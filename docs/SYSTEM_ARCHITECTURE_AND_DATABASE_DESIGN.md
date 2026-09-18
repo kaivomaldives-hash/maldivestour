@@ -1,204 +1,98 @@
-# MTG — Complete System Architecture & Database Design (Task 2, Revision 2)
+# MTG — Complete System Architecture & Database Design (Task 2, Revision 3 — Final Correction Pass)
 
-Status: **Design only. Nothing built.** No Next.js project, no Supabase project, no database, no migrations, no packages, no pages, no components, no redirects, no booking logic, no email integration, no application code. This revision supersedes the prior version of this document and resolves the 14 issues raised in review. Task 1's blueprint (`docs/ARCHITECTURE_BLUEPRINT.md`) remains valid at the level it operates on; this document is the authoritative detailed design.
+Status: **Design only. Nothing built.** No Next.js project, no Supabase project, no migrations, no packages, no pages, no components, no API routes, no email integration, no application code. This revision keeps Revision 2 as the foundation and fixes only the 12 issues raised in the latest review. Nothing was redesigned beyond what each issue required.
 
-Section 14 of the review ("LEGACY URL MIGRATION") arrived without a body in the request. §22 below keeps the previously-approved redirect design unchanged, and confirms it still holds correctly against every schema change made in this revision — see §22 for the explicit consistency check.
+Structure of this document: §1–§12 below are the correction for each numbered issue in the review, in the same order. §13 is the full, final, dependency-ordered consolidated schema (every fix applied). §14 is the final ER diagram. §15 is the final verdict.
 
 ---
 
-## 1. Transfers — Final Required Model: Routes vs. Services
+## 1. Transfer Service Schedules
 
-**Two tables, deliberately not collapsed: `transfer_routes` and `transfer_services`.**
-
-### Why they must stay separate
-
-A **route** is a geographic fact: a directional origin→destination pair. It is stable, reusable, and reference-like — "Velana International Airport → Thulusdhoo" exists as a concept whether or not anyone currently sells a ticket on it. A **service** is a commercial offering on that route: who runs it, in what vehicle, on what schedule, for what price. A route regularly has *many* services (Provider A/B/C in the worked example), each changing independently and at different rates — price and schedule churn constantly, while the route itself almost never does.
-
-Collapsing them into one table forces a choice between two bad outcomes: either the origin/destination geography gets duplicated once per provider/service row (denormalized, error-prone if a location is renamed or its atoll changes), or a route can only ever have one operator (contradicts the requirement outright). Keeping them separate means:
-
-- Origin/destination is stored **once per direction**, referenced by every service on it.
-- "Show all services on this route" is a plain join, not a `GROUP BY` over duplicated geography.
-- A route and its reverse (`A→B` vs `B→A`) are genuinely independent rows — different services, different prices, sometimes only one direction is even sold (e.g., a resort-included one-way transfer) — exactly as the review specifies. Nothing about this model infers or auto-generates the reverse; it must be created as its own row if it exists.
-
-### Schema
+`transfer_services` previously held one `departure_time`/`arrival_time`/`operating_days` array directly, which cannot represent a service with several departures on the same day (Provider C's 09:00 *and* 14:00 ferry) or a schedule that changes seasonally. Fixed with a new normalized table, **not JSONB**:
 
 ```sql
-create table transfer_routes (
-  id                          uuid primary key references nodes(id) on delete cascade,
-  origin_location_id          uuid not null references locations(id),
-  destination_location_id     uuid not null references locations(id),
-  distance_km                 numeric(6,2),
-  typical_duration_minutes    int,
-  unique (origin_location_id, destination_location_id)
-);
-create index transfer_routes_origin_idx      on transfer_routes(origin_location_id);
-create index transfer_routes_destination_idx on transfer_routes(destination_location_id);
-```
-
-`transfer_routes.id` shares a primary key with `nodes.id` (§2) — a route is the addressable, SEO-visible, reviewable unit ("Transfers: Velana Airport → Thulusdhoo" is a real page). `origin_location_id`/`destination_location_id` reference the canonical `locations` table directly (never free text), so a route participates in the same location-hub queries as everything else.
-
-```sql
-create table transfer_services (
-  id                     uuid primary key default gen_random_uuid(),
-  route_id               uuid not null references transfer_routes(id) on delete cascade,
-  provider_id            uuid references providers(id),
-  transfer_type          text not null check (transfer_type in (
-                            'speedboat', 'seaplane', 'domestic_flight', 'ferry',
-                            'private_yacht', 'land_transfer'
-                          )),
-  vehicle_type           text,               -- e.g. "40-seat speedboat", "DHC-6 Twin Otter"
-  shared_or_private      text not null check (shared_or_private in ('shared','private')),
-  departure_time         time,               -- null for on-request/private-charter services
-  arrival_time           time,
-  duration_minutes       int,
-  price                  numeric(10,2) not null,
-  currency               text not null default 'USD',
-  capacity               int,
-  luggage_allowance      text,
-  operating_days         text[],             -- e.g. {'mon','wed','fri'} or {'daily'}
-  status                 text not null default 'active' check (status in (
-                            'active', 'seasonal', 'suspended', 'discontinued'
-                          )),
-  pickup_instructions    text,
-  dropoff_instructions   text,
-  booking_requirements   text,
-  cancellation_policy    text,
-  description            text,
-  created_at             timestamptz not null default now(),
-  updated_at             timestamptz not null default now()
-);
-create index transfer_services_route_idx    on transfer_services(route_id);
-create index transfer_services_provider_idx on transfer_services(provider_id);
-
-create table transfer_service_media (
+create table transfer_service_schedules (
+  id                    uuid primary key default gen_random_uuid(),
   transfer_service_id   uuid not null references transfer_services(id) on delete cascade,
-  media_id              uuid not null references media_assets(id) on delete cascade,
-  role                  text not null check (role in ('hero','gallery')),
-  sort_order            int default 0,
-  primary key (transfer_service_id, media_id, role)
+  day_of_week           smallint check (day_of_week between 0 and 6),  -- 0=Sun..6=Sat; null = operates every day
+  departure_time        time,
+  arrival_time           time,
+  duration_minutes       int,           -- optional override of transfer_services.duration_minutes for this slot
+  effective_from          date,
+  effective_to            date,
+  status                  text not null default 'active' check (status in ('active','inactive')),
+  sort_order              int not null default 0,
+  unique nulls not distinct (transfer_service_id, day_of_week, departure_time)
 );
+create index transfer_service_schedules_service_idx on transfer_service_schedules(transfer_service_id);
 ```
 
-Every field the review listed as "where applicable" is present as its own column (provider, transfer type, vehicle/boat type, shared/private, departure/arrival time, duration, price, currency, capacity, luggage, operating days, status/availability, pickup/dropoff instructions, booking requirements, cancellation policy, description, media) — nothing here is buried in JSONB, consistent with §11's relational boundary.
+`departure_time`, `arrival_time`, and `operating_days` are **removed** from `transfer_services`; `duration_minutes` stays there as the service's typical/default duration, overridable per schedule row when a specific slot genuinely differs (e.g., a later crossing runs longer due to tide).
+
+**How multiple departures per day are represented:** each departure is its own row. Provider C's ferry (09:00 daily, 14:00 daily) is two rows: `(day_of_week = null, departure_time = '09:00')` and `(day_of_week = null, departure_time = '14:00')`, `day_of_week = null` meaning "every day this service runs," so a fully daily multi-departure service doesn't need seven rows per time slot. A service that only runs specific weekdays at a specific time uses one row per weekday instead (`day_of_week = 1` for Monday, etc.). `effective_from`/`effective_to` let a seasonal timetable (e.g., a monsoon-season schedule change) coexist with the regular one as a separate set of rows without deleting/overwriting history. The `unique nulls not distinct (...)` constraint (Postgres 15+, which Supabase runs) prevents an accidental exact duplicate of the same service/day/time — including two `day_of_week = null` rows at the same time, which a plain `UNIQUE` constraint would *not* catch, since ordinary SQL treats every `NULL` as distinct from every other `NULL`.
+
+A booking does not reference a specific schedule row — `bookings.travel_date`/`travel_time` (already in the schema, §3 of Revision 2) capture the customer's chosen date and time directly; `transfer_service_schedules` exists to publish what's available, not to be a booking foreign key.
 
 ---
 
-## 2. Nodes + Transfers Consistency — Final Model
+## 2. Migration Order / Foreign Key Dependencies
 
-**Resolved:** `nodes.node_type` now includes `'transfer_route'` (replacing the earlier, incorrect `'transfer_option'`). **Transfer services are explicitly not nodes.**
+**There is no true circular dependency anywhere in the schema.** `nodes.og_image_media_id → media_assets.id` and `media_assets` itself has zero outgoing foreign keys — the appearance of a cycle in Revision 2 was purely an artifact of the order tables were *written* in the document, not a structural cycle. The fix is a single reordering, applied throughout §13: **`media_assets` is now the first table created, immediately after extensions, before `nodes`.** Because `media_assets` has no dependencies of its own, this is always valid, and it means:
 
-```sql
--- nodes.node_type check constraint, final:
-check (node_type in (
-  'location', 'category', 'provider', 'accommodation',
-  'activity', 'transfer_route', 'package', 'article'
-))
+- `nodes.og_image_media_id uuid references media_assets(id)` can be declared inline, no deferred `ALTER TABLE` needed.
+- `transfer_service_media`, which references `media_assets(id)`, is naturally valid wherever it's created later, since `media_assets` already exists.
+- `node_media`, same reasoning.
+
+The full dependency order used in §13, confirmed acyclic by construction (every table only references tables created strictly before it, except declared self-references within the same `CREATE TABLE`, e.g. `locations.parent_id → locations.id`, which Postgres resolves within a single statement and is not a cross-table ordering issue):
+
 ```
-
-**Why routes are nodes:** a route needs everything the node backbone provides — a slug and canonical URL, draft/published status, SEO metadata, breadcrumbs, the ability to be reviewed ("how was the Velana→Thulusdhoo transfer experience"), a hero image/gallery, and discoverability through search and location hubs. It is content in its own right.
-
-**Why services are not nodes:** a service is a fast-changing, provider-owned commercial line item, not an independently addressable page — it doesn't need its own slug, its own draft/publish lifecycle, or its own canonical URL; it's presented as one row in a comparison list on its route's page (exactly like the worked example: one route page, three service rows). Making every service a full node would mean giving volatile pricing/schedule data the same lifecycle machinery (SEO fields, status enum, rating aggregates) as genuine content, for no benefit — a direct violation of "don't invent unnecessary features" and of §11's relational/JSONB discipline applied one level up (don't force a shape onto data that doesn't need it).
-
-**Consequence for reviews:** since only nodes are reviewable, reviews attach at the **route** level (the transfer experience generally) or at the **provider** level (§8, providers are nodes — a provider's overall reputation across everything it runs, transfers included). There is no per-service review table — this is a deliberate scope limit, not an oversight: it can be added later as `transfer_service_id` on `reviews` (nullable, alongside `node_id`) if provider-vs-provider review comparison on the same route becomes a real product need, without touching any other part of the schema.
-
-**Consequence for booking:** a service is still fully bookable — see §3, which handles "bookable thing is sometimes a node, sometimes a transfer_service" explicitly rather than pretending everything is a node.
-
-**Consequence for URLs:** a service has no canonical URL of its own; it only ever appears inline within its route's page (§21).
-
-The ER diagram in §23 reflects this exactly: `transfer_routes` hangs off `nodes`; `transfer_services` hangs off `transfer_routes`, not off `nodes`.
+extensions → media_assets → nodes → locations → categories → attribute_definitions
+→ location_type_hierarchy_rules → providers → accommodations → activities
+→ transfer_routes → transfer_services → transfer_service_schedules → transfer_service_media
+→ packages → package_itinerary_stages → package_itinerary_items → articles
+→ node_locations → node_categories → reviews → article_comments → favorites → node_media
+→ bookable_products → booking_reference_counters → bookings → booking_notifications
+→ platform_settings → profiles → url_redirects
+→ (functions and triggers, which only need their referenced tables to already exist)
+```
 
 ---
 
-## 3. Booking / Inquiry — Guest Bookings
+## 3. Bookable Product Type Safety
 
-One table, `bookings`, serves every bookable thing on the platform — accommodations, activities, packages, and transfer services — per the instruction not to fragment booking into per-entity-type tables. `user_id` is nullable; guest contact fields are first-class.
-
-```sql
-create table bookings (
-  id                        uuid primary key default gen_random_uuid(),
-  booking_reference         text not null unique,                -- MTG-2026-000123, see §4
-
-  -- what is being booked: exactly one of the two branches below (§2 consequence)
-  product_type              text not null check (product_type in ('node','transfer_service')),
-  product_node_id           uuid references bookable_products(id),
-  transfer_service_id       uuid references transfer_services(id),
-  check (
-    (product_type = 'node' and product_node_id is not null and transfer_service_id is null)
-    or
-    (product_type = 'transfer_service' and transfer_service_id is not null and product_node_id is null)
-  ),
-
-  -- who is booking: account optional, guest details always captured
-  user_id                   uuid references auth.users(id),      -- nullable — guests have none
-  customer_name              text not null,
-  customer_email             text not null,
-  customer_phone             text,
-  customer_whatsapp          text,
-
-  -- trip details — nullable where not applicable to the product type
-  origin_location_id         uuid references locations(id),
-  destination_location_id    uuid references locations(id),
-  travel_date                date,
-  travel_time                 time,
-  return_date                 date,
-  return_time                 time,
-  trip_type                   text check (trip_type in ('one_way','round_trip','multi_day','n_a')),
-  adults                      int not null default 1,
-  children                    int not null default 0,
-  infants                     int not null default 0,
-  flight_number                text,
-  special_requests              text,
-
-  -- commercial
-  estimated_price              numeric(10,2),
-  quoted_price                 numeric(10,2),
-  currency                     text not null default 'USD',
-
-  -- operations
-  internal_notes               text,
-  status                       text not null default 'new' check (status in (
-                                  'new', 'contacted', 'pending', 'confirmed', 'cancelled', 'completed'
-                                )),
-  notification_status          text not null default 'pending' check (notification_status in (
-                                  'pending', 'sent', 'failed'
-                                )),
-
-  created_at                   timestamptz not null default now(),
-  updated_at                   timestamptz not null default now()
-);
-create index bookings_reference_idx             on bookings(booking_reference);
-create index bookings_status_idx                on bookings(status);
-create index bookings_user_idx                  on bookings(user_id);
-create index bookings_product_node_idx          on bookings(product_node_id);
-create index bookings_transfer_service_idx      on bookings(transfer_service_id);
-```
-
-`bookable_products` (from Task 2 rev 1, unchanged) remains the opt-in gate for which **nodes** (accommodations, activities, packages) can be booked at all:
+A plain `CHECK` constraint cannot enforce "only nodes of certain types," because `CHECK` constraints can't reliably reference another table's current data. This needs a trigger — enforced at the database level regardless of which client or role performs the write, so it cannot be bypassed by application code:
 
 ```sql
-create table bookable_products (
-  id              uuid primary key references nodes(id) on delete cascade,
-  booking_mode    text not null default 'inquiry' check (booking_mode in ('inquiry','instant')),
-  base_price      numeric(10,2),
-  currency        text default 'USD',
-  max_guests      int
-);
+create or replace function enforce_bookable_product_node_type() returns trigger as $$
+declare
+  v_node_type text;
+begin
+  select node_type into v_node_type from nodes where id = new.id;
+  if v_node_type is null then
+    raise exception 'bookable_products.id % does not reference an existing node', new.id;
+  end if;
+  if v_node_type not in ('accommodation', 'activity', 'package') then
+    raise exception 'node_type % may not be marked bookable (allowed: accommodation, activity, package)', v_node_type;
+  end if;
+  return new;
+end;
+$$ language plpgsql set search_path = public, pg_temp;
+
+create trigger bookable_products_node_type_check
+  before insert or update on bookable_products
+  for each row
+  execute function enforce_bookable_product_node_type();
 ```
 
-`bookings.product_node_id` references `bookable_products.id`, not `nodes.id` directly — this makes it structurally impossible to create a booking against a node that was never marked bookable, rather than relying on application code to check that separately. Transfer-specific fields (`origin_location_id`, `flight_number`, etc.) stay nullable and are simply unused for an accommodation/activity/package booking; there is no separate `transfer_bookings` table, per the instruction.
+This makes it structurally impossible for an article, location, provider, category, or transfer_route to end up in `bookable_products` — an `INSERT` attempting it fails at the database layer, independent of and in addition to the RLS role check (§10) that already limits *who* may write to the table. Transfer services remain bookable exclusively through `bookings.transfer_service_id`, unaffected by this trigger.
 
 ---
 
-## 4. Booking Reference
+## 4. Booking Reference Security & RPC Hardening
 
-`booking_reference text unique`, format `MTG-{year}-{6-digit sequence}`, generated server-side — never client-supplied, never guessable in advance, never subject to a race condition under concurrent inserts.
+**The trigger is made unconditionally authoritative.** Revision 2's trigger only set `booking_reference` `when (new.booking_reference is null)` — a theoretical gap if a value were ever supplied. That condition is removed: the trigger now overwrites `booking_reference` on every insert, full stop, regardless of any value a caller attempts to pass.
 
 ```sql
-create table booking_reference_counters (
-  year         int primary key,
-  last_value   int not null default 0
-);
-
 create or replace function generate_booking_reference() returns trigger as $$
 declare
   next_val int;
@@ -212,346 +106,630 @@ begin
   new.booking_reference := 'MTG-' || yr || '-' || lpad(next_val::text, 6, '0');
   return new;
 end;
-$$ language plpgsql;
+$$ language plpgsql set search_path = public, pg_temp;
 
 create trigger set_booking_reference
   before insert on bookings
   for each row
-  when (new.booking_reference is null)
   execute function generate_booking_reference();
 ```
 
-**Why this is safe under concurrency:** the counter increment is done with a single `INSERT ... ON CONFLICT (year) DO UPDATE ... RETURNING`, which Postgres executes as one atomic, row-locked statement — two simultaneous bookings in the same year cannot read-then-write the same `last_value` and collide, because the second transaction blocks on the row lock until the first commits. This is the standard safe pattern for a gapless-enough sequential counter in Postgres (small gaps are still possible only if a transaction rolls back after incrementing, which is acceptable — uniqueness is guaranteed, sequential-without-gaps is not promised or needed here). The reference resets to `000001` at the start of each calendar year, matching the `MTG-2026-000123` example. The UUID `bookings.id` remains the real primary key and the only value used in foreign keys (`booking_notifications.booking_id`, etc.); `booking_reference` exists purely as the human-facing lookup/communication string.
-
----
-
-## 5. Booking Status
-
-| Status | Meaning |
-|---|---|
-| `new` | Inquiry just submitted by the customer (guest or logged-in); nobody on staff has actioned it yet. |
-| `contacted` | Staff has reached out to the customer — clarifying details, checking availability with a provider, or sending a quote — but nothing is agreed yet. |
-| `pending` | A quote/offer is out and MTG is waiting on something external to close it: customer confirmation, payment, or a provider's availability confirmation. |
-| `confirmed` | Both sides have agreed — the booking is locked in for the stated dates. |
-| `cancelled` | The booking will not proceed (customer- or operator-initiated cancellation, at any prior stage). |
-| `completed` | The travel date has passed and the service was delivered as booked. |
-
-This is a linear-ish workflow (`new → contacted → pending → confirmed → completed`) with `cancelled` reachable from any non-terminal state — enough to run an inquiry desk without building a full workflow/state-machine engine, consistent with keeping v1 to inquiry-mode bookings (Task 1 §20/Task 2 §15, unchanged: no payments, no live availability engine).
-
----
-
-## 6. Booking Notification
-
-**The recipient address is data, not code.** It lives in one configurable settings table, never hardcoded in application source:
+**The public RPC never exposes the forbidden fields as parameters at all** — not filtered, simply not present in the function signature, so there is nothing to strip or forget to strip:
 
 ```sql
-create table platform_settings (
-  key            text primary key,
-  value          text not null,
-  description    text,
-  updated_at     timestamptz not null default now()
+create or replace function create_booking_inquiry(
+  p_product_type              text,
+  p_product_node_id           uuid,
+  p_transfer_service_id       uuid,
+  p_customer_name              text,
+  p_customer_email             text,
+  p_customer_phone             text,
+  p_customer_whatsapp          text,
+  p_origin_location_id         uuid,
+  p_destination_location_id    uuid,
+  p_travel_date                 date,
+  p_travel_time                  time,
+  p_return_date                   date,
+  p_return_time                   time,
+  p_trip_type                     text,
+  p_adults                        int default 1,
+  p_children                      int default 0,
+  p_infants                       int default 0,
+  p_flight_number                  text default null,
+  p_special_requests                text default null,
+  p_estimated_price                 numeric default null,
+  p_currency                        text default 'USD'
+) returns table (id uuid, booking_reference text)
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_id uuid;
+  v_reference text;
+begin
+  if p_product_type not in ('node', 'transfer_service') then
+    raise exception 'invalid product_type: %', p_product_type;
+  end if;
+  if p_product_type = 'node' and p_product_node_id is null then
+    raise exception 'product_node_id is required when product_type = node';
+  end if;
+  if p_product_type = 'transfer_service' and p_transfer_service_id is null then
+    raise exception 'transfer_service_id is required when product_type = transfer_service';
+  end if;
+
+  insert into bookings (
+    product_type, product_node_id, transfer_service_id, user_id,
+    customer_name, customer_email, customer_phone, customer_whatsapp,
+    origin_location_id, destination_location_id, travel_date, travel_time,
+    return_date, return_time, trip_type, adults, children, infants,
+    flight_number, special_requests, estimated_price, currency
+  ) values (
+    p_product_type,
+    case when p_product_type = 'node' then p_product_node_id end,
+    case when p_product_type = 'transfer_service' then p_transfer_service_id end,
+    auth.uid(),                          -- null for anonymous/guest callers, never client-supplied
+    p_customer_name, p_customer_email, p_customer_phone, p_customer_whatsapp,
+    p_origin_location_id, p_destination_location_id, p_travel_date, p_travel_time,
+    p_return_date, p_return_time, p_trip_type, p_adults, p_children, p_infants,
+    p_flight_number, p_special_requests, p_estimated_price, p_currency
+  )
+  returning bookings.id, bookings.booking_reference into v_id, v_reference;
+
+  return query select v_id, v_reference;
+end;
+$$;
+
+revoke all on function create_booking_inquiry from public;
+grant execute on function create_booking_inquiry(text, uuid, uuid, text, text, text, text, uuid, uuid, date, time, date, time, text, int, int, int, text, text, numeric, text)
+  to anon, authenticated;
+```
+
+`booking_reference`, `status`, `internal_notes`, `notification_status`, `created_at`, and `updated_at` are not parameters — they are fixed by column defaults (`status` defaults to `'new'`, `notification_status` to `'pending'`, timestamps to `now()`) and the trigger from §4/above, and there is no way for a caller of this function to influence any of them.
+
+**Hardening applied, matching every point raised:**
+- **Explicit safe `search_path`** (`set search_path = public, pg_temp`) — prevents a search-path-hijacking attack against a `SECURITY DEFINER` function (a well-known Postgres privilege-escalation vector if the path is left to inherit the caller's).
+- **Controlled `EXECUTE` grants** — `revoke all ... from public` first, then an explicit `grant execute ... to anon, authenticated` naming exactly who may call it.
+- **No unnecessary public access to the underlying table** — `bookings` itself grants no `INSERT` privilege to `anon`/`authenticated` at the table level (in addition to RLS denying it, §10); the function is the only path in, because its owner (see §10's note on function ownership) can write to the table when regular client roles cannot.
+- **Returns only `id` and `booking_reference`** — `returns table (id uuid, booking_reference text)`, never the full row, so the response can't be used to read back customer contact details or internal fields for someone else's booking.
+
+The paired self-service read function is hardened identically:
+
+```sql
+create or replace function get_my_bookings() returns setof bookings
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+begin
+  return query select * from bookings where user_id = auth.uid();
+end;
+$$;
+
+revoke all on function get_my_bookings from public;
+grant execute on function get_my_bookings to authenticated;   -- not anon — guests have no account to list
+```
+
+---
+
+## 5. Redirect Target Integrity
+
+**Shape constraint** — the populated column must match `target_type`:
+
+```sql
+alter table url_redirects add constraint url_redirects_target_shape check (
+  (target_type = 'node'         and target_node_id is not null and target_path is null)
+  or
+  (target_type = 'path'          and target_path is not null and target_node_id is null)
+  or
+  (target_type = 'external_url'  and target_path is not null and target_node_id is null)
 );
--- conceptual seed row (not created now):
--- ('booking_notification_email', 'contact@maldivestour.guide', 'Default recipient for booking/inquiry notifications')
 ```
 
-The application reads `platform_settings['booking_notification_email']` in exactly one place (a single config-access function), so changing the recipient — or adding a second one later — is an admin-editable data change, never a code search-and-replace.
+(`target_path` is reused for both `path` — an internal relative path — and `external_url` — a full URL — distinguished by `target_type`; this mirrors the same discriminated-union pattern already used elsewhere in the schema, e.g. `bookings.product_type`.)
 
-**Notification tracking**, separate from the booking row itself so multiple attempts/recipients can be logged without overloading `bookings`:
+**301 is the default and the expected choice for a permanent SEO migration** — `status_code` already defaults to `301`. `302`/`308` are exceptions that must be deliberate (e.g., a genuinely temporary notice), and any such row is expected to record why in `notes`; this is an editorial/process rule enforced by the admin workflow (§17 in Revision 1/2) rather than a `CHECK`, since the database cannot judge *intent* — only that a chosen code is one of the three allowed values (already enforced).
+
+**No redirect chains.** A trigger blocks the two realistic ways a chain gets created, checked from both directions so it's caught whichever row is added second:
 
 ```sql
-create table booking_notifications (
-  id                    uuid primary key default gen_random_uuid(),
-  booking_id            uuid not null references bookings(id) on delete cascade,
-  notification_type     text not null check (notification_type in ('admin_alert','customer_confirmation')),
-  recipient_email       text not null,
-  status                text not null default 'pending' check (status in ('pending','sent','failed')),
-  provider_message_id   text,
-  error_message         text,
-  attempted_at          timestamptz not null default now(),
-  sent_at               timestamptz
-);
-create index booking_notifications_booking_idx on booking_notifications(booking_id);
+create or replace function prevent_redirect_chains() returns trigger as $$
+begin
+  -- this row's target must not itself be another active redirect's source
+  if new.target_type = 'path' and exists (
+    select 1 from url_redirects r
+    where r.source_path = new.target_path and r.is_active and r.id <> new.id
+  ) then
+    raise exception 'redirect chain: target_path % is itself an active redirect source — point directly at the final canonical path', new.target_path;
+  end if;
+
+  -- this row's source must not already be the target of another active redirect
+  if exists (
+    select 1 from url_redirects r
+    where r.target_type = 'path' and r.target_path = new.source_path and r.is_active and r.id <> new.id
+  ) then
+    raise exception 'redirect chain: source_path % is already the target of another active redirect', new.source_path;
+  end if;
+
+  return new;
+end;
+$$ language plpgsql set search_path = public, pg_temp;
+
+create trigger url_redirects_no_chains
+  before insert or update on url_redirects
+  for each row
+  execute function prevent_redirect_chains();
 ```
 
-`bookings.notification_status` stays as a fast, denormalized summary for admin list views (mirrors the latest `admin_alert` attempt); `booking_notifications` is the full, appendable audit trail supporting retries and more than one notification type.
+This is a practical guard against the realistic editor mistake (a two-hop chain, created in either order), not a general graph-cycle solver — chains built up gradually across many separate edits over time are not exhaustively detected by a per-row trigger. The operational backstop is a simple periodic admin health-check query (`select source_path from url_redirects where is_active and source_path in (select target_path from url_redirects where target_type = 'path' and is_active)`), not a new subsystem.
 
-**Designed flow (not implemented — no email provider wired up):**
-1. Guest or user submits an inquiry → `bookings` row inserted (via the RPC in §7), `booking_reference` auto-generated (§4).
-2. A `booking_notifications` row is inserted: `notification_type = 'admin_alert'`, `recipient_email` read from `platform_settings`, `status = 'pending'`.
-3. An Edge Function (triggered by a DB webhook/`pg_net` call on insert, or a scheduled job — provider TBD) sends the email containing all booking details, then updates that notification row's `status`/`sent_at`/`error_message` and mirrors the outcome onto `bookings.notification_status`.
-4. If the booking includes `customer_email` and customer confirmations are enabled, a second `booking_notifications` row (`notification_type = 'customer_confirmation'`) follows the same path.
-5. The admin booking list surfaces `notification_status` per booking (and, on demand, the full `booking_notifications` history) so staff can see at a glance whether the office was actually notified — with a manual "resend" admin action simply inserting a fresh `booking_notifications` row.
+**No mass homepage redirects** is a policy rule for the later migration/import phase (§11), not something the schema can safely hard-block — a merge of several genuinely obsolete pages into one surviving hub is sometimes legitimate, so the constraint would be wrong if absolute. It's enforced procedurally: the migration import step (§11) flags any target used by an unusually large number of source rows for manual review before activation, and a bare `'/'` target is treated as requiring explicit sign-off rather than being auto-approved.
+
+**Old URL → final canonical URL, directly.** For `target_type = 'node'`, the destination is always that node's live, dynamically-computed canonical path (§13/§21 of Revision 2) — it can never itself be "a redirect," by construction. For `target_type = 'path'`, the chain-prevention trigger above guarantees it isn't pointing at another redirect's source.
+
+**`url_redirects` is the sole authoritative redirect system; `legacy_slugs` is historical metadata only.** This corrects an ambiguity in Revision 2: `nodes.legacy_slugs` is **not** consulted by request-time redirect resolution and does **not**, on its own, cause an HTTP redirect to happen. It exists purely as an audit/history record ("this node used to be known by these slugs") and as an optional aid for admin search/lookup. If an old slug needs to actually 301 somewhere, a corresponding `url_redirects` row must exist — `legacy_slugs` never substitutes for one.
 
 ---
 
-## 7. Booking Security
+## 6. Transfer Route vs. Service — Explicit SEO Decision
 
-Guest bookings mean `auth.uid() = user_id` cannot be the (or the only) access control — it's `false` for every guest row and enforces nothing on the anonymous-write side at all. The design instead separates the **write path** from **table access**:
+Stated explicitly, as required, with the worked example:
 
-**Write path — a `SECURITY DEFINER` RPC function, not a direct table INSERT:**
+- **`transfer_routes` are the only canonical, indexable SEO pages** for transfer content. `/maldives/transfers/velana-airport-to-thulusdhoo/` is a real, crawlable, reviewable page.
+- **`transfer_services` are commercial line items displayed inside their route's page**, not independent URLs:
 
-- `create_booking_inquiry(...)` accepts only customer-facing fields (product reference, contact details, trip details) — it never accepts `status`, `internal_notes`, `booking_reference`, or `notification_status`; those are fixed by defaults/triggers regardless of what's passed.
-- It runs as `SECURITY DEFINER`, so it can insert into `bookings` even though the `anon`/`authenticated` Postgres roles have **no direct INSERT grant** on the table — the table stays locked down; the function is the only door.
-- It returns the minimal confirmation payload (`booking_reference`, `id`) — never the full row — so the response can't be used to enumerate or read other people's bookings.
-- It is called through Supabase RPC and is rate-limited at the application layer (§Task-2-rev1 §24 rate limiting, still applies) to curb anonymous abuse.
+  ```
+  /maldives/transfers/velana-airport-to-thulusdhoo/
+    Provider A — Speedboat (shared) — $30
+    Provider B — Speedboat (private) — $150 (on request)
+    Provider C — Ferry — $5 — 09:00 / 14:00 daily (see §1 schedules)
+  ```
 
-**Table-level RLS on `bookings` — default-deny, no policy relies on `user_id`:**
-
-- **No `SELECT`/`INSERT`/`UPDATE`/`DELETE` policy grants anything to `anon` or `authenticated` directly.** All direct table access is denied by RLS unless a policy below explicitly allows it.
-- `SELECT`/`UPDATE` allowed for `profiles.role IN ('editor','admin')` — staff manage the inquiry desk through the admin (§17), same role pattern used everywhere else in the schema.
-- A logged-in customer who wants to see "my bookings" is served by a second `SECURITY DEFINER` function, `get_my_bookings()`, which internally filters `where user_id = auth.uid()` and returns only that user's rows — this is a narrow, purpose-built function, not a table policy, precisely because a blanket `auth.uid() = user_id` policy would do nothing for the anonymous-write case and is easy to misconfigure into a false sense of coverage.
-- `booking_notifications`, `booking_reference_counters`, and `platform_settings` are staff/service-role only — never exposed to `anon` or `authenticated` under any policy.
-
-Net effect: an anonymous visitor can create exactly one thing (a booking, through the function, with only the fields the function accepts) and can read nothing back except their own confirmation reference; only staff and, narrowly, the owning authenticated user can ever read booking rows.
+- **Transfer services get no canonical URL of their own in v1.** There is no `/maldives/transfers/velana-airport-to-thulusdhoo/provider-a` page; a service is only ever reachable as a row within its route's page. This is a direct, intended consequence of §2 of Revision 2 (services are not nodes) — restated here explicitly because the review asked for it to be unambiguous, not because anything about the underlying model changed.
+- **The booking retains the exact `transfer_service_id` selected**, via `bookings.transfer_service_id` (§3 of Revision 2, unchanged) — even though the service has no page of its own, the specific provider/offering chosen is never lost; it's a hard foreign key on the booking row, not inferred from the route.
 
 ---
 
-## 8. Packages — Taxonomies (No Boolean Columns)
+## 7. Package Itinerary — Stage Model
 
-Packages reuse the existing `categories`/`node_categories` system from Task 2 rev 1 (§9 of that document) — no new taxonomy mechanism, no boolean flags. `categories.category_group` gains the groups this review calls for, alongside the ones already defined for accommodations/activities:
-
-```sql
--- categories.category_group check constraint, final:
-check (category_group in (
-  'accommodation-type', 'activity-type', 'amenity',       -- unchanged from rev 1
-  'traveler-type', 'package-style', 'duration-band', 'inclusion', 'theme'  -- new, package-oriented
-))
-```
-
-| `category_group` | Example values |
-|---|---|
-| `traveler-type` | Honeymoon, Family, Couple, Solo, Group, Luxury, Budget, Long Stay |
-| `package-style` | Local Island, Resort, Hotel, Guesthouse, Mix Islands, Local Island + Resort, Island Hopping |
-| `duration-band` | 3 Nights, 4 Nights, 5 Nights, 7 Nights, 10 Nights, 14 Nights, Custom |
-| `inclusion` | Accommodation, Activities, Transfers, Food, Breakfast, Half Board, Full Board, All Inclusive, Airport Transfer, Speedboat Transfer, Seaplane Transfer, Domestic Flight, Excursions, Tours |
-| `theme` | Diving, Fishing, Surfing, Island Hopping, Beach Holiday, Adventure, Culture, Wellness, Romantic, Family Activities |
-
-A package attaches to any number of these via the existing `node_categories` junction — "Honeymoon + Resort + 7 Nights + All Inclusive + Romantic" is five rows, not five columns, and adding a new value (e.g. a future "Wellness Retreat" `theme`) is a data insert, never a migration.
-
-**On `duration-band` specifically:** the package's authoritative duration lives as a real numeric column (`packages.duration_nights`, §9) used for exact display and range filtering (`WHERE duration_nights BETWEEN 5 AND 7`). The `duration-band` category tag is a separate, editor-assignable *marketing facet* — normally auto-suggested from `duration_nights` but overridable (e.g. a 6-night package intentionally tagged "7 Nights" for a marketing bucket) — kept as a tag rather than only relying on a numeric filter because faceted-browse UIs read far more naturally off a small fixed set of bands than a raw number range.
-
-**On `inclusion` values that look like transfer types** (Airport Transfer, Speedboat Transfer, Seaplane Transfer, Domestic Flight): these are **discovery/filter tags**, not the actual booked components — "this package includes some kind of speedboat transfer" for search/filtering. The real, dated, priced transfer is a `transfer_service` referenced in the package's itinerary (§9). Both exist for different reasons: the category tag makes the package filterable and summarizable at a glance; the itinerary item is the literal thing a guest experiences on Day 1. Neither duplicates the other's data — the tag carries no price/schedule, the itinerary item carries no marketing copy.
-
----
-
-## 9. Package Itinerary
-
-A package is a day-by-day sequence, not an unordered bag of related nodes. `package_components` from Task 2 rev 1 is **replaced** by two tables — it was a flat, day-blind junction and can't represent "Day 1: transfer, Day 1–3: Hotel A, Day 3: transfer, Day 4–6: Hotel B."
+Revision 2's `package_itinerary_days` forced one row per single day, which meant repeating "Hotel A" four times to cover a four-night stay. Replaced with **stages** — a day *range*, which is a superset of a single day (`day_start = day_end`) and removes the repetition without losing anything:
 
 ```sql
-create table package_itinerary_days (
+create table package_itinerary_stages (
   id             uuid primary key default gen_random_uuid(),
   package_id     uuid not null references nodes(id) on delete cascade,
-  day_number     int not null,
-  night_count    int not null default 1,     -- nights at this stage; 0 for a pure transfer/activity day
-  title          text,                        -- e.g. "Arrival & transfer to Maafushi"
+  stage_number   int not null,
+  day_start      int not null,
+  day_end        int not null,
+  night_count    int not null default 0,
+  title          text,
   description    text,
   sort_order     int not null default 0,
-  unique (package_id, day_number)
+  unique (package_id, stage_number),
+  check (day_end >= day_start)
 );
 
 create table package_itinerary_items (
   id                    uuid primary key default gen_random_uuid(),
-  itinerary_day_id      uuid not null references package_itinerary_days(id) on delete cascade,
+  stage_id              uuid not null references package_itinerary_stages(id) on delete cascade,
   component_type        text not null check (component_type in ('node','transfer_service')),
   component_node_id     uuid references nodes(id),
   transfer_service_id   uuid references transfer_services(id),
   component_role        text not null check (component_role in (
-                           'accommodation', 'activity', 'transfer', 'meal', 'free_time', 'excursion', 'other'
+                           'accommodation','activity','transfer','meal','free_time','excursion','other'
                          )),
   quantity              int not null default 1,
   notes                 text,
-  sort_order            int not null default 0,
+  sort_order             int not null default 0,
   check (
     (component_type = 'node' and component_node_id is not null and transfer_service_id is null)
     or
     (component_type = 'transfer_service' and transfer_service_id is not null and component_node_id is null)
   )
 );
-create index package_itinerary_items_day_idx on package_itinerary_items(itinerary_day_id);
+create index package_itinerary_items_stage_idx on package_itinerary_items(stage_id);
 ```
 
-Walking the worked example: `package_itinerary_days` gets one row per day (1–7); `package_itinerary_items` gets, e.g., Day 1 → {transfer_service: airport→Maafushi, role=`transfer`} + {node: Hotel A, role=`accommodation`}; Day 2 → {node: Snorkeling activity, role=`activity`} + {node: Hotel A, role=`accommodation`}; Day 4 → {transfer_service: Maafushi→Thulusdhoo, role=`transfer`} + {node: Hotel B, role=`accommodation`}; and so on. Repeating "Hotel A" as an item on each night's day is intentional — it keeps every day self-describing for rendering ("where am I this day") without needing to derive stay-ranges from sparse start/end markers.
+**Concrete 7-night example**, matching the review's worked case exactly:
 
-**No data is duplicated into the package:** every item is a reference (`component_node_id` → the actual hotel/activity node, or `transfer_service_id` → the actual transfer service), never a copy of that thing's title, price, or description. If the linked hotel's photos or price change, every package itinerary referencing it reflects that automatically on next render.
+| Stage | Days | Items |
+|---|---|---|
+| 1 | 1–4 | `{node: Hotel A, role: accommodation}`, `{node: Snorkeling activity, role: activity}`, `{node: Fishing trip, role: activity}` |
+| 2 | 5–5 | `{transfer_service: Island A → Island B, role: transfer}` |
+| 3 | 5–7 | `{node: Hotel B, role: accommodation}`, `{node: some Hotel-B-side activity, role: activity}` |
 
-`package_id` is reachable through `itinerary_day_id → package_itinerary_days.package_id`, so there is exactly one place ("what's in this package") to query, not two overlapping systems — `package_components` is removed entirely rather than kept alongside this.
+Hotel A appears **once** (in Stage 1), not four times; Hotel B appears **once** (in Stage 3), not three times. Day 5 legitimately appears in both Stage 2 (the transfer happens that day) and Stage 3 (the Hotel B stay begins that same day) — that overlap is real and intentional, exactly matching the review's own example, not a data-modeling error.
+
+**No duplication:** every item is a reference — `component_node_id` to the real hotel/activity node, or `transfer_service_id` to the real transfer service — never a copy of that thing's title, price, or description. `package_id` is reachable through `stage_id → package_itinerary_stages.package_id`, so there is exactly one place to query "what's in this package," and `package_itinerary_days` from Revision 2 is fully removed rather than kept alongside this.
 
 ---
 
-## 10. Activities vs. Sites
+## 8. `node_locations` Primary Rule
 
-Two genuinely different kinds of thing were being conflated:
-
-- **Bookable activities/services** — a guided dive, a night dive, a fishing trip, a surf lesson, an island-hopping tour. These are commercial offerings: they have a price, a provider, a duration, and can be booked. Modeled by the existing `activities` table (Task 2 rev 1 §5), unchanged.
-- **Geographic/experience sites** — Fish Head, Banana Reef, Manta Point, a named surf break, a known fishing ground. These are *places*, not products — nobody "books Banana Reef"; operators book *trips to* it. Forcing every site into the `activities` table (as a commercial entity with a price) was the actual bug this review is calling out.
-
-**Resolution: sites are `locations`, not `activities`.** Because `locations` rows already share the `nodes` backbone (§2 of Task 2 rev 1), a site gets full SEO metadata, a canonical URL, reviews, media, and search/filter visibility for free, with zero new tables — it only needed the right `location_type` values:
+A node may have at most one `primary` location; any number of `secondary` locations remain allowed. Enforced with a partial unique index (only indexes rows where `relation = 'primary'`, so it constrains nothing about `secondary` rows):
 
 ```sql
--- locations.location_type check constraint, final:
-check (location_type in (
-  'country', 'atoll', 'island', 'locality', 'airport', 'seaport', 'harbour', 'poi',
-  'dive_site', 'surf_break', 'fishing_spot'
-))
+create unique index node_locations_one_primary_per_node
+  on node_locations (node_id)
+  where relation = 'primary';
 ```
 
-A site sits in the same hierarchy as everything else via `parent_id` (Banana Reef's parent is its atoll or nearest island) — no separate geography system. Site-specific descriptive facts (depth range and visibility for a dive site; break type and best swell direction for a surf break; target species and season for a fishing spot) live in `nodes.attributes` JSONB, validated per `location_type` via `attribute_definitions` — the same mechanism already used for activity-category-specific facts (§11 draws this exact line explicitly).
-
-**How activities and sites connect — no new junction needed:** a "Guided Dive at Banana Reef" activity references Banana Reef through the *existing* `node_locations` table (a site is a location, so this already works) — `primary` location = Banana Reef, `secondary` = its atoll. Ten different operators' dive-trip activities can all reference the same Banana Reef row without duplicating its description, coordinates, or depth data ten times; and Banana Reef can be browsed, reviewed, and appear in search entirely independent of any specific operator's trip.
-
-**Bookability stays where it belongs:** sites never get a `bookable_products` row — they have no price of their own. Only `activities`/`accommodations`/`packages` (opted in via `bookable_products`) and `transfer_services` are ever bookable, which is exactly "bookings where appropriate" without inventing a parallel booking concept for geography.
+An `INSERT`/`UPDATE` that would give a node a second `primary` row fails at the database level — this cannot be worked around by application code, same enforcement style as §3.
 
 ---
 
-## 11. JSONB Boundaries
+## 9. Location Hierarchy Integrity
 
-**Relational (real columns/tables — never JSONB):**
-
-| Category | Where |
-|---|---|
-| Identity | `nodes.id`, `node_type`, `slug`, `title`, `status`, timestamps |
-| Locations | `locations` table, `parent_id`, `path`, `lat`/`lng` |
-| Providers | `providers` table |
-| Relationships | `node_locations`, `node_categories`, `package_itinerary_days`/`items` |
-| Package taxonomy | `node_categories` rows linking a package to `traveler-type`/`package-style`/`duration-band`/`inclusion`/`theme` categories |
-| Package components | `package_itinerary_days`, `package_itinerary_items` |
-| Transfer origin/destination | `transfer_routes.origin_location_id` / `destination_location_id` |
-| Transfer providers | `transfer_services.provider_id` |
-| Prices needed for filtering | `accommodations.price_tier`, `activities.price_from`, `transfer_services.price`, `packages.duration_nights`/`price_from` |
-| Booking fields | every column on `bookings` (§3) |
-| Reviews | `reviews` table |
-| Media | `media_assets`, `node_media`, `transfer_service_media` |
-| Status | `nodes.status`, `bookings.status`, `transfer_services.status` |
-| SEO identity | `nodes.slug`, `meta_title`, `meta_description`, canonical derivation (§21) |
-
-**JSONB (`nodes.attributes`, GIN-indexed) — only for:**
-- Genuinely flexible, category-specific descriptive attributes: dive site depth/visibility, surf break type/swell direction, fishing spot species/season, activity-category-specific facts (certification required, boat type).
-- Uncommon/rare descriptive fields that apply to very few entities and don't justify a dedicated column.
-- Future attributes that don't yet justify a migration.
-
-**The promotion rule** (governs every future addition, not just today's): if a fact needs to be filtered precisely, sorted on, aggregated, or referenced with real foreign-key integrity, it belongs in a column — promote it out of `attributes` the moment that's true. If it's purely descriptive, optional, or too rare to justify a schema change yet, it stays in `attributes`. This is why, for example, transfer service fields (price, capacity, schedule — all filter/sort-critical) were made explicit columns in §1 rather than JSONB, while dive-site depth (descriptive, occasionally filtered, not sorted/aggregated across the platform) stays in `attributes`.
-
----
-
-## 12. Location Hierarchy
-
-Unchanged in shape from Task 2 rev 1, confirmed here with the §10 sites addition folded in:
-
-```
-Maldives (country, root)
- └─ Atoll                      e.g. Kaafu Atoll
-      └─ Island                 e.g. Thulusdhoo, Malé, Hulhumalé, a private resort island
-           ├─ Locality/district    only where it genuinely exists
-           ├─ Airport / Seaport / Harbour   (parent = nearest island)
-           └─ Dive site / Surf break / Fishing spot   (parent = nearest island or atoll)
-```
-
-**One canonical row per place** — Thulusdhoo exists exactly once in `locations`; atoll/country ancestry is always derived by walking `parent_id`/`ltree`, never re-stored on the entities that reference it.
-
-**How everything connects to locations:**
-
-| Entity | Mechanism |
-|---|---|
-| Accommodations | `node_locations` — primary = island (or the resort's own island) |
-| Activities | `node_locations` — primary = the site if the activity happens at one (§10), else the island |
-| Sites | *are* `locations` rows themselves — connected via `parent_id`, not a junction |
-| Transfers | `transfer_routes.origin_location_id` / `destination_location_id` — direct FKs, not `node_locations`, because a route has exactly two fixed geographic roles, not an open set of associated places |
-| Packages | `node_locations` for overall marketing location tags (e.g. "Kaafu Atoll package"); day-to-day geography is also derivable via the itinerary's components' own locations, never duplicated |
-| Articles | `node_locations`, same as Task 2 rev 1 — e.g. a "Diving in Kaafu Atoll" guide tagged to Kaafu Atoll |
-
----
-
-## 13. SEO URL Architecture
-
-**Canonical URLs never depend on an entity's location.** The category-first structure from Task 2 rev 1 stands; location is a discovery/relationship mechanism (location hub pages, filters, breadcrumbs) layered on top, never part of an entity's own canonical path.
-
-**Generation rule — one function, one source of truth:**
-
-```
-canonical_path(node) = '/maldives/' + url_segment(node.node_type, node.subtype) + '/' + node.slug + '/'
-```
-
-`url_segment` is a fixed, small mapping table (design-time constant, defined once and used both to render `<link rel="canonical">` and to build the sitemap, so the two can never diverge):
-
-| `node_type` / subtype | URL segment |
-|---|---|
-| `accommodation` (hotel) | `hotels` |
-| `accommodation` (resort) | `resorts` |
-| `accommodation` (guesthouse) | `guesthouses` |
-| `accommodation` (villa) | `villas` |
-| `activity` (general/watersports/excursion/…) | `activities` |
-| `activity` (fishing) | `fishing` |
-| `activity` (diving) | `diving` |
-| `activity` (surfing) | `surfing` |
-| `location` (dive_site) | `dive-sites` |
-| `location` (surf_break) | `surf-spots` |
-| `location` (fishing_spot) | `fishing-spots` |
-| `location` (airport/seaport/harbour) | `travel-points` |
-| `transfer_route` | `transfers` |
-| `package` | `packages` |
-| `article` | `travel-guide` |
-| `provider` | `providers` |
-
-Country/atoll/island/locality `locations` keep the nested location-hub structure already established (`/maldives/atolls/[atoll-slug]/[island-slug]/`) — that nesting describes the *administrative hierarchy's own pages*, not an entity borrowing location in its URL, so it does not conflict with the "no location-dependent entity URLs" rule. Every other `location_type` (sites, transfer points) gets a flat, category-first path like any other entity, per the rule above — a dive site's URL never encodes which atoll it's in.
-
-**Uniqueness/stability:** guaranteed by `UNIQUE (node_type, slug)` on `nodes` plus the fixed, reviewed `url_segment` mapping (no two `node_type`/subtype pairs are ever assigned the same segment) — the path is deterministic from data that never changes after creation except a deliberate slug edit (which is exactly when a redirect, §22, gets created).
-
-**Filtered/query-param URLs are never canonical targets.** Search results and filtered listing pages (`/maldives/search?...`, `/maldives/hotels/?budget=true`) always carry `<link rel="canonical">` pointing at the unfiltered listing page, and combinations that add no unique value are `noindex` — they are explicitly not treated as independently indexable URLs.
-
----
-
-## 14–20. (Reserved — no new requirement text was supplied for point 14 onward in this review)
-
-The review's item 14 ("LEGACY URL MIGRATION") was sent without a body. Nothing here has changed as a result — the existing redirect design from Task 2 rev 1 is retained, and its consistency against every change made in this revision is checked explicitly in §22 below. If there are further specific requirements for legacy URL migration, they should be supplied for a follow-up revision; nothing in this document assumes they won't be.
-
----
-
-## 21. Redirect Management (Retained, Re-Verified Against This Revision)
-
-Unchanged from Task 2 rev 1, still fully data-agnostic (no live crawl of `maldivestour.guide` is available in this environment — see the status note at the top of this document):
+**Allowed parent → child pairs**, encoded as data (not hardcoded in application logic) so the rule is inspectable and editable without a schema change:
 
 ```sql
-alter table nodes add column legacy_slugs text[] default '{}';
-create index nodes_legacy_slugs_gin on nodes using gin (legacy_slugs);
-
-create table url_redirects (
-  id               uuid primary key default gen_random_uuid(),
-  source_path      text not null unique,
-  target_type      text not null check (target_type in ('node','path','external_url')),
-  target_node_id   uuid references nodes(id),
-  target_path      text,
-  status_code      smallint not null default 301 check (status_code in (301,302,308)),
-  is_active        boolean not null default true,
-  notes            text,
-  created_at       timestamptz not null default now(),
-  updated_at       timestamptz not null default now()
+create table location_type_hierarchy_rules (
+  parent_type   text,        -- null = "permitted as a root (no parent)"
+  child_type    text not null,
+  primary key (parent_type, child_type)
 );
-create index url_redirects_active_idx on url_redirects(source_path) where is_active;
+
+-- seed rows (conceptual — not inserted now):
+-- (null,      'country')
+-- ('country', 'atoll')
+-- ('atoll',   'island')
+-- ('atoll',   'airport'), ('atoll','seaport'), ('atoll','harbour')
+-- ('atoll',   'dive_site'), ('atoll','surf_break'), ('atoll','fishing_spot'), ('atoll','poi')
+-- ('island',  'locality')
+-- ('island',  'airport'), ('island','seaport'), ('island','harbour')
+-- ('island',  'dive_site'), ('island','surf_break'), ('island','fishing_spot'), ('island','poi')
 ```
 
-**Explicit consistency check against this revision's changes:**
-- `transfer_routes` are nodes → a legacy transfer-route-style URL redirects straight to `target_node_id` like any other entity. No change needed.
-- `transfer_services` are **not** nodes and have no canonical URL of their own (§2) → a legacy URL that referred to a specific operator's transfer offering has no single equivalent node to redirect to; it redirects to the **route's** page (`target_node_id` = the parent `transfer_route`), where that operator's current service, if still offered, appears inline. This is a real, deliberate consequence of the routes-are-nodes/services-aren't decision, not a gap — noted here so it isn't rediscovered as a bug later.
-- `package_components` is removed and replaced by the itinerary tables (§9) → this affects how a package's *contents* are queried, not its URL; package canonical URLs and any redirects to them are unaffected.
-- The `activities` vs `locations`(sites) split (§10) means a legacy URL that used to point at, say, a "Banana Reef" page built as an activity now redirects to the equivalent **location** node instead — still just `target_node_id`, no schema change required, only a different `node_type` at the far end.
+`island → island`, `atoll → country`, and a `country` anywhere but the root are simply never present in this table, so they're rejected the same way any other disallowed pair is — no special-case code needed for each named bad example in the review.
 
-No part of this mechanism needed to change to stay correct under this revision — that is the intended payoff of routing every redirect through `nodes.id` rather than through type-specific tables.
+**Validation trigger** — checks the proposed parent/child pair against the rule table, rejects a self-referencing `parent_id`, and walks the ancestor chain to reject any cycle:
+
+```sql
+create or replace function enforce_location_hierarchy() returns trigger as $$
+declare
+  v_parent_type text;
+begin
+  if new.parent_id is null then
+    if not exists (select 1 from location_type_hierarchy_rules where parent_type is null and child_type = new.location_type) then
+      raise exception 'location_type % is not permitted as a root location', new.location_type;
+    end if;
+    return new;
+  end if;
+
+  if new.parent_id = new.id then
+    raise exception 'a location cannot be its own parent';
+  end if;
+
+  select location_type into v_parent_type from locations where id = new.parent_id;
+  if v_parent_type is null then
+    raise exception 'parent_id % does not reference an existing location', new.parent_id;
+  end if;
+
+  if not exists (
+    select 1 from location_type_hierarchy_rules
+    where parent_type = v_parent_type and child_type = new.location_type
+  ) then
+    raise exception 'location_type % is not a permitted child of parent type %', new.location_type, v_parent_type;
+  end if;
+
+  if exists (
+    with recursive ancestors as (
+      select id, parent_id from locations where id = new.parent_id
+      union all
+      select l.id, l.parent_id from locations l join ancestors a on l.id = a.parent_id
+    )
+    select 1 from ancestors where id = new.id
+  ) then
+    raise exception 'assigning parent_id % would create a cycle', new.parent_id;
+  end if;
+
+  return new;
+end;
+$$ language plpgsql set search_path = public, pg_temp;
+
+create trigger locations_hierarchy_check
+  before insert or update of parent_id, location_type on locations
+  for each row
+  execute function enforce_location_hierarchy();
+```
+
+The cycle check walks `parent_id` directly (a recursive CTE over the real ancestor chain), not the `path` column — this avoids a bootstrapping problem where `path` might not yet reflect the very change being validated.
+
+**Keeping `ltree.path` synchronized on a move (or a slug rename).** `path` is built from each ancestor's **slug** (for human-readable, queryable paths like `maldives.kaafu.thulusdhoo`, consistent with every example elsewhere in this document) — which means it must be recomputed whenever `parent_id` changes *or* the node's own `slug` changes (slug lives on `nodes`, not `locations`). One function, called from two triggers:
+
+```sql
+create or replace function recompute_location_path(p_location_id uuid) returns void as $$
+declare
+  v_parent_id    uuid;
+  v_slug         text;
+  v_parent_path  ltree;
+  v_old_path     ltree;
+  v_new_path     ltree;
+  v_label        text;
+begin
+  select l.parent_id, n.slug, l.path
+    into v_parent_id, v_slug, v_old_path
+    from locations l join nodes n on n.id = l.id
+    where l.id = p_location_id;
+
+  v_label := replace(v_slug, '-', '_');   -- ltree labels allow only [A-Za-z0-9_]; slugs may contain hyphens
+
+  if v_parent_id is null then
+    v_new_path := text2ltree(v_label);
+  else
+    select path into v_parent_path from locations where id = v_parent_id;
+    v_new_path := v_parent_path || text2ltree(v_label);
+  end if;
+
+  update locations set path = v_new_path where id = p_location_id;
+
+  if v_old_path is not null and v_old_path <> v_new_path then
+    update locations
+      set path = v_new_path || subpath(path, nlevel(v_old_path))
+      where path <@ v_old_path and id <> p_location_id;
+  end if;
+end;
+$$ language plpgsql set search_path = public, pg_temp;
+
+create trigger locations_path_on_reparent
+  after insert or update of parent_id on locations
+  for each row execute function trigger_recompute_location_path();
+
+create trigger nodes_path_on_slug_change
+  after update of slug on nodes
+  for each row
+  when (new.node_type = 'location')
+  execute function trigger_recompute_location_path();
+
+-- both triggers call the same underlying logic via a thin wrapper:
+create or replace function trigger_recompute_location_path() returns trigger as $$
+begin
+  perform recompute_location_path(new.id);
+  return new;
+end;
+$$ language plpgsql set search_path = public, pg_temp;
+```
+
+This is deliberately not more elaborate than this: it recomputes the moved/renamed node's own path from its (possibly new) parent, then rewrites every descendant's path by swapping the old prefix for the new one in a single bulk `UPDATE`, using `path <@ old_path` (an indexed `GiST` lookup) to find them. That is the whole mechanism — no queueing, no batching, no async job, appropriate for a geography tree of a few hundred rows.
 
 ---
 
-## 22. Complete Database Schema Reference (Consolidated, Final)
+## 10. RLS / Security Design (Concrete)
+
+**Two helper functions**, used throughout instead of repeating the same subquery in every policy. Both are `SECURITY DEFINER` specifically so their internal read of `profiles` bypasses RLS — without this, a policy on `profiles` itself that calls `is_staff()` could recurse into `profiles`' own RLS evaluation:
+
+```sql
+create or replace function is_staff() returns boolean
+language sql stable security definer set search_path = public, pg_temp as $$
+  select exists (select 1 from profiles p where p.id = auth.uid() and p.role in ('editor','admin'));
+$$;
+
+create or replace function is_admin() returns boolean
+language sql stable security definer set search_path = public, pg_temp as $$
+  select exists (select 1 from profiles p where p.id = auth.uid() and p.role = 'admin');
+$$;
+```
+
+**Ownership note that makes the anonymous-write model work:** in Supabase, tables are owned by a privileged role (`postgres`) which bypasses RLS on tables it owns unless `FORCE ROW LEVEL SECURITY` is set (it is not, here). `SECURITY DEFINER` functions such as `create_booking_inquiry` execute with that owning role's privileges, which is what lets them write to `bookings` even though **no `INSERT` policy exists for `anon`/`authenticated` on that table at all** — the function is deliberately the only door in. `service_role` (used only by Edge Functions, never the browser) also bypasses RLS by design and is how `booking_notifications` gets written.
+
+**Policy matrix.** Tables in the first block all follow one template — public read gated on the linked node/parent being published, all writes staff-only — shown once and then listed as "applied identically to" the rest:
+
+```sql
+-- Template A: nodes itself
+alter table nodes enable row level security;
+create policy nodes_public_read on nodes for select using (status = 'published');
+create policy nodes_staff_read   on nodes for select using (is_staff());
+create policy nodes_staff_write  on nodes for insert with check (is_staff());
+create policy nodes_staff_update on nodes for update using (is_staff()) with check (is_staff());
+create policy nodes_staff_delete on nodes for delete using (is_staff());
+
+-- Template B: a 1:1 detail table sharing nodes.id (example: locations)
+alter table locations enable row level security;
+create policy locations_public_read on locations for select
+  using (exists (select 1 from nodes n where n.id = locations.id and n.status = 'published'));
+create policy locations_staff_all on locations for all
+  using (is_staff()) with check (is_staff());
+-- Applied identically (swap table name) to:
+--   categories, providers, accommodations, activities, transfer_routes, packages, articles
+
+-- Template C: a junction/child table gated through its parent node (example: node_locations)
+alter table node_locations enable row level security;
+create policy node_locations_public_read on node_locations for select
+  using (exists (select 1 from nodes n where n.id = node_locations.node_id and n.status = 'published'));
+create policy node_locations_staff_all on node_locations for all
+  using (is_staff()) with check (is_staff());
+-- Applied identically to: node_categories, node_media (join on node_media.node_id),
+--   bookable_products (join on bookable_products.id = nodes.id)
+
+-- media_assets has no publish gate of its own (not tied to a single node) — public read, staff write
+alter table media_assets enable row level security;
+create policy media_assets_public_read on media_assets for select using (true);
+create policy media_assets_staff_all   on media_assets for all using (is_staff()) with check (is_staff());
+```
+
+**Transfer-specific tables** (gated through the route's node status, and the service's own operational status):
+
+```sql
+alter table transfer_services enable row level security;
+create policy transfer_services_public_read on transfer_services for select
+  using (
+    status in ('active','seasonal')
+    and exists (select 1 from nodes n where n.id = transfer_services.route_id and n.status = 'published')
+  );
+create policy transfer_services_staff_all on transfer_services for all
+  using (is_staff()) with check (is_staff());
+
+alter table transfer_service_schedules enable row level security;
+create policy transfer_service_schedules_public_read on transfer_service_schedules for select
+  using (
+    status = 'active'
+    and exists (
+      select 1 from transfer_services s join nodes n on n.id = s.route_id
+      where s.id = transfer_service_schedules.transfer_service_id and n.status = 'published'
+    )
+  );
+create policy transfer_service_schedules_staff_all on transfer_service_schedules for all
+  using (is_staff()) with check (is_staff());
+
+alter table transfer_service_media enable row level security;
+create policy transfer_service_media_public_read on transfer_service_media for select
+  using (
+    exists (
+      select 1 from transfer_services s join nodes n on n.id = s.route_id
+      where s.id = transfer_service_media.transfer_service_id and n.status = 'published'
+    )
+  );
+create policy transfer_service_media_staff_all on transfer_service_media for all
+  using (is_staff()) with check (is_staff());
+```
+
+**User-generated content** — identity-bound (unlike bookings, reviewing/commenting/favoriting require an account):
+
+```sql
+alter table reviews enable row level security;
+create policy reviews_public_read on reviews for select using (status = 'published');
+create policy reviews_own_read    on reviews for select using (auth.uid() = user_id);
+create policy reviews_staff_read  on reviews for select using (is_staff());
+create policy reviews_own_insert  on reviews for insert with check (auth.uid() = user_id);
+create policy reviews_own_update  on reviews for update using (auth.uid() = user_id);
+create policy reviews_own_delete  on reviews for delete using (auth.uid() = user_id);
+create policy reviews_staff_moderate on reviews for update using (is_staff());
+create policy reviews_staff_delete   on reviews for delete using (is_staff());
+-- article_comments: identical shape, substituting status in ('visible','flagged','removed'), public = 'visible'
+
+alter table favorites enable row level security;
+create policy favorites_owner_all on favorites for all
+  using (auth.uid() = user_id) with check (auth.uid() = user_id);
+-- no public policy, no staff override — favorites are private and carry no moderation-relevant content
+```
+
+**`profiles`** — public read (display name/avatar are shown alongside a user's reviews/comments), self-update, admin override, and an explicit trigger closing the self-escalation path regardless of which policy let an `UPDATE` through:
+
+```sql
+alter table profiles enable row level security;
+create policy profiles_public_read on profiles for select using (true);
+create policy profiles_self_update on profiles for update
+  using (auth.uid() = id) with check (auth.uid() = id);
+create policy profiles_admin_all on profiles for all
+  using (is_admin()) with check (is_admin());
+
+create or replace function prevent_profile_role_self_escalation() returns trigger as $$
+begin
+  if new.role is distinct from old.role and not is_admin() then
+    raise exception 'only an admin may change profiles.role';
+  end if;
+  return new;
+end;
+$$ language plpgsql set search_path = public, pg_temp;
+
+create trigger profiles_prevent_role_self_escalation
+  before update on profiles
+  for each row
+  execute function prevent_profile_role_self_escalation();
+```
+
+The `profiles_self_update` policy alone would technically let a user submit a row with a changed `role` (RLS's `USING`/`WITH CHECK` only gates *which rows*, not *which columns*, can be touched); the trigger is what actually blocks the column change itself, which is why it's kept as a second, independent layer rather than relying on the policy alone — directly closing the "no self-escalation" requirement.
+
+**Bookings and its support tables — no policy anywhere relies on `user_id`/`auth.uid()` as the access gate for writes, matching §7's requirement:**
+
+```sql
+alter table bookings enable row level security;
+create policy bookings_staff_read   on bookings for select using (is_staff());
+create policy bookings_staff_update on bookings for update using (is_staff()) with check (is_staff());
+-- no insert/delete policy for any client role, and no policy at all referencing auth.uid() = user_id;
+-- all inserts go through create_booking_inquiry() (§4); self-service reads go through get_my_bookings() (§4)
+
+alter table booking_notifications enable row level security;
+create policy booking_notifications_staff_read on booking_notifications for select using (is_staff());
+-- writes: service_role only (Edge Function), which bypasses RLS by design — no client-role policy needed or granted
+
+alter table platform_settings enable row level security;
+create policy platform_settings_admin_read  on platform_settings for select using (is_admin());
+create policy platform_settings_admin_write on platform_settings for all using (is_admin()) with check (is_admin());
+-- admin-only, not editor — platform configuration is a narrower privilege than content editing
+
+alter table booking_reference_counters enable row level security;
+-- zero policies for any client role — touched only internally by the booking_reference trigger,
+-- which runs in the same privileged context as the insert it's attached to (see ownership note above)
+```
+
+**Redirects — corrects an inconsistency from Revision 2**, which said `url_redirects` was staff-only for both read and write. That can't be right: redirect resolution has to run on every unmatched request in Next.js middleware, which is not an authenticated staff session — so `SELECT` must be public for active rows (the mapping itself isn't sensitive; only who may *create* one is restricted):
+
+```sql
+alter table url_redirects enable row level security;
+create policy url_redirects_public_read on url_redirects for select using (is_active);
+create policy url_redirects_staff_all   on url_redirects for all using (is_staff()) with check (is_staff());
+```
+
+---
+
+## 11. SEO Migration Requirement
+
+This is not an open or unknowable requirement — it is a committed, explicit part of the architecture, restated here without hedging: **`maldivestour.guide` is a live, already-indexed SEO property with real Search Console data and a real URL inventory.** A migration/import phase — after this design is approved for implementation, and separate from it — will build an authoritative **old-URL → final-URL mapping** from that real inventory (crawl export, sitemap export, and/or Search Console URL list), and load it into `url_redirects` (§5/§21) under exactly these rules:
+
+1. **Keep the same URL where the new canonical structure already matches it** — no redirect row is even needed; the node's `slug` is chosen to reproduce the existing path so `canonical_path(node)` naturally equals the live URL.
+2. **301 (or 308) to the exact new equivalent everywhere the URL must change** — one row per URL, pointing directly at the specific replacement node, never a category default or a best-guess hub.
+3. **404/410 where no meaningful new equivalent exists** — a discontinued page is allowed to simply not resolve; it is not force-mapped to something unrelated just to avoid a 404.
+4. **Never a mass redirect of unrelated URLs to the homepage** — this is the same rule already encoded procedurally in §5's chain/mass-redirect handling; it applies here as the standard the migration import step is built to enforce, not merely a preference.
+
+**What is genuinely unavailable is not the requirement, only the data**, and only within this design session: this sandboxed environment's network egress to `maldivestour.guide` is blocked, and no crawl/Search Console export has been supplied yet. That is a fact about this session's tooling, not about the architecture — the schema (`url_redirects`, `legacy_slugs`) is already fully ready to receive that real inventory the moment it's supplied, with zero redesign, exactly as designed in Revision 2 and re-verified against every change made in this revision (§5).
+
+**Not implemented now** — no redirects are created, no mapping is loaded; this section states the rule the later migration phase must follow and confirms the schema is ready for it.
+
+---
+
+## 12. Final Consistency Check
+
+| Check | Result |
+|---|---|
+| Foreign-key dependency order | Fixed — `media_assets` moved to be the first table created; full order given in §2, every table now only references tables created strictly before it. |
+| Circular references | None exist or ever existed structurally; §2 confirms this explicitly. |
+| Orphan/invalid records | `bookable_products` can no longer hold a wrong `node_type` (§3, trigger-enforced). `node_locations` can no longer hold two primaries (§8). `url_redirects` can no longer have a mismatched `target_type`/target-column pairing (§5) or an active chain (§5). |
+| Invalid polymorphic references | `bookings` (`product_type` + exactly-one-of `product_node_id`/`transfer_service_id`, `product_node_id` FK'd to `bookable_products` not raw `nodes`) and `package_itinerary_items` (`component_type` + exactly-one-of `component_node_id`/`transfer_service_id`) both remain `CHECK`-constrained discriminated unions — carried over correctly into the renamed itinerary tables (§7). |
+| Duplicate canonical URLs | Prevented by `UNIQUE (node_type, slug)` on `nodes` plus the fixed `url_segment` mapping (Revision 2 §13, unchanged and still valid). |
+| Duplicate primary locations | Fixed — partial unique index, §8. |
+| Booking security | Fixed — no policy anywhere depends on `auth.uid() = user_id` for the write path; writes are RPC-only, hardened per §4; reads are staff-only plus a narrow self-service function, §10. |
+| Transfer route/service consistency | Schedules added without collapsing route/service (§1); route-vs-service SEO split restated explicitly with no model change (§6). |
+| Package itinerary consistency | Stage model replaces the day model; no duplicated hotel/activity/transfer data; itinerary items still reference canonical nodes/services only (§7). |
+| Location hierarchy consistency | Parent/child type pairs are now data-driven and trigger-enforced; self-reference and multi-level cycles are both rejected; `ltree.path` sync on move/rename is explicit (§9). |
+| RLS consistency | Every table listed in the review now has a concrete, stated policy set; the `url_redirects` staff-only-read inconsistency from Revision 2 is corrected; no self-escalation path on `profiles.role` (§10). |
+| SEO canonical consistency | Unchanged from Revision 2 (§13/§19 there) and still holds under every change made here — nothing in this revision touches canonical URL derivation for any node type. |
+| Redirect consistency | Target-shape constraint, chain prevention, and the corrected read policy are all in place; `legacy_slugs` role is disambiguated as historical-only (§5). |
+
+No item in this table required introducing architecture beyond what fixing it demanded — the entity model, node backbone, and everything approved in Revision 2 that isn't listed above is unchanged.
+
+---
+
+## 13. Complete Database Schema Reference (Consolidated, Final, Dependency-Ordered)
 
 Everything below is exactly as it would be applied as migrations **when building is approved** — nothing has been run.
 
 ```sql
+-- ══════════════════════════════════════════════════════════════════
 -- Extensions
+-- ══════════════════════════════════════════════════════════════════
 create extension if not exists pgcrypto;
 create extension if not exists ltree;
 create extension if not exists pg_trgm;
 
+-- ══════════════════════════════════════════════════════════════════
+-- Media (no dependencies — created first so nodes/transfer_service_media can reference it)
+-- ══════════════════════════════════════════════════════════════════
+create table media_assets (
+  id             uuid primary key default gen_random_uuid(),
+  media_type     text not null check (media_type in ('image','youtube')),
+  storage_path   text,
+  youtube_id     text,
+  alt_text       text,
+  credit         text,
+  width          int,
+  height         int,
+  created_at     timestamptz not null default now()
+);
+
+-- ══════════════════════════════════════════════════════════════════
 -- Backbone
+-- ══════════════════════════════════════════════════════════════════
 create table nodes (
   id                   uuid primary key default gen_random_uuid(),
   node_type            text not null check (node_type in (
@@ -565,22 +743,24 @@ create table nodes (
   rating_avg           numeric(3,2) default 0,
   rating_count         int default 0,
   attributes           jsonb not null default '{}'::jsonb,
-  legacy_slugs         text[] default '{}',
+  legacy_slugs         text[] default '{}',           -- historical metadata only — see §5
   meta_title           text,
   meta_description     text,
-  og_image_media_id    uuid,
+  og_image_media_id    uuid references media_assets(id),
   created_by           uuid references auth.users(id),
   created_at           timestamptz not null default now(),
   updated_at           timestamptz not null default now(),
   published_at         timestamptz,
   unique (node_type, slug)
 );
-create index nodes_status_idx     on nodes(status);
-create index nodes_attributes_gin on nodes using gin (attributes jsonb_path_ops);
-create index nodes_search_idx     on nodes using gin (to_tsvector('english', title || ' ' || coalesce(summary,'')));
+create index nodes_status_idx      on nodes(status);
+create index nodes_attributes_gin  on nodes using gin (attributes jsonb_path_ops);
+create index nodes_search_idx      on nodes using gin (to_tsvector('english', title || ' ' || coalesce(summary,'')));
 create index nodes_legacy_slugs_gin on nodes using gin (legacy_slugs);
 
--- Geography (§10, §12)
+-- ══════════════════════════════════════════════════════════════════
+-- Geography
+-- ══════════════════════════════════════════════════════════════════
 create table locations (
   id                    uuid primary key references nodes(id) on delete cascade,
   location_type         text not null check (location_type in (
@@ -598,7 +778,6 @@ create table locations (
 create index locations_path_gist  on locations using gist (path);
 create index locations_parent_idx on locations(parent_id);
 
--- Taxonomy (§8)
 create table categories (
   id                uuid primary key references nodes(id) on delete cascade,
   category_group    text not null check (category_group in (
@@ -624,7 +803,15 @@ create table attribute_definitions (
   unique (applies_to_node_type, applies_to_subtype, key)
 );
 
+create table location_type_hierarchy_rules (
+  parent_type   text,
+  child_type    text not null,
+  primary key (parent_type, child_type)
+);
+
+-- ══════════════════════════════════════════════════════════════════
 -- Businesses
+-- ══════════════════════════════════════════════════════════════════
 create table providers (
   id                uuid primary key references nodes(id) on delete cascade,
   legal_name        text,
@@ -635,7 +822,9 @@ create table providers (
   is_verified       boolean default false
 );
 
--- Accommodation (§4 of rev 1, unchanged)
+-- ══════════════════════════════════════════════════════════════════
+-- Accommodation & Activities
+-- ══════════════════════════════════════════════════════════════════
 create table accommodations (
   id                        uuid primary key references nodes(id) on delete cascade,
   accommodation_type        text not null check (accommodation_type in ('hotel','resort','guesthouse','villa','other')),
@@ -650,7 +839,6 @@ create table accommodations (
   currency                  text default 'USD'
 );
 
--- Activities (§5 of rev 1, unchanged; sites moved out to locations per §10)
 create table activities (
   id                        uuid primary key references nodes(id) on delete cascade,
   activity_category         text not null check (activity_category in (
@@ -666,7 +854,9 @@ create table activities (
   max_participants          int
 );
 
--- Transfers (§1, §2 — final model)
+-- ══════════════════════════════════════════════════════════════════
+-- Transfers — routes (nodes) vs services (not nodes) — §1, §2, §6
+-- ══════════════════════════════════════════════════════════════════
 create table transfer_routes (
   id                          uuid primary key references nodes(id) on delete cascade,
   origin_location_id          uuid not null references locations(id),
@@ -687,14 +877,11 @@ create table transfer_services (
                           )),
   vehicle_type           text,
   shared_or_private      text not null check (shared_or_private in ('shared','private')),
-  departure_time         time,
-  arrival_time           time,
   duration_minutes       int,
   price                  numeric(10,2) not null,
   currency               text not null default 'USD',
   capacity               int,
   luggage_allowance      text,
-  operating_days         text[],
   status                 text not null default 'active' check (status in ('active','seasonal','suspended','discontinued')),
   pickup_instructions    text,
   dropoff_instructions   text,
@@ -707,6 +894,21 @@ create table transfer_services (
 create index transfer_services_route_idx    on transfer_services(route_id);
 create index transfer_services_provider_idx on transfer_services(provider_id);
 
+create table transfer_service_schedules (
+  id                    uuid primary key default gen_random_uuid(),
+  transfer_service_id   uuid not null references transfer_services(id) on delete cascade,
+  day_of_week           smallint check (day_of_week between 0 and 6),
+  departure_time        time,
+  arrival_time           time,
+  duration_minutes       int,
+  effective_from          date,
+  effective_to            date,
+  status                  text not null default 'active' check (status in ('active','inactive')),
+  sort_order              int not null default 0,
+  unique nulls not distinct (transfer_service_id, day_of_week, departure_time)
+);
+create index transfer_service_schedules_service_idx on transfer_service_schedules(transfer_service_id);
+
 create table transfer_service_media (
   transfer_service_id   uuid not null references transfer_services(id) on delete cascade,
   media_id              uuid not null references media_assets(id) on delete cascade,
@@ -715,7 +917,9 @@ create table transfer_service_media (
   primary key (transfer_service_id, media_id, role)
 );
 
--- Packages (§8, §9 — final model)
+-- ══════════════════════════════════════════════════════════════════
+-- Packages — taxonomy via categories (§8 issue), itinerary stages (§7)
+-- ══════════════════════════════════════════════════════════════════
 create table packages (
   id                        uuid primary key references nodes(id) on delete cascade,
   duration_nights           int,
@@ -724,20 +928,23 @@ create table packages (
   operated_by_provider_id   uuid references providers(id)
 );
 
-create table package_itinerary_days (
+create table package_itinerary_stages (
   id             uuid primary key default gen_random_uuid(),
   package_id     uuid not null references nodes(id) on delete cascade,
-  day_number     int not null,
-  night_count    int not null default 1,
+  stage_number   int not null,
+  day_start      int not null,
+  day_end        int not null,
+  night_count    int not null default 0,
   title          text,
   description    text,
   sort_order     int not null default 0,
-  unique (package_id, day_number)
+  unique (package_id, stage_number),
+  check (day_end >= day_start)
 );
 
 create table package_itinerary_items (
   id                    uuid primary key default gen_random_uuid(),
-  itinerary_day_id      uuid not null references package_itinerary_days(id) on delete cascade,
+  stage_id              uuid not null references package_itinerary_stages(id) on delete cascade,
   component_type        text not null check (component_type in ('node','transfer_service')),
   component_node_id     uuid references nodes(id),
   transfer_service_id   uuid references transfer_services(id),
@@ -746,16 +953,15 @@ create table package_itinerary_items (
                          )),
   quantity              int not null default 1,
   notes                 text,
-  sort_order            int not null default 0,
+  sort_order             int not null default 0,
   check (
     (component_type = 'node' and component_node_id is not null and transfer_service_id is null)
     or
     (component_type = 'transfer_service' and transfer_service_id is not null and component_node_id is null)
   )
 );
-create index package_itinerary_items_day_idx on package_itinerary_items(itinerary_day_id);
+create index package_itinerary_items_stage_idx on package_itinerary_items(stage_id);
 
--- Articles
 create table articles (
   id                   uuid primary key references nodes(id) on delete cascade,
   body                 text not null,
@@ -763,7 +969,9 @@ create table articles (
   author_id            uuid references auth.users(id)
 );
 
+-- ══════════════════════════════════════════════════════════════════
 -- Junctions
+-- ══════════════════════════════════════════════════════════════════
 create table node_locations (
   node_id       uuid not null references nodes(id) on delete cascade,
   location_id   uuid not null references locations(id) on delete cascade,
@@ -771,6 +979,8 @@ create table node_locations (
   primary key (node_id, location_id)
 );
 create index node_locations_location_idx on node_locations(location_id);
+create unique index node_locations_one_primary_per_node
+  on node_locations (node_id) where relation = 'primary';
 
 create table node_categories (
   node_id       uuid not null references nodes(id) on delete cascade,
@@ -779,7 +989,9 @@ create table node_categories (
 );
 create index node_categories_category_idx on node_categories(category_id);
 
+-- ══════════════════════════════════════════════════════════════════
 -- Generic systems
+-- ══════════════════════════════════════════════════════════════════
 create table reviews (
   id            uuid primary key default gen_random_uuid(),
   node_id       uuid not null references nodes(id) on delete cascade,
@@ -811,18 +1023,6 @@ create table favorites (
   primary key (user_id, node_id)
 );
 
-create table media_assets (
-  id             uuid primary key default gen_random_uuid(),
-  media_type     text not null check (media_type in ('image','youtube')),
-  storage_path   text,
-  youtube_id     text,
-  alt_text       text,
-  credit         text,
-  width          int,
-  height         int,
-  created_at     timestamptz not null default now()
-);
-
 create table node_media (
   node_id      uuid not null references nodes(id) on delete cascade,
   media_id     uuid not null references media_assets(id) on delete cascade,
@@ -831,7 +1031,9 @@ create table node_media (
   primary key (node_id, media_id, role)
 );
 
--- Booking / inquiry (§3–§7 — final model)
+-- ══════════════════════════════════════════════════════════════════
+-- Booking / inquiry (§3, §4, §10)
+-- ══════════════════════════════════════════════════════════════════
 create table bookable_products (
   id              uuid primary key references nodes(id) on delete cascade,
   booking_mode    text not null default 'inquiry' check (booking_mode in ('inquiry','instant')),
@@ -868,16 +1070,16 @@ create table bookings (
   infants                    int not null default 0,
   flight_number               text,
   special_requests             text,
-  estimated_price             numeric(10,2),
-  quoted_price                 numeric(10,2),
-  currency                     text not null default 'USD',
-  internal_notes               text,
-  status                       text not null default 'new' check (status in (
-                                  'new','contacted','pending','confirmed','cancelled','completed'
-                                )),
-  notification_status          text not null default 'pending' check (notification_status in ('pending','sent','failed')),
-  created_at                   timestamptz not null default now(),
-  updated_at                   timestamptz not null default now(),
+  estimated_price              numeric(10,2),
+  quoted_price                  numeric(10,2),
+  currency                      text not null default 'USD',
+  internal_notes                text,
+  status                        text not null default 'new' check (status in (
+                                   'new','contacted','pending','confirmed','cancelled','completed'
+                                 )),
+  notification_status           text not null default 'pending' check (notification_status in ('pending','sent','failed')),
+  created_at                    timestamptz not null default now(),
+  updated_at                    timestamptz not null default now(),
   check (
     (product_type = 'node' and product_node_id is not null and transfer_service_id is null)
     or
@@ -910,7 +1112,9 @@ create table platform_settings (
   updated_at     timestamptz not null default now()
 );
 
+-- ══════════════════════════════════════════════════════════════════
 -- Identity
+-- ══════════════════════════════════════════════════════════════════
 create table profiles (
   id             uuid primary key references auth.users(id) on delete cascade,
   display_name   text,
@@ -921,7 +1125,9 @@ create table profiles (
   created_at     timestamptz not null default now()
 );
 
--- Migration support (§21)
+-- ══════════════════════════════════════════════════════════════════
+-- Migration support (§5, §11)
+-- ══════════════════════════════════════════════════════════════════
 create table url_redirects (
   id               uuid primary key default gen_random_uuid(),
   source_path      text not null unique,
@@ -932,11 +1138,42 @@ create table url_redirects (
   is_active        boolean not null default true,
   notes            text,
   created_at       timestamptz not null default now(),
-  updated_at       timestamptz not null default now()
+  updated_at       timestamptz not null default now(),
+  constraint url_redirects_target_shape check (
+    (target_type = 'node'         and target_node_id is not null and target_path is null)
+    or
+    (target_type = 'path'          and target_path is not null and target_node_id is null)
+    or
+    (target_type = 'external_url'  and target_path is not null and target_node_id is null)
+  )
 );
 create index url_redirects_active_idx on url_redirects(source_path) where is_active;
 
--- Booking reference generator (§4)
+-- ══════════════════════════════════════════════════════════════════
+-- Functions & triggers
+-- ══════════════════════════════════════════════════════════════════
+
+-- §3 bookable_products type safety
+create or replace function enforce_bookable_product_node_type() returns trigger as $$
+declare
+  v_node_type text;
+begin
+  select node_type into v_node_type from nodes where id = new.id;
+  if v_node_type is null then
+    raise exception 'bookable_products.id % does not reference an existing node', new.id;
+  end if;
+  if v_node_type not in ('accommodation', 'activity', 'package') then
+    raise exception 'node_type % may not be marked bookable (allowed: accommodation, activity, package)', v_node_type;
+  end if;
+  return new;
+end;
+$$ language plpgsql set search_path = public, pg_temp;
+
+create trigger bookable_products_node_type_check
+  before insert or update on bookable_products
+  for each row execute function enforce_bookable_product_node_type();
+
+-- §4 booking reference — unconditionally authoritative
 create or replace function generate_booking_reference() returns trigger as $$
 declare
   next_val int;
@@ -949,20 +1186,245 @@ begin
   new.booking_reference := 'MTG-' || yr || '-' || lpad(next_val::text, 6, '0');
   return new;
 end;
-$$ language plpgsql;
+$$ language plpgsql set search_path = public, pg_temp;
 
 create trigger set_booking_reference
   before insert on bookings
-  for each row
-  when (new.booking_reference is null)
-  execute function generate_booking_reference();
+  for each row execute function generate_booking_reference();
+
+-- §4 guest-safe booking RPCs
+create or replace function create_booking_inquiry(
+  p_product_type              text,
+  p_product_node_id           uuid,
+  p_transfer_service_id       uuid,
+  p_customer_name              text,
+  p_customer_email             text,
+  p_customer_phone             text,
+  p_customer_whatsapp          text,
+  p_origin_location_id         uuid,
+  p_destination_location_id    uuid,
+  p_travel_date                 date,
+  p_travel_time                  time,
+  p_return_date                   date,
+  p_return_time                   time,
+  p_trip_type                     text,
+  p_adults                        int default 1,
+  p_children                      int default 0,
+  p_infants                       int default 0,
+  p_flight_number                  text default null,
+  p_special_requests                text default null,
+  p_estimated_price                 numeric default null,
+  p_currency                        text default 'USD'
+) returns table (id uuid, booking_reference text)
+language plpgsql security definer set search_path = public, pg_temp
+as $$
+declare
+  v_id uuid;
+  v_reference text;
+begin
+  if p_product_type not in ('node', 'transfer_service') then
+    raise exception 'invalid product_type: %', p_product_type;
+  end if;
+  if p_product_type = 'node' and p_product_node_id is null then
+    raise exception 'product_node_id is required when product_type = node';
+  end if;
+  if p_product_type = 'transfer_service' and p_transfer_service_id is null then
+    raise exception 'transfer_service_id is required when product_type = transfer_service';
+  end if;
+
+  insert into bookings (
+    product_type, product_node_id, transfer_service_id, user_id,
+    customer_name, customer_email, customer_phone, customer_whatsapp,
+    origin_location_id, destination_location_id, travel_date, travel_time,
+    return_date, return_time, trip_type, adults, children, infants,
+    flight_number, special_requests, estimated_price, currency
+  ) values (
+    p_product_type,
+    case when p_product_type = 'node' then p_product_node_id end,
+    case when p_product_type = 'transfer_service' then p_transfer_service_id end,
+    auth.uid(),
+    p_customer_name, p_customer_email, p_customer_phone, p_customer_whatsapp,
+    p_origin_location_id, p_destination_location_id, p_travel_date, p_travel_time,
+    p_return_date, p_return_time, p_trip_type, p_adults, p_children, p_infants,
+    p_flight_number, p_special_requests, p_estimated_price, p_currency
+  )
+  returning bookings.id, bookings.booking_reference into v_id, v_reference;
+
+  return query select v_id, v_reference;
+end;
+$$;
+revoke all on function create_booking_inquiry from public;
+grant execute on function create_booking_inquiry(text, uuid, uuid, text, text, text, text, uuid, uuid, date, time, date, time, text, int, int, int, text, text, numeric, text)
+  to anon, authenticated;
+
+create or replace function get_my_bookings() returns setof bookings
+language plpgsql security definer set search_path = public, pg_temp
+as $$
+begin
+  return query select * from bookings where user_id = auth.uid();
+end;
+$$;
+revoke all on function get_my_bookings from public;
+grant execute on function get_my_bookings to authenticated;
+
+-- §5 redirect integrity
+create or replace function prevent_redirect_chains() returns trigger as $$
+begin
+  if new.target_type = 'path' and exists (
+    select 1 from url_redirects r
+    where r.source_path = new.target_path and r.is_active and r.id <> new.id
+  ) then
+    raise exception 'redirect chain: target_path % is itself an active redirect source', new.target_path;
+  end if;
+  if exists (
+    select 1 from url_redirects r
+    where r.target_type = 'path' and r.target_path = new.source_path and r.is_active and r.id <> new.id
+  ) then
+    raise exception 'redirect chain: source_path % is already the target of another active redirect', new.source_path;
+  end if;
+  return new;
+end;
+$$ language plpgsql set search_path = public, pg_temp;
+
+create trigger url_redirects_no_chains
+  before insert or update on url_redirects
+  for each row execute function prevent_redirect_chains();
+
+-- §9 location hierarchy integrity
+create or replace function enforce_location_hierarchy() returns trigger as $$
+declare
+  v_parent_type text;
+begin
+  if new.parent_id is null then
+    if not exists (select 1 from location_type_hierarchy_rules where parent_type is null and child_type = new.location_type) then
+      raise exception 'location_type % is not permitted as a root location', new.location_type;
+    end if;
+    return new;
+  end if;
+
+  if new.parent_id = new.id then
+    raise exception 'a location cannot be its own parent';
+  end if;
+
+  select location_type into v_parent_type from locations where id = new.parent_id;
+  if v_parent_type is null then
+    raise exception 'parent_id % does not reference an existing location', new.parent_id;
+  end if;
+
+  if not exists (
+    select 1 from location_type_hierarchy_rules
+    where parent_type = v_parent_type and child_type = new.location_type
+  ) then
+    raise exception 'location_type % is not a permitted child of parent type %', new.location_type, v_parent_type;
+  end if;
+
+  if exists (
+    with recursive ancestors as (
+      select id, parent_id from locations where id = new.parent_id
+      union all
+      select l.id, l.parent_id from locations l join ancestors a on l.id = a.parent_id
+    )
+    select 1 from ancestors where id = new.id
+  ) then
+    raise exception 'assigning parent_id % would create a cycle', new.parent_id;
+  end if;
+
+  return new;
+end;
+$$ language plpgsql set search_path = public, pg_temp;
+
+create trigger locations_hierarchy_check
+  before insert or update of parent_id, location_type on locations
+  for each row execute function enforce_location_hierarchy();
+
+-- §9 ltree path synchronization
+create or replace function recompute_location_path(p_location_id uuid) returns void as $$
+declare
+  v_parent_id    uuid;
+  v_slug         text;
+  v_parent_path  ltree;
+  v_old_path     ltree;
+  v_new_path     ltree;
+  v_label        text;
+begin
+  select l.parent_id, n.slug, l.path
+    into v_parent_id, v_slug, v_old_path
+    from locations l join nodes n on n.id = l.id
+    where l.id = p_location_id;
+
+  v_label := replace(v_slug, '-', '_');
+
+  if v_parent_id is null then
+    v_new_path := text2ltree(v_label);
+  else
+    select path into v_parent_path from locations where id = v_parent_id;
+    v_new_path := v_parent_path || text2ltree(v_label);
+  end if;
+
+  update locations set path = v_new_path where id = p_location_id;
+
+  if v_old_path is not null and v_old_path <> v_new_path then
+    update locations
+      set path = v_new_path || subpath(path, nlevel(v_old_path))
+      where path <@ v_old_path and id <> p_location_id;
+  end if;
+end;
+$$ language plpgsql set search_path = public, pg_temp;
+
+create or replace function trigger_recompute_location_path() returns trigger as $$
+begin
+  perform recompute_location_path(new.id);
+  return new;
+end;
+$$ language plpgsql set search_path = public, pg_temp;
+
+create trigger locations_path_on_reparent
+  after insert or update of parent_id on locations
+  for each row execute function trigger_recompute_location_path();
+
+create trigger nodes_path_on_slug_change
+  after update of slug on nodes
+  for each row when (new.node_type = 'location')
+  execute function trigger_recompute_location_path();
+
+-- §10 RLS helpers
+create or replace function is_staff() returns boolean
+language sql stable security definer set search_path = public, pg_temp as $$
+  select exists (select 1 from profiles p where p.id = auth.uid() and p.role in ('editor','admin'));
+$$;
+
+create or replace function is_admin() returns boolean
+language sql stable security definer set search_path = public, pg_temp as $$
+  select exists (select 1 from profiles p where p.id = auth.uid() and p.role = 'admin');
+$$;
+
+-- §10 profiles self-escalation guard
+create or replace function prevent_profile_role_self_escalation() returns trigger as $$
+begin
+  if new.role is distinct from old.role and not is_admin() then
+    raise exception 'only an admin may change profiles.role';
+  end if;
+  return new;
+end;
+$$ language plpgsql set search_path = public, pg_temp;
+
+create trigger profiles_prevent_role_self_escalation
+  before update on profiles
+  for each row execute function prevent_profile_role_self_escalation();
+
+-- ══════════════════════════════════════════════════════════════════
+-- Row Level Security — policies as specified in §10, applied to every
+-- table listed there (template SQL given in full in §10; omitted here
+-- to avoid duplicating ~35 near-identical CREATE POLICY statements —
+-- §10 is the authoritative, complete policy reference for Task 3).
+-- ══════════════════════════════════════════════════════════════════
 ```
 
-**What was removed in this revision:** `package_components` (replaced by `package_itinerary_days`/`items`, §9); the `transfer_option` node type and the earlier single-table `transfer_options` (replaced by `transfer_routes` + `transfer_services`, §1–§2); the plain `auth.uid() = user_id` RLS policy on bookings as the sole access control (replaced by the RPC + role-based model, §7).
+**What was removed in this revision:** `package_itinerary_days` (replaced by `package_itinerary_stages`, §7); the conditional `when (new.booking_reference is null)` on the booking-reference trigger (now unconditional, §4); the plain "staff-only read" policy description for `url_redirects` (corrected to public-read/staff-write, §10); `transfer_services.departure_time`/`arrival_time`/`operating_days` (replaced by `transfer_service_schedules`, §1).
 
 ---
 
-## 23. Entity-Relationship Diagram (Final, Matches Schema Exactly)
+## 14. Entity-Relationship Diagram (Final)
 
 ```
                                 ┌────────────┐
@@ -975,49 +1437,45 @@ locations categories providers accommodations activities transfer_routes package
    │          │           └────────┴────────────┴──────────────┘            │
    │          │              (operated_by_provider_id)                      │
    │          │                                                              │
-   └──node_locations                    node_categories ──────────────────────┘
-        (any node ↔ any location)            (any node ↔ any category,
-                                                incl. package taxonomy §8)
+   └──node_locations (≤1 primary/node, §8)   node_categories ─────────────────┘
+        (any node ↔ any location)                 (any node ↔ any category,
+                                                     incl. package taxonomy §8)
 
-transfer_routes ──< transfer_services >── providers          (route has many services;
-      │                    │                                  service belongs to one route)
-      │                    ├──< transfer_service_media >── media_assets
+locations ──self── location_type_hierarchy_rules-validated parent_id, ltree path (§9)
+
+transfer_routes ──< transfer_services >── providers
       │                    │
-locations(origin/destination) ──── transfer_routes            (direct FK, not node_locations)
+      │                    ├──< transfer_service_schedules   (§1 — multiple departures/day)
+      │                    └──< transfer_service_media >── media_assets
+      │
+locations(origin/destination) ──── transfer_routes
 
-nodes ──< reviews                (node_id, user_id, rating — routes & providers reviewable;
-                                   services are NOT — §2)
-nodes ──< favorites               (node_id, user_id)
+nodes ──< reviews                (routes & providers reviewable; services are NOT — §2/§6)
+nodes ──< favorites
 nodes ──< node_media >── media_assets
-nodes(article) ──< article_comments   (threaded, user_id)
+nodes(article) ──< article_comments
 
-nodes(bookable node types) ──< bookable_products
-bookable_products ──< bookings >── transfer_services      (bookings.product_type discriminates
-        │                                                   which FK is populated — §3)
-auth.users ──○ bookings.user_id (nullable — guest bookings, §3)
+nodes(bookable: accommodation|activity|package only, trigger-enforced §3) ──< bookable_products
+bookable_products ──< bookings >── transfer_services   (product_type discriminates — §3 of Rev 2)
+auth.users ──○ bookings.user_id (nullable — guest bookings)
 bookings ──< booking_notifications
-platform_settings, booking_reference_counters             (support tables, staff-only, §6/§4)
+booking_reference_counters, platform_settings          (support tables, service/admin-only)
+-- all booking writes: create_booking_inquiry() RPC only (§4); no direct table policy for anon/authenticated
 
-nodes(package) ──< package_itinerary_days ──< package_itinerary_items >── nodes / transfer_services
-                                                                            (component_type discriminates)
+nodes(package) ──< package_itinerary_stages ──< package_itinerary_items >── nodes / transfer_services
+                     (day_start..day_end range, §7)      (component_type discriminates)
 
-auth.users ── profiles (1:1, role)
-nodes.legacy_slugs[] / url_redirects → nodes (canonical target only — §21)
+auth.users ── profiles (1:1, role; self-escalation blocked by trigger, §10)
+nodes.legacy_slugs[] (historical only, §5) / url_redirects (authoritative, target-shape + no-chain
+  constrained, §5) → nodes (canonical target)
 ```
 
-Every relationship above corresponds 1:1 to a foreign key or check constraint in §22 — nothing in this diagram is aspirational or simplified away from the actual schema.
+Every relationship above corresponds 1:1 to a constraint in §13.
 
 ---
 
-## 24. Security, Permissions & RLS (Consolidated, Including §7's Booking Model)
+## 15. Final Verdict
 
-- **RLS enabled on every table, default-deny**, as in rev 1: public `SELECT` on `nodes` and its detail/junction/media tables only where `status = 'published'`; `INSERT`/`UPDATE`/`DELETE` restricted to `profiles.role IN ('editor','admin')`.
-- **`bookings`** — no policy relies on `auth.uid() = user_id`; writes go through a `SECURITY DEFINER` RPC, reads are staff-only plus a narrow `get_my_bookings()` function for the owning authenticated user (§7, full detail there).
-- **`reviews`, `favorites`, `article_comments`** — insert requires `auth.uid() = user_id` (these *do* require an account, unlike bookings — reviewing/favoriting are identity-bound actions by design); select public for published/visible rows.
-- **`booking_notifications`, `booking_reference_counters`, `platform_settings`, `url_redirects`** — staff/service-role only, never exposed to `anon`/`authenticated`.
-- **`profiles.role`** excluded from the user's own update policy — no self-escalation path.
-- Every Server Action re-validates input with Zod regardless of client-side validation; the Supabase service-role key never reaches the browser.
+All 12 issues raised in this review have been resolved in the design and reflected in the consolidated schema (§13): transfer schedules normalized without JSONB (§1); dependency order corrected with no circular reference (§2); bookable product type safety enforced by trigger (§3); booking reference made unconditionally authoritative and the public RPC hardened with explicit `search_path`, controlled grants, and a minimal return shape (§4); redirect target integrity constrained and chain-guarded, with `legacy_slugs`'s role disambiguated (§5); the transfer route/service SEO split restated explicitly (§6); the package itinerary moved to a stage/range model eliminating repeated accommodation rows (§7); at-most-one-primary-location enforced (§8); location hierarchy parent/child types validated and `ltree` sync made explicit (§9); RLS made concrete for all 19 listed tables with the `url_redirects` inconsistency corrected and `profiles.role` self-escalation closed (§10); the SEO migration requirement restated as a committed rule rather than an unknown (§11); and the full consistency sweep in §12 found no remaining defect.
 
----
-
-**Nothing has been built.** This is the final revised design for review. It has not yet been approved for implementation — that approval is a separate, explicit step.
+**READY FOR IMPLEMENTATION**

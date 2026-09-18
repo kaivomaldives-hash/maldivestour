@@ -10,9 +10,27 @@ import { NextResponse, type NextRequest } from "next/server";
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // No Supabase project connected yet (e.g. local dev before .env.local is
+  // filled in). Every request goes through this proxy, so failing hard here
+  // would 500 the entire site — including routes that don't touch Supabase
+  // at all. Pass the request through unmodified instead; pages that
+  // actually need data still fail informatively at the point they call
+  // createClient().
+  if (!url || !anonKey) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        "[proxy] NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY are not set — skipping session refresh.",
+      );
+    }
+    return supabaseResponse;
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    url,
+    anonKey,
     {
       cookies: {
         getAll() {

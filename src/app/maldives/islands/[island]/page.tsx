@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
+import { ActivityCard } from "@/components/activity/activity-card";
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
+import { getActivitiesByLocation } from "@/lib/activities/repository";
 import { getChildLocations, getIslandBySlug } from "@/lib/locations/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 import { createClient } from "@/lib/supabase/server";
@@ -49,10 +51,11 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
   const island = await getIslandBySlug(slug);
   if (!island) notFound();
 
-  const [atoll, children, accommodations] = await Promise.all([
+  const [atoll, children, accommodations, activities] = await Promise.all([
     getAtollSummary(island.parentId),
     getChildLocations(island.id),
     getAccommodationsByLocation(island.id),
+    getActivitiesByLocation(island.id),
   ]);
 
   return (
@@ -116,8 +119,19 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
         </section>
       )}
 
-      {/* Future content sections (activities, transfers, packages) attach to
-          this island via node_locations once those entity types exist. */}
+      {activities.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Activities on {island.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {activities.map((activity) => (
+              <ActivityCard key={activity.id} activity={activity} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Future content sections (transfers, packages) attach to this island
+          via node_locations once those entity types exist. */}
     </main>
   );
 }

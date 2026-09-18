@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
+import { ActivityCard } from "@/components/activity/activity-card";
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { getAccommodationsByAtoll } from "@/lib/accommodations/repository";
+import { getActivitiesByAtoll } from "@/lib/activities/repository";
 import { getAtollBySlug, getIslandsByAtoll } from "@/lib/locations/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
@@ -42,7 +44,10 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
   // to give resorts a real location to attach to) alongside the inhabited
   // islands Task 4 seeded — split them rather than mislabel the count.
   const islands = allIslands.filter((island) => island.isInhabited !== false);
-  const accommodations = await getAccommodationsByAtoll(atoll.id);
+  const [accommodations, activities] = await Promise.all([
+    getAccommodationsByAtoll(atoll.id),
+    getActivitiesByAtoll(atoll.id),
+  ]);
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
@@ -97,8 +102,19 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
         </section>
       )}
 
-      {/* Future content sections (activities, transfers, packages) attach to
-          this atoll via node_locations once those entity types exist. */}
+      {activities.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Activities in {atoll.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {activities.map((activity) => (
+              <ActivityCard key={activity.id} activity={activity} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Future content sections (transfers, packages) attach to this atoll
+          via node_locations once those entity types exist. */}
     </main>
   );
 }

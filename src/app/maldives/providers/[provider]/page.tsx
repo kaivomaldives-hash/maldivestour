@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
+import { ActivityCard } from "@/components/activity/activity-card";
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { getAccommodationsByProvider } from "@/lib/accommodations/repository";
+import { getActivitiesByProvider } from "@/lib/activities/repository";
 import { getProviderBySlug } from "@/lib/providers/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
@@ -35,7 +37,10 @@ export default async function ProviderDetailPage({ params }: { params: Promise<P
   const provider = await getProviderBySlug(slug);
   if (!provider) notFound();
 
-  const accommodations = await getAccommodationsByProvider(provider.id);
+  const [accommodations, activities] = await Promise.all([
+    getAccommodationsByProvider(provider.id),
+    getActivitiesByProvider(provider.id),
+  ]);
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
@@ -62,6 +67,17 @@ export default async function ProviderDetailPage({ params }: { params: Promise<P
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {accommodations.map((accommodation) => (
               <AccommodationCard key={accommodation.id} accommodation={accommodation} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {activities.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Activities operated by {provider.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {activities.map((activity) => (
+              <ActivityCard key={activity.id} activity={activity} />
             ))}
           </ul>
         </section>

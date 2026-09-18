@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
+import { getAccommodationsByAtoll } from "@/lib/accommodations/repository";
 import { getAtollBySlug, getIslandsByAtoll } from "@/lib/locations/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
@@ -34,7 +36,13 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
   const atoll = await getAtollBySlug(slug);
   if (!atoll) notFound();
 
-  const islands = await getIslandsByAtoll(slug);
+  const allIslands = await getIslandsByAtoll(slug);
+  // getIslandsByAtoll returns every location_type="island" row under this
+  // atoll, which now includes uninhabited resort islands (added in Task 5
+  // to give resorts a real location to attach to) alongside the inhabited
+  // islands Task 4 seeded — split them rather than mislabel the count.
+  const islands = allIslands.filter((island) => island.isInhabited !== false);
+  const accommodations = await getAccommodationsByAtoll(atoll.id);
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
@@ -78,9 +86,19 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
         )}
       </section>
 
-      {/* Future content sections (hotels, resorts, activities, transfers, packages)
-          attach to this atoll via node_locations once those entity types exist —
-          intentionally not built yet (Task 4 is geography-only). */}
+      {accommodations.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Accommodation in {atoll.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {accommodations.map((accommodation) => (
+              <AccommodationCard key={accommodation.id} accommodation={accommodation} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Future content sections (activities, transfers, packages) attach to
+          this atoll via node_locations once those entity types exist. */}
     </main>
   );
 }

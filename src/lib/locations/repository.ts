@@ -311,3 +311,37 @@ export async function searchLocations(
 
   return data.map(locationSummaryOf).filter((l): l is LocationSummary => l !== null);
 }
+
+/**
+ * Batch lookup by id, added for Task 5: the accommodation repository needs
+ * to resolve a set of primary-location ids (islands, resort islands, ...)
+ * without one query per accommodation. Kept here rather than duplicated in
+ * the accommodation repository, since this module already owns the
+ * nodes+locations join shape.
+ */
+export async function getLocationSummariesByIds(ids: string[]): Promise<Map<string, LocationSummary>> {
+  const map = new Map<string, LocationSummary>();
+  if (ids.length === 0) return map;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("nodes")
+    .select(NODE_LOCATION_SELECT)
+    .eq("node_type", "location")
+    .eq("status", "published")
+    .in("id", ids)
+    .returns<NodeLocationRow[]>();
+
+  if (error || !data) return map;
+
+  for (const row of data) {
+    const summary = locationSummaryOf(row);
+    if (summary) map.set(summary.id, summary);
+  }
+  return map;
+}
+
+export async function getLocationSummaryById(id: string): Promise<LocationSummary | null> {
+  const map = await getLocationSummariesByIds([id]);
+  return map.get(id) ?? null;
+}

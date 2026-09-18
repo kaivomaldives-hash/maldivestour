@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "seed:locations": "node scripts/generate-location-seed.mjs"
+    "seed:locations": "node scripts/generate-location-seed.mjs",
+    "seed:accommodations": "node scripts/generate-accommodation-seed.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

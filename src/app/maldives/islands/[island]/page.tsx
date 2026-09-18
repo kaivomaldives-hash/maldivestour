@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
+import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { getChildLocations, getIslandBySlug } from "@/lib/locations/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 import { createClient } from "@/lib/supabase/server";
@@ -47,9 +49,10 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
   const island = await getIslandBySlug(slug);
   if (!island) notFound();
 
-  const [atoll, children] = await Promise.all([
+  const [atoll, children, accommodations] = await Promise.all([
     getAtollSummary(island.parentId),
     getChildLocations(island.id),
+    getAccommodationsByLocation(island.id),
   ]);
 
   return (
@@ -102,9 +105,19 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
         </section>
       )}
 
-      {/* Future content sections (accommodation, activities, transfers, packages)
-          attach to this island via node_locations once those entity types
-          exist — intentionally not built yet (Task 4 is geography-only). */}
+      {accommodations.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Accommodation on {island.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {accommodations.map((accommodation) => (
+              <AccommodationCard key={accommodation.id} accommodation={accommodation} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Future content sections (activities, transfers, packages) attach to
+          this island via node_locations once those entity types exist. */}
     </main>
   );
 }

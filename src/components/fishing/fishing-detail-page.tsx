@@ -3,21 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
-import { getActivityBySlug } from "@/lib/activities/repository";
-import { hasDedicatedRoute } from "@/lib/activities/types";
+import { getFishingActivitiesByLocation, getFishingActivityBySlug, getFishingTypesForActivity } from "@/lib/fishing/repository";
 import { canonicalUrl } from "@/lib/seo/site";
-
-const CATEGORY_LABEL: Record<string, string> = {
-  general: "General",
-  fishing: "Fishing",
-  diving: "Diving",
-  surfing: "Surfing",
-  watersports: "Watersports",
-  excursion: "Excursion",
-  island_hopping: "Island Hopping",
-  spa: "Spa",
-  culture: "Culture",
-};
 
 function formatDuration(minutes: number | null): string | null {
   if (!minutes) return null;
@@ -26,27 +13,13 @@ function formatDuration(minutes: number | null): string | null {
   return Number.isInteger(hours) ? `${hours} hour${hours === 1 ? "" : "s"}` : `${hours.toFixed(1)} hours`;
 }
 
-/**
- * The generic /maldives/activities/[slug]/ route only serves categories
- * without their own dedicated vertical (see ACTIVITY_CATEGORY_SEGMENT in
- * lib/activities/types.ts). A fishing activity's one canonical URL is
- * /maldives/fishing/[slug]/ (Task 7) — reachable, unambiguous, and
- * matching the architecture's original per-category URL segments — so it
- * 404s here rather than being reachable (and indexable) at two paths.
- */
-async function loadGenericActivity(slug: string) {
-  const activity = await getActivityBySlug(slug);
-  if (!activity || hasDedicatedRoute(activity.activityCategory)) return null;
-  return activity;
-}
-
-export async function activityDetailMetadata(slug: string): Promise<Metadata> {
-  const activity = await loadGenericActivity(slug);
+export async function fishingDetailMetadata(slug: string): Promise<Metadata> {
+  const activity = await getFishingActivityBySlug(slug);
   if (!activity) return {};
 
-  const title = activity.metaTitle ?? `${activity.title} | Maldives Activities | MTG`;
+  const title = activity.metaTitle ?? `${activity.title} | Maldives Fishing | MTG`;
   const description = activity.metaDescription ?? activity.summary ?? undefined;
-  const url = canonicalUrl(`/maldives/activities/${activity.slug}`);
+  const url = canonicalUrl(`/maldives/fishing/${activity.slug}`);
 
   return {
     title,
@@ -56,46 +29,50 @@ export async function activityDetailMetadata(slug: string): Promise<Metadata> {
   };
 }
 
-export async function ActivityDetailPage({ slug }: { slug: string }) {
-  const activity = await loadGenericActivity(slug);
+export async function FishingDetailPage({ slug }: { slug: string }) {
+  const activity = await getFishingActivityBySlug(slug);
   if (!activity) notFound();
 
   const { primaryLocation, atoll } = activity;
   const duration = formatDuration(activity.durationMinutes);
+
+  const [fishingTypes, sameIslandTrips] = await Promise.all([
+    getFishingTypesForActivity(activity.id),
+    primaryLocation ? getFishingActivitiesByLocation(primaryLocation.id) : Promise.resolve([]),
+  ]);
+  const relatedTrips = sameIslandTrips.filter((t) => t.id !== activity.id).slice(0, 4);
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
       <Breadcrumbs
         items={[
           { label: "Maldives", href: "/maldives/" },
-          { label: "Activities", href: "/maldives/activities/" },
+          { label: "Fishing", href: "/maldives/fishing/" },
           { label: activity.title },
         ]}
       />
       <h1 className="mt-4 text-3xl font-semibold">{activity.title}</h1>
       {activity.summary && <p className="mt-3 text-neutral-700">{activity.summary}</p>}
 
-      <dl className="mt-6 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
-        <div>
-          <dt className="text-neutral-500">Category</dt>
-          <dd className="font-medium">{CATEGORY_LABEL[activity.activityCategory] ?? activity.activityCategory}</dd>
+      {fishingTypes.length > 0 && (
+        <div className="mt-3 flex flex-wrap gap-2">
+          {fishingTypes.map((type) => (
+            <Link
+              key={type.id}
+              href={`/maldives/fishing/?type=${type.slug}`}
+              className="rounded-full border border-neutral-300 px-3 py-1 text-xs"
+            >
+              {type.title}
+            </Link>
+          ))}
         </div>
+      )}
+
+      <dl className="mt-6 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
         {duration && (
           <div>
             <dt className="text-neutral-500">Duration</dt>
             <dd className="font-medium">{duration}</dd>
-          </div>
-        )}
-        {activity.difficulty && (
-          <div>
-            <dt className="text-neutral-500">Difficulty</dt>
-            <dd className="font-medium capitalize">{activity.difficulty.replace("_", " ")}</dd>
-          </div>
-        )}
-        {activity.minAge !== null && (
-          <div>
-            <dt className="text-neutral-500">Minimum age</dt>
-            <dd className="font-medium">{activity.minAge}</dd>
           </div>
         )}
         {activity.maxParticipants !== null && (
@@ -151,7 +128,22 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
         )}
       </dl>
 
-      {/* Booking/inquiry UI is not built yet — Task 6 only establishes the
+      {relatedTrips.length > 0 && primaryLocation && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Other fishing trips on {primaryLocation.title}</h2>
+          <ul className="mt-4 space-y-2 text-sm">
+            {relatedTrips.map((trip) => (
+              <li key={trip.id}>
+                <Link href={`/maldives/fishing/${trip.slug}/`} className="hover:underline">
+                  {trip.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Booking/inquiry UI is not built yet — Task 7 only establishes the
           bookable_products relationship (see activity.isBookable). */}
     </main>
   );

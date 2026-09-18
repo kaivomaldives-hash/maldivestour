@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ActivityCard } from "@/components/activity/activity-card";
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { getActivities, searchActivities } from "@/lib/activities/repository";
-import type { ActivityCategory, ActivityDifficulty } from "@/lib/activities/types";
+import { activityDirectorySegment, hasDedicatedRoute, type ActivityCategory, type ActivityDifficulty } from "@/lib/activities/types";
 import { getAtollBySlug, getIslandBySlug } from "@/lib/locations/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
@@ -20,7 +20,11 @@ const CATEGORY_LABEL: Record<ActivityCategory, string> = {
   culture: "Culture",
 };
 
-const CATEGORIES = Object.keys(CATEGORY_LABEL) as ActivityCategory[];
+// Categories with their own dedicated vertical (fishing, as of Task 7) get
+// a direct link to that vertical's landing page below, not a `?category=`
+// filter chip here — that dedicated page is their real home.
+const CATEGORIES = (Object.keys(CATEGORY_LABEL) as ActivityCategory[]).filter((c) => !hasDedicatedRoute(c));
+const DEDICATED_CATEGORIES = (Object.keys(CATEGORY_LABEL) as ActivityCategory[]).filter((c) => hasDedicatedRoute(c));
 const PAGE_SIZE = 24;
 
 export interface ActivityDirectorySearchParams {
@@ -121,6 +125,15 @@ export async function ActivityDirectoryPage({
             className={`rounded-full border px-3 py-1 ${category === c ? "border-neutral-900 bg-neutral-900 text-white" : "border-neutral-300"}`}
           >
             {CATEGORY_LABEL[c]}
+          </Link>
+        ))}
+        {DEDICATED_CATEGORIES.map((c) => (
+          <Link
+            key={c}
+            href={`/maldives/${activityDirectorySegment(c)}/`}
+            className="rounded-full border border-dashed border-neutral-400 px-3 py-1 text-neutral-700"
+          >
+            {CATEGORY_LABEL[c]} →
           </Link>
         ))}
       </nav>

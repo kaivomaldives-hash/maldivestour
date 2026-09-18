@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import type { ActivitySummary } from "@/lib/activities/types";
+import { activityHref, type ActivitySummary } from "@/lib/activities/types";
 
 const CATEGORY_LABEL: Record<string, string> = {
   general: "General",
@@ -26,7 +26,7 @@ export function ActivityCard({ activity }: { activity: ActivitySummary }) {
 
   return (
     <li className="rounded border border-neutral-200 p-4">
-      <Link href={`/maldives/activities/${activity.slug}/`} className="text-lg font-medium hover:underline">
+      <Link href={activityHref(activity)} className="text-lg font-medium hover:underline">
         {activity.title}
       </Link>
       <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-sm text-neutral-600">

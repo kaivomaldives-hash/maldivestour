@@ -194,6 +194,7 @@ export async function getActivities(options: GetActivitiesOptions = {}): Promise
   if (options.maxPriceFrom !== undefined) query = query.lte("activities.price_from", options.maxPriceFrom);
   if (options.maxParticipants !== undefined) query = query.gte("activities.max_participants", options.maxParticipants);
   if (nodeIdFilter) query = query.in("id", nodeIdFilter);
+  if (options.nodeIds) query = query.in("id", options.nodeIds);
 
   const { data, error, count } = await query
     .order("title", { ascending: true })

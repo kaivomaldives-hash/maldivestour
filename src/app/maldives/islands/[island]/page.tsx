@@ -57,6 +57,11 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
     getAccommodationsByLocation(island.id),
     getActivitiesByLocation(island.id),
   ]);
+  // Fishing has its own dedicated vertical/section as of Task 7 (and, per
+  // ACTIVITY_CATEGORY_SEGMENT, its own canonical URL) — split it out of
+  // the generic activity list rather than showing it twice.
+  const fishingActivities = activities.filter((a) => a.activityCategory === "fishing");
+  const otherActivities = activities.filter((a) => a.activityCategory !== "fishing");
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
@@ -119,11 +124,22 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
         </section>
       )}
 
-      {activities.length > 0 && (
+      {fishingActivities.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Fishing on {island.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {fishingActivities.map((activity) => (
+              <ActivityCard key={activity.id} activity={activity} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {otherActivities.length > 0 && (
         <section className="mt-10">
           <h2 className="text-xl font-semibold">Activities on {island.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {activities.map((activity) => (
+            {otherActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
             ))}
           </ul>

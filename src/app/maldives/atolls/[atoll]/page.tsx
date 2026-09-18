@@ -48,6 +48,10 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
     getAccommodationsByAtoll(atoll.id),
     getActivitiesByAtoll(atoll.id),
   ]);
+  // See the identical split on the island page (Task 7): fishing has its
+  // own dedicated vertical/section and canonical URL now.
+  const fishingActivities = activities.filter((a) => a.activityCategory === "fishing");
+  const otherActivities = activities.filter((a) => a.activityCategory !== "fishing");
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
@@ -102,11 +106,22 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
         </section>
       )}
 
-      {activities.length > 0 && (
+      {fishingActivities.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Fishing in {atoll.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {fishingActivities.map((activity) => (
+              <ActivityCard key={activity.id} activity={activity} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {otherActivities.length > 0 && (
         <section className="mt-10">
           <h2 className="text-xl font-semibold">Activities in {atoll.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {activities.map((activity) => (
+            {otherActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
             ))}
           </ul>

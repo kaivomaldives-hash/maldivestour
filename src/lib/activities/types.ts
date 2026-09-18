@@ -55,9 +55,35 @@ export interface ActivityFilters {
   minAge?: number;
   maxPriceFrom?: number;
   maxParticipants?: number;
+  /** Restrict results to this exact set of node ids — used to compose a
+   * further filter (e.g. "tagged with fishing type X" via node_categories)
+   * on top of the relational filters above, without duplicating query
+   * logic in a specialized-vertical repository. Added in Task 7. */
+  nodeIds?: string[];
 }
 
-/** Every activity category shares one canonical directory in Task 6 —
- * fishing/diving/surfing get their own dedicated systems in a later task.
- * See docs note in the activities repository module. */
-export const ACTIVITY_DIRECTORY_SEGMENT = "activities";
+/**
+ * URL segment each activity category resolves to. Categories with their
+ * own dedicated vertical (fishing as of Task 7; diving/surfing land here
+ * in later tasks) map to their own segment — that is their one canonical
+ * location, per docs/SYSTEM_ARCHITECTURE_AND_DATABASE_DESIGN.md §13/§19.
+ * Every other category falls back to the shared /maldives/activities/
+ * directory established in Task 6.
+ */
+export const ACTIVITY_CATEGORY_SEGMENT: Partial<Record<ActivityCategory, string>> = {
+  fishing: "fishing",
+};
+
+export function activityDirectorySegment(category: ActivityCategory): string {
+  return ACTIVITY_CATEGORY_SEGMENT[category] ?? "activities";
+}
+
+export function activityHref(activity: { activityCategory: ActivityCategory; slug: string }): string {
+  return `/maldives/${activityDirectorySegment(activity.activityCategory)}/${activity.slug}/`;
+}
+
+/** True when `category` has moved to its own dedicated vertical route and
+ * should no longer be independently reachable at /maldives/activities/. */
+export function hasDedicatedRoute(category: ActivityCategory): boolean {
+  return category in ACTIVITY_CATEGORY_SEGMENT;
+}

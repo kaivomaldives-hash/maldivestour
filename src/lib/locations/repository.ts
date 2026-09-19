@@ -345,3 +345,127 @@ export async function getLocationSummaryById(id: string): Promise<LocationSummar
   const map = await getLocationSummariesByIds([id]);
   return map.get(id) ?? null;
 }
+
+/**
+ * Generic site-type queries, added for Task 8. Dive sites, and later surf
+ * breaks (Task 9), are both `locations` rows distinguished only by
+ * `location_type` — rather than writing a `dive_site`-specific version of
+ * `getIslands`/`getIslandsByAtoll`/`getIslandBySlug` and then a near-
+ * identical `surf_break` version next task, these take `locationType` as a
+ * parameter so every "site" vertical composes the same three functions.
+ */
+
+export interface GetLocationsByTypeOptions {
+  page?: number;
+  pageSize?: number;
+}
+
+export async function getLocationsByType(
+  locationType: LocationType,
+  options: GetLocationsByTypeOptions = {},
+): Promise<PaginatedResult<LocationSummary>> {
+  const page = Math.max(1, options.page ?? 1);
+  const pageSize = Math.min(100, Math.max(1, options.pageSize ?? 48));
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  const supabase = await createClient();
+  const { data, error, count } = await supabase
+    .from("nodes")
+    .select(NODE_LOCATION_SELECT, { count: "exact" })
+    .eq("node_type", "location")
+    .eq("status", "published")
+    .eq("locations.location_type", locationType)
+    .order("title", { ascending: true })
+    .range(from, to)
+    .returns<NodeLocationRow[]>();
+
+  if (error || !data) return { items: [], total: 0, page, pageSize };
+
+  const items = data.map(locationSummaryOf).filter((l): l is LocationSummary => l !== null);
+  return { items, total: count ?? items.length, page, pageSize };
+}
+
+export async function getLocationsByTypeAndAtoll(locationType: LocationType, atollId: string): Promise<LocationSummary[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("nodes")
+    .select(NODE_LOCATION_SELECT)
+    .eq("node_type", "location")
+    .eq("status", "published")
+    .eq("locations.location_type", locationType)
+    .eq("locations.parent_id", atollId)
+    .order("title", { ascending: true })
+    .returns<NodeLocationRow[]>();
+
+  if (error || !data) return [];
+  return data.map(locationSummaryOf).filter((l): l is LocationSummary => l !== null);
+}
+
+export async function getLocationBySlugAndType(slug: string, locationType: LocationType): Promise<LocationDetail | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("nodes")
+    .select(NODE_LOCATION_SELECT)
+    .eq("node_type", "location")
+    .eq("status", "published")
+    .eq("slug", slug)
+    .eq("locations.location_type", locationType)
+    .maybeSingle<NodeLocationRow>();
+
+  if (error || !data) return null;
+  return locationDetailOf(data);
+}
+
+/** `nodes.attributes` for one node — the JSONB home for genuinely flexible,
+ * category-specific descriptive facts (dive site depth/current/marine-life
+ * notes, per the architecture's JSONB-boundaries rule), never for data that
+ * needs relational filtering. */
+export async function getNodeAttributes(nodeId: string): Promise<Record<string, unknown>> {
+  const map = await getNodeAttributesByIds([nodeId]);
+  return map.get(nodeId) ?? {};
+}
+
+export async function getNodeAttributesByIds(nodeIds: string[]): Promise<Map<string, Record<string, unknown>>> {
+  const map = new Map<string, Record<string, unknown>>();
+  if (nodeIds.length === 0) return map;
+
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("nodes")
+    .select("id, attributes")
+    .in("id", nodeIds)
+    .returns<Array<{ id: string; attributes: Record<string, unknown> | null }>>();
+
+  for (const row of data ?? []) {
+    map.set(row.id, row.attributes ?? {});
+  }
+  return map;
+}
+
+/** Every node tagged to `locationId` via node_locations, regardless of
+ * relation (primary or secondary) — used to find, e.g., every diving
+ * activity that visits a given dive site even though the site is usually
+ * a secondary tag, not the activity's primary location. */
+export async function getNodeIdsAtLocation(locationId: string): Promise<string[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("node_locations")
+    .select("node_id")
+    .eq("location_id", locationId)
+    .returns<Array<{ node_id: string }>>();
+  return Array.from(new Set((data ?? []).map((row) => row.node_id)));
+}
+
+/** Every location tagged *to* `nodeId` via node_locations (any relation) —
+ * the reverse of getNodeIdsAtLocation. Used to find, e.g., the specific
+ * dive site(s) a diving activity visits when that's documented. */
+export async function getLocationIdsForNode(nodeId: string): Promise<string[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("node_locations")
+    .select("location_id")
+    .eq("node_id", nodeId)
+    .returns<Array<{ location_id: string }>>();
+  return Array.from(new Set((data ?? []).map((row) => row.location_id)));
+}

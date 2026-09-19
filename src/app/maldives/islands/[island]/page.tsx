@@ -5,8 +5,10 @@ import { notFound } from "next/navigation";
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { ActivityCard } from "@/components/activity/activity-card";
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
+import { DiveSiteCard } from "@/components/diving/dive-site-card";
 import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { getActivitiesByLocation } from "@/lib/activities/repository";
+import { getDiveSitesByLocation } from "@/lib/diving/repository";
 import { getChildLocations, getIslandBySlug } from "@/lib/locations/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 import { createClient } from "@/lib/supabase/server";
@@ -51,17 +53,21 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
   const island = await getIslandBySlug(slug);
   if (!island) notFound();
 
-  const [atoll, children, accommodations, activities] = await Promise.all([
+  const [atoll, children, accommodations, activities, diveSites] = await Promise.all([
     getAtollSummary(island.parentId),
     getChildLocations(island.id),
     getAccommodationsByLocation(island.id),
     getActivitiesByLocation(island.id),
+    getDiveSitesByLocation(island.id),
   ]);
-  // Fishing has its own dedicated vertical/section as of Task 7 (and, per
-  // ACTIVITY_CATEGORY_SEGMENT, its own canonical URL) — split it out of
-  // the generic activity list rather than showing it twice.
+  // Fishing and diving each have their own dedicated vertical/section (Task
+  // 7, Task 8) and, per ACTIVITY_CATEGORY_SEGMENT, their own canonical URL —
+  // split them out of the generic activity list rather than showing them twice.
   const fishingActivities = activities.filter((a) => a.activityCategory === "fishing");
-  const otherActivities = activities.filter((a) => a.activityCategory !== "fishing");
+  const divingActivities = activities.filter((a) => a.activityCategory === "diving");
+  const otherActivities = activities.filter(
+    (a) => a.activityCategory !== "fishing" && a.activityCategory !== "diving",
+  );
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
@@ -130,6 +136,28 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {fishingActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {divingActivities.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Diving on {island.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {divingActivities.map((activity) => (
+              <ActivityCard key={activity.id} activity={activity} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {diveSites.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Dive sites near {island.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {diveSites.map((site) => (
+              <DiveSiteCard key={site.id} site={site} />
             ))}
           </ul>
         </section>

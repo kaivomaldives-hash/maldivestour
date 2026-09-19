@@ -41,9 +41,12 @@ export default async function ProviderDetailPage({ params }: { params: Promise<P
     getAccommodationsByProvider(provider.id),
     getActivitiesByProvider(provider.id),
   ]);
-  // See the identical split on the island/atoll pages (Task 7).
+  // See the identical split on the island/atoll pages (Task 7, Task 8).
   const fishingActivities = activities.filter((a) => a.activityCategory === "fishing");
-  const otherActivities = activities.filter((a) => a.activityCategory !== "fishing");
+  const divingActivities = activities.filter((a) => a.activityCategory === "diving");
+  const otherActivities = activities.filter(
+    (a) => a.activityCategory !== "fishing" && a.activityCategory !== "diving",
+  );
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
@@ -80,6 +83,17 @@ export default async function ProviderDetailPage({ params }: { params: Promise<P
           <h2 className="text-xl font-semibold">Fishing operated by {provider.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {fishingActivities.map((activity) => (
+              <ActivityCard key={activity.id} activity={activity} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {divingActivities.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Diving operated by {provider.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {divingActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
             ))}
           </ul>

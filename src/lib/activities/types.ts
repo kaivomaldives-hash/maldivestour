@@ -64,14 +64,16 @@ export interface ActivityFilters {
 
 /**
  * URL segment each activity category resolves to. Categories with their
- * own dedicated vertical (fishing as of Task 7; diving/surfing land here
- * in later tasks) map to their own segment — that is their one canonical
- * location, per docs/SYSTEM_ARCHITECTURE_AND_DATABASE_DESIGN.md §13/§19.
- * Every other category falls back to the shared /maldives/activities/
- * directory established in Task 6.
+ * own dedicated vertical (fishing since Task 7, diving since Task 8;
+ * surfing lands here in a later task) map to their own segment — that is
+ * their one canonical location, per
+ * docs/SYSTEM_ARCHITECTURE_AND_DATABASE_DESIGN.md §13/§19. Every other
+ * category falls back to the shared /maldives/activities/ directory
+ * established in Task 6.
  */
 export const ACTIVITY_CATEGORY_SEGMENT: Partial<Record<ActivityCategory, string>> = {
   fishing: "fishing",
+  diving: "diving",
 };
 
 export function activityDirectorySegment(category: ActivityCategory): string {

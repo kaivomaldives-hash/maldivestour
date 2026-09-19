@@ -6,11 +6,13 @@ import { AccommodationCard } from "@/components/accommodation/accommodation-card
 import { ActivityCard } from "@/components/activity/activity-card";
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
+import { SurfBreakCard } from "@/components/surfing/surf-break-card";
 import { getAccommodationsByAtoll } from "@/lib/accommodations/repository";
 import { getActivitiesByAtoll } from "@/lib/activities/repository";
 import { getDiveSitesByAtoll } from "@/lib/diving/repository";
 import { getAtollBySlug, getIslandsByAtoll } from "@/lib/locations/repository";
 import { canonicalUrl } from "@/lib/seo/site";
+import { getSurfBreaksByAtoll } from "@/lib/surfing/repository";
 
 export const revalidate = 3600;
 
@@ -46,18 +48,20 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
   // to give resorts a real location to attach to) alongside the inhabited
   // islands Task 4 seeded — split them rather than mislabel the count.
   const islands = allIslands.filter((island) => island.isInhabited !== false);
-  const [accommodations, activities, diveSites] = await Promise.all([
+  const [accommodations, activities, diveSites, surfBreaks] = await Promise.all([
     getAccommodationsByAtoll(atoll.id),
     getActivitiesByAtoll(atoll.id),
     getDiveSitesByAtoll(atoll.id),
+    getSurfBreaksByAtoll(atoll.id),
   ]);
-  // See the identical split on the island page (Task 7, Task 8): fishing
-  // and diving each have their own dedicated vertical/section and
-  // canonical URL now.
+  // See the identical split on the island page (Task 7, Task 8, Task 9):
+  // fishing, diving, and surfing each have their own dedicated
+  // vertical/section and canonical URL now.
   const fishingActivities = activities.filter((a) => a.activityCategory === "fishing");
   const divingActivities = activities.filter((a) => a.activityCategory === "diving");
+  const surfingActivities = activities.filter((a) => a.activityCategory === "surfing");
   const otherActivities = activities.filter(
-    (a) => a.activityCategory !== "fishing" && a.activityCategory !== "diving",
+    (a) => a.activityCategory !== "fishing" && a.activityCategory !== "diving" && a.activityCategory !== "surfing",
   );
 
   return (
@@ -141,6 +145,28 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {diveSites.map((site) => (
               <DiveSiteCard key={site.id} site={site} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {surfingActivities.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Surfing in {atoll.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {surfingActivities.map((activity) => (
+              <ActivityCard key={activity.id} activity={activity} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {surfBreaks.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Surf breaks in {atoll.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {surfBreaks.map((surfBreak) => (
+              <SurfBreakCard key={surfBreak.id} surfBreak={surfBreak} />
             ))}
           </ul>
         </section>

@@ -7,6 +7,7 @@ import { ActivityCard } from "@/components/activity/activity-card";
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
 import { SurfBreakCard } from "@/components/surfing/surf-break-card";
+import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { getActivitiesByLocation } from "@/lib/activities/repository";
 import { getDiveSitesByLocation } from "@/lib/diving/repository";
@@ -14,6 +15,7 @@ import { getChildLocations, getIslandBySlug } from "@/lib/locations/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 import { getSurfBreaksByLocation } from "@/lib/surfing/repository";
 import { createClient } from "@/lib/supabase/server";
+import { getTransferRoutesByLocation } from "@/lib/transfers/repository";
 
 export const revalidate = 3600;
 
@@ -55,13 +57,14 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
   const island = await getIslandBySlug(slug);
   if (!island) notFound();
 
-  const [atoll, children, accommodations, activities, diveSites, surfBreaks] = await Promise.all([
+  const [atoll, children, accommodations, activities, diveSites, surfBreaks, transferRoutes] = await Promise.all([
     getAtollSummary(island.parentId),
     getChildLocations(island.id),
     getAccommodationsByLocation(island.id),
     getActivitiesByLocation(island.id),
     getDiveSitesByLocation(island.id),
     getSurfBreaksByLocation(island.id),
+    getTransferRoutesByLocation(island.id),
   ]);
   // Fishing, diving, and surfing each have their own dedicated
   // vertical/section (Task 7, Task 8, Task 9) and, per
@@ -201,8 +204,19 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
         </section>
       )}
 
-      {/* Future content sections (transfers, packages) attach to this island
-          via node_locations once those entity types exist. */}
+      {transferRoutes.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Transfers to/from {island.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {transferRoutes.map((route) => (
+              <TransferRouteCard key={route.id} route={route} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Future content sections (packages) attach to this island via
+          node_locations once that entity type exists. */}
     </main>
   );
 }

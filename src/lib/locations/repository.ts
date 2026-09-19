@@ -425,6 +425,24 @@ export async function getLocationBySlugAndType(slug: string, locationType: Locat
   return locationDetailOf(data);
 }
 
+/** Same as getLocationBySlugAndType but without a location_type filter —
+ * for callers (Task 10 transfers) where the endpoint can legitimately be
+ * more than one type (an island or an airport), so the caller doesn't
+ * already know which type to ask for. */
+export async function getLocationBySlug(slug: string): Promise<LocationDetail | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("nodes")
+    .select(NODE_LOCATION_SELECT)
+    .eq("node_type", "location")
+    .eq("status", "published")
+    .eq("slug", slug)
+    .maybeSingle<NodeLocationRow>();
+
+  if (error || !data) return null;
+  return locationDetailOf(data);
+}
+
 /** `nodes.attributes` for one node — the JSONB home for genuinely flexible,
  * category-specific descriptive facts (dive site depth/current/marine-life
  * notes, per the architecture's JSONB-boundaries rule), never for data that

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import Link from "next/link";
+
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { ActivityCard } from "@/components/activity/activity-card";
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
@@ -8,6 +10,16 @@ import { getAccommodationsByProvider } from "@/lib/accommodations/repository";
 import { getActivitiesByProvider } from "@/lib/activities/repository";
 import { getProviderBySlug } from "@/lib/providers/repository";
 import { canonicalUrl } from "@/lib/seo/site";
+import { getTransferServicesByProvider } from "@/lib/transfers/repository";
+
+const TRANSFER_TYPE_LABEL: Record<string, string> = {
+  speedboat: "Speedboat",
+  seaplane: "Seaplane",
+  domestic_flight: "Domestic Flight",
+  ferry: "Ferry",
+  private_yacht: "Private Yacht",
+  land_transfer: "Land Transfer",
+};
 
 export const revalidate = 3600;
 
@@ -37,9 +49,10 @@ export default async function ProviderDetailPage({ params }: { params: Promise<P
   const provider = await getProviderBySlug(slug);
   if (!provider) notFound();
 
-  const [accommodations, activities] = await Promise.all([
+  const [accommodations, activities, transferServices] = await Promise.all([
     getAccommodationsByProvider(provider.id),
     getActivitiesByProvider(provider.id),
+    getTransferServicesByProvider(provider.id),
   ]);
   // See the identical split on the island/atoll pages (Task 7, Task 8, Task 9).
   const fishingActivities = activities.filter((a) => a.activityCategory === "fishing");
@@ -118,6 +131,28 @@ export default async function ProviderDetailPage({ params }: { params: Promise<P
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {otherActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {transferServices.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Transfer services operated by {provider.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {transferServices.map((service) => (
+              <li key={service.id} className="rounded border border-neutral-200 p-4">
+                <Link href={`/maldives/transfers/${service.route.slug}/`} className="text-lg font-medium hover:underline">
+                  {service.route.title}
+                </Link>
+                <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-sm text-neutral-600">
+                  <span>{TRANSFER_TYPE_LABEL[service.transferType] ?? service.transferType}</span>
+                  <span className="capitalize">{service.sharedOrPrivate}</span>
+                  <span>
+                    {service.currency} {service.price}
+                  </span>
+                </div>
+              </li>
             ))}
           </ul>
         </section>

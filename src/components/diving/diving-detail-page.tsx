@@ -4,12 +4,14 @@ import { notFound } from "next/navigation";
 
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
+import { PackageCard } from "@/components/packages/package-card";
 import {
   getDivingActivitiesByLocation,
   getDivingActivityBySlug,
   getDiveSitesForActivity,
   getDivingTypesForActivity,
 } from "@/lib/diving/repository";
+import { getPackagesByActivity } from "@/lib/packages/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
 function formatDuration(minutes: number | null): string | null {
@@ -42,10 +44,11 @@ export async function DivingDetailPage({ slug }: { slug: string }) {
   const { primaryLocation, atoll } = activity;
   const duration = formatDuration(activity.durationMinutes);
 
-  const [divingTypes, diveSites, sameIslandActivities] = await Promise.all([
+  const [divingTypes, diveSites, sameIslandActivities, packages] = await Promise.all([
     getDivingTypesForActivity(activity.id),
     getDiveSitesForActivity(activity.id),
     primaryLocation ? getDivingActivitiesByLocation(primaryLocation.id) : Promise.resolve([]),
+    getPackagesByActivity(activity.id),
   ]);
   const relatedActivities = sameIslandActivities.filter((a) => a.id !== activity.id).slice(0, 4);
 
@@ -168,6 +171,17 @@ export async function DivingDetailPage({ slug }: { slug: string }) {
                   {a.title}
                 </Link>
               </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {packages.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Packages featuring {activity.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {packages.map((pkg) => (
+              <PackageCard key={pkg.id} pkg={pkg} />
             ))}
           </ul>
         </section>

@@ -473,7 +473,10 @@ export async function getTransferServicesByProvider(providerId: string): Promise
   return results;
 }
 
-async function getTransferRoutesByIds(routeIds: string[]): Promise<Map<string, TransferRouteSummary>> {
+/** Batch lookup by transfer_routes node id — exported for the package
+ * repository (Task 11), which needs route context (origin/destination) for
+ * an itinerary item that only stores a transfer_service_id. */
+export async function getTransferRoutesByIds(routeIds: string[]): Promise<Map<string, TransferRouteSummary>> {
   const map = new Map<string, TransferRouteSummary>();
   if (routeIds.length === 0) return map;
 
@@ -496,6 +499,57 @@ async function getTransferRoutesByIds(routeIds: string[]): Promise<Map<string, T
 export async function getTransferServicesByRoute(routeId: string): Promise<TransferService[]> {
   const map = await getServicesByRouteIds([routeId]);
   return map.get(routeId) ?? [];
+}
+
+/** Batch lookup by transfer_services.id (not a node id — transfer_services
+ * are not nodes) — used by the package repository to resolve itinerary
+ * items that reference a specific service without an N+1 query per item
+ * (Task 11). */
+export async function getTransferServicesByIds(ids: string[]): Promise<Map<string, TransferService>> {
+  const map = new Map<string, TransferService>();
+  if (ids.length === 0) return map;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("transfer_services")
+    .select(
+      "id, route_id, provider_id, transfer_type, vehicle_type, shared_or_private, duration_minutes, price, currency, capacity, luggage_allowance, status, pickup_instructions, dropoff_instructions, booking_requirements, cancellation_policy, description",
+    )
+    .in("id", ids)
+    .returns<TransferServiceRow[]>();
+
+  if (error || !data) return map;
+
+  const providerIds = Array.from(new Set(data.map((s) => s.provider_id).filter((id): id is string => Boolean(id))));
+  const [providersById, schedulesById] = await Promise.all([
+    getProviderSummariesByIds(providerIds),
+    getSchedulesByServiceIds(data.map((s) => s.id)),
+  ]);
+
+  for (const row of data) {
+    map.set(row.id, {
+      id: row.id,
+      routeId: row.route_id,
+      provider: row.provider_id ? providersById.get(row.provider_id) ?? null : null,
+      transferType: row.transfer_type,
+      vehicleType: row.vehicle_type,
+      sharedOrPrivate: row.shared_or_private,
+      durationMinutes: row.duration_minutes,
+      price: row.price,
+      currency: row.currency,
+      capacity: row.capacity,
+      luggageAllowance: row.luggage_allowance,
+      status: row.status,
+      pickupInstructions: row.pickup_instructions,
+      dropoffInstructions: row.dropoff_instructions,
+      bookingRequirements: row.booking_requirements,
+      cancellationPolicy: row.cancellation_policy,
+      description: row.description,
+      isBookable: true,
+      schedules: schedulesById.get(row.id) ?? [],
+    });
+  }
+  return map;
 }
 
 /** Every distinct `transfer_type` value actually present among active

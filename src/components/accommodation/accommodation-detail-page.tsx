@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
+import { PackageCard } from "@/components/packages/package-card";
 import { getAccommodationBySlug } from "@/lib/accommodations/repository";
 import { ACCOMMODATION_TYPE_SEGMENT, type AccommodationType } from "@/lib/accommodations/types";
+import { getPackagesByAccommodation } from "@/lib/packages/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
 const TYPE_LABEL: Record<AccommodationType, string> = {
@@ -57,6 +59,7 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
 
   const segment = ACCOMMODATION_TYPE_SEGMENT[type];
   const { primaryLocation, atoll } = accommodation;
+  const packages = await getPackagesByAccommodation(accommodation.id);
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
@@ -136,6 +139,17 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
           </div>
         )}
       </dl>
+
+      {packages.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Packages featuring {accommodation.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {packages.map((pkg) => (
+              <PackageCard key={pkg.id} pkg={pkg} />
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* Booking/inquiry UI is not built yet — Task 5 only establishes the
           bookable_products relationship (see accommodation.isBookable). */}

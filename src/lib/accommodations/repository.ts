@@ -292,6 +292,31 @@ export async function getAccommodationBySlug(slug: string): Promise<Accommodatio
   };
 }
 
+/** Batch lookup by node id — used by the package repository to resolve
+ * itinerary items without an N+1 query per item (Task 11). */
+export async function getAccommodationSummariesByIds(ids: string[]): Promise<Map<string, AccommodationSummary>> {
+  const map = new Map<string, AccommodationSummary>();
+  if (ids.length === 0) return map;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("nodes")
+    .select(NODE_ACCOMMODATION_SELECT)
+    .eq("node_type", "accommodation")
+    .eq("status", "published")
+    .in("id", ids)
+    .returns<NodeAccommodationRow[]>();
+
+  if (error || !data) return map;
+
+  const bares = data.map(bareAccommodationOf).filter((b): b is BareAccommodation => b !== null);
+  const locationsByNodeId = await attachPrimaryLocations(bares.map((b) => b.id));
+  for (const bare of bares) {
+    map.set(bare.id, toSummary(bare, locationsByNodeId.get(bare.id) ?? null));
+  }
+  return map;
+}
+
 export interface SearchAccommodationsOptions {
   limit?: number;
 }

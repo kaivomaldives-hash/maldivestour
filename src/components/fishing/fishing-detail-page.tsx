@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
+import { PackageCard } from "@/components/packages/package-card";
 import { getFishingActivitiesByLocation, getFishingActivityBySlug, getFishingTypesForActivity } from "@/lib/fishing/repository";
+import { getPackagesByActivity } from "@/lib/packages/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
 function formatDuration(minutes: number | null): string | null {
@@ -36,9 +38,10 @@ export async function FishingDetailPage({ slug }: { slug: string }) {
   const { primaryLocation, atoll } = activity;
   const duration = formatDuration(activity.durationMinutes);
 
-  const [fishingTypes, sameIslandTrips] = await Promise.all([
+  const [fishingTypes, sameIslandTrips, packages] = await Promise.all([
     getFishingTypesForActivity(activity.id),
     primaryLocation ? getFishingActivitiesByLocation(primaryLocation.id) : Promise.resolve([]),
+    getPackagesByActivity(activity.id),
   ]);
   const relatedTrips = sameIslandTrips.filter((t) => t.id !== activity.id).slice(0, 4);
 
@@ -138,6 +141,17 @@ export async function FishingDetailPage({ slug }: { slug: string }) {
                   {trip.title}
                 </Link>
               </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {packages.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Packages featuring {activity.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {packages.map((pkg) => (
+              <PackageCard key={pkg.id} pkg={pkg} />
             ))}
           </ul>
         </section>

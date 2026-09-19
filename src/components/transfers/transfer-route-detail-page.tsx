@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
+import { PackageCard } from "@/components/packages/package-card";
+import { getPackagesByTransferRoute } from "@/lib/packages/repository";
 import { getTransferRouteBySlug } from "@/lib/transfers/repository";
 import type { SharedOrPrivate, TransferService, TransferType } from "@/lib/transfers/types";
 import { canonicalUrl } from "@/lib/seo/site";
@@ -149,6 +151,7 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
 
   const reverseSlug = route.origin && route.destination ? `${route.destination.slug}-to-${route.origin.slug}` : null;
   const reverseRoute = reverseSlug ? await getTransferRouteBySlug(reverseSlug) : null;
+  const packages = await getPackagesByTransferRoute(route.id);
 
   const duration = formatDuration(route.typicalDurationMinutes);
 
@@ -220,6 +223,17 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
           </ul>
         )}
       </section>
+
+      {packages.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Packages using this route</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {packages.map((pkg) => (
+              <PackageCard key={pkg.id} pkg={pkg} />
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* Booking/inquiry UI is not built yet — Task 10 only establishes the
           bookings.transfer_service_id connection (see service.isBookable). */}

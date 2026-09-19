@@ -6,12 +6,14 @@ import { AccommodationCard } from "@/components/accommodation/accommodation-card
 import { ActivityCard } from "@/components/activity/activity-card";
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
+import { PackageCard } from "@/components/packages/package-card";
 import { SurfBreakCard } from "@/components/surfing/surf-break-card";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { getAccommodationsByAtoll } from "@/lib/accommodations/repository";
 import { getActivitiesByAtoll } from "@/lib/activities/repository";
 import { getDiveSitesByAtoll } from "@/lib/diving/repository";
 import { getAtollBySlug, getIslandsByAtoll } from "@/lib/locations/repository";
+import { getPackagesByAtoll } from "@/lib/packages/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 import { getSurfBreaksByAtoll } from "@/lib/surfing/repository";
 import { getTransferRoutesByAtoll } from "@/lib/transfers/repository";
@@ -50,12 +52,13 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
   // to give resorts a real location to attach to) alongside the inhabited
   // islands Task 4 seeded — split them rather than mislabel the count.
   const islands = allIslands.filter((island) => island.isInhabited !== false);
-  const [accommodations, activities, diveSites, surfBreaks, transferRoutes] = await Promise.all([
+  const [accommodations, activities, diveSites, surfBreaks, transferRoutes, packages] = await Promise.all([
     getAccommodationsByAtoll(atoll.id),
     getActivitiesByAtoll(atoll.id),
     getDiveSitesByAtoll(atoll.id),
     getSurfBreaksByAtoll(atoll.id),
     getTransferRoutesByAtoll(atoll.id),
+    getPackagesByAtoll(atoll.id),
   ]);
   // See the identical split on the island page (Task 7, Task 8, Task 9):
   // fishing, diving, and surfing each have their own dedicated
@@ -197,8 +200,16 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
         </section>
       )}
 
-      {/* Future content sections (packages) attach to this atoll via
-          node_locations once that entity type exists. */}
+      {packages.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Packages featuring {atoll.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {packages.map((pkg) => (
+              <PackageCard key={pkg.id} pkg={pkg} />
+            ))}
+          </ul>
+        </section>
+      )}
     </main>
   );
 }

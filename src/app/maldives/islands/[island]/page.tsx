@@ -6,12 +6,14 @@ import { AccommodationCard } from "@/components/accommodation/accommodation-card
 import { ActivityCard } from "@/components/activity/activity-card";
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
+import { PackageCard } from "@/components/packages/package-card";
 import { SurfBreakCard } from "@/components/surfing/surf-break-card";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { getActivitiesByLocation } from "@/lib/activities/repository";
 import { getDiveSitesByLocation } from "@/lib/diving/repository";
 import { getChildLocations, getIslandBySlug } from "@/lib/locations/repository";
+import { getPackagesByLocation } from "@/lib/packages/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 import { getSurfBreaksByLocation } from "@/lib/surfing/repository";
 import { createClient } from "@/lib/supabase/server";
@@ -57,7 +59,7 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
   const island = await getIslandBySlug(slug);
   if (!island) notFound();
 
-  const [atoll, children, accommodations, activities, diveSites, surfBreaks, transferRoutes] = await Promise.all([
+  const [atoll, children, accommodations, activities, diveSites, surfBreaks, transferRoutes, packages] = await Promise.all([
     getAtollSummary(island.parentId),
     getChildLocations(island.id),
     getAccommodationsByLocation(island.id),
@@ -65,6 +67,7 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
     getDiveSitesByLocation(island.id),
     getSurfBreaksByLocation(island.id),
     getTransferRoutesByLocation(island.id),
+    getPackagesByLocation(island.id),
   ]);
   // Fishing, diving, and surfing each have their own dedicated
   // vertical/section (Task 7, Task 8, Task 9) and, per
@@ -215,8 +218,16 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
         </section>
       )}
 
-      {/* Future content sections (packages) attach to this island via
-          node_locations once that entity type exists. */}
+      {packages.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Packages featuring {island.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {packages.map((pkg) => (
+              <PackageCard key={pkg.id} pkg={pkg} />
+            ))}
+          </ul>
+        </section>
+      )}
     </main>
   );
 }

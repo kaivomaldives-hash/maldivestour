@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Breadcrumbs } from "@/components/location/breadcrumbs";
+import { PackageCard } from "@/components/packages/package-card";
 import { getActivityBySlug } from "@/lib/activities/repository";
 import { hasDedicatedRoute } from "@/lib/activities/types";
+import { getPackagesByActivity } from "@/lib/packages/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -62,6 +64,7 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
 
   const { primaryLocation, atoll } = activity;
   const duration = formatDuration(activity.durationMinutes);
+  const packages = await getPackagesByActivity(activity.id);
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
@@ -150,6 +153,17 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
           </div>
         )}
       </dl>
+
+      {packages.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Packages featuring {activity.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {packages.map((pkg) => (
+              <PackageCard key={pkg.id} pkg={pkg} />
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* Booking/inquiry UI is not built yet — Task 6 only establishes the
           bookable_products relationship (see activity.isBookable). */}

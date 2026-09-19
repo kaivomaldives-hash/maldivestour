@@ -266,6 +266,31 @@ export async function getActivityBySlug(slug: string): Promise<ActivityDetail | 
   };
 }
 
+/** Batch lookup by node id — used by the package repository to resolve
+ * itinerary items without an N+1 query per item (Task 11). */
+export async function getActivitySummariesByIds(ids: string[]): Promise<Map<string, ActivitySummary>> {
+  const map = new Map<string, ActivitySummary>();
+  if (ids.length === 0) return map;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("nodes")
+    .select(NODE_ACTIVITY_SELECT)
+    .eq("node_type", "activity")
+    .eq("status", "published")
+    .in("id", ids)
+    .returns<NodeActivityRow[]>();
+
+  if (error || !data) return map;
+
+  const bares = data.map(bareActivityOf).filter((b): b is BareActivity => b !== null);
+  const locationsByNodeId = await attachPrimaryLocations(bares.map((b) => b.id));
+  for (const bare of bares) {
+    map.set(bare.id, toSummary(bare, locationsByNodeId.get(bare.id) ?? null));
+  }
+  return map;
+}
+
 export interface SearchActivitiesOptions {
   limit?: number;
 }

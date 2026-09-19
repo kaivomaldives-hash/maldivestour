@@ -23,16 +23,24 @@ import type {
  * `locations_public_read` RLS policies (status = 'published').
  */
 
-// `locations!inner(...)` — not a plain `locations(...)` embed. Every query
-// below filters on an embedded `locations` column (location_type or
-// parent_id). Without `!inner`, PostgREST only filters which embedded rows
-// are attached to a match, not which parent `nodes` rows are returned at
-// all — the filter would silently do nothing at the top level and every
-// location node (islands, atolls, sites, ...) would come back regardless
-// of the intended location_type/parent_id filter. `!inner` makes it a real
-// join-level filter that actually restricts the result set.
+// `locations!locations_id_fkey!inner(...)` — not a plain `locations(...)`
+// embed. Every query below filters on an embedded `locations` column
+// (location_type or parent_id). Without `!inner`, PostgREST only filters
+// which embedded rows are attached to a match, not which parent `nodes`
+// rows are returned at all — the filter would silently do nothing at the
+// top level and every location node (islands, atolls, sites, ...) would
+// come back regardless of the intended location_type/parent_id filter.
+// `!inner` makes it a real join-level filter that actually restricts the
+// result set. The relationship name is also required (not just `!inner`):
+// `nodes` and `locations` are connected by two real relationships — the
+// direct `locations.id -> nodes.id` FK, and a second, indirect path via the
+// `node_locations` junction table — so PostgREST refuses to guess which one
+// is meant and returns PGRST201 ("more than one relationship was found")
+// unless the FK is named explicitly. Confirmed against a live Supabase
+// project; this couldn't be caught earlier since no live PostgREST instance
+// was available through Task 9.
 const NODE_LOCATION_SELECT =
-  "id, slug, title, summary, meta_title, meta_description, locations!inner(location_type, parent_id, lat, lng, is_inhabited, administrative_code, path)";
+  "id, slug, title, summary, meta_title, meta_description, locations!locations_id_fkey!inner(location_type, parent_id, lat, lng, is_inhabited, administrative_code, path)";
 
 type NodeLocationRow = {
   id: string;

@@ -12,10 +12,16 @@ import type { CategoryGroup, CategorySummary } from "@/lib/categories/types";
  * relationship), not by a relational column.
  */
 
-// `categories!inner(...)` — not a plain embed. See the identical note in
-// src/lib/locations/repository.ts: without `!inner`, filtering on an
-// embedded column doesn't restrict which `nodes` rows come back.
-const NODE_CATEGORY_SELECT = "id, slug, title, categories!inner(category_group)";
+// `categories!categories_id_fkey!inner(...)` — not a plain embed. See the
+// identical note in src/lib/locations/repository.ts: without `!inner`,
+// filtering on an embedded column doesn't restrict which `nodes` rows come
+// back, and the relationship name is required because `nodes` and
+// `categories` are connected two ways — the direct `categories.id ->
+// nodes.id` FK, and a second, indirect path via the `node_categories`
+// junction table — so PostgREST returns PGRST201 ("more than one
+// relationship was found") unless the FK is named explicitly. Confirmed
+// against a live Supabase project.
+const NODE_CATEGORY_SELECT = "id, slug, title, categories!categories_id_fkey!inner(category_group)";
 
 type NodeCategoryRow = {
   id: string;

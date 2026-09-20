@@ -13,6 +13,7 @@ import { getFerryRoutes } from "@/lib/ferries/repository";
 import { getAtollBySlug, getLocationBySlug } from "@/lib/locations/repository";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 import { getSpeedboats } from "@/lib/speedboats/repository";
+import { TRANSFER_CATEGORY_IMAGES } from "@/lib/transfers/category-images";
 import {
   getSharedOrPrivateOptionsInUse,
   getTransferRoutes,
@@ -224,6 +225,7 @@ export async function TransferDirectoryPage({
         eyebrow="Maldives transportation"
         title="Maldives Transfers"
         description="Airport, resort, island, private speedboat, and other transportation options across the Maldives — real routes and prices, search by destination, or request a private charter."
+        image={TRANSFER_CATEGORY_IMAGES.mainHub}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
@@ -303,10 +305,12 @@ export async function TransferDirectoryPage({
         <ComingSoonSection
           title="Seaplane Transfers"
           description="We're working on confirming real seaplane operator, route, and pricing data before listing it here — no fabricated schedules or availability in the meantime."
+          image={TRANSFER_CATEGORY_IMAGES.seaplaneComingSoon}
         />
         <ComingSoonSection
           title="Domestic Flight Transfers"
           description="Domestic flight transfer routes will be added once real operator and schedule data is confirmed."
+          image={TRANSFER_CATEGORY_IMAGES.domesticFlightComingSoon}
         />
 
         {/* 10. Ferry schedule */}

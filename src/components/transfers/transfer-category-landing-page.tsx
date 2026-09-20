@@ -5,6 +5,7 @@ import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
+import type { MediaAsset } from "@/lib/media/types";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 import { getTransferRoutes } from "@/lib/transfers/repository";
 import type { TransferType } from "@/lib/transfers/types";
@@ -40,6 +41,9 @@ export interface TransferCategoryConfig {
    * service alongside other service types). */
   transferType?: TransferType;
   emptyMessage: string;
+  /** A real legacy image purpose-named for this category — never a
+   * generic stock substitute. */
+  heroImage?: MediaAsset;
 }
 
 const OTHER_CATEGORIES = [
@@ -99,6 +103,7 @@ export async function TransferCategoryLandingPage({ config }: { config: Transfer
         eyebrow={config.eyebrow}
         title={config.h1}
         description={config.intro}
+        image={config.heroImage}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>

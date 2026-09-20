@@ -9,6 +9,7 @@ import { PageHero } from "@/components/ui/page-hero";
 import { getFerryRoutes } from "@/lib/ferries/repository";
 import type { FerryRoute } from "@/lib/ferries/types";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { TRANSFER_CATEGORY_IMAGES } from "@/lib/transfers/category-images";
 
 const FAQS = [
   {
@@ -65,6 +66,22 @@ function RouteCard({ route }: { route: FerryRoute }) {
       </p>
       <p className="mt-1 text-sm font-medium text-ocean-800">{route.operatingDays}</p>
 
+      {(route.origin || route.destination) && (
+        <p className="mt-1 text-sm text-neutral-600">
+          {route.origin && (
+            <Link href={`/maldives/islands/${route.origin.slug}/`} className="text-maldives-600 hover:underline">
+              {route.origin.title}
+            </Link>
+          )}
+          {route.origin && route.destination && " → "}
+          {route.destination && (
+            <Link href={`/maldives/islands/${route.destination.slug}/`} className="text-maldives-600 hover:underline">
+              {route.destination.title}
+            </Link>
+          )}
+        </p>
+      )}
+
       <div className="mt-3 overflow-x-auto">
         <table className="w-full min-w-[280px] text-left text-sm">
           <thead>
@@ -113,6 +130,7 @@ export async function FerryScheduleDirectoryPage() {
         eyebrow="Public transport · information only"
         title="Maldives Ferry Schedule"
         description="Real province ferry timetables between local Maldivian islands — route, operating days, and stop-by-stop times. Information only; these government ferries aren't booked through us."
+        image={TRANSFER_CATEGORY_IMAGES.ferryScheduleHub}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>

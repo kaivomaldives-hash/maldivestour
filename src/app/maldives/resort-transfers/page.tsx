@@ -5,6 +5,7 @@ import {
   transferCategoryMetadata,
   type TransferCategoryConfig,
 } from "@/components/transfers/transfer-category-landing-page";
+import { TRANSFER_CATEGORY_IMAGES } from "@/lib/transfers/category-images";
 
 const config: TransferCategoryConfig = {
   slug: "resort-transfers",
@@ -26,6 +27,7 @@ const config: TransferCategoryConfig = {
   ],
   category: "resort-transfer",
   emptyMessage: "No resort transfer routes recorded yet.",
+  heroImage: TRANSFER_CATEGORY_IMAGES.resortTransfers,
 };
 
 export function generateMetadata(): Metadata {

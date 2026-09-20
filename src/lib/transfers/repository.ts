@@ -3,6 +3,7 @@ import "server-only";
 import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { getCategoryBySlug, getNodeIdsByCategory } from "@/lib/categories/repository";
 import { getLocationSummariesByIds } from "@/lib/locations/repository";
+import { getHeroMediaByNodeIds } from "@/lib/media/repository";
 import type { MediaAsset } from "@/lib/media/types";
 import { getProviderSummariesByIds } from "@/lib/providers/repository";
 import { createClient } from "@/lib/supabase/server";
@@ -288,9 +289,10 @@ async function getTransferCategoriesForRoutes(routeIds: string[]): Promise<Map<s
 async function attachOriginDestination(bares: BareRoute[]): Promise<TransferRouteSummary[]> {
   const locationIds = Array.from(new Set(bares.flatMap((b) => [b.originLocationId, b.destinationLocationId])));
   const routeIds = bares.map((b) => b.id);
-  const [locationsById, heroImageByDestinationId, servicesByRoute, categoriesByRoute] = await Promise.all([
+  const [locationsById, heroImageByDestinationId, routeOwnHeroById, servicesByRoute, categoriesByRoute] = await Promise.all([
     getLocationSummariesByIds(locationIds),
     attachDestinationHeroImages(bares.map((b) => b.destinationLocationId)),
+    getHeroMediaByNodeIds(routeIds),
     getServicesByRouteIds(routeIds),
     getTransferCategoriesForRoutes(routeIds),
   ]);
@@ -309,7 +311,11 @@ async function attachOriginDestination(bares: BareRoute[]): Promise<TransferRout
       typicalDurationMinutes: b.typicalDurationMinutes,
       priceFrom: cheapest?.price ?? null,
       currency: cheapest?.currency ?? null,
-      heroImage: heroImageByDestinationId.get(b.destinationLocationId) ?? null,
+      // The route's own recovered legacy image (a real "airport to X"
+      // photo from the old site) is more specific to the actual transfer
+      // than a generic accommodation interior shot, so it takes priority
+      // when both exist.
+      heroImage: routeOwnHeroById.get(b.id) ?? heroImageByDestinationId.get(b.destinationLocationId) ?? null,
       categories: categoriesByRoute.get(b.id) ?? [],
     };
   });

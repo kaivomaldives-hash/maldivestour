@@ -79,10 +79,12 @@ function mergeManifests() {
   const mediaManifest = loadManifest("data/maldives/media/media-storage-manifest.json");
   const articleManifest = loadManifest("data/maldives/content/article-storage-manifest.json");
   const ferryManifest = loadManifest("data/maldives/migration/task20-ferry-storage-manifest.json");
+  const routeImageManifest = loadManifest("data/maldives/migration/transfer-route-image-manifest.json");
+  const categoryImageManifest = loadManifest("data/maldives/migration/transfer-category-image-manifest.json");
 
   const byId = new Map();
   const conflicts = [];
-  for (const entry of [...mediaManifest, ...articleManifest, ...ferryManifest]) {
+  for (const entry of [...mediaManifest, ...articleManifest, ...ferryManifest, ...routeImageManifest, ...categoryImageManifest]) {
     const existing = byId.get(entry.mediaId);
     if (!existing) {
       byId.set(entry.mediaId, entry);

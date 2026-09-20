@@ -5,6 +5,7 @@ import {
   transferCategoryMetadata,
   type TransferCategoryConfig,
 } from "@/components/transfers/transfer-category-landing-page";
+import { TRANSFER_CATEGORY_IMAGES } from "@/lib/transfers/category-images";
 
 const config: TransferCategoryConfig = {
   slug: "speedboat-transfers",
@@ -34,6 +35,7 @@ const config: TransferCategoryConfig = {
   ],
   transferType: "speedboat",
   emptyMessage: "No speedboat transfer routes recorded yet.",
+  heroImage: TRANSFER_CATEGORY_IMAGES.speedboatTransfers,
 };
 
 export function generateMetadata(): Metadata {

@@ -7,6 +7,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 import { getSpeedboats } from "@/lib/speedboats/repository";
+import { TRANSFER_CATEGORY_IMAGES } from "@/lib/transfers/category-images";
 
 const FAQS = [
   {
@@ -65,6 +66,7 @@ export async function SpeedboatDirectoryPage() {
         eyebrow="Private hire"
         title="Maldives Private Speedboat Charter"
         description="Our own fleet, available for private hire — hourly, destination-based, or a fully custom trip. No fixed public price; request a charter and we'll quote you directly."
+        image={TRANSFER_CATEGORY_IMAGES.speedboatCharterHub}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>

@@ -1,0 +1,600 @@
+{
+  "generatedAt": "2026-09-20T09:40:25.814Z",
+  "files": [
+    {
+      "mediaId": "10eee094-26e9-30ae-39be-d9ffe3b03068",
+      "relativePath": "resorts/Four-Seasons-Huraa/images/Four-Seasons-Maldives-at-Kuda-Huraa-Sunset-Water-Bangalow1.webp",
+      "storagePath": "legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp"
+    },
+    {
+      "mediaId": "1907c26d-f2cb-85fa-2760-21dcfe4c0fa0",
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp"
+    },
+    {
+      "mediaId": "f9edd6e6-b545-8552-68a0-54876b71418f",
+      "relativePath": "resorts/Komandoo-Island/images/Komandoo-Island-Resort-and-Spa-Pool.webp",
+      "storagePath": "legacy/resorts/komandoo-island/images/komandoo-island-resort-and-spa-pool.webp"
+    },
+    {
+      "mediaId": "006f127f-3891-1a11-d0f6-c9ed503e58c5",
+      "relativePath": "resorts/Reethi-Beach/images/Reethi-Beach-Resort-Maldives-Honeymoon.webp",
+      "storagePath": "legacy/resorts/reethi-beach/images/reethi-beach-resort-maldives-honeymoon.webp"
+    },
+    {
+      "mediaId": "b168136b-5954-7363-1938-3ebc25d6ef97",
+      "relativePath": "images/diving/Meedhoo-Coral-Garden.webp",
+      "storagePath": "legacy/images/diving/meedhoo-coral-garden.webp"
+    },
+    {
+      "mediaId": "85b25fa5-ecd2-dfe0-e028-440391b5635a",
+      "relativePath": "images/activities/sunset-cruise-maldives.webp",
+      "storagePath": "legacy/images/activities/sunset-cruise-maldives.webp"
+    },
+    {
+      "mediaId": "823b838a-0490-199f-79b2-27c294d9f5c7",
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort.webp"
+    },
+    {
+      "mediaId": "9b8db8dc-f547-6730-e627-efa5b1c20fb5",
+      "relativePath": "resorts/Soneva-Fushi/images/Soneva-Fushi-Island-Resort-Maldives.webp",
+      "storagePath": "legacy/resorts/soneva-fushi/images/soneva-fushi-island-resort-maldives.webp"
+    },
+    {
+      "mediaId": "6f6badd7-d668-7014-54d2-b04abdf0ce9f",
+      "relativePath": "resorts/Six-Senses-Laamu/images/Six-Senses-Laamu-Maldives.webp",
+      "storagePath": "legacy/resorts/six-senses-laamu/images/six-senses-laamu-maldives.webp"
+    },
+    {
+      "mediaId": "3cbb9028-7268-5b5a-4aec-9bb18a4dbdc8",
+      "relativePath": "resorts/Lily-beach/images/Lily-Beach-Resort-and-Spa-Maldives-Island.webp",
+      "storagePath": "legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives-island.webp"
+    },
+    {
+      "mediaId": "3cccd65d-0b38-b5a5-1722-e0c202e46aeb",
+      "relativePath": "resorts/Kurumba/images/Kurumba-Maldives-Vihamanaafushi-Resort.webp",
+      "storagePath": "legacy/resorts/kurumba/images/kurumba-maldives-vihamanaafushi-resort.webp"
+    },
+    {
+      "mediaId": "9a0a36ab-e9fd-8c61-4aa5-d9a375df80cb",
+      "relativePath": "resorts/Hideaway-Beach/images/Hideaway-Beach-Island-Resort-and-Spa.webp",
+      "storagePath": "legacy/resorts/hideaway-beach/images/hideaway-beach-island-resort-and-spa.webp"
+    },
+    {
+      "mediaId": "5d3bcf17-508b-e22c-459d-c51013949bc0",
+      "relativePath": "images/male/sultan-park-male.webp",
+      "storagePath": "legacy/images/male/sultan-park-male.webp"
+    },
+    {
+      "mediaId": "3678fc10-a6db-23d4-dceb-b59185c4a6b3",
+      "relativePath": "images/male/male-city-artificial-beach.webp",
+      "storagePath": "legacy/images/male/male-city-artificial-beach.webp"
+    },
+    {
+      "mediaId": "03e1e9a2-6a76-42c4-8aea-994ca6109f04",
+      "relativePath": "images/Hulhumale-city-Maldives.webp",
+      "storagePath": "legacy/images/hulhumale-city-maldives.webp"
+    },
+    {
+      "mediaId": "1ca773b3-c63d-f6de-7dae-44552d2c7529",
+      "relativePath": "images/male/male-city-republic-square.webp",
+      "storagePath": "legacy/images/male/male-city-republic-square.webp"
+    },
+    {
+      "mediaId": "2d3c2642-7404-55fd-80a9-7e9a1d189dab",
+      "relativePath": "images/male/male-bridge.webp",
+      "storagePath": "legacy/images/male/male-bridge.webp"
+    },
+    {
+      "mediaId": "1e638f32-b0ce-fd12-0f2f-566849e78011",
+      "relativePath": "images/male/male-city-beach.webp",
+      "storagePath": "legacy/images/male/male-city-beach.webp"
+    },
+    {
+      "mediaId": "1907c26d-f2cb-85fa-2760-21dcfe4c0fa0",
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp"
+    },
+    {
+      "mediaId": "2cdf3a5c-4ae7-b41e-0787-cdc38851087c",
+      "relativePath": "images/activities/sand-bank/male-atoll-sand-bank-trip.webp",
+      "storagePath": "legacy/images/activities/sand-bank/male-atoll-sand-bank-trip.webp"
+    },
+    {
+      "mediaId": "fbf1f83d-d4a3-8b69-c09f-f9c74ecbbcd6",
+      "relativePath": "images/maldives/maafushi-island.webp",
+      "storagePath": "legacy/images/maldives/maafushi-island.webp"
+    },
+    {
+      "mediaId": "df1a234a-f8a1-743d-7069-cc0750519361",
+      "relativePath": "images/maldives/Ukulhas-island-maldives.webp",
+      "storagePath": "legacy/images/maldives/ukulhas-island-maldives.webp"
+    },
+    {
+      "mediaId": "441fb524-5a8a-e411-f99c-9a73b75e0a85",
+      "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Family-Villa1.webp",
+      "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-family-villa1.webp"
+    },
+    {
+      "mediaId": "b0ad30a7-9490-560d-4714-46d1b8a3727a",
+      "relativePath": "images/male/maldives-capital-male-city.webp",
+      "storagePath": "legacy/images/male/maldives-capital-male-city.webp"
+    },
+    {
+      "mediaId": "e7e26582-7d9a-7efe-1fe8-d662c7688e5e",
+      "relativePath": "images/activities/Manta-Point-Lankanfinolhu-Island.webp",
+      "storagePath": "legacy/images/activities/manta-point-lankanfinolhu-island.webp"
+    },
+    {
+      "mediaId": "1907c26d-f2cb-85fa-2760-21dcfe4c0fa0",
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp"
+    },
+    {
+      "mediaId": "b1e944d9-8909-19a3-b841-3fdf4f7a166e",
+      "relativePath": "images/maldives-sunset-cruise.webp",
+      "storagePath": "legacy/images/maldives-sunset-cruise.webp"
+    },
+    {
+      "mediaId": "b168136b-5954-7363-1938-3ebc25d6ef97",
+      "relativePath": "images/diving/Meedhoo-Coral-Garden.webp",
+      "storagePath": "legacy/images/diving/meedhoo-coral-garden.webp"
+    },
+    {
+      "mediaId": "620e9b62-c59f-86ab-1f1a-c29236b081c2",
+      "relativePath": "images/articles/dolphin-cruise.webp",
+      "storagePath": "legacy/images/articles/dolphin-cruise.webp"
+    },
+    {
+      "mediaId": "fe08057c-f29b-4da2-4955-b96beb91a921",
+      "relativePath": "images/fishing/Big-Game-Fishing-maldives.webp",
+      "storagePath": "legacy/images/fishing/big-game-fishing-maldives.webp"
+    },
+    {
+      "mediaId": "77f1a68b-9ea0-4775-71ef-45b7eac9b32a",
+      "relativePath": "images/male/male-maldives.webp",
+      "storagePath": "legacy/images/male/male-maldives.webp"
+    },
+    {
+      "mediaId": "a74ba690-21b3-5ebd-7d46-fe6b210ee449",
+      "relativePath": "images/Utheemu-ganduvaru.webp",
+      "storagePath": "legacy/images/utheemu-ganduvaru.webp"
+    },
+    {
+      "mediaId": "a21c1875-da36-bce5-bcca-7099f91d21fe",
+      "relativePath": "resorts/Hideaway-Beach/images/Hideaway-Beach-Resort-and-Spa.webp",
+      "storagePath": "legacy/resorts/hideaway-beach/images/hideaway-beach-resort-and-spa.webp"
+    },
+    {
+      "mediaId": "9985dfc5-2aa5-06f0-2f3d-40fd5567d656",
+      "relativePath": "images/Male-fish-market-maldives.webp",
+      "storagePath": "legacy/images/male-fish-market-maldives.webp"
+    },
+    {
+      "mediaId": "1e638f32-b0ce-fd12-0f2f-566849e78011",
+      "relativePath": "images/male/male-city-beach.webp",
+      "storagePath": "legacy/images/male/male-city-beach.webp"
+    },
+    {
+      "mediaId": "03e1e9a2-6a76-42c4-8aea-994ca6109f04",
+      "relativePath": "images/Hulhumale-city-Maldives.webp",
+      "storagePath": "legacy/images/hulhumale-city-maldives.webp"
+    },
+    {
+      "mediaId": "505b8ca8-7a27-520c-4566-b0a73cf49b21",
+      "relativePath": "images/male/male-city-guided-tour.webp",
+      "storagePath": "legacy/images/male/male-city-guided-tour.webp"
+    },
+    {
+      "mediaId": "f3e99082-1e0c-d968-cc4e-522589fce5bd",
+      "relativePath": "images/male/male-island-tour.webp",
+      "storagePath": "legacy/images/male/male-island-tour.webp"
+    },
+    {
+      "mediaId": "7aee5f90-4f9a-5821-f5d7-3468badba656",
+      "relativePath": "images/diving/Addu-Manta-Point.webp",
+      "storagePath": "legacy/images/diving/addu-manta-point.webp"
+    },
+    {
+      "mediaId": "85b25fa5-ecd2-dfe0-e028-440391b5635a",
+      "relativePath": "images/activities/sunset-cruise-maldives.webp",
+      "storagePath": "legacy/images/activities/sunset-cruise-maldives.webp"
+    },
+    {
+      "mediaId": "620e9b62-c59f-86ab-1f1a-c29236b081c2",
+      "relativePath": "images/articles/dolphin-cruise.webp",
+      "storagePath": "legacy/images/articles/dolphin-cruise.webp"
+    },
+    {
+      "mediaId": "67336692-acbc-3bb2-6e4f-28d76e7e91df",
+      "relativePath": "images/activities/full-day/full-day-activity-male-atoll.webp",
+      "storagePath": "legacy/images/activities/full-day/full-day-activity-male-atoll.webp"
+    },
+    {
+      "mediaId": "a42f6b6a-be87-5b65-2770-cb1f24fe13e5",
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel.webp"
+    },
+    {
+      "mediaId": "b3787b70-ef88-f3ef-48ef-0c388737dca8",
+      "relativePath": "images/activities/maafushi-island.webp",
+      "storagePath": "legacy/images/activities/maafushi-island.webp"
+    },
+    {
+      "mediaId": "a90df2c7-481e-7f55-18e7-bc4a0748b911",
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel-maldives.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel-maldives.webp"
+    },
+    {
+      "mediaId": "1252ee18-2500-652f-31db-6174cfc5982e",
+      "relativePath": "images/activities/sandbank-excursion-male-atoll.webp",
+      "storagePath": "legacy/images/activities/sandbank-excursion-male-atoll.webp"
+    },
+    {
+      "mediaId": "f16e57bc-78bc-5a11-3c5a-ca8608f2052b",
+      "relativePath": "images/activities/Six-Senses-Laamu.webp",
+      "storagePath": "legacy/images/activities/six-senses-laamu.webp"
+    },
+    {
+      "mediaId": "2cfb4323-ece8-675a-85b9-15503018a7fb",
+      "relativePath": "images/activities/HP-reef-Male-Atoll.webp",
+      "storagePath": "legacy/images/activities/hp-reef-male-atoll.webp"
+    },
+    {
+      "mediaId": "21f35349-02c7-0ad2-d2f3-19f084ddaa86",
+      "relativePath": "images/diving/Ari-Atoll-Maaya-Thila-Maldives.webp",
+      "storagePath": "legacy/images/diving/ari-atoll-maaya-thila-maldives.webp"
+    },
+    {
+      "mediaId": "e7e26582-7d9a-7efe-1fe8-d662c7688e5e",
+      "relativePath": "images/activities/Manta-Point-Lankanfinolhu-Island.webp",
+      "storagePath": "legacy/images/activities/manta-point-lankanfinolhu-island.webp"
+    },
+    {
+      "mediaId": "a93f256b-062c-747f-e550-0c85c39e7ea2",
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Water-Villa.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives-water-villa.webp"
+    },
+    {
+      "mediaId": "df1a234a-f8a1-743d-7069-cc0750519361",
+      "relativePath": "images/maldives/Ukulhas-island-maldives.webp",
+      "storagePath": "legacy/images/maldives/ukulhas-island-maldives.webp"
+    },
+    {
+      "mediaId": "10eee094-26e9-30ae-39be-d9ffe3b03068",
+      "relativePath": "resorts/Four-Seasons-Huraa/images/Four-Seasons-Maldives-at-Kuda-Huraa-Sunset-Water-Bangalow1.webp",
+      "storagePath": "legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp"
+    },
+    {
+      "mediaId": "10eee094-26e9-30ae-39be-d9ffe3b03068",
+      "relativePath": "resorts/Four-Seasons-Huraa/images/Four-Seasons-Maldives-at-Kuda-Huraa-Sunset-Water-Bangalow1.webp",
+      "storagePath": "legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp"
+    },
+    {
+      "mediaId": "b1e944d9-8909-19a3-b841-3fdf4f7a166e",
+      "relativePath": "images/maldives-sunset-cruise.webp",
+      "storagePath": "legacy/images/maldives-sunset-cruise.webp"
+    },
+    {
+      "mediaId": "67336692-acbc-3bb2-6e4f-28d76e7e91df",
+      "relativePath": "images/activities/full-day/full-day-activity-male-atoll.webp",
+      "storagePath": "legacy/images/activities/full-day/full-day-activity-male-atoll.webp"
+    },
+    {
+      "mediaId": "7aee5f90-4f9a-5821-f5d7-3468badba656",
+      "relativePath": "images/diving/Addu-Manta-Point.webp",
+      "storagePath": "legacy/images/diving/addu-manta-point.webp"
+    },
+    {
+      "mediaId": "0270bec0-67a7-d923-e3cf-45e1009af53f",
+      "relativePath": "images/fishing/night-fishing-in-maldives.webp",
+      "storagePath": "legacy/images/fishing/night-fishing-in-maldives.webp"
+    },
+    {
+      "mediaId": "f164cf64-2808-9527-ba28-1fd1ff8358aa",
+      "relativePath": "resorts/Soneva-Fushi/images/Soneva-Fushi-Maldives.webp",
+      "storagePath": "legacy/resorts/soneva-fushi/images/soneva-fushi-maldives.webp"
+    },
+    {
+      "mediaId": "7aee5f90-4f9a-5821-f5d7-3468badba656",
+      "relativePath": "images/diving/Addu-Manta-Point.webp",
+      "storagePath": "legacy/images/diving/addu-manta-point.webp"
+    },
+    {
+      "mediaId": "bf39851a-0019-c28f-6f3c-8be91ec35ee0",
+      "relativePath": "images/diving/Manta-Point-Lankanfinolhu-Island.webp",
+      "storagePath": "legacy/images/diving/manta-point-lankanfinolhu-island.webp"
+    },
+    {
+      "mediaId": "9a0dcad4-60ab-74d1-31cb-9ea1b325a38f",
+      "relativePath": "images/fishing/Maldives-Night-Fishing.webp",
+      "storagePath": "legacy/images/fishing/maldives-night-fishing.webp"
+    },
+    {
+      "mediaId": "9a0dcad4-60ab-74d1-31cb-9ea1b325a38f",
+      "relativePath": "images/fishing/Maldives-Night-Fishing.webp",
+      "storagePath": "legacy/images/fishing/maldives-night-fishing.webp"
+    },
+    {
+      "mediaId": "85b25fa5-ecd2-dfe0-e028-440391b5635a",
+      "relativePath": "images/activities/sunset-cruise-maldives.webp",
+      "storagePath": "legacy/images/activities/sunset-cruise-maldives.webp"
+    },
+    {
+      "mediaId": "177d517a-c13c-80a3-5909-99f4d4076cbe",
+      "relativePath": "resorts/Baros-Island/images/Baros-Isalnd-Maldives-Resort.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-isalnd-maldives-resort.webp"
+    },
+    {
+      "mediaId": "3010fffd-82b4-262f-3bf4-415ae933062c",
+      "relativePath": "resorts/Velassaru/images/Velassaru-Maldives-Beach-Villa-Pool.webp",
+      "storagePath": "legacy/resorts/velassaru/images/velassaru-maldives-beach-villa-pool.webp"
+    },
+    {
+      "mediaId": "1d71b3d6-5468-1177-9368-70afdbb90fc5",
+      "relativePath": "images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+      "storagePath": "legacy/images/baros-maldives-island-resort-beach-dinner.webp"
+    },
+    {
+      "mediaId": "85b25fa5-ecd2-dfe0-e028-440391b5635a",
+      "relativePath": "images/activities/sunset-cruise-maldives.webp",
+      "storagePath": "legacy/images/activities/sunset-cruise-maldives.webp"
+    },
+    {
+      "mediaId": "9a0dcad4-60ab-74d1-31cb-9ea1b325a38f",
+      "relativePath": "images/fishing/Maldives-Night-Fishing.webp",
+      "storagePath": "legacy/images/fishing/maldives-night-fishing.webp"
+    },
+    {
+      "mediaId": "85b25fa5-ecd2-dfe0-e028-440391b5635a",
+      "relativePath": "images/activities/sunset-cruise-maldives.webp",
+      "storagePath": "legacy/images/activities/sunset-cruise-maldives.webp"
+    },
+    {
+      "mediaId": "9b8db8dc-f547-6730-e627-efa5b1c20fb5",
+      "relativePath": "resorts/Soneva-Fushi/images/Soneva-Fushi-Island-Resort-Maldives.webp",
+      "storagePath": "legacy/resorts/soneva-fushi/images/soneva-fushi-island-resort-maldives.webp"
+    },
+    {
+      "mediaId": "48f4113a-34bb-51ab-4a70-56791633dae9",
+      "relativePath": "resorts/Six-Senses-Laamu/images/Six-Senses-Laamu-Maldives-Beach.webp",
+      "storagePath": "legacy/resorts/six-senses-laamu/images/six-senses-laamu-maldives-beach.webp"
+    },
+    {
+      "mediaId": "72d57239-0ddf-2e16-248f-15b5a91edac0",
+      "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Activities.webp",
+      "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-activities.webp"
+    },
+    {
+      "mediaId": "9a0dcad4-60ab-74d1-31cb-9ea1b325a38f",
+      "relativePath": "images/fishing/Maldives-Night-Fishing.webp",
+      "storagePath": "legacy/images/fishing/maldives-night-fishing.webp"
+    },
+    {
+      "mediaId": "7aee5f90-4f9a-5821-f5d7-3468badba656",
+      "relativePath": "images/diving/Addu-Manta-Point.webp",
+      "storagePath": "legacy/images/diving/addu-manta-point.webp"
+    },
+    {
+      "mediaId": "7aee5f90-4f9a-5821-f5d7-3468badba656",
+      "relativePath": "images/diving/Addu-Manta-Point.webp",
+      "storagePath": "legacy/images/diving/addu-manta-point.webp"
+    },
+    {
+      "mediaId": "0270bec0-67a7-d923-e3cf-45e1009af53f",
+      "relativePath": "images/fishing/night-fishing-in-maldives.webp",
+      "storagePath": "legacy/images/fishing/night-fishing-in-maldives.webp"
+    },
+    {
+      "mediaId": "67336692-acbc-3bb2-6e4f-28d76e7e91df",
+      "relativePath": "images/activities/full-day/full-day-activity-male-atoll.webp",
+      "storagePath": "legacy/images/activities/full-day/full-day-activity-male-atoll.webp"
+    },
+    {
+      "mediaId": "7aee5f90-4f9a-5821-f5d7-3468badba656",
+      "relativePath": "images/diving/Addu-Manta-Point.webp",
+      "storagePath": "legacy/images/diving/addu-manta-point.webp"
+    },
+    {
+      "mediaId": "0270bec0-67a7-d923-e3cf-45e1009af53f",
+      "relativePath": "images/fishing/night-fishing-in-maldives.webp",
+      "storagePath": "legacy/images/fishing/night-fishing-in-maldives.webp"
+    },
+    {
+      "mediaId": "67336692-acbc-3bb2-6e4f-28d76e7e91df",
+      "relativePath": "images/activities/full-day/full-day-activity-male-atoll.webp",
+      "storagePath": "legacy/images/activities/full-day/full-day-activity-male-atoll.webp"
+    },
+    {
+      "mediaId": "85b25fa5-ecd2-dfe0-e028-440391b5635a",
+      "relativePath": "images/activities/sunset-cruise-maldives.webp",
+      "storagePath": "legacy/images/activities/sunset-cruise-maldives.webp"
+    },
+    {
+      "mediaId": "85b25fa5-ecd2-dfe0-e028-440391b5635a",
+      "relativePath": "images/activities/sunset-cruise-maldives.webp",
+      "storagePath": "legacy/images/activities/sunset-cruise-maldives.webp"
+    },
+    {
+      "mediaId": "36ab9bfe-c6aa-3147-99d1-86e75d5a1975",
+      "relativePath": "resorts/Lily-beach/images/Lily-Beach-Resort-and-Spa-Maldives.webp",
+      "storagePath": "legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives.webp"
+    },
+    {
+      "mediaId": "3010fffd-82b4-262f-3bf4-415ae933062c",
+      "relativePath": "resorts/Velassaru/images/Velassaru-Maldives-Beach-Villa-Pool.webp",
+      "storagePath": "legacy/resorts/velassaru/images/velassaru-maldives-beach-villa-pool.webp"
+    },
+    {
+      "mediaId": "ea357590-893c-721b-cf78-f24fa707b820",
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach.webp"
+    },
+    {
+      "mediaId": "67336692-acbc-3bb2-6e4f-28d76e7e91df",
+      "relativePath": "images/activities/full-day/full-day-activity-male-atoll.webp",
+      "storagePath": "legacy/images/activities/full-day/full-day-activity-male-atoll.webp"
+    },
+    {
+      "mediaId": "7aee5f90-4f9a-5821-f5d7-3468badba656",
+      "relativePath": "images/diving/Addu-Manta-Point.webp",
+      "storagePath": "legacy/images/diving/addu-manta-point.webp"
+    },
+    {
+      "mediaId": "0270bec0-67a7-d923-e3cf-45e1009af53f",
+      "relativePath": "images/fishing/night-fishing-in-maldives.webp",
+      "storagePath": "legacy/images/fishing/night-fishing-in-maldives.webp"
+    },
+    {
+      "mediaId": "3155d9dc-380b-ac00-3242-23d72abb7a84",
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives.webp"
+    },
+    {
+      "mediaId": "68a6101f-09a4-0320-5a39-c4a8ecbbe92e",
+      "relativePath": "resorts/Velassaru/images/Velassaru-Maldives.webp",
+      "storagePath": "legacy/resorts/velassaru/images/velassaru-maldives.webp"
+    },
+    {
+      "mediaId": "36ab9bfe-c6aa-3147-99d1-86e75d5a1975",
+      "relativePath": "resorts/Lily-beach/images/Lily-Beach-Resort-and-Spa-Maldives.webp",
+      "storagePath": "legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives.webp"
+    },
+    {
+      "mediaId": "0270bec0-67a7-d923-e3cf-45e1009af53f",
+      "relativePath": "images/fishing/night-fishing-in-maldives.webp",
+      "storagePath": "legacy/images/fishing/night-fishing-in-maldives.webp"
+    },
+    {
+      "mediaId": "1252ee18-2500-652f-31db-6174cfc5982e",
+      "relativePath": "images/activities/sandbank-excursion-male-atoll.webp",
+      "storagePath": "legacy/images/activities/sandbank-excursion-male-atoll.webp"
+    },
+    {
+      "mediaId": "a0396492-c61d-9a26-f750-712a914f5b22",
+      "relativePath": "images/fishing/Maldives-Fishing-trip.webp",
+      "storagePath": "legacy/images/fishing/maldives-fishing-trip.webp"
+    },
+    {
+      "mediaId": "10eee094-26e9-30ae-39be-d9ffe3b03068",
+      "relativePath": "resorts/Four-Seasons-Huraa/images/Four-Seasons-Maldives-at-Kuda-Huraa-Sunset-Water-Bangalow1.webp",
+      "storagePath": "legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp"
+    },
+    {
+      "mediaId": "1907c26d-f2cb-85fa-2760-21dcfe4c0fa0",
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp"
+    },
+    {
+      "mediaId": "7aee5f90-4f9a-5821-f5d7-3468badba656",
+      "relativePath": "images/diving/Addu-Manta-Point.webp",
+      "storagePath": "legacy/images/diving/addu-manta-point.webp"
+    },
+    {
+      "mediaId": "0270bec0-67a7-d923-e3cf-45e1009af53f",
+      "relativePath": "images/fishing/night-fishing-in-maldives.webp",
+      "storagePath": "legacy/images/fishing/night-fishing-in-maldives.webp"
+    },
+    {
+      "mediaId": "f164cf64-2808-9527-ba28-1fd1ff8358aa",
+      "relativePath": "resorts/Soneva-Fushi/images/Soneva-Fushi-Maldives.webp",
+      "storagePath": "legacy/resorts/soneva-fushi/images/soneva-fushi-maldives.webp"
+    },
+    {
+      "mediaId": "7aee5f90-4f9a-5821-f5d7-3468badba656",
+      "relativePath": "images/diving/Addu-Manta-Point.webp",
+      "storagePath": "legacy/images/diving/addu-manta-point.webp"
+    },
+    {
+      "mediaId": "d1c05767-2467-0d92-1943-73085df38a99",
+      "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Lagoon-Villa.webp",
+      "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-lagoon-villa.webp"
+    },
+    {
+      "mediaId": "72d57239-0ddf-2e16-248f-15b5a91edac0",
+      "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Activities.webp",
+      "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-activities.webp"
+    },
+    {
+      "mediaId": "1907c26d-f2cb-85fa-2760-21dcfe4c0fa0",
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp"
+    },
+    {
+      "mediaId": "1907c26d-f2cb-85fa-2760-21dcfe4c0fa0",
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp"
+    },
+    {
+      "mediaId": "72d57239-0ddf-2e16-248f-15b5a91edac0",
+      "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Activities.webp",
+      "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-activities.webp"
+    },
+    {
+      "mediaId": "620e9b62-c59f-86ab-1f1a-c29236b081c2",
+      "relativePath": "images/articles/dolphin-cruise.webp",
+      "storagePath": "legacy/images/articles/dolphin-cruise.webp"
+    },
+    {
+      "mediaId": "1907c26d-f2cb-85fa-2760-21dcfe4c0fa0",
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp"
+    },
+    {
+      "mediaId": "9a0dcad4-60ab-74d1-31cb-9ea1b325a38f",
+      "relativePath": "images/fishing/Maldives-Night-Fishing.webp",
+      "storagePath": "legacy/images/fishing/maldives-night-fishing.webp"
+    },
+    {
+      "mediaId": "b168136b-5954-7363-1938-3ebc25d6ef97",
+      "relativePath": "images/diving/Meedhoo-Coral-Garden.webp",
+      "storagePath": "legacy/images/diving/meedhoo-coral-garden.webp"
+    },
+    {
+      "mediaId": "b1e944d9-8909-19a3-b841-3fdf4f7a166e",
+      "relativePath": "images/maldives-sunset-cruise.webp",
+      "storagePath": "legacy/images/maldives-sunset-cruise.webp"
+    },
+    {
+      "mediaId": "0270bec0-67a7-d923-e3cf-45e1009af53f",
+      "relativePath": "images/fishing/night-fishing-in-maldives.webp",
+      "storagePath": "legacy/images/fishing/night-fishing-in-maldives.webp"
+    },
+    {
+      "mediaId": "6c7a21e8-2802-edea-c196-c2730560add3",
+      "relativePath": "resorts/Soneva-Fushi/images/Soneva-Fushi-Kunfunadhoo-Island-Maldives-Resort.webp",
+      "storagePath": "legacy/resorts/soneva-fushi/images/soneva-fushi-kunfunadhoo-island-maldives-resort.webp"
+    },
+    {
+      "mediaId": "3cccd65d-0b38-b5a5-1722-e0c202e46aeb",
+      "relativePath": "resorts/Kurumba/images/Kurumba-Maldives-Vihamanaafushi-Resort.webp",
+      "storagePath": "legacy/resorts/kurumba/images/kurumba-maldives-vihamanaafushi-resort.webp"
+    },
+    {
+      "mediaId": "36ab9bfe-c6aa-3147-99d1-86e75d5a1975",
+      "relativePath": "resorts/Lily-beach/images/Lily-Beach-Resort-and-Spa-Maldives.webp",
+      "storagePath": "legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives.webp"
+    },
+    {
+      "mediaId": "1e638f32-b0ce-fd12-0f2f-566849e78011",
+      "relativePath": "images/male/male-city-beach.webp",
+      "storagePath": "legacy/images/male/male-city-beach.webp"
+    },
+    {
+      "mediaId": "b3787b70-ef88-f3ef-48ef-0c388737dca8",
+      "relativePath": "images/activities/maafushi-island.webp",
+      "storagePath": "legacy/images/activities/maafushi-island.webp"
+    },
+    {
+      "mediaId": "32e80985-5a6b-f00d-2fa6-244717b399bb",
+      "relativePath": "images/articles/fishing.webp",
+      "storagePath": "legacy/images/articles/fishing.webp"
+    },
+    {
+      "mediaId": "620e9b62-c59f-86ab-1f1a-c29236b081c2",
+      "relativePath": "images/articles/dolphin-cruise.webp",
+      "storagePath": "legacy/images/articles/dolphin-cruise.webp"
+    }
+  ]
+}

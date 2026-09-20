@@ -16,6 +16,7 @@ const PRIMARY_NAV = [
   { label: "Fishing", href: "/maldives/fishing/" },
   { label: "Transfers", href: "/maldives/transfers/" },
   { label: "Packages", href: "/maldives/packages/" },
+  { label: "Travel Guide", href: "/maldives/travel-guide/" },
 ];
 
 const WHATSAPP_URL = "https://wa.me/9607794332";

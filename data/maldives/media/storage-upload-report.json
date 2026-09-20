@@ -1,0 +1,510 @@
+{
+  "generatedAt": "2026-09-20T09:40:37.876Z",
+  "committed": false,
+  "bucket": "media",
+  "totalManifestFiles": 100,
+  "foundOnDisk": 100,
+  "missingOnDisk": [],
+  "results": [
+    {
+      "relativePath": "atolls/alifu-alifu/images/alifu-alifu-atoll-maldives.webp",
+      "storagePath": "legacy/atolls/alifu-alifu/images/alifu-alifu-atoll-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "atolls/gnaviyani-atoll/images/fuvahmulah-island.webp",
+      "storagePath": "legacy/atolls/gnaviyani-atoll/images/fuvahmulah-island.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "atolls/gnaviyani-atoll/images/fuvahmulah-maldives.webp",
+      "storagePath": "legacy/atolls/gnaviyani-atoll/images/fuvahmulah-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/activities/Fuvahmulah-Atoll-Maldives.webp",
+      "storagePath": "legacy/images/activities/fuvahmulah-atoll-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/diving/Fuvahmulah-Atoll-Maldives.webp",
+      "storagePath": "legacy/images/diving/fuvahmulah-atoll-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/islands/fuvahmulah-island-maldives.webp",
+      "storagePath": "legacy/images/islands/fuvahmulah-island-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/maldives/Fuvahmulah-Island-maldives.webp",
+      "storagePath": "legacy/images/maldives/fuvahmulah-island-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "atolls/lhaviyani-atoll/images/lhaviyani-felivaru-island-maldives.webp",
+      "storagePath": "legacy/atolls/lhaviyani-atoll/images/lhaviyani-felivaru-island-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "hotels/images/hotels-in-male.webp",
+      "storagePath": "legacy/hotels/images/hotels-in-male.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "hotels/images/male-maldives-hotels.webp",
+      "storagePath": "legacy/hotels/images/male-maldives-hotels.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/maldives/male-island.webp",
+      "storagePath": "legacy/images/maldives/male-island.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/male.jpg",
+      "storagePath": "legacy/images/male.jpg",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/male.webp",
+      "storagePath": "legacy/images/male.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/male/male-island.webp",
+      "storagePath": "legacy/images/male/male-island.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/activities/Six-Senses-Laamu.webp",
+      "storagePath": "legacy/images/activities/six-senses-laamu.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/surfing/Six-Senses-Laamu.webp",
+      "storagePath": "legacy/images/surfing/six-senses-laamu.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Six-Senses-Laamu/images/Six-Senses-Laamu-Maldives-Beach.webp",
+      "storagePath": "legacy/resorts/six-senses-laamu/images/six-senses-laamu-maldives-beach.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Six-Senses-Laamu/images/Six-Senses-Laamu-Maldives-Dinning.webp",
+      "storagePath": "legacy/resorts/six-senses-laamu/images/six-senses-laamu-maldives-dinning.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Six-Senses-Laamu/images/Six-Senses-Laamu-Maldives-Diving.webp",
+      "storagePath": "legacy/resorts/six-senses-laamu/images/six-senses-laamu-maldives-diving.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Six-Senses-Laamu/images/Six-Senses-Laamu-Maldives-Excursions.webp",
+      "storagePath": "legacy/resorts/six-senses-laamu/images/six-senses-laamu-maldives-excursions.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/activities/maafushi-island.jpg",
+      "storagePath": "legacy/images/activities/maafushi-island.jpg",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/activities/maafushi-island.webp",
+      "storagePath": "legacy/images/activities/maafushi-island.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/maldives/maafushi-island.webp",
+      "storagePath": "legacy/images/maldives/maafushi-island.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/hotels/kaani-beach-hotel-in-maafushi-maldives.webp",
+      "storagePath": "legacy/images/hotels/kaani-beach-hotel-in-maafushi-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/maldives/Dharavandhoo-Island-maldives.webp",
+      "storagePath": "legacy/images/maldives/dharavandhoo-island-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/maldives/Dhigurah-Island-maldives.webp",
+      "storagePath": "legacy/images/maldives/dhigurah-island-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/maldives/Funadhoo-Island-maldives.webp",
+      "storagePath": "legacy/images/maldives/funadhoo-island-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/maldives/Maradhoo-Island-maldives.webp",
+      "storagePath": "legacy/images/maldives/maradhoo-island-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/maldives/Olhuveli-island-maldives.webp",
+      "storagePath": "legacy/images/maldives/olhuveli-island-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/maldives/Thoddoo-Island-maldives.webp",
+      "storagePath": "legacy/images/maldives/thoddoo-island-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/maldives/Thulusdhoo-island-maldives.webp",
+      "storagePath": "legacy/images/maldives/thulusdhoo-island-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/maldives/Ukulhas-island-maldives.webp",
+      "storagePath": "legacy/images/maldives/ukulhas-island-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/maldives/Villingili-Resort-Island.webp",
+      "storagePath": "legacy/images/maldives/villingili-resort-island.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/maldives/hulhumale-island.webp",
+      "storagePath": "legacy/images/maldives/hulhumale-island.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/maldives/utheemu-island.webp",
+      "storagePath": "legacy/images/maldives/utheemu-island.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Baros-Island/images/Baros-Isalnd-Maldives-Resort.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-isalnd-maldives-resort.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Baros-Island/images/Baros-Island-Maldives-Island-map.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-island-maldives-island-map.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Deluxe-Villa.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives-deluxe-villa.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Deluxe-Villa1.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives-deluxe-villa1.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Activities.webp",
+      "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-activities.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Beach-Breakfast.webp",
+      "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-beach-breakfast.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Beach-North-Male-Atoll.webp",
+      "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-beach-north-male-atoll.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Beach.webp",
+      "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-beach.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Dinner.webp",
+      "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-dinner.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Family-Villa.webp",
+      "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-family-villa.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Velassaru/images/Velassaru-Maldives-Island-Resort.webp",
+      "storagePath": "legacy/resorts/velassaru/images/velassaru-maldives-island-resort.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Velassaru/images/Velassaru-Maldives-Resort.webp",
+      "storagePath": "legacy/resorts/velassaru/images/velassaru-maldives-resort.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Velassaru/images/Velassaru-Maldives.webp",
+      "storagePath": "legacy/resorts/velassaru/images/velassaru-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Four-Seasons-Huraa/images/Four-Seasons-Maldives-at-Kuda-Huraa-Sunset-Water-Bangalow1.webp",
+      "storagePath": "legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Komandoo-Island/images/Komandoo-Island-Resort-and-Spa-Pool.webp",
+      "storagePath": "legacy/resorts/komandoo-island/images/komandoo-island-resort-and-spa-pool.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Reethi-Beach/images/Reethi-Beach-Resort-Maldives-Honeymoon.webp",
+      "storagePath": "legacy/resorts/reethi-beach/images/reethi-beach-resort-maldives-honeymoon.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/diving/Meedhoo-Coral-Garden.webp",
+      "storagePath": "legacy/images/diving/meedhoo-coral-garden.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/activities/sunset-cruise-maldives.webp",
+      "storagePath": "legacy/images/activities/sunset-cruise-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Soneva-Fushi/images/Soneva-Fushi-Island-Resort-Maldives.webp",
+      "storagePath": "legacy/resorts/soneva-fushi/images/soneva-fushi-island-resort-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Six-Senses-Laamu/images/Six-Senses-Laamu-Maldives.webp",
+      "storagePath": "legacy/resorts/six-senses-laamu/images/six-senses-laamu-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Lily-beach/images/Lily-Beach-Resort-and-Spa-Maldives-Island.webp",
+      "storagePath": "legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives-island.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Kurumba/images/Kurumba-Maldives-Vihamanaafushi-Resort.webp",
+      "storagePath": "legacy/resorts/kurumba/images/kurumba-maldives-vihamanaafushi-resort.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Hideaway-Beach/images/Hideaway-Beach-Island-Resort-and-Spa.webp",
+      "storagePath": "legacy/resorts/hideaway-beach/images/hideaway-beach-island-resort-and-spa.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/male/sultan-park-male.webp",
+      "storagePath": "legacy/images/male/sultan-park-male.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/male/male-city-artificial-beach.webp",
+      "storagePath": "legacy/images/male/male-city-artificial-beach.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/Hulhumale-city-Maldives.webp",
+      "storagePath": "legacy/images/hulhumale-city-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/male/male-city-republic-square.webp",
+      "storagePath": "legacy/images/male/male-city-republic-square.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/male/male-bridge.webp",
+      "storagePath": "legacy/images/male/male-bridge.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/male/male-city-beach.webp",
+      "storagePath": "legacy/images/male/male-city-beach.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/activities/sand-bank/male-atoll-sand-bank-trip.webp",
+      "storagePath": "legacy/images/activities/sand-bank/male-atoll-sand-bank-trip.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Family-Villa1.webp",
+      "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-family-villa1.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/male/maldives-capital-male-city.webp",
+      "storagePath": "legacy/images/male/maldives-capital-male-city.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/activities/Manta-Point-Lankanfinolhu-Island.webp",
+      "storagePath": "legacy/images/activities/manta-point-lankanfinolhu-island.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/maldives-sunset-cruise.webp",
+      "storagePath": "legacy/images/maldives-sunset-cruise.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/articles/dolphin-cruise.webp",
+      "storagePath": "legacy/images/articles/dolphin-cruise.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/fishing/Big-Game-Fishing-maldives.webp",
+      "storagePath": "legacy/images/fishing/big-game-fishing-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/male/male-maldives.webp",
+      "storagePath": "legacy/images/male/male-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/Utheemu-ganduvaru.webp",
+      "storagePath": "legacy/images/utheemu-ganduvaru.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Hideaway-Beach/images/Hideaway-Beach-Resort-and-Spa.webp",
+      "storagePath": "legacy/resorts/hideaway-beach/images/hideaway-beach-resort-and-spa.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/Male-fish-market-maldives.webp",
+      "storagePath": "legacy/images/male-fish-market-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/male/male-city-guided-tour.webp",
+      "storagePath": "legacy/images/male/male-city-guided-tour.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/male/male-island-tour.webp",
+      "storagePath": "legacy/images/male/male-island-tour.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/diving/Addu-Manta-Point.webp",
+      "storagePath": "legacy/images/diving/addu-manta-point.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/activities/full-day/full-day-activity-male-atoll.webp",
+      "storagePath": "legacy/images/activities/full-day/full-day-activity-male-atoll.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel-maldives.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/activities/sandbank-excursion-male-atoll.webp",
+      "storagePath": "legacy/images/activities/sandbank-excursion-male-atoll.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/activities/HP-reef-Male-Atoll.webp",
+      "storagePath": "legacy/images/activities/hp-reef-male-atoll.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/diving/Ari-Atoll-Maaya-Thila-Maldives.webp",
+      "storagePath": "legacy/images/diving/ari-atoll-maaya-thila-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Water-Villa.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives-water-villa.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/fishing/night-fishing-in-maldives.webp",
+      "storagePath": "legacy/images/fishing/night-fishing-in-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Soneva-Fushi/images/Soneva-Fushi-Maldives.webp",
+      "storagePath": "legacy/resorts/soneva-fushi/images/soneva-fushi-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/diving/Manta-Point-Lankanfinolhu-Island.webp",
+      "storagePath": "legacy/images/diving/manta-point-lankanfinolhu-island.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/fishing/Maldives-Night-Fishing.webp",
+      "storagePath": "legacy/images/fishing/maldives-night-fishing.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Velassaru/images/Velassaru-Maldives-Beach-Villa-Pool.webp",
+      "storagePath": "legacy/resorts/velassaru/images/velassaru-maldives-beach-villa-pool.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+      "storagePath": "legacy/images/baros-maldives-island-resort-beach-dinner.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Lily-beach/images/Lily-Beach-Resort-and-Spa-Maldives.webp",
+      "storagePath": "legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Baros-Island/images/Baros-Maldives.webp",
+      "storagePath": "legacy/resorts/baros-island/images/baros-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/fishing/Maldives-Fishing-trip.webp",
+      "storagePath": "legacy/images/fishing/maldives-fishing-trip.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Lagoon-Villa.webp",
+      "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-lagoon-villa.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "resorts/Soneva-Fushi/images/Soneva-Fushi-Kunfunadhoo-Island-Maldives-Resort.webp",
+      "storagePath": "legacy/resorts/soneva-fushi/images/soneva-fushi-kunfunadhoo-island-maldives-resort.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/articles/fishing.webp",
+      "storagePath": "legacy/images/articles/fishing.webp",
+      "status": "planned"
+    }
+  ]
+}

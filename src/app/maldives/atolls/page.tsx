@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { CARD_CLASS } from "@/components/ui/card";
+import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
+import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { getAtolls } from "@/lib/locations/repository";
+import { getHeroMediaByNodeIds } from "@/lib/media/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
 export function generateMetadata(): Metadata {
@@ -20,6 +22,7 @@ export function generateMetadata(): Metadata {
 
 export default async function AtollsPage() {
   const atolls = await getAtolls();
+  const heroByAtollId = await getHeroMediaByNodeIds(atolls.map((a) => a.id));
 
   return (
     <main>
@@ -35,6 +38,11 @@ export default async function AtollsPage() {
           {atolls.map((atoll) => (
             <li key={atoll.id}>
               <Link href={`/maldives/atolls/${atoll.slug}/`} className={`${CARD_CLASS} block`}>
+                {heroByAtollId.get(atoll.id) && (
+                  <div className={CARD_IMAGE_BLEED_CLASS}>
+                    <MediaImage asset={heroByAtollId.get(atoll.id)} alt={atoll.title} aspectClassName="aspect-[16/10]" />
+                  </div>
+                )}
                 <span className="text-lg font-medium text-ocean-900">{atoll.title}</span>
                 <p className="mt-1 text-sm text-neutral-600">
                   {atoll.islandCount} inhabited island{atoll.islandCount === 1 ? "" : "s"}

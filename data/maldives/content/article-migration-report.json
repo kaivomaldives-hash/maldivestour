@@ -1,0 +1,2775 @@
+{
+  "generatedAt": "2026-09-20T09:40:25.803Z",
+  "totalCandidates": 48,
+  "totalExtracted": 48,
+  "byConfidence": {
+    "high": 41,
+    "medium": 0,
+    "needs-review": 7
+  },
+  "byCategory": {
+    "Islands": 12,
+    "Diving": 5,
+    "Accommodation": 5,
+    "Transportation": 5,
+    "Surfing": 3,
+    "Atolls": 8,
+    "Travel Tips": 3,
+    "Airports": 3,
+    "Maldives Travel": 4
+  },
+  "articles": [
+    {
+      "oldUrl": "/articles/Maldives-honeymoons.html",
+      "sourceFile": "articles/Maldives-honeymoons.html",
+      "oldTitle": "Maldives Honeymoon Guide | Romantic Resorts & Packages",
+      "candidateTitle": "Maldives Honeymoon: Ultimate Romantic Getaway Guide",
+      "candidateSlug": "maldives-honeymoon-ultimate-romantic-getaway-guide",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-honeymoon-ultimate-romantic-getaway-guide/",
+      "category": "Islands",
+      "metaDescription": "Complete Maldives honeymoon guide - Discover the best romantic resorts, overwater bungalows, packages and unique experiences for your perfect couples getaway in paradise.",
+      "wordCount": 525,
+      "paragraphCount": 18,
+      "headingCount": 15,
+      "imageCount": 7,
+      "matchedImageCount": 2,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "huraa",
+          "title": "Huraa",
+          "href": "/maldives/islands/huraa/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "baros",
+          "title": "Baros",
+          "href": "/maldives/islands/baros/",
+          "score": 0.7
+        },
+        {
+          "type": "resort",
+          "slug": "baros-maldives",
+          "title": "Baros Maldives",
+          "href": "/maldives/resorts/baros-maldives/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/maldives-honeymoon-ultimate-romantic-getaway-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "resorts/Four-Seasons-Huraa/images/Four-Seasons-Maldives-at-Kuda-Huraa-Sunset-Water-Bangalow1.webp",
+          "storagePath": "legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+          "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp",
+          "width": 1280,
+          "height": 720
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/adults-only-maldives.html",
+      "sourceFile": "articles/adults-only-maldives.html",
+      "oldTitle": "Best Adults-Only Maldives Resorts | Child-Free Paradise",
+      "candidateTitle": "Best Adults-Only Maldives Resorts",
+      "candidateSlug": "best-adults-only-maldives-resorts",
+      "candidateNewUrl": "/maldives/travel-guide/best-adults-only-maldives-resorts/",
+      "category": "Islands",
+      "metaDescription": "Adults-only Maldives resorts - Discover the most exclusive adults-only retreats, private pool villas & romantic packages. Compare top 15 adults-only luxury resorts for couples seeking peaceful relaxation without children.",
+      "wordCount": 975,
+      "paragraphCount": 26,
+      "headingCount": 18,
+      "imageCount": 14,
+      "matchedImageCount": 2,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "jPkD9zEh4o4",
+          "title": "Adults-Only Maldives Resorts Tour"
+        }
+      ],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "komandoo",
+          "title": "Komandoo",
+          "href": "/maldives/islands/komandoo/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/best-adults-only-maldives-resorts.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "resorts/Komandoo-Island/images/Komandoo-Island-Resort-and-Spa-Pool.webp",
+          "storagePath": "legacy/resorts/komandoo-island/images/komandoo-island-resort-and-spa-pool.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "resorts/Reethi-Beach/images/Reethi-Beach-Resort-Maldives-Honeymoon.webp",
+          "storagePath": "legacy/resorts/reethi-beach/images/reethi-beach-resort-maldives-honeymoon.webp",
+          "width": 1920,
+          "height": 1080
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/beautiful-places-in-maldives.html",
+      "sourceFile": "articles/beautiful-places-in-maldives.html",
+      "oldTitle": "15 Most Beautiful Places in Maldives | Stunning Islands & Natural Wonders",
+      "candidateTitle": "15 Most Beautiful Places in Maldives: Paradise Found",
+      "candidateSlug": "15-most-beautiful-places-in-maldives-paradise-found",
+      "candidateNewUrl": "/maldives/travel-guide/15-most-beautiful-places-in-maldives-paradise-found/",
+      "category": "Islands",
+      "metaDescription": "Discover the most beautiful places in Maldives - From stunning atolls and islands to underwater wonders, bioluminescent beaches, and luxury resorts. Complete guide to paradise.",
+      "wordCount": 3869,
+      "paragraphCount": 52,
+      "headingCount": 30,
+      "imageCount": 16,
+      "matchedImageCount": 2,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "EktYGTKldpk",
+          "title": "Beautiful Places in Maldives"
+        }
+      ],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "vaadhoo",
+          "title": "Vaadhoo",
+          "href": "/maldives/islands/vaadhoo/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "vaadhoo-gaafu-dhaalu",
+          "title": "Vaadhoo",
+          "href": "/maldives/islands/vaadhoo-gaafu-dhaalu/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "fuvahmulah",
+          "title": "Fuvahmulah",
+          "href": "/maldives/islands/fuvahmulah/",
+          "score": 0.7
+        },
+        {
+          "type": "dive_site",
+          "slug": "maaya-thila",
+          "title": "Maaya Thila",
+          "href": "/maldives/dive-sites/maaya-thila/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/15-most-beautiful-places-in-maldives-paradise-found.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/diving/Meedhoo-Coral-Garden.webp",
+          "storagePath": "legacy/images/diving/meedhoo-coral-garden.webp",
+          "width": 640,
+          "height": 480
+        },
+        {
+          "relativePath": "images/activities/sunset-cruise-maldives.webp",
+          "storagePath": "legacy/images/activities/sunset-cruise-maldives.webp",
+          "width": 1814,
+          "height": 1360
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/beautiful-places-to-visit-in-Maldives.html",
+      "sourceFile": "articles/beautiful-places-to-visit-in-Maldives.html",
+      "oldTitle": "Beautiful Places to Visit in Maldives",
+      "candidateTitle": "Beautiful Places to Visit in Maldives",
+      "candidateSlug": "beautiful-places-to-visit-in-maldives",
+      "candidateNewUrl": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+      "category": "Diving",
+      "metaDescription": "Discover the most beautiful places to visit in Maldives, from pristine beaches to vibrant coral reefs. Explore top resorts, islands, and atolls that make the Maldives a tropical paradise.",
+      "wordCount": 4341,
+      "paragraphCount": 95,
+      "headingCount": 112,
+      "imageCount": 32,
+      "matchedImageCount": 12,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "baros",
+          "title": "Baros",
+          "href": "/maldives/islands/baros/",
+          "score": 0.7
+        },
+        {
+          "type": "resort",
+          "slug": "baros-maldives",
+          "title": "Baros Maldives",
+          "href": "/maldives/resorts/baros-maldives/",
+          "score": 0.7
+        },
+        {
+          "type": "package",
+          "slug": "maldives-fishing-island-hopping-package",
+          "title": "Maldives Fishing & Island Hopping Package",
+          "href": "/maldives/packages/maldives-fishing-island-hopping-package/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/beautiful-places-to-visit-in-maldives.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort.webp",
+          "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort.webp",
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "relativePath": "resorts/Soneva-Fushi/images/Soneva-Fushi-Island-Resort-Maldives.webp",
+          "storagePath": "legacy/resorts/soneva-fushi/images/soneva-fushi-island-resort-maldives.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "resorts/Six-Senses-Laamu/images/Six-Senses-Laamu-Maldives.webp",
+          "storagePath": "legacy/resorts/six-senses-laamu/images/six-senses-laamu-maldives.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "resorts/Lily-beach/images/Lily-Beach-Resort-and-Spa-Maldives-Island.webp",
+          "storagePath": "legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives-island.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "resorts/Kurumba/images/Kurumba-Maldives-Vihamanaafushi-Resort.webp",
+          "storagePath": "legacy/resorts/kurumba/images/kurumba-maldives-vihamanaafushi-resort.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "resorts/Hideaway-Beach/images/Hideaway-Beach-Island-Resort-and-Spa.webp",
+          "storagePath": "legacy/resorts/hideaway-beach/images/hideaway-beach-island-resort-and-spa.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "relativePath": "images/male/sultan-park-male.webp",
+          "storagePath": "legacy/images/male/sultan-park-male.webp",
+          "width": 640,
+          "height": 427
+        },
+        {
+          "relativePath": "images/male/male-city-artificial-beach.webp",
+          "storagePath": "legacy/images/male/male-city-artificial-beach.webp",
+          "width": 720,
+          "height": 508
+        },
+        {
+          "relativePath": "images/Hulhumale-city-Maldives.webp",
+          "storagePath": "legacy/images/hulhumale-city-maldives.webp",
+          "width": 888,
+          "height": 665
+        },
+        {
+          "relativePath": "images/male/male-city-republic-square.webp",
+          "storagePath": "legacy/images/male/male-city-republic-square.webp",
+          "width": 720,
+          "height": 508
+        },
+        {
+          "relativePath": "images/male/male-bridge.webp",
+          "storagePath": "legacy/images/male/male-bridge.webp",
+          "width": 640,
+          "height": 526
+        },
+        {
+          "relativePath": "images/male/male-city-beach.webp",
+          "storagePath": "legacy/images/male/male-city-beach.webp",
+          "width": 2048,
+          "height": 2560
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/best-beaches-in-maldives.html",
+      "sourceFile": "articles/best-beaches-in-maldives.html",
+      "oldTitle": "12 Best Beaches in Maldives | Ultimate Beach Paradise Guide",
+      "candidateTitle": "12 Best Beaches in Maldives: Ultimate Paradise Guide",
+      "candidateSlug": "12-best-beaches-in-maldives-ultimate-paradise-guide",
+      "candidateNewUrl": "/maldives/travel-guide/12-best-beaches-in-maldives-ultimate-paradise-guide/",
+      "category": "Islands",
+      "metaDescription": "Discover the best beaches in Maldives - From pristine white sand beaches to bioluminescent shores, hidden coves, and vibrant house reefs. Complete guide to paradise beaches.",
+      "wordCount": 3618,
+      "paragraphCount": 69,
+      "headingCount": 29,
+      "imageCount": 17,
+      "matchedImageCount": 3,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "LnMQCQ9h744",
+          "title": "Best Beaches in Maldives"
+        }
+      ],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "dhigurah",
+          "title": "Dhigurah",
+          "href": "/maldives/islands/dhigurah/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "baros",
+          "title": "Baros",
+          "href": "/maldives/islands/baros/",
+          "score": 0.7
+        },
+        {
+          "type": "resort",
+          "slug": "baros-maldives",
+          "title": "Baros Maldives",
+          "href": "/maldives/resorts/baros-maldives/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/12-best-beaches-in-maldives-ultimate-paradise-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+          "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp",
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "relativePath": "images/activities/sand-bank/male-atoll-sand-bank-trip.webp",
+          "storagePath": "legacy/images/activities/sand-bank/male-atoll-sand-bank-trip.webp",
+          "width": 640,
+          "height": 800
+        },
+        {
+          "relativePath": "images/maldives/maafushi-island.webp",
+          "storagePath": "legacy/images/maldives/maafushi-island.webp",
+          "width": 640,
+          "height": 427
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/best-maldives-resorts-for-couples.html",
+      "sourceFile": "articles/best-maldives-resorts-for-couples.html",
+      "oldTitle": "Best Maldives Resorts for Couples | Romantic Honeymoon Resorts",
+      "candidateTitle": "Best Maldives Resorts for Couples: Romantic Getaways",
+      "candidateSlug": "best-maldives-resorts-for-couples-romantic-getaways",
+      "candidateNewUrl": "/maldives/travel-guide/best-maldives-resorts-for-couples-romantic-getaways/",
+      "category": "Accommodation",
+      "metaDescription": "Romantic Maldives resorts for couples - best overwater bungalows, private pool villas, honeymoon packages & adults-only retreats in . Compare top couple-friendly resorts.",
+      "wordCount": 366,
+      "paragraphCount": 18,
+      "headingCount": 14,
+      "imageCount": 11,
+      "matchedImageCount": 2,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "0VIhza1IyE0",
+          "title": "Romantic Maldives resorts video tour"
+        }
+      ],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "komandoo",
+          "title": "Komandoo",
+          "href": "/maldives/islands/komandoo/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "lankanfushi",
+          "title": "Lankanfushi",
+          "href": "/maldives/islands/lankanfushi/",
+          "score": 0.7
+        },
+        {
+          "type": "resort",
+          "slug": "gili-lankanfushi",
+          "title": "Gili Lankanfushi",
+          "href": "/maldives/resorts/gili-lankanfushi/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/best-maldives-resorts-for-couples-romantic-getaways.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/maldives/Ukulhas-island-maldives.webp",
+          "storagePath": "legacy/images/maldives/ukulhas-island-maldives.webp",
+          "width": 720,
+          "height": 405
+        },
+        {
+          "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Family-Villa1.webp",
+          "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-family-villa1.webp",
+          "width": 1920,
+          "height": 1080
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/best-things-to-do-in-maldives.html",
+      "sourceFile": "articles/best-things-to-do-in-maldives.html",
+      "oldTitle": "100 Best things to Do in the Maldives: An Ultimate Guide",
+      "candidateTitle": "100 Best things to Do in the Maldives: An Ultimate Guide",
+      "candidateSlug": "100-best-things-to-do-in-the-maldives-an-ultimate-guide",
+      "candidateNewUrl": "/maldives/travel-guide/100-best-things-to-do-in-the-maldives-an-ultimate-guide/",
+      "category": "Diving",
+      "metaDescription": "Here",
+      "wordCount": 3528,
+      "paragraphCount": 102,
+      "headingCount": 101,
+      "imageCount": 100,
+      "matchedImageCount": 16,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/100-best-things-to-do-in-the-maldives-an-ultimate-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/male/maldives-capital-male-city.webp",
+          "storagePath": "legacy/images/male/maldives-capital-male-city.webp",
+          "width": 720,
+          "height": 508
+        },
+        {
+          "relativePath": "images/activities/Manta-Point-Lankanfinolhu-Island.webp",
+          "storagePath": "legacy/images/activities/manta-point-lankanfinolhu-island.webp",
+          "width": 640,
+          "height": 359
+        },
+        {
+          "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+          "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp",
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "relativePath": "images/maldives-sunset-cruise.webp",
+          "storagePath": "legacy/images/maldives-sunset-cruise.webp",
+          "width": 1814,
+          "height": 1360
+        },
+        {
+          "relativePath": "images/diving/Meedhoo-Coral-Garden.webp",
+          "storagePath": "legacy/images/diving/meedhoo-coral-garden.webp",
+          "width": 640,
+          "height": 480
+        },
+        {
+          "relativePath": "images/articles/dolphin-cruise.webp",
+          "storagePath": "legacy/images/articles/dolphin-cruise.webp",
+          "width": 640,
+          "height": 452
+        },
+        {
+          "relativePath": "images/fishing/Big-Game-Fishing-maldives.webp",
+          "storagePath": "legacy/images/fishing/big-game-fishing-maldives.webp",
+          "width": 640,
+          "height": 427
+        },
+        {
+          "relativePath": "images/male/male-maldives.webp",
+          "storagePath": "legacy/images/male/male-maldives.webp",
+          "width": 720,
+          "height": 508
+        },
+        {
+          "relativePath": "images/Utheemu-ganduvaru.webp",
+          "storagePath": "legacy/images/utheemu-ganduvaru.webp",
+          "width": 700,
+          "height": 525
+        },
+        {
+          "relativePath": "resorts/Hideaway-Beach/images/Hideaway-Beach-Resort-and-Spa.webp",
+          "storagePath": "legacy/resorts/hideaway-beach/images/hideaway-beach-resort-and-spa.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "images/Male-fish-market-maldives.webp",
+          "storagePath": "legacy/images/male-fish-market-maldives.webp",
+          "width": 720,
+          "height": 1080
+        },
+        {
+          "relativePath": "images/male/male-city-beach.webp",
+          "storagePath": "legacy/images/male/male-city-beach.webp",
+          "width": 2048,
+          "height": 2560
+        },
+        {
+          "relativePath": "images/Hulhumale-city-Maldives.webp",
+          "storagePath": "legacy/images/hulhumale-city-maldives.webp",
+          "width": 888,
+          "height": 665
+        },
+        {
+          "relativePath": "images/male/male-city-guided-tour.webp",
+          "storagePath": "legacy/images/male/male-city-guided-tour.webp",
+          "width": 720,
+          "height": 508
+        },
+        {
+          "relativePath": "images/male/male-island-tour.webp",
+          "storagePath": "legacy/images/male/male-island-tour.webp",
+          "width": 720,
+          "height": 508
+        },
+        {
+          "relativePath": "images/diving/Addu-Manta-Point.webp",
+          "storagePath": "legacy/images/diving/addu-manta-point.webp",
+          "width": 640,
+          "height": 427
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/cheapest-time-to-go-to-maldives.html",
+      "sourceFile": "articles/cheapest-time-to-go-to-maldives.html",
+      "oldTitle": "The Cheapest Time to Visit the Maldives",
+      "candidateTitle": "The Cheapest Time to Visit the Maldives: A Comprehensive Guide",
+      "candidateSlug": "the-cheapest-time-to-visit-the-maldives-a-comprehensive-guide",
+      "candidateNewUrl": "/maldives/travel-guide/the-cheapest-time-to-visit-the-maldives-a-comprehensive-guide/",
+      "category": "Accommodation",
+      "metaDescription": "This guide explores the cheapest time to visit the Maldives, helping you plan an affordable and unforgettable getaway.",
+      "wordCount": 1080,
+      "paragraphCount": 39,
+      "headingCount": 21,
+      "imageCount": 10,
+      "matchedImageCount": 1,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "QNg0J5-thqE",
+          "title": "The Cheapest Time to Visit the Maldives"
+        }
+      ],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/the-cheapest-time-to-visit-the-maldives-a-comprehensive-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/activities/sunset-cruise-maldives.webp",
+          "storagePath": "legacy/images/activities/sunset-cruise-maldives.webp",
+          "width": 1814,
+          "height": 1360
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/ilhas-maldivas.html",
+      "sourceFile": "articles/ilhas-maldivas.html",
+      "oldTitle": "The Maldives Country For Visitors - All in one place",
+      "candidateTitle": "Ilhas Maldivas para visitantes",
+      "candidateSlug": "ilhas-maldivas-para-visitantes",
+      "candidateNewUrl": "/maldives/travel-guide/ilhas-maldivas-para-visitantes/",
+      "category": "Transportation",
+      "metaDescription": "Everything a visitor needs from the Maldives is in here with live chat. Whether its information you need or activities or a hotel to stay can be found in here",
+      "wordCount": 2558,
+      "paragraphCount": 34,
+      "headingCount": 18,
+      "imageCount": 53,
+      "matchedImageCount": 0,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "dhiffushi",
+          "title": "Dhiffushi",
+          "href": "/maldives/islands/dhiffushi/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "gulhi",
+          "title": "Gulhi",
+          "href": "/maldives/islands/gulhi/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "guraidhoo",
+          "title": "Guraidhoo",
+          "href": "/maldives/islands/guraidhoo/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "huraa",
+          "title": "Huraa",
+          "href": "/maldives/islands/huraa/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "maafushi",
+          "title": "Maafushi",
+          "href": "/maldives/islands/maafushi/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "thulusdhoo",
+          "title": "Thulusdhoo",
+          "href": "/maldives/islands/thulusdhoo/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "guraidhoo-thaa",
+          "title": "Guraidhoo",
+          "href": "/maldives/islands/guraidhoo-thaa/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/ilhas-maldivas-para-visitantes.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": []
+    },
+    {
+      "oldUrl": "/articles/las-islas-maldivas.html",
+      "sourceFile": "articles/las-islas-maldivas.html",
+      "oldTitle": "Las islas Maldivas para visitantes",
+      "candidateTitle": "Las Islas Maldivas",
+      "candidateSlug": "las-islas-maldivas",
+      "candidateNewUrl": "/maldives/travel-guide/las-islas-maldivas/",
+      "category": "Transportation",
+      "metaDescription": "Todo lo que un visitante necesita de las Maldivas está aquí con chat en vivo. Puede encontrar aquí la información que necesita o las actividades o un hotel para quedarse.",
+      "wordCount": 3327,
+      "paragraphCount": 38,
+      "headingCount": 20,
+      "imageCount": 55,
+      "matchedImageCount": 1,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/las-islas-maldivas.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/articles/dolphin-cruise.webp",
+          "storagePath": "legacy/images/articles/dolphin-cruise.webp",
+          "width": 640,
+          "height": 452
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-accommodation.html",
+      "sourceFile": "articles/maldives-accommodation.html",
+      "oldTitle": "Maldives Accommodation Guide | Resorts, Hotels & Budget Options",
+      "candidateTitle": "Maldives Accommodation Guide: Where to Stay in Paradise",
+      "candidateSlug": "maldives-accommodation-guide-where-to-stay-in-paradise",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-accommodation-guide-where-to-stay-in-paradise/",
+      "category": "Islands",
+      "metaDescription": "Comprehensive guide to Maldives accommodation options - from luxury resorts and water villas to budget-friendly guesthouses and local island stays. Find your perfect paradise stay.",
+      "wordCount": 1094,
+      "paragraphCount": 36,
+      "headingCount": 36,
+      "imageCount": 13,
+      "matchedImageCount": 1,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/maldives-accommodation-guide-where-to-stay-in-paradise.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/activities/full-day/full-day-activity-male-atoll.webp",
+          "storagePath": "legacy/images/activities/full-day/full-day-activity-male-atoll.webp",
+          "width": 1280,
+          "height": 720
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-budget-travel.html",
+      "sourceFile": "articles/maldives-budget-travel.html",
+      "oldTitle": "Maldives on a Budget 2024 | Complete Guide to Affordable Travel",
+      "candidateTitle": "Maldives on a Budget: Complete 2024 Guide to Affordable Travel",
+      "candidateSlug": "maldives-on-a-budget-complete-2024-guide-to-affordable-travel",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-on-a-budget-complete-2024-guide-to-affordable-travel/",
+      "category": "Transportation",
+      "metaDescription": "Maldives budget travel guide 2024 - Discover how to experience paradise for less with affordable local islands, guesthouses & budget-friendly activities. Complete guide to Maldives on a budget with tips to save 50-70% on your trip.",
+      "wordCount": 1297,
+      "paragraphCount": 58,
+      "headingCount": 27,
+      "imageCount": 8,
+      "matchedImageCount": 5,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "6eRExf-ixRw",
+          "title": "Maldives Budget Travel Guide"
+        }
+      ],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "dhiffushi",
+          "title": "Dhiffushi",
+          "href": "/maldives/islands/dhiffushi/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "maafushi",
+          "title": "Maafushi",
+          "href": "/maldives/islands/maafushi/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        },
+        {
+          "type": "transfer_route",
+          "slug": "male-to-maafushi",
+          "title": "Malé to Maafushi",
+          "href": "/maldives/transfers/male-to-maafushi/",
+          "score": 0.7
+        },
+        {
+          "type": "transfer_route",
+          "slug": "maafushi-to-male",
+          "title": "Maafushi to Malé",
+          "href": "/maldives/transfers/maafushi-to-male/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/maldives-on-a-budget-complete-2024-guide-to-affordable-travel.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel.webp",
+          "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "images/activities/maafushi-island.webp",
+          "storagePath": "legacy/images/activities/maafushi-island.webp",
+          "width": 500,
+          "height": 375
+        },
+        {
+          "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel-maldives.webp",
+          "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel-maldives.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "images/activities/sandbank-excursion-male-atoll.webp",
+          "storagePath": "legacy/images/activities/sandbank-excursion-male-atoll.webp",
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "relativePath": "images/activities/Six-Senses-Laamu.webp",
+          "storagePath": "legacy/images/activities/six-senses-laamu.webp",
+          "width": 640,
+          "height": 360
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-culture.html",
+      "sourceFile": "articles/maldives-culture.html",
+      "oldTitle": "Maldives Culture Guide | Traditions, Customs & Cultural Experiences",
+      "candidateTitle": "Maldives Culture Guide: Traditions, Customs & Cultural Experiences",
+      "candidateSlug": "maldives-culture-guide-traditions-customs-cultural-experiences",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-culture-guide-traditions-customs-cultural-experiences/",
+      "category": "Islands",
+      "metaDescription": "Maldives culture guide - Discover the rich traditions, customs, food, music, and arts of the Maldivian people. Experience authentic cultural immersion during your visit.",
+      "wordCount": 3157,
+      "paragraphCount": 57,
+      "headingCount": 28,
+      "imageCount": 14,
+      "matchedImageCount": 0,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "Sea-aiuXZNY",
+          "title": "Maldives Culture Guide"
+        }
+      ],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "thulhaadhoo",
+          "title": "Thulhaadhoo",
+          "href": "/maldives/islands/thulhaadhoo/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/maldives-culture-guide-traditions-customs-cultural-experiences.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": []
+    },
+    {
+      "oldUrl": "/articles/maldives-diving-spots.html",
+      "sourceFile": "articles/maldives-diving-spots.html",
+      "oldTitle": "Best Maldives Diving Spots | Ultimate Dive Site Guide",
+      "candidateTitle": "Best Maldives Diving Spots: Ultimate Guide",
+      "candidateSlug": "best-maldives-diving-spots-ultimate-guide",
+      "candidateNewUrl": "/maldives/travel-guide/best-maldives-diving-spots-ultimate-guide/",
+      "category": "Diving",
+      "metaDescription": "Maldives diving spots - Discover the best dive sites with detailed information on marine life, visibility, currents & difficulty levels. Complete guide to diving in Maldives for beginners to advanced divers.",
+      "wordCount": 1235,
+      "paragraphCount": 48,
+      "headingCount": 27,
+      "imageCount": 12,
+      "matchedImageCount": 3,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "lKN9hrfiuKE",
+          "title": "Maldives Diving Spots Guide"
+        }
+      ],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "maamigili",
+          "title": "Maamigili",
+          "href": "/maldives/islands/maamigili/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "rasdhoo",
+          "title": "Rasdhoo",
+          "href": "/maldives/islands/rasdhoo/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "dhigurah",
+          "title": "Dhigurah",
+          "href": "/maldives/islands/dhigurah/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        },
+        {
+          "type": "dive_site",
+          "slug": "banana-reef",
+          "title": "Banana Reef",
+          "href": "/maldives/dive-sites/banana-reef/",
+          "score": 0.7
+        },
+        {
+          "type": "dive_site",
+          "slug": "maaya-thila",
+          "title": "Maaya Thila",
+          "href": "/maldives/dive-sites/maaya-thila/",
+          "score": 0.7
+        },
+        {
+          "type": "dive_site",
+          "slug": "rasdhoo-madivaru",
+          "title": "Rasdhoo Madivaru",
+          "href": "/maldives/dive-sites/rasdhoo-madivaru/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/best-maldives-diving-spots-ultimate-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/activities/HP-reef-Male-Atoll.webp",
+          "storagePath": "legacy/images/activities/hp-reef-male-atoll.webp",
+          "width": 640,
+          "height": 427
+        },
+        {
+          "relativePath": "images/diving/Ari-Atoll-Maaya-Thila-Maldives.webp",
+          "storagePath": "legacy/images/diving/ari-atoll-maaya-thila-maldives.webp",
+          "width": 640,
+          "height": 428
+        },
+        {
+          "relativePath": "images/activities/Manta-Point-Lankanfinolhu-Island.webp",
+          "storagePath": "legacy/images/activities/manta-point-lankanfinolhu-island.webp",
+          "width": 640,
+          "height": 359
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-honeymoon-packages.html",
+      "sourceFile": "articles/maldives-honeymoon-packages.html",
+      "oldTitle": "Best Maldives Honeymoon Packages | Romantic Getaways",
+      "candidateTitle": "Best Maldives Honeymoon Packages for",
+      "candidateSlug": "best-maldives-honeymoon-packages-for",
+      "candidateNewUrl": "/maldives/travel-guide/best-maldives-honeymoon-packages-for/",
+      "category": "Islands",
+      "metaDescription": "Maldives honeymoon packages - Discover the most romantic all-inclusive packages, overwater villas & exclusive experiences. Compare top 20 honeymoon resorts with private pools, sunset cruises & couples spa treatments.",
+      "wordCount": 1142,
+      "paragraphCount": 26,
+      "headingCount": 18,
+      "imageCount": 14,
+      "matchedImageCount": 3,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "HLJ0KjimEyA",
+          "title": "Maldives Honeymoon Packages Tour"
+        }
+      ],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "baros",
+          "title": "Baros",
+          "href": "/maldives/islands/baros/",
+          "score": 0.7
+        },
+        {
+          "type": "resort",
+          "slug": "baros-maldives",
+          "title": "Baros Maldives",
+          "href": "/maldives/resorts/baros-maldives/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/best-maldives-honeymoon-packages-for.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Water-Villa.webp",
+          "storagePath": "legacy/resorts/baros-island/images/baros-maldives-water-villa.webp",
+          "width": 600,
+          "height": 337
+        },
+        {
+          "relativePath": "images/maldives/Ukulhas-island-maldives.webp",
+          "storagePath": "legacy/images/maldives/ukulhas-island-maldives.webp",
+          "width": 720,
+          "height": 405
+        },
+        {
+          "relativePath": "resorts/Four-Seasons-Huraa/images/Four-Seasons-Maldives-at-Kuda-Huraa-Sunset-Water-Bangalow1.webp",
+          "storagePath": "legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp",
+          "width": 1920,
+          "height": 1080
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-huts-on-water.html",
+      "sourceFile": "articles/maldives-huts-on-water.html",
+      "oldTitle": "Maldives Huts On Water : The Ultimate Overwater Villas",
+      "candidateTitle": "Maldives Huts On Water : The Ultimate Overwater Villas",
+      "candidateSlug": "maldives-huts-on-water-the-ultimate-overwater-villas",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-huts-on-water-the-ultimate-overwater-villas/",
+      "category": "Accommodation",
+      "metaDescription": "Discover the iconic Maldives water villas and overwater bungalows - the ultimate luxury experience. Find the best water villas, pricing, features, and insider tips for your dream vacation.",
+      "wordCount": 1992,
+      "paragraphCount": 59,
+      "headingCount": 40,
+      "imageCount": 19,
+      "matchedImageCount": 1,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "UFqQa9o8-TQ",
+          "title": "Maldives Luxury Water Villas Experience"
+        }
+      ],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "kunfunadhoo",
+          "title": "Kunfunadhoo",
+          "href": "/maldives/islands/kunfunadhoo/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/maldives-huts-on-water-the-ultimate-overwater-villas.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "resorts/Four-Seasons-Huraa/images/Four-Seasons-Maldives-at-Kuda-Huraa-Sunset-Water-Bangalow1.webp",
+          "storagePath": "legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp",
+          "width": 1920,
+          "height": 1080
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-in-april.html",
+      "sourceFile": "articles/maldives-in-april.html",
+      "oldTitle": "Maldives in April 2025 | Weather, Events & Travel Guide",
+      "candidateTitle": "Maldives in April: Perfect Weather, Lower Prices",
+      "candidateSlug": "maldives-in-april-perfect-weather-lower-prices",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-in-april-perfect-weather-lower-prices/",
+      "category": "Islands",
+      "metaDescription": "Planning a trip to Maldives in April? Discover perfect weather conditions, lower prices, special events, and insider tips for an unforgettable April vacation in paradise.",
+      "wordCount": 932,
+      "paragraphCount": 33,
+      "headingCount": 40,
+      "imageCount": 11,
+      "matchedImageCount": 2,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "-8PM1dNvSKc",
+          "title": "Maldives in April - Weather and Experience"
+        }
+      ],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/maldives-in-april-perfect-weather-lower-prices.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/maldives-sunset-cruise.webp",
+          "storagePath": "legacy/images/maldives-sunset-cruise.webp",
+          "width": 1814,
+          "height": 1360
+        },
+        {
+          "relativePath": "images/activities/full-day/full-day-activity-male-atoll.webp",
+          "storagePath": "legacy/images/activities/full-day/full-day-activity-male-atoll.webp",
+          "width": 1280,
+          "height": 720
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-in-august.html",
+      "sourceFile": "articles/maldives-in-august.html",
+      "oldTitle": "Maldives in August: Weather, Activities & Expert Travel Guide 2024",
+      "candidateTitle": "Maldives in August: Weather, Activities & Expert Travel Guide",
+      "candidateSlug": "maldives-in-august-weather-activities-expert-travel-guide",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-in-august-weather-activities-expert-travel-guide/",
+      "category": "Surfing",
+      "metaDescription": "Planning a trip to Maldives in August? Discover weather patterns, activities, prices, and expert tips for visiting during the wet season. Find the best resorts and experiences for an August vacation.",
+      "wordCount": 2495,
+      "paragraphCount": 69,
+      "headingCount": 52,
+      "imageCount": 19,
+      "matchedImageCount": 4,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/maldives-in-august-weather-activities-expert-travel-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/diving/Addu-Manta-Point.webp",
+          "storagePath": "legacy/images/diving/addu-manta-point.webp",
+          "width": 640,
+          "height": 427
+        },
+        {
+          "relativePath": "images/fishing/night-fishing-in-maldives.webp",
+          "storagePath": "legacy/images/fishing/night-fishing-in-maldives.webp",
+          "width": 945,
+          "height": 1024
+        },
+        {
+          "relativePath": "resorts/Soneva-Fushi/images/Soneva-Fushi-Maldives.webp",
+          "storagePath": "legacy/resorts/soneva-fushi/images/soneva-fushi-maldives.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "images/diving/Addu-Manta-Point.webp",
+          "storagePath": "legacy/images/diving/addu-manta-point.webp",
+          "width": 640,
+          "height": 427
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-in-december.html",
+      "sourceFile": "articles/maldives-in-december.html",
+      "oldTitle": "Maldives in December: Weather, Activities & Expert Travel Guide 2024",
+      "candidateTitle": "Maldives in December: Weather, Activities & Expert Travel Guide",
+      "candidateSlug": "maldives-in-december-weather-activities-expert-travel-guide",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-in-december-weather-activities-expert-travel-guide/",
+      "category": "Atolls",
+      "metaDescription": "Planning a trip to Maldives in December? Discover weather patterns, activities, prices, and expert tips for visiting during the peak dry season. Find the best resorts and experiences for a December vacation.",
+      "wordCount": 2700,
+      "paragraphCount": 71,
+      "headingCount": 54,
+      "imageCount": 21,
+      "matchedImageCount": 3,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "-tmrOPCI3-Q",
+          "title": "Maldives in December - What to Expect"
+        }
+      ],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/maldives-in-december-weather-activities-expert-travel-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/diving/Manta-Point-Lankanfinolhu-Island.webp",
+          "storagePath": "legacy/images/diving/manta-point-lankanfinolhu-island.webp",
+          "width": 640,
+          "height": 359
+        },
+        {
+          "relativePath": "images/fishing/Maldives-Night-Fishing.webp",
+          "storagePath": "legacy/images/fishing/maldives-night-fishing.webp",
+          "width": 640,
+          "height": 507
+        },
+        {
+          "relativePath": "images/fishing/Maldives-Night-Fishing.webp",
+          "storagePath": "legacy/images/fishing/maldives-night-fishing.webp",
+          "width": 640,
+          "height": 507
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-in-february.html",
+      "sourceFile": "articles/maldives-in-february.html",
+      "oldTitle": "Maldives in February: Weather, Activities & Expert Travel Guide 2024",
+      "candidateTitle": "Maldives in February: Weather, Activities & Expert Travel Guide",
+      "candidateSlug": "maldives-in-february-weather-activities-expert-travel-guide",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-in-february-weather-activities-expert-travel-guide/",
+      "category": "Travel Tips",
+      "metaDescription": "Planning a trip to Maldives in February? Discover excellent weather conditions, activities, prices, and expert tips for visiting during the dry season. Find the best resorts and experiences for a February vacation.",
+      "wordCount": 2784,
+      "paragraphCount": 71,
+      "headingCount": 54,
+      "imageCount": 21,
+      "matchedImageCount": 5,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "uvRrBgIp_1I",
+          "title": "Maldives in February - What to Expect"
+        }
+      ],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/maldives-in-february-weather-activities-expert-travel-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/activities/sunset-cruise-maldives.webp",
+          "storagePath": "legacy/images/activities/sunset-cruise-maldives.webp",
+          "width": 1814,
+          "height": 1360
+        },
+        {
+          "relativePath": "resorts/Baros-Island/images/Baros-Isalnd-Maldives-Resort.webp",
+          "storagePath": "legacy/resorts/baros-island/images/baros-isalnd-maldives-resort.webp",
+          "width": 480,
+          "height": 320
+        },
+        {
+          "relativePath": "resorts/Velassaru/images/Velassaru-Maldives-Beach-Villa-Pool.webp",
+          "storagePath": "legacy/resorts/velassaru/images/velassaru-maldives-beach-villa-pool.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+          "storagePath": "legacy/images/baros-maldives-island-resort-beach-dinner.webp",
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "relativePath": "images/activities/sunset-cruise-maldives.webp",
+          "storagePath": "legacy/images/activities/sunset-cruise-maldives.webp",
+          "width": 1814,
+          "height": 1360
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-in-january.html",
+      "sourceFile": "articles/maldives-in-january.html",
+      "oldTitle": "Maldives in January: Weather, Activities & Expert Travel Guide 2024",
+      "candidateTitle": "Maldives in January: Weather, Activities & Expert Travel Guide",
+      "candidateSlug": "maldives-in-january-weather-activities-expert-travel-guide",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-in-january-weather-activities-expert-travel-guide/",
+      "category": "Travel Tips",
+      "metaDescription": "Planning a trip to Maldives in January? Discover perfect weather conditions, activities, prices, and expert tips for visiting during the peak dry season. Find the best resorts and experiences for a January vacation.",
+      "wordCount": 2744,
+      "paragraphCount": 69,
+      "headingCount": 53,
+      "imageCount": 20,
+      "matchedImageCount": 6,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "K4RmfjxrmyY",
+          "title": "Maldives in January - What to Expect"
+        }
+      ],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/maldives-in-january-weather-activities-expert-travel-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/fishing/Maldives-Night-Fishing.webp",
+          "storagePath": "legacy/images/fishing/maldives-night-fishing.webp",
+          "width": 640,
+          "height": 507
+        },
+        {
+          "relativePath": "images/activities/sunset-cruise-maldives.webp",
+          "storagePath": "legacy/images/activities/sunset-cruise-maldives.webp",
+          "width": 1814,
+          "height": 1360
+        },
+        {
+          "relativePath": "resorts/Soneva-Fushi/images/Soneva-Fushi-Island-Resort-Maldives.webp",
+          "storagePath": "legacy/resorts/soneva-fushi/images/soneva-fushi-island-resort-maldives.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "resorts/Six-Senses-Laamu/images/Six-Senses-Laamu-Maldives-Beach.webp",
+          "storagePath": "legacy/resorts/six-senses-laamu/images/six-senses-laamu-maldives-beach.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Activities.webp",
+          "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-activities.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "images/fishing/Maldives-Night-Fishing.webp",
+          "storagePath": "legacy/images/fishing/maldives-night-fishing.webp",
+          "width": 640,
+          "height": 507
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-in-july.html",
+      "sourceFile": "articles/maldives-in-july.html",
+      "oldTitle": "Maldives in July: Weather, Activities & Expert Travel Guide 2024",
+      "candidateTitle": "Maldives in July: Weather, Activities & Expert Travel Guide",
+      "candidateSlug": "maldives-in-july-weather-activities-expert-travel-guide",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-in-july-weather-activities-expert-travel-guide/",
+      "category": "Surfing",
+      "metaDescription": "Planning a trip to Maldives in July? Discover weather patterns, activities, prices, and expert tips for visiting during the wet season. Find the best resorts and experiences for a July vacation.",
+      "wordCount": 2426,
+      "paragraphCount": 67,
+      "headingCount": 51,
+      "imageCount": 19,
+      "matchedImageCount": 4,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "cGucjHAbmVE",
+          "title": "Maldives in July - What to Expect"
+        }
+      ],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/maldives-in-july-weather-activities-expert-travel-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/diving/Addu-Manta-Point.webp",
+          "storagePath": "legacy/images/diving/addu-manta-point.webp",
+          "width": 640,
+          "height": 427
+        },
+        {
+          "relativePath": "images/diving/Addu-Manta-Point.webp",
+          "storagePath": "legacy/images/diving/addu-manta-point.webp",
+          "width": 640,
+          "height": 427
+        },
+        {
+          "relativePath": "images/fishing/night-fishing-in-maldives.webp",
+          "storagePath": "legacy/images/fishing/night-fishing-in-maldives.webp",
+          "width": 945,
+          "height": 1024
+        },
+        {
+          "relativePath": "images/activities/full-day/full-day-activity-male-atoll.webp",
+          "storagePath": "legacy/images/activities/full-day/full-day-activity-male-atoll.webp",
+          "width": 1280,
+          "height": 720
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-in-june.html",
+      "sourceFile": "articles/maldives-in-june.html",
+      "oldTitle": "Maldives in June | Weather, Activities & Travel Guide",
+      "candidateTitle": "Maldives in June: Weather, Activities & Travel Guide",
+      "candidateSlug": "maldives-in-june-weather-activities-travel-guide",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-in-june-weather-activities-travel-guide/",
+      "category": "Atolls",
+      "metaDescription": "Planning a trip to Maldives in June? Discover the weather, activities, prices, and insider tips for visiting the Maldives during June - the start of the wet season with great deals and fewer crowds.",
+      "wordCount": 2023,
+      "paragraphCount": 67,
+      "headingCount": 49,
+      "imageCount": 18,
+      "matchedImageCount": 3,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "jPkD9zEh4o4",
+          "title": "Maldives in June - What to Expect"
+        }
+      ],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        },
+        {
+          "type": "surf_break",
+          "slug": "chickens",
+          "title": "Chickens",
+          "href": "/maldives/surf-breaks/chickens/",
+          "score": 0.7
+        },
+        {
+          "type": "surf_break",
+          "slug": "sultans",
+          "title": "Sultans",
+          "href": "/maldives/surf-breaks/sultans/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/maldives-in-june-weather-activities-travel-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/diving/Addu-Manta-Point.webp",
+          "storagePath": "legacy/images/diving/addu-manta-point.webp",
+          "width": 640,
+          "height": 427
+        },
+        {
+          "relativePath": "images/fishing/night-fishing-in-maldives.webp",
+          "storagePath": "legacy/images/fishing/night-fishing-in-maldives.webp",
+          "width": 945,
+          "height": 1024
+        },
+        {
+          "relativePath": "images/activities/full-day/full-day-activity-male-atoll.webp",
+          "storagePath": "legacy/images/activities/full-day/full-day-activity-male-atoll.webp",
+          "width": 1280,
+          "height": 720
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-in-march.html",
+      "sourceFile": "articles/maldives-in-march.html",
+      "oldTitle": "Maldives in March: Weather, Activities & Expert Travel Guide 2024",
+      "candidateTitle": "Maldives in March: Weather, Activities & Expert Travel Guide",
+      "candidateSlug": "maldives-in-march-weather-activities-expert-travel-guide",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-in-march-weather-activities-expert-travel-guide/",
+      "category": "Travel Tips",
+      "metaDescription": "Planning a trip to Maldives in March? Discover transitional weather conditions, activities, prices, and expert tips for visiting during this shoulder season. Find the best resorts and experiences for a March vacation.",
+      "wordCount": 2586,
+      "paragraphCount": 61,
+      "headingCount": 58,
+      "imageCount": 19,
+      "matchedImageCount": 4,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "DzttfHXqBt0",
+          "title": "Maldives in March - What to Expect"
+        }
+      ],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/maldives-in-march-weather-activities-expert-travel-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/activities/sunset-cruise-maldives.webp",
+          "storagePath": "legacy/images/activities/sunset-cruise-maldives.webp",
+          "width": 1814,
+          "height": 1360
+        },
+        {
+          "relativePath": "images/activities/sunset-cruise-maldives.webp",
+          "storagePath": "legacy/images/activities/sunset-cruise-maldives.webp",
+          "width": 1814,
+          "height": 1360
+        },
+        {
+          "relativePath": "resorts/Lily-beach/images/Lily-Beach-Resort-and-Spa-Maldives.webp",
+          "storagePath": "legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "resorts/Velassaru/images/Velassaru-Maldives-Beach-Villa-Pool.webp",
+          "storagePath": "legacy/resorts/velassaru/images/velassaru-maldives-beach-villa-pool.webp",
+          "width": 1920,
+          "height": 1080
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-in-may.html",
+      "sourceFile": "articles/maldives-in-may.html",
+      "oldTitle": "Maldives in May: Weather, Prices & What to Expect | 2024 Guide",
+      "candidateTitle": "Maldives in May: The Perfect Shoulder Season Escape",
+      "candidateSlug": "maldives-in-may-the-perfect-shoulder-season-escape",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-in-may-the-perfect-shoulder-season-escape/",
+      "category": "Atolls",
+      "metaDescription": "Planning a trip to Maldives in May? Discover the perfect balance of weather, prices, and activities. Our comprehensive guide covers everything you need to know about visiting the Maldives in May.",
+      "wordCount": 1965,
+      "paragraphCount": 59,
+      "headingCount": 48,
+      "imageCount": 17,
+      "matchedImageCount": 2,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "osYS5xv2OMQ",
+          "title": "Maldives in May - What to Expect"
+        }
+      ],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/maldives-in-may-the-perfect-shoulder-season-escape.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach.webp",
+          "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach.webp",
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "relativePath": "images/activities/full-day/full-day-activity-male-atoll.webp",
+          "storagePath": "legacy/images/activities/full-day/full-day-activity-male-atoll.webp",
+          "width": 1280,
+          "height": 720
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-in-november.html",
+      "sourceFile": "articles/maldives-in-november.html",
+      "oldTitle": "Maldives in November: Weather, Activities & Expert Travel Guide 2024",
+      "candidateTitle": "Maldives in November: Weather, Activities & Expert Travel Guide",
+      "candidateSlug": "maldives-in-november-weather-activities-expert-travel-guide",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-in-november-weather-activities-expert-travel-guide/",
+      "category": "Atolls",
+      "metaDescription": "Planning a trip to Maldives in November? Discover weather patterns, activities, prices, and expert tips for visiting during the start of the dry season. Find the best resorts and experiences for a November vacation.",
+      "wordCount": 2591,
+      "paragraphCount": 71,
+      "headingCount": 54,
+      "imageCount": 21,
+      "matchedImageCount": 6,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "kSmRO7irtTA",
+          "title": "Maldives in November - What to Expect"
+        }
+      ],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/maldives-in-november-weather-activities-expert-travel-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/diving/Addu-Manta-Point.webp",
+          "storagePath": "legacy/images/diving/addu-manta-point.webp",
+          "width": 640,
+          "height": 427
+        },
+        {
+          "relativePath": "images/fishing/night-fishing-in-maldives.webp",
+          "storagePath": "legacy/images/fishing/night-fishing-in-maldives.webp",
+          "width": 945,
+          "height": 1024
+        },
+        {
+          "relativePath": "resorts/Baros-Island/images/Baros-Maldives.webp",
+          "storagePath": "legacy/resorts/baros-island/images/baros-maldives.webp",
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "relativePath": "resorts/Velassaru/images/Velassaru-Maldives.webp",
+          "storagePath": "legacy/resorts/velassaru/images/velassaru-maldives.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "resorts/Lily-beach/images/Lily-Beach-Resort-and-Spa-Maldives.webp",
+          "storagePath": "legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "images/fishing/night-fishing-in-maldives.webp",
+          "storagePath": "legacy/images/fishing/night-fishing-in-maldives.webp",
+          "width": 945,
+          "height": 1024
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-in-october.html",
+      "sourceFile": "articles/maldives-in-october.html",
+      "oldTitle": "Maldives in October: Weather, Activities & Expert Travel Guide 2024",
+      "candidateTitle": "Maldives in October: Weather, Activities & Expert Travel Guide",
+      "candidateSlug": "maldives-in-october-weather-activities-expert-travel-guide",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-in-october-weather-activities-expert-travel-guide/",
+      "category": "Atolls",
+      "metaDescription": "Planning a trip to Maldives in October? Discover weather patterns, activities, prices, and expert tips for visiting during this transitional month. Find the best resorts and experiences for an October vacation.",
+      "wordCount": 2645,
+      "paragraphCount": 69,
+      "headingCount": 52,
+      "imageCount": 19,
+      "matchedImageCount": 4,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "T15IaKJUWbw",
+          "title": "Maldives in October - What to Expect"
+        }
+      ],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/maldives-in-october-weather-activities-expert-travel-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/activities/sandbank-excursion-male-atoll.webp",
+          "storagePath": "legacy/images/activities/sandbank-excursion-male-atoll.webp",
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "relativePath": "images/fishing/Maldives-Fishing-trip.webp",
+          "storagePath": "legacy/images/fishing/maldives-fishing-trip.webp",
+          "width": 1024,
+          "height": 576
+        },
+        {
+          "relativePath": "resorts/Four-Seasons-Huraa/images/Four-Seasons-Maldives-at-Kuda-Huraa-Sunset-Water-Bangalow1.webp",
+          "storagePath": "legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+          "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp",
+          "width": 1280,
+          "height": 720
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-in-september.html",
+      "sourceFile": "articles/maldives-in-september.html",
+      "oldTitle": "Maldives in September: Weather, Activities & Expert Travel Guide 2024",
+      "candidateTitle": "Maldives in September: Weather, Activities & Expert Travel Guide",
+      "candidateSlug": "maldives-in-september-weather-activities-expert-travel-guide",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-in-september-weather-activities-expert-travel-guide/",
+      "category": "Surfing",
+      "metaDescription": "Planning a trip to Maldives in September? Discover weather patterns, activities, prices, and expert tips for visiting during the late wet season. Find the best resorts and experiences for a September vacation.",
+      "wordCount": 2632,
+      "paragraphCount": 69,
+      "headingCount": 52,
+      "imageCount": 19,
+      "matchedImageCount": 4,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "n_EUtg20kho",
+          "title": "Maldives in September - What to Expect"
+        }
+      ],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/maldives-in-september-weather-activities-expert-travel-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/diving/Addu-Manta-Point.webp",
+          "storagePath": "legacy/images/diving/addu-manta-point.webp",
+          "width": 640,
+          "height": 427
+        },
+        {
+          "relativePath": "images/fishing/night-fishing-in-maldives.webp",
+          "storagePath": "legacy/images/fishing/night-fishing-in-maldives.webp",
+          "width": 945,
+          "height": 1024
+        },
+        {
+          "relativePath": "resorts/Soneva-Fushi/images/Soneva-Fushi-Maldives.webp",
+          "storagePath": "legacy/resorts/soneva-fushi/images/soneva-fushi-maldives.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "images/diving/Addu-Manta-Point.webp",
+          "storagePath": "legacy/images/diving/addu-manta-point.webp",
+          "width": 640,
+          "height": 427
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-international-airport.html",
+      "sourceFile": "articles/maldives-international-airport.html",
+      "oldTitle": "Malé Airport | Maldives International and Domestic Airport Guide",
+      "candidateTitle": "Malé Airport | Velana International Airport",
+      "candidateSlug": "male-airport-velana-international-airport",
+      "candidateNewUrl": "/maldives/travel-guide/male-airport-velana-international-airport/",
+      "category": "Airports",
+      "metaDescription": "Discover all you need to know about Malé Airport, also known as Velana International Airport, the primary gateway to the Maldives. Find information on flights, facilities, and more.",
+      "wordCount": 302,
+      "paragraphCount": 5,
+      "headingCount": 3,
+      "imageCount": 0,
+      "matchedImageCount": 0,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [
+        {
+          "type": "atoll",
+          "slug": "male-city",
+          "title": "Malé City",
+          "href": "/maldives/atolls/male-city/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        },
+        {
+          "type": "transfer_route",
+          "slug": "velana-international-airport-to-male",
+          "title": "Velana International Airport to Malé",
+          "href": "/maldives/transfers/velana-international-airport-to-male/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/male-airport-velana-international-airport.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": []
+    },
+    {
+      "oldUrl": "/articles/maldives-islands-ar.html",
+      "sourceFile": "articles/maldives-islands-ar.html",
+      "oldTitle": "جزر المالديف الفنادق ودليل المطار",
+      "candidateTitle": "جزر المالديف الفنادق ودليل المطار",
+      "candidateSlug": "maldives-islands-ar",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-islands-ar/",
+      "category": "Atolls",
+      "metaDescription": "أفضل دليل محلي في بلد جزر المالديف. قراءة هذا الدليل أو الدردشة عبر الإنترنت للحصول على أي معلومات وحجز أفضل الفنادق السياحية مع الأنشطة.",
+      "wordCount": 2230,
+      "paragraphCount": 34,
+      "headingCount": 18,
+      "imageCount": 53,
+      "matchedImageCount": 0,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "hulhumale",
+          "title": "Hulhumalé",
+          "href": "/maldives/islands/hulhumale/",
+          "score": 0.7
+        },
+        {
+          "type": "transfer_route",
+          "slug": "male-to-hulhumale",
+          "title": "Malé to Hulhumalé",
+          "href": "/maldives/transfers/male-to-hulhumale/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/maldives-islands-ar.html",
+      "migrationStatus": "needs-review",
+      "confidence": "needs-review",
+      "nonEnglishTitle": true,
+      "embeddedImages": []
+    },
+    {
+      "oldUrl": "/articles/maldives-islands-jp.html",
+      "sourceFile": "articles/maldives-islands-jp.html",
+      "oldTitle": "訪問者のためのモルディブ島",
+      "candidateTitle": "モルディブの国",
+      "candidateSlug": "maldives-islands-jp",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-islands-jp/",
+      "category": "Maldives Travel",
+      "metaDescription": "モルディブの国で最高のローカルガイド。このガイドを読むか、オンラインでチャットして情報を入手し、アクティビティ付きの最高の観光ホテルを予約してください。私たちの国は非常にユニークであり、情報の欠如は旅行者に不便をもたらす可能性があります。",
+      "wordCount": 80,
+      "paragraphCount": 22,
+      "headingCount": 13,
+      "imageCount": 14,
+      "matchedImageCount": 0,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "hulhudhuffaaru",
+          "title": "Hulhudhuffaaru",
+          "href": "/maldives/islands/hulhudhuffaaru/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "vaadhoo",
+          "title": "Vaadhoo",
+          "href": "/maldives/islands/vaadhoo/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "thoddoo",
+          "title": "Thoddoo",
+          "href": "/maldives/islands/thoddoo/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "vaadhoo-gaafu-dhaalu",
+          "title": "Vaadhoo",
+          "href": "/maldives/islands/vaadhoo-gaafu-dhaalu/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "fuvahmulah",
+          "title": "Fuvahmulah",
+          "href": "/maldives/islands/fuvahmulah/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/maldives-islands-jp.html",
+      "migrationStatus": "needs-review",
+      "confidence": "needs-review",
+      "nonEnglishTitle": true,
+      "embeddedImages": []
+    },
+    {
+      "oldUrl": "/articles/maldives-islands-kr.html",
+      "sourceFile": "articles/maldives-islands-kr.html",
+      "oldTitle": "몰디브 관광 안내",
+      "candidateTitle": "몰디브 관광 안내",
+      "candidateSlug": "maldives-islands-kr",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-islands-kr/",
+      "category": "Atolls",
+      "metaDescription": "몰디브에서 방문자가 필요로하는 모든 것이 실시간 채팅으로 제공됩니다. 필요한 정보 나 활동이나 호텔을 찾을 수 있습니다.",
+      "wordCount": 1427,
+      "paragraphCount": 23,
+      "headingCount": 13,
+      "imageCount": 14,
+      "matchedImageCount": 0,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        },
+        {
+          "type": "transfer_route",
+          "slug": "velana-international-airport-to-male",
+          "title": "Velana International Airport to Malé",
+          "href": "/maldives/transfers/velana-international-airport-to-male/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/maldives-islands-kr.html",
+      "migrationStatus": "needs-review",
+      "confidence": "needs-review",
+      "nonEnglishTitle": true,
+      "embeddedImages": []
+    },
+    {
+      "oldUrl": "/articles/maldives-islands-ru.html",
+      "sourceFile": "articles/maldives-islands-ru.html",
+      "oldTitle": "Мальдивские острова Страна для посетителей",
+      "candidateTitle": "Мальдивские острова",
+      "candidateSlug": "maldives-islands-ru",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-islands-ru/",
+      "category": "Maldives Travel",
+      "metaDescription": "Найдите все ответы, связанные с вашей поездкой на Мальдивы, или живите с нами в чате, если у вас есть какие-либо вопросы",
+      "wordCount": 2127,
+      "paragraphCount": 34,
+      "headingCount": 18,
+      "imageCount": 53,
+      "matchedImageCount": 0,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/maldives-islands-ru.html",
+      "migrationStatus": "needs-review",
+      "confidence": "needs-review",
+      "nonEnglishTitle": true,
+      "embeddedImages": []
+    },
+    {
+      "oldUrl": "/articles/maldives-people.html",
+      "sourceFile": "articles/maldives-people.html",
+      "oldTitle": "The People of the Maldives: A Cultural Tapestry of Resilience and Tradition",
+      "candidateTitle": "The People of the Maldives: A Cultural Tapestry of Resilience and Tradition",
+      "candidateSlug": "the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition",
+      "candidateNewUrl": "/maldives/travel-guide/the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition/",
+      "category": "Islands",
+      "metaDescription": "The Maldivian people, or Dhivehis, are a unique blend of various cultural influences. Historically, the Maldives has been a crossroads of trade and migration. Its population is a melting pot of South Asian, Arab, and African heritage, with influences from India, Sri Lanka, and even the Swahili coast.",
+      "wordCount": 1949,
+      "paragraphCount": 30,
+      "headingCount": 21,
+      "imageCount": 14,
+      "matchedImageCount": 0,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "fuvahmulah",
+          "title": "Fuvahmulah",
+          "href": "/maldives/islands/fuvahmulah/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": []
+    },
+    {
+      "oldUrl": "/articles/maldives-private-island.html",
+      "sourceFile": "articles/maldives-private-island.html",
+      "oldTitle": "Maldives Private Islands: Ultimate Luxury Getaway Guide",
+      "candidateTitle": "Maldives Private Islands: Ultimate Luxury Getaway Guide",
+      "candidateSlug": "maldives-private-islands-ultimate-luxury-getaway-guide",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-private-islands-ultimate-luxury-getaway-guide/",
+      "category": "Islands",
+      "metaDescription": "Discover exclusive Maldives private islands for the ultimate luxury vacation. Find private island resorts, rentals, and experiences for a secluded paradise getaway.",
+      "wordCount": 2054,
+      "paragraphCount": 76,
+      "headingCount": 48,
+      "imageCount": 25,
+      "matchedImageCount": 5,
+      "videoCount": 1,
+      "videos": [
+        {
+          "youtubeId": "DzttfHXqBt0",
+          "title": "Maldives Private Island Experience"
+        }
+      ],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "lankanfushi",
+          "title": "Lankanfushi",
+          "href": "/maldives/islands/lankanfushi/",
+          "score": 0.7
+        },
+        {
+          "type": "resort",
+          "slug": "gili-lankanfushi",
+          "title": "Gili Lankanfushi",
+          "href": "/maldives/resorts/gili-lankanfushi/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/maldives-private-islands-ultimate-luxury-getaway-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Lagoon-Villa.webp",
+          "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-lagoon-villa.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Activities.webp",
+          "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-activities.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+          "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp",
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+          "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp",
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "relativePath": "resorts/Gili-Lankanfushi/images/Gili-Lankanfushi-Maldives-Activities.webp",
+          "storagePath": "legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-activities.webp",
+          "width": 1920,
+          "height": 1080
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/maldives-religion.html",
+      "sourceFile": "articles/maldives-religion.html",
+      "oldTitle": "Maldives Religion: Before Islam, Percentage, Demographics, and Cultural Impact",
+      "candidateTitle": "Maldives Religion: A Comprehensive Analysis of Faith, History, and Demographics",
+      "candidateSlug": "maldives-religion-a-comprehensive-analysis-of-faith-history-and-demographics",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-religion-a-comprehensive-analysis-of-faith-history-and-demographics/",
+      "category": "Atolls",
+      "metaDescription": "Explore the Maldives religion landscape, including its Islamic dominance, historical religions, and demographic insights.",
+      "wordCount": 893,
+      "paragraphCount": 15,
+      "headingCount": 17,
+      "imageCount": 10,
+      "matchedImageCount": 0,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/maldives-religion-a-comprehensive-analysis-of-faith-history-and-demographics.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": []
+    },
+    {
+      "oldUrl": "/articles/maldives-weather.html",
+      "sourceFile": "articles/maldives-weather.html",
+      "oldTitle": "Maldives Weather Guide | Month by Month Climate Information",
+      "candidateTitle": "Maldives Weather Guide: Month by Month Climate Information for",
+      "candidateSlug": "maldives-weather-guide-month-by-month-climate-information-for",
+      "candidateNewUrl": "/maldives/travel-guide/maldives-weather-guide-month-by-month-climate-information-for/",
+      "category": "Diving",
+      "metaDescription": "Maldives weather guide - Detailed monthly climate information with temperature, rainfall, humidity & sunshine data. Find the best time to visit Maldives based on your preferences.",
+      "wordCount": 1419,
+      "paragraphCount": 40,
+      "headingCount": 23,
+      "imageCount": 5,
+      "matchedImageCount": 0,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "baros",
+          "title": "Baros",
+          "href": "/maldives/islands/baros/",
+          "score": 0.7
+        },
+        {
+          "type": "resort",
+          "slug": "baros-maldives",
+          "title": "Baros Maldives",
+          "href": "/maldives/resorts/baros-maldives/",
+          "score": 0.7
+        },
+        {
+          "type": "surf_break",
+          "slug": "chickens",
+          "title": "Chickens",
+          "href": "/maldives/surf-breaks/chickens/",
+          "score": 0.7
+        },
+        {
+          "type": "surf_break",
+          "slug": "sultans",
+          "title": "Sultans",
+          "href": "/maldives/surf-breaks/sultans/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/maldives-weather-guide-month-by-month-climate-information-for.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": []
+    },
+    {
+      "oldUrl": "/articles/malediven-urlaub.html",
+      "sourceFile": "articles/malediven-urlaub.html",
+      "oldTitle": "Malediven besten Urlaub",
+      "candidateTitle": "Malediven Urlaub",
+      "candidateSlug": "malediven-urlaub",
+      "candidateNewUrl": "/maldives/travel-guide/malediven-urlaub/",
+      "category": "Transportation",
+      "metaDescription": "Alles, was ein Besucher von den Malediven braucht, ist hier mit Live-Chat. Hier finden Sie Informationen, die Sie benötigen, Aktivitäten oder ein Hotel zum Verweilen",
+      "wordCount": 350,
+      "paragraphCount": 11,
+      "headingCount": 5,
+      "imageCount": 39,
+      "matchedImageCount": 0,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/malediven-urlaub.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": []
+    },
+    {
+      "oldUrl": "/articles/most-famous-places-in-the-world-tovisit.html",
+      "sourceFile": "articles/most-famous-places-in-the-world-tovisit.html",
+      "oldTitle": "Most Famous Places In The World To Visit",
+      "candidateTitle": "Most Famous Places In The World",
+      "candidateSlug": "most-famous-places-in-the-world",
+      "candidateNewUrl": "/maldives/travel-guide/most-famous-places-in-the-world/",
+      "category": "Transportation",
+      "metaDescription": "List of the most famouse places and destinations in the world with facts for tourists",
+      "wordCount": 648,
+      "paragraphCount": 14,
+      "headingCount": 10,
+      "imageCount": 10,
+      "matchedImageCount": 0,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/most-famous-places-in-the-world.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": []
+    },
+    {
+      "oldUrl": "/articles/sea-of-stars-maldives.html",
+      "sourceFile": "articles/sea-of-stars-maldives.html",
+      "oldTitle": "Sea of Stars Maldives | Magical Bioluminescent Beaches & How to Experience Them",
+      "candidateTitle": "Sea of Stars in Maldives",
+      "candidateSlug": "sea-of-stars-in-maldives",
+      "candidateNewUrl": "/maldives/travel-guide/sea-of-stars-in-maldives/",
+      "category": "Maldives Travel",
+      "metaDescription": "Discover the magical Sea of Stars in Maldives - a natural phenomenon where bioluminescent plankton creates glowing blue waters on beaches at night. Learn about the best islands, seasons, and tours to experience this breathtaking natural wonder.",
+      "wordCount": 14,
+      "paragraphCount": 1,
+      "headingCount": 0,
+      "imageCount": 0,
+      "matchedImageCount": 0,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/sea-of-stars-in-maldives.html",
+      "migrationStatus": "needs-review",
+      "confidence": "needs-review",
+      "nonEnglishTitle": false,
+      "embeddedImages": []
+    },
+    {
+      "oldUrl": "/articles/the-maldives-islands-cn.html",
+      "sourceFile": "articles/the-maldives-islands-cn.html",
+      "oldTitle": "马尔代夫 旅游 和 首都 与 旅游景点",
+      "candidateTitle": "马尔代夫 旅游 和 首都 与 旅游景点",
+      "candidateSlug": "the-maldives-islands-cn",
+      "candidateNewUrl": "/maldives/travel-guide/the-maldives-islands-cn/",
+      "category": "Maldives Travel",
+      "metaDescription": "马尔代夫最好的当地向导。阅读本指南或在线聊天以获取信息，并预订有活动的最佳旅游酒店。 我们的国家非常独特，缺乏信息会给旅行者带来不便。",
+      "wordCount": 65,
+      "paragraphCount": 18,
+      "headingCount": 12,
+      "imageCount": 9,
+      "matchedImageCount": 0,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "dhiffushi",
+          "title": "Dhiffushi",
+          "href": "/maldives/islands/dhiffushi/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "gulhi",
+          "title": "Gulhi",
+          "href": "/maldives/islands/gulhi/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "guraidhoo",
+          "title": "Guraidhoo",
+          "href": "/maldives/islands/guraidhoo/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "huraa",
+          "title": "Huraa",
+          "href": "/maldives/islands/huraa/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "maafushi",
+          "title": "Maafushi",
+          "href": "/maldives/islands/maafushi/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "thulusdhoo",
+          "title": "Thulusdhoo",
+          "href": "/maldives/islands/thulusdhoo/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "guraidhoo-thaa",
+          "title": "Guraidhoo",
+          "href": "/maldives/islands/guraidhoo-thaa/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/the-maldives-islands-cn.html",
+      "migrationStatus": "needs-review",
+      "confidence": "needs-review",
+      "nonEnglishTitle": true,
+      "embeddedImages": []
+    },
+    {
+      "oldUrl": "/articles/things-to-do-in-maldives-for-couples.html",
+      "sourceFile": "articles/things-to-do-in-maldives-for-couples.html",
+      "oldTitle": "Romantic Things to Do in the Maldives for Couples",
+      "candidateTitle": "Romantic Things to Do in the Maldives for Couples",
+      "candidateSlug": "romantic-things-to-do-in-the-maldives-for-couples",
+      "candidateNewUrl": "/maldives/travel-guide/romantic-things-to-do-in-the-maldives-for-couples/",
+      "category": "Accommodation",
+      "metaDescription": "The Maldives is an idyllic destination for couples, offering a perfect blend of romance, adventure, and tranquility. With its pristine beaches, crystal-clear waters, and luxurious resorts, it’s no wonder the Maldives is a top choice for honeymooners and couples seeking a romantic escape.",
+      "wordCount": 1605,
+      "paragraphCount": 41,
+      "headingCount": 40,
+      "imageCount": 40,
+      "matchedImageCount": 4,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/romantic-things-to-do-in-the-maldives-for-couples.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/articles/dolphin-cruise.webp",
+          "storagePath": "legacy/images/articles/dolphin-cruise.webp",
+          "width": 640,
+          "height": 452
+        },
+        {
+          "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+          "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp",
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "relativePath": "images/fishing/Maldives-Night-Fishing.webp",
+          "storagePath": "legacy/images/fishing/maldives-night-fishing.webp",
+          "width": 640,
+          "height": 507
+        },
+        {
+          "relativePath": "images/diving/Meedhoo-Coral-Garden.webp",
+          "storagePath": "legacy/images/diving/meedhoo-coral-garden.webp",
+          "width": 640,
+          "height": 480
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/things-to-do-in-maldives-for-family.html",
+      "sourceFile": "articles/things-to-do-in-maldives-for-family.html",
+      "oldTitle": "Things to Do in the Maldives for Family: A Comprehensive Guide",
+      "candidateTitle": "Things to Do in the Maldives for Family: A Comprehensive Guide",
+      "candidateSlug": "things-to-do-in-the-maldives-for-family-a-comprehensive-guide",
+      "candidateNewUrl": "/maldives/travel-guide/things-to-do-in-the-maldives-for-family-a-comprehensive-guide/",
+      "category": "Islands",
+      "metaDescription": "Explore the best things to do in the Maldives for family, from snorkeling and diving to cultural experiences and beach relaxation.",
+      "wordCount": 3630,
+      "paragraphCount": 77,
+      "headingCount": 42,
+      "imageCount": 35,
+      "matchedImageCount": 7,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "baros",
+          "title": "Baros",
+          "href": "/maldives/islands/baros/",
+          "score": 0.7
+        },
+        {
+          "type": "resort",
+          "slug": "baros-maldives",
+          "title": "Baros Maldives",
+          "href": "/maldives/resorts/baros-maldives/",
+          "score": 0.7
+        },
+        {
+          "type": "package",
+          "slug": "maldives-honeymoon-escape-soneva-fushi",
+          "title": "Maldives Honeymoon Escape — Soneva Fushi",
+          "href": "/maldives/packages/maldives-honeymoon-escape-soneva-fushi/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/things-to-do-in-the-maldives-for-family-a-comprehensive-guide.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/maldives-sunset-cruise.webp",
+          "storagePath": "legacy/images/maldives-sunset-cruise.webp",
+          "width": 1814,
+          "height": 1360
+        },
+        {
+          "relativePath": "images/fishing/night-fishing-in-maldives.webp",
+          "storagePath": "legacy/images/fishing/night-fishing-in-maldives.webp",
+          "width": 945,
+          "height": 1024
+        },
+        {
+          "relativePath": "resorts/Soneva-Fushi/images/Soneva-Fushi-Kunfunadhoo-Island-Maldives-Resort.webp",
+          "storagePath": "legacy/resorts/soneva-fushi/images/soneva-fushi-kunfunadhoo-island-maldives-resort.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "resorts/Kurumba/images/Kurumba-Maldives-Vihamanaafushi-Resort.webp",
+          "storagePath": "legacy/resorts/kurumba/images/kurumba-maldives-vihamanaafushi-resort.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "resorts/Lily-beach/images/Lily-Beach-Resort-and-Spa-Maldives.webp",
+          "storagePath": "legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives.webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "relativePath": "images/male/male-city-beach.webp",
+          "storagePath": "legacy/images/male/male-city-beach.webp",
+          "width": 2048,
+          "height": 2560
+        },
+        {
+          "relativePath": "images/activities/maafushi-island.webp",
+          "storagePath": "legacy/images/activities/maafushi-island.webp",
+          "width": 500,
+          "height": 375
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/things-to-do-in-maldives.html",
+      "sourceFile": "articles/things-to-do-in-maldives.html",
+      "oldTitle": "Things to do in Maldives",
+      "candidateTitle": "Things to do in Maldives",
+      "candidateSlug": "things-to-do-in-maldives",
+      "candidateNewUrl": "/maldives/travel-guide/things-to-do-in-maldives/",
+      "category": "Diving",
+      "metaDescription": "Top 12 things to do in Maldives during your holiday. Most of these activities are available in all resorts.",
+      "wordCount": 751,
+      "paragraphCount": 16,
+      "headingCount": 12,
+      "imageCount": 10,
+      "matchedImageCount": 2,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "fuvahmulah",
+          "title": "Fuvahmulah",
+          "href": "/maldives/islands/fuvahmulah/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        },
+        {
+          "type": "package",
+          "slug": "maldives-fishing-island-hopping-package",
+          "title": "Maldives Fishing & Island Hopping Package",
+          "href": "/maldives/packages/maldives-fishing-island-hopping-package/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/things-to-do-in-maldives.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/articles/fishing.webp",
+          "storagePath": "legacy/images/articles/fishing.webp",
+          "width": 640,
+          "height": 452
+        },
+        {
+          "relativePath": "images/articles/dolphin-cruise.webp",
+          "storagePath": "legacy/images/articles/dolphin-cruise.webp",
+          "width": 640,
+          "height": 452
+        }
+      ]
+    },
+    {
+      "oldUrl": "/articles/things-to-do-on-honeymoon.html",
+      "sourceFile": "articles/things-to-do-on-honeymoon.html",
+      "oldTitle": "Romantic Things to Do in the Maldives for Couples",
+      "candidateTitle": "Romantic Things to Do in the Maldives for Couples",
+      "candidateSlug": "romantic-things-to-do-in-the-maldives-for-couples-",
+      "candidateNewUrl": "/maldives/travel-guide/romantic-things-to-do-in-the-maldives-for-couples-/",
+      "category": "Accommodation",
+      "metaDescription": "The Maldives is an idyllic destination for couples, offering a perfect blend of romance, adventure, and tranquility. With its pristine beaches, crystal-clear waters, and luxurious resorts, it’s no wonder the Maldives is a top choice for honeymooners and couples seeking a romantic escape.",
+      "wordCount": 1593,
+      "paragraphCount": 41,
+      "headingCount": 40,
+      "imageCount": 40,
+      "matchedImageCount": 4,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [],
+      "bodyFile": "data/maldives/content/articles/romantic-things-to-do-in-the-maldives-for-couples-.html",
+      "migrationStatus": "needs-review",
+      "confidence": "needs-review",
+      "nonEnglishTitle": false,
+      "embeddedImages": [
+        {
+          "relativePath": "images/articles/dolphin-cruise.webp",
+          "storagePath": "legacy/images/articles/dolphin-cruise.webp",
+          "width": 640,
+          "height": 452
+        },
+        {
+          "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Island-Resort-Beach-Dinner.webp",
+          "storagePath": "legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp",
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "relativePath": "images/fishing/Maldives-Night-Fishing.webp",
+          "storagePath": "legacy/images/fishing/maldives-night-fishing.webp",
+          "width": 640,
+          "height": 507
+        },
+        {
+          "relativePath": "images/diving/Meedhoo-Coral-Garden.webp",
+          "storagePath": "legacy/images/diving/meedhoo-coral-garden.webp",
+          "width": 640,
+          "height": 480
+        }
+      ],
+      "duplicateOfSlug": "romantic-things-to-do-in-the-maldives-for-couples"
+    },
+    {
+      "oldUrl": "/articles/underwater-hotel-in-maldives.html",
+      "sourceFile": "articles/underwater-hotel-in-maldives.html",
+      "oldTitle": "Underwater Hotels and Restaurents In Maldives",
+      "candidateTitle": "Underwater Hotels and Restaurants In Maldives",
+      "candidateSlug": "underwater-hotels-and-restaurants-in-maldives",
+      "candidateNewUrl": "/maldives/travel-guide/underwater-hotels-and-restaurants-in-maldives/",
+      "category": "Islands",
+      "metaDescription": "List of underwater hotels and restaurants in maldives.",
+      "wordCount": 1604,
+      "paragraphCount": 51,
+      "headingCount": 13,
+      "imageCount": 0,
+      "matchedImageCount": 0,
+      "videoCount": 3,
+      "videos": [
+        {
+          "youtubeId": "wm8kohwgJhI",
+          "title": "restaurant subsix maldives underwater"
+        },
+        {
+          "youtubeId": "GshhbowTAOY",
+          "title": "h20 cocoon maldives underwater restaurant"
+        },
+        {
+          "youtubeId": "9vs_dfZcijI",
+          "title": "The MURAKA Underwater Villa maldives"
+        }
+      ],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/underwater-hotels-and-restaurants-in-maldives.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": []
+    },
+    {
+      "oldUrl": "/articles/where-is-maldives-located.html",
+      "sourceFile": "articles/where-is-maldives-located.html",
+      "oldTitle": "Where is Maldives Located",
+      "candidateTitle": "Where Is Maldives Located?",
+      "candidateSlug": "where-is-maldives-located",
+      "candidateNewUrl": "/maldives/travel-guide/where-is-maldives-located/",
+      "category": "Airports",
+      "metaDescription": "Where is maldives located? Discover where the Maldives is located and why this tropical paradise is a top destination for travelers around the world.",
+      "wordCount": 572,
+      "paragraphCount": 7,
+      "headingCount": 8,
+      "imageCount": 4,
+      "matchedImageCount": 0,
+      "videoCount": 0,
+      "videos": [],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        },
+        {
+          "type": "transfer_route",
+          "slug": "velana-international-airport-to-male",
+          "title": "Velana International Airport to Malé",
+          "href": "/maldives/transfers/velana-international-airport-to-male/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/where-is-maldives-located.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": []
+    },
+    {
+      "oldUrl": "/the-maldives-islands-travel-guide.html",
+      "sourceFile": "the-maldives-islands-travel-guide.html",
+      "oldTitle": "The Maldives Islands Travel Guide 2024",
+      "candidateTitle": "The Maldives",
+      "candidateSlug": "the-maldives",
+      "candidateNewUrl": "/maldives/travel-guide/the-maldives/",
+      "category": "Airports",
+      "metaDescription": "The maldives islands travel guide for visitors explaining everything about the country",
+      "wordCount": 5983,
+      "paragraphCount": 100,
+      "headingCount": 99,
+      "imageCount": 22,
+      "matchedImageCount": 0,
+      "videoCount": 22,
+      "videos": [
+        {
+          "youtubeId": "3wtrnR2BJoQ",
+          "title": "the maldives facts"
+        },
+        {
+          "youtubeId": "LnMQCQ9h744",
+          "title": "20 Best Beaches Of Maldives"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "maldives equator line"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "maldives-capital-male-city"
+        },
+        {
+          "youtubeId": "-x1oEz1q1nw",
+          "title": "maldives speed boat transfers"
+        },
+        {
+          "youtubeId": "EkQv7QBOJU4",
+          "title": "Maldives travel"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "where are maldives"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "where are maldives"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "where are maldives"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "maldives"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "where are maldives"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "where are maldives"
+        },
+        {
+          "youtubeId": "3wtrnR2BJoQ",
+          "title": "hanifaru-bay-maldives"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "where are maldives"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "where are maldives"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "where are maldives"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "where are maldives"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "where are maldives"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "where are maldives"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "where are maldives"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "where are maldives"
+        },
+        {
+          "youtubeId": "iuHpvHD9ynE",
+          "title": "where are maldives"
+        }
+      ],
+      "relatedEntities": [
+        {
+          "type": "island",
+          "slug": "male",
+          "title": "Malé",
+          "href": "/maldives/islands/male/",
+          "score": 0.7
+        },
+        {
+          "type": "island",
+          "slug": "hulhumale",
+          "title": "Hulhumalé",
+          "href": "/maldives/islands/hulhumale/",
+          "score": 0.7
+        },
+        {
+          "type": "transfer_route",
+          "slug": "male-to-hulhumale",
+          "title": "Malé to Hulhumalé",
+          "href": "/maldives/transfers/male-to-hulhumale/",
+          "score": 0.7
+        }
+      ],
+      "bodyFile": "data/maldives/content/articles/the-maldives.html",
+      "migrationStatus": "ready",
+      "confidence": "high",
+      "nonEnglishTitle": false,
+      "embeddedImages": []
+    }
+  ]
+}

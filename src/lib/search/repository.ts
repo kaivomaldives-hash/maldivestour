@@ -5,6 +5,8 @@ import type { AccommodationSummary, AccommodationType } from "@/lib/accommodatio
 import { getActivities, searchActivities } from "@/lib/activities/repository";
 import { activityHref } from "@/lib/activities/types";
 import type { ActivityCategory, ActivitySummary } from "@/lib/activities/types";
+import { searchArticles } from "@/lib/articles/repository";
+import { articleHref, type ArticleSummary } from "@/lib/articles/types";
 import type { CategorySummary } from "@/lib/categories/types";
 import { getLocationSummariesByIds, searchLocations } from "@/lib/locations/repository";
 import type { LocationSummary, LocationType } from "@/lib/locations/types";
@@ -219,6 +221,20 @@ function mapTransferRoute(r: TransferRouteSummary, score: number): SearchResult 
   };
 }
 
+function mapArticle(a: ArticleSummary, score: number): SearchResult {
+  return {
+    id: a.id,
+    type: "article",
+    group: "travel-guide",
+    typeLabel: a.category?.title ?? "Travel Guide",
+    title: a.title,
+    href: articleHref(a),
+    description: a.summary,
+    context: null,
+    score,
+  };
+}
+
 function mapPackage(p: PackageSummary, score: number): SearchResult {
   return {
     id: p.id,
@@ -248,14 +264,15 @@ function dedupe(results: SearchResult[]): SearchResult[] {
 // ── Base title search (parallel, one call per vertical) ────────────────
 
 async function baseSearch(query: string, perSourceLimit: number) {
-  const [locations, accommodations, activities, transferRoutes, packages] = await Promise.all([
+  const [locations, accommodations, activities, transferRoutes, packages, articles] = await Promise.all([
     searchLocations(query, { limit: perSourceLimit }),
     searchAccommodations(query, { limit: perSourceLimit }),
     searchActivities(query, { limit: perSourceLimit }),
     searchTransferRoutes(query, { limit: perSourceLimit }),
     searchPackages(query, { limit: perSourceLimit }),
+    searchArticles(query, { limit: perSourceLimit }),
   ]);
-  return { locations, accommodations, activities, transferRoutes, packages };
+  return { locations, accommodations, activities, transferRoutes, packages, articles };
 }
 
 async function mapBaseResults(
@@ -285,6 +302,9 @@ async function mapBaseResults(
   }
   for (const p of base.packages) {
     results.push(mapPackage(p, scoreTitleMatch(p.title, query)));
+  }
+  for (const a of base.articles) {
+    results.push(mapArticle(a, scoreTitleMatch(a.title, query)));
   }
   return results;
 }
@@ -530,6 +550,11 @@ async function fetchFlatResults(type: SearchFilterType, query: string, cap = 60)
       const fallback = multiToken.filter((r) => r.type === "package");
       return dedupe([...items.map((p) => mapPackage(p, scoreTitleMatch(p.title, query))), ...taxonomyExpansion, ...fallback]);
     }
+    case "article": {
+      const items = await searchArticles(query, { limit: cap });
+      const fallback = multiToken.filter((r) => r.type === "article");
+      return dedupe([...items.map((a) => mapArticle(a, scoreTitleMatch(a.title, query))), ...fallback]);
+    }
     default:
       return [];
   }
@@ -543,9 +568,10 @@ const GROUP_LABEL: Record<SearchGroupKey, string> = {
   "things-to-do": "Things to Do",
   transfers: "Transfers",
   packages: "Packages",
+  "travel-guide": "Travel Guide",
 };
 
-const GROUP_ORDER: SearchGroupKey[] = ["destinations", "stay", "things-to-do", "transfers", "packages"];
+const GROUP_ORDER: SearchGroupKey[] = ["destinations", "stay", "things-to-do", "transfers", "packages", "travel-guide"];
 const GROUP_CAP = 6;
 
 /** The full search-results page: either a mixed, grouped view (no `type`

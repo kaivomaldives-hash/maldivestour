@@ -19,12 +19,13 @@ export type SearchResultType =
   | "diving"
   | "surfing"
   | "transfer"
-  | "package";
+  | "package"
+  | "article";
 
 /** The broader section a result is grouped under on the search page —
  * coarser than SearchResultType (e.g. atoll/island/dive_site/surf_break
  * all group under "destinations"). */
-export type SearchGroupKey = "destinations" | "stay" | "things-to-do" | "transfers" | "packages";
+export type SearchGroupKey = "destinations" | "stay" | "things-to-do" | "transfers" | "packages" | "travel-guide";
 
 export interface SearchResult {
   id: string;
@@ -54,8 +55,9 @@ export interface SearchResultGroup {
  * param — a deliberately flat, hardcoded list (Task 13 §11): every value
  * here has real seeded data and a real route (confirmed against the
  * Task 4-11 seed data), so there is no "in use" query needed and no dead
- * filter chip. Villas and articles are omitted: no villa-type
- * accommodation and no article system exist yet. */
+ * filter chip. `article` was added in Task 14 once the Travel Guide
+ * migration gave it real data; villas remain omitted (no villa-type
+ * accommodation exists). */
 export const SEARCH_FILTER_TYPES = [
   "location",
   "resort",
@@ -67,6 +69,7 @@ export const SEARCH_FILTER_TYPES = [
   "surfing",
   "transfer",
   "package",
+  "article",
 ] as const;
 
 export type SearchFilterType = (typeof SEARCH_FILTER_TYPES)[number];
@@ -82,6 +85,7 @@ export const SEARCH_FILTER_LABEL: Record<SearchFilterType, string> = {
   surfing: "Surfing",
   transfer: "Transfers",
   package: "Packages",
+  article: "Travel Guide",
 };
 
 export interface SearchPageOptions {

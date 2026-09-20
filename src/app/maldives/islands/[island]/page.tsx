@@ -14,6 +14,7 @@ import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { getActivitiesByLocation } from "@/lib/activities/repository";
 import { getDiveSitesByLocation } from "@/lib/diving/repository";
 import { getChildLocations, getIslandBySlug } from "@/lib/locations/repository";
+import { getHeroMediaByNodeIds } from "@/lib/media/repository";
 import { getPackagesByLocation } from "@/lib/packages/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 import { getSurfBreaksByLocation } from "@/lib/surfing/repository";
@@ -60,7 +61,7 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
   const island = await getIslandBySlug(slug);
   if (!island) notFound();
 
-  const [atoll, children, accommodations, activities, diveSites, surfBreaks, transferRoutes, packages] = await Promise.all([
+  const [atoll, children, accommodations, activities, diveSites, surfBreaks, transferRoutes, packages, heroById] = await Promise.all([
     getAtollSummary(island.parentId),
     getChildLocations(island.id),
     getAccommodationsByLocation(island.id),
@@ -69,7 +70,9 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
     getSurfBreaksByLocation(island.id),
     getTransferRoutesByLocation(island.id),
     getPackagesByLocation(island.id),
+    getHeroMediaByNodeIds([island.id]),
   ]);
+  const heroImage = heroById.get(island.id) ?? null;
   // Fishing, diving, and surfing each have their own dedicated
   // vertical/section (Task 7, Task 8, Task 9) and, per
   // ACTIVITY_CATEGORY_SEGMENT, their own canonical URL — split them out of
@@ -93,6 +96,7 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
         eyebrow="Island"
         title={island.title}
         description={island.summary ?? undefined}
+        image={heroImage}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>

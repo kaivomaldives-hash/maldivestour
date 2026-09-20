@@ -2,6 +2,8 @@ import "server-only";
 
 import { getLocationSummariesByIds, getLocationSummaryById } from "@/lib/locations/repository";
 import type { LocationSummary } from "@/lib/locations/types";
+import { getHeroMediaByNodeIds } from "@/lib/media/repository";
+import type { MediaAsset } from "@/lib/media/types";
 import { getProviderSummariesByIds } from "@/lib/providers/repository";
 import type { ProviderSummary } from "@/lib/providers/types";
 import { createClient } from "@/lib/supabase/server";
@@ -102,7 +104,7 @@ function bareAccommodationOf(row: NodeAccommodationRow): BareAccommodation | nul
   };
 }
 
-function toSummary(bare: BareAccommodation, primaryLocation: LocationSummary | null): AccommodationSummary {
+function toSummary(bare: BareAccommodation, primaryLocation: LocationSummary | null, heroImage: MediaAsset | null): AccommodationSummary {
   return {
     id: bare.id,
     slug: bare.slug,
@@ -114,6 +116,7 @@ function toSummary(bare: BareAccommodation, primaryLocation: LocationSummary | n
     allInclusive: bare.allInclusive,
     overwaterVillas: bare.overwaterVillas,
     primaryLocation,
+    heroImage,
   };
 }
 
@@ -213,9 +216,12 @@ export async function getAccommodations(
   if (error || !data) return { items: [], total: 0, page, pageSize };
 
   const bares = data.map(bareAccommodationOf).filter((b): b is BareAccommodation => b !== null);
-  const locationsByNodeId = await attachPrimaryLocations(bares.map((b) => b.id));
+  const [locationsByNodeId, heroByNodeId] = await Promise.all([
+    attachPrimaryLocations(bares.map((b) => b.id)),
+    getHeroMediaByNodeIds(bares.map((b) => b.id)),
+  ]);
 
-  const items = bares.map((b) => toSummary(b, locationsByNodeId.get(b.id) ?? null));
+  const items = bares.map((b) => toSummary(b, locationsByNodeId.get(b.id) ?? null, heroByNodeId.get(b.id) ?? null));
   return { items, total: count ?? items.length, page, pageSize };
 }
 
@@ -252,8 +258,11 @@ export async function getAccommodationsByProvider(providerId: string): Promise<A
   if (error || !data) return [];
 
   const bares = data.map(bareAccommodationOf).filter((b): b is BareAccommodation => b !== null);
-  const locationsByNodeId = await attachPrimaryLocations(bares.map((b) => b.id));
-  return bares.map((b) => toSummary(b, locationsByNodeId.get(b.id) ?? null));
+  const [locationsByNodeId, heroByNodeId] = await Promise.all([
+    attachPrimaryLocations(bares.map((b) => b.id)),
+    getHeroMediaByNodeIds(bares.map((b) => b.id)),
+  ]);
+  return bares.map((b) => toSummary(b, locationsByNodeId.get(b.id) ?? null, heroByNodeId.get(b.id) ?? null));
 }
 
 export async function getAccommodationBySlug(slug: string): Promise<AccommodationDetail | null> {
@@ -270,16 +279,17 @@ export async function getAccommodationBySlug(slug: string): Promise<Accommodatio
   const bare = bareAccommodationOf(data);
   if (!bare) return null;
 
-  const [primaryLocation, providersById, bookableRow] = await Promise.all([
+  const [primaryLocation, providersById, bookableRow, heroImage] = await Promise.all([
     attachPrimaryLocations([bare.id]).then((m) => m.get(bare.id) ?? null),
     bare.providerId ? getProviderSummariesByIds([bare.providerId]) : Promise.resolve(new Map<string, ProviderSummary>()),
     supabase.from("bookable_products").select("id").eq("id", bare.id).maybeSingle(),
+    getHeroMediaByNodeIds([bare.id]).then((m) => m.get(bare.id) ?? null),
   ]);
 
   const atoll = primaryLocation?.parentId ? await getLocationSummaryById(primaryLocation.parentId) : null;
 
   return {
-    ...toSummary(bare, primaryLocation),
+    ...toSummary(bare, primaryLocation, heroImage),
     roomCount: bare.roomCount,
     checkInTime: bare.checkInTime,
     checkOutTime: bare.checkOutTime,
@@ -310,9 +320,12 @@ export async function getAccommodationSummariesByIds(ids: string[]): Promise<Map
   if (error || !data) return map;
 
   const bares = data.map(bareAccommodationOf).filter((b): b is BareAccommodation => b !== null);
-  const locationsByNodeId = await attachPrimaryLocations(bares.map((b) => b.id));
+  const [locationsByNodeId, heroByNodeId] = await Promise.all([
+    attachPrimaryLocations(bares.map((b) => b.id)),
+    getHeroMediaByNodeIds(bares.map((b) => b.id)),
+  ]);
   for (const bare of bares) {
-    map.set(bare.id, toSummary(bare, locationsByNodeId.get(bare.id) ?? null));
+    map.set(bare.id, toSummary(bare, locationsByNodeId.get(bare.id) ?? null, heroByNodeId.get(bare.id) ?? null));
   }
   return map;
 }
@@ -342,6 +355,9 @@ export async function searchAccommodations(
   if (error || !data) return [];
 
   const bares = data.map(bareAccommodationOf).filter((b): b is BareAccommodation => b !== null);
-  const locationsByNodeId = await attachPrimaryLocations(bares.map((b) => b.id));
-  return bares.map((b) => toSummary(b, locationsByNodeId.get(b.id) ?? null));
+  const [locationsByNodeId, heroByNodeId] = await Promise.all([
+    attachPrimaryLocations(bares.map((b) => b.id)),
+    getHeroMediaByNodeIds(bares.map((b) => b.id)),
+  ]);
+  return bares.map((b) => toSummary(b, locationsByNodeId.get(b.id) ?? null, heroByNodeId.get(b.id) ?? null));
 }

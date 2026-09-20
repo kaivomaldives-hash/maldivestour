@@ -41,6 +41,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# Task 14: legacy website migration source (extracted from the
+# "webmigration" GitHub Release asset). This is the migration INPUT, not
+# application code — never commit it. Migration outputs (JSON reports,
+# uploaded Storage URLs) live in data/maldives/media|content/ instead.
+/release/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

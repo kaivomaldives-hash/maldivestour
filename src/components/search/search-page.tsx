@@ -50,6 +50,7 @@ const GROUP_FILTER_TYPES: Record<SearchGroupKey, SearchFilterType[]> = {
   "things-to-do": ["activity", "fishing", "diving", "surfing"],
   transfers: ["transfer"],
   packages: ["package"],
+  "travel-guide": ["article"],
 };
 
 function chipClass(active: boolean): string {

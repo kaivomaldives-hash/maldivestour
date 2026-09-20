@@ -10,7 +10,8 @@ export type CategoryGroup =
   | "package-style"
   | "duration-band"
   | "inclusion"
-  | "theme";
+  | "theme"
+  | "article-category";
 
 export interface CategorySummary {
   id: string;

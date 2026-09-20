@@ -1,4 +1,5 @@
 import type { LocationSummary } from "@/lib/locations/types";
+import type { MediaAsset } from "@/lib/media/types";
 import type { ProviderSummary } from "@/lib/providers/types";
 
 export type AccommodationType = "hotel" | "resort" | "guesthouse" | "villa" | "other";
@@ -15,6 +16,10 @@ export interface AccommodationSummary {
   allInclusive: boolean | null;
   overwaterVillas: boolean | null;
   primaryLocation: LocationSummary | null;
+  /** Null for the vast majority of accommodations — only entities the
+   * Task 14 legacy media migration matched with real confidence have one.
+   * Never a placeholder/stock image (see MediaImage). */
+  heroImage: MediaAsset | null;
 }
 
 export interface AccommodationDetail extends AccommodationSummary {

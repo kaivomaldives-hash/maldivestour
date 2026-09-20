@@ -14,6 +14,7 @@ import { getAccommodationsByAtoll } from "@/lib/accommodations/repository";
 import { getActivitiesByAtoll } from "@/lib/activities/repository";
 import { getDiveSitesByAtoll } from "@/lib/diving/repository";
 import { getAtollBySlug, getIslandsByAtoll } from "@/lib/locations/repository";
+import { getHeroMediaByNodeIds } from "@/lib/media/repository";
 import { getPackagesByAtoll } from "@/lib/packages/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 import { getSurfBreaksByAtoll } from "@/lib/surfing/repository";
@@ -47,6 +48,7 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
   const atoll = await getAtollBySlug(slug);
   if (!atoll) notFound();
 
+  const heroImage = (await getHeroMediaByNodeIds([atoll.id])).get(atoll.id) ?? null;
   const allIslands = await getIslandsByAtoll(slug);
   // getIslandsByAtoll returns every location_type="island" row under this
   // atoll, which now includes uninhabited resort islands (added in Task 5
@@ -82,6 +84,7 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
         eyebrow="Atoll"
         title={atoll.title}
         description={atoll.summary ?? undefined}
+        image={heroImage}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>

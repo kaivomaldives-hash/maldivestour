@@ -3,15 +3,17 @@ import Link from "next/link";
 
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { ActivityCard } from "@/components/activity/activity-card";
+import { ArticleCard } from "@/components/articles/article-card";
 import { PackageCard } from "@/components/packages/package-card";
 import { SearchBox } from "@/components/search/search-box";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { BookIcon, CompassIcon, DivingIcon, FishIcon, MapPinIcon } from "@/components/ui/icons";
+import { CompassIcon, DivingIcon, FishIcon, MapPinIcon } from "@/components/ui/icons";
 import { SectionHeader } from "@/components/ui/section-header";
 import { getAccommodations } from "@/lib/accommodations/repository";
 import { getActivities } from "@/lib/activities/repository";
+import { getRecentArticles } from "@/lib/articles/repository";
 import { getAtolls } from "@/lib/locations/repository";
 import { getPackages } from "@/lib/packages/repository";
 import { canonicalUrl } from "@/lib/seo/site";
@@ -36,12 +38,13 @@ export function generateMetadata(): Metadata {
 }
 
 export default async function Home() {
-  const [atolls, accommodations, activities, transferRoutes, packages] = await Promise.all([
+  const [atolls, accommodations, activities, transferRoutes, packages, articles] = await Promise.all([
     getAtolls(),
     getAccommodations({ type: "resort", pageSize: 6 }),
     getActivities({ pageSize: 6 }),
     getTransferRoutes({ pageSize: 4 }),
     getPackages({ pageSize: 6 }),
+    getRecentArticles(3),
   ]);
 
   const islandCount = atolls.reduce((sum, atoll) => sum + atoll.islandCount, 0);
@@ -224,28 +227,25 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Travel Guide — no article content exists yet; an honest teaser
-          rather than a link to a page (or fabricated posts) that don't
-          exist. */}
-      <section className="bg-sand-50 py-14 sm:py-20">
-        <Container>
-          <div className="flex flex-col items-start gap-4 rounded-2xl border border-neutral-200 bg-white p-8 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-start gap-4">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-lagoon-100 text-maldives-600">
-                <BookIcon className="h-5 w-5" />
-              </span>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-maldives-600">Travel Guide</p>
-                <h2 className="mt-1 text-xl font-semibold text-ocean-900">In-depth Maldives travel guides — coming soon</h2>
-                <p className="mt-1 max-w-xl text-sm text-neutral-600">
-                  We&rsquo;re building out detailed guides to plan your trip. Until then, every destination, resort,
-                  and activity page on MTG already carries real, up-to-date travel information.
-                </p>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </section>
+      {/* Travel Guide — real migrated articles (Task 14) only; nothing
+          renders here when there are none. */}
+      {articles.length > 0 && (
+        <section className="bg-sand-50 py-14 sm:py-20">
+          <Container>
+            <SectionHeader
+              eyebrow="Travel Guide"
+              title="In-depth Maldives travel guides"
+              description="Real, researched guides to islands, atolls, diving, weather and culture."
+              action={{ label: "View all guides", href: "/maldives/travel-guide/" }}
+            />
+            <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {articles.map((article) => (
+                <ArticleCard key={article.id} article={article} />
+              ))}
+            </ul>
+          </Container>
+        </section>
+      )}
 
       {/* Final CTA */}
       <section className="bg-gradient-to-br from-ocean-900 to-maldives-600 py-14 text-white sm:py-20">

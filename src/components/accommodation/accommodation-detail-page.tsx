@@ -73,6 +73,7 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
         eyebrow={TYPE_LABEL[type]}
         title={accommodation.title}
         description={accommodation.summary ?? undefined}
+        image={accommodation.heroImage}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>

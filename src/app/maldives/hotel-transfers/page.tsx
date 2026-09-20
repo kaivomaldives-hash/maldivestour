@@ -24,7 +24,7 @@ const config: TransferCategoryConfig = {
       answer: "Find your hotel's island below — each route shows the real transfer options and prices on record. Your hotel may also arrange pickup directly; check with them first.",
     },
   ],
-  filter: (route) => route.destination?.isInhabited === true,
+  category: "hotel-transfer",
   emptyMessage: "No hotel-island transfer routes recorded yet.",
 };
 

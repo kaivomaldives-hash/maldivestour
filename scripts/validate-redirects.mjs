@@ -43,6 +43,13 @@ const STATIC_APP_PATHS = new Set([
   "/maldives/surf-breaks/",
   "/maldives/surfing/",
   "/maldives/transfers/",
+  "/maldives/airport-transfers/",
+  "/maldives/resort-transfers/",
+  "/maldives/hotel-transfers/",
+  "/maldives/island-transfers/",
+  "/maldives/speedboat-transfers/",
+  "/maldives-speedboats-charter/",
+  "/maldives-ferry-schedule/",
   "/maldives/travel-guide/",
 ]);
 

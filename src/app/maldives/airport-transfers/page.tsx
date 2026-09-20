@@ -35,6 +35,7 @@ const config: TransferCategoryConfig = {
       answer: "Prices vary by destination and operator — each route page below shows the real, source-verified price for that specific transfer.",
     },
   ],
+  category: "airport",
   emptyMessage: "No airport transfer routes recorded yet.",
 };
 

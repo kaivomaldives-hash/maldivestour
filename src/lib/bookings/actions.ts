@@ -97,3 +97,65 @@ export async function createTransferBookingInquiry(
 
   return { ok: true, bookingReference: data.booking_reference };
 }
+
+/**
+ * Task 20: the same RPC, for a node-backed inquiry with no fixed
+ * origin/destination/trip-type (private speedboat charter, car transfer)
+ * — product_type='node' is the RPC's own generic path (already used by
+ * package inquiries), never a second booking system. No price is ever
+ * passed: these products have no public price.
+ */
+export interface NodeInquiryInput {
+  productNodeId: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  customerWhatsapp: string;
+  preferredDate: string | null; // YYYY-MM-DD
+  preferredTime: string | null; // HH:MM
+  adults: number;
+  children: number;
+  specialRequests: string | null;
+}
+
+export async function createNodeInquiry(input: NodeInquiryInput): Promise<TransferBookingInquiryResult> {
+  const name = input.customerName.trim();
+  const email = input.customerEmail.trim();
+
+  if (!name) return { ok: false, error: "Please enter your name." };
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, error: "Please enter a valid email address." };
+
+  const supabase = await createClient();
+  const rpcArgs = {
+    p_product_type: "node",
+    p_product_node_id: input.productNodeId,
+    p_transfer_service_id: null,
+    p_customer_name: name,
+    p_customer_email: email,
+    p_customer_phone: input.customerPhone.trim() || null,
+    p_customer_whatsapp: input.customerWhatsapp.trim() || null,
+    p_origin_location_id: null,
+    p_destination_location_id: null,
+    p_travel_date: input.preferredDate || null,
+    p_travel_time: input.preferredTime || null,
+    p_return_date: null,
+    p_return_time: null,
+    p_trip_type: "n_a",
+    p_adults: input.adults,
+    p_children: input.children,
+    p_infants: 0,
+    p_flight_number: null,
+    p_special_requests: input.specialRequests?.trim() || null,
+    p_estimated_price: null,
+    p_currency: "USD",
+  };
+  const { data, error } = await supabase
+    .rpc("create_booking_inquiry" as unknown as never, rpcArgs as unknown as undefined)
+    .single<{ id: string; booking_reference: string }>();
+
+  if (error || !data) {
+    return { ok: false, error: "We couldn't submit your request right now. Please try again or contact us on WhatsApp." };
+  }
+
+  return { ok: true, bookingReference: data.booking_reference };
+}

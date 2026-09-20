@@ -198,6 +198,17 @@ export default async function Home() {
               description="Real airport, speedboat, resort and island transfer routes from Velana International Airport, with source-verified prices."
               action={{ label: "Find your transfer", href: "/maldives/transfers/" }}
             />
+            <nav aria-label="Transfer categories" className="mt-4 flex flex-wrap gap-2">
+              {[
+                { href: "/maldives/airport-transfers/", label: "Airport Transfers" },
+                { href: "/maldives-speedboats-charter/", label: "Private Speedboats" },
+                { href: "/maldives/island-transfers/", label: "Island Transfers" },
+              ].map((link) => (
+                <Link key={link.href} href={link.href} className="rounded-full border border-neutral-300 bg-white px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
             <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {transferRoutes.items.map((route) => (
                 <TransferRouteCard key={route.id} route={route} />

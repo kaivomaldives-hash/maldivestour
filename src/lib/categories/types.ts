@@ -11,7 +11,8 @@ export type CategoryGroup =
   | "duration-band"
   | "inclusion"
   | "theme"
-  | "article-category";
+  | "article-category"
+  | "transfer-category";
 
 export interface CategorySummary {
   id: string;

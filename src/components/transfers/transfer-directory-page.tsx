@@ -1,29 +1,34 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { ComingSoonSection } from "@/components/transfers/coming-soon-section";
+import { TransferFinder } from "@/components/transfers/transfer-finder";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
+import { CarTransfersSection } from "@/components/vehicles/car-transfers-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
 import { Pagination } from "@/components/ui/pagination";
+import { getFerryRoutes } from "@/lib/ferries/repository";
 import { getAtollBySlug, getLocationBySlug } from "@/lib/locations/repository";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { getSpeedboats } from "@/lib/speedboats/repository";
 import {
   getSharedOrPrivateOptionsInUse,
   getTransferRoutes,
-  getTransferRoutesByOrigin,
   getTransferTypesInUse,
   searchTransferRoutes,
 } from "@/lib/transfers/repository";
 import type { SharedOrPrivate, TransferType } from "@/lib/transfers/types";
 
-const TRANSFER_CATEGORY_LINKS = [
-  { href: "/maldives/airport-transfers/", label: "Airport Transfers", description: "Velana International Airport to anywhere in the Maldives" },
-  { href: "/maldives/speedboat-transfers/", label: "Speedboat Transfers", description: "Fast sea transfers by speedboat" },
-  { href: "/maldives/resort-transfers/", label: "Resort Transfers", description: "Private resort islands" },
-  { href: "/maldives/hotel-transfers/", label: "Hotel Transfers", description: "Local-island hotels and guesthouses" },
-  { href: "/maldives/island-transfers/", label: "Island Transfers", description: "Local Maldivian islands" },
-];
+/**
+ * Task 20: the main Maldives transportation hub. Rebuilt as a full
+ * search engine + directory + booking/inquiry funnel, not a page of
+ * generic card sections — see the section order in the task brief
+ * (§11): hero, finder, airport, speedboat charter, car, resort, island,
+ * seaplane/domestic-flight (coming soon), ferry, why-us, how-it-works,
+ * FAQ, related links, then the full filterable directory beneath it.
+ */
 
 const TRANSFER_TYPE_LABEL: Record<TransferType, string> = {
   speedboat: "Speedboat",
@@ -41,6 +46,68 @@ const MODE_LABEL: Record<SharedOrPrivate, string> = {
 
 const PAGE_SIZE = 24;
 
+const HOW_IT_WORKS = [
+  {
+    title: "After you land",
+    body: "Once you clear immigration and collect luggage at Velana International Airport, resort and hotel transfer desks are typically just outside arrivals — most shared and private speedboat transfers depart from the jetty a short walk away.",
+  },
+  {
+    title: "Shared vs. private speedboats",
+    body: "A shared transfer runs on a schedule with other travellers heading the same way, usually at a lower fixed price. A private transfer or full charter is your own boat on your own timing — see Private Speedboat Charter below.",
+  },
+  {
+    title: "Resort transfers",
+    body: "Most resorts occupy their own private island and run their own speedboat or seaplane transfer, timed around your flight — the resort's own route page shows its real price and typical journey time where on record.",
+  },
+  {
+    title: "Local island transfers",
+    body: "Local islands such as Maafushi are reached by public ferry (cheapest, runs on a fixed schedule) or a faster private speedboat operator.",
+  },
+  {
+    title: "Seaplanes and domestic flights",
+    body: "Used for resorts too far for a speedboat — currently marked Coming Soon on this platform while we confirm real operator and schedule data.",
+  },
+  {
+    title: "Booking ahead",
+    body: "Arrange your transfer as soon as your accommodation is confirmed — many resorts times transfers to specific flight schedules, so having your flight details ready speeds things up.",
+  },
+];
+
+const FAQS = [
+  {
+    question: "How do Maldives airport transfers work?",
+    answer: "You land at Velana International Airport, then continue by speedboat, ferry, seaplane, or domestic flight depending on your destination — see How Transfers Work above.",
+  },
+  {
+    question: "How do I get from Velana Airport to my island?",
+    answer: "Use the transfer finder above — search your destination and we'll show the real route if one exists, or offer a private charter if it doesn't.",
+  },
+  {
+    question: "Are Maldives speedboat transfers shared?",
+    answer: "Both — most resorts offer a scheduled shared transfer, and a private transfer or full charter is also usually available. Each route page shows what's actually on offer.",
+  },
+  {
+    question: "Can I book a private speedboat?",
+    answer: "Yes — see Private Speedboat Charter below for our own fleet, available for hourly, destination-based, or custom private hire.",
+  },
+  {
+    question: "How early should I arrange my transfer?",
+    answer: "As soon as your accommodation is confirmed, especially for resorts that time transfers to specific flights.",
+  },
+  {
+    question: "Are ferry schedules the same every day?",
+    answer: "No — public ferries don't run on Fridays, and most routes only run on specific days of the week. See the Ferry Schedule page for exact days.",
+  },
+  {
+    question: "What's the difference between a resort transfer and an island transfer?",
+    answer: "A resort transfer goes to a private resort island; an island transfer goes to a local, inhabited Maldivian island (like Malé or Maafushi) with hotels or guesthouses rather than a resort.",
+  },
+  {
+    question: "Are seaplane and domestic flight transfers available?",
+    answer: "Not yet listed on this platform — marked Coming Soon while we confirm real operator, route, and schedule data rather than publish anything unverified.",
+  },
+];
+
 export interface TransferDirectorySearchParams {
   q?: string;
   page?: string;
@@ -57,8 +124,9 @@ function hasAnyFilter(sp: TransferDirectorySearchParams): boolean {
 
 export async function transferDirectoryMetadata(searchParams: Promise<TransferDirectorySearchParams>): Promise<Metadata> {
   const sp = await searchParams;
-  const title = "Maldives Transfers | Airport, Speedboat & Island Transfers";
-  const description = "Real, source-verified airport, ferry, speedboat, and resort transfers in the Maldives, by route and operator.";
+  const title = "Maldives Transfers | Airport, Resort, Island & Speedboat Transfers";
+  const description =
+    "The complete Maldives transportation platform: real airport, resort, island, ferry, and private speedboat transfer routes and prices — search, compare, and book or enquire.";
   const url = canonicalUrl("/maldives/transfers");
 
   return {
@@ -68,6 +136,22 @@ export async function transferDirectoryMetadata(searchParams: Promise<TransferDi
     openGraph: { title, description, url },
     robots: hasAnyFilter(sp) ? { index: false, follow: true } : undefined,
   };
+}
+
+function faqJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQS.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })),
+  };
+}
+
+function SeeAllLink({ href, total, label }: { href: string; total: number; label: string }) {
+  return (
+    <Link href={href} className="text-sm font-medium text-maldives-600 hover:underline">
+      {label} ({total}) →
+    </Link>
+  );
 }
 
 export async function TransferDirectoryPage({
@@ -89,11 +173,18 @@ export async function TransferDirectoryPage({
     getLocationBySlug("velana-international-airport"),
   ]);
 
-  const airportRoutes = velanaAirport ? await getTransferRoutesByOrigin(velanaAirport.id) : [];
-  const resortRoutes = airportRoutes.filter((r) => r.destination?.isInhabited === false);
-  const islandRoutes = airportRoutes.filter((r) => r.destination?.isInhabited === true);
-  const featuredResorts = resortRoutes.slice(0, 4);
-  const featuredIslands = islandRoutes.slice(0, 4);
+  const [airportResult, resortResult, islandResult, boats, ferryRoutes] = await Promise.all([
+    getTransferRoutes({ category: "airport", pageSize: 6 }),
+    getTransferRoutes({ category: "resort-transfer", pageSize: 6 }),
+    getTransferRoutes({ category: "island-transfer", pageSize: 6 }),
+    getSpeedboats(),
+    getFerryRoutes(),
+  ]);
+  const [airportTotal, resortTotal, islandTotal] = await Promise.all([
+    getTransferRoutes({ category: "airport", pageSize: 1 }).then((r) => r.total),
+    getTransferRoutes({ category: "resort-transfer", pageSize: 1 }).then((r) => r.total),
+    getTransferRoutes({ category: "island-transfer", pageSize: 1 }).then((r) => r.total),
+  ]);
 
   const activeType = sp.type && transferTypes.includes(sp.type as TransferType) ? (sp.type as TransferType) : undefined;
   const activeMode = sp.mode && modes.includes(sp.mode as SharedOrPrivate) ? (sp.mode as SharedOrPrivate) : undefined;
@@ -126,97 +217,177 @@ export async function TransferDirectoryPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Transfers" }], "/maldives/transfers")) }}
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }} />
+
       <PageHero
         breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Transfers" }]}
-        eyebrow="Getting around"
+        eyebrow="Maldives transportation"
         title="Maldives Transfers"
-        description="Find a transfer from Velana International Airport to your resort, hotel, or local island — real speedboat, ferry, and seaplane routes and prices, not a generic directory."
+        description="Airport, resort, island, private speedboat, and other transportation options across the Maldives — real routes and prices, search by destination, or request a private charter."
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
-        {/* Route finder — a plain GET form (no client JS needed) that
-            reuses this same page's existing from/to filters (Task 18). */}
-        {velanaAirport && airportRoutes.length > 0 && (
-          <form method="get" action="/maldives/transfers/" className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm sm:p-6">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Find your transfer</h2>
-            <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-[1fr_1fr_auto]">
-              <div>
-                <label htmlFor="tf-from" className="mb-1 block text-xs font-medium text-neutral-600">
-                  From
-                </label>
-                <input id="tf-from" type="text" value={velanaAirport.title} disabled className="min-touch-target w-full rounded-xl border border-neutral-300 bg-neutral-50 px-3 py-2 text-sm text-neutral-700" />
-                <input type="hidden" name="from" value={velanaAirport.slug} />
-              </div>
-              <div>
-                <label htmlFor="tf-to" className="mb-1 block text-xs font-medium text-neutral-600">
-                  To
-                </label>
-                <select id="tf-to" name="to" defaultValue={sp.to ?? ""} className="min-touch-target w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none">
-                  <option value="">Choose a destination…</option>
-                  {airportRoutes
-                    .filter((r) => r.destination)
-                    .sort((a, b) => (a.destination?.title ?? "").localeCompare(b.destination?.title ?? ""))
-                    .map((r) => (
-                      <option key={r.destination!.slug} value={r.destination!.slug}>
-                        {r.destination!.title}
-                      </option>
-                    ))}
-                </select>
-              </div>
-              <button type="submit" className="min-touch-target self-end rounded-full bg-maldives-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-ocean-800">
-                Search
-              </button>
-            </div>
-          </form>
-        )}
+        {/* 2. Transfer search */}
+        <TransferFinder defaultFromSlug={velanaAirport?.slug} defaultFromLabel={velanaAirport?.title} />
 
-        <nav aria-label="Browse transfers by category" className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-5">
-          {TRANSFER_CATEGORY_LINKS.map((cat) => (
-            <Link
-              key={cat.href}
-              href={cat.href}
-              className="rounded-xl border border-neutral-200 p-4 text-center transition-colors hover:border-maldives-500 hover:bg-lagoon-50"
-            >
-              <span className="block text-sm font-semibold text-ocean-900">{cat.label}</span>
-              <span className="mt-1 block text-xs text-neutral-500">{cat.description}</span>
-            </Link>
-          ))}
-        </nav>
-
-        {featuredResorts.length > 0 && (
+        {/* 3. Airport transfers */}
+        {airportResult.items.length > 0 && (
           <section className="mt-10">
             <div className="flex items-baseline justify-between">
-              <h2 className="text-xl font-semibold text-ocean-900">Resort transfers</h2>
-              <Link href="/maldives/resort-transfers/" className="text-sm font-medium text-maldives-600 hover:underline">
-                View all {resortRoutes.length} →
-              </Link>
+              <h2 className="text-xl font-semibold text-ocean-900">Maldives Airport Transfers</h2>
+              <SeeAllLink href="/maldives/airport-transfers/" total={airportTotal} label="See all" />
             </div>
-            <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {featuredResorts.map((r) => (
+            <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {airportResult.items.map((r) => (
                 <TransferRouteCard key={r.id} route={r} />
               ))}
             </ul>
           </section>
         )}
 
-        {featuredIslands.length > 0 && (
+        {/* 4. Private speedboat charters */}
+        {boats.length > 0 && (
           <section className="mt-10">
             <div className="flex items-baseline justify-between">
-              <h2 className="text-xl font-semibold text-ocean-900">Island transfers</h2>
-              <Link href="/maldives/island-transfers/" className="text-sm font-medium text-maldives-600 hover:underline">
-                View all {islandRoutes.length} →
-              </Link>
+              <h2 className="text-xl font-semibold text-ocean-900">Private Speedboat Charters</h2>
+              <SeeAllLink href="/maldives-speedboats-charter/" total={boats.length} label="See all speedboats" />
             </div>
-            <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {featuredIslands.map((r) => (
+            <p className="mt-1 text-sm text-neutral-600">Our own fleet, available for private hire — hourly, destination-based, or custom trip. No fixed public price.</p>
+            <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {boats.slice(0, 6).map((boat) => (
+                <li key={boat.id} className="rounded-2xl border border-neutral-200 p-4">
+                  <Link href={`/maldives-speedboats-charter/${boat.slug}/`} className="font-medium text-ocean-900 hover:text-maldives-600">
+                    {boat.title}
+                  </Link>
+                  <p className="mt-1 text-sm text-neutral-600">{boat.capacity} seats{boat.lengthFeet ? ` · ${boat.lengthFeet} ft` : ""}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* 5. Car transfers */}
+        <CarTransfersSection />
+
+        {/* 6. Resort transfers */}
+        {resortResult.items.length > 0 && (
+          <section className="mt-10">
+            <div className="flex items-baseline justify-between">
+              <h2 className="text-xl font-semibold text-ocean-900">Resort Transfers</h2>
+              <SeeAllLink href="/maldives/resort-transfers/" total={resortTotal} label="See all" />
+            </div>
+            <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {resortResult.items.map((r) => (
                 <TransferRouteCard key={r.id} route={r} />
               ))}
             </ul>
           </section>
         )}
 
+        {/* 7. Island transfers */}
+        {islandResult.items.length > 0 && (
+          <section className="mt-10">
+            <div className="flex items-baseline justify-between">
+              <h2 className="text-xl font-semibold text-ocean-900">Island Transfers</h2>
+              <SeeAllLink href="/maldives/island-transfers/" total={islandTotal} label="See all" />
+            </div>
+            <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {islandResult.items.map((r) => (
+                <TransferRouteCard key={r.id} route={r} />
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* 8-9. Seaplane / domestic flight — coming soon */}
+        <ComingSoonSection
+          title="Seaplane Transfers"
+          description="We're working on confirming real seaplane operator, route, and pricing data before listing it here — no fabricated schedules or availability in the meantime."
+        />
+        <ComingSoonSection
+          title="Domestic Flight Transfers"
+          description="Domestic flight transfer routes will be added once real operator and schedule data is confirmed."
+        />
+
+        {/* 10. Ferry schedule */}
+        {ferryRoutes.length > 0 && (
+          <section className="mt-10">
+            <div className="flex items-baseline justify-between">
+              <h2 className="text-xl font-semibold text-ocean-900">Maldives Ferry Schedule</h2>
+              <SeeAllLink href="/maldives-ferry-schedule/" total={ferryRoutes.length} label="See all schedules" />
+            </div>
+            <p className="mt-1 text-sm text-neutral-600">Public province ferries between local islands — information only, no booking through us.</p>
+            <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {ferryRoutes.slice(0, 6).map((route) => (
+                <li key={route.id} className="rounded-2xl border border-neutral-200 p-4">
+                  <span className="font-medium text-ocean-900">{route.title}</span>
+                  <p className="mt-1 text-sm text-neutral-600">
+                    {route.province} · {route.operatingDays}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* 11. Why use MTG */}
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Why Use Maldives Tour Guide for Transfers</h2>
+          <p className="mt-2 max-w-2xl text-sm text-neutral-700">
+            Every route on this page is a real, individually verified transfer — not a generic estimate. We list the actual price where one
+            exists, we&rsquo;re honest when a route isn&rsquo;t on record instead of inventing one, and every enquiry connects to a real
+            booking or charter request, not a dead-end contact form.
+          </p>
+        </section>
+
+        {/* 12. How transfers work */}
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">How Maldives Transfers Work</h2>
+          <dl className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {HOW_IT_WORKS.map((item) => (
+              <div key={item.title}>
+                <dt className="font-medium text-ocean-900">{item.title}</dt>
+                <dd className="mt-1 text-sm text-neutral-700">{item.body}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        {/* 13. FAQs */}
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Frequently Asked Questions</h2>
+          <dl className="mt-4 space-y-6">
+            {FAQS.map((faq) => (
+              <div key={faq.question}>
+                <dt className="font-medium text-ocean-900">{faq.question}</dt>
+                <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        {/* 14. Related Maldives travel links */}
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Related Maldives Travel Links</h2>
+          <nav aria-label="Related Maldives travel links" className="mt-4 flex flex-wrap gap-2">
+            {[
+              { href: "/maldives/islands/", label: "Maldives Islands" },
+              { href: "/maldives/atolls/", label: "Maldives Atolls" },
+              { href: "/maldives/resorts/", label: "Maldives Resorts" },
+              { href: "/maldives/hotels/", label: "Maldives Hotels" },
+              { href: "/maldives/packages/", label: "Maldives Packages" },
+              { href: "/maldives/travel-guide/", label: "Travel Guide" },
+            ].map((link) => (
+              <Link key={link.href} href={link.href} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </section>
+
+        {/* Full filterable directory */}
         <div className="mt-14 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Browse the complete transfer directory</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Browse the Complete Transfer Directory</h2>
           <p className="mt-1 text-sm text-neutral-600">Every migrated route — filter, search, or browse the full inventory below.</p>
         </div>
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20T14:57:21.305Z",
+  "generatedAt": "2026-09-20T16:55:49.079Z",
   "note": "Task 16 §23. Every entry's newUrl is a verified, currently-real destination — never an invented mapping.",
   "total": 329,
   "chainIssuesFound": 0,
@@ -10,11 +10,11 @@
       "oldTitle": "Book Maldives Transfers - ferry & Speedboat transportation schedules (20$)",
       "pageType": "transfer",
       "internalLinkCount": 2140,
-      "newUrl": "/maldives/transfers/",
+      "newUrl": "/maldives-ferry-schedule/",
       "status": 301,
       "migrationStatus": "redirect",
-      "confidence": "medium",
-      "reason": "Generic transfer-booking utility/hub page naming no specific property — mapped to the transfers directory as the closest genuine equivalent."
+      "confidence": "high",
+      "reason": "This page's real province ferry schedule content was migrated to a dedicated Ferry Schedule page (Task 20)."
     },
     {
       "oldUrl": "/maps/maldives-island-on-world-map.html",

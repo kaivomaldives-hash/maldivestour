@@ -45,7 +45,10 @@ function mediaAssetOf(row: MediaAssetRow): MediaAsset {
   };
 }
 
-async function getMediaAssetsByIds(ids: string[]): Promise<Map<string, MediaAsset>> {
+/** Direct media_assets lookup by id — for the rare case (ferry_routes'
+ * hero_media_id) where a non-node table references media_assets straight,
+ * without going through node_media. */
+export async function getMediaAssetsByIds(ids: string[]): Promise<Map<string, MediaAsset>> {
   const map = new Map<string, MediaAsset>();
   if (ids.length === 0) return map;
 

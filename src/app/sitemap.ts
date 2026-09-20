@@ -11,6 +11,7 @@ import { getAtolls, getIslands } from "@/lib/locations/repository";
 import { getPackages } from "@/lib/packages/repository";
 import { getProviders } from "@/lib/providers/repository";
 import { getSiteUrl } from "@/lib/seo/site";
+import { getSpeedboats } from "@/lib/speedboats/repository";
 import { getSurfBreaks } from "@/lib/surfing/repository";
 import { getTransferRoutes } from "@/lib/transfers/repository";
 
@@ -53,6 +54,13 @@ const STATIC_PATHS = [
   "/maldives/surf-breaks/",
   "/maldives/surfing/",
   "/maldives/transfers/",
+  "/maldives/airport-transfers/",
+  "/maldives/resort-transfers/",
+  "/maldives/hotel-transfers/",
+  "/maldives/island-transfers/",
+  "/maldives/speedboat-transfers/",
+  "/maldives-speedboats-charter/",
+  "/maldives-ferry-schedule/",
   "/maldives/travel-guide/",
 ];
 
@@ -60,7 +68,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl();
   const url = (path: string) => `${siteUrl}${path}`;
 
-  const [atolls, islands, accommodations, activities, diveSites, surfBreaks, packages, transferRoutes, articles, providers] = await Promise.all([
+  const [atolls, islands, accommodations, activities, diveSites, surfBreaks, packages, transferRoutes, articles, providers, speedboats] = await Promise.all([
     getAtolls(),
     fetchAllPages((page) => getIslands({ page, pageSize: PAGE_SIZE })),
     fetchAllPages((page) => getAccommodations({ page, pageSize: PAGE_SIZE })),
@@ -71,6 +79,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     fetchAllPages((page) => getTransferRoutes({ page, pageSize: PAGE_SIZE })),
     fetchAllPages((page) => getArticles({ page, pageSize: PAGE_SIZE })),
     fetchAllPages((page) => getProviders({ page, pageSize: PAGE_SIZE })),
+    getSpeedboats(),
   ]);
 
   const entries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => ({ url: url(path), changeFrequency: "weekly", priority: path === "/" || path === "/maldives/" ? 1 : 0.6 }));
@@ -83,6 +92,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const s of surfBreaks) entries.push({ url: url(`/maldives/surf-breaks/${s.slug}/`), changeFrequency: "monthly", priority: 0.5 });
   for (const p of packages) entries.push({ url: url(`/maldives/packages/${p.slug}/`), changeFrequency: "weekly", priority: 0.7 });
   for (const t of transferRoutes) entries.push({ url: url(`/maldives/transfers/${t.slug}/`), changeFrequency: "monthly", priority: 0.6 });
+  for (const b of speedboats) entries.push({ url: url(`/maldives-speedboats-charter/${b.slug}/`), changeFrequency: "monthly", priority: 0.5 });
   for (const a of articles) entries.push({ url: url(articleHref(a)), changeFrequency: "monthly", priority: 0.6, lastModified: a.publishedAt ?? undefined });
   for (const p of providers) entries.push({ url: url(`/maldives/providers/${p.slug}/`), changeFrequency: "monthly", priority: 0.4 });
 

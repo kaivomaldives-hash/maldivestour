@@ -49,6 +49,10 @@ export interface TransferService {
   cancellationPolicy: string | null;
   description: string | null;
   isBookable: boolean;
+  /** Real, per-service attributes only (Task 20 §35) — never a generic
+   * checklist. Empty for the great majority of services, which have no
+   * sourced facility list. */
+  facilities: string[];
   schedules: TransferServiceSchedule[];
 }
 
@@ -72,12 +76,22 @@ export interface TransferRouteSummary {
    * most destinations (see attachDestinationHeroImages in the repository
    * for why that's the honest, expected outcome for most routes). */
   heroImage: MediaAsset | null;
+  /** transfer-category slugs this route is tagged with (Task 20 §22:
+   * airport / resort-transfer / hotel-transfer / island-transfer) —
+   * derived from real data (origin is an airport, destination's
+   * is_inhabited flag, a real hotel/guesthouse at the destination), never
+   * mutually exclusive. */
+  categories: string[];
 }
 
 export interface TransferRouteDetail extends TransferRouteSummary {
   metaTitle: string | null;
   metaDescription: string | null;
   services: TransferService[];
+  /** True when this route can take a private-transfer inquiry (Task 20
+   * §29) — every real route has this by default; only false if the route
+   * somehow predates the bookable_products backfill. */
+  isBookableForPrivateInquiry: boolean;
 }
 
 export interface GetTransferRoutesOptions {
@@ -90,6 +104,9 @@ export interface GetTransferRoutesOptions {
   atollId?: string;
   transferType?: TransferType;
   sharedOrPrivate?: SharedOrPrivate;
+  /** transfer-category slug (Task 20 §22) — airport / resort-transfer /
+   * hotel-transfer / island-transfer. */
+  category?: string;
 }
 
 export interface PaginatedResult<T> {

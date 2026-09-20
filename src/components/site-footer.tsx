@@ -23,6 +23,11 @@ const TRAVEL_LINKS = [
   { label: "Diving", href: "/maldives/diving/" },
   { label: "Surfing", href: "/maldives/surfing/" },
   { label: "Transfers", href: "/maldives/transfers/" },
+  { label: "Airport Transfers", href: "/maldives/airport-transfers/" },
+  { label: "Resort Transfers", href: "/maldives/resort-transfers/" },
+  { label: "Island Transfers", href: "/maldives/island-transfers/" },
+  { label: "Private Speedboat Charter", href: "/maldives-speedboats-charter/" },
+  { label: "Ferry Schedule", href: "/maldives-ferry-schedule/" },
   { label: "Packages", href: "/maldives/packages/" },
   { label: "Travel Guide", href: "/maldives/travel-guide/" },
 ];

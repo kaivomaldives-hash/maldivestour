@@ -24,10 +24,7 @@ const config: TransferCategoryConfig = {
       answer: "This varies by resort and rate — the price shown on each route is the transfer's own price as recorded, separate from any accommodation booking.",
     },
   ],
-  // Private resort islands are recorded as is_inhabited = false — the same
-  // real distinction already used throughout this project's location
-  // data, never a fabricated resort/hotel split.
-  filter: (route) => route.destination?.isInhabited === false,
+  category: "resort-transfer",
   emptyMessage: "No resort transfer routes recorded yet.",
 };
 

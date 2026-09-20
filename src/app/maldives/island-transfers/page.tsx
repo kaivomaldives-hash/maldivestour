@@ -24,7 +24,7 @@ const config: TransferCategoryConfig = {
       answer: "Generally yes — public ferry fares to nearby local islands are typically far lower than a resort's private speedboat transfer, though the journey usually takes longer.",
     },
   ],
-  filter: (route) => route.destination?.isInhabited === true,
+  category: "island-transfer",
   emptyMessage: "No local-island transfer routes recorded yet.",
 };
 

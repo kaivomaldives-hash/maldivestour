@@ -266,7 +266,6 @@ function main() {
       // real, specific content this script must NOT blur into a category
       // redirect (Task 16 §20), so they fall through to review instead.
       const GENERIC_TRANSFER_HUB_FILES = new Set([
-        "maldives-transportation-ferry-speedboat-transfers.html",
         "transfer/alifalif-transfer-booking.html",
         "transfer/baaatoll-transfer-booking.html",
         "transfer/ga-transfer-booking.html",
@@ -287,6 +286,11 @@ function main() {
         results.push(record(page, { newUrl: "/maldives/activities/", status: 301, migrationStatus: "redirect", confidence: "medium", reason: "Content is a general snorkeling/diving/water-sports activities hub (misfiled under transfer/ by directory), not transfer content — mapped to the activities directory." }));
       } else if (sf === "transfer/transfer-thank-you.html") {
         results.push(record(page, { newUrl: null, status: null, migrationStatus: "retire", confidence: "high", reason: "Post-checkout confirmation page, not real content." }));
+      } else if (sf === "maldives-transportation-ferry-speedboat-transfers.html") {
+        // Task 20: this page's own real province ferry schedule content
+        // (9 routes, transcribed) now has a dedicated page — a more
+        // specific, accurate target than the generic transfers hub.
+        results.push(record(page, { newUrl: "/maldives-ferry-schedule/", status: 301, migrationStatus: "redirect", confidence: "high", reason: "This page's real province ferry schedule content was migrated to a dedicated Ferry Schedule page (Task 20)." }));
       } else if (t?.reason?.startsWith("no structured") && GENERIC_TRANSFER_HUB_FILES.has(sf)) {
         results.push(record(page, { newUrl: "/maldives/transfers/", status: 301, migrationStatus: "redirect", confidence: "medium", reason: "Generic transfer-booking utility/hub page naming no specific property — mapped to the transfers directory as the closest genuine equivalent." }));
       } else {

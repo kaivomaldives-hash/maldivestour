@@ -5,22 +5,23 @@ import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
-import { getLocationBySlug } from "@/lib/locations/repository";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 import { getTransferRoutes } from "@/lib/transfers/repository";
-import type { TransferRouteSummary, TransferType } from "@/lib/transfers/types";
+import type { TransferType } from "@/lib/transfers/types";
 
 /**
- * Task 18: one shared implementation behind the 5 category landing pages
- * (airport/speedboat/resort/hotel/island) — each has genuinely distinct
- * copy and a genuinely distinct filtered subset of the real migrated
- * route data (never the same content re-skinned), but the fetch/render
- * shape is identical, so it lives once. A dedicated "Velana Airport
- * transfers" page was deliberately NOT built as a separate route: nearly
- * every migrated route already originates at Velana International
- * Airport, so /maldives/airport-transfers/ already serves that exact
- * search intent — a second page would be the near-duplicate-content
- * problem Task 18 explicitly warns against.
+ * Task 20: one shared implementation behind the transfer-category landing
+ * pages (airport/resort/hotel/island) plus speedboat-transfers. Each has
+ * genuinely distinct copy and a genuinely distinct real subset of route
+ * data — never the same content re-skinned. Since Task 20 §22, routes are
+ * filtered by the real, non-exclusive transfer-category tags
+ * (node_categories, group='transfer-category') rather than a single
+ * transferType/isInhabited check, so a route genuinely appears on every
+ * category page it qualifies for (e.g. airport AND resort AND island),
+ * with no route duplicated in the underlying data. A dedicated "Velana
+ * Airport transfers" page was deliberately NOT built as a separate route:
+ * nearly every route originates at Velana International Airport, so
+ * /maldives/airport-transfers/ already serves that exact search intent.
  */
 
 export interface TransferCategoryConfig {
@@ -31,15 +32,23 @@ export interface TransferCategoryConfig {
   metaTitle: string;
   metaDescription: string;
   faqs: Array<{ question: string; answer: string }>;
-  /** Filtered server-side via getTransferRoutes — use for a real column
-   * the repository already supports (transfer type). */
+  /** transfer-category slug (Task 20 §22): airport / resort-transfer /
+   * hotel-transfer / island-transfer. */
+  category?: string;
+  /** Real transfer_type column filter — used only by speedboat-transfers,
+   * which isn't a route-level category (a route can carry a speedboat
+   * service alongside other service types). */
   transferType?: TransferType;
-  /** Post-fetch filter for criteria the repository doesn't expose as a
-   * query option (e.g. destination.isInhabited) — applied after the
-   * (already origin-scoped, and optionally transferType-scoped) fetch. */
-  filter?: (route: TransferRouteSummary) => boolean;
   emptyMessage: string;
 }
+
+const OTHER_CATEGORIES = [
+  { slug: "airport-transfers", label: "Airport Transfers" },
+  { slug: "resort-transfers", label: "Resort Transfers" },
+  { slug: "hotel-transfers", label: "Hotel Transfers" },
+  { slug: "island-transfers", label: "Island Transfers" },
+  { slug: "speedboat-transfers", label: "Speedboat Transfers" },
+];
 
 export function transferCategoryMetadata(config: TransferCategoryConfig): Metadata {
   const url = canonicalUrl(`/maldives/${config.slug}`);
@@ -65,11 +74,8 @@ function faqJsonLd(faqs: TransferCategoryConfig["faqs"]) {
 }
 
 export async function TransferCategoryLandingPage({ config }: { config: TransferCategoryConfig }) {
-  const velanaAirport = await getLocationBySlug("velana-international-airport");
-  const fetched = velanaAirport
-    ? await getTransferRoutes({ originLocationId: velanaAirport.id, transferType: config.transferType, pageSize: 100 })
-    : { items: [] };
-  const routes = config.filter ? fetched.items.filter(config.filter) : fetched.items;
+  const fetched = await getTransferRoutes({ category: config.category, transferType: config.transferType, pageSize: 100 });
+  const routes = fetched.items;
 
   const faq = faqJsonLd(config.faqs);
 
@@ -121,7 +127,19 @@ export async function TransferCategoryLandingPage({ config }: { config: Transfer
         )}
 
         <div className="mt-10 border-t border-neutral-200 pt-6">
-          <Link href="/maldives/transfers/" className="text-sm font-medium text-maldives-600 hover:underline">
+          <p className="text-sm font-medium text-neutral-500">Browse other transfer types</p>
+          <nav aria-label="Other transfer categories" className="mt-2 flex flex-wrap gap-2">
+            {OTHER_CATEGORIES.filter((c) => c.slug !== config.slug).map((c) => (
+              <Link
+                key={c.slug}
+                href={`/maldives/${c.slug}/`}
+                className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
+              >
+                {c.label}
+              </Link>
+            ))}
+          </nav>
+          <Link href="/maldives/transfers/" className="mt-4 inline-block text-sm font-medium text-maldives-600 hover:underline">
             ← All Maldives transfers
           </Link>
         </div>

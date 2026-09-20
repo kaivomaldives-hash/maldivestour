@@ -1,6 +1,7 @@
 import "server-only";
 
 import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
+import { getCategoryBySlug, getNodeIdsByCategory } from "@/lib/categories/repository";
 import { getLocationSummariesByIds } from "@/lib/locations/repository";
 import type { MediaAsset } from "@/lib/media/types";
 import { getProviderSummariesByIds } from "@/lib/providers/repository";
@@ -114,6 +115,8 @@ type TransferServiceRow = {
   booking_requirements: string | null;
   cancellation_policy: string | null;
   description: string | null;
+  is_bookable: boolean;
+  facilities: string[];
 };
 
 type TransferServiceScheduleRow = {
@@ -179,7 +182,7 @@ async function getServicesByRouteIds(routeIds: string[]): Promise<Map<string, Tr
   const { data, error } = await supabase
     .from("transfer_services")
     .select(
-      "id, route_id, provider_id, transfer_type, vehicle_type, shared_or_private, duration_minutes, price, currency, capacity, luggage_allowance, status, pickup_instructions, dropoff_instructions, booking_requirements, cancellation_policy, description",
+      "id, route_id, provider_id, transfer_type, vehicle_type, shared_or_private, duration_minutes, price, currency, capacity, luggage_allowance, status, pickup_instructions, dropoff_instructions, booking_requirements, cancellation_policy, description, is_bookable, facilities",
     )
     .in("route_id", routeIds)
     .eq("status", "active")
@@ -191,10 +194,9 @@ async function getServicesByRouteIds(routeIds: string[]): Promise<Map<string, Tr
   const providerIds = Array.from(new Set(data.map((s) => s.provider_id).filter((id): id is string => Boolean(id))));
   const serviceIds = data.map((s) => s.id);
 
-  const [providersById, schedulesById, bookableIds] = await Promise.all([
+  const [providersById, schedulesById] = await Promise.all([
     getProviderSummariesByIds(providerIds),
     getSchedulesByServiceIds(serviceIds),
-    getBookableTransferServiceIds(serviceIds),
   ]);
 
   for (const row of data) {
@@ -216,7 +218,8 @@ async function getServicesByRouteIds(routeIds: string[]): Promise<Map<string, Tr
       bookingRequirements: row.booking_requirements,
       cancellationPolicy: row.cancellation_policy,
       description: row.description,
-      isBookable: bookableIds.has(row.id),
+      isBookable: row.is_bookable,
+      facilities: row.facilities ?? [],
       schedules: schedulesById.get(row.id) ?? [],
     };
     const list = map.get(row.route_id) ?? [];
@@ -224,24 +227,6 @@ async function getServicesByRouteIds(routeIds: string[]): Promise<Map<string, Tr
     map.set(row.route_id, list);
   }
   return map;
-}
-
-/**
- * `transfer_services` are not `nodes` (see this file's top comment), so
- * they never appear in `bookable_products` (that table's FK and type-safety
- * trigger only accept accommodation/activity/package nodes — see
- * supabase/migrations/20250101001300_functions_triggers.sql §3). The
- * architecture already connects them to booking a different, already-built
- * way: `bookings.transfer_service_id` + `bookings.product_type =
- * 'transfer_service'` (supabase/migrations/20250101001000_booking.sql).
- * "Bookable" for a transfer service therefore just means "exists and is
- * active" — there is no separate opt-in row to check, unlike accommodation/
- * activity/package. This returns the active service ids unchanged; kept as
- * its own function so the one place that would need to change, if a future
- * task adds a transfer-specific bookability flag, is obvious.
- */
-async function getBookableTransferServiceIds(serviceIds: string[]): Promise<Set<string>> {
-  return new Set(serviceIds);
 }
 
 /** A route's destination island's own real accommodation photo (already
@@ -262,14 +247,53 @@ async function attachDestinationHeroImages(destinationLocationIds: string[]): Pr
   return result;
 }
 
+/** transfer-category slugs (Task 20 §22) tagged on a set of route node
+ * ids, via the shared node_categories table — one query, then grouped in
+ * application code, same "when in doubt, don't embed" reasoning as every
+ * other category lookup in this codebase. */
+async function getTransferCategoriesForRoutes(routeIds: string[]): Promise<Map<string, string[]>> {
+  const map = new Map<string, string[]>();
+  if (routeIds.length === 0) return map;
+
+  const supabase = await createClient();
+  const { data: tagRows, error: tagError } = await supabase
+    .from("node_categories")
+    .select("node_id, category_id")
+    .in("node_id", routeIds)
+    .returns<Array<{ node_id: string; category_id: string }>>();
+
+  if (tagError || !tagRows || tagRows.length === 0) return map;
+
+  const categoryIds = Array.from(new Set(tagRows.map((r) => r.category_id)));
+  const { data: categoryRows, error: categoryError } = await supabase
+    .from("nodes")
+    .select("id, slug, categories!inner(category_group)")
+    .in("id", categoryIds)
+    .eq("categories.category_group", "transfer-category")
+    .returns<Array<{ id: string; slug: string }>>();
+
+  if (categoryError || !categoryRows) return map;
+  const slugById = new Map(categoryRows.map((c) => [c.id, c.slug]));
+
+  for (const row of tagRows) {
+    const slug = slugById.get(row.category_id);
+    if (!slug) continue;
+    const list = map.get(row.node_id) ?? [];
+    list.push(slug);
+    map.set(row.node_id, list);
+  }
+  return map;
+}
+
 async function attachOriginDestination(bares: BareRoute[]): Promise<TransferRouteSummary[]> {
   const locationIds = Array.from(new Set(bares.flatMap((b) => [b.originLocationId, b.destinationLocationId])));
-  const [locationsById, heroImageByDestinationId] = await Promise.all([
+  const routeIds = bares.map((b) => b.id);
+  const [locationsById, heroImageByDestinationId, servicesByRoute, categoriesByRoute] = await Promise.all([
     getLocationSummariesByIds(locationIds),
     attachDestinationHeroImages(bares.map((b) => b.destinationLocationId)),
+    getServicesByRouteIds(routeIds),
+    getTransferCategoriesForRoutes(routeIds),
   ]);
-  const routeIds = bares.map((b) => b.id);
-  const servicesByRoute = await getServicesByRouteIds(routeIds);
 
   return bares.map((b) => {
     const services = servicesByRoute.get(b.id) ?? [];
@@ -286,6 +310,7 @@ async function attachOriginDestination(bares: BareRoute[]): Promise<TransferRout
       priceFrom: cheapest?.price ?? null,
       currency: cheapest?.currency ?? null,
       heroImage: heroImageByDestinationId.get(b.destinationLocationId) ?? null,
+      categories: categoriesByRoute.get(b.id) ?? [],
     };
   });
 }
@@ -342,7 +367,13 @@ export async function getTransferRoutes(options: GetTransferRoutesOptions = {}):
     }
   }
 
-  const total = options.locationId || options.atollId ? bares.length : (count ?? bares.length);
+  if (options.category) {
+    const category = await getCategoryBySlug(options.category, "transfer-category");
+    const taggedNodeIds = category ? new Set(await getNodeIdsByCategory(category.id)) : new Set<string>();
+    bares = bares.filter((b) => taggedNodeIds.has(b.id));
+  }
+
+  const total = options.locationId || options.atollId || options.category ? bares.length : (count ?? bares.length);
   const pageItems = bares.slice(from, to + 1);
   let items = await attachOriginDestination(pageItems);
 
@@ -380,9 +411,10 @@ export async function getTransferRouteBySlug(slug: string): Promise<TransferRout
   const bare = bareRouteOf(data);
   if (!bare) return null;
 
-  const [summaries, services] = await Promise.all([
+  const [summaries, services, bookableRow] = await Promise.all([
     attachOriginDestination([bare]),
     getServicesByRouteIds([bare.id]).then((m) => m.get(bare.id) ?? []),
+    supabase.from("bookable_products").select("id").eq("id", bare.id).maybeSingle(),
   ]);
   const summary = summaries[0];
 
@@ -391,6 +423,7 @@ export async function getTransferRouteBySlug(slug: string): Promise<TransferRout
     metaTitle: bare.metaTitle,
     metaDescription: bare.metaDescription,
     services,
+    isBookableForPrivateInquiry: Boolean(bookableRow.data),
   };
 }
 
@@ -451,7 +484,7 @@ export async function getTransferServicesByProvider(providerId: string): Promise
   const { data, error } = await supabase
     .from("transfer_services")
     .select(
-      "id, route_id, provider_id, transfer_type, vehicle_type, shared_or_private, duration_minutes, price, currency, capacity, luggage_allowance, status, pickup_instructions, dropoff_instructions, booking_requirements, cancellation_policy, description",
+      "id, route_id, provider_id, transfer_type, vehicle_type, shared_or_private, duration_minutes, price, currency, capacity, luggage_allowance, status, pickup_instructions, dropoff_instructions, booking_requirements, cancellation_policy, description, is_bookable, facilities",
     )
     .eq("provider_id", providerId)
     .eq("status", "active")
@@ -489,7 +522,8 @@ export async function getTransferServicesByProvider(providerId: string): Promise
       bookingRequirements: row.booking_requirements,
       cancellationPolicy: row.cancellation_policy,
       description: row.description,
-      isBookable: true,
+      isBookable: row.is_bookable,
+      facilities: row.facilities ?? [],
       schedules: schedulesById.get(row.id) ?? [],
       route,
     });
@@ -537,7 +571,7 @@ export async function getTransferServicesByIds(ids: string[]): Promise<Map<strin
   const { data, error } = await supabase
     .from("transfer_services")
     .select(
-      "id, route_id, provider_id, transfer_type, vehicle_type, shared_or_private, duration_minutes, price, currency, capacity, luggage_allowance, status, pickup_instructions, dropoff_instructions, booking_requirements, cancellation_policy, description",
+      "id, route_id, provider_id, transfer_type, vehicle_type, shared_or_private, duration_minutes, price, currency, capacity, luggage_allowance, status, pickup_instructions, dropoff_instructions, booking_requirements, cancellation_policy, description, is_bookable, facilities",
     )
     .in("id", ids)
     .returns<TransferServiceRow[]>();
@@ -569,7 +603,8 @@ export async function getTransferServicesByIds(ids: string[]): Promise<Map<strin
       bookingRequirements: row.booking_requirements,
       cancellationPolicy: row.cancellation_policy,
       description: row.description,
-      isBookable: true,
+      isBookable: row.is_bookable,
+      facilities: row.facilities ?? [],
       schedules: schedulesById.get(row.id) ?? [],
     });
   }

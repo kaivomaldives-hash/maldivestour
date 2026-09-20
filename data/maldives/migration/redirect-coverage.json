@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20T14:57:21.308Z",
+  "generatedAt": "2026-09-20T16:55:49.083Z",
   "note": "Task 16 §25. 'High-value' here means high internal-link count within the legacy site itself (no Search Console export exists in this repository — confirmed absent, see legacy-url-inventory.json's own note).",
   "totalLegacyUrls": 1037,
   "keep": 1,

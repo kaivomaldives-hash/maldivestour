@@ -3,14 +3,17 @@
 // generated Task 14 SQL migrations to Supabase Storage's `media` bucket.
 //
 // This script's ONLY input is the union of
-// data/maldives/media/media-storage-manifest.json and
-// data/maldives/content/article-storage-manifest.json — the manifests
-// scripts/import-legacy-media.mjs and scripts/import-legacy-articles.mjs
-// write (in --commit mode) alongside their generated SQL, listing exactly
-// the media_assets rows those migrations create. Uploading precisely that
-// set (never a broader guess, e.g. "every high-confidence match") is what
-// keeps "files actually in Storage" and "DB rows that reference them" from
-// drifting apart.
+// data/maldives/media/media-storage-manifest.json,
+// data/maldives/content/article-storage-manifest.json, and
+// data/maldives/migration/task20-ferry-storage-manifest.json — the
+// manifests scripts/import-legacy-media.mjs,
+// scripts/import-legacy-articles.mjs, and
+// scripts/build-transfers-platform-v2.mjs write (in --commit mode)
+// alongside their generated SQL, listing exactly the media_assets rows
+// those migrations create. Uploading precisely that set (never a broader
+// guess, e.g. "every high-confidence match") is what keeps "files
+// actually in Storage" and "DB rows that reference them" from drifting
+// apart.
 //
 // Dry run (default, no network/credentials required): reports what WOULD
 // be uploaded — local file, target storage path, size — and flags any
@@ -75,10 +78,11 @@ function loadManifest(relPath) {
 function mergeManifests() {
   const mediaManifest = loadManifest("data/maldives/media/media-storage-manifest.json");
   const articleManifest = loadManifest("data/maldives/content/article-storage-manifest.json");
+  const ferryManifest = loadManifest("data/maldives/migration/task20-ferry-storage-manifest.json");
 
   const byId = new Map();
   const conflicts = [];
-  for (const entry of [...mediaManifest, ...articleManifest]) {
+  for (const entry of [...mediaManifest, ...articleManifest, ...ferryManifest]) {
     const existing = byId.get(entry.mediaId);
     if (!existing) {
       byId.set(entry.mediaId, entry);

@@ -1,16 +1,22 @@
 #!/usr/bin/env node
-// Migrates the ENTIRE real legacy image library (release/public_html/
-// images/), not just the subset currently wired into specific pages —
-// the owner wants the full set available in Storage for future pages.
+// Migrates the ENTIRE real legacy image library — not just
+// release/public_html/images/, but every top-level content folder that
+// holds its own images (atolls/, fishing/, resorts/ additionally, found
+// after the first pass only covered images/) — not just the subset
+// currently wired into specific pages. The owner wants the full set
+// available in Storage for future pages.
 // Every file gets a real media_assets row using the exact same
 // deterministicUuid("legacy-media::" + relativePath) convention every
-// other Task 14+ migration script uses, so this can never create a
-// duplicate row for a file some other script already covered — it just
-// resolves to the same id and no-ops via ON CONFLICT.
+// other Task 14+ migration script uses (relativePath is always relative
+// to RELEASE_DIR itself, e.g. "resorts/fihalhohi/images/x.webp" — the
+// same convention scripts/import-legacy-media.mjs uses when it walks the
+// whole release tree), so this can never create a duplicate row for a
+// file some other script already covered — it just resolves to the same
+// id and no-ops via ON CONFLICT.
 //
-// Excludes only genuinely non-image junk found in the folder (Windows
-// thumbnail caches, stray .php/.html files, a .lnk shortcut, and the two
-// .mp4s — this project's media_assets.media_type only supports
+// Excludes only genuinely non-image junk found in these folders (Windows
+// thumbnail caches, stray .php/.html/.css/.js files, a .lnk shortcut, and
+// any .mp4/.mov — this project's media_assets.media_type only supports
 // 'image'/'youtube', no generic video type, so real video files are
 // reported but not migrated here).
 //
@@ -27,7 +33,7 @@ import path from "node:path";
 import { DATA_DIR, deterministicUuid, RELEASE_DIR, ROOT, storagePathForRelativePath, toAsciiSafe } from "./lib/legacy-shared.mjs";
 
 const COMMIT = process.argv.includes("--commit");
-const IMAGES_ROOT = path.join(RELEASE_DIR, "images");
+const ROOT_FOLDERS = ["images", "atolls", "fishing", "resorts"];
 
 const IMAGE_EXTENSIONS = new Set([".webp", ".jpg", ".jpeg", ".png", ".gif", ".avif", ".svg"]);
 const SKIP_FILENAMES = new Set(["thumbs.db"]);
@@ -74,13 +80,17 @@ function walk(dir, relBase, out) {
 }
 
 function main() {
-  if (!existsSync(IMAGES_ROOT)) {
-    console.error(`Not found: ${IMAGES_ROOT}`);
-    process.exit(1);
-  }
-
   const allFiles = [];
-  walk(IMAGES_ROOT, "", allFiles);
+  for (const folder of ROOT_FOLDERS) {
+    const folderRoot = path.join(RELEASE_DIR, folder);
+    if (!existsSync(folderRoot)) {
+      console.error(`Not found: ${folderRoot}`);
+      process.exit(1);
+    }
+    const folderFiles = [];
+    walk(folderRoot, "", folderFiles);
+    for (const f of folderFiles) allFiles.push({ ...f, rel: `${folder}/${f.rel}`, folder });
+  }
 
   const images = [];
   const skippedVideo = [];
@@ -125,7 +135,10 @@ function main() {
   const uploadManifest = [];
 
   for (const img of images) {
-    const relativePath = `images/${img.rel}`;
+    // img.rel already carries its root-folder prefix (e.g.
+    // "resorts/fihalhohi/images/x.webp") — this IS the path relative to
+    // RELEASE_DIR, matching import-legacy-media.mjs's own convention.
+    const relativePath = img.rel;
     const mediaId = deterministicUuid(`legacy-media::${relativePath}`);
     const storagePath = storagePathForRelativePath(relativePath);
     uploadManifest.push({ mediaId, relativePath, storagePath });
@@ -136,9 +149,10 @@ function main() {
 
   const sql = [
     "-- Full legacy image library (Task 20 follow-up): every real image",
-    "-- file under release/public_html/images/, not just the subset wired",
-    "-- into specific pages -- available for future pages to reference by",
-    "-- its own storage_path. GENERATED FILE, regenerate with:",
+    "-- file under release/public_html/{images,atolls,fishing,resorts}/,",
+    "-- not just the subset wired into specific pages -- available for",
+    "-- future pages to reference by its own storage_path. GENERATED FILE,",
+    "-- regenerate with:",
     "--   node scripts/build-full-legacy-image-library.mjs --commit",
     "",
     ...lines,
@@ -162,7 +176,7 @@ function main() {
     console.log(`Wrote ${path.relative(ROOT, reportPath)}`);
   }
 
-  console.log(`\nTotal files under images/: ${allFiles.length}`);
+  console.log(`\nTotal files under ${ROOT_FOLDERS.join("/, ")}/: ${allFiles.length}`);
   console.log(`Real images migrated: ${images.length} (including ${recoveredByMagicBytes} recovered by content sniffing, no/wrong extension on disk)`);
   console.log(`Skipped (video, media_assets has no video type): ${skippedVideo.length}`, skippedVideo);
   console.log(`Skipped (genuinely not an image): ${skippedOther.length}`);

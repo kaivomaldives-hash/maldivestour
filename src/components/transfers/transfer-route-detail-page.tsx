@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { PackageCard } from "@/components/packages/package-card";
+import { CARD_CLASS } from "@/components/ui/card";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { PageHero } from "@/components/ui/page-hero";
 import { getPackagesByTransferRoute } from "@/lib/packages/repository";
 import { getTransferRouteBySlug } from "@/lib/transfers/repository";
 import type { SharedOrPrivate, TransferService, TransferType } from "@/lib/transfers/types";
@@ -67,7 +69,7 @@ function ServiceCard({ service }: { service: TransferService }) {
   const duration = formatDuration(service.durationMinutes);
 
   return (
-    <li className="rounded border border-neutral-200 p-4">
+    <li className={CARD_CLASS}>
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <span className="text-lg font-medium">
           {service.provider ? (
@@ -156,18 +158,20 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
   const duration = formatDuration(route.typicalDurationMinutes);
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Breadcrumbs
-        items={[
+    <main>
+      <PageHero
+        breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },
           { label: "Transfers", href: "/maldives/transfers/" },
           { label: route.title },
         ]}
+        eyebrow="Transfer route"
+        title={route.title}
+        description={route.summary ?? undefined}
       />
-      <h1 className="mt-4 text-3xl font-semibold">{route.title}</h1>
-      {route.summary && <p className="mt-3 text-neutral-700">{route.summary}</p>}
 
-      <dl className="mt-6 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
+      <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+      <dl className="grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
         {route.origin && (
           <div>
             <dt className="text-neutral-500">From</dt>
@@ -212,7 +216,7 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
       )}
 
       <section className="mt-10">
-        <h2 className="text-xl font-semibold">Transfer services</h2>
+        <h2 className="text-xl font-semibold text-ocean-900">Transfer services</h2>
         {route.services.length === 0 ? (
           <p className="mt-2 text-sm text-neutral-600">No verified transfer services recorded for this route yet.</p>
         ) : (
@@ -226,7 +230,7 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
 
       {packages.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Packages using this route</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Packages using this route</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {packages.map((pkg) => (
               <PackageCard key={pkg.id} pkg={pkg} />
@@ -237,6 +241,7 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
 
       {/* Booking/inquiry UI is not built yet — Task 10 only establishes the
           bookings.transfer_service_id connection (see service.isBookable). */}
+      </div>
     </main>
   );
 }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { CARD_CLASS } from "@/components/ui/card";
 import { activityHref, type ActivitySummary } from "@/lib/activities/types";
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -25,11 +26,11 @@ export function ActivityCard({ activity }: { activity: ActivitySummary }) {
   const duration = formatDuration(activity.durationMinutes);
 
   return (
-    <li className="rounded border border-neutral-200 p-4">
-      <Link href={activityHref(activity)} className="text-lg font-medium hover:underline">
+    <li className={CARD_CLASS}>
+      <Link href={activityHref(activity)} className="text-lg font-medium text-ocean-900 transition-colors hover:text-maldives-600">
         {activity.title}
       </Link>
-      <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-sm text-neutral-600">
+      <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-sm text-neutral-600">
         <span>{CATEGORY_LABEL[activity.activityCategory] ?? activity.activityCategory}</span>
         {activity.primaryLocation && <span>{activity.primaryLocation.title}</span>}
         {duration && <span>{duration}</span>}

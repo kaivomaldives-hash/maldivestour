@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ActivityCard } from "@/components/activity/activity-card";
-import { Breadcrumbs } from "@/components/location/breadcrumbs";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { PageHero } from "@/components/ui/page-hero";
 import { getDiveSiteBySlug, getDivingActivitiesAtSite } from "@/lib/diving/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
@@ -40,18 +41,20 @@ export async function DiveSiteDetailPage({ slug }: { slug: string }) {
   const activities = await getDivingActivitiesAtSite(site.id);
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Breadcrumbs
-        items={[
+    <main>
+      <PageHero
+        breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },
           { label: "Dive Sites", href: "/maldives/dive-sites/" },
           { label: site.title },
         ]}
+        eyebrow="Dive site"
+        title={site.title}
+        description={site.summary ?? undefined}
       />
-      <h1 className="mt-4 text-3xl font-semibold">{site.title}</h1>
-      {site.summary && <p className="mt-3 text-neutral-700">{site.summary}</p>}
 
-      <p className="mt-2 text-xs uppercase tracking-wide text-neutral-500">
+      <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+      <p className="text-xs uppercase tracking-wide text-neutral-500">
         A physical dive site — not a bookable product. See diving activities below for operators running trips here.
       </p>
 
@@ -119,7 +122,7 @@ export async function DiveSiteDetailPage({ slug }: { slug: string }) {
 
       {activities.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Diving activities at {site.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Diving activities at {site.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {activities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
@@ -127,6 +130,7 @@ export async function DiveSiteDetailPage({ slug }: { slug: string }) {
           </ul>
         </section>
       )}
+      </div>
     </main>
   );
 }

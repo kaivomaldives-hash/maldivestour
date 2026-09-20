@@ -5,7 +5,9 @@ import Link from "next/link";
 
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { ActivityCard } from "@/components/activity/activity-card";
-import { Breadcrumbs } from "@/components/location/breadcrumbs";
+import { CARD_CLASS } from "@/components/ui/card";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodationsByProvider } from "@/lib/accommodations/repository";
 import { getActivitiesByProvider } from "@/lib/activities/repository";
 import { getProviderBySlug } from "@/lib/providers/repository";
@@ -63,27 +65,29 @@ export default async function ProviderDetailPage({ params }: { params: Promise<P
   );
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Breadcrumbs
-        items={[
+    <main>
+      <PageHero
+        breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },
           { label: "Providers", href: "/maldives/providers/" },
           { label: provider.title },
         ]}
+        eyebrow="Provider"
+        title={provider.title}
+        description={provider.summary ?? undefined}
+        meta={
+          provider.websiteUrl ? (
+            <a href={provider.websiteUrl} target="_blank" rel="noopener noreferrer" className="text-maldives-600 underline">
+              {provider.websiteUrl}
+            </a>
+          ) : undefined
+        }
       />
-      <h1 className="mt-4 text-3xl font-semibold">{provider.title}</h1>
-      {provider.summary && <p className="mt-3 text-neutral-700">{provider.summary}</p>}
-      {provider.websiteUrl && (
-        <p className="mt-2 text-sm">
-          <a href={provider.websiteUrl} target="_blank" rel="noopener noreferrer" className="underline">
-            {provider.websiteUrl}
-          </a>
-        </p>
-      )}
 
+      <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
       {accommodations.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-xl font-semibold">Accommodation operated by {provider.title}</h2>
+        <section>
+          <h2 className="text-xl font-semibold text-ocean-900">Accommodation operated by {provider.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {accommodations.map((accommodation) => (
               <AccommodationCard key={accommodation.id} accommodation={accommodation} />
@@ -94,7 +98,7 @@ export default async function ProviderDetailPage({ params }: { params: Promise<P
 
       {fishingActivities.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Fishing operated by {provider.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Fishing operated by {provider.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {fishingActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
@@ -105,7 +109,7 @@ export default async function ProviderDetailPage({ params }: { params: Promise<P
 
       {divingActivities.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Diving operated by {provider.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Diving operated by {provider.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {divingActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
@@ -116,7 +120,7 @@ export default async function ProviderDetailPage({ params }: { params: Promise<P
 
       {surfingActivities.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Surfing operated by {provider.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Surfing operated by {provider.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {surfingActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
@@ -127,7 +131,7 @@ export default async function ProviderDetailPage({ params }: { params: Promise<P
 
       {otherActivities.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Activities operated by {provider.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Activities operated by {provider.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {otherActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
@@ -138,11 +142,11 @@ export default async function ProviderDetailPage({ params }: { params: Promise<P
 
       {transferServices.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Transfer services operated by {provider.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Transfer services operated by {provider.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {transferServices.map((service) => (
-              <li key={service.id} className="rounded border border-neutral-200 p-4">
-                <Link href={`/maldives/transfers/${service.route.slug}/`} className="text-lg font-medium hover:underline">
+              <li key={service.id} className={CARD_CLASS}>
+                <Link href={`/maldives/transfers/${service.route.slug}/`} className="text-lg font-medium text-ocean-900 transition-colors hover:text-maldives-600">
                   {service.route.title}
                 </Link>
                 <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-sm text-neutral-600">
@@ -157,6 +161,7 @@ export default async function ProviderDetailPage({ params }: { params: Promise<P
           </ul>
         </section>
       )}
+      </div>
     </main>
   );
 }

@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { PackageCard } from "@/components/packages/package-card";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { EmptyState } from "@/components/ui/empty-state";
+import { PageHero } from "@/components/ui/page-hero";
+import { Pagination } from "@/components/ui/pagination";
 import { getAtollBySlug } from "@/lib/locations/repository";
 import {
   getPackageDurationBandsInUse,
@@ -108,7 +111,7 @@ export async function PackageDirectoryPage({ searchParams }: { searchParams: Pro
       <nav aria-label={`Filter by ${label}`} className="mt-3 flex flex-wrap gap-2 text-sm">
         <Link
           href={`/maldives/packages/${otherQuery ? `?${otherQuery}` : ""}`}
-          className={`rounded-full border px-3 py-1 ${!active ? "border-neutral-900 bg-neutral-900 text-white" : "border-neutral-300"}`}
+          className={`rounded-full border px-3 py-1 ${!active ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
         >
           All {label}
         </Link>
@@ -119,7 +122,7 @@ export async function PackageDirectoryPage({ searchParams }: { searchParams: Pro
             <Link
               key={option.slug}
               href={`/maldives/packages/?${params.toString()}`}
-              className={`rounded-full border px-3 py-1 ${active === option.slug ? "border-neutral-900 bg-neutral-900 text-white" : "border-neutral-300"}`}
+              className={`rounded-full border px-3 py-1 ${active === option.slug ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
             >
               {option.title}
             </Link>
@@ -130,73 +133,59 @@ export async function PackageDirectoryPage({ searchParams }: { searchParams: Pro
   }
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Breadcrumbs items={[{ label: "Maldives", href: "/maldives/" }, { label: "Packages" }]} />
-      <h1 className="mt-4 text-3xl font-semibold">Maldives Packages</h1>
-      <p className="mt-3 text-neutral-700">
-        Multi-day itineraries built entirely from real, individually verified accommodation, activities, and transfers —
-        never a generic package template.
-      </p>
+    <main>
+      <PageHero
+        breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Packages" }]}
+        eyebrow="Packages"
+        title="Maldives Packages"
+        description="Multi-day itineraries built entirely from real, individually verified accommodation, activities, and transfers — never a generic package template."
+      />
 
-      {atoll && (
-        <p className="mt-3 text-sm text-neutral-600">
-          Filtered to {atoll.title}.{" "}
-          <Link href="/maldives/packages/" className="underline">
-            Clear
-          </Link>
-        </p>
-      )}
-
-      {chipRow("traveler types", "travelerType", travelerTypes, activeTravelerType)}
-      {chipRow("styles", "style", styles, activeStyle)}
-      {chipRow("themes", "theme", themes, activeTheme)}
-      {chipRow("durations", "duration", durationBands, activeDuration)}
-      {chipRow("inclusions", "inclusion", inclusions, activeInclusion)}
-
-      <form method="get" className="mt-4 flex gap-2">
-        <label htmlFor="package-search" className="sr-only">
-          Search packages
-        </label>
-        <input
-          id="package-search"
-          type="search"
-          name="q"
-          defaultValue={query}
-          placeholder="Search by package name…"
-          className="w-full max-w-sm rounded border border-neutral-300 px-3 py-2 text-sm"
-        />
-        <button type="submit" className="rounded bg-neutral-900 px-4 py-2 text-sm text-white">
-          Search
-        </button>
-      </form>
-
-      {results.items.length === 0 ? (
-        <p className="mt-8 text-sm text-neutral-600">No packages match this filter yet.</p>
-      ) : (
-        <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {results.items.map((pkg) => (
-            <PackageCard key={pkg.id} pkg={pkg} />
-          ))}
-        </ul>
-      )}
-
-      {!isSearching && totalPages > 1 && (
-        <nav aria-label="Pagination" className="mt-8 flex items-center gap-4 text-sm">
-          {page > 1 && (
-            <Link href={`/maldives/packages/?${baseQuery ? baseQuery + "&" : ""}page=${page - 1}`} className="hover:underline">
-              ← Previous
+      <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+        {atoll && (
+          <p className="text-sm text-neutral-600">
+            Filtered to {atoll.title}.{" "}
+            <Link href="/maldives/packages/" className="underline">
+              Clear
             </Link>
-          )}
-          <span className="text-neutral-500">
-            Page {page} of {totalPages}
-          </span>
-          {page < totalPages && (
-            <Link href={`/maldives/packages/?${baseQuery ? baseQuery + "&" : ""}page=${page + 1}`} className="hover:underline">
-              Next →
-            </Link>
-          )}
-        </nav>
-      )}
+          </p>
+        )}
+
+        {chipRow("traveler types", "travelerType", travelerTypes, activeTravelerType)}
+        {chipRow("styles", "style", styles, activeStyle)}
+        {chipRow("themes", "theme", themes, activeTheme)}
+        {chipRow("durations", "duration", durationBands, activeDuration)}
+        {chipRow("inclusions", "inclusion", inclusions, activeInclusion)}
+
+        <form method="get" className="mt-4 flex gap-2">
+          <label htmlFor="package-search" className="sr-only">
+            Search packages
+          </label>
+          <input
+            id="package-search"
+            type="search"
+            name="q"
+            defaultValue={query}
+            placeholder="Search by package name…"
+            className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+          />
+          <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
+            Search
+          </button>
+        </form>
+
+        {results.items.length === 0 ? (
+          <EmptyState title="No packages match this filter yet" />
+        ) : (
+          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {results.items.map((pkg) => (
+              <PackageCard key={pkg.id} pkg={pkg} />
+            ))}
+          </ul>
+        )}
+
+        {!isSearching && <Pagination page={page} totalPages={totalPages} basePath="/maldives/packages/" baseQuery={baseQuery} />}
+      </div>
     </main>
   );
 }

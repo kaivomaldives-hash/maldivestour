@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Breadcrumbs } from "@/components/location/breadcrumbs";
+import { CARD_CLASS } from "@/components/ui/card";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { EmptyState } from "@/components/ui/empty-state";
+import { PageHero } from "@/components/ui/page-hero";
 import { getProviders } from "@/lib/providers/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
@@ -20,24 +23,29 @@ export default async function ProvidersPage() {
   const { items: providers } = await getProviders({ pageSize: 100 });
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Breadcrumbs items={[{ label: "Maldives", href: "/maldives/" }, { label: "Providers" }]} />
-      <h1 className="mt-4 text-3xl font-semibold">Providers</h1>
-      <p className="mt-2 text-neutral-600">Companies operating accommodation in the Maldives.</p>
+    <main>
+      <PageHero
+        breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Providers" }]}
+        eyebrow="Operators"
+        title="Providers"
+        description="Companies operating accommodation in the Maldives."
+      />
 
-      {providers.length === 0 ? (
-        <p className="mt-8 text-sm text-neutral-600">No providers recorded yet.</p>
-      ) : (
-        <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {providers.map((provider) => (
-            <li key={provider.id} className="rounded border border-neutral-200 p-4">
-              <Link href={`/maldives/providers/${provider.slug}/`} className="text-lg font-medium hover:underline">
-                {provider.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+        {providers.length === 0 ? (
+          <EmptyState title="No providers recorded yet" />
+        ) : (
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {providers.map((provider) => (
+              <li key={provider.id}>
+                <Link href={`/maldives/providers/${provider.slug}/`} className={`${CARD_CLASS} block text-lg font-medium text-ocean-900 hover:text-maldives-600`}>
+                  {provider.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </main>
   );
 }

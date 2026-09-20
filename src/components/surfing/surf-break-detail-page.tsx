@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ActivityCard } from "@/components/activity/activity-card";
-import { Breadcrumbs } from "@/components/location/breadcrumbs";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { PageHero } from "@/components/ui/page-hero";
 import { getSurfBreakBySlug, getSurfingActivitiesAtBreak } from "@/lib/surfing/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
@@ -37,18 +38,20 @@ export async function SurfBreakDetailPage({ slug }: { slug: string }) {
   const activities = await getSurfingActivitiesAtBreak(surfBreak.id);
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Breadcrumbs
-        items={[
+    <main>
+      <PageHero
+        breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },
           { label: "Surf Breaks", href: "/maldives/surf-breaks/" },
           { label: surfBreak.title },
         ]}
+        eyebrow="Surf break"
+        title={surfBreak.title}
+        description={surfBreak.summary ?? undefined}
       />
-      <h1 className="mt-4 text-3xl font-semibold">{surfBreak.title}</h1>
-      {surfBreak.summary && <p className="mt-3 text-neutral-700">{surfBreak.summary}</p>}
 
-      <p className="mt-2 text-xs uppercase tracking-wide text-neutral-500">
+      <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+      <p className="text-xs uppercase tracking-wide text-neutral-500">
         A physical surf break — not a bookable product. See surfing activities below for operators running lessons or trips here.
       </p>
 
@@ -112,7 +115,7 @@ export async function SurfBreakDetailPage({ slug }: { slug: string }) {
 
       {activities.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Surfing activities at {surfBreak.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Surfing activities at {surfBreak.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {activities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
@@ -120,6 +123,7 @@ export async function SurfBreakDetailPage({ slug }: { slug: string }) {
           </ul>
         </section>
       )}
+      </div>
     </main>
   );
 }

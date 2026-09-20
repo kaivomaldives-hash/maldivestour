@@ -4,11 +4,12 @@ import { notFound } from "next/navigation";
 
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { ActivityCard } from "@/components/activity/activity-card";
-import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
 import { PackageCard } from "@/components/packages/package-card";
 import { SurfBreakCard } from "@/components/surfing/surf-break-card";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodationsByAtoll } from "@/lib/accommodations/repository";
 import { getActivitiesByAtoll } from "@/lib/activities/repository";
 import { getDiveSitesByAtoll } from "@/lib/diving/repository";
@@ -71,18 +72,20 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
   );
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Breadcrumbs
-        items={[
+    <main>
+      <PageHero
+        breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },
           { label: "Atolls", href: "/maldives/atolls/" },
           { label: atoll.title },
         ]}
+        eyebrow="Atoll"
+        title={atoll.title}
+        description={atoll.summary ?? undefined}
       />
-      <h1 className="mt-4 text-3xl font-semibold">{atoll.title}</h1>
-      {atoll.summary && <p className="mt-3 text-neutral-700">{atoll.summary}</p>}
 
-      <dl className="mt-6 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
+      <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+      <dl className="grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
         {atoll.administrativeCode && (
           <div>
             <dt className="text-neutral-500">Administrative code</dt>
@@ -96,7 +99,7 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
       </dl>
 
       <section className="mt-10">
-        <h2 className="text-xl font-semibold">Islands in {atoll.title}</h2>
+        <h2 className="text-xl font-semibold text-ocean-900">Islands in {atoll.title}</h2>
         {islands.length === 0 ? (
           <p className="mt-2 text-sm text-neutral-600">No islands recorded for this atoll yet.</p>
         ) : (
@@ -114,7 +117,7 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
 
       {accommodations.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Accommodation in {atoll.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Accommodation in {atoll.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {accommodations.map((accommodation) => (
               <AccommodationCard key={accommodation.id} accommodation={accommodation} />
@@ -125,7 +128,7 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
 
       {fishingActivities.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Fishing in {atoll.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Fishing in {atoll.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {fishingActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
@@ -136,7 +139,7 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
 
       {divingActivities.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Diving in {atoll.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Diving in {atoll.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {divingActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
@@ -147,7 +150,7 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
 
       {diveSites.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Dive sites in {atoll.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Dive sites in {atoll.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {diveSites.map((site) => (
               <DiveSiteCard key={site.id} site={site} />
@@ -158,7 +161,7 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
 
       {surfingActivities.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Surfing in {atoll.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Surfing in {atoll.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {surfingActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
@@ -169,7 +172,7 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
 
       {surfBreaks.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Surf breaks in {atoll.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Surf breaks in {atoll.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {surfBreaks.map((surfBreak) => (
               <SurfBreakCard key={surfBreak.id} surfBreak={surfBreak} />
@@ -180,7 +183,7 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
 
       {otherActivities.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Activities in {atoll.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Activities in {atoll.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {otherActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
@@ -191,7 +194,7 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
 
       {transferRoutes.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Transfers in {atoll.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Transfers in {atoll.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {transferRoutes.map((route) => (
               <TransferRouteCard key={route.id} route={route} />
@@ -202,7 +205,7 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
 
       {packages.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Packages featuring {atoll.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Packages featuring {atoll.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {packages.map((pkg) => (
               <PackageCard key={pkg.id} pkg={pkg} />
@@ -210,6 +213,7 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
           </ul>
         </section>
       )}
+      </div>
     </main>
   );
 }

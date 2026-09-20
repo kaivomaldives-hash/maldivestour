@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { PackageCard } from "@/components/packages/package-card";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { PageHero } from "@/components/ui/page-hero";
 import { getFishingActivitiesByLocation, getFishingActivityBySlug, getFishingTypesForActivity } from "@/lib/fishing/repository";
 import { getPackagesByActivity } from "@/lib/packages/repository";
 import { canonicalUrl } from "@/lib/seo/site";
@@ -46,24 +47,26 @@ export async function FishingDetailPage({ slug }: { slug: string }) {
   const relatedTrips = sameIslandTrips.filter((t) => t.id !== activity.id).slice(0, 4);
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Breadcrumbs
-        items={[
+    <main>
+      <PageHero
+        breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },
           { label: "Fishing", href: "/maldives/fishing/" },
           { label: activity.title },
         ]}
+        eyebrow="Fishing"
+        title={activity.title}
+        description={activity.summary ?? undefined}
       />
-      <h1 className="mt-4 text-3xl font-semibold">{activity.title}</h1>
-      {activity.summary && <p className="mt-3 text-neutral-700">{activity.summary}</p>}
 
+      <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
       {fishingTypes.length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2">
           {fishingTypes.map((type) => (
             <Link
               key={type.id}
               href={`/maldives/fishing/?type=${type.slug}`}
-              className="rounded-full border border-neutral-300 px-3 py-1 text-xs"
+              className="rounded-full border border-neutral-300 px-3 py-1 text-xs text-neutral-700"
             >
               {type.title}
             </Link>
@@ -133,11 +136,11 @@ export async function FishingDetailPage({ slug }: { slug: string }) {
 
       {relatedTrips.length > 0 && primaryLocation && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Other fishing trips on {primaryLocation.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Other fishing trips on {primaryLocation.title}</h2>
           <ul className="mt-4 space-y-2 text-sm">
             {relatedTrips.map((trip) => (
               <li key={trip.id}>
-                <Link href={`/maldives/fishing/${trip.slug}/`} className="hover:underline">
+                <Link href={`/maldives/fishing/${trip.slug}/`} className="text-maldives-600 hover:text-ocean-800 hover:underline">
                   {trip.title}
                 </Link>
               </li>
@@ -148,7 +151,7 @@ export async function FishingDetailPage({ slug }: { slug: string }) {
 
       {packages.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Packages featuring {activity.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Packages featuring {activity.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {packages.map((pkg) => (
               <PackageCard key={pkg.id} pkg={pkg} />
@@ -159,6 +162,7 @@ export async function FishingDetailPage({ slug }: { slug: string }) {
 
       {/* Booking/inquiry UI is not built yet — Task 7 only establishes the
           bookable_products relationship (see activity.isBookable). */}
+      </div>
     </main>
   );
 }

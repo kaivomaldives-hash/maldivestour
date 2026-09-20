@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Breadcrumbs } from "@/components/location/breadcrumbs";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { EmptyState } from "@/components/ui/empty-state";
+import { PageHero } from "@/components/ui/page-hero";
+import { Pagination } from "@/components/ui/pagination";
+import { SearchIcon } from "@/components/ui/icons";
 import { getIslands, searchLocations } from "@/lib/locations/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
@@ -51,68 +55,60 @@ export default async function IslandsPage({
   const totalPages = isSearching ? 1 : Math.max(1, Math.ceil(results.total / PAGE_SIZE));
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Breadcrumbs
-        items={[
-          { label: "Maldives", href: "/maldives/" },
-          { label: "Islands" },
-        ]}
+    <main>
+      <PageHero
+        breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Islands" }]}
+        eyebrow="Destinations"
+        title="Islands of the Maldives"
+        description="Every inhabited island, searchable across all atolls."
       />
-      <h1 className="mt-4 text-3xl font-semibold">Islands of the Maldives</h1>
 
-      <form method="get" className="mt-6 flex gap-2">
-        <label htmlFor="island-search" className="sr-only">
-          Search islands
-        </label>
-        <input
-          id="island-search"
-          type="search"
-          name="q"
-          defaultValue={query}
-          placeholder="Search islands…"
-          className="w-full max-w-sm rounded border border-neutral-300 px-3 py-2 text-sm"
-        />
-        <button type="submit" className="rounded bg-neutral-900 px-4 py-2 text-sm text-white">
-          Search
-        </button>
-      </form>
+      <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+        <form method="get" className="flex gap-2">
+          <label htmlFor="island-search" className="sr-only">
+            Search islands
+          </label>
+          <div className="relative w-full max-w-sm">
+            <SearchIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+            <input
+              id="island-search"
+              type="search"
+              name="q"
+              defaultValue={query}
+              placeholder="Search islands…"
+              className="w-full rounded-full border border-neutral-300 py-2 pl-9 pr-3 text-sm focus:border-maldives-500 focus:outline-none"
+            />
+          </div>
+          <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
+            Search
+          </button>
+        </form>
 
-      {isSearching && (
-        <p className="mt-4 text-sm text-neutral-600">
-          {results.items.length} result{results.items.length === 1 ? "" : "s"} for &ldquo;{query}&rdquo; —{" "}
-          <Link href="/maldives/islands/" className="underline">
-            clear search
-          </Link>
-        </p>
-      )}
-
-      <ul className="mt-6 grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-3">
-        {results.items.map((island) => (
-          <li key={island.id}>
-            <Link href={`/maldives/islands/${island.slug}/`} className="hover:underline">
-              {island.title}
+        {isSearching && (
+          <p className="mt-4 text-sm text-neutral-600">
+            {results.items.length} result{results.items.length === 1 ? "" : "s"} for &ldquo;{query}&rdquo; —{" "}
+            <Link href="/maldives/islands/" className="underline">
+              clear search
             </Link>
-          </li>
-        ))}
-      </ul>
+          </p>
+        )}
 
-      {!isSearching && totalPages > 1 && (
-        <nav aria-label="Pagination" className="mt-8 flex items-center gap-4 text-sm">
-          {page > 1 && (
-            <Link href={`/maldives/islands/?page=${page - 1}`} className="hover:underline">
-              ← Previous
-            </Link>
-          )}
-          <span className="text-neutral-500">
-            Page {page} of {totalPages}
-          </span>
-          {page < totalPages && (
-            <Link href={`/maldives/islands/?page=${page + 1}`} className="hover:underline">
-              Next →
-            </Link>
-          )}
-        </nav>
-      )}
+        {results.items.length === 0 ? (
+          <EmptyState title="No islands found" description="Try a different search term." />
+        ) : (
+          <ul className="mt-6 grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-3 lg:grid-cols-4">
+            {results.items.map((island) => (
+              <li key={island.id}>
+                <Link href={`/maldives/islands/${island.slug}/`} className="text-sm text-ocean-900 hover:text-maldives-600 hover:underline">
+                  {island.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {!isSearching && <Pagination page={page} totalPages={totalPages} basePath="/maldives/islands/" />}
+      </div>
     </main>
   );
 }

@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { PackageCard } from "@/components/packages/package-card";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { PageHero } from "@/components/ui/page-hero";
 import { getActivityBySlug } from "@/lib/activities/repository";
 import { hasDedicatedRoute } from "@/lib/activities/types";
 import { getPackagesByActivity } from "@/lib/packages/repository";
@@ -67,18 +68,20 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
   const packages = await getPackagesByActivity(activity.id);
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Breadcrumbs
-        items={[
+    <main>
+      <PageHero
+        breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },
           { label: "Activities", href: "/maldives/activities/" },
           { label: activity.title },
         ]}
+        eyebrow="Activity"
+        title={activity.title}
+        description={activity.summary ?? undefined}
       />
-      <h1 className="mt-4 text-3xl font-semibold">{activity.title}</h1>
-      {activity.summary && <p className="mt-3 text-neutral-700">{activity.summary}</p>}
 
-      <dl className="mt-6 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
+      <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+      <dl className="grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
         <div>
           <dt className="text-neutral-500">Category</dt>
           <dd className="font-medium">{CATEGORY_LABEL[activity.activityCategory] ?? activity.activityCategory}</dd>
@@ -156,7 +159,7 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
 
       {packages.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Packages featuring {activity.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Packages featuring {activity.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {packages.map((pkg) => (
               <PackageCard key={pkg.id} pkg={pkg} />
@@ -167,6 +170,7 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
 
       {/* Booking/inquiry UI is not built yet — Task 6 only establishes the
           bookable_products relationship (see activity.isBookable). */}
+      </div>
     </main>
   );
 }

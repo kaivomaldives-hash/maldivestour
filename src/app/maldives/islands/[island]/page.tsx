@@ -4,11 +4,12 @@ import { notFound } from "next/navigation";
 
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { ActivityCard } from "@/components/activity/activity-card";
-import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
 import { PackageCard } from "@/components/packages/package-card";
 import { SurfBreakCard } from "@/components/surfing/surf-break-card";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { getActivitiesByLocation } from "@/lib/activities/repository";
 import { getDiveSitesByLocation } from "@/lib/diving/repository";
@@ -81,19 +82,21 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
   );
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Breadcrumbs
-        items={[
+    <main>
+      <PageHero
+        breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },
           { label: "Atolls", href: "/maldives/atolls/" },
           ...(atoll ? [{ label: atoll.title, href: `/maldives/atolls/${atoll.slug}/` }] : []),
           { label: island.title },
         ]}
+        eyebrow="Island"
+        title={island.title}
+        description={island.summary ?? undefined}
       />
-      <h1 className="mt-4 text-3xl font-semibold">{island.title}</h1>
-      {island.summary && <p className="mt-3 text-neutral-700">{island.summary}</p>}
 
-      <dl className="mt-6 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
+      <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+      <dl className="grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
         <div>
           <dt className="text-neutral-500">Location type</dt>
           <dd className="font-medium capitalize">{island.locationType}</dd>
@@ -118,7 +121,7 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
 
       {children.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">On this island</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">On this island</h2>
           <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-3">
             {children.map((child) => (
               <li key={child.id} className="capitalize">
@@ -132,7 +135,7 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
 
       {accommodations.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Accommodation on {island.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Accommodation on {island.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {accommodations.map((accommodation) => (
               <AccommodationCard key={accommodation.id} accommodation={accommodation} />
@@ -143,7 +146,7 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
 
       {fishingActivities.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Fishing on {island.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Fishing on {island.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {fishingActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
@@ -154,7 +157,7 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
 
       {divingActivities.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Diving on {island.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Diving on {island.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {divingActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
@@ -165,7 +168,7 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
 
       {diveSites.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Dive sites near {island.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Dive sites near {island.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {diveSites.map((site) => (
               <DiveSiteCard key={site.id} site={site} />
@@ -176,7 +179,7 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
 
       {surfingActivities.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Surfing on {island.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Surfing on {island.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {surfingActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
@@ -187,7 +190,7 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
 
       {surfBreaks.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Surf breaks near {island.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Surf breaks near {island.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {surfBreaks.map((surfBreak) => (
               <SurfBreakCard key={surfBreak.id} surfBreak={surfBreak} />
@@ -198,7 +201,7 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
 
       {otherActivities.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Activities on {island.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Activities on {island.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {otherActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
@@ -209,7 +212,7 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
 
       {transferRoutes.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Transfers to/from {island.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Transfers to/from {island.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {transferRoutes.map((route) => (
               <TransferRouteCard key={route.id} route={route} />
@@ -220,7 +223,7 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
 
       {packages.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Packages featuring {island.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Packages featuring {island.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {packages.map((pkg) => (
               <PackageCard key={pkg.id} pkg={pkg} />
@@ -228,6 +231,7 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
           </ul>
         </section>
       )}
+      </div>
     </main>
   );
 }

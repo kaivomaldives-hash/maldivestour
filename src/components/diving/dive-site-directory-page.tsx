@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { EmptyState } from "@/components/ui/empty-state";
+import { PageHero } from "@/components/ui/page-hero";
+import { Pagination } from "@/components/ui/pagination";
 import { getDiveSites } from "@/lib/diving/repository";
 import type { DiveSiteType } from "@/lib/diving/types";
 import { getAtollBySlug } from "@/lib/locations/repository";
@@ -60,71 +63,62 @@ export async function DiveSiteDirectoryPage({
   const totalPages = Math.max(1, Math.ceil(results.total / PAGE_SIZE));
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Breadcrumbs items={[{ label: "Maldives", href: "/maldives/" }, { label: "Dive Sites" }]} />
-      <h1 className="mt-4 text-3xl font-semibold">Maldives Dive Sites</h1>
-      <p className="mt-3 text-neutral-700">
-        Physical dive sites, not bookable products — see{" "}
-        <Link href="/maldives/diving/" className="underline">
-          diving activities
-        </Link>{" "}
-        for operators running trips to them.
-      </p>
+    <main>
+      <PageHero
+        breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Dive Sites" }]}
+        eyebrow="Diving"
+        title="Maldives Dive Sites"
+        description="Physical dive sites, not bookable products — see diving activities for operators running trips to them."
+      />
 
-      {atoll && (
-        <p className="mt-3 text-sm text-neutral-600">
-          Filtered to {atoll.title}.{" "}
-          <Link href="/maldives/dive-sites/" className="underline">
-            Clear
-          </Link>
+      <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+        <p className="text-sm text-neutral-600">
+          See{" "}
+          <Link href="/maldives/diving/" className="underline">
+            diving activities
+          </Link>{" "}
+          for operators running trips to them.
         </p>
-      )}
 
-      <nav aria-label="Filter by site type" className="mt-6 flex flex-wrap gap-2 text-sm">
-        <Link
-          href="/maldives/dive-sites/"
-          className={`rounded-full border px-3 py-1 ${!siteType ? "border-neutral-900 bg-neutral-900 text-white" : "border-neutral-300"}`}
-        >
-          All types
-        </Link>
-        {SITE_TYPES.map((type) => (
+        {atoll && (
+          <p className="mt-3 text-sm text-neutral-600">
+            Filtered to {atoll.title}.{" "}
+            <Link href="/maldives/dive-sites/" className="underline">
+              Clear
+            </Link>
+          </p>
+        )}
+
+        <nav aria-label="Filter by site type" className="mt-6 flex flex-wrap gap-2 text-sm">
           <Link
-            key={type}
-            href={`/maldives/dive-sites/?type=${type}`}
-            className={`rounded-full border px-3 py-1 ${siteType === type ? "border-neutral-900 bg-neutral-900 text-white" : "border-neutral-300"}`}
+            href="/maldives/dive-sites/"
+            className={`rounded-full border px-3 py-1 ${!siteType ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
           >
-            {SITE_TYPE_LABEL[type]}
+            All types
           </Link>
-        ))}
-      </nav>
-
-      {results.items.length === 0 ? (
-        <p className="mt-8 text-sm text-neutral-600">No dive sites recorded for this filter yet.</p>
-      ) : (
-        <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {results.items.map((site) => (
-            <DiveSiteCard key={site.id} site={site} />
+          {SITE_TYPES.map((type) => (
+            <Link
+              key={type}
+              href={`/maldives/dive-sites/?type=${type}`}
+              className={`rounded-full border px-3 py-1 ${siteType === type ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
+            >
+              {SITE_TYPE_LABEL[type]}
+            </Link>
           ))}
-        </ul>
-      )}
-
-      {totalPages > 1 && (
-        <nav aria-label="Pagination" className="mt-8 flex items-center gap-4 text-sm">
-          {page > 1 && (
-            <Link href={`/maldives/dive-sites/?page=${page - 1}`} className="hover:underline">
-              ← Previous
-            </Link>
-          )}
-          <span className="text-neutral-500">
-            Page {page} of {totalPages}
-          </span>
-          {page < totalPages && (
-            <Link href={`/maldives/dive-sites/?page=${page + 1}`} className="hover:underline">
-              Next →
-            </Link>
-          )}
         </nav>
-      )}
+
+        {results.items.length === 0 ? (
+          <EmptyState title="No dive sites recorded for this filter yet" />
+        ) : (
+          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {results.items.map((site) => (
+              <DiveSiteCard key={site.id} site={site} />
+            ))}
+          </ul>
+        )}
+
+        <Pagination page={page} totalPages={totalPages} basePath="/maldives/dive-sites/" />
+      </div>
     </main>
   );
 }

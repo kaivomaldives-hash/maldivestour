@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { MapPinIcon } from "@/components/ui/icons";
+import { CARD_CLASS } from "@/components/ui/card";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { PageHero } from "@/components/ui/page-hero";
+import { SectionHeader } from "@/components/ui/section-header";
 import { getAtolls, getCountry } from "@/lib/locations/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
@@ -28,50 +33,55 @@ export default async function MaldivesPage() {
   const totalIslands = atolls.reduce((sum, atoll) => sum + atoll.islandCount, 0);
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <h1 className="text-3xl font-semibold">{country.title}</h1>
-      {country.summary && <p className="mt-4 text-lg text-neutral-700">{country.summary}</p>}
+    <main>
+      <PageHero
+        variant="ocean"
+        eyebrow="Maldives Tour Guide"
+        title={country.title}
+        description={country.summary ?? undefined}
+        meta={
+          <>
+            <span>
+              <strong className="font-semibold text-white">{atolls.length}</strong> administrative atolls
+            </span>
+            <span>
+              <strong className="font-semibold text-white">{totalIslands}</strong> inhabited islands
+            </span>
+          </>
+        }
+      />
 
-      <dl className="mt-6 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
-        <div>
-          <dt className="text-neutral-500">Administrative atolls</dt>
-          <dd className="text-lg font-medium">{atolls.length}</dd>
-        </div>
-        <div>
-          <dt className="text-neutral-500">Inhabited islands</dt>
-          <dd className="text-lg font-medium">{totalIslands}</dd>
-        </div>
-      </dl>
-
-      <section className="mt-10">
-        <h2 className="text-xl font-semibold">Browse by atoll</h2>
-        <p className="mt-1 text-sm text-neutral-600">
-          The Maldives is organized into administrative atolls, each made up of inhabited islands.
-        </p>
-        <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-3">
+      <div className={`${CONTAINER_CLASS} py-12 sm:py-16`}>
+        <SectionHeader
+          eyebrow="Destinations"
+          title="Browse by atoll"
+          description="The Maldives is organized into administrative atolls, each made up of inhabited islands."
+          action={{ label: "View all atolls", href: "/maldives/atolls/" }}
+        />
+        <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {atolls.map((atoll) => (
             <li key={atoll.id}>
-              <Link href={`/maldives/atolls/${atoll.slug}/`} className="hover:underline">
-                {atoll.title}
+              <Link href={`/maldives/atolls/${atoll.slug}/`} className={`${CARD_CLASS} flex items-center gap-3`}>
+                <MapPinIcon className="h-5 w-5 shrink-0 text-maldives-600" />
+                <span>
+                  <span className="block font-medium text-ocean-900">{atoll.title}</span>
+                  <span className="text-xs text-neutral-500">
+                    {atoll.islandCount} island{atoll.islandCount === 1 ? "" : "s"}
+                  </span>
+                </span>
               </Link>
-              <span className="ml-1 text-xs text-neutral-500">({atoll.islandCount})</span>
             </li>
           ))}
         </ul>
-        <Link href="/maldives/atolls/" className="mt-4 inline-block text-sm font-medium hover:underline">
-          View all atolls →
-        </Link>
-      </section>
 
-      <section className="mt-10">
-        <h2 className="text-xl font-semibold">Browse islands</h2>
-        <p className="mt-1 text-sm text-neutral-600">
-          Every inhabited island in the Maldives, searchable across all atolls.
-        </p>
-        <Link href="/maldives/islands/" className="mt-2 inline-block text-sm font-medium hover:underline">
-          View all islands →
-        </Link>
-      </section>
+        <div className="mt-12">
+          <SectionHeader
+            title="Browse islands"
+            description="Every inhabited island in the Maldives, searchable across all atolls."
+            action={{ label: "View all islands", href: "/maldives/islands/" }}
+          />
+        </div>
+      </div>
     </main>
   );
 }

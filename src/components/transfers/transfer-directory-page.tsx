@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { EmptyState } from "@/components/ui/empty-state";
+import { PageHero } from "@/components/ui/page-hero";
+import { Pagination } from "@/components/ui/pagination";
 import { getAtollBySlug, getLocationBySlug } from "@/lib/locations/repository";
 import {
   getSharedOrPrivateOptionsInUse,
@@ -102,105 +105,91 @@ export async function TransferDirectoryPage({
   const baseQuery = baseParams.toString();
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Breadcrumbs items={[{ label: "Maldives", href: "/maldives/" }, { label: "Transfers" }]} />
-      <h1 className="mt-4 text-3xl font-semibold">Transfers in the Maldives</h1>
-      <p className="mt-3 text-neutral-700">
-        Real, individually verified airport, ferry, speedboat, and resort transfer services — sourced from operator and
-        resort information rather than a generic directory.
-      </p>
+    <main>
+      <PageHero
+        breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Transfers" }]}
+        eyebrow="Getting around"
+        title="Transfers in the Maldives"
+        description="Real, individually verified airport, ferry, speedboat, and resort transfer services — sourced from operator and resort information rather than a generic directory."
+      />
 
-      {(atoll || origin || destination) && (
-        <p className="mt-3 text-sm text-neutral-600">
-          Filtered to{" "}
-          {[origin?.title, destination?.title ? `→ ${destination.title}` : null, !origin && !destination ? atoll?.title : null]
-            .filter(Boolean)
-            .join(" ")}
-          .{" "}
-          <Link href="/maldives/transfers/" className="underline">
-            Clear
-          </Link>
-        </p>
-      )}
+      <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+        {(atoll || origin || destination) && (
+          <p className="text-sm text-neutral-600">
+            Filtered to{" "}
+            {[origin?.title, destination?.title ? `→ ${destination.title}` : null, !origin && !destination ? atoll?.title : null]
+              .filter(Boolean)
+              .join(" ")}
+            .{" "}
+            <Link href="/maldives/transfers/" className="underline">
+              Clear
+            </Link>
+          </p>
+        )}
 
-      {transferTypes.length > 0 && (
-        <nav aria-label="Filter by transfer type" className="mt-6 flex flex-wrap gap-2 text-sm">
-          <Link
-            href="/maldives/transfers/"
-            className={`rounded-full border px-3 py-1 ${!activeType ? "border-neutral-900 bg-neutral-900 text-white" : "border-neutral-300"}`}
-          >
-            All types
-          </Link>
-          {transferTypes.map((type) => (
+        {transferTypes.length > 0 && (
+          <nav aria-label="Filter by transfer type" className="mt-6 flex flex-wrap gap-2 text-sm">
             <Link
-              key={type}
-              href={`/maldives/transfers/?type=${type}`}
-              className={`rounded-full border px-3 py-1 ${activeType === type ? "border-neutral-900 bg-neutral-900 text-white" : "border-neutral-300"}`}
+              href="/maldives/transfers/"
+              className={`rounded-full border px-3 py-1 ${!activeType ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
             >
-              {TRANSFER_TYPE_LABEL[type]}
+              All types
             </Link>
-          ))}
-        </nav>
-      )}
+            {transferTypes.map((type) => (
+              <Link
+                key={type}
+                href={`/maldives/transfers/?type=${type}`}
+                className={`rounded-full border px-3 py-1 ${activeType === type ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
+              >
+                {TRANSFER_TYPE_LABEL[type]}
+              </Link>
+            ))}
+          </nav>
+        )}
 
-      {modes.length > 1 && (
-        <nav aria-label="Filter by shared or private" className="mt-3 flex flex-wrap gap-2 text-sm">
-          {modes.map((mode) => (
-            <Link
-              key={mode}
-              href={`/maldives/transfers/?mode=${mode}`}
-              className={`rounded-full border px-3 py-1 ${activeMode === mode ? "border-neutral-900 bg-neutral-900 text-white" : "border-neutral-300"}`}
-            >
-              {MODE_LABEL[mode]}
-            </Link>
-          ))}
-        </nav>
-      )}
+        {modes.length > 1 && (
+          <nav aria-label="Filter by shared or private" className="mt-3 flex flex-wrap gap-2 text-sm">
+            {modes.map((mode) => (
+              <Link
+                key={mode}
+                href={`/maldives/transfers/?mode=${mode}`}
+                className={`rounded-full border px-3 py-1 ${activeMode === mode ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
+              >
+                {MODE_LABEL[mode]}
+              </Link>
+            ))}
+          </nav>
+        )}
 
-      <form method="get" className="mt-4 flex gap-2">
-        <label htmlFor="transfer-search" className="sr-only">
-          Search transfer routes
-        </label>
-        <input
-          id="transfer-search"
-          type="search"
-          name="q"
-          defaultValue={query}
-          placeholder="Search by island or airport…"
-          className="w-full max-w-sm rounded border border-neutral-300 px-3 py-2 text-sm"
-        />
-        <button type="submit" className="rounded bg-neutral-900 px-4 py-2 text-sm text-white">
-          Search
-        </button>
-      </form>
+        <form method="get" className="mt-4 flex gap-2">
+          <label htmlFor="transfer-search" className="sr-only">
+            Search transfer routes
+          </label>
+          <input
+            id="transfer-search"
+            type="search"
+            name="q"
+            defaultValue={query}
+            placeholder="Search by island or airport…"
+            className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+          />
+          <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
+            Search
+          </button>
+        </form>
 
-      {results.items.length === 0 ? (
-        <p className="mt-8 text-sm text-neutral-600">No transfer routes recorded for this filter yet.</p>
-      ) : (
-        <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {results.items.map((route) => (
-            <TransferRouteCard key={route.id} route={route} />
-          ))}
-        </ul>
-      )}
+        {results.items.length === 0 ? (
+          <EmptyState title="No transfer routes recorded for this filter yet" />
+        ) : (
+          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {results.items.map((route) => (
+              <TransferRouteCard key={route.id} route={route} />
+            ))}
+          </ul>
+        )}
 
-      {!isSearching && totalPages > 1 && (
-        <nav aria-label="Pagination" className="mt-8 flex items-center gap-4 text-sm">
-          {page > 1 && (
-            <Link href={`/maldives/transfers/?${baseQuery ? baseQuery + "&" : ""}page=${page - 1}`} className="hover:underline">
-              ← Previous
-            </Link>
-          )}
-          <span className="text-neutral-500">
-            Page {page} of {totalPages}
-          </span>
-          {page < totalPages && (
-            <Link href={`/maldives/transfers/?${baseQuery ? baseQuery + "&" : ""}page=${page + 1}`} className="hover:underline">
-              Next →
-            </Link>
-          )}
-        </nav>
-      )}
+        {!isSearching && <Pagination page={page} totalPages={totalPages} basePath="/maldives/transfers/" baseQuery={baseQuery} />}
+      </div>
     </main>
   );
 }

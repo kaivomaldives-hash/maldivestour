@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ActivityCard } from "@/components/activity/activity-card";
-import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { EmptyState } from "@/components/ui/empty-state";
+import { PageHero } from "@/components/ui/page-hero";
+import { Pagination } from "@/components/ui/pagination";
 import {
   getDiveSites,
   getDivingActivities,
@@ -78,108 +81,98 @@ export async function DivingDirectoryPage({
   const baseQuery = baseParams.toString();
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Breadcrumbs items={[{ label: "Maldives", href: "/maldives/" }, { label: "Diving" }]} />
-      <h1 className="mt-4 text-3xl font-semibold">Diving in the Maldives</h1>
-      <p className="mt-3 text-neutral-700">
-        Real, individually verified diving activities and dive centers — sourced from official operator and resort
-        information rather than a generic directory. See{" "}
-        <Link href="/maldives/activities/" className="underline">
-          all activities
-        </Link>{" "}
-        for other things to do.
-      </p>
+    <main>
+      <PageHero
+        breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Diving" }]}
+        eyebrow="Things to do"
+        title="Diving in the Maldives"
+        description="Real, individually verified diving activities and dive centers — sourced from official operator and resort information rather than a generic directory."
+      />
 
-      {(atoll || island) && (
-        <p className="mt-3 text-sm text-neutral-600">
-          Filtered to {island ? island.title : atoll?.title}.{" "}
-          <Link href="/maldives/diving/" className="underline">
-            Clear
-          </Link>
+      <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+        <p className="text-sm text-neutral-600">
+          See{" "}
+          <Link href="/maldives/activities/" className="underline">
+            all activities
+          </Link>{" "}
+          for other things to do.
         </p>
-      )}
 
-      {divingTypes.length > 0 && (
-        <nav aria-label="Filter by diving type" className="mt-6 flex flex-wrap gap-2 text-sm">
-          <Link
-            href="/maldives/diving/"
-            className={`rounded-full border px-3 py-1 ${!activeType ? "border-neutral-900 bg-neutral-900 text-white" : "border-neutral-300"}`}
-          >
-            All types
-          </Link>
-          {divingTypes.map((type) => (
-            <Link
-              key={type.id}
-              href={`/maldives/diving/?type=${type.slug}`}
-              className={`rounded-full border px-3 py-1 ${activeType?.id === type.id ? "border-neutral-900 bg-neutral-900 text-white" : "border-neutral-300"}`}
-            >
-              {type.title}
+        {(atoll || island) && (
+          <p className="mt-3 text-sm text-neutral-600">
+            Filtered to {island ? island.title : atoll?.title}.{" "}
+            <Link href="/maldives/diving/" className="underline">
+              Clear
             </Link>
-          ))}
-        </nav>
-      )}
-
-      <form method="get" className="mt-4 flex gap-2">
-        <label htmlFor="diving-search" className="sr-only">
-          Search diving activities
-        </label>
-        <input
-          id="diving-search"
-          type="search"
-          name="q"
-          defaultValue={query}
-          placeholder="Search diving activities…"
-          className="w-full max-w-sm rounded border border-neutral-300 px-3 py-2 text-sm"
-        />
-        <button type="submit" className="rounded bg-neutral-900 px-4 py-2 text-sm text-white">
-          Search
-        </button>
-      </form>
-
-      {results.items.length === 0 ? (
-        <p className="mt-8 text-sm text-neutral-600">No diving activities recorded for this filter yet.</p>
-      ) : (
-        <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {results.items.map((activity) => (
-            <ActivityCard key={activity.id} activity={activity} />
-          ))}
-        </ul>
-      )}
-
-      {!isSearching && totalPages > 1 && (
-        <nav aria-label="Pagination" className="mt-8 flex items-center gap-4 text-sm">
-          {page > 1 && (
-            <Link href={`/maldives/diving/?${baseQuery ? baseQuery + "&" : ""}page=${page - 1}`} className="hover:underline">
-              ← Previous
-            </Link>
-          )}
-          <span className="text-neutral-500">
-            Page {page} of {totalPages}
-          </span>
-          {page < totalPages && (
-            <Link href={`/maldives/diving/?${baseQuery ? baseQuery + "&" : ""}page=${page + 1}`} className="hover:underline">
-              Next →
-            </Link>
-          )}
-        </nav>
-      )}
-
-      {diveSites.items.length > 0 && (
-        <section className="mt-12">
-          <h2 className="text-xl font-semibold">Dive sites</h2>
-          <p className="mt-1 text-sm text-neutral-600">
-            Physical dive sites — not bookable themselves; see the operators above for trips that visit them.
           </p>
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {diveSites.items.map((site) => (
-              <DiveSiteCard key={site.id} site={site} />
+        )}
+
+        {divingTypes.length > 0 && (
+          <nav aria-label="Filter by diving type" className="mt-6 flex flex-wrap gap-2 text-sm">
+            <Link
+              href="/maldives/diving/"
+              className={`rounded-full border px-3 py-1 ${!activeType ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
+            >
+              All types
+            </Link>
+            {divingTypes.map((type) => (
+              <Link
+                key={type.id}
+                href={`/maldives/diving/?type=${type.slug}`}
+                className={`rounded-full border px-3 py-1 ${activeType?.id === type.id ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
+              >
+                {type.title}
+              </Link>
+            ))}
+          </nav>
+        )}
+
+        <form method="get" className="mt-4 flex gap-2">
+          <label htmlFor="diving-search" className="sr-only">
+            Search diving activities
+          </label>
+          <input
+            id="diving-search"
+            type="search"
+            name="q"
+            defaultValue={query}
+            placeholder="Search diving activities…"
+            className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+          />
+          <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
+            Search
+          </button>
+        </form>
+
+        {results.items.length === 0 ? (
+          <EmptyState title="No diving activities recorded for this filter yet" />
+        ) : (
+          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {results.items.map((activity) => (
+              <ActivityCard key={activity.id} activity={activity} />
             ))}
           </ul>
-          <Link href="/maldives/dive-sites/" className="mt-4 inline-block text-sm font-medium hover:underline">
-            View all dive sites →
-          </Link>
-        </section>
-      )}
+        )}
+
+        {!isSearching && <Pagination page={page} totalPages={totalPages} basePath="/maldives/diving/" baseQuery={baseQuery} />}
+
+        {diveSites.items.length > 0 && (
+          <section className="mt-12">
+            <h2 className="text-xl font-semibold text-ocean-900">Dive sites</h2>
+            <p className="mt-1 text-sm text-neutral-600">
+              Physical dive sites — not bookable themselves; see the operators above for trips that visit them.
+            </p>
+            <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {diveSites.items.map((site) => (
+                <DiveSiteCard key={site.id} site={site} />
+              ))}
+            </ul>
+            <Link href="/maldives/dive-sites/" className="mt-4 inline-block text-sm font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
+              View all dive sites →
+            </Link>
+          </section>
+        )}
+      </div>
     </main>
   );
 }

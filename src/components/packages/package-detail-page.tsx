@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Breadcrumbs } from "@/components/location/breadcrumbs";
+import { Badge } from "@/components/ui/badge";
+import { CARD_CLASS } from "@/components/ui/card";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { PageHero } from "@/components/ui/page-hero";
 import { ACCOMMODATION_TYPE_SEGMENT } from "@/lib/accommodations/types";
 import { activityHref } from "@/lib/activities/types";
 import { getPackageBySlug } from "@/lib/packages/repository";
@@ -85,36 +88,33 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
   const allTags = [...pkg.travelerTypes, ...pkg.styles, ...(pkg.durationBand ? [pkg.durationBand] : []), ...pkg.themes, ...pkg.inclusions];
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Breadcrumbs
-        items={[
+    <main>
+      <PageHero
+        breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },
           { label: "Packages", href: "/maldives/packages/" },
           { label: pkg.title },
         ]}
+        eyebrow="Package"
+        title={pkg.title}
+        description={pkg.summary ?? undefined}
+        meta={
+          pkg.isMtgCurated ? (
+            <Badge tone="aqua">MTG-curated itinerary</Badge>
+          ) : pkg.provider ? (
+            <span className="text-neutral-600">
+              Operated by{" "}
+              <Link href={`/maldives/providers/${pkg.provider.slug}/`} className="text-maldives-600 underline">
+                {pkg.provider.title}
+              </Link>
+            </span>
+          ) : undefined
+        }
       />
-      <h1 className="mt-4 text-3xl font-semibold">{pkg.title}</h1>
-      {pkg.summary && <p className="mt-3 text-neutral-700">{pkg.summary}</p>}
 
-      {pkg.isMtgCurated ? (
-        <p className="mt-3 text-sm text-neutral-600">
-          An MTG-curated itinerary, assembled from real, individually verified accommodation, activities, and
-          transfers — not sold as a single package by an external operator.
-        </p>
-      ) : (
-        pkg.provider && (
-          <p className="mt-3 text-sm text-neutral-600">
-            Operated by{" "}
-            <Link href={`/maldives/providers/${pkg.provider.slug}/`} className="underline">
-              {pkg.provider.title}
-            </Link>
-            .
-          </p>
-        )
-      )}
-
+      <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
       {allTags.length > 0 && (
-        <div className="mt-4 flex flex-wrap gap-2 text-sm">
+        <div className="flex flex-wrap gap-2 text-sm">
           {allTags.map((tag) => (
             <span key={tag.id} className="rounded-full border border-neutral-300 px-3 py-1 text-neutral-700">
               {tag.title}
@@ -156,15 +156,15 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
       </dl>
 
       <section className="mt-10">
-        <h2 className="text-xl font-semibold">Itinerary</h2>
+        <h2 className="text-xl font-semibold text-ocean-900">Itinerary</h2>
         {pkg.stages.length === 0 ? (
           <p className="mt-2 text-sm text-neutral-600">No itinerary recorded for this package yet.</p>
         ) : (
           <ol className="mt-4 space-y-6">
             {pkg.stages.map((stage) => (
-              <li key={stage.id} className="rounded border border-neutral-200 p-4">
+              <li key={stage.id} className={CARD_CLASS}>
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="text-lg font-medium">
+                  <h3 className="text-lg font-medium text-ocean-900">
                     {stage.title ?? `Days ${stage.dayStart}–${stage.dayEnd}`}
                   </h3>
                   <span className="text-sm text-neutral-500">
@@ -188,6 +188,7 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
 
       {/* Booking/inquiry UI is not built yet — Task 11 only establishes the
           bookable_products relationship (see pkg.isBookable). */}
+      </div>
     </main>
   );
 }

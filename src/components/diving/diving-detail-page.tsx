@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Breadcrumbs } from "@/components/location/breadcrumbs";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
 import { PackageCard } from "@/components/packages/package-card";
+import { CONTAINER_CLASS } from "@/components/ui/container";
+import { PageHero } from "@/components/ui/page-hero";
 import {
   getDivingActivitiesByLocation,
   getDivingActivityBySlug,
@@ -53,24 +54,26 @@ export async function DivingDetailPage({ slug }: { slug: string }) {
   const relatedActivities = sameIslandActivities.filter((a) => a.id !== activity.id).slice(0, 4);
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <Breadcrumbs
-        items={[
+    <main>
+      <PageHero
+        breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },
           { label: "Diving", href: "/maldives/diving/" },
           { label: activity.title },
         ]}
+        eyebrow="Diving"
+        title={activity.title}
+        description={activity.summary ?? undefined}
       />
-      <h1 className="mt-4 text-3xl font-semibold">{activity.title}</h1>
-      {activity.summary && <p className="mt-3 text-neutral-700">{activity.summary}</p>}
 
+      <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
       {divingTypes.length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2">
           {divingTypes.map((type) => (
             <Link
               key={type.id}
               href={`/maldives/diving/?type=${type.slug}`}
-              className="rounded-full border border-neutral-300 px-3 py-1 text-xs"
+              className="rounded-full border border-neutral-300 px-3 py-1 text-xs text-neutral-700"
             >
               {type.title}
             </Link>
@@ -152,7 +155,7 @@ export async function DivingDetailPage({ slug }: { slug: string }) {
 
       {diveSites.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Dive sites visited</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Dive sites visited</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {diveSites.map((site) => (
               <DiveSiteCard key={site.id} site={site} />
@@ -163,11 +166,11 @@ export async function DivingDetailPage({ slug }: { slug: string }) {
 
       {relatedActivities.length > 0 && primaryLocation && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Other diving on {primaryLocation.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Other diving on {primaryLocation.title}</h2>
           <ul className="mt-4 space-y-2 text-sm">
             {relatedActivities.map((a) => (
               <li key={a.id}>
-                <Link href={`/maldives/diving/${a.slug}/`} className="hover:underline">
+                <Link href={`/maldives/diving/${a.slug}/`} className="text-maldives-600 hover:text-ocean-800 hover:underline">
                   {a.title}
                 </Link>
               </li>
@@ -178,7 +181,7 @@ export async function DivingDetailPage({ slug }: { slug: string }) {
 
       {packages.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold">Packages featuring {activity.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Packages featuring {activity.title}</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {packages.map((pkg) => (
               <PackageCard key={pkg.id} pkg={pkg} />
@@ -189,6 +192,7 @@ export async function DivingDetailPage({ slug }: { slug: string }) {
 
       {/* Booking/inquiry UI is not built yet — Task 8 only establishes the
           bookable_products relationship (see activity.isBookable). */}
+      </div>
     </main>
   );
 }

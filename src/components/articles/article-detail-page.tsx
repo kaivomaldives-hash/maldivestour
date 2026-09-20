@@ -119,6 +119,21 @@ export async function ArticleDetailPage({ slug }: { slug: string }) {
               </div>
             )}
 
+            {article.relatedEntities.length > 0 && (
+              <div>
+                <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">You might also book</h2>
+                <ul className="mt-3 space-y-2 text-sm">
+                  {article.relatedEntities.map((entity) => (
+                    <li key={entity.id}>
+                      <Link href={entity.href} className="text-maldives-600 hover:underline">
+                        {entity.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             {article.category && (
               <div>
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Topic</h2>
@@ -132,6 +147,24 @@ export async function ArticleDetailPage({ slug }: { slug: string }) {
             )}
           </aside>
         </div>
+
+        {article.relatedArticles.length > 0 && (
+          <div className="mt-14 border-t border-neutral-200 pt-10">
+            <h2 className="text-xl font-semibold text-ocean-900">Related Travel Guide articles</h2>
+            <ul className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {article.relatedArticles.map((related) => (
+                <li key={related.id}>
+                  <Link
+                    href={`/maldives/travel-guide/${related.slug}/`}
+                    className="block rounded-xl border border-neutral-200 p-4 text-sm font-medium text-ocean-900 transition-colors hover:border-maldives-600 hover:text-maldives-600"
+                  >
+                    {related.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <div className="mt-10 border-t border-neutral-200 pt-6">
           <Link href="/maldives/travel-guide/" className="text-sm font-medium text-maldives-600 hover:underline">

@@ -25,6 +25,18 @@ export interface ArticleSummary {
   publishedAt: string | null;
 }
 
+/** A link to a real, published node of some other vertical (accommodation/
+ * activity/package/transfer_route), resolved from a node_relationships row
+ * (Task 15 §5-11) — never fabricated, and never rendered unless the target
+ * actually exists and is published (see getRelatedContentForArticle). */
+export interface RelatedEntityLink {
+  id: string;
+  type: "accommodation" | "activity" | "package" | "transfer_route";
+  title: string;
+  href: string;
+  image: MediaAsset | null;
+}
+
 export interface ArticleDetail extends ArticleSummary {
   metaTitle: string | null;
   metaDescription: string | null;
@@ -36,6 +48,14 @@ export interface ArticleDetail extends ArticleSummary {
    * at migration time via token-overlap matching against the live
    * catalogue (Task 14) — never fabricated. Empty when nothing matched. */
   relatedLocations: LocationSummary[];
+  /** Real accommodations/activities/packages/transfer routes the article's
+   * content is actually about (Task 15 §5-11), resolved from
+   * node_relationships. Empty when nothing matched — never a filler link. */
+  relatedEntities: RelatedEntityLink[];
+  /** Other migrated Travel Guide articles that share several of the same
+   * real entities as this one (Task 15 §5-11) — editorial relatedness
+   * derived from real matches, not raw keyword similarity. */
+  relatedArticles: ArticleSummary[];
 }
 
 export interface GetArticlesOptions {

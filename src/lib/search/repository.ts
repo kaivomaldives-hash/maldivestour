@@ -5,7 +5,7 @@ import type { AccommodationSummary, AccommodationType } from "@/lib/accommodatio
 import { getActivities, searchActivities } from "@/lib/activities/repository";
 import { activityHref } from "@/lib/activities/types";
 import type { ActivityCategory, ActivitySummary } from "@/lib/activities/types";
-import { searchArticles } from "@/lib/articles/repository";
+import { getArticlesRelatedToNodes, searchArticles } from "@/lib/articles/repository";
 import { articleHref, type ArticleSummary } from "@/lib/articles/types";
 import type { CategorySummary } from "@/lib/categories/types";
 import { getLocationSummariesByIds, searchLocations } from "@/lib/locations/repository";
@@ -309,6 +309,27 @@ async function mapBaseResults(
   return results;
 }
 
+// ── Related-article expansion (search-page only, not autocomplete) ─────
+// A query that matches a real entity by title (e.g. "Baros Maldives")
+// should also surface an article that genuinely discusses it, even when
+// the query never appears in that article's own title. Reuses the exact
+// node_relationships/node_locations rows Task 15 §41-42 persists from the
+// article's own side (see getArticlesRelatedToNodes) — no separate index,
+// no full-text search, just one more real relationship already on hand.
+
+async function expandArticlesByRelatedEntity(base: Awaited<ReturnType<typeof baseSearch>>, limit: number): Promise<SearchResult[]> {
+  const nodeIds = [
+    ...base.locations.map((l) => l.id),
+    ...base.accommodations.map((a) => a.id),
+    ...base.activities.map((a) => a.id),
+    ...base.transferRoutes.map((r) => r.id),
+    ...base.packages.map((p) => p.id),
+  ];
+  if (nodeIds.length === 0) return [];
+  const articles = await getArticlesRelatedToNodes(nodeIds);
+  return articles.slice(0, limit).map((a) => mapArticle(a, EXPANSION_MATCH_SCORE));
+}
+
 // ── Keyword-driven expansion (search-page only, not autocomplete) ──────
 // Handles combined queries a single title ILIKE can't express, e.g.
 // "resort dhaalu" or "guesthouse thulusdhoo" — a type keyword plus a
@@ -491,8 +512,11 @@ async function gatherCandidates(query: string, perSourceLimit: number): Promise<
     expandByKeyword(tokens, perSourceLimit),
     expandPackagesByTaxonomy(tokens, perSourceLimit),
   ]);
-  const baseResults = await mapBaseResults(base, query);
-  return dedupe([...baseResults, ...multiToken, ...expansion, ...packageExpansion]);
+  const [baseResults, relatedArticles] = await Promise.all([
+    mapBaseResults(base, query),
+    expandArticlesByRelatedEntity(base, perSourceLimit),
+  ]);
+  return dedupe([...baseResults, ...multiToken, ...expansion, ...packageExpansion, ...relatedArticles]);
 }
 
 // ── Type-filtered flat results (the search page's single-type view) ────
@@ -551,9 +575,10 @@ async function fetchFlatResults(type: SearchFilterType, query: string, cap = 60)
       return dedupe([...items.map((p) => mapPackage(p, scoreTitleMatch(p.title, query))), ...taxonomyExpansion, ...fallback]);
     }
     case "article": {
-      const items = await searchArticles(query, { limit: cap });
+      const [items, entityBase] = await Promise.all([searchArticles(query, { limit: cap }), baseSearch(query, cap)]);
+      const relatedArticles = await expandArticlesByRelatedEntity(entityBase, cap);
       const fallback = multiToken.filter((r) => r.type === "article");
-      return dedupe([...items.map((a) => mapArticle(a, scoreTitleMatch(a.title, query))), ...fallback]);
+      return dedupe([...items.map((a) => mapArticle(a, scoreTitleMatch(a.title, query))), ...relatedArticles, ...fallback]);
     }
     default:
       return [];

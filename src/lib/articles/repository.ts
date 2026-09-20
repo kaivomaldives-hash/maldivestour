@@ -1,13 +1,19 @@
 import "server-only";
 
+import { getAccommodationSummariesByIds } from "@/lib/accommodations/repository";
+import { ACCOMMODATION_TYPE_SEGMENT } from "@/lib/accommodations/types";
+import { getActivitySummariesByIds } from "@/lib/activities/repository";
+import { activityHref } from "@/lib/activities/types";
 import { getCategoriesByGroup } from "@/lib/categories/repository";
 import type { CategorySummary } from "@/lib/categories/types";
 import { getLocationSummariesByIds } from "@/lib/locations/repository";
 import type { LocationSummary } from "@/lib/locations/types";
 import { getHeroMediaByNodeIds, resolveStorageImageSrcs } from "@/lib/media/repository";
 import type { MediaAsset } from "@/lib/media/types";
+import { getPackageSummariesByIds } from "@/lib/packages/repository";
 import { createClient } from "@/lib/supabase/server";
-import type { ArticleDetail, ArticleSummary, GetArticlesOptions, PaginatedResult } from "@/lib/articles/types";
+import { getTransferRoutesByIds } from "@/lib/transfers/repository";
+import type { ArticleDetail, ArticleSummary, GetArticlesOptions, PaginatedResult, RelatedEntityLink } from "@/lib/articles/types";
 
 /**
  * Server-side article data-access layer (Task 14), following the same
@@ -187,9 +193,10 @@ export async function getArticleBySlug(slug: string): Promise<ArticleDetail | nu
   const bare = bareArticleOf(data);
   if (!bare) return null;
 
-  const [[summary], relatedLocations] = await Promise.all([
+  const [[summary], relatedLocations, relatedContent] = await Promise.all([
     toSummaries([bare]),
     getRelatedLocationsForArticle(bare.id),
+    getRelatedContentForArticle(bare.id),
   ]);
 
   return {
@@ -198,6 +205,8 @@ export async function getArticleBySlug(slug: string): Promise<ArticleDetail | nu
     metaDescription: bare.metaDescription,
     bodyHtml: resolveStorageImageSrcs(bare.body),
     relatedLocations,
+    relatedEntities: relatedContent.relatedEntities,
+    relatedArticles: relatedContent.relatedArticles,
   };
 }
 
@@ -213,6 +222,152 @@ async function getRelatedLocationsForArticle(articleId: string): Promise<Locatio
 
   const locationsById = await getLocationSummariesByIds(data.map((row) => row.location_id));
   return data.map((row) => locationsById.get(row.location_id)).filter((l): l is LocationSummary => Boolean(l));
+}
+
+/** Every `node_relationships` target for this article, grouped by the
+ * related node's actual `node_type` (island/atoll/dive_site/surf_break are
+ * excluded — those go through node_locations/getRelatedLocationsForArticle
+ * instead, see scripts/import-legacy-articles.mjs's writeCommitMigration).
+ * Filters to published targets only, same as every other repository in
+ * this codebase (Task 15 §5-11). */
+async function getRelatedNodeIdsByType(articleId: string): Promise<Map<string, string[]>> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("node_relationships")
+    .select("related_node_id")
+    .eq("node_id", articleId)
+    .eq("relation_type", "related")
+    .returns<Array<{ related_node_id: string }>>();
+
+  if (error || !data || data.length === 0) return new Map();
+
+  const relatedIds = Array.from(new Set(data.map((row) => row.related_node_id)));
+  const { data: nodeRows, error: nodeError } = await supabase
+    .from("nodes")
+    .select("id, node_type")
+    .eq("status", "published")
+    .in("id", relatedIds)
+    .returns<Array<{ id: string; node_type: string }>>();
+
+  if (nodeError || !nodeRows) return new Map();
+
+  const byType = new Map<string, string[]>();
+  for (const row of nodeRows) {
+    const list = byType.get(row.node_type) ?? [];
+    list.push(row.id);
+    byType.set(row.node_type, list);
+  }
+  return byType;
+}
+
+/** Resolves an article's node_relationships into real, typed, already-
+ * published entity links (accommodation/activity/package/transfer_route)
+ * plus other related articles — every href/title/image comes straight from
+ * each vertical's own repository, so this can never render a dead link or
+ * fabricated content (Task 15 §5-11/§43). */
+async function getRelatedContentForArticle(
+  articleId: string,
+): Promise<{ relatedEntities: RelatedEntityLink[]; relatedArticles: ArticleSummary[] }> {
+  const byType = await getRelatedNodeIdsByType(articleId);
+  if (byType.size === 0) return { relatedEntities: [], relatedArticles: [] };
+
+  const [accommodations, activities, packages, transferRoutes] = await Promise.all([
+    getAccommodationSummariesByIds(byType.get("accommodation") ?? []),
+    getActivitySummariesByIds(byType.get("activity") ?? []),
+    getPackageSummariesByIds(byType.get("package") ?? []),
+    getTransferRoutesByIds(byType.get("transfer_route") ?? []),
+  ]);
+
+  const relatedEntities: RelatedEntityLink[] = [
+    ...Array.from(accommodations.values()).map((a) => ({
+      id: a.id,
+      type: "accommodation" as const,
+      title: a.title,
+      href: `/maldives/${ACCOMMODATION_TYPE_SEGMENT[a.accommodationType]}/${a.slug}/`,
+      image: a.heroImage,
+    })),
+    ...Array.from(activities.values()).map((a) => ({
+      id: a.id,
+      type: "activity" as const,
+      title: a.title,
+      href: activityHref(a),
+      image: null,
+    })),
+    ...Array.from(packages.values()).map((p) => ({
+      id: p.id,
+      type: "package" as const,
+      title: p.title,
+      href: `/maldives/packages/${p.slug}/`,
+      image: null,
+    })),
+    ...Array.from(transferRoutes.values()).map((r) => ({
+      id: r.id,
+      type: "transfer_route" as const,
+      title: r.title,
+      href: `/maldives/transfers/${r.slug}/`,
+      image: null,
+    })),
+  ];
+
+  let relatedArticles: ArticleSummary[] = [];
+  const articleNodeIds = byType.get("article") ?? [];
+  if (articleNodeIds.length > 0) {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("nodes")
+      .select(NODE_ARTICLE_SELECT)
+      .eq("node_type", "article")
+      .eq("status", "published")
+      .in("id", articleNodeIds)
+      .returns<NodeArticleRow[]>();
+
+    if (!error && data) {
+      const bares = data.map(bareArticleOf).filter((b): b is BareArticle => b !== null);
+      relatedArticles = await toSummaries(bares);
+    }
+  }
+
+  return { relatedEntities, relatedArticles };
+}
+
+/** Reverse lookup: real, published articles related to any of the given
+ * (already query-matched) node ids — via the same node_relationships and
+ * node_locations rows the migration persists from the article's own side
+ * (see getRelatedContentForArticle/getRelatedLocationsForArticle above).
+ * Used by the search layer (Task 15 §44) so a query matching e.g. "Baros
+ * Maldives" can also surface an article that discusses Baros, without the
+ * query needing to literally appear in that article's own title — reusing
+ * the same relationship data, never a second search index. */
+export async function getArticlesRelatedToNodes(nodeIds: string[]): Promise<ArticleSummary[]> {
+  if (nodeIds.length === 0) return [];
+  const supabase = await createClient();
+
+  const [relResult, locResult] = await Promise.all([
+    supabase
+      .from("node_relationships")
+      .select("node_id")
+      .in("related_node_id", nodeIds)
+      .eq("relation_type", "related")
+      .returns<Array<{ node_id: string }>>(),
+    supabase.from("node_locations").select("node_id").in("location_id", nodeIds).returns<Array<{ node_id: string }>>(),
+  ]);
+
+  const articleIds = new Set<string>();
+  for (const row of relResult.data ?? []) articleIds.add(row.node_id);
+  for (const row of locResult.data ?? []) articleIds.add(row.node_id);
+  if (articleIds.size === 0) return [];
+
+  const { data, error } = await supabase
+    .from("nodes")
+    .select(NODE_ARTICLE_SELECT)
+    .eq("node_type", "article")
+    .eq("status", "published")
+    .in("id", Array.from(articleIds))
+    .returns<NodeArticleRow[]>();
+
+  if (error || !data) return [];
+  const bares = data.map(bareArticleOf).filter((b): b is BareArticle => b !== null);
+  return toSummaries(bares);
 }
 
 /** Every article-category actually tagged on at least one published

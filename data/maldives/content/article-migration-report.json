@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20T12:30:45.328Z",
+  "generatedAt": "2026-09-20T12:42:58.387Z",
   "totalCandidates": 48,
   "totalExtracted": 48,
   "byConfidence": {
@@ -104,6 +104,32 @@
           "storagePath": "legacy/images/stargazing-on-the-maldives-beach.webp",
           "width": 640,
           "height": 468
+        }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "12-best-beaches-in-maldives-ultimate-paradise-guide",
+          "title": "12 Best Beaches in Maldives: Ultimate Paradise Guide",
+          "href": "/maldives/travel-guide/12-best-beaches-in-maldives-ultimate-paradise-guide/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "best-maldives-honeymoon-packages-for",
+          "title": "Best Maldives Honeymoon Packages for",
+          "href": "/maldives/travel-guide/best-maldives-honeymoon-packages-for/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "maldives-weather-guide-month-by-month-climate-information-for",
+          "title": "Maldives Weather Guide: Month by Month Climate Information for",
+          "href": "/maldives/travel-guide/maldives-weather-guide-month-by-month-climate-information-for/",
+          "sharedEntityCount": 2
         }
       ]
     },
@@ -219,6 +245,14 @@
           "storagePath": "legacy/images/activities/what-is-the-best-way-to-snorkel-the-maldives.webp",
           "width": 640,
           "height": 417
+        }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "best-maldives-resorts-for-couples-romantic-getaways",
+          "title": "Best Maldives Resorts for Couples: Romantic Getaways",
+          "href": "/maldives/travel-guide/best-maldives-resorts-for-couples-romantic-getaways/",
+          "sharedEntityCount": 1
         }
       ]
     },
@@ -373,6 +407,26 @@
           "storagePath": "legacy/images/transfers/maldives-seaplane-transfers.webp",
           "width": 599,
           "height": 510
+        }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "best-maldives-diving-spots-ultimate-guide",
+          "title": "Best Maldives Diving Spots: Ultimate Guide",
+          "href": "/maldives/travel-guide/best-maldives-diving-spots-ultimate-guide/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition",
+          "title": "The People of the Maldives: A Cultural Tapestry of Resilience and Tradition",
+          "href": "/maldives/travel-guide/the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "things-to-do-in-maldives",
+          "title": "Things to do in Maldives",
+          "href": "/maldives/travel-guide/things-to-do-in-maldives/",
+          "sharedEntityCount": 1
         }
       ]
     },
@@ -613,6 +667,32 @@
           "width": 2048,
           "height": 2560
         }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "maldives-weather-guide-month-by-month-climate-information-for",
+          "title": "Maldives Weather Guide: Month by Month Climate Information for",
+          "href": "/maldives/travel-guide/maldives-weather-guide-month-by-month-climate-information-for/",
+          "sharedEntityCount": 3
+        },
+        {
+          "slug": "things-to-do-in-the-maldives-for-family-a-comprehensive-guide",
+          "title": "Things to Do in the Maldives for Family: A Comprehensive Guide",
+          "href": "/maldives/travel-guide/things-to-do-in-the-maldives-for-family-a-comprehensive-guide/",
+          "sharedEntityCount": 3
+        },
+        {
+          "slug": "maldives-honeymoon-ultimate-romantic-getaway-guide",
+          "title": "Maldives Honeymoon: Ultimate Romantic Getaway Guide",
+          "href": "/maldives/travel-guide/maldives-honeymoon-ultimate-romantic-getaway-guide/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "12-best-beaches-in-maldives-ultimate-paradise-guide",
+          "title": "12 Best Beaches in Maldives: Ultimate Paradise Guide",
+          "href": "/maldives/travel-guide/12-best-beaches-in-maldives-ultimate-paradise-guide/",
+          "sharedEntityCount": 2
+        }
       ]
     },
     {
@@ -766,6 +846,32 @@
           "width": 1920,
           "height": 1080
         }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "maldives-honeymoon-ultimate-romantic-getaway-guide",
+          "title": "Maldives Honeymoon: Ultimate Romantic Getaway Guide",
+          "href": "/maldives/travel-guide/maldives-honeymoon-ultimate-romantic-getaway-guide/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "best-maldives-honeymoon-packages-for",
+          "title": "Best Maldives Honeymoon Packages for",
+          "href": "/maldives/travel-guide/best-maldives-honeymoon-packages-for/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "maldives-weather-guide-month-by-month-climate-information-for",
+          "title": "Maldives Weather Guide: Month by Month Climate Information for",
+          "href": "/maldives/travel-guide/maldives-weather-guide-month-by-month-climate-information-for/",
+          "sharedEntityCount": 2
+        }
       ]
     },
     {
@@ -882,6 +988,20 @@
           "storagePath": "legacy/images/maldivian-wedding-ceremony.webp",
           "width": 1920,
           "height": 1080
+        }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "maldives-private-islands-ultimate-luxury-getaway-guide",
+          "title": "Maldives Private Islands: Ultimate Luxury Getaway Guide",
+          "href": "/maldives/travel-guide/maldives-private-islands-ultimate-luxury-getaway-guide/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "best-adults-only-maldives-resorts",
+          "title": "Best Adults-Only Maldives Resorts",
+          "href": "/maldives/travel-guide/best-adults-only-maldives-resorts/",
+          "sharedEntityCount": 1
         }
       ]
     },
@@ -1503,6 +1623,32 @@
           "width": 1920,
           "height": 1080
         }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "ilhas-maldivas-para-visitantes",
+          "title": "Ilhas Maldivas para visitantes",
+          "href": "/maldives/travel-guide/ilhas-maldivas-para-visitantes/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "maldives-accommodation-guide-where-to-stay-in-paradise",
+          "title": "Maldives Accommodation Guide: Where to Stay in Paradise",
+          "href": "/maldives/travel-guide/maldives-accommodation-guide-where-to-stay-in-paradise/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "maldives-on-a-budget-complete-2024-guide-to-affordable-travel",
+          "title": "Maldives on a Budget: Complete 2024 Guide to Affordable Travel",
+          "href": "/maldives/travel-guide/maldives-on-a-budget-complete-2024-guide-to-affordable-travel/",
+          "sharedEntityCount": 1
+        }
       ]
     },
     {
@@ -1592,7 +1738,8 @@
           "width": 1280,
           "height": 960
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/ilhas-maldivas.html",
@@ -1672,7 +1819,33 @@
       "migrationStatus": "ready",
       "confidence": "high",
       "nonEnglishTitle": false,
-      "embeddedImages": []
+      "embeddedImages": [],
+      "relatedArticles": [
+        {
+          "slug": "maldives-on-a-budget-complete-2024-guide-to-affordable-travel",
+          "title": "Maldives on a Budget: Complete 2024 Guide to Affordable Travel",
+          "href": "/maldives/travel-guide/maldives-on-a-budget-complete-2024-guide-to-affordable-travel/",
+          "sharedEntityCount": 3
+        },
+        {
+          "slug": "maldives-honeymoon-ultimate-romantic-getaway-guide",
+          "title": "Maldives Honeymoon: Ultimate Romantic Getaway Guide",
+          "href": "/maldives/travel-guide/maldives-honeymoon-ultimate-romantic-getaway-guide/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "100-best-things-to-do-in-the-maldives-an-ultimate-guide",
+          "title": "100 Best things to Do in the Maldives: An Ultimate Guide",
+          "href": "/maldives/travel-guide/100-best-things-to-do-in-the-maldives-an-ultimate-guide/",
+          "sharedEntityCount": 1
+        }
+      ]
     },
     {
       "oldUrl": "/articles/las-islas-maldivas.html",
@@ -1726,7 +1899,8 @@
           "width": 545,
           "height": 396
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-accommodation.html",
@@ -1835,6 +2009,32 @@
           "storagePath": "legacy/images/activities/island-hopping/island-hopping-tour.webp",
           "width": 600,
           "height": 450
+        }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "100-best-things-to-do-in-the-maldives-an-ultimate-guide",
+          "title": "100 Best things to Do in the Maldives: An Ultimate Guide",
+          "href": "/maldives/travel-guide/100-best-things-to-do-in-the-maldives-an-ultimate-guide/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "ilhas-maldivas-para-visitantes",
+          "title": "Ilhas Maldivas para visitantes",
+          "href": "/maldives/travel-guide/ilhas-maldivas-para-visitantes/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "maldives-on-a-budget-complete-2024-guide-to-affordable-travel",
+          "title": "Maldives on a Budget: Complete 2024 Guide to Affordable Travel",
+          "href": "/maldives/travel-guide/maldives-on-a-budget-complete-2024-guide-to-affordable-travel/",
+          "sharedEntityCount": 1
         }
       ]
     },
@@ -1948,6 +2148,32 @@
           "storagePath": "legacy/images/activities/six-senses-laamu.webp",
           "width": 640,
           "height": 360
+        }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "ilhas-maldivas-para-visitantes",
+          "title": "Ilhas Maldivas para visitantes",
+          "href": "/maldives/travel-guide/ilhas-maldivas-para-visitantes/",
+          "sharedEntityCount": 3
+        },
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "100-best-things-to-do-in-the-maldives-an-ultimate-guide",
+          "title": "100 Best things to Do in the Maldives: An Ultimate Guide",
+          "href": "/maldives/travel-guide/100-best-things-to-do-in-the-maldives-an-ultimate-guide/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "maldives-accommodation-guide-where-to-stay-in-paradise",
+          "title": "Maldives Accommodation Guide: Where to Stay in Paradise",
+          "href": "/maldives/travel-guide/maldives-accommodation-guide-where-to-stay-in-paradise/",
+          "sharedEntityCount": 1
         }
       ]
     },
@@ -2064,7 +2290,8 @@
           "width": 380,
           "height": 300
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-diving-spots.html",
@@ -2209,6 +2436,32 @@
           "width": 720,
           "height": 959
         }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "15-most-beautiful-places-in-maldives-paradise-found",
+          "title": "15 Most Beautiful Places in Maldives: Paradise Found",
+          "href": "/maldives/travel-guide/15-most-beautiful-places-in-maldives-paradise-found/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "12-best-beaches-in-maldives-ultimate-paradise-guide",
+          "title": "12 Best Beaches in Maldives: Ultimate Paradise Guide",
+          "href": "/maldives/travel-guide/12-best-beaches-in-maldives-ultimate-paradise-guide/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "100-best-things-to-do-in-the-maldives-an-ultimate-guide",
+          "title": "100 Best things to Do in the Maldives: An Ultimate Guide",
+          "href": "/maldives/travel-guide/100-best-things-to-do-in-the-maldives-an-ultimate-guide/",
+          "sharedEntityCount": 1
+        }
       ]
     },
     {
@@ -2336,6 +2589,32 @@
           "storagePath": "legacy/images/maldives-honeymoons.webp",
           "width": 1280,
           "height": 720
+        }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "maldives-honeymoon-ultimate-romantic-getaway-guide",
+          "title": "Maldives Honeymoon: Ultimate Romantic Getaway Guide",
+          "href": "/maldives/travel-guide/maldives-honeymoon-ultimate-romantic-getaway-guide/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "12-best-beaches-in-maldives-ultimate-paradise-guide",
+          "title": "12 Best Beaches in Maldives: Ultimate Paradise Guide",
+          "href": "/maldives/travel-guide/12-best-beaches-in-maldives-ultimate-paradise-guide/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "maldives-weather-guide-month-by-month-climate-information-for",
+          "title": "Maldives Weather Guide: Month by Month Climate Information for",
+          "href": "/maldives/travel-guide/maldives-weather-guide-month-by-month-climate-information-for/",
+          "sharedEntityCount": 2
         }
       ]
     },
@@ -2488,7 +2767,8 @@
           "width": 1920,
           "height": 1080
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-in-april.html",
@@ -2590,6 +2870,32 @@
           "storagePath": "legacy/images/traditional-maldivian-boat.webp",
           "width": 1920,
           "height": 1080
+        }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "100-best-things-to-do-in-the-maldives-an-ultimate-guide",
+          "title": "100 Best things to Do in the Maldives: An Ultimate Guide",
+          "href": "/maldives/travel-guide/100-best-things-to-do-in-the-maldives-an-ultimate-guide/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "ilhas-maldivas-para-visitantes",
+          "title": "Ilhas Maldivas para visitantes",
+          "href": "/maldives/travel-guide/ilhas-maldivas-para-visitantes/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "maldives-accommodation-guide-where-to-stay-in-paradise",
+          "title": "Maldives Accommodation Guide: Where to Stay in Paradise",
+          "href": "/maldives/travel-guide/maldives-accommodation-guide-where-to-stay-in-paradise/",
+          "sharedEntityCount": 1
         }
       ]
     },
@@ -2729,7 +3035,8 @@
           "width": 500,
           "height": 351
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-in-december.html",
@@ -2884,7 +3191,8 @@
           "width": 500,
           "height": 375
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-in-february.html",
@@ -3039,7 +3347,8 @@
           "width": 500,
           "height": 375
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-in-january.html",
@@ -3188,7 +3497,8 @@
           "width": 500,
           "height": 375
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-in-july.html",
@@ -3331,7 +3641,8 @@
           "width": 500,
           "height": 351
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-in-june.html",
@@ -3484,6 +3795,32 @@
           "width": 600,
           "height": 450
         }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "maldives-weather-guide-month-by-month-climate-information-for",
+          "title": "Maldives Weather Guide: Month by Month Climate Information for",
+          "href": "/maldives/travel-guide/maldives-weather-guide-month-by-month-climate-information-for/",
+          "sharedEntityCount": 3
+        },
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "100-best-things-to-do-in-the-maldives-an-ultimate-guide",
+          "title": "100 Best things to Do in the Maldives: An Ultimate Guide",
+          "href": "/maldives/travel-guide/100-best-things-to-do-in-the-maldives-an-ultimate-guide/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "ilhas-maldivas-para-visitantes",
+          "title": "Ilhas Maldivas para visitantes",
+          "href": "/maldives/travel-guide/ilhas-maldivas-para-visitantes/",
+          "sharedEntityCount": 1
+        }
       ]
     },
     {
@@ -3615,7 +3952,8 @@
           "width": 1920,
           "height": 1080
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-in-may.html",
@@ -3746,7 +4084,8 @@
           "width": 600,
           "height": 450
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-in-november.html",
@@ -3901,7 +4240,8 @@
           "width": 500,
           "height": 375
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-in-october.html",
@@ -4044,7 +4384,8 @@
           "width": 500,
           "height": 375
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-in-september.html",
@@ -4187,7 +4528,8 @@
           "width": 500,
           "height": 351
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-international-airport.html",
@@ -4232,7 +4574,33 @@
       "migrationStatus": "ready",
       "confidence": "high",
       "nonEnglishTitle": false,
-      "embeddedImages": []
+      "embeddedImages": [],
+      "relatedArticles": [
+        {
+          "slug": "where-is-maldives-located",
+          "title": "Where Is Maldives Located?",
+          "href": "/maldives/travel-guide/where-is-maldives-located/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "100-best-things-to-do-in-the-maldives-an-ultimate-guide",
+          "title": "100 Best things to Do in the Maldives: An Ultimate Guide",
+          "href": "/maldives/travel-guide/100-best-things-to-do-in-the-maldives-an-ultimate-guide/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "ilhas-maldivas-para-visitantes",
+          "title": "Ilhas Maldivas para visitantes",
+          "href": "/maldives/travel-guide/ilhas-maldivas-para-visitantes/",
+          "sharedEntityCount": 1
+        }
+      ]
     },
     {
       "oldUrl": "/articles/maldives-islands-ar.html",
@@ -4290,7 +4658,8 @@
           "width": 654,
           "height": 474
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-islands-jp.html",
@@ -4362,7 +4731,8 @@
           "width": 654,
           "height": 474
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-islands-kr.html",
@@ -4407,7 +4777,8 @@
           "width": 654,
           "height": 474
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-islands-ru.html",
@@ -4443,7 +4814,8 @@
           "width": 654,
           "height": 474
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-people.html",
@@ -4565,6 +4937,32 @@
           "storagePath": "legacy/images/maldives-economy.webp",
           "width": 640,
           "height": 427
+        }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "things-to-do-in-maldives",
+          "title": "Things to do in Maldives",
+          "href": "/maldives/travel-guide/things-to-do-in-maldives/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "15-most-beautiful-places-in-maldives-paradise-found",
+          "title": "15 Most Beautiful Places in Maldives: Paradise Found",
+          "href": "/maldives/travel-guide/15-most-beautiful-places-in-maldives-paradise-found/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "100-best-things-to-do-in-the-maldives-an-ultimate-guide",
+          "title": "100 Best things to Do in the Maldives: An Ultimate Guide",
+          "href": "/maldives/travel-guide/100-best-things-to-do-in-the-maldives-an-ultimate-guide/",
+          "sharedEntityCount": 1
         }
       ]
     },
@@ -4761,6 +5159,32 @@
           "width": 1920,
           "height": 1080
         }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "best-maldives-resorts-for-couples-romantic-getaways",
+          "title": "Best Maldives Resorts for Couples: Romantic Getaways",
+          "href": "/maldives/travel-guide/best-maldives-resorts-for-couples-romantic-getaways/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "100-best-things-to-do-in-the-maldives-an-ultimate-guide",
+          "title": "100 Best things to Do in the Maldives: An Ultimate Guide",
+          "href": "/maldives/travel-guide/100-best-things-to-do-in-the-maldives-an-ultimate-guide/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "ilhas-maldivas-para-visitantes",
+          "title": "Ilhas Maldivas para visitantes",
+          "href": "/maldives/travel-guide/ilhas-maldivas-para-visitantes/",
+          "sharedEntityCount": 1
+        }
       ]
     },
     {
@@ -4845,7 +5269,8 @@
           "width": 4000,
           "height": 2250
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/maldives-weather.html",
@@ -4929,6 +5354,32 @@
           "width": 1280,
           "height": 720
         }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 3
+        },
+        {
+          "slug": "maldives-in-june-weather-activities-travel-guide",
+          "title": "Maldives in June: Weather, Activities & Travel Guide",
+          "href": "/maldives/travel-guide/maldives-in-june-weather-activities-travel-guide/",
+          "sharedEntityCount": 3
+        },
+        {
+          "slug": "things-to-do-in-the-maldives-for-family-a-comprehensive-guide",
+          "title": "Things to Do in the Maldives for Family: A Comprehensive Guide",
+          "href": "/maldives/travel-guide/things-to-do-in-the-maldives-for-family-a-comprehensive-guide/",
+          "sharedEntityCount": 3
+        },
+        {
+          "slug": "maldives-honeymoon-ultimate-romantic-getaway-guide",
+          "title": "Maldives Honeymoon: Ultimate Romantic Getaway Guide",
+          "href": "/maldives/travel-guide/maldives-honeymoon-ultimate-romantic-getaway-guide/",
+          "sharedEntityCount": 2
+        }
       ]
     },
     {
@@ -4952,7 +5403,8 @@
       "migrationStatus": "ready",
       "confidence": "high",
       "nonEnglishTitle": false,
-      "embeddedImages": []
+      "embeddedImages": [],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/most-famous-places-in-the-world-tovisit.html",
@@ -5036,7 +5488,8 @@
           "width": 640,
           "height": 426
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/sea-of-stars-maldives.html",
@@ -5059,7 +5512,8 @@
       "migrationStatus": "needs-review",
       "confidence": "needs-review",
       "nonEnglishTitle": false,
-      "embeddedImages": []
+      "embeddedImages": [],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/the-maldives-islands-cn.html",
@@ -5145,7 +5599,8 @@
           "width": 654,
           "height": 474
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/things-to-do-in-maldives-for-couples.html",
@@ -5397,7 +5852,8 @@
           "width": 640,
           "height": 360
         }
-      ]
+      ],
+      "relatedArticles": []
     },
     {
       "oldUrl": "/articles/things-to-do-in-maldives-for-family.html",
@@ -5660,6 +6116,32 @@
           "width": 500,
           "height": 375
         }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 3
+        },
+        {
+          "slug": "maldives-weather-guide-month-by-month-climate-information-for",
+          "title": "Maldives Weather Guide: Month by Month Climate Information for",
+          "href": "/maldives/travel-guide/maldives-weather-guide-month-by-month-climate-information-for/",
+          "sharedEntityCount": 3
+        },
+        {
+          "slug": "maldives-honeymoon-ultimate-romantic-getaway-guide",
+          "title": "Maldives Honeymoon: Ultimate Romantic Getaway Guide",
+          "href": "/maldives/travel-guide/maldives-honeymoon-ultimate-romantic-getaway-guide/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "12-best-beaches-in-maldives-ultimate-paradise-guide",
+          "title": "12 Best Beaches in Maldives: Ultimate Paradise Guide",
+          "href": "/maldives/travel-guide/12-best-beaches-in-maldives-ultimate-paradise-guide/",
+          "sharedEntityCount": 2
+        }
       ]
     },
     {
@@ -5747,6 +6229,32 @@
           "storagePath": "legacy/images/articles/dolphin-cruise.webp",
           "width": 640,
           "height": 452
+        }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition",
+          "title": "The People of the Maldives: A Cultural Tapestry of Resilience and Tradition",
+          "href": "/maldives/travel-guide/the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "15-most-beautiful-places-in-maldives-paradise-found",
+          "title": "15 Most Beautiful Places in Maldives: Paradise Found",
+          "href": "/maldives/travel-guide/15-most-beautiful-places-in-maldives-paradise-found/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "100-best-things-to-do-in-the-maldives-an-ultimate-guide",
+          "title": "100 Best things to Do in the Maldives: An Ultimate Guide",
+          "href": "/maldives/travel-guide/100-best-things-to-do-in-the-maldives-an-ultimate-guide/",
+          "sharedEntityCount": 1
         }
       ]
     },
@@ -6001,6 +6509,7 @@
           "height": 360
         }
       ],
+      "relatedArticles": [],
       "duplicateOfSlug": "romantic-things-to-do-in-the-maldives-for-couples"
     },
     {
@@ -6045,7 +6554,33 @@
       "migrationStatus": "ready",
       "confidence": "high",
       "nonEnglishTitle": false,
-      "embeddedImages": []
+      "embeddedImages": [],
+      "relatedArticles": [
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "100-best-things-to-do-in-the-maldives-an-ultimate-guide",
+          "title": "100 Best things to Do in the Maldives: An Ultimate Guide",
+          "href": "/maldives/travel-guide/100-best-things-to-do-in-the-maldives-an-ultimate-guide/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "ilhas-maldivas-para-visitantes",
+          "title": "Ilhas Maldivas para visitantes",
+          "href": "/maldives/travel-guide/ilhas-maldivas-para-visitantes/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "maldives-accommodation-guide-where-to-stay-in-paradise",
+          "title": "Maldives Accommodation Guide: Where to Stay in Paradise",
+          "href": "/maldives/travel-guide/maldives-accommodation-guide-where-to-stay-in-paradise/",
+          "sharedEntityCount": 1
+        }
+      ]
     },
     {
       "oldUrl": "/articles/where-is-maldives-located.html",
@@ -6107,6 +6642,32 @@
           "storagePath": "legacy/images/maps/indian-ocean.webp",
           "width": 1237,
           "height": 696
+        }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "male-airport-velana-international-airport",
+          "title": "Malé Airport | Velana International Airport",
+          "href": "/maldives/travel-guide/male-airport-velana-international-airport/",
+          "sharedEntityCount": 2
+        },
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "100-best-things-to-do-in-the-maldives-an-ultimate-guide",
+          "title": "100 Best things to Do in the Maldives: An Ultimate Guide",
+          "href": "/maldives/travel-guide/100-best-things-to-do-in-the-maldives-an-ultimate-guide/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "ilhas-maldivas-para-visitantes",
+          "title": "Ilhas Maldivas para visitantes",
+          "href": "/maldives/travel-guide/ilhas-maldivas-para-visitantes/",
+          "sharedEntityCount": 1
         }
       ]
     },
@@ -6332,6 +6893,32 @@
           "storagePath": "legacy/images/fish-factory-maldives.webp",
           "width": 800,
           "height": 566
+        }
+      ],
+      "relatedArticles": [
+        {
+          "slug": "beautiful-places-to-visit-in-maldives",
+          "title": "Beautiful Places to Visit in Maldives",
+          "href": "/maldives/travel-guide/beautiful-places-to-visit-in-maldives/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "100-best-things-to-do-in-the-maldives-an-ultimate-guide",
+          "title": "100 Best things to Do in the Maldives: An Ultimate Guide",
+          "href": "/maldives/travel-guide/100-best-things-to-do-in-the-maldives-an-ultimate-guide/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "ilhas-maldivas-para-visitantes",
+          "title": "Ilhas Maldivas para visitantes",
+          "href": "/maldives/travel-guide/ilhas-maldivas-para-visitantes/",
+          "sharedEntityCount": 1
+        },
+        {
+          "slug": "maldives-accommodation-guide-where-to-stay-in-paradise",
+          "title": "Maldives Accommodation Guide: Where to Stay in Paradise",
+          "href": "/maldives/travel-guide/maldives-accommodation-guide-where-to-stay-in-paradise/",
+          "sharedEntityCount": 1
         }
       ]
     }

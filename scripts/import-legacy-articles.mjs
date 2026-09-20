@@ -328,6 +328,31 @@ function main() {
     }
     relatedEntities.sort((a, b) => b.score - a.score);
 
+    // Natural in-body contextual links (Task 15 §5-11/§43): link the FIRST
+    // mention of each of this article's strongest real related entities,
+    // using the same real href buildEntityIndex() already assigned it.
+    // Capped at the top 8 entities and one link per entity in the whole
+    // article, so this can never become keyword-stuffed - it just makes
+    // real, already-existing mentions of real places/entities clickable.
+    const topLinkEntities = relatedEntities.filter((e) => e.score >= 0.6).slice(0, 8);
+    if (topLinkEntities.length > 0) {
+      const linkedEntityKeys = new Set();
+      for (const block of blocks) {
+        if (block.type !== "paragraph") continue;
+        let html = escapeHtml(block.text);
+        for (const entity of topLinkEntities) {
+          const key = `${entity.type}:${entity.slug}`;
+          if (linkedEntityKeys.has(key)) continue;
+          const linked = injectFirstEntityLink(html, entity.title, entity.href);
+          if (linked !== html) {
+            html = linked;
+            linkedEntityKeys.add(key);
+          }
+        }
+        if (html !== escapeHtml(block.text)) block.html = html;
+      }
+    }
+
     const category = categorize(title, plainText);
     // A title in a non-Latin script (Arabic/Japanese/Korean/Russian/
     // Chinese translations of the same English page) slugifies to nothing
@@ -385,6 +410,7 @@ function main() {
       confidence,
       nonEnglishTitle: !hasAsciiTitle,
       embeddedImages,
+      relatedArticles: [],
     });
   }
 
@@ -414,6 +440,31 @@ function main() {
       dup.confidence = "needs-review";
       dup.duplicateOfSlug = group[0].candidateSlug;
     }
+  }
+
+  // Article-to-article relatedness (Task 15 §5-11 "other-article"): two
+  // READY articles that reference several of the SAME real entities (same
+  // resort/island/dive site/...) are genuinely related content. Reusing the
+  // relatedEntities already matched above (real catalogue matches only)
+  // instead of a second freeform text-similarity heuristic keeps this
+  // natural/editorial rather than keyword-stuffed, and never fabricates a
+  // relationship between two articles that merely happen to share common
+  // words.
+  const readyReports = reports.filter((r) => r.migrationStatus === "ready");
+  for (const a of readyReports) {
+    const aKeys = new Set(a.relatedEntities.map((e) => `${e.type}:${e.slug}`));
+    if (aKeys.size === 0) continue;
+    const scored = [];
+    for (const b of readyReports) {
+      if (b === a) continue;
+      let sharedEntityCount = 0;
+      for (const e of b.relatedEntities) if (aKeys.has(`${e.type}:${e.slug}`)) sharedEntityCount += 1;
+      if (sharedEntityCount > 0) {
+        scored.push({ slug: b.candidateSlug, title: b.candidateTitle, href: b.candidateNewUrl, sharedEntityCount });
+      }
+    }
+    scored.sort((x, y) => y.sharedEntityCount - x.sharedEntityCount);
+    a.relatedArticles = scored.slice(0, 4);
   }
 
   const byConfidence = { high: 0, medium: 0, "needs-review": 0 };
@@ -453,17 +504,50 @@ function escapeHtml(value) {
   return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
+/** Wraps the first case-insensitive, word-bounded match of `entityTitle`
+ * inside an already-HTML-escaped paragraph string with a real link to
+ * `href`. Never matches inside a previously injected <a>...</a> (so two
+ * entities whose names overlap can't nest), and never partial-word matches
+ * ("Male" inside "Female"). Returns `escapedText` unchanged if no safe
+ * match is found. */
+function injectFirstEntityLink(escapedText, entityTitle, href) {
+  const escapedTitle = escapeHtml(entityTitle);
+  if (escapedTitle.length < 4) return escapedText;
+  const idx = escapedText.toLowerCase().indexOf(escapedTitle.toLowerCase());
+  if (idx === -1) return escapedText;
+
+  const before = escapedText[idx - 1];
+  const after = escapedText[idx + escapedTitle.length];
+  if (before && /[a-zA-Z0-9]/.test(before)) return escapedText;
+  if (after && /[a-zA-Z0-9]/.test(after)) return escapedText;
+
+  const priorOpenAnchor = escapedText.lastIndexOf("<a ", idx);
+  const priorCloseAnchor = escapedText.lastIndexOf("</a>", idx);
+  if (priorOpenAnchor > priorCloseAnchor) return escapedText; // already inside a link
+
+  return (
+    escapedText.slice(0, idx) +
+    `<a href="${escapeHtml(href)}">` +
+    escapedText.slice(idx, idx + escapedTitle.length) +
+    "</a>" +
+    escapedText.slice(idx + escapedTitle.length)
+  );
+}
+
 // No HTML tag allow-list check is needed here: unlike a sanitizer that
 // filters arbitrary input HTML, this regenerates output from scratch out
 // of a small fixed set of block types (heading/paragraph/list/image/video/
 // table/quote), each with a hardcoded tag and every text value passed
 // through escapeHtml() — there is no code path that could ever emit a tag
-// or raw fragment taken directly from the source page.
+// or raw fragment taken directly from the source page. The one exception,
+// a paragraph's optional `b.html`, is never source-page HTML either — it's
+// built exclusively by injectFirstEntityLink() above from an already
+// escapeHtml()'d string plus a real, internally-generated href.
 function renderHtml(blocks) {
   const parts = [];
   for (const b of blocks) {
     if (b.type === "heading") parts.push(`<h${b.level}>${escapeHtml(b.text)}</h${b.level}>`);
-    else if (b.type === "paragraph") parts.push(`<p>${escapeHtml(b.text)}</p>`);
+    else if (b.type === "paragraph") parts.push(`<p>${b.html ?? escapeHtml(b.text)}</p>`);
     else if (b.type === "list") {
       const tag = b.ordered ? "ol" : "ul";
       parts.push(`<${tag}>${b.items.map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</${tag}>`);
@@ -489,6 +573,31 @@ function sqlString(value) {
   if (value === null || value === undefined) return "null";
   return `'${toAsciiSafe(value).replace(/'/g, "''")}'`;
 }
+
+// Task 15 §5-11: entity types whose node_type is 'location' (atoll/island/
+// dive_site/surf_break all share that node_type in the schema — see
+// supabase/migrations/20250101000300_nodes.sql) reuse the EXISTING
+// node_locations table (Task 14 already wired island/atoll through it).
+// Everything else gets the new generic node_relationships table below —
+// never a second location-relationship system for the same node_type.
+const LOCATION_ENTITY_TYPES = new Set(["atoll", "island", "dive_site", "surf_break"]);
+
+// Maps a buildEntityIndex() entity `type` to the `nodes.node_type` it's
+// actually stored under (accommodation subtypes and diving/fishing/surfing
+// activities all collapse to one shared node_type in the schema).
+const ENTITY_TYPE_TO_NODE_TYPE = {
+  hotel: "accommodation",
+  resort: "accommodation",
+  guesthouse: "accommodation",
+  villa: "accommodation",
+  other: "accommodation",
+  activity: "activity",
+  diving: "activity",
+  fishing: "activity",
+  surfing: "activity",
+  package: "package",
+  transfer_route: "transfer_route",
+};
 
 const CATEGORY_SLUGS = {
   "Maldives Travel": "maldives-travel",
@@ -548,6 +657,7 @@ function writeCommitMigration(readyArticles) {
   let mediaCount = 0;
   let attachCount = 0;
   let locationTagCount = 0;
+  let relationshipCount = 0;
   const uploadManifest = [];
 
   for (const article of readyArticles) {
@@ -577,8 +687,15 @@ function writeCommitMigration(readyArticles) {
     // untouched) makes every statement a genuinely single physical line,
     // immune to any client that isn't fully SQL-string-aware.
     const bodyHtmlForSql = bodyHtml.replace(/\r?\n/g, "");
+    // Unlike every other statement in this file, this one intentionally
+    // UPDATEs on conflict rather than doing nothing: `body` is exactly the
+    // content this generator keeps iterating on (Task 15 recovered 676
+    // previously-dropped images, then added in-body entity links, both
+    // AFTER many users' databases already had the Task 14 version of this
+    // row) — "do nothing" would silently leave their live body stale on
+    // every re-run, defeating the entire point of re-running the file.
     lines.push(
-      `insert into articles (id, body, reading_time_minutes) select id, ${sqlString(bodyHtmlForSql)}, ${readingMinutes} from nodes where node_type = 'article' and slug = ${sqlString(article.candidateSlug)} on conflict (id) do nothing;`,
+      `insert into articles (id, body, reading_time_minutes) select id, ${sqlString(bodyHtmlForSql)}, ${readingMinutes} from nodes where node_type = 'article' and slug = ${sqlString(article.candidateSlug)} on conflict (id) do update set body = excluded.body, reading_time_minutes = excluded.reading_time_minutes;`,
     );
     lines.push("");
     articleCount += 1;
@@ -588,15 +705,42 @@ function writeCommitMigration(readyArticles) {
     );
     lines.push("");
 
-    // Related location entities -> node_locations (secondary — an article
-    // isn't primarily "about" one place the way an accommodation is).
-    for (const rel of article.relatedEntities.filter((e) => e.type === "island" || e.type === "atoll")) {
+    // Related location entities (atoll/island/dive_site/surf_break all
+    // share node_type='location' - Task 15 §5-11) -> node_locations
+    // (secondary — an article isn't primarily "about" one place the way an
+    // accommodation is). Reuses the same table Task 14 already wired up for
+    // island/atoll rather than adding a second location-relationship system.
+    for (const rel of article.relatedEntities.filter((e) => LOCATION_ENTITY_TYPES.has(e.type))) {
       lines.push(
         `insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = ${sqlString(article.candidateSlug)} and l.node_type = 'location' and l.slug = ${sqlString(rel.slug)} on conflict (node_id, location_id) do nothing;`,
       );
       lines.push("");
       locationTagCount += 1;
     }
+
+    // Every other related entity type (accommodation/activity/diving/
+    // fishing/surfing/package/transfer_route) -> the generic
+    // node_relationships table (Task 15 §5-11), keyed by real matches only
+    // (article.relatedEntities never contains a fabricated entity).
+    for (const rel of article.relatedEntities) {
+      if (LOCATION_ENTITY_TYPES.has(rel.type) || rel.type === "country") continue;
+      const relatedNodeType = ENTITY_TYPE_TO_NODE_TYPE[rel.type];
+      if (!relatedNodeType) continue;
+      lines.push(
+        `insert into node_relationships (node_id, related_node_id, relation_type, confidence) select n.id, r.id, 'related', ${rel.score} from nodes n, nodes r where n.node_type = 'article' and n.slug = ${sqlString(article.candidateSlug)} and r.node_type = ${sqlString(relatedNodeType)} and r.slug = ${sqlString(rel.slug)} on conflict (node_id, related_node_id, relation_type) do nothing;`,
+      );
+      lines.push("");
+      relationshipCount += 1;
+    }
+
+    // Article-to-article relatedness computed above (shared real entities).
+    article.relatedArticles.forEach((rel, idx) => {
+      lines.push(
+        `insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', ${idx} from nodes n, nodes r where n.node_type = 'article' and n.slug = ${sqlString(article.candidateSlug)} and r.node_type = 'article' and r.slug = ${sqlString(rel.slug)} on conflict (node_id, related_node_id, relation_type) do nothing;`,
+      );
+      lines.push("");
+      relationshipCount += 1;
+    });
 
     // Content images actually embedded in this article's body (already
     // filtered to real uploaded-file matches when the body was rendered —
@@ -628,7 +772,7 @@ function writeCommitMigration(readyArticles) {
   const migrationPath = path.join(ROOT, "supabase", "migrations", "20250110000300_legacy_articles.sql");
   writeFileSync(migrationPath, lines.join("\n") + "\n");
   console.log(`\nWrote ${migrationPath}`);
-  console.log(`  articles: ${articleCount}, categories used: ${usedCategories.size}, media_assets: ${mediaCount}, node_media: ${attachCount}, location tags: ${locationTagCount}`);
+  console.log(`  articles: ${articleCount}, categories used: ${usedCategories.size}, media_assets: ${mediaCount}, node_media: ${attachCount}, location tags: ${locationTagCount}, entity/article relationships: ${relationshipCount}`);
 
   const manifestPath = path.join(CONTENT_DATA_DIR, "article-storage-manifest.json");
   writeFileSync(manifestPath, JSON.stringify({ generatedAt: new Date().toISOString(), files: uploadManifest }, null, 2));

@@ -102,14 +102,59 @@ function extractYouTubeId(src) {
 // data-src attributes for unrelated widgets.
 const SELF_HOSTED_ORIGIN = /^https?:\/\/(?:www\.)?maldivestour\.guide\//i;
 
+/** Site chrome that legitimately exists as a real, matchable file (so it
+ * isn't caught by the "confidence" gate below) but is never real article
+ * content — the site logo/favicon, reused as a lazy-load placeholder
+ * graphic, turns up dozens of times across article bodies (Task 15 §1
+ * audit: 37 of 676 newly-includable images were exactly this). */
+const NON_CONTENT_FILENAMES = new Set(["icon.png", "icon-og.png", "favicon.ico", "logo.png"]);
+
 /** Normalizes a legacy img src/data-src ("/images/x.webp", "images/x.webp",
- * "https://maldivestour.guide/images/x.webp") to the same relativePath
- * shape the media inventory uses. */
-function normalizeImageSrc(src) {
+ * "https://maldivestour.guide/images/x.webp", "../images/x.webp",
+ * "/images/x.webp?v=2", a URL-encoded filename) to the same relativePath
+ * shape the media inventory uses. `fromRelPath` (the source HTML file's own
+ * path, relative to RELEASE_DIR) resolves "../"-relative references against
+ * the page's own directory rather than the release root (Task 15 §3) — a
+ * no-op for this batch of articles specifically (none use "../"), but
+ * correct for any future page that does.
+ */
+function normalizeImageSrc(src, fromRelPath) {
   if (!src) return null;
-  if (SELF_HOSTED_ORIGIN.test(src)) return src.replace(SELF_HOSTED_ORIGIN, "");
-  if (/^https?:\/\//i.test(src)) return null; // genuinely external image, not ours to migrate
-  return src.replace(/^\/+/, "");
+  let value = src.trim();
+  if (!value) return null;
+
+  // Strip a query string / hash fragment before anything else — neither
+  // is part of the actual file path (Task 15 §3).
+  value = value.split("#")[0].split("?")[0];
+  if (!value) return null;
+
+  let pathPart;
+  if (SELF_HOSTED_ORIGIN.test(value)) {
+    pathPart = value.replace(SELF_HOSTED_ORIGIN, "");
+  } else if (/^https?:\/\//i.test(value)) {
+    return null; // genuinely external image, not ours to migrate
+  } else if (value.startsWith("/")) {
+    pathPart = value.slice(1);
+  } else if (value.startsWith("../") || value.startsWith("./")) {
+    // Relative to the linking page's own directory, same resolution used
+    // for the Task 14 broken-internal-link check.
+    const baseDir = path.posix.dirname(fromRelPath.split(path.sep).join("/"));
+    pathPart = path.posix.normalize(path.posix.join(baseDir, value));
+  } else {
+    pathPart = value;
+  }
+
+  // URL-decode a percent-encoded filename (e.g. "Mal%C3%A9") so it can
+  // match the inventory's on-disk (decoded) relativePath. Malformed
+  // sequences (a stray "%" that isn't real encoding) throw — keep the
+  // pre-decode value in that case rather than dropping the reference.
+  try {
+    pathPart = decodeURIComponent(pathPart);
+  } catch {
+    // leave as-is
+  }
+
+  return pathPart;
 }
 
 function main() {
@@ -182,14 +227,25 @@ function main() {
       if ($el.parents("ul,ol,table").length > 0 && tag !== "ul" && tag !== "ol" && tag !== "table") return;
 
       if (tag === "img") {
-        const src = normalizeImageSrc($el.attr("data-src") || $el.attr("src"));
+        const src = normalizeImageSrc($el.attr("data-src") || $el.attr("src"), candidate.sourceFile);
         if (!src) return;
         const match = mediaByPath.get(src.toLowerCase()) ?? null;
-        const usable = Boolean(match) && (match.confidence === "high" || match.confidence === "medium");
+        // Task 15 §1 audit finding: Task 14 required "high/medium
+        // CONFIDENCE" here, a bar meant for attaching a photo to a
+        // specific resort/island/atoll it might not actually depict. That
+        // bar makes no sense for embedding an image in the very article
+        // that references it — we already know which article it belongs
+        // to, because we're reading it out of that article's own HTML. The
+        // only real requirement is that the file genuinely exists (so we
+        // never render a dead src), which this file — being found by the
+        // Task 14 media inventory's filesystem walk — already guarantees.
+        // This single change recovered 676 of 833 legacy article images
+        // that Task 14 was silently dropping (119 -> 795 embeddable).
+        const usable = Boolean(match) && !NON_CONTENT_FILENAMES.has(match.filename.toLowerCase());
         images.push({ src, alt: $el.attr("alt") ?? null, match: match ? { confidence: match.confidence, entityMatch: match.match } : null });
         // Only reference images with a real uploaded file behind them
         // (Task 14: "never claim media was migrated if it wasn't"). An
-        // <img> for an unmatched/low-confidence legacy file would be a
+        // <img> for a file that doesn't exist in the inventory would be a
         // permanently broken image on the live site, so it's dropped here
         // rather than rendered with a dead src. The stored src is the
         // final canonical storage_path (not the raw legacy relativePath)
@@ -284,7 +340,10 @@ function main() {
     const slugBasis = hasAsciiTitle ? title : path.basename(candidate.sourceFile, ".html");
     const slug = assignUniqueSlug(slugBasis || path.basename(candidate.sourceFile, ".html"), usedSlugs);
 
-    const matchedImages = images.filter((i) => i.match && (i.match.confidence === "high" || i.match.confidence === "medium"));
+    // Exactly the images actually embedded into the body below — see the
+    // img handler's `usable` comment for why this is no longer gated by
+    // entity-match confidence (Task 15 §1).
+    const matchedImages = blocks.filter((b) => b.type === "image");
     let confidence;
     if (!hasAsciiTitle) confidence = "needs-review";
     else if (title && blocks.filter((b) => b.type === "paragraph").length >= 3 && wordCount >= 150) confidence = "high";

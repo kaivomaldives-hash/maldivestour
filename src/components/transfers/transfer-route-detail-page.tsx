@@ -58,9 +58,8 @@ function locationHref(location: { slug: string; locationType: string }): string 
   if (location.locationType === "island") return `/maldives/islands/${location.slug}/`;
   if (location.locationType === "atoll") return `/maldives/atolls/${location.slug}/`;
   // Airports/seaports/harbours don't have their own directory route yet —
-  // link to the transfers directory pre-filtered to that endpoint instead
-  // of a 404.
-  return `/maldives/transfers/?from=${location.slug}`;
+  // link to the main transfers hub instead of a 404.
+  return `/maldives/transfers/`;
 }
 
 export async function transferRouteDetailMetadata(slug: string): Promise<Metadata> {
@@ -471,8 +470,8 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
           Private Speedboat Charter
         </Link>
         {originAtoll && (
-          <Link href={`/maldives/transfers/?atoll=${originAtoll.slug}`} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
-            More transfers in {originAtoll.title}
+          <Link href={`/maldives/atolls/${originAtoll.slug}/`} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+            More about {originAtoll.title}
           </Link>
         )}
       </nav>

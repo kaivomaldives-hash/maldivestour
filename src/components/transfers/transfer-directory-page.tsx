@@ -6,21 +6,13 @@ import { TransferFinder } from "@/components/transfers/transfer-finder";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CarTransfersSection } from "@/components/vehicles/car-transfers-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
-import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
-import { Pagination } from "@/components/ui/pagination";
 import { getFerryRoutes } from "@/lib/ferries/repository";
-import { getAtollBySlug, getLocationBySlug } from "@/lib/locations/repository";
+import { getLocationBySlug } from "@/lib/locations/repository";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 import { getSpeedboats } from "@/lib/speedboats/repository";
 import { TRANSFER_CATEGORY_IMAGES } from "@/lib/transfers/category-images";
-import {
-  getSharedOrPrivateOptionsInUse,
-  getTransferRoutes,
-  getTransferTypesInUse,
-  searchTransferRoutes,
-} from "@/lib/transfers/repository";
-import type { SharedOrPrivate, TransferType } from "@/lib/transfers/types";
+import { getTransferRoutes } from "@/lib/transfers/repository";
 
 /**
  * Task 20: the main Maldives transportation hub. Rebuilt as a full
@@ -28,24 +20,10 @@ import type { SharedOrPrivate, TransferType } from "@/lib/transfers/types";
  * generic card sections — see the section order in the task brief
  * (§11): hero, finder, airport, speedboat charter, car, resort, island,
  * seaplane/domestic-flight (coming soon), ferry, why-us, how-it-works,
- * FAQ, related links, then the full filterable directory beneath it.
+ * FAQ, related links. (The catch-all "browse every route" directory that
+ * used to sit beneath all of this was removed on request — the category
+ * pages linked from each section's "See all" already cover that.)
  */
-
-const TRANSFER_TYPE_LABEL: Record<TransferType, string> = {
-  speedboat: "Speedboat",
-  seaplane: "Seaplane",
-  domestic_flight: "Domestic Flight",
-  ferry: "Ferry",
-  private_yacht: "Private Yacht",
-  land_transfer: "Land Transfer",
-};
-
-const MODE_LABEL: Record<SharedOrPrivate, string> = {
-  shared: "Shared",
-  private: "Private",
-};
-
-const PAGE_SIZE = 24;
 
 const HOW_IT_WORKS = [
   {
@@ -109,22 +87,7 @@ const FAQS = [
   },
 ];
 
-export interface TransferDirectorySearchParams {
-  q?: string;
-  page?: string;
-  type?: string;
-  mode?: string;
-  from?: string;
-  to?: string;
-  atoll?: string;
-}
-
-function hasAnyFilter(sp: TransferDirectorySearchParams): boolean {
-  return Boolean(sp.q || sp.type || sp.mode || sp.from || sp.to || sp.atoll);
-}
-
-export async function transferDirectoryMetadata(searchParams: Promise<TransferDirectorySearchParams>): Promise<Metadata> {
-  const sp = await searchParams;
+export function transferDirectoryMetadata(): Metadata {
   const title = "Maldives Transfers | Airport, Resort, Island & Speedboat Transfers";
   const description =
     "The complete Maldives transportation platform: real airport, resort, island, ferry, and private speedboat transfer routes and prices — search, compare, and book or enquire.";
@@ -135,7 +98,6 @@ export async function transferDirectoryMetadata(searchParams: Promise<TransferDi
     description,
     alternates: { canonical: url },
     openGraph: { title, description, url },
-    robots: hasAnyFilter(sp) ? { index: false, follow: true } : undefined,
   };
 }
 
@@ -155,24 +117,8 @@ function SeeAllLink({ href, total, label }: { href: string; total: number; label
   );
 }
 
-export async function TransferDirectoryPage({
-  searchParams,
-}: {
-  searchParams: Promise<TransferDirectorySearchParams>;
-}) {
-  const sp = await searchParams;
-  const page = Math.max(1, Number(sp.page) || 1);
-  const query = sp.q?.trim() ?? "";
-  const isSearching = query.length > 0;
-
-  const [atoll, origin, destination, transferTypes, modes, velanaAirport] = await Promise.all([
-    sp.atoll ? getAtollBySlug(sp.atoll) : Promise.resolve(null),
-    sp.from ? getLocationBySlug(sp.from) : Promise.resolve(null),
-    sp.to ? getLocationBySlug(sp.to) : Promise.resolve(null),
-    getTransferTypesInUse(),
-    getSharedOrPrivateOptionsInUse(),
-    getLocationBySlug("velana-international-airport"),
-  ]);
+export async function TransferDirectoryPage() {
+  const velanaAirport = await getLocationBySlug("velana-international-airport");
 
   const [airportResult, resortResult, islandResult, boats, ferryRoutes] = await Promise.all([
     getTransferRoutes({ category: "airport", pageSize: 6 }),
@@ -186,31 +132,6 @@ export async function TransferDirectoryPage({
     getTransferRoutes({ category: "resort-transfer", pageSize: 1 }).then((r) => r.total),
     getTransferRoutes({ category: "island-transfer", pageSize: 1 }).then((r) => r.total),
   ]);
-
-  const activeType = sp.type && transferTypes.includes(sp.type as TransferType) ? (sp.type as TransferType) : undefined;
-  const activeMode = sp.mode && modes.includes(sp.mode as SharedOrPrivate) ? (sp.mode as SharedOrPrivate) : undefined;
-
-  const results = isSearching
-    ? { items: await searchTransferRoutes(query, { limit: 100 }), total: 0, page: 1, pageSize: 100 }
-    : await getTransferRoutes({
-        page,
-        pageSize: PAGE_SIZE,
-        atollId: sp.atoll ? atoll?.id : undefined,
-        originLocationId: origin?.id,
-        destinationLocationId: destination?.id,
-        transferType: activeType,
-        sharedOrPrivate: activeMode,
-      });
-
-  const totalPages = isSearching ? 1 : Math.max(1, Math.ceil(results.total / PAGE_SIZE));
-
-  const baseParams = new URLSearchParams();
-  if (sp.type) baseParams.set("type", sp.type);
-  if (sp.mode) baseParams.set("mode", sp.mode);
-  if (sp.from) baseParams.set("from", sp.from);
-  if (sp.to) baseParams.set("to", sp.to);
-  if (sp.atoll) baseParams.set("atoll", sp.atoll);
-  const baseQuery = baseParams.toString();
 
   return (
     <main>
@@ -388,88 +309,6 @@ export async function TransferDirectoryPage({
             ))}
           </nav>
         </section>
-
-        {/* Full filterable directory */}
-        <div className="mt-14 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Browse the Complete Transfer Directory</h2>
-          <p className="mt-1 text-sm text-neutral-600">Every migrated route — filter, search, or browse the full inventory below.</p>
-        </div>
-
-        {(atoll || origin || destination) && (
-          <p className="text-sm text-neutral-600">
-            Filtered to{" "}
-            {[origin?.title, destination?.title ? `→ ${destination.title}` : null, !origin && !destination ? atoll?.title : null]
-              .filter(Boolean)
-              .join(" ")}
-            .{" "}
-            <Link href="/maldives/transfers/" className="underline">
-              Clear
-            </Link>
-          </p>
-        )}
-
-        {transferTypes.length > 0 && (
-          <nav aria-label="Filter by transfer type" className="mt-6 flex flex-wrap gap-2 text-sm">
-            <Link
-              href="/maldives/transfers/"
-              className={`rounded-full border px-3 py-1 ${!activeType ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
-            >
-              All types
-            </Link>
-            {transferTypes.map((type) => (
-              <Link
-                key={type}
-                href={`/maldives/transfers/?type=${type}`}
-                className={`rounded-full border px-3 py-1 ${activeType === type ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
-              >
-                {TRANSFER_TYPE_LABEL[type]}
-              </Link>
-            ))}
-          </nav>
-        )}
-
-        {modes.length > 1 && (
-          <nav aria-label="Filter by shared or private" className="mt-3 flex flex-wrap gap-2 text-sm">
-            {modes.map((mode) => (
-              <Link
-                key={mode}
-                href={`/maldives/transfers/?mode=${mode}`}
-                className={`rounded-full border px-3 py-1 ${activeMode === mode ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
-              >
-                {MODE_LABEL[mode]}
-              </Link>
-            ))}
-          </nav>
-        )}
-
-        <form method="get" className="mt-4 flex gap-2">
-          <label htmlFor="transfer-search" className="sr-only">
-            Search transfer routes
-          </label>
-          <input
-            id="transfer-search"
-            type="search"
-            name="q"
-            defaultValue={query}
-            placeholder="Search by island or airport…"
-            className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none"
-          />
-          <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
-            Search
-          </button>
-        </form>
-
-        {results.items.length === 0 ? (
-          <EmptyState title="No transfer routes recorded for this filter yet" />
-        ) : (
-          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {results.items.map((route) => (
-              <TransferRouteCard key={route.id} route={route} />
-            ))}
-          </ul>
-        )}
-
-        {!isSearching && <Pagination page={page} totalPages={totalPages} basePath="/maldives/transfers/" baseQuery={baseQuery} />}
       </div>
     </main>
   );

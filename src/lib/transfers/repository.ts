@@ -617,32 +617,3 @@ export async function getTransferServicesByIds(ids: string[]): Promise<Map<strin
   return map;
 }
 
-/** Every distinct `transfer_type` value actually present among active
- * services — drives the directory's type filter so it never offers a
- * filter chip with zero possible results, same rule as every other
- * directory in this codebase (fishing/diving/surfing "types in use"). */
-export async function getTransferTypesInUse(): Promise<TransferType[]> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("transfer_services")
-    .select("transfer_type")
-    .eq("status", "active")
-    .returns<Array<{ transfer_type: TransferType }>>();
-
-  if (error || !data) return [];
-  return Array.from(new Set(data.map((row) => row.transfer_type)));
-}
-
-/** Every distinct `shared_or_private` value actually present among active
- * services — same "only show a filter that can return something" rule. */
-export async function getSharedOrPrivateOptionsInUse(): Promise<SharedOrPrivate[]> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("transfer_services")
-    .select("shared_or_private")
-    .eq("status", "active")
-    .returns<Array<{ shared_or_private: SharedOrPrivate }>>();
-
-  if (error || !data) return [];
-  return Array.from(new Set(data.map((row) => row.shared_or_private)));
-}

@@ -504,14 +504,21 @@ function writeCommitMigration(readyArticles) {
     );
     lines.push("");
 
-    // The body HTML itself contains real newlines (one per paragraph/
-    // block — see renderHtml in main()); those stay embedded inside the
-    // single-quoted string literal below, which is safe (a SQL client has
-    // to track quote state to paste large content like this at all), so
-    // this statement is still emitted as one lines.push call even though
-    // the resulting text spans many physical lines.
+    // The on-disk body HTML has one real newline per paragraph/block (see
+    // renderHtml in main()) for human readability. Embedding those raw
+    // newlines inside this statement's string literal was assumed safe —
+    // a SQL client has to track quote state to paste large content like
+    // this at all — but that assumption was wrong: pasted into the
+    // Supabase SQL Editor, a large multi-line string literal has been
+    // observed getting split mid-string, desynchronizing quote parsing for
+    // everything after it (observed: a word from the article prose,
+    // "crystal", showing up as an undefined relation). Stripping the
+    // newlines here (only for the SQL value — the .html file on disk is
+    // untouched) makes every statement a genuinely single physical line,
+    // immune to any client that isn't fully SQL-string-aware.
+    const bodyHtmlForSql = bodyHtml.replace(/\r?\n/g, "");
     lines.push(
-      `insert into articles (id, body, reading_time_minutes) select id, ${sqlString(bodyHtml)}, ${readingMinutes} from nodes where node_type = 'article' and slug = ${sqlString(article.candidateSlug)} on conflict (id) do nothing;`,
+      `insert into articles (id, body, reading_time_minutes) select id, ${sqlString(bodyHtmlForSql)}, ${readingMinutes} from nodes where node_type = 'article' and slug = ${sqlString(article.candidateSlug)} on conflict (id) do nothing;`,
     );
     lines.push("");
     articleCount += 1;

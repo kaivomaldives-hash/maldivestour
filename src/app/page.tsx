@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { ActivityCard } from "@/components/activity/activity-card";
 import { PackageCard } from "@/components/packages/package-card";
+import { SearchBox } from "@/components/search/search-box";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -61,7 +62,10 @@ export default async function Home() {
             Atolls, islands, resorts, hotels and guesthouses, activities, diving, fishing, surfing, transfers and
             travel packages — researched and kept up to date, not generated.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-6 max-w-xl">
+            <SearchBox variant="inline" placeholder="Search islands, resorts, activities…" />
+          </div>
+          <div className="mt-6 flex flex-wrap gap-3">
             <Button href="/maldives/" variant="inverted" size="md">
               Explore the Maldives
             </Button>

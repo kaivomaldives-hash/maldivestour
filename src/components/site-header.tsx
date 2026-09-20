@@ -4,8 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
+import { SearchBox } from "@/components/search/search-box";
 import { CONTAINER_CLASS } from "@/components/ui/container";
-import { CloseIcon, MenuIcon } from "@/components/ui/icons";
+import { CloseIcon, MenuIcon, SearchIcon } from "@/components/ui/icons";
 
 const PRIMARY_NAV = [
   { label: "Maldives", href: "/maldives/" },
@@ -24,18 +25,24 @@ function isActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(href);
 }
 
+type MobilePanel = "none" | "nav" | "search";
+
 export function SiteHeader() {
   const pathname = usePathname();
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobilePanel, setMobilePanel] = useState<MobilePanel>("none");
 
-  // Close the mobile panel on route change so it never lingers open.
-  // Adjusting state during render (React's recommended pattern for
-  // resetting state in response to a prop/derived value changing) rather
-  // than in an effect, which would cause an extra render pass.
+  // Close whichever mobile panel is open on route change, so it never
+  // lingers open after a navigation. Adjusting state during render
+  // (React's recommended pattern for resetting state in response to a
+  // derived value changing) rather than in an effect.
   const [lastPathname, setLastPathname] = useState(pathname);
   if (pathname !== lastPathname) {
     setLastPathname(pathname);
-    setMobileOpen(false);
+    setMobilePanel("none");
+  }
+
+  function toggle(panel: MobilePanel) {
+    setMobilePanel((current) => (current === panel ? "none" : panel));
   }
 
   return (
@@ -66,7 +73,8 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="hidden shrink-0 lg:block">
+        <div className="hidden shrink-0 items-center gap-3 lg:flex">
+          <SearchBox variant="header" placeholder="Search MTG…" />
           <a
             href={WHATSAPP_URL}
             target="_blank"
@@ -77,19 +85,37 @@ export function SiteHeader() {
           </a>
         </div>
 
-        <button
-          type="button"
-          aria-label={mobileOpen ? "Close menu" : "Open menu"}
-          aria-expanded={mobileOpen}
-          aria-controls="mobile-nav-panel"
-          onClick={() => setMobileOpen((open) => !open)}
-          className="min-touch-target inline-flex items-center justify-center rounded-full text-ocean-900 transition-colors hover:bg-neutral-100 lg:hidden"
-        >
-          {mobileOpen ? <CloseIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
-        </button>
+        <div className="flex items-center gap-1 lg:hidden">
+          <button
+            type="button"
+            aria-label={mobilePanel === "search" ? "Close search" : "Search"}
+            aria-expanded={mobilePanel === "search"}
+            aria-controls="mobile-search-panel"
+            onClick={() => toggle("search")}
+            className="min-touch-target inline-flex items-center justify-center rounded-full text-ocean-900 transition-colors hover:bg-neutral-100"
+          >
+            {mobilePanel === "search" ? <CloseIcon className="h-6 w-6" /> : <SearchIcon className="h-6 w-6" />}
+          </button>
+          <button
+            type="button"
+            aria-label={mobilePanel === "nav" ? "Close menu" : "Open menu"}
+            aria-expanded={mobilePanel === "nav"}
+            aria-controls="mobile-nav-panel"
+            onClick={() => toggle("nav")}
+            className="min-touch-target inline-flex items-center justify-center rounded-full text-ocean-900 transition-colors hover:bg-neutral-100"
+          >
+            {mobilePanel === "nav" ? <CloseIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
+          </button>
+        </div>
       </div>
 
-      {mobileOpen && (
+      {mobilePanel === "search" && (
+        <div id="mobile-search-panel" className="border-t border-neutral-200 bg-white p-4 lg:hidden">
+          <SearchBox variant="inline" autoFocus placeholder="Search resorts, islands, activities…" onNavigate={() => setMobilePanel("none")} />
+        </div>
+      )}
+
+      {mobilePanel === "nav" && (
         <div id="mobile-nav-panel" className="border-t border-neutral-200 bg-white lg:hidden">
           <nav aria-label="Primary" className={`${CONTAINER_CLASS} flex flex-col gap-1 py-3`}>
             {PRIMARY_NAV.map((item) => {

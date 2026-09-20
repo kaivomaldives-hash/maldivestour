@@ -141,7 +141,45 @@ function main() {
     return;
   }
 
-  runCommit(present, missing);
+  runCommit(present, missing).catch((err) => {
+    // A previous version of this function awaited nothing at the top
+    // level and had no try/catch around the network call — one transient
+    // failure (timeout, dropped connection) partway through a
+    // 500MB/4000+-file run threw an unhandled rejection and silently
+    // killed the whole process with no output at all, which is exactly
+    // what happened running this against a real ~4300 file library on a
+    // home connection. This is the last-resort net so a crash is at
+    // least visible instead of a script that just vanishes.
+    console.error(`\nUpload run crashed: ${err.message}`);
+    process.exit(1);
+  });
+}
+
+const MAX_ATTEMPTS_PER_FILE = 3;
+
+async function uploadOneFile(supabase, f) {
+  const ext = (f.relativePath.match(/\.[a-zA-Z0-9]+$/)?.[0] ?? "").toLowerCase();
+  const contentType = CONTENT_TYPE_BY_EXT[ext] ?? "application/octet-stream";
+  const body = readFileSync(f.localPath);
+
+  let lastError = null;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS_PER_FILE; attempt += 1) {
+    try {
+      const { error } = await supabase.storage.from(BUCKET).upload(f.storagePath, body, { contentType, upsert: true });
+      if (!error) return { ok: true };
+      lastError = error.message;
+    } catch (err) {
+      // Network-level throws (timeout, connection reset) — Supabase's
+      // client doesn't always surface these as a returned `error`, so
+      // this catches them directly rather than letting them propagate
+      // and kill the whole run.
+      lastError = err instanceof Error ? err.message : String(err);
+    }
+    if (attempt < MAX_ATTEMPTS_PER_FILE) {
+      await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+    }
+  }
+  return { ok: false, error: lastError };
 }
 
 async function runCommit(present, missing) {
@@ -161,18 +199,34 @@ async function runCommit(present, missing) {
   const results = [];
   let uploaded = 0;
   let failed = 0;
-  for (const f of present) {
-    const ext = (f.relativePath.match(/\.[a-zA-Z0-9]+$/)?.[0] ?? "").toLowerCase();
-    const contentType = CONTENT_TYPE_BY_EXT[ext] ?? "application/octet-stream";
-    const body = readFileSync(f.localPath);
-    const { error } = await supabase.storage.from(BUCKET).upload(f.storagePath, body, { contentType, upsert: true });
-    if (error) {
-      failed += 1;
-      results.push({ ...f, status: "failed", error: error.message });
-      console.error(`FAILED  ${f.storagePath}: ${error.message}`);
-    } else {
+  const startedAt = Date.now();
+
+  for (let i = 0; i < present.length; i += 1) {
+    const f = present[i];
+    const outcome = await uploadOneFile(supabase, f);
+    if (outcome.ok) {
       uploaded += 1;
       results.push({ ...f, status: "uploaded" });
+    } else {
+      failed += 1;
+      results.push({ ...f, status: "failed", error: outcome.error });
+      console.error(`FAILED  ${f.storagePath}: ${outcome.error}`);
+    }
+
+    // Progress every 100 files (or the last one) — a silent multi-minute
+    // run with zero output looks identical to a hung/crashed one from the
+    // terminal, which is exactly what caused confusion diagnosing this
+    // the first time around.
+    if ((i + 1) % 100 === 0 || i === present.length - 1) {
+      const elapsedSec = Math.round((Date.now() - startedAt) / 1000);
+      console.log(`  ${i + 1}/${present.length} processed (${uploaded} uploaded, ${failed} failed) — ${elapsedSec}s elapsed`);
+    }
+
+    // Write the report incrementally too, so even if the process does
+    // die partway through (killed terminal, machine sleep, etc.) there's
+    // a record of what got uploaded so far instead of nothing at all.
+    if ((i + 1) % 200 === 0) {
+      writeUploadReport(present, missing, true, results);
     }
   }
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20T18:41:59.475Z",
+  "generatedAt": "2026-09-20T19:33:47.533Z",
   "committed": false,
   "bucket": "media",
   "totalManifestFiles": 4314,
@@ -1856,13 +1856,13 @@
       "status": "planned"
     },
     {
-      "relativePath": "images/transfers/Male-airport-to-adaaran-select-hudhuranfushi.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-adaaran-select-hudhuranfushi.webp",
+      "relativePath": "resorts/Adaaran-Hudhuranfushi/images/Adaaran-Select-Hudhuran-Fushi-Island.jpg",
+      "storagePath": "legacy/resorts/adaaran-hudhuranfushi/images/adaaran-select-hudhuran-fushi-island.jpg",
       "status": "planned"
     },
     {
-      "relativePath": "images/transfers/Male-airport-to-adaaran-club-rannalhi.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-adaaran-club-rannalhi.webp",
+      "relativePath": "resorts/adaaran-club-rannalhi/images/adaaran-club-rannalhi-island-maldives.webp",
+      "storagePath": "legacy/resorts/adaaran-club-rannalhi/images/adaaran-club-rannalhi-island-maldives.webp",
       "status": "planned"
     },
     {
@@ -1881,8 +1881,8 @@
       "status": "planned"
     },
     {
-      "relativePath": "images/transfers/Male-airport-to-bandos-island.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-bandos-island.webp",
+      "relativePath": "resorts/Bandos-Island/images/Bandos-Island-Beach-Pool-Villa.webp",
+      "storagePath": "legacy/resorts/bandos-island/images/bandos-island-beach-pool-villa.webp",
       "status": "planned"
     },
     {
@@ -1896,8 +1896,8 @@
       "status": "planned"
     },
     {
-      "relativePath": "images/transfers/Male-airport-to-como-cocoa.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-como-cocoa.webp",
+      "relativePath": "resorts/COMO-Cocoa/images/COMO-Cocoa-Island-Dhoni-water-villa.webp",
+      "storagePath": "legacy/resorts/como-cocoa/images/como-cocoa-island-dhoni-water-villa.webp",
       "status": "planned"
     },
     {
@@ -1921,18 +1921,23 @@
       "status": "planned"
     },
     {
+      "relativePath": "resorts/Eriyadu-Island/images/Eriyadu-Island-Resort-Beach.webp",
+      "storagePath": "legacy/resorts/eriyadu-island/images/eriyadu-island-resort-beach.webp",
+      "status": "planned"
+    },
+    {
       "relativePath": "images/transfers/Male-airport-to-fari-island-and-capella-maldives.webp",
       "storagePath": "legacy/images/transfers/male-airport-to-fari-island-and-capella-maldives.webp",
       "status": "planned"
     },
     {
-      "relativePath": "images/transfers/Male-airport-to-fihalhohi-island.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-fihalhohi-island.webp",
+      "relativePath": "resorts/fihalhohi/images/fihalhohi-island-hotel.webp",
+      "storagePath": "legacy/resorts/fihalhohi/images/fihalhohi-island-hotel.webp",
       "status": "planned"
     },
     {
-      "relativePath": "images/transfers/Male-airport-to-fourseasons-kuda-huraa.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-fourseasons-kuda-huraa.webp",
+      "relativePath": "resorts/Four-Seasons-Huraa/images/Four-Seasons-Maldives-Huraa.webp",
+      "storagePath": "legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-huraa.webp",
       "status": "planned"
     },
     {
@@ -1951,6 +1956,11 @@
       "status": "planned"
     },
     {
+      "relativePath": "resorts/Hard-Rock-Hotel/images/Hard-Rock-Hotel-Maldives-Beach-Male-Atoll.webp",
+      "storagePath": "legacy/resorts/hard-rock-hotel/images/hard-rock-hotel-maldives-beach-male-atoll.webp",
+      "status": "planned"
+    },
+    {
       "relativePath": "images/transfers/Male-airport-to-holiday-inn-kandooma.webp",
       "storagePath": "legacy/images/transfers/male-airport-to-holiday-inn-kandooma.webp",
       "status": "planned"
@@ -1961,8 +1971,8 @@
       "status": "planned"
     },
     {
-      "relativePath": "images/transfers/Male-airport-to-jumeirah-olhahali-island.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-jumeirah-olhahali-island.webp",
+      "relativePath": "resorts/Jumeirah-Olhahali/images/Jumeirah-Olhahali-Island-Maldives-Beach-Villa-Pool.webp",
+      "storagePath": "legacy/resorts/jumeirah-olhahali/images/jumeirah-olhahali-island-maldives-beach-villa-pool.webp",
       "status": "planned"
     },
     {
@@ -1986,13 +1996,13 @@
       "status": "planned"
     },
     {
-      "relativePath": "images/transfers/Male-airport-to-makunudu.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-makunudu.webp",
+      "relativePath": "resorts/Makunudu-Island/images/Makunudu-Island-Maldives-map.webp",
+      "storagePath": "legacy/resorts/makunudu-island/images/makunudu-island-maldives-map.webp",
       "status": "planned"
     },
     {
-      "relativePath": "images/transfers/Male-airport-to-malahini-kuda-bandos.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-malahini-kuda-bandos.webp",
+      "relativePath": "resorts/Malahini-Kuda-Bandos/images/Malahini-Kuda-Bandos-Maldives-Activities.webp",
+      "storagePath": "legacy/resorts/malahini-kuda-bandos/images/malahini-kuda-bandos-maldives-activities.webp",
       "status": "planned"
     },
     {
@@ -2001,28 +2011,28 @@
       "status": "planned"
     },
     {
-      "relativePath": "images/transfers/Male-airport-to-oblu-select-lobigili.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-oblu-select-lobigili.webp",
+      "relativePath": "resorts/OBLU-SELECT-Lobigili/images/OBLU-SELECT-Lobigili-Maldives-Beach.webp",
+      "storagePath": "legacy/resorts/oblu-select-lobigili/images/oblu-select-lobigili-maldives-beach.webp",
       "status": "planned"
     },
     {
-      "relativePath": "images/transfers/Male-airport-to-oblu-select-sangeli.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-oblu-select-sangeli.webp",
+      "relativePath": "resorts/OBLU-SELECT-Sangeli/images/FOBLU-SELECT-Sangeli-Maldives-Island-map.webp",
+      "storagePath": "legacy/resorts/oblu-select-sangeli/images/foblu-select-sangeli-maldives-island-map.webp",
       "status": "planned"
     },
     {
-      "relativePath": "images/transfers/Male-airport-to-oblu-xperience-ailafushi.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-oblu-xperience-ailafushi.webp",
+      "relativePath": "resorts/OBLU-XPERIENCE-Ailafushi/images/OBLU-XPERIENCE-Ailafushi-Maldives-Island-map.webp",
+      "storagePath": "legacy/resorts/oblu-xperience-ailafushi/images/oblu-xperience-ailafushi-maldives-island-map.webp",
       "status": "planned"
     },
     {
-      "relativePath": "images/transfers/Male-airport-to-oblu-nature-helenglei.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-oblu-nature-helenglei.webp",
+      "relativePath": "resorts/OBLU-NATURE-Helengeli/images/OBLU-NATURE-Helengeli-Island.webp",
+      "storagePath": "legacy/resorts/oblu-nature-helengeli/images/oblu-nature-helengeli-island.webp",
       "status": "planned"
     },
     {
-      "relativePath": "images/transfers/Male-airport-to-ozen-life-maadhoo.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-ozen-life-maadhoo.webp",
+      "relativePath": "resorts/OZEN-LIFE-MAADHOO/images/OZEN-LIFE-MAADHOO-Island.webp",
+      "storagePath": "legacy/resorts/ozen-life-maadhoo/images/ozen-life-maadhoo-island.webp",
       "status": "planned"
     },
     {
@@ -2036,8 +2046,8 @@
       "status": "planned"
     },
     {
-      "relativePath": "images/transfers/Male-airport-to-ozen-reserve-bolifushi.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-ozen-reserve-bolifushi.webp",
+      "relativePath": "resorts/Ozen-Reserve-Bolifushi/images/Ozen-Reserve-Bolifushi-Maldive-Activities.webp",
+      "storagePath": "legacy/resorts/ozen-reserve-bolifushi/images/ozen-reserve-bolifushi-maldive-activities.webp",
       "status": "planned"
     },
     {
@@ -2076,8 +2086,8 @@
       "status": "planned"
     },
     {
-      "relativePath": "images/transfers/Male-airport-to-the-ritz-carlton.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-the-ritz-carlton.webp",
+      "relativePath": "resorts/The-Ritz-Carlton/images/fari-island-transfer.jpg",
+      "storagePath": "legacy/resorts/the-ritz-carlton/images/fari-island-transfer.jpg",
       "status": "planned"
     },
     {
@@ -9461,8 +9471,18 @@
       "status": "planned"
     },
     {
+      "relativePath": "images/transfers/Male-airport-to-adaaran-club-rannalhi.webp",
+      "storagePath": "legacy/images/transfers/male-airport-to-adaaran-club-rannalhi.webp",
+      "status": "planned"
+    },
+    {
       "relativePath": "images/transfers/Male-airport-to-adaaran-prestige-vadoo.webp",
       "storagePath": "legacy/images/transfers/male-airport-to-adaaran-prestige-vadoo.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/transfers/Male-airport-to-adaaran-select-hudhuranfushi.webp",
+      "storagePath": "legacy/images/transfers/male-airport-to-adaaran-select-hudhuranfushi.webp",
       "status": "planned"
     },
     {
@@ -9473,6 +9493,11 @@
     {
       "relativePath": "images/transfers/Male-airport-to-anantara-veli.webp",
       "storagePath": "legacy/images/transfers/male-airport-to-anantara-veli.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/transfers/Male-airport-to-bandos-island.webp",
+      "storagePath": "legacy/images/transfers/male-airport-to-bandos-island.webp",
       "status": "planned"
     },
     {
@@ -9511,6 +9536,11 @@
       "status": "planned"
     },
     {
+      "relativePath": "images/transfers/Male-airport-to-como-cocoa.webp",
+      "storagePath": "legacy/images/transfers/male-airport-to-como-cocoa.webp",
+      "status": "planned"
+    },
+    {
       "relativePath": "images/transfers/Male-airport-to-dusitd2-feydhoo.webp",
       "storagePath": "legacy/images/transfers/male-airport-to-dusitd2-feydhoo.webp",
       "status": "planned"
@@ -9523,6 +9553,16 @@
     {
       "relativePath": "images/transfers/Male-airport-to-eri-maldives.webp",
       "storagePath": "legacy/images/transfers/male-airport-to-eri-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/transfers/Male-airport-to-fihalhohi-island.webp",
+      "storagePath": "legacy/images/transfers/male-airport-to-fihalhohi-island.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/transfers/Male-airport-to-fourseasons-kuda-huraa.webp",
+      "storagePath": "legacy/images/transfers/male-airport-to-fourseasons-kuda-huraa.webp",
       "status": "planned"
     },
     {
@@ -9566,6 +9606,11 @@
       "status": "planned"
     },
     {
+      "relativePath": "images/transfers/Male-airport-to-jumeirah-olhahali-island.webp",
+      "storagePath": "legacy/images/transfers/male-airport-to-jumeirah-olhahali-island.webp",
+      "status": "planned"
+    },
+    {
       "relativePath": "images/transfers/Male-airport-to-jw-marriot.webp",
       "storagePath": "legacy/images/transfers/male-airport-to-jw-marriot.webp",
       "status": "planned"
@@ -9586,6 +9631,16 @@
       "status": "planned"
     },
     {
+      "relativePath": "images/transfers/Male-airport-to-makunudu.webp",
+      "storagePath": "legacy/images/transfers/male-airport-to-makunudu.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/transfers/Male-airport-to-malahini-kuda-bandos.webp",
+      "storagePath": "legacy/images/transfers/male-airport-to-malahini-kuda-bandos.webp",
+      "status": "planned"
+    },
+    {
       "relativePath": "images/transfers/Male-airport-to-marina-crossroad.webp",
       "storagePath": "legacy/images/transfers/male-airport-to-marina-crossroad.webp",
       "status": "planned"
@@ -9601,8 +9656,38 @@
       "status": "planned"
     },
     {
+      "relativePath": "images/transfers/Male-airport-to-oblu-nature-helenglei.webp",
+      "storagePath": "legacy/images/transfers/male-airport-to-oblu-nature-helenglei.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/transfers/Male-airport-to-oblu-select-lobigili.webp",
+      "storagePath": "legacy/images/transfers/male-airport-to-oblu-select-lobigili.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/transfers/Male-airport-to-oblu-select-sangeli.webp",
+      "storagePath": "legacy/images/transfers/male-airport-to-oblu-select-sangeli.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/transfers/Male-airport-to-oblu-xperience-ailafushi.webp",
+      "storagePath": "legacy/images/transfers/male-airport-to-oblu-xperience-ailafushi.webp",
+      "status": "planned"
+    },
+    {
       "relativePath": "images/transfers/Male-airport-to-one-and-only-reethi-rah-maldives.webp",
       "storagePath": "legacy/images/transfers/male-airport-to-one-and-only-reethi-rah-maldives.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/transfers/Male-airport-to-ozen-life-maadhoo.webp",
+      "storagePath": "legacy/images/transfers/male-airport-to-ozen-life-maadhoo.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/transfers/Male-airport-to-ozen-reserve-bolifushi.webp",
+      "storagePath": "legacy/images/transfers/male-airport-to-ozen-reserve-bolifushi.webp",
       "status": "planned"
     },
     {
@@ -9643,6 +9728,11 @@
     {
       "relativePath": "images/transfers/Male-airport-to-taj-exotica.webp",
       "storagePath": "legacy/images/transfers/male-airport-to-taj-exotica.webp",
+      "status": "planned"
+    },
+    {
+      "relativePath": "images/transfers/Male-airport-to-the-ritz-carlton.webp",
+      "storagePath": "legacy/images/transfers/male-airport-to-the-ritz-carlton.webp",
       "status": "planned"
     },
     {
@@ -10966,11 +11056,6 @@
       "status": "planned"
     },
     {
-      "relativePath": "resorts/Adaaran-Hudhuranfushi/images/Adaaran-Select-Hudhuran-Fushi-Island.jpg",
-      "storagePath": "legacy/resorts/adaaran-hudhuranfushi/images/adaaran-select-hudhuran-fushi-island.jpg",
-      "status": "planned"
-    },
-    {
       "relativePath": "resorts/Adaaran-Hudhuranfushi/images/Adaaran-Select-Hudhuran-Fushi-Island.webp",
       "storagePath": "legacy/resorts/adaaran-hudhuranfushi/images/adaaran-select-hudhuran-fushi-island.webp",
       "status": "planned"
@@ -12086,11 +12171,6 @@
       "status": "planned"
     },
     {
-      "relativePath": "resorts/Bandos-Island/images/Bandos-Island-Beach-Pool-Villa.webp",
-      "storagePath": "legacy/resorts/bandos-island/images/bandos-island-beach-pool-villa.webp",
-      "status": "planned"
-    },
-    {
       "relativePath": "resorts/Bandos-Island/images/Bandos-Island-Beach-Pool-Villa1.webp",
       "storagePath": "legacy/resorts/bandos-island/images/bandos-island-beach-pool-villa1.webp",
       "status": "planned"
@@ -12248,11 +12328,6 @@
     {
       "relativePath": "resorts/Baros-Island/images/Baros-Maldives-Water-Villa1.webp",
       "storagePath": "legacy/resorts/baros-island/images/baros-maldives-water-villa1.webp",
-      "status": "planned"
-    },
-    {
-      "relativePath": "resorts/COMO-Cocoa/images/COMO-Cocoa-Island-Dhoni-water-villa.webp",
-      "storagePath": "legacy/resorts/como-cocoa/images/como-cocoa-island-dhoni-water-villa.webp",
       "status": "planned"
     },
     {
@@ -13436,11 +13511,6 @@
       "status": "planned"
     },
     {
-      "relativePath": "resorts/Eriyadu-Island/images/Eriyadu-Island-Resort-Beach.webp",
-      "storagePath": "legacy/resorts/eriyadu-island/images/eriyadu-island-resort-beach.webp",
-      "status": "planned"
-    },
-    {
       "relativePath": "resorts/Eriyadu-Island/images/Eriyadu-Island-Resort-Maldives-Beach.webp",
       "storagePath": "legacy/resorts/eriyadu-island/images/eriyadu-island-resort-maldives-beach.webp",
       "status": "planned"
@@ -13898,11 +13968,6 @@
     {
       "relativePath": "resorts/Four-Seasons-Giraavaru/images/Four-Seasons-Resort-Maldives-at-Landaa-Giraavaru.webp",
       "storagePath": "legacy/resorts/four-seasons-giraavaru/images/four-seasons-resort-maldives-at-landaa-giraavaru.webp",
-      "status": "planned"
-    },
-    {
-      "relativePath": "resorts/Four-Seasons-Huraa/images/Four-Seasons-Maldives-Huraa.webp",
-      "storagePath": "legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-huraa.webp",
       "status": "planned"
     },
     {
@@ -14423,11 +14488,6 @@
     {
       "relativePath": "resorts/Grand-Park-Kodhipparu/images/Grand-Park-Kodhipparu.webp",
       "storagePath": "legacy/resorts/grand-park-kodhipparu/images/grand-park-kodhipparu.webp",
-      "status": "planned"
-    },
-    {
-      "relativePath": "resorts/Hard-Rock-Hotel/images/Hard-Rock-Hotel-Maldives-Beach-Male-Atoll.webp",
-      "storagePath": "legacy/resorts/hard-rock-hotel/images/hard-rock-hotel-maldives-beach-male-atoll.webp",
       "status": "planned"
     },
     {
@@ -15221,11 +15281,6 @@
       "status": "planned"
     },
     {
-      "relativePath": "resorts/Jumeirah-Olhahali/images/Jumeirah-Olhahali-Island-Maldives-Beach-Villa-Pool.webp",
-      "storagePath": "legacy/resorts/jumeirah-olhahali/images/jumeirah-olhahali-island-maldives-beach-villa-pool.webp",
-      "status": "planned"
-    },
-    {
       "relativePath": "resorts/Jumeirah-Olhahali/images/Jumeirah-Olhahali-Island-Maldives-Beach-Villa-Pool1.webp",
       "storagePath": "legacy/resorts/jumeirah-olhahali/images/jumeirah-olhahali-island-maldives-beach-villa-pool1.webp",
       "status": "planned"
@@ -15896,11 +15951,6 @@
       "status": "planned"
     },
     {
-      "relativePath": "resorts/Makunudu-Island/images/Makunudu-Island-Maldives-map.webp",
-      "storagePath": "legacy/resorts/makunudu-island/images/makunudu-island-maldives-map.webp",
-      "status": "planned"
-    },
-    {
       "relativePath": "resorts/Makunudu-Island/images/Makunudu-Island-Resort-Maldives-Beach-Bangalow1.webp",
       "storagePath": "legacy/resorts/makunudu-island/images/makunudu-island-resort-maldives-beach-bangalow1.webp",
       "status": "planned"
@@ -15948,11 +15998,6 @@
     {
       "relativePath": "resorts/Makunudu-Island/images/Makunudu-Island-Resort-Maldives.webp",
       "storagePath": "legacy/resorts/makunudu-island/images/makunudu-island-resort-maldives.webp",
-      "status": "planned"
-    },
-    {
-      "relativePath": "resorts/Malahini-Kuda-Bandos/images/Malahini-Kuda-Bandos-Maldives-Activities.webp",
-      "storagePath": "legacy/resorts/malahini-kuda-bandos/images/malahini-kuda-bandos-maldives-activities.webp",
       "status": "planned"
     },
     {
@@ -16576,11 +16621,6 @@
       "status": "planned"
     },
     {
-      "relativePath": "resorts/OBLU-NATURE-Helengeli/images/OBLU-NATURE-Helengeli-Island.webp",
-      "storagePath": "legacy/resorts/oblu-nature-helengeli/images/oblu-nature-helengeli-island.webp",
-      "status": "planned"
-    },
-    {
       "relativePath": "resorts/OBLU-NATURE-Helengeli/images/OBLU-NATURE-Helengeli-Maldives-Beach-Villa.webp",
       "storagePath": "legacy/resorts/oblu-nature-helengeli/images/oblu-nature-helengeli-maldives-beach-villa.webp",
       "status": "planned"
@@ -16643,11 +16683,6 @@
     {
       "relativePath": "resorts/OBLU-NATURE-Helengeli/images/OBLU-NATURE-Helengeli-Maldives.webp",
       "storagePath": "legacy/resorts/oblu-nature-helengeli/images/oblu-nature-helengeli-maldives.webp",
-      "status": "planned"
-    },
-    {
-      "relativePath": "resorts/OBLU-SELECT-Lobigili/images/OBLU-SELECT-Lobigili-Maldives-Beach.webp",
-      "storagePath": "legacy/resorts/oblu-select-lobigili/images/oblu-select-lobigili-maldives-beach.webp",
       "status": "planned"
     },
     {
@@ -16723,11 +16758,6 @@
     {
       "relativePath": "resorts/OBLU-SELECT-Sangeli/FOBLU-SELECT-Sangeli-Maldives-Island-map.webp",
       "storagePath": "legacy/resorts/oblu-select-sangeli/foblu-select-sangeli-maldives-island-map.webp",
-      "status": "planned"
-    },
-    {
-      "relativePath": "resorts/OBLU-SELECT-Sangeli/images/FOBLU-SELECT-Sangeli-Maldives-Island-map.webp",
-      "storagePath": "legacy/resorts/oblu-select-sangeli/images/foblu-select-sangeli-maldives-island-map.webp",
       "status": "planned"
     },
     {
@@ -16811,11 +16841,6 @@
       "status": "planned"
     },
     {
-      "relativePath": "resorts/OBLU-XPERIENCE-Ailafushi/images/OBLU-XPERIENCE-Ailafushi-Maldives-Island-map.webp",
-      "storagePath": "legacy/resorts/oblu-xperience-ailafushi/images/oblu-xperience-ailafushi-maldives-island-map.webp",
-      "status": "planned"
-    },
-    {
       "relativePath": "resorts/OBLU-XPERIENCE-Ailafushi/images/OBLU-XPErience-Ailafushi-Maldives-Beach-Island.webp",
       "storagePath": "legacy/resorts/oblu-xperience-ailafushi/images/oblu-xperience-ailafushi-maldives-beach-island.webp",
       "status": "planned"
@@ -16883,11 +16908,6 @@
     {
       "relativePath": "resorts/OBLU-XPERIENCE-Ailafushi/images/OBLU-XPErience-Ailafushi.webp",
       "storagePath": "legacy/resorts/oblu-xperience-ailafushi/images/oblu-xperience-ailafushi.webp",
-      "status": "planned"
-    },
-    {
-      "relativePath": "resorts/OZEN-LIFE-MAADHOO/images/OZEN-LIFE-MAADHOO-Island.webp",
-      "storagePath": "legacy/resorts/ozen-life-maadhoo/images/ozen-life-maadhoo-island.webp",
       "status": "planned"
     },
     {
@@ -17218,11 +17238,6 @@
     {
       "relativePath": "resorts/Outrigger-Maafushivaru/images/Outrigger-Maldives-Maafushivaru.webp",
       "storagePath": "legacy/resorts/outrigger-maafushivaru/images/outrigger-maldives-maafushivaru.webp",
-      "status": "planned"
-    },
-    {
-      "relativePath": "resorts/Ozen-Reserve-Bolifushi/images/Ozen-Reserve-Bolifushi-Maldive-Activities.webp",
-      "storagePath": "legacy/resorts/ozen-reserve-bolifushi/images/ozen-reserve-bolifushi-maldive-activities.webp",
       "status": "planned"
     },
     {
@@ -19391,11 +19406,6 @@
       "status": "planned"
     },
     {
-      "relativePath": "resorts/The-Ritz-Carlton/images/fari-island-transfer.jpg",
-      "storagePath": "legacy/resorts/the-ritz-carlton/images/fari-island-transfer.jpg",
-      "status": "planned"
-    },
-    {
       "relativePath": "resorts/The-Ritz-Carlton/images/maldives-fari-island.jpg",
       "storagePath": "legacy/resorts/the-ritz-carlton/images/maldives-fari-island.jpg",
       "status": "planned"
@@ -20121,11 +20131,6 @@
       "status": "planned"
     },
     {
-      "relativePath": "resorts/adaaran-club-rannalhi/images/adaaran-club-rannalhi-island-maldives.webp",
-      "storagePath": "legacy/resorts/adaaran-club-rannalhi/images/adaaran-club-rannalhi-island-maldives.webp",
-      "status": "planned"
-    },
-    {
       "relativePath": "resorts/adaaran-club-rannalhi/images/adaaran-club-rannalhi-island.webp",
       "storagePath": "legacy/resorts/adaaran-club-rannalhi/images/adaaran-club-rannalhi-island.webp",
       "status": "planned"
@@ -20488,11 +20493,6 @@
     {
       "relativePath": "resorts/embudu-village/images/embudu-village.webp",
       "storagePath": "legacy/resorts/embudu-village/images/embudu-village.webp",
-      "status": "planned"
-    },
-    {
-      "relativePath": "resorts/fihalhohi/images/fihalhohi-island-hotel.webp",
-      "storagePath": "legacy/resorts/fihalhohi/images/fihalhohi-island-hotel.webp",
       "status": "planned"
     },
     {

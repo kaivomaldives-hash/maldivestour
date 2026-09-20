@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-09-20T18:07:35.176Z",
+  "generatedAt": "2026-09-20T19:32:55.302Z",
   "files": [
     {
-      "mediaId": "1e0e0a56-d618-252f-46df-19075ffac88d",
-      "relativePath": "images/transfers/Male-airport-to-adaaran-select-hudhuranfushi.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-adaaran-select-hudhuranfushi.webp"
+      "mediaId": "9804f87e-57d7-44fd-9806-9fd0720b027f",
+      "relativePath": "resorts/Adaaran-Hudhuranfushi/images/Adaaran-Select-Hudhuran-Fushi-Island.jpg",
+      "storagePath": "legacy/resorts/adaaran-hudhuranfushi/images/adaaran-select-hudhuran-fushi-island.jpg"
     },
     {
-      "mediaId": "57aa90b9-5afe-acff-2780-ec5a39a06eb1",
-      "relativePath": "images/transfers/Male-airport-to-adaaran-club-rannalhi.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-adaaran-club-rannalhi.webp"
+      "mediaId": "8ece2ae9-63b9-4e94-09ec-af46ede658d4",
+      "relativePath": "resorts/adaaran-club-rannalhi/images/adaaran-club-rannalhi-island-maldives.webp",
+      "storagePath": "legacy/resorts/adaaran-club-rannalhi/images/adaaran-club-rannalhi-island-maldives.webp"
     },
     {
       "mediaId": "99497a67-200b-6f05-2981-ad79e6f7a462",
@@ -27,9 +27,9 @@
       "storagePath": "legacy/images/transfers/anantara-veli-transfer.webp"
     },
     {
-      "mediaId": "dc3aed1a-c72f-c1b7-5497-ce41ef55474c",
-      "relativePath": "images/transfers/Male-airport-to-bandos-island.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-bandos-island.webp"
+      "mediaId": "0574dfec-ecdb-47ba-273d-2758977e7206",
+      "relativePath": "resorts/Bandos-Island/images/Bandos-Island-Beach-Pool-Villa.webp",
+      "storagePath": "legacy/resorts/bandos-island/images/bandos-island-beach-pool-villa.webp"
     },
     {
       "mediaId": "3c6cd384-a5ae-8cc1-8332-3ebf6c36fabf",
@@ -42,9 +42,9 @@
       "storagePath": "legacy/images/transfers/biyadhoo-island-transfer.webp"
     },
     {
-      "mediaId": "4970a269-576d-1a62-74f9-82d43302e8b0",
-      "relativePath": "images/transfers/Male-airport-to-como-cocoa.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-como-cocoa.webp"
+      "mediaId": "8ce20d2d-59f7-543e-9f75-9fc87d18b421",
+      "relativePath": "resorts/COMO-Cocoa/images/COMO-Cocoa-Island-Dhoni-water-villa.webp",
+      "storagePath": "legacy/resorts/como-cocoa/images/como-cocoa-island-dhoni-water-villa.webp"
     },
     {
       "mediaId": "e4da1df4-cc81-44bc-00bf-15332640851e",
@@ -67,19 +67,24 @@
       "storagePath": "legacy/images/transfers/embudu-village-transfer.webp"
     },
     {
+      "mediaId": "bf48246a-685e-e636-2933-8560800ca0f2",
+      "relativePath": "resorts/Eriyadu-Island/images/Eriyadu-Island-Resort-Beach.webp",
+      "storagePath": "legacy/resorts/eriyadu-island/images/eriyadu-island-resort-beach.webp"
+    },
+    {
       "mediaId": "6fd3eb50-584e-264d-4ab2-fb39d76a730c",
       "relativePath": "images/transfers/Male-airport-to-fari-island-and-capella-maldives.webp",
       "storagePath": "legacy/images/transfers/male-airport-to-fari-island-and-capella-maldives.webp"
     },
     {
-      "mediaId": "f4e0a1ca-e2e0-1acc-8e2f-ca7c2245c825",
-      "relativePath": "images/transfers/Male-airport-to-fihalhohi-island.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-fihalhohi-island.webp"
+      "mediaId": "e40eeeb9-06d4-57b2-52a3-f77007984430",
+      "relativePath": "resorts/fihalhohi/images/fihalhohi-island-hotel.webp",
+      "storagePath": "legacy/resorts/fihalhohi/images/fihalhohi-island-hotel.webp"
     },
     {
-      "mediaId": "fe3eb656-ccba-62a6-f9f1-a16e2e480c4d",
-      "relativePath": "images/transfers/Male-airport-to-fourseasons-kuda-huraa.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-fourseasons-kuda-huraa.webp"
+      "mediaId": "2119d3e0-2aa3-b177-dafc-f03b997cb956",
+      "relativePath": "resorts/Four-Seasons-Huraa/images/Four-Seasons-Maldives-Huraa.webp",
+      "storagePath": "legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-huraa.webp"
     },
     {
       "mediaId": "911c7bbe-8577-6d41-7c16-711f4da9a7a5",
@@ -97,6 +102,11 @@
       "storagePath": "legacy/images/transfers/grand-park-kodhipparu-transfer.webp"
     },
     {
+      "mediaId": "2ed2df70-b3ea-5bbd-fc5b-f488bc593b90",
+      "relativePath": "resorts/Hard-Rock-Hotel/images/Hard-Rock-Hotel-Maldives-Beach-Male-Atoll.webp",
+      "storagePath": "legacy/resorts/hard-rock-hotel/images/hard-rock-hotel-maldives-beach-male-atoll.webp"
+    },
+    {
       "mediaId": "90639026-7e3d-e3f6-7748-deb7e91cccc4",
       "relativePath": "images/transfers/Male-airport-to-holiday-inn-kandooma.webp",
       "storagePath": "legacy/images/transfers/male-airport-to-holiday-inn-kandooma.webp"
@@ -107,9 +117,9 @@
       "storagePath": "legacy/images/transfers/huvafen-fushi-transfer.webp"
     },
     {
-      "mediaId": "5bb55e3a-f102-8b1e-847f-b2ec30237bae",
-      "relativePath": "images/transfers/Male-airport-to-jumeirah-olhahali-island.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-jumeirah-olhahali-island.webp"
+      "mediaId": "446f52a3-de59-0691-b3a7-a11b4b4cc3d3",
+      "relativePath": "resorts/Jumeirah-Olhahali/images/Jumeirah-Olhahali-Island-Maldives-Beach-Villa-Pool.webp",
+      "storagePath": "legacy/resorts/jumeirah-olhahali/images/jumeirah-olhahali-island-maldives-beach-villa-pool.webp"
     },
     {
       "mediaId": "9a0a4b57-561b-759c-446c-7b57e792f891",
@@ -132,14 +142,14 @@
       "storagePath": "legacy/images/transfers/lux-north-male-transfer.webp"
     },
     {
-      "mediaId": "cca21cfe-aa42-5285-c2e6-ced80c5855e2",
-      "relativePath": "images/transfers/Male-airport-to-makunudu.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-makunudu.webp"
+      "mediaId": "1fad9296-47a5-7aa4-7414-88ccc9d8096a",
+      "relativePath": "resorts/Makunudu-Island/images/Makunudu-Island-Maldives-map.webp",
+      "storagePath": "legacy/resorts/makunudu-island/images/makunudu-island-maldives-map.webp"
     },
     {
-      "mediaId": "5ae6eafe-8915-afab-6165-46cad7e7c778",
-      "relativePath": "images/transfers/Male-airport-to-malahini-kuda-bandos.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-malahini-kuda-bandos.webp"
+      "mediaId": "79d2ab40-319f-ee16-78d2-e57827463bea",
+      "relativePath": "resorts/Malahini-Kuda-Bandos/images/Malahini-Kuda-Bandos-Maldives-Activities.webp",
+      "storagePath": "legacy/resorts/malahini-kuda-bandos/images/malahini-kuda-bandos-maldives-activities.webp"
     },
     {
       "mediaId": "28a7a083-4f53-65dd-c8b3-2f2b1977905a",
@@ -147,29 +157,29 @@
       "storagePath": "legacy/images/transfers/meeru-island-transfer.webp"
     },
     {
-      "mediaId": "d23ec94e-f01a-577d-3626-878d63fdc006",
-      "relativePath": "images/transfers/Male-airport-to-oblu-select-lobigili.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-oblu-select-lobigili.webp"
+      "mediaId": "19293926-f806-5401-faa8-2a94a49f8a79",
+      "relativePath": "resorts/OBLU-SELECT-Lobigili/images/OBLU-SELECT-Lobigili-Maldives-Beach.webp",
+      "storagePath": "legacy/resorts/oblu-select-lobigili/images/oblu-select-lobigili-maldives-beach.webp"
     },
     {
-      "mediaId": "920211ea-031e-d6aa-8386-ba247f16af65",
-      "relativePath": "images/transfers/Male-airport-to-oblu-select-sangeli.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-oblu-select-sangeli.webp"
+      "mediaId": "6092c69a-0bf9-a985-4bbb-56fbe5c5f088",
+      "relativePath": "resorts/OBLU-SELECT-Sangeli/images/FOBLU-SELECT-Sangeli-Maldives-Island-map.webp",
+      "storagePath": "legacy/resorts/oblu-select-sangeli/images/foblu-select-sangeli-maldives-island-map.webp"
     },
     {
-      "mediaId": "fd46c40d-6001-5958-26d6-458f8195f883",
-      "relativePath": "images/transfers/Male-airport-to-oblu-xperience-ailafushi.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-oblu-xperience-ailafushi.webp"
+      "mediaId": "99f276fa-bd18-c8d6-db34-81cdfd680dc2",
+      "relativePath": "resorts/OBLU-XPERIENCE-Ailafushi/images/OBLU-XPERIENCE-Ailafushi-Maldives-Island-map.webp",
+      "storagePath": "legacy/resorts/oblu-xperience-ailafushi/images/oblu-xperience-ailafushi-maldives-island-map.webp"
     },
     {
-      "mediaId": "ab14a680-5591-21fb-4c83-2cfafcf50dc1",
-      "relativePath": "images/transfers/Male-airport-to-oblu-nature-helenglei.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-oblu-nature-helenglei.webp"
+      "mediaId": "e006d2f8-b2a8-c93a-e4df-cfd8b1873f2d",
+      "relativePath": "resorts/OBLU-NATURE-Helengeli/images/OBLU-NATURE-Helengeli-Island.webp",
+      "storagePath": "legacy/resorts/oblu-nature-helengeli/images/oblu-nature-helengeli-island.webp"
     },
     {
-      "mediaId": "80856546-26ea-bbed-e9a8-8f7a0d9e115e",
-      "relativePath": "images/transfers/Male-airport-to-ozen-life-maadhoo.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-ozen-life-maadhoo.webp"
+      "mediaId": "4f6ead45-052a-406c-4c51-93a611dce9fd",
+      "relativePath": "resorts/OZEN-LIFE-MAADHOO/images/OZEN-LIFE-MAADHOO-Island.webp",
+      "storagePath": "legacy/resorts/ozen-life-maadhoo/images/ozen-life-maadhoo-island.webp"
     },
     {
       "mediaId": "a8da0484-06cf-6fe3-6ad0-c639829e42d5",
@@ -182,9 +192,9 @@
       "storagePath": "legacy/images/transfers/male-airport-to-oaga-art.webp"
     },
     {
-      "mediaId": "c5ed2365-d279-7107-f149-5688773cef40",
-      "relativePath": "images/transfers/Male-airport-to-ozen-reserve-bolifushi.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-ozen-reserve-bolifushi.webp"
+      "mediaId": "5903e82c-0ef0-10be-b876-e2b3d02b9199",
+      "relativePath": "resorts/Ozen-Reserve-Bolifushi/images/Ozen-Reserve-Bolifushi-Maldive-Activities.webp",
+      "storagePath": "legacy/resorts/ozen-reserve-bolifushi/images/ozen-reserve-bolifushi-maldive-activities.webp"
     },
     {
       "mediaId": "5f697b96-4657-63ff-3a38-1491a0aa3d4c",
@@ -222,9 +232,9 @@
       "storagePath": "legacy/images/transfers/taj-exotica-transfer.webp"
     },
     {
-      "mediaId": "8a6df8f4-36ec-cf2a-4e46-da183d1ad24c",
-      "relativePath": "images/transfers/Male-airport-to-the-ritz-carlton.webp",
-      "storagePath": "legacy/images/transfers/male-airport-to-the-ritz-carlton.webp"
+      "mediaId": "44c72b2e-0552-438d-c55e-8819dcd48847",
+      "relativePath": "resorts/The-Ritz-Carlton/images/fari-island-transfer.jpg",
+      "storagePath": "legacy/resorts/the-ritz-carlton/images/fari-island-transfer.jpg"
     },
     {
       "mediaId": "33772c3a-b4bc-1aca-a21c-608d3c3f0414",

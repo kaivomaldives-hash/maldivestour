@@ -47,6 +47,12 @@ yarn-error.log*
 # uploaded Storage URLs) live in data/maldives/media|content/ instead.
 /release/
 
+# scripts/upload-legacy-media.mjs rewrites this on every run (dry run or
+# --commit) as a local diagnostic, never something to review in a diff or
+# merge — tracking it just breaks the next `git pull` for whoever ran the
+# script locally ("local changes would be overwritten by merge").
+/data/maldives/media/storage-upload-report.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

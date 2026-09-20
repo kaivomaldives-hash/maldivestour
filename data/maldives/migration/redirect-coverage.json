@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-09-20T14:14:48.758Z",
+  "generatedAt": "2026-09-20T14:57:21.308Z",
   "note": "Task 16 §25. 'High-value' here means high internal-link count within the legacy site itself (no Search Console export exists in this repository — confirmed absent, see legacy-url-inventory.json's own note).",
   "totalLegacyUrls": 1037,
   "keep": 1,
-  "redirect": 255,
+  "redirect": 316,
   "consolidate": 12,
   "retire": 418,
-  "review": 351,
+  "review": 290,
   "chainIssuesFound": 0,
   "highValueThreshold": 50,
   "highValueTotal": 395,
-  "highValueMapped": 197,
-  "highValueUnmapped": 198,
+  "highValueMapped": 206,
+  "highValueUnmapped": 189,
   "byType": {
     "diving": {
       "total": 54,
@@ -24,10 +24,10 @@
     "transfer": {
       "total": 88,
       "keep": 0,
-      "redirect": 11,
+      "redirect": 72,
       "consolidate": 0,
       "retire": 3,
-      "review": 74
+      "review": 13
     },
     "map": {
       "total": 11,

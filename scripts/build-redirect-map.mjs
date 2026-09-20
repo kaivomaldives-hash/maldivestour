@@ -95,9 +95,14 @@ function main() {
   const articleReport = loadJsonIfExists(path.join(CONTENT_DATA_DIR, "article-migration-report.json"));
   const transferReport = loadJsonIfExists(path.join(CONTENT_DATA_DIR, "transfer-migration-report.json"));
   const packageReport = loadJsonIfExists(path.join(CONTENT_DATA_DIR, "package-migration-report.json"));
+  // Task 18 superseded Task 15's conservative transfer matching (2 of 88
+  // legacy pages) with a much richer recovery pass (63 of 88, including 55
+  // brand-new destination islands) — checked FIRST for any transfer page.
+  const transferRecoveryReport = loadJsonIfExists(path.join(MIGRATION_DATA_DIR, "transfer-legacy-recovery.json"));
 
   const articleBySourceFile = new Map((articleReport?.articles ?? []).map((a) => [a.sourceFile, a]));
   const transferBySourceFile = new Map((transferReport?.pages ?? []).map((t) => [t.sourceFile, t]));
+  const transferRecoveryBySourceFile = new Map((transferRecoveryReport?.records ?? []).map((t) => [t.sourceFile, t]));
   const packageBySourceFile = new Map((packageReport?.pages ?? []).map((p) => [p.sourceFile, p]));
 
   const entities = buildEntityIndex();
@@ -235,6 +240,20 @@ function main() {
     }
 
     if (page.pageType === "transfer") {
+      const recovered = transferRecoveryBySourceFile.get(sf);
+      if (recovered?.status === "ready") {
+        const newUrl = `/maldives/transfers/velana-international-airport-to-${recovered.islandSlug}/`;
+        results.push(
+          record(page, {
+            newUrl,
+            status: 301,
+            migrationStatus: "redirect",
+            confidence: "high",
+            reason: `Same transfer route, recovered from this page's own JSON-LD (Task 18) — ${recovered.isNewLocation ? `a new destination (${recovered.islandTitle}) created from this page's real name/atoll/coordinates` : `matches the already-seeded island ${recovered.islandTitle}`}.`,
+          }),
+        );
+        continue;
+      }
       const t = transferBySourceFile.get(sf);
       // These specific source files were individually inspected (their
       // titles read as genuinely generic transfer-booking utilities or

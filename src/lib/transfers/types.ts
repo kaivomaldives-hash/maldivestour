@@ -1,4 +1,5 @@
 import type { LocationSummary } from "@/lib/locations/types";
+import type { MediaAsset } from "@/lib/media/types";
 import type { ProviderSummary } from "@/lib/providers/types";
 
 /**
@@ -66,6 +67,11 @@ export interface TransferRouteSummary {
    * zero services). */
   priceFrom: number | null;
   currency: string | null;
+  /** The destination island's own real accommodation photo, when one is
+   * already migrated and matched — never a generic stock image. Null for
+   * most destinations (see attachDestinationHeroImages in the repository
+   * for why that's the honest, expected outcome for most routes). */
+  heroImage: MediaAsset | null;
 }
 
 export interface TransferRouteDetail extends TransferRouteSummary {

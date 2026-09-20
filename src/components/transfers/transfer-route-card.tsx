@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import { CARD_CLASS } from "@/components/ui/card";
+import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
+import { MediaImage } from "@/components/ui/media-image";
 import type { TransferRouteSummary } from "@/lib/transfers/types";
 
 function formatDuration(minutes: number | null): string | null {
@@ -15,6 +16,11 @@ export function TransferRouteCard({ route }: { route: TransferRouteSummary }) {
 
   return (
     <li className={CARD_CLASS}>
+      {route.heroImage && (
+        <div className={CARD_IMAGE_BLEED_CLASS}>
+          <MediaImage asset={route.heroImage} alt={route.title} aspectClassName="aspect-[16/10]" />
+        </div>
+      )}
       <Link href={`/maldives/transfers/${route.slug}/`} className="text-lg font-medium text-ocean-900 transition-colors hover:text-maldives-600">
         {route.title}
       </Link>

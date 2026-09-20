@@ -2,14 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { BookingToggle } from "@/components/bookings/booking-toggle";
 import { PackageCard } from "@/components/packages/package-card";
+import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CARD_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getPackagesByTransferRoute } from "@/lib/packages/repository";
-import { getTransferRouteBySlug } from "@/lib/transfers/repository";
-import type { SharedOrPrivate, TransferService, TransferType } from "@/lib/transfers/types";
-import { canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, getSiteUrl } from "@/lib/seo/site";
+import { getTransferRouteBySlug, getTransferRoutesByOrigin } from "@/lib/transfers/repository";
+import type { SharedOrPrivate, TransferRouteDetail, TransferService, TransferType } from "@/lib/transfers/types";
 
 const TRANSFER_TYPE_LABEL: Record<TransferType, string> = {
   speedboat: "Speedboat",
@@ -65,7 +67,30 @@ export async function transferRouteDetailMetadata(slug: string): Promise<Metadat
   };
 }
 
-function ServiceCard({ service }: { service: TransferService }) {
+/** Real, visible-on-page facts only — no ratings/reviews/availability
+ * claims (Task 18 explicitly disallows fabricating any of those). */
+function routeJsonLd(route: TransferRouteDetail) {
+  const url = canonicalUrl(`/maldives/transfers/${route.slug}`);
+  const cheapest = route.services.reduce<TransferService | null>(
+    (min, s) => (min === null || s.price < min.price ? s : min),
+    null,
+  );
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: route.title,
+    description: route.summary ?? `Transfer from ${route.origin?.title ?? "Velana International Airport"} to ${route.destination?.title ?? route.title}.`,
+    url,
+    areaServed: "Maldives",
+    provider: { "@type": "Organization", name: "Maldives Tour Guide", url: getSiteUrl() },
+    offers: cheapest
+      ? { "@type": "Offer", price: cheapest.price, priceCurrency: cheapest.currency, availability: "https://schema.org/InStock" }
+      : undefined,
+  };
+}
+
+function ServiceCard({ service, route }: { service: TransferService; route: TransferRouteDetail }) {
   const duration = formatDuration(service.durationMinutes);
 
   return (
@@ -143,6 +168,18 @@ function ServiceCard({ service }: { service: TransferService }) {
           </ul>
         </div>
       )}
+
+      {service.isBookable && (
+        <BookingToggle
+          transferServiceId={service.id}
+          originLocationId={route.origin?.id ?? null}
+          destinationLocationId={route.destination?.id ?? null}
+          originTitle={route.origin?.title ?? "Velana International Airport"}
+          destinationTitle={route.destination?.title ?? route.title}
+          price={service.price}
+          currency={service.currency}
+        />
+      )}
     </li>
   );
 }
@@ -152,13 +189,29 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
   if (!route) notFound();
 
   const reverseSlug = route.origin && route.destination ? `${route.destination.slug}-to-${route.origin.slug}` : null;
-  const reverseRoute = reverseSlug ? await getTransferRouteBySlug(reverseSlug) : null;
-  const packages = await getPackagesByTransferRoute(route.id);
+  const [reverseRoute, packages, originRoutes] = await Promise.all([
+    reverseSlug ? getTransferRouteBySlug(reverseSlug) : Promise.resolve(null),
+    getPackagesByTransferRoute(route.id),
+    route.origin ? getTransferRoutesByOrigin(route.origin.id) : Promise.resolve([]),
+  ]);
+  const relatedRoutes = originRoutes.filter((r) => r.id !== route.id).slice(0, 4);
 
   const duration = formatDuration(route.typicalDurationMinutes);
 
   return (
     <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(routeJsonLd(route)) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd(
+              [{ label: "Maldives", href: "/maldives/" }, { label: "Transfers", href: "/maldives/transfers/" }, { label: route.title }],
+              `/maldives/transfers/${route.slug}`,
+            ),
+          ),
+        }}
+      />
       <PageHero
         breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },
@@ -168,6 +221,7 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
         eyebrow="Transfer route"
         title={route.title}
         description={route.summary ?? undefined}
+        image={route.heroImage}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
@@ -222,7 +276,7 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
         ) : (
           <ul className="mt-4 space-y-3">
             {route.services.map((service) => (
-              <ServiceCard key={service.id} service={service} />
+              <ServiceCard key={service.id} service={service} route={route} />
             ))}
           </ul>
         )}
@@ -239,8 +293,16 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
         </section>
       )}
 
-      {/* Booking/inquiry UI is not built yet — Task 10 only establishes the
-          bookings.transfer_service_id connection (see service.isBookable). */}
+      {relatedRoutes.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Other transfers from {route.origin?.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {relatedRoutes.map((r) => (
+              <TransferRouteCard key={r.id} route={r} />
+            ))}
+          </ul>
+        </section>
+      )}
       </div>
     </main>
   );

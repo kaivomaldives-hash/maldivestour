@@ -100,6 +100,18 @@ function main() {
       if (a.migrationStatus === "ready") realHrefs.add(a.candidateNewUrl);
     }
   }
+  // Task 18's own legacy transfer recovery creates real destinations
+  // (verified against a from-scratch local Postgres apply in that task —
+  // see its own migration report) that aren't in buildEntityIndex()
+  // because they don't exist in the static data/maldives/**/*.json seed
+  // files at all; they were inserted directly by that task's own SQL.
+  const transferRecoveryPath = path.join(DATA_DIR, "migration", "transfer-legacy-recovery.json");
+  if (existsSync(transferRecoveryPath)) {
+    const recovery = JSON.parse(readFileSync(transferRecoveryPath, "utf8"));
+    for (const r of recovery.records) {
+      if (r.status === "ready") realHrefs.add(`/maldives/transfers/velana-international-airport-to-${r.islandSlug}/`);
+    }
+  }
   const DYNAMIC_PREFIX_PATTERNS = [/^\/maldives\/dive-sites\/[^/]+\/$/, /^\/maldives\/surf-breaks\/[^/]+\/$/, /^\/maldives\/providers\/[^/]+\/$/];
 
   let brokenDestinations = 0;

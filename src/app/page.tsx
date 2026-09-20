@@ -194,9 +194,9 @@ export default async function Home() {
           <Container>
             <SectionHeader
               eyebrow="Getting around"
-              title="Transfers between islands"
-              description="Speedboats, ferries, seaplanes and domestic flights — with real operators and prices where available."
-              action={{ label: "View all transfers", href: "/maldives/transfers/" }}
+              title="Maldives Transfers"
+              description="Real airport, speedboat, resort and island transfer routes from Velana International Airport, with source-verified prices."
+              action={{ label: "Find your transfer", href: "/maldives/transfers/" }}
             />
             <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {transferRoutes.items.map((route) => (

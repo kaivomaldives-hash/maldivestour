@@ -1,6 +1,8 @@
 import "server-only";
 
+import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { getLocationSummariesByIds } from "@/lib/locations/repository";
+import type { MediaAsset } from "@/lib/media/types";
 import { getProviderSummariesByIds } from "@/lib/providers/repository";
 import { createClient } from "@/lib/supabase/server";
 import type {
@@ -242,9 +244,30 @@ async function getBookableTransferServiceIds(serviceIds: string[]): Promise<Set<
   return new Set(serviceIds);
 }
 
+/** A route's destination island's own real accommodation photo (already
+ * migrated via Task 14's media pipeline) — never a generic stock/
+ * speedboat image standing in for a specific resort. Most destinations
+ * (especially the ~55 new ones Task 18 recovered directly from legacy
+ * transfer pages) have no matching accommodation in the current small
+ * catalogue yet and simply get no hero image, which is the honest
+ * outcome — not a fabricated substitute. */
+async function attachDestinationHeroImages(destinationLocationIds: string[]): Promise<Map<string, MediaAsset>> {
+  const result = new Map<string, MediaAsset>();
+  const uniqueIds = Array.from(new Set(destinationLocationIds));
+  const accommodationLists = await Promise.all(uniqueIds.map((id) => getAccommodationsByLocation(id)));
+  uniqueIds.forEach((id, index) => {
+    const withImage = accommodationLists[index].find((a) => a.heroImage);
+    if (withImage?.heroImage) result.set(id, withImage.heroImage);
+  });
+  return result;
+}
+
 async function attachOriginDestination(bares: BareRoute[]): Promise<TransferRouteSummary[]> {
   const locationIds = Array.from(new Set(bares.flatMap((b) => [b.originLocationId, b.destinationLocationId])));
-  const locationsById = await getLocationSummariesByIds(locationIds);
+  const [locationsById, heroImageByDestinationId] = await Promise.all([
+    getLocationSummariesByIds(locationIds),
+    attachDestinationHeroImages(bares.map((b) => b.destinationLocationId)),
+  ]);
   const routeIds = bares.map((b) => b.id);
   const servicesByRoute = await getServicesByRouteIds(routeIds);
 
@@ -262,6 +285,7 @@ async function attachOriginDestination(bares: BareRoute[]): Promise<TransferRout
       typicalDurationMinutes: b.typicalDurationMinutes,
       priceFrom: cheapest?.price ?? null,
       currency: cheapest?.currency ?? null,
+      heroImage: heroImageByDestinationId.get(b.destinationLocationId) ?? null,
     };
   });
 }

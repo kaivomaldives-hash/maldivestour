@@ -430,20 +430,22 @@ function writeCommitMigration(highConfidenceRecords) {
       const role = index === 0 ? "hero" : "gallery";
       const alt = altTextFor(r);
 
-      lines.push(`insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)`);
+      // Each statement is emitted as ONE line (never split across several
+      // lines.push calls) — a multi-line statement pasted into the
+      // Supabase SQL Editor can end up submitted to Postgres split apart
+      // (observed: "on conflict ..." arriving as its own query), which is
+      // invalid standalone SQL even though the full statement is valid.
+      // One line per statement is immune to that regardless of cause.
       lines.push(
-        `values (${sqlString(mediaId)}::uuid, 'image', ${sqlString(storagePath)}, ${sqlString(alt)}, ${sqlString("Legacy MTG site archive")}, ${r.width ?? "null"}, ${r.height ?? "null"})`,
+        `insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values (${sqlString(mediaId)}::uuid, 'image', ${sqlString(storagePath)}, ${sqlString(alt)}, ${sqlString("Legacy MTG site archive")}, ${r.width ?? "null"}, ${r.height ?? "null"}) on conflict (id) do nothing;`,
       );
-      lines.push(`on conflict (id) do nothing;`);
       lines.push("");
       mediaCount += 1;
       uploadManifest.push({ mediaId, relativePath: r.relativePath, storagePath });
 
-      lines.push(`insert into node_media (node_id, media_id, role, sort_order)`);
-      lines.push(`select n.id, ${sqlString(mediaId)}::uuid, ${sqlString(role)}, ${index}`);
-      lines.push(`from nodes n`);
-      lines.push(`where n.node_type = ${sqlString(nodeType)} and n.slug = ${sqlString(slug)}`);
-      lines.push(`on conflict (node_id, media_id, role) do nothing;`);
+      lines.push(
+        `insert into node_media (node_id, media_id, role, sort_order) select n.id, ${sqlString(mediaId)}::uuid, ${sqlString(role)}, ${index} from nodes n where n.node_type = ${sqlString(nodeType)} and n.slug = ${sqlString(slug)} on conflict (node_id, media_id, role) do nothing;`,
+      );
       lines.push("");
       attachCount += 1;
     });

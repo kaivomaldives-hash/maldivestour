@@ -11,85 +11,42 @@
 -- creates duplicate media_assets rows for one physical image.
 
 -- Article categories actually used by migrated content.
-insert into nodes (node_type, slug, title, status, published_at)
-values ('category', 'islands', 'Islands', 'published', now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, status, published_at) values ('category', 'islands', 'Islands', 'published', now()) on conflict (node_type, slug) do nothing;
 
-insert into categories (id, category_group, path)
-select id, 'article-category', text2ltree('islands') from nodes
-where node_type = 'category' and slug = 'islands'
-on conflict (id) do nothing;
+insert into categories (id, category_group, path) select id, 'article-category', text2ltree('islands') from nodes where node_type = 'category' and slug = 'islands' on conflict (id) do nothing;
 
-insert into nodes (node_type, slug, title, status, published_at)
-values ('category', 'diving', 'Diving', 'published', now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, status, published_at) values ('category', 'diving', 'Diving', 'published', now()) on conflict (node_type, slug) do nothing;
 
-insert into categories (id, category_group, path)
-select id, 'article-category', text2ltree('diving') from nodes
-where node_type = 'category' and slug = 'diving'
-on conflict (id) do nothing;
+insert into categories (id, category_group, path) select id, 'article-category', text2ltree('diving') from nodes where node_type = 'category' and slug = 'diving' on conflict (id) do nothing;
 
-insert into nodes (node_type, slug, title, status, published_at)
-values ('category', 'accommodation', 'Accommodation', 'published', now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, status, published_at) values ('category', 'accommodation', 'Accommodation', 'published', now()) on conflict (node_type, slug) do nothing;
 
-insert into categories (id, category_group, path)
-select id, 'article-category', text2ltree('accommodation') from nodes
-where node_type = 'category' and slug = 'accommodation'
-on conflict (id) do nothing;
+insert into categories (id, category_group, path) select id, 'article-category', text2ltree('accommodation') from nodes where node_type = 'category' and slug = 'accommodation' on conflict (id) do nothing;
 
-insert into nodes (node_type, slug, title, status, published_at)
-values ('category', 'transportation', 'Transportation', 'published', now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, status, published_at) values ('category', 'transportation', 'Transportation', 'published', now()) on conflict (node_type, slug) do nothing;
 
-insert into categories (id, category_group, path)
-select id, 'article-category', text2ltree('transportation') from nodes
-where node_type = 'category' and slug = 'transportation'
-on conflict (id) do nothing;
+insert into categories (id, category_group, path) select id, 'article-category', text2ltree('transportation') from nodes where node_type = 'category' and slug = 'transportation' on conflict (id) do nothing;
 
-insert into nodes (node_type, slug, title, status, published_at)
-values ('category', 'surfing', 'Surfing', 'published', now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, status, published_at) values ('category', 'surfing', 'Surfing', 'published', now()) on conflict (node_type, slug) do nothing;
 
-insert into categories (id, category_group, path)
-select id, 'article-category', text2ltree('surfing') from nodes
-where node_type = 'category' and slug = 'surfing'
-on conflict (id) do nothing;
+insert into categories (id, category_group, path) select id, 'article-category', text2ltree('surfing') from nodes where node_type = 'category' and slug = 'surfing' on conflict (id) do nothing;
 
-insert into nodes (node_type, slug, title, status, published_at)
-values ('category', 'atolls', 'Atolls', 'published', now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, status, published_at) values ('category', 'atolls', 'Atolls', 'published', now()) on conflict (node_type, slug) do nothing;
 
-insert into categories (id, category_group, path)
-select id, 'article-category', text2ltree('atolls') from nodes
-where node_type = 'category' and slug = 'atolls'
-on conflict (id) do nothing;
+insert into categories (id, category_group, path) select id, 'article-category', text2ltree('atolls') from nodes where node_type = 'category' and slug = 'atolls' on conflict (id) do nothing;
 
-insert into nodes (node_type, slug, title, status, published_at)
-values ('category', 'travel-tips', 'Travel Tips', 'published', now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, status, published_at) values ('category', 'travel-tips', 'Travel Tips', 'published', now()) on conflict (node_type, slug) do nothing;
 
-insert into categories (id, category_group, path)
-select id, 'article-category', text2ltree('travel_tips') from nodes
-where node_type = 'category' and slug = 'travel-tips'
-on conflict (id) do nothing;
+insert into categories (id, category_group, path) select id, 'article-category', text2ltree('travel_tips') from nodes where node_type = 'category' and slug = 'travel-tips' on conflict (id) do nothing;
 
-insert into nodes (node_type, slug, title, status, published_at)
-values ('category', 'airports', 'Airports', 'published', now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, status, published_at) values ('category', 'airports', 'Airports', 'published', now()) on conflict (node_type, slug) do nothing;
 
-insert into categories (id, category_group, path)
-select id, 'article-category', text2ltree('airports') from nodes
-where node_type = 'category' and slug = 'airports'
-on conflict (id) do nothing;
+insert into categories (id, category_group, path) select id, 'article-category', text2ltree('airports') from nodes where node_type = 'category' and slug = 'airports' on conflict (id) do nothing;
 
 -- Article: Maldives Honeymoon: Ultimate Romantic Getaway Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-honeymoon-ultimate-romantic-getaway-guide', 'Maldives Honeymoon: Ultimate Romantic Getaway Guide', 'Complete Maldives honeymoon guide - Discover the best romantic resorts, overwater bungalows, packages and unique experiences for your perfect couples getaway in paradise.', 'published', 'Maldives Honeymoon: Ultimate Romantic Getaway Guide | Maldives Travel Guide | MTG', 'Complete Maldives honeymoon guide - Discover the best romantic resorts, overwater bungalows, packages and unique experiences for your perfect couples getaway in paradise.', ARRAY['/articles/Maldives-honeymoons.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-honeymoon-ultimate-romantic-getaway-guide', 'Maldives Honeymoon: Ultimate Romantic Getaway Guide', 'Complete Maldives honeymoon guide - Discover the best romantic resorts, overwater bungalows, packages and unique experiences for your perfect couples getaway in paradise.', 'published', 'Maldives Honeymoon: Ultimate Romantic Getaway Guide | Maldives Travel Guide | MTG', 'Complete Maldives honeymoon guide - Discover the best romantic resorts, overwater bungalows, packages and unique experiences for your perfect couples getaway in paradise.', ARRAY['/articles/Maldives-honeymoons.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>The Maldives stands as the undisputed paradise for honeymooners, offering newlyweds an exquisite blend of natural beauty, privacy, and romance. This archipelago of 1,192 coral islands scattered across the Indian Ocean has perfected the art of couples'' vacations, with resorts designed specifically to create unforgettable romantic experiences.</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>The Maldives stands as the undisputed paradise for honeymooners, offering newlyweds an exquisite blend of natural beauty, privacy, and romance. This archipelago of 1,192 coral islands scattered across the Indian Ocean has perfected the art of couples'' vacations, with resorts designed specifically to create unforgettable romantic experiences.</p>
 <p>What sets the Maldives apart from other tropical destinations is its unique geography - each resort typically occupies its own private island, ensuring complete seclusion. The iconic overwater bungalows, which the Maldives pioneered, allow couples to wake up to the gentle lapping of waves beneath their villa and step directly into crystal-clear lagoons.</p>
 <p>Beyond the physical beauty, Maldivian resorts specialize in crafting personalized romantic experiences. From private sandbank picnics to underwater dining rooms surrounded by marine life, the opportunities for creating special moments are endless. The country''s Muslim culture means public displays of affection are reserved for resort islands, creating a discreet, intimate atmosphere perfect for honeymooners.</p>
 <h2>Why the Maldives is the Ultimate Honeymoon Destination</h2>
@@ -127,53 +84,26 @@ select id, '<p>The Maldives stands as the undisputed paradise for honeymooners, 
 <h4>1. Underwater Dining</h4>
 <p>Several resorts feature incredible underwater restaurants where you dine surrounded by marine life. The most famous is Ithaa at Conrad Maldives, the world''s first all-glass undersea restaurant.</p>
 <h4>2. Private Stargazing</h4>
-<p>With minimal light pollution, the Maldives offers spectacular night skies. Some resorts provide telescopes and astronomers to guide you through constellations while lounging on your private deck.</p>', 3
-from nodes where node_type = 'article' and slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide'
-on conflict (id) do nothing;
+<p>With minimal light pollution, the Maldives offers spectacular night skies. Some resorts provide telescopes and astronomers to guide you through constellations while lounging on your private deck.</p>', 3 from nodes where node_type = 'article' and slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide'
-  and c.node_type = 'category' and c.slug = 'islands'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide' and c.node_type = 'category' and c.slug = 'islands' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide'
-  and l.node_type = 'location' and l.slug = 'huraa'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide' and l.node_type = 'location' and l.slug = 'huraa' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide'
-  and l.node_type = 'location' and l.slug = 'baros'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide' and l.node_type = 'location' and l.slug = 'baros' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('10eee094-26e9-30ae-39be-d9ffe3b03068'::uuid, 'image', 'legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp', 'Maldives Honeymoon: Ultimate Romantic Getaway Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('10eee094-26e9-30ae-39be-d9ffe3b03068'::uuid, 'image', 'legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp', 'Maldives Honeymoon: Ultimate Romantic Getaway Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '10eee094-26e9-30ae-39be-d9ffe3b03068'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '10eee094-26e9-30ae-39be-d9ffe3b03068'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp', 'Maldives Honeymoon: Ultimate Romantic Getaway Guide', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp', 'Maldives Honeymoon: Ultimate Romantic Getaway Guide', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Best Adults-Only Maldives Resorts
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'best-adults-only-maldives-resorts', 'Best Adults-Only Maldives Resorts', 'Adults-only Maldives resorts - Discover the most exclusive adults-only retreats, private pool villas & romantic packages. Compare top 15 adults-only luxury resorts for couples seeking peaceful relaxation without children.', 'published', 'Best Adults-Only Maldives Resorts | Maldives Travel Guide | MTG', 'Adults-only Maldives resorts - Discover the most exclusive adults-only retreats, private pool villas & romantic packages. Compare top 15 adults-only luxury resorts for couples seeking peaceful relaxation without children.', ARRAY['/articles/adults-only-maldives.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'best-adults-only-maldives-resorts', 'Best Adults-Only Maldives Resorts', 'Adults-only Maldives resorts - Discover the most exclusive adults-only retreats, private pool villas & romantic packages. Compare top 15 adults-only luxury resorts for couples seeking peaceful relaxation without children.', 'published', 'Best Adults-Only Maldives Resorts | Maldives Travel Guide | MTG', 'Adults-only Maldives resorts - Discover the most exclusive adults-only retreats, private pool villas & romantic packages. Compare top 15 adults-only luxury resorts for couples seeking peaceful relaxation without children.', ARRAY['/articles/adults-only-maldives.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>Private infinity pool at Hurawalhi Island Resort - adults-only paradise in Maldives</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>Private infinity pool at Hurawalhi Island Resort - adults-only paradise in Maldives</p>
 <p>Escape to child-free luxury in the Maldives, where adults-only resorts promise serene atmospheres, uninterrupted romance, and sophisticated experiences. Our travel experts have curated the definitive list of the top 15 adults-only Maldives resorts, each offering exclusive amenities from private pools to world-class spas and intimate dining experiences designed specifically for grown-up enjoyment.</p>
 <div data-youtube-id="jPkD9zEh4o4" data-video-title="Adults-Only Maldives Resorts Tour"></div>
 <p>Video: Tour of Maldives'' most exclusive adults-only resorts</p>
@@ -227,47 +157,24 @@ select id, '<p>Private infinity pool at Hurawalhi Island Resort - adults-only pa
 <p>For honeymooners, Hurawalhi Island Resort offers the perfect balance of luxury, romance, and value. Their &quot;Dream Honeymoon&quot; package includes an underwater dining experience, couples'' spa treatment, champagne sunset cruise, and romantic in-villa setup. For ultra-luxury, Kudadoo''s all-inclusive approach means honeymooners never need to think about costs once there. Budget-conscious honeymooners should consider Komandoo, which offers similar romantic experiences at more accessible price points.</p>
 <h2>Final Thoughts on Adults-Only Maldives Escapes</h2>
 <p>Adults-only resorts in the Maldives represent the pinnacle of sophisticated tropical luxury, offering experiences tailored exclusively to grown-up preferences. From the serene atmospheres and uninterrupted relaxation to the refined dining experiences and couples-focused activities, these resorts provide a distinctly different experience from their family-friendly counterparts. With options spanning multiple price points and atolls, adults-only properties ensure travelers can find their perfect child-free paradise.</p>
-<p>When planning your adults-only Maldives escape, consider what aspects matter most to you—whether that''s culinary excellence, exceptional house reefs for snorkeling, world-class spas, or simply the most peaceful setting possible. The growing number of adults-only options means you can find a resort that perfectly matches your preferences without compromise. For personalized recommendations, contact our Maldives specialists who can help match you with the ideal adults-only haven.</p>', 5
-from nodes where node_type = 'article' and slug = 'best-adults-only-maldives-resorts'
-on conflict (id) do nothing;
+<p>When planning your adults-only Maldives escape, consider what aspects matter most to you—whether that''s culinary excellence, exceptional house reefs for snorkeling, world-class spas, or simply the most peaceful setting possible. The growing number of adults-only options means you can find a resort that perfectly matches your preferences without compromise. For personalized recommendations, contact our Maldives specialists who can help match you with the ideal adults-only haven.</p>', 5 from nodes where node_type = 'article' and slug = 'best-adults-only-maldives-resorts' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'best-adults-only-maldives-resorts'
-  and c.node_type = 'category' and c.slug = 'islands'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'best-adults-only-maldives-resorts' and c.node_type = 'category' and c.slug = 'islands' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'best-adults-only-maldives-resorts'
-  and l.node_type = 'location' and l.slug = 'komandoo'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'best-adults-only-maldives-resorts' and l.node_type = 'location' and l.slug = 'komandoo' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('f9edd6e6-b545-8552-68a0-54876b71418f'::uuid, 'image', 'legacy/resorts/komandoo-island/images/komandoo-island-resort-and-spa-pool.webp', 'Best Adults-Only Maldives Resorts', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('f9edd6e6-b545-8552-68a0-54876b71418f'::uuid, 'image', 'legacy/resorts/komandoo-island/images/komandoo-island-resort-and-spa-pool.webp', 'Best Adults-Only Maldives Resorts', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'f9edd6e6-b545-8552-68a0-54876b71418f'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'best-adults-only-maldives-resorts'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'f9edd6e6-b545-8552-68a0-54876b71418f'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'best-adults-only-maldives-resorts' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('006f127f-3891-1a11-d0f6-c9ed503e58c5'::uuid, 'image', 'legacy/resorts/reethi-beach/images/reethi-beach-resort-maldives-honeymoon.webp', 'Best Adults-Only Maldives Resorts', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('006f127f-3891-1a11-d0f6-c9ed503e58c5'::uuid, 'image', 'legacy/resorts/reethi-beach/images/reethi-beach-resort-maldives-honeymoon.webp', 'Best Adults-Only Maldives Resorts', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '006f127f-3891-1a11-d0f6-c9ed503e58c5'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'best-adults-only-maldives-resorts'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '006f127f-3891-1a11-d0f6-c9ed503e58c5'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'best-adults-only-maldives-resorts' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: 15 Most Beautiful Places in Maldives: Paradise Found
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', '15-most-beautiful-places-in-maldives-paradise-found', '15 Most Beautiful Places in Maldives: Paradise Found', 'Discover the most beautiful places in Maldives - From stunning atolls and islands to underwater wonders, bioluminescent beaches, and luxury resorts. Complete guide to paradise.', 'published', '15 Most Beautiful Places in Maldives: Paradise Found | Maldives Travel Guide | MTG', 'Discover the most beautiful places in Maldives - From stunning atolls and islands to underwater wonders, bioluminescent beaches, and luxury resorts. Complete guide to paradise.', ARRAY['/articles/beautiful-places-in-maldives.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', '15-most-beautiful-places-in-maldives-paradise-found', '15 Most Beautiful Places in Maldives: Paradise Found', 'Discover the most beautiful places in Maldives - From stunning atolls and islands to underwater wonders, bioluminescent beaches, and luxury resorts. Complete guide to paradise.', 'published', '15 Most Beautiful Places in Maldives: Paradise Found | Maldives Travel Guide | MTG', 'Discover the most beautiful places in Maldives - From stunning atolls and islands to underwater wonders, bioluminescent beaches, and luxury resorts. Complete guide to paradise.', ARRAY['/articles/beautiful-places-in-maldives.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>The Maldives offers some of the most breathtaking natural scenery on the planet</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>The Maldives offers some of the most breathtaking natural scenery on the planet</p>
 <p>The Maldives is synonymous with paradise on Earth, a destination where nature''s artistry is on full display. This archipelago of 1,192 coral islands scattered across the Indian Ocean presents a mesmerizing tapestry of azure waters, pristine beaches, vibrant coral reefs, and luxurious resorts that seem to float on the ocean. From bioluminescent beaches that glow at night to underwater wonders teeming with marine life, the Maldives offers a collection of breathtaking locations that seem almost too perfect to be real. This guide explores the 15 most beautiful places in the Maldives, showcasing the diverse natural and man-made wonders that make this island nation one of the world''s most coveted destinations.</p>
 <div data-youtube-id="EktYGTKldpk" data-video-title="Beautiful Places in Maldives"></div>
 <p>Video: Explore the most stunning locations across the Maldives archipelago</p>
@@ -353,59 +260,28 @@ select id, '<p>The Maldives offers some of the most breathtaking natural scenery
 <p>What makes the beautiful places of the Maldives particularly special is their diversity—each atoll, island, reef, and lagoon has its own character and charm. Some locations dazzle with dramatic natural phenomena like bioluminescent shores or manta ray aggregations, while others offer more subtle beauty in their perfect proportions and pristine conditions.</p>
 <p>While photographs can capture aspects of the Maldives'' beauty, they inevitably fall short of the full sensory experience—the feeling of soft sand between your toes, the gentle sound of waves lapping at the shore, the warm tropical breeze, and the sense of tranquility that pervades these islands. These elements combine to create not just visual beauty but a holistic experience of natural harmony.</p>
 <p>As climate change threatens this fragile paradise, experiencing the beautiful places of the Maldives takes on added significance. Each visitor becomes a witness to a unique environment that may change dramatically within our lifetimes. This reality underscores the importance of responsible tourism and global environmental action to preserve these extraordinary places for future generations.</p>
-<p>Whether you''re drawn to underwater wonders, pristine beaches, luxury accommodations, or cultural heritage, the Maldives offers beautiful places that exceed expectations and create memories that last a lifetime. In a world of increasingly manufactured experiences, the natural and cultural beauty of the Maldives remains authentic, powerful, and transformative.</p>', 19
-from nodes where node_type = 'article' and slug = '15-most-beautiful-places-in-maldives-paradise-found'
-on conflict (id) do nothing;
+<p>Whether you''re drawn to underwater wonders, pristine beaches, luxury accommodations, or cultural heritage, the Maldives offers beautiful places that exceed expectations and create memories that last a lifetime. In a world of increasingly manufactured experiences, the natural and cultural beauty of the Maldives remains authentic, powerful, and transformative.</p>', 19 from nodes where node_type = 'article' and slug = '15-most-beautiful-places-in-maldives-paradise-found' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found'
-  and c.node_type = 'category' and c.slug = 'islands'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found' and c.node_type = 'category' and c.slug = 'islands' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found'
-  and l.node_type = 'location' and l.slug = 'vaadhoo'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found' and l.node_type = 'location' and l.slug = 'vaadhoo' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found'
-  and l.node_type = 'location' and l.slug = 'vaadhoo-gaafu-dhaalu'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found' and l.node_type = 'location' and l.slug = 'vaadhoo-gaafu-dhaalu' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found'
-  and l.node_type = 'location' and l.slug = 'fuvahmulah'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found' and l.node_type = 'location' and l.slug = 'fuvahmulah' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('b168136b-5954-7363-1938-3ebc25d6ef97'::uuid, 'image', 'legacy/images/diving/meedhoo-coral-garden.webp', '15 Most Beautiful Places in Maldives: Paradise Found', 'Legacy MTG site archive', 640, 480)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('b168136b-5954-7363-1938-3ebc25d6ef97'::uuid, 'image', 'legacy/images/diving/meedhoo-coral-garden.webp', '15 Most Beautiful Places in Maldives: Paradise Found', 'Legacy MTG site archive', 640, 480) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'b168136b-5954-7363-1938-3ebc25d6ef97'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'b168136b-5954-7363-1938-3ebc25d6ef97'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'image', 'legacy/images/activities/sunset-cruise-maldives.webp', '15 Most Beautiful Places in Maldives: Paradise Found', 'Legacy MTG site archive', 1814, 1360)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'image', 'legacy/images/activities/sunset-cruise-maldives.webp', '15 Most Beautiful Places in Maldives: Paradise Found', 'Legacy MTG site archive', 1814, 1360) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Beautiful Places to Visit in Maldives
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'beautiful-places-to-visit-in-maldives', 'Beautiful Places to Visit in Maldives', 'Discover the most beautiful places to visit in Maldives, from pristine beaches to vibrant coral reefs. Explore top resorts, islands, and atolls that make the Maldives a tropical paradise.', 'published', 'Beautiful Places to Visit in Maldives | Maldives Travel Guide | MTG', 'Discover the most beautiful places to visit in Maldives, from pristine beaches to vibrant coral reefs. Explore top resorts, islands, and atolls that make the Maldives a tropical paradise.', ARRAY['/articles/beautiful-places-to-visit-in-Maldives.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'beautiful-places-to-visit-in-maldives', 'Beautiful Places to Visit in Maldives', 'Discover the most beautiful places to visit in Maldives, from pristine beaches to vibrant coral reefs. Explore top resorts, islands, and atolls that make the Maldives a tropical paradise.', 'published', 'Beautiful Places to Visit in Maldives | Maldives Travel Guide | MTG', 'Discover the most beautiful places to visit in Maldives, from pristine beaches to vibrant coral reefs. Explore top resorts, islands, and atolls that make the Maldives a tropical paradise.', ARRAY['/articles/beautiful-places-to-visit-in-Maldives.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>The Maldives, a paradise on earth, is a dream destination for travelers from around the globe. This tropical archipelago, composed of 26 atolls and over 1,000 coral islands, offers an unparalleled experience with its turquoise waters, white sandy beaches, and vibrant marine life. Whether you''re planning a family vacation, a romantic getaway, or an adventure-filled trip, the Maldives has something for everyone. In this article, we''ll explore some of the most beautiful places to visit in the Maldives, along with recommendations for families, couples, and those looking to explore the capital city of Male.</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>The Maldives, a paradise on earth, is a dream destination for travelers from around the globe. This tropical archipelago, composed of 26 atolls and over 1,000 coral islands, offers an unparalleled experience with its turquoise waters, white sandy beaches, and vibrant marine life. Whether you''re planning a family vacation, a romantic getaway, or an adventure-filled trip, the Maldives has something for everyone. In this article, we''ll explore some of the most beautiful places to visit in the Maldives, along with recommendations for families, couples, and those looking to explore the capital city of Male.</p>
 <h3>Quick Navigations (Topics covered in this guide)</h3>
 <p>Places to Visit in Maldives for Couples Places to Visit in Maldives for Family Places to Visit in Male</p>
 <h2>1. Places to Visit in Maldives for Couples</h2>
@@ -623,143 +499,66 @@ select id, '<p>The Maldives, a paradise on earth, is a dream destination for tra
 <p>Rasfannu Beach is a small but popular urban beach located on the western side of Malé. The beach offers a convenient spot for swimming, sunbathing, and relaxing, with facilities such as showers, changing rooms, and food stalls nearby.</p>
 <h4>Sunset Views:</h4>
 <p>Rasfannu Beach is a great place to catch the sunset in Malé. The beach is well-maintained and offers a laid-back atmosphere, making it a favorite spot for both locals and tourists.</p>
-<figure><img src="legacy/images/male/male-city-beach.webp" alt="Rasfannu Beach" loading="lazy" /></figure>', 22
-from nodes where node_type = 'article' and slug = 'beautiful-places-to-visit-in-maldives'
-on conflict (id) do nothing;
+<figure><img src="legacy/images/male/male-city-beach.webp" alt="Rasfannu Beach" loading="lazy" /></figure>', 22 from nodes where node_type = 'article' and slug = 'beautiful-places-to-visit-in-maldives' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives'
-  and c.node_type = 'category' and c.slug = 'diving'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' and c.node_type = 'category' and c.slug = 'diving' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives'
-  and l.node_type = 'location' and l.slug = 'baros'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' and l.node_type = 'location' and l.slug = 'baros' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('823b838a-0490-199f-79b2-27c294d9f5c7'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('823b838a-0490-199f-79b2-27c294d9f5c7'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '823b838a-0490-199f-79b2-27c294d9f5c7'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '823b838a-0490-199f-79b2-27c294d9f5c7'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('9b8db8dc-f547-6730-e627-efa5b1c20fb5'::uuid, 'image', 'legacy/resorts/soneva-fushi/images/soneva-fushi-island-resort-maldives.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('9b8db8dc-f547-6730-e627-efa5b1c20fb5'::uuid, 'image', 'legacy/resorts/soneva-fushi/images/soneva-fushi-island-resort-maldives.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '9b8db8dc-f547-6730-e627-efa5b1c20fb5'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '9b8db8dc-f547-6730-e627-efa5b1c20fb5'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('6f6badd7-d668-7014-54d2-b04abdf0ce9f'::uuid, 'image', 'legacy/resorts/six-senses-laamu/images/six-senses-laamu-maldives.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('6f6badd7-d668-7014-54d2-b04abdf0ce9f'::uuid, 'image', 'legacy/resorts/six-senses-laamu/images/six-senses-laamu-maldives.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '6f6badd7-d668-7014-54d2-b04abdf0ce9f'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '6f6badd7-d668-7014-54d2-b04abdf0ce9f'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('3cbb9028-7268-5b5a-4aec-9bb18a4dbdc8'::uuid, 'image', 'legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives-island.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('3cbb9028-7268-5b5a-4aec-9bb18a4dbdc8'::uuid, 'image', 'legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives-island.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '3cbb9028-7268-5b5a-4aec-9bb18a4dbdc8'::uuid, 'content', 3
-from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '3cbb9028-7268-5b5a-4aec-9bb18a4dbdc8'::uuid, 'content', 3 from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('3cccd65d-0b38-b5a5-1722-e0c202e46aeb'::uuid, 'image', 'legacy/resorts/kurumba/images/kurumba-maldives-vihamanaafushi-resort.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('3cccd65d-0b38-b5a5-1722-e0c202e46aeb'::uuid, 'image', 'legacy/resorts/kurumba/images/kurumba-maldives-vihamanaafushi-resort.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '3cccd65d-0b38-b5a5-1722-e0c202e46aeb'::uuid, 'content', 4
-from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '3cccd65d-0b38-b5a5-1722-e0c202e46aeb'::uuid, 'content', 4 from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('9a0a36ab-e9fd-8c61-4aa5-d9a375df80cb'::uuid, 'image', 'legacy/resorts/hideaway-beach/images/hideaway-beach-island-resort-and-spa.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 480, 320)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('9a0a36ab-e9fd-8c61-4aa5-d9a375df80cb'::uuid, 'image', 'legacy/resorts/hideaway-beach/images/hideaway-beach-island-resort-and-spa.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 480, 320) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '9a0a36ab-e9fd-8c61-4aa5-d9a375df80cb'::uuid, 'content', 5
-from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '9a0a36ab-e9fd-8c61-4aa5-d9a375df80cb'::uuid, 'content', 5 from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('5d3bcf17-508b-e22c-459d-c51013949bc0'::uuid, 'image', 'legacy/images/male/sultan-park-male.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 640, 427)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('5d3bcf17-508b-e22c-459d-c51013949bc0'::uuid, 'image', 'legacy/images/male/sultan-park-male.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 640, 427) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '5d3bcf17-508b-e22c-459d-c51013949bc0'::uuid, 'content', 6
-from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '5d3bcf17-508b-e22c-459d-c51013949bc0'::uuid, 'content', 6 from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('3678fc10-a6db-23d4-dceb-b59185c4a6b3'::uuid, 'image', 'legacy/images/male/male-city-artificial-beach.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 720, 508)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('3678fc10-a6db-23d4-dceb-b59185c4a6b3'::uuid, 'image', 'legacy/images/male/male-city-artificial-beach.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 720, 508) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '3678fc10-a6db-23d4-dceb-b59185c4a6b3'::uuid, 'content', 7
-from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '3678fc10-a6db-23d4-dceb-b59185c4a6b3'::uuid, 'content', 7 from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('03e1e9a2-6a76-42c4-8aea-994ca6109f04'::uuid, 'image', 'legacy/images/hulhumale-city-maldives.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 888, 665)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('03e1e9a2-6a76-42c4-8aea-994ca6109f04'::uuid, 'image', 'legacy/images/hulhumale-city-maldives.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 888, 665) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '03e1e9a2-6a76-42c4-8aea-994ca6109f04'::uuid, 'content', 8
-from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '03e1e9a2-6a76-42c4-8aea-994ca6109f04'::uuid, 'content', 8 from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('1ca773b3-c63d-f6de-7dae-44552d2c7529'::uuid, 'image', 'legacy/images/male/male-city-republic-square.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 720, 508)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1ca773b3-c63d-f6de-7dae-44552d2c7529'::uuid, 'image', 'legacy/images/male/male-city-republic-square.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 720, 508) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '1ca773b3-c63d-f6de-7dae-44552d2c7529'::uuid, 'content', 9
-from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '1ca773b3-c63d-f6de-7dae-44552d2c7529'::uuid, 'content', 9 from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('2d3c2642-7404-55fd-80a9-7e9a1d189dab'::uuid, 'image', 'legacy/images/male/male-bridge.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 640, 526)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('2d3c2642-7404-55fd-80a9-7e9a1d189dab'::uuid, 'image', 'legacy/images/male/male-bridge.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 640, 526) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '2d3c2642-7404-55fd-80a9-7e9a1d189dab'::uuid, 'content', 10
-from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '2d3c2642-7404-55fd-80a9-7e9a1d189dab'::uuid, 'content', 10 from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('1e638f32-b0ce-fd12-0f2f-566849e78011'::uuid, 'image', 'legacy/images/male/male-city-beach.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 2048, 2560)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1e638f32-b0ce-fd12-0f2f-566849e78011'::uuid, 'image', 'legacy/images/male/male-city-beach.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 2048, 2560) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '1e638f32-b0ce-fd12-0f2f-566849e78011'::uuid, 'content', 11
-from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '1e638f32-b0ce-fd12-0f2f-566849e78011'::uuid, 'content', 11 from nodes n where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: 12 Best Beaches in Maldives: Ultimate Paradise Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', '12-best-beaches-in-maldives-ultimate-paradise-guide', '12 Best Beaches in Maldives: Ultimate Paradise Guide', 'Discover the best beaches in Maldives - From pristine white sand beaches to bioluminescent shores, hidden coves, and vibrant house reefs. Complete guide to paradise beaches.', 'published', '12 Best Beaches in Maldives: Ultimate Paradise Guide | Maldives Travel Guide | MTG', 'Discover the best beaches in Maldives - From pristine white sand beaches to bioluminescent shores, hidden coves, and vibrant house reefs. Complete guide to paradise beaches.', ARRAY['/articles/best-beaches-in-maldives.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', '12-best-beaches-in-maldives-ultimate-paradise-guide', '12 Best Beaches in Maldives: Ultimate Paradise Guide', 'Discover the best beaches in Maldives - From pristine white sand beaches to bioluminescent shores, hidden coves, and vibrant house reefs. Complete guide to paradise beaches.', 'published', '12 Best Beaches in Maldives: Ultimate Paradise Guide | Maldives Travel Guide | MTG', 'Discover the best beaches in Maldives - From pristine white sand beaches to bioluminescent shores, hidden coves, and vibrant house reefs. Complete guide to paradise beaches.', ARRAY['/articles/best-beaches-in-maldives.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>The Maldives is home to some of the world''s most stunning beaches with powder-soft white sand and crystal-clear turquoise waters</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>The Maldives is home to some of the world''s most stunning beaches with powder-soft white sand and crystal-clear turquoise waters</p>
 <p>The Maldives is synonymous with dream beaches—a place where reality surpasses imagination with stretches of powder-soft white sand, crystal-clear turquoise waters, and swaying palm trees. With over 1,190 islands scattered across 26 atolls, this island nation offers an abundance of beaches, each with its own unique charm and character. From vibrant house reefs teeming with marine life to secluded sandbanks that disappear at high tide, from bioluminescent shores that glow at night to beaches with overwater villas extending into the lagoon, the variety is astounding. This guide explores the 12 best beaches in the Maldives, showcasing the diverse coastal experiences that make this destination the ultimate beach paradise.</p>
 <div data-youtube-id="LnMQCQ9h744" data-video-title="Best Beaches in Maldives"></div>
 <p>Video: Explore the most stunning beaches across the Maldives archipelago</p>
@@ -866,62 +665,30 @@ select id, '<p>The Maldives is home to some of the world''s most stunning beache
 <p>The diversity of beach experiences available in the Maldives means there''s a perfect stretch of sand for every type of traveler. Luxury seekers can enjoy the immaculate beaches of private resort islands, complete with attentive service and amenities. Budget travelers can experience similar natural beauty on local island beaches at a fraction of the cost. Adventure enthusiasts can discover uninhabited islands and sandbanks that offer a true castaway experience. And underwater lovers can find beaches with extraordinary house reefs just steps from shore.</p>
 <p>What makes the beaches of the Maldives truly special goes beyond their physical beauty—it''s the sense of tranquility and connection with nature they provide. In our increasingly busy world, these beaches offer rare spaces where time seems to slow down, where the natural rhythm of tides and sunsets replaces the artificial pace of modern life.</p>
 <p>Whether you''re seeking a romantic honeymoon setting, a family-friendly beach vacation, or a solo adventure to reconnect with nature, the beaches of the Maldives offer an experience that lives up to—and often exceeds—the dream. The only challenge is choosing which of these paradise shores to visit first.</p>
-<p>For more information about planning your perfect Maldives beach vacation, explore our guides on Maldives resorts, activities, and beautiful places in the Maldives.</p>', 18
-from nodes where node_type = 'article' and slug = '12-best-beaches-in-maldives-ultimate-paradise-guide'
-on conflict (id) do nothing;
+<p>For more information about planning your perfect Maldives beach vacation, explore our guides on Maldives resorts, activities, and beautiful places in the Maldives.</p>', 18 from nodes where node_type = 'article' and slug = '12-best-beaches-in-maldives-ultimate-paradise-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = '12-best-beaches-in-maldives-ultimate-paradise-guide'
-  and c.node_type = 'category' and c.slug = 'islands'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = '12-best-beaches-in-maldives-ultimate-paradise-guide' and c.node_type = 'category' and c.slug = 'islands' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = '12-best-beaches-in-maldives-ultimate-paradise-guide'
-  and l.node_type = 'location' and l.slug = 'dhigurah'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = '12-best-beaches-in-maldives-ultimate-paradise-guide' and l.node_type = 'location' and l.slug = 'dhigurah' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = '12-best-beaches-in-maldives-ultimate-paradise-guide'
-  and l.node_type = 'location' and l.slug = 'baros'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = '12-best-beaches-in-maldives-ultimate-paradise-guide' and l.node_type = 'location' and l.slug = 'baros' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp', '12 Best Beaches in Maldives: Ultimate Paradise Guide', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp', '12 Best Beaches in Maldives: Ultimate Paradise Guide', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = '12-best-beaches-in-maldives-ultimate-paradise-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = '12-best-beaches-in-maldives-ultimate-paradise-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('2cdf3a5c-4ae7-b41e-0787-cdc38851087c'::uuid, 'image', 'legacy/images/activities/sand-bank/male-atoll-sand-bank-trip.webp', '12 Best Beaches in Maldives: Ultimate Paradise Guide', 'Legacy MTG site archive', 640, 800)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('2cdf3a5c-4ae7-b41e-0787-cdc38851087c'::uuid, 'image', 'legacy/images/activities/sand-bank/male-atoll-sand-bank-trip.webp', '12 Best Beaches in Maldives: Ultimate Paradise Guide', 'Legacy MTG site archive', 640, 800) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '2cdf3a5c-4ae7-b41e-0787-cdc38851087c'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = '12-best-beaches-in-maldives-ultimate-paradise-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '2cdf3a5c-4ae7-b41e-0787-cdc38851087c'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = '12-best-beaches-in-maldives-ultimate-paradise-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('fbf1f83d-d4a3-8b69-c09f-f9c74ecbbcd6'::uuid, 'image', 'legacy/images/maldives/maafushi-island.webp', '12 Best Beaches in Maldives: Ultimate Paradise Guide', 'Legacy MTG site archive', 640, 427)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('fbf1f83d-d4a3-8b69-c09f-f9c74ecbbcd6'::uuid, 'image', 'legacy/images/maldives/maafushi-island.webp', '12 Best Beaches in Maldives: Ultimate Paradise Guide', 'Legacy MTG site archive', 640, 427) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'fbf1f83d-d4a3-8b69-c09f-f9c74ecbbcd6'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = '12-best-beaches-in-maldives-ultimate-paradise-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'fbf1f83d-d4a3-8b69-c09f-f9c74ecbbcd6'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = '12-best-beaches-in-maldives-ultimate-paradise-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Best Maldives Resorts for Couples: Romantic Getaways
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'best-maldives-resorts-for-couples-romantic-getaways', 'Best Maldives Resorts for Couples: Romantic Getaways', 'Romantic Maldives resorts for couples - best overwater bungalows, private pool villas, honeymoon packages & adults-only retreats in . Compare top couple-friendly resorts.', 'published', 'Best Maldives Resorts for Couples: Romantic Getaways | Maldives Travel Guide | MTG', 'Romantic Maldives resorts for couples - best overwater bungalows, private pool villas, honeymoon packages & adults-only retreats in . Compare top couple-friendly resorts.', ARRAY['/articles/best-maldives-resorts-for-couples.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'best-maldives-resorts-for-couples-romantic-getaways', 'Best Maldives Resorts for Couples: Romantic Getaways', 'Romantic Maldives resorts for couples - best overwater bungalows, private pool villas, honeymoon packages & adults-only retreats in . Compare top couple-friendly resorts.', 'published', 'Best Maldives Resorts for Couples: Romantic Getaways | Maldives Travel Guide | MTG', 'Romantic Maldives resorts for couples - best overwater bungalows, private pool villas, honeymoon packages & adults-only retreats in . Compare top couple-friendly resorts.', ARRAY['/articles/best-maldives-resorts-for-couples.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>Sunset view from a private overwater villa at Soneva Jani resort</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>Sunset view from a private overwater villa at Soneva Jani resort</p>
 <p>The Maldives is the ultimate romantic destination, with overwater bungalows, private pools, and crystal-clear lagoons creating perfect couple moments. Our experts have curated the top 15 resorts offering exceptional romance packages, adults-only privacy, and unforgettable honeymoon experiences.</p>
 <div data-youtube-id="0VIhza1IyE0" data-video-title="Romantic Maldives resorts video tour"></div>
 <p>Video: Romantic experiences at Maldives couple resorts</p>
@@ -963,53 +730,26 @@ select id, '<p>Sunset view from a private overwater villa at Soneva Jani resort<
 <ol><li>Book early: Reserve 6-9 months ahead for best villa selection and early bird discounts</li><li>Consider seasons: November-April offers dry weather but higher prices</li><li>Check inclusions: Many resorts offer free honeymoon perks when booking direct (bottle of champagne, couple''s massage, etc.)</li><li>Flight combos: Look for flight+resort packages from major airlines</li><li>Special occasions: Mention anniversaries/birthdays - resorts often provide complimentary upgrades</li></ol>
 <h2>Couples Resort FAQs</h2>
 <p>Overwater villas provide ultimate privacy and direct lagoon access, while beach villas offer more space and easier access to resort amenities. For first-time visitors, we recommend splitting your stay - 3 nights in each type.</p>
-<p>Adults-only resorts like Komandoo guarantee a child-free environment, but many family-friendly resorts have adults-only areas and restaurants. If tranquility is your priority, adults-only is worth the premium.</p>', 2
-from nodes where node_type = 'article' and slug = 'best-maldives-resorts-for-couples-romantic-getaways'
-on conflict (id) do nothing;
+<p>Adults-only resorts like Komandoo guarantee a child-free environment, but many family-friendly resorts have adults-only areas and restaurants. If tranquility is your priority, adults-only is worth the premium.</p>', 2 from nodes where node_type = 'article' and slug = 'best-maldives-resorts-for-couples-romantic-getaways' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'best-maldives-resorts-for-couples-romantic-getaways'
-  and c.node_type = 'category' and c.slug = 'accommodation'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'best-maldives-resorts-for-couples-romantic-getaways' and c.node_type = 'category' and c.slug = 'accommodation' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'best-maldives-resorts-for-couples-romantic-getaways'
-  and l.node_type = 'location' and l.slug = 'komandoo'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'best-maldives-resorts-for-couples-romantic-getaways' and l.node_type = 'location' and l.slug = 'komandoo' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'best-maldives-resorts-for-couples-romantic-getaways'
-  and l.node_type = 'location' and l.slug = 'lankanfushi'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'best-maldives-resorts-for-couples-romantic-getaways' and l.node_type = 'location' and l.slug = 'lankanfushi' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('df1a234a-f8a1-743d-7069-cc0750519361'::uuid, 'image', 'legacy/images/maldives/ukulhas-island-maldives.webp', 'Best Maldives Resorts for Couples: Romantic Getaways', 'Legacy MTG site archive', 720, 405)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('df1a234a-f8a1-743d-7069-cc0750519361'::uuid, 'image', 'legacy/images/maldives/ukulhas-island-maldives.webp', 'Best Maldives Resorts for Couples: Romantic Getaways', 'Legacy MTG site archive', 720, 405) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'df1a234a-f8a1-743d-7069-cc0750519361'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'best-maldives-resorts-for-couples-romantic-getaways'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'df1a234a-f8a1-743d-7069-cc0750519361'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'best-maldives-resorts-for-couples-romantic-getaways' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('441fb524-5a8a-e411-f99c-9a73b75e0a85'::uuid, 'image', 'legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-family-villa1.webp', 'Best Maldives Resorts for Couples: Romantic Getaways', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('441fb524-5a8a-e411-f99c-9a73b75e0a85'::uuid, 'image', 'legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-family-villa1.webp', 'Best Maldives Resorts for Couples: Romantic Getaways', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '441fb524-5a8a-e411-f99c-9a73b75e0a85'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'best-maldives-resorts-for-couples-romantic-getaways'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '441fb524-5a8a-e411-f99c-9a73b75e0a85'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'best-maldives-resorts-for-couples-romantic-getaways' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: 100 Best things to Do in the Maldives: An Ultimate Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', '100-best-things-to-do-in-the-maldives-an-ultimate-guide', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Here', 'published', '100 Best things to Do in the Maldives: An Ultimate Guide | Maldives Travel Guide | MTG', 'Here', ARRAY['/articles/best-things-to-do-in-maldives.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', '100-best-things-to-do-in-the-maldives-an-ultimate-guide', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Here', 'published', '100 Best things to Do in the Maldives: An Ultimate Guide | Maldives Travel Guide | MTG', 'Here', ARRAY['/articles/best-things-to-do-in-maldives.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<h3>1. Snorkeling</h3>
+insert into articles (id, body, reading_time_minutes) select id, '<h3>1. Snorkeling</h3>
 <p>The Maldives offers some of the most spectacular snorkeling in the world. This is due to the abundance of coral reefs in the region, as well as extremely clear waters. There are, in fact, close to 70 distinct species of coral reefs and more than 700 species of marine life. This means when you snorkel here you are sure to see an amazing variety of flora and fauna. Just some of the species you are likely to see include reef sharks, various kinds of turtles, rays, napoleons and morays. Whether you are an expert on marine life or not, you can still appreciate the colorful array of creatures you will be able to observe. Snorkeling highly recommended thing to do in Maldives.</p>
 <h3>2. Diving</h3>
 <p>The Maldives has become one of the world''s best scuba diving destinations because of the white sand beaches, coral reefs, clear warm waters, numerous scuba diving sites and rich marine life.</p>
@@ -1227,173 +967,80 @@ select id, '<h3>1. Snorkeling</h3>
 <h3>99. Explore the Thilafushi Island</h3>
 <p>Known as the “garbage island,” Thilafushi offers a unique insight into waste management and the environmental challenges faced by the Maldives.</p>
 <h3>100. Visit the Hanifaru Bay</h3>
-<p>Snorkel in this UNESCO Biosphere Reserve, famous for its large gatherings of manta rays and whale sharks.</p>', 18
-from nodes where node_type = 'article' and slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (id) do nothing;
+<p>Snorkel in this UNESCO Biosphere Reserve, famous for its large gatherings of manta rays and whale sharks.</p>', 18 from nodes where node_type = 'article' and slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-  and c.node_type = 'category' and c.slug = 'diving'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' and c.node_type = 'category' and c.slug = 'diving' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('b0ad30a7-9490-560d-4714-46d1b8a3727a'::uuid, 'image', 'legacy/images/male/maldives-capital-male-city.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 720, 508)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('b0ad30a7-9490-560d-4714-46d1b8a3727a'::uuid, 'image', 'legacy/images/male/maldives-capital-male-city.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 720, 508) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'b0ad30a7-9490-560d-4714-46d1b8a3727a'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'b0ad30a7-9490-560d-4714-46d1b8a3727a'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('e7e26582-7d9a-7efe-1fe8-d662c7688e5e'::uuid, 'image', 'legacy/images/activities/manta-point-lankanfinolhu-island.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 640, 359)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('e7e26582-7d9a-7efe-1fe8-d662c7688e5e'::uuid, 'image', 'legacy/images/activities/manta-point-lankanfinolhu-island.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 640, 359) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'e7e26582-7d9a-7efe-1fe8-d662c7688e5e'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'e7e26582-7d9a-7efe-1fe8-d662c7688e5e'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('b1e944d9-8909-19a3-b841-3fdf4f7a166e'::uuid, 'image', 'legacy/images/maldives-sunset-cruise.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 1814, 1360)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('b1e944d9-8909-19a3-b841-3fdf4f7a166e'::uuid, 'image', 'legacy/images/maldives-sunset-cruise.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 1814, 1360) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'b1e944d9-8909-19a3-b841-3fdf4f7a166e'::uuid, 'content', 3
-from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'b1e944d9-8909-19a3-b841-3fdf4f7a166e'::uuid, 'content', 3 from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('b168136b-5954-7363-1938-3ebc25d6ef97'::uuid, 'image', 'legacy/images/diving/meedhoo-coral-garden.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 640, 480)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('b168136b-5954-7363-1938-3ebc25d6ef97'::uuid, 'image', 'legacy/images/diving/meedhoo-coral-garden.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 640, 480) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'b168136b-5954-7363-1938-3ebc25d6ef97'::uuid, 'content', 4
-from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'b168136b-5954-7363-1938-3ebc25d6ef97'::uuid, 'content', 4 from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('620e9b62-c59f-86ab-1f1a-c29236b081c2'::uuid, 'image', 'legacy/images/articles/dolphin-cruise.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 640, 452)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('620e9b62-c59f-86ab-1f1a-c29236b081c2'::uuid, 'image', 'legacy/images/articles/dolphin-cruise.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 640, 452) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '620e9b62-c59f-86ab-1f1a-c29236b081c2'::uuid, 'content', 5
-from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '620e9b62-c59f-86ab-1f1a-c29236b081c2'::uuid, 'content', 5 from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('fe08057c-f29b-4da2-4955-b96beb91a921'::uuid, 'image', 'legacy/images/fishing/big-game-fishing-maldives.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 640, 427)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('fe08057c-f29b-4da2-4955-b96beb91a921'::uuid, 'image', 'legacy/images/fishing/big-game-fishing-maldives.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 640, 427) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'fe08057c-f29b-4da2-4955-b96beb91a921'::uuid, 'content', 6
-from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'fe08057c-f29b-4da2-4955-b96beb91a921'::uuid, 'content', 6 from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('77f1a68b-9ea0-4775-71ef-45b7eac9b32a'::uuid, 'image', 'legacy/images/male/male-maldives.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 720, 508)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('77f1a68b-9ea0-4775-71ef-45b7eac9b32a'::uuid, 'image', 'legacy/images/male/male-maldives.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 720, 508) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '77f1a68b-9ea0-4775-71ef-45b7eac9b32a'::uuid, 'content', 7
-from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '77f1a68b-9ea0-4775-71ef-45b7eac9b32a'::uuid, 'content', 7 from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('a74ba690-21b3-5ebd-7d46-fe6b210ee449'::uuid, 'image', 'legacy/images/utheemu-ganduvaru.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 700, 525)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('a74ba690-21b3-5ebd-7d46-fe6b210ee449'::uuid, 'image', 'legacy/images/utheemu-ganduvaru.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 700, 525) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'a74ba690-21b3-5ebd-7d46-fe6b210ee449'::uuid, 'content', 8
-from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'a74ba690-21b3-5ebd-7d46-fe6b210ee449'::uuid, 'content', 8 from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('a21c1875-da36-bce5-bcca-7099f91d21fe'::uuid, 'image', 'legacy/resorts/hideaway-beach/images/hideaway-beach-resort-and-spa.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('a21c1875-da36-bce5-bcca-7099f91d21fe'::uuid, 'image', 'legacy/resorts/hideaway-beach/images/hideaway-beach-resort-and-spa.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'a21c1875-da36-bce5-bcca-7099f91d21fe'::uuid, 'content', 9
-from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'a21c1875-da36-bce5-bcca-7099f91d21fe'::uuid, 'content', 9 from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('9985dfc5-2aa5-06f0-2f3d-40fd5567d656'::uuid, 'image', 'legacy/images/male-fish-market-maldives.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 720, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('9985dfc5-2aa5-06f0-2f3d-40fd5567d656'::uuid, 'image', 'legacy/images/male-fish-market-maldives.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 720, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '9985dfc5-2aa5-06f0-2f3d-40fd5567d656'::uuid, 'content', 10
-from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '9985dfc5-2aa5-06f0-2f3d-40fd5567d656'::uuid, 'content', 10 from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('1e638f32-b0ce-fd12-0f2f-566849e78011'::uuid, 'image', 'legacy/images/male/male-city-beach.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 2048, 2560)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1e638f32-b0ce-fd12-0f2f-566849e78011'::uuid, 'image', 'legacy/images/male/male-city-beach.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 2048, 2560) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '1e638f32-b0ce-fd12-0f2f-566849e78011'::uuid, 'content', 11
-from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '1e638f32-b0ce-fd12-0f2f-566849e78011'::uuid, 'content', 11 from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('03e1e9a2-6a76-42c4-8aea-994ca6109f04'::uuid, 'image', 'legacy/images/hulhumale-city-maldives.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 888, 665)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('03e1e9a2-6a76-42c4-8aea-994ca6109f04'::uuid, 'image', 'legacy/images/hulhumale-city-maldives.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 888, 665) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '03e1e9a2-6a76-42c4-8aea-994ca6109f04'::uuid, 'content', 12
-from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '03e1e9a2-6a76-42c4-8aea-994ca6109f04'::uuid, 'content', 12 from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('505b8ca8-7a27-520c-4566-b0a73cf49b21'::uuid, 'image', 'legacy/images/male/male-city-guided-tour.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 720, 508)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('505b8ca8-7a27-520c-4566-b0a73cf49b21'::uuid, 'image', 'legacy/images/male/male-city-guided-tour.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 720, 508) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '505b8ca8-7a27-520c-4566-b0a73cf49b21'::uuid, 'content', 13
-from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '505b8ca8-7a27-520c-4566-b0a73cf49b21'::uuid, 'content', 13 from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('f3e99082-1e0c-d968-cc4e-522589fce5bd'::uuid, 'image', 'legacy/images/male/male-island-tour.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 720, 508)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('f3e99082-1e0c-d968-cc4e-522589fce5bd'::uuid, 'image', 'legacy/images/male/male-island-tour.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 720, 508) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'f3e99082-1e0c-d968-cc4e-522589fce5bd'::uuid, 'content', 14
-from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'f3e99082-1e0c-d968-cc4e-522589fce5bd'::uuid, 'content', 14 from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 640, 427)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', '100 Best things to Do in the Maldives: An Ultimate Guide', 'Legacy MTG site archive', 640, 427) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'content', 15
-from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'content', 15 from nodes n where n.node_type = 'article' and n.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: The Cheapest Time to Visit the Maldives: A Comprehensive Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'the-cheapest-time-to-visit-the-maldives-a-comprehensive-guide', 'The Cheapest Time to Visit the Maldives: A Comprehensive Guide', 'This guide explores the cheapest time to visit the Maldives, helping you plan an affordable and unforgettable getaway.', 'published', 'The Cheapest Time to Visit the Maldives: A Comprehensive Guide | Maldives Travel Guide | MTG', 'This guide explores the cheapest time to visit the Maldives, helping you plan an affordable and unforgettable getaway.', ARRAY['/articles/cheapest-time-to-go-to-maldives.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'the-cheapest-time-to-visit-the-maldives-a-comprehensive-guide', 'The Cheapest Time to Visit the Maldives: A Comprehensive Guide', 'This guide explores the cheapest time to visit the Maldives, helping you plan an affordable and unforgettable getaway.', 'published', 'The Cheapest Time to Visit the Maldives: A Comprehensive Guide | Maldives Travel Guide | MTG', 'This guide explores the cheapest time to visit the Maldives, helping you plan an affordable and unforgettable getaway.', ARRAY['/articles/cheapest-time-to-go-to-maldives.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>The Maldives, with its stunning turquoise waters, white sandy beaches, and luxurious resorts, is often perceived as a high-end vacation destination. However, traveling to this tropical paradise doesn''t always have to break the bank. Timing your trip strategically can significantly reduce your costs. This guide explores the cheapest time to visit the Maldives, helping you plan an affordable and unforgettable getaway.</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>The Maldives, with its stunning turquoise waters, white sandy beaches, and luxurious resorts, is often perceived as a high-end vacation destination. However, traveling to this tropical paradise doesn''t always have to break the bank. Timing your trip strategically can significantly reduce your costs. This guide explores the cheapest time to visit the Maldives, helping you plan an affordable and unforgettable getaway.</p>
 <div data-youtube-id="QNg0J5-thqE" data-video-title="The Cheapest Time to Visit the Maldives"></div>
 <h3>Quick Navigations (Topics covered in this guide)</h3>
 <p>Understanding the Maldives'' Travel Seasons Best Months for Affordable Travel Additional Tips for Budget Travely Popular Affordable Activities in the Maldives Travel Insurance and Safety Conclusion</p>
@@ -1454,32 +1101,18 @@ select id, '<p>The Maldives, with its stunning turquoise waters, white sandy bea
 <p>Weather Awareness: During the wet season, keep an eye on weather forecasts and be prepared for sudden changes in weather conditions.</p>
 <p>Local Customs: Respect local customs and regulations, especially when visiting local islands. Dress modestly and be mindful of cultural practices.</p>
 <p>The Maldives is a stunning destination that doesn’t have to come with a hefty price tag. By choosing to travel during the wet season, particularly from May to October, and following budget-friendly tips, you can experience the Maldives'' beauty and culture without overspending. With careful planning and strategic booking, you can enjoy an affordable yet unforgettable vacation in this tropical paradise.</p>
-<p>Whether you’re seeking relaxation on idyllic beaches, exploring vibrant marine life, or immersing yourself in local culture, the Maldives offers something for every traveler. By choosing the right time to visit and making smart travel decisions, you can make your dream trip to the Maldives a reality without breaking the bank.</p>', 5
-from nodes where node_type = 'article' and slug = 'the-cheapest-time-to-visit-the-maldives-a-comprehensive-guide'
-on conflict (id) do nothing;
+<p>Whether you’re seeking relaxation on idyllic beaches, exploring vibrant marine life, or immersing yourself in local culture, the Maldives offers something for every traveler. By choosing the right time to visit and making smart travel decisions, you can make your dream trip to the Maldives a reality without breaking the bank.</p>', 5 from nodes where node_type = 'article' and slug = 'the-cheapest-time-to-visit-the-maldives-a-comprehensive-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'the-cheapest-time-to-visit-the-maldives-a-comprehensive-guide'
-  and c.node_type = 'category' and c.slug = 'accommodation'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'the-cheapest-time-to-visit-the-maldives-a-comprehensive-guide' and c.node_type = 'category' and c.slug = 'accommodation' on conflict (node_id, category_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'image', 'legacy/images/activities/sunset-cruise-maldives.webp', 'The Cheapest Time to Visit the Maldives: A Comprehensive Guide', 'Legacy MTG site archive', 1814, 1360)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'image', 'legacy/images/activities/sunset-cruise-maldives.webp', 'The Cheapest Time to Visit the Maldives: A Comprehensive Guide', 'Legacy MTG site archive', 1814, 1360) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'the-cheapest-time-to-visit-the-maldives-a-comprehensive-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'the-cheapest-time-to-visit-the-maldives-a-comprehensive-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Ilhas Maldivas para visitantes
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'ilhas-maldivas-para-visitantes', 'Ilhas Maldivas para visitantes', 'Everything a visitor needs from the Maldives is in here with live chat. Whether its information you need or activities or a hotel to stay can be found in here', 'published', 'Ilhas Maldivas para visitantes | Maldives Travel Guide | MTG', 'Everything a visitor needs from the Maldives is in here with live chat. Whether its information you need or activities or a hotel to stay can be found in here', ARRAY['/articles/ilhas-maldivas.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'ilhas-maldivas-para-visitantes', 'Ilhas Maldivas para visitantes', 'Everything a visitor needs from the Maldives is in here with live chat. Whether its information you need or activities or a hotel to stay can be found in here', 'published', 'Ilhas Maldivas para visitantes | Maldives Travel Guide | MTG', 'Everything a visitor needs from the Maldives is in here with live chat. Whether its information you need or activities or a hotel to stay can be found in here', ARRAY['/articles/ilhas-maldivas.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>O melhor guia local no país Maldivas. Leia este guia ou converse on-line para qualquer informação e reserve os melhores hotéis turísticos com atividades. Nosso país é muito único e a falta de informações pode colocar os visitantes em situações inconvenientes, por isso somos um guia local para ajudar e fornecer informações, pequenos detalhes sobre o local e todos os serviços necessários para que os viajantes visitem e fiquem nas Maldivas. As Maldivas são um destino único e muitas coisas podem não ser as mesmas que os viajantes esperam, por isso é necessário ler sobre o local e obter o máximo de conhecimento possível antes de começar a viajar. no final dos artigos, se você ainda tiver alguma dúvida, sinta-se à vontade para se juntar ao nosso serviço de bate-papo ao vivo. Neste artigo, focaremos nas áreas e lugares mais importantes que muitos viajantes não conseguem entender com base nas perguntas frequentes.</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>O melhor guia local no país Maldivas. Leia este guia ou converse on-line para qualquer informação e reserve os melhores hotéis turísticos com atividades. Nosso país é muito único e a falta de informações pode colocar os visitantes em situações inconvenientes, por isso somos um guia local para ajudar e fornecer informações, pequenos detalhes sobre o local e todos os serviços necessários para que os viajantes visitem e fiquem nas Maldivas. As Maldivas são um destino único e muitas coisas podem não ser as mesmas que os viajantes esperam, por isso é necessário ler sobre o local e obter o máximo de conhecimento possível antes de começar a viajar. no final dos artigos, se você ainda tiver alguma dúvida, sinta-se à vontade para se juntar ao nosso serviço de bate-papo ao vivo. Neste artigo, focaremos nas áreas e lugares mais importantes que muitos viajantes não conseguem entender com base nas perguntas frequentes.</p>
 <h2>Highlights (Important for first time travelers)</h2>
 <p>Hotéis Resorts Transferes Excursões Religião Idioma</p>
 <p>Moeda Capital Cidade Aeroporto Guia Atrações Turísticas ilhas maldivas</p>
@@ -1530,71 +1163,30 @@ select id, '<p>O melhor guia local no país Maldivas. Leia este guia ou converse
 <h4>Dia do Oceano</h4>
 <p>Embora toda a economia das Maldivas dependa do turismo, a negligência ainda faz parte da comunidade. Muitos plásticos são fundados no oceano Maldivas. Nas Maldivas, todos os anos, em 8 de junho, é comemorado o dia mundial dos oceanos e alguns dos organizadores de serviços comunitários organizam a limpeza dos recifes de nossa casa e removem o plástico do oceano.</p>
 <h4>A vida de um maldivo - uma experiência além da sua imaginação -</h4>
-<p>As ilhas Maldivas são multifacetadas. A cultura, tradições e costumes do país são influenciados principalmente pelas influências do Sri Lanka, Malásia, Árabe, Indiana, Persa, Indonésia e até Africana. Uma mistura cultural fabulosa que faz toda a riqueza das Maldivas.</p>', 13
-from nodes where node_type = 'article' and slug = 'ilhas-maldivas-para-visitantes'
-on conflict (id) do nothing;
+<p>As ilhas Maldivas são multifacetadas. A cultura, tradições e costumes do país são influenciados principalmente pelas influências do Sri Lanka, Malásia, Árabe, Indiana, Persa, Indonésia e até Africana. Uma mistura cultural fabulosa que faz toda a riqueza das Maldivas.</p>', 13 from nodes where node_type = 'article' and slug = 'ilhas-maldivas-para-visitantes' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes'
-  and c.node_type = 'category' and c.slug = 'transportation'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes' and c.node_type = 'category' and c.slug = 'transportation' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes'
-  and l.node_type = 'location' and l.slug = 'dhiffushi'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes' and l.node_type = 'location' and l.slug = 'dhiffushi' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes'
-  and l.node_type = 'location' and l.slug = 'gulhi'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes' and l.node_type = 'location' and l.slug = 'gulhi' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes'
-  and l.node_type = 'location' and l.slug = 'guraidhoo'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes' and l.node_type = 'location' and l.slug = 'guraidhoo' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes'
-  and l.node_type = 'location' and l.slug = 'huraa'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes' and l.node_type = 'location' and l.slug = 'huraa' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes'
-  and l.node_type = 'location' and l.slug = 'maafushi'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes' and l.node_type = 'location' and l.slug = 'maafushi' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes'
-  and l.node_type = 'location' and l.slug = 'thulusdhoo'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes' and l.node_type = 'location' and l.slug = 'thulusdhoo' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes'
-  and l.node_type = 'location' and l.slug = 'guraidhoo-thaa'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes' and l.node_type = 'location' and l.slug = 'guraidhoo-thaa' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'ilhas-maldivas-para-visitantes' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
 -- Article: Las Islas Maldivas
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'las-islas-maldivas', 'Las Islas Maldivas', 'Todo lo que un visitante necesita de las Maldivas está aquí con chat en vivo. Puede encontrar aquí la información que necesita o las actividades o un hotel para quedarse.', 'published', 'Las Islas Maldivas | Maldives Travel Guide | MTG', 'Todo lo que un visitante necesita de las Maldivas está aquí con chat en vivo. Puede encontrar aquí la información que necesita o las actividades o un hotel para quedarse.', ARRAY['/articles/las-islas-maldivas.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'las-islas-maldivas', 'Las Islas Maldivas', 'Todo lo que un visitante necesita de las Maldivas está aquí con chat en vivo. Puede encontrar aquí la información que necesita o las actividades o un hotel para quedarse.', 'published', 'Las Islas Maldivas | Maldives Travel Guide | MTG', 'Todo lo que un visitante necesita de las Maldivas está aquí con chat en vivo. Puede encontrar aquí la información que necesita o las actividades o un hotel para quedarse.', ARRAY['/articles/las-islas-maldivas.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>las islas Maldivas es un destino turístico muy singular que puede causar confusión a los visitantes por primera vez. Algunos visitantes cometen errores horribles porque no son conscientes de ciertas cosas. He visto a una familia venir con 2 hoteles reservados uno al lado del otro, con la esperanza de que se conozcan todos los días, pero debido a que eran 2 islas diferentes, no pudieron conocerse. Algunos turistas intentan llevar alcohol libre de impuestos con ellos a algunas islas y la policía los retuvo. Este tipo de errores puede causar problemas innecesarios. Es por eso que intentaré proporcionar información vital para su viaje e intentaré responder a todas sus preguntas. Si no respondo ninguna de ellas, no dude en chatear conmigo desde el siguiente enlace en la esquina derecha.</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>las islas Maldivas es un destino turístico muy singular que puede causar confusión a los visitantes por primera vez. Algunos visitantes cometen errores horribles porque no son conscientes de ciertas cosas. He visto a una familia venir con 2 hoteles reservados uno al lado del otro, con la esperanza de que se conozcan todos los días, pero debido a que eran 2 islas diferentes, no pudieron conocerse. Algunos turistas intentan llevar alcohol libre de impuestos con ellos a algunas islas y la policía los retuvo. Este tipo de errores puede causar problemas innecesarios. Es por eso que intentaré proporcionar información vital para su viaje e intentaré responder a todas sus preguntas. Si no respondo ninguna de ellas, no dude en chatear conmigo desde el siguiente enlace en la esquina derecha.</p>
 <p>Es tan único que no hay un segundo lugar que se pueda comparar. Primero de todo su país 100% musulmán. El país está formado por pequeñas islas pequeñas, que están separadas por el océano y cada isla tiene una longitud promedio de 0.6 km. El 99% del país es océano y el 1% es tierra. Es el país más bajo del mundo y el más pequeño de Asia. También posee el 5% del total de corales en el mundo y es el hogar de miles de especies raras. Las playas blancas, los bancos de arena, el agua cristalina, el cielo azul y el ecuador, la lista puede continuar. Entonces, si desea visitar lo primero que debe hacer es hacer algunas preguntas como las siguientes</p>
 <h2>contenido (temas a cubrir sobre las Maldivas)</h2>
 <p>Donde quedarse? Cómo viajar en transporte público? Cuáles son los mejores lugares para visitar? Qué actividades se recomiendan mejor? Maldivas Religión Idioma Comunidad</p>
@@ -1653,32 +1245,18 @@ select id, '<p>las islas Maldivas es un destino turístico muy singular que pued
 <h4>Día del océano</h4>
 <p>Aunque toda la economía de Maldivas depende del turismo, la negligencia es parte de la comunidad. Muchos plásticos se fundan en el océano Maldivas. En Maldivas, todos los años, el 8 de junio, se celebra el día mundial del océano y algunos de los organizadores del servicio comunitario organizan la limpieza de los arrecifes de nuestra casa y eliminan el plástico del océano..</p>
 <h4>TLa vida de un maldivo - una experiencia más allá de tu imaginación -</h4>
-<p>Las islas Maldivas son multifacéticas. La cultura, las tradiciones y las costumbres del país están influenciadas principalmente por las influencias de Sri Lanka, Malasia, Árabe, India, Persa, Indonesia e incluso África. Una fabulosa mezcla cultural que hace toda la riqueza de las Maldivas.</p>', 17
-from nodes where node_type = 'article' and slug = 'las-islas-maldivas'
-on conflict (id) do nothing;
+<p>Las islas Maldivas son multifacéticas. La cultura, las tradiciones y las costumbres del país están influenciadas principalmente por las influencias de Sri Lanka, Malasia, Árabe, India, Persa, Indonesia e incluso África. Una fabulosa mezcla cultural que hace toda la riqueza de las Maldivas.</p>', 17 from nodes where node_type = 'article' and slug = 'las-islas-maldivas' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'las-islas-maldivas'
-  and c.node_type = 'category' and c.slug = 'transportation'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'las-islas-maldivas' and c.node_type = 'category' and c.slug = 'transportation' on conflict (node_id, category_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('620e9b62-c59f-86ab-1f1a-c29236b081c2'::uuid, 'image', 'legacy/images/articles/dolphin-cruise.webp', 'Las Islas Maldivas', 'Legacy MTG site archive', 640, 452)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('620e9b62-c59f-86ab-1f1a-c29236b081c2'::uuid, 'image', 'legacy/images/articles/dolphin-cruise.webp', 'Las Islas Maldivas', 'Legacy MTG site archive', 640, 452) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '620e9b62-c59f-86ab-1f1a-c29236b081c2'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'las-islas-maldivas'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '620e9b62-c59f-86ab-1f1a-c29236b081c2'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'las-islas-maldivas' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives Accommodation Guide: Where to Stay in Paradise
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-accommodation-guide-where-to-stay-in-paradise', 'Maldives Accommodation Guide: Where to Stay in Paradise', 'Comprehensive guide to Maldives accommodation options - from luxury resorts and water villas to budget-friendly guesthouses and local island stays. Find your perfect paradise stay.', 'published', 'Maldives Accommodation Guide: Where to Stay in Paradise | Maldives Travel Guide | MTG', 'Comprehensive guide to Maldives accommodation options - from luxury resorts and water villas to budget-friendly guesthouses and local island stays. Find your perfect paradise stay.', ARRAY['/articles/maldives-accommodation.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-accommodation-guide-where-to-stay-in-paradise', 'Maldives Accommodation Guide: Where to Stay in Paradise', 'Comprehensive guide to Maldives accommodation options - from luxury resorts and water villas to budget-friendly guesthouses and local island stays. Find your perfect paradise stay.', 'published', 'Maldives Accommodation Guide: Where to Stay in Paradise | Maldives Travel Guide | MTG', 'Comprehensive guide to Maldives accommodation options - from luxury resorts and water villas to budget-friendly guesthouses and local island stays. Find your perfect paradise stay.', ARRAY['/articles/maldives-accommodation.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>The Maldives offers a range of accommodation options from luxury water villas to budget-friendly guesthouses</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>The Maldives offers a range of accommodation options from luxury water villas to budget-friendly guesthouses</p>
 <p>The Maldives, with its pristine white beaches, crystal-clear turquoise waters, and vibrant marine life, is a dream destination for travelers worldwide. While the country is renowned for its luxury resorts and iconic overwater villas, it offers a surprising variety of accommodation options to suit different preferences and budgets. From exclusive private island resorts to affordable guesthouses on local islands, this comprehensive guide explores all your options for staying in this tropical paradise.</p>
 <h4>Maldives Accommodation at a Glance</h4>
 <p>The Maldives follows a unique &quot;one island, one resort&quot; concept for most of its luxury properties, meaning each resort occupies its own private island. In recent years, tourism has expanded to include guesthouses on local inhabited islands, offering more affordable options while still providing access to the country''s natural beauty.</p>
@@ -1761,38 +1339,20 @@ select id, '<p>The Maldives offers a range of accommodation options from luxury 
 <p>Many travelers find that combining different accommodation types creates the perfect Maldives experience—perhaps starting with a cultural stay on a local island before indulging in a few nights of luxury at a private resort.</p>
 <p>Regardless of where you stay, you''ll have access to the Maldives'' greatest treasures: its pristine beaches, crystal-clear waters, vibrant marine life, and the warm hospitality of its people. With careful planning and the right choice of accommodation, your Maldives vacation can be the trip of a lifetime without necessarily breaking the bank.</p>
 <h4>Ready to Book Your Maldives Accommodation?</h4>
-<p>Browse our curated selection of Maldives Resorts and Maldives Hotels to find your perfect stay. For more information about activities and experiences available during your stay, check out our Activities Guide.</p>', 5
-from nodes where node_type = 'article' and slug = 'maldives-accommodation-guide-where-to-stay-in-paradise'
-on conflict (id) do nothing;
+<p>Browse our curated selection of Maldives Resorts and Maldives Hotels to find your perfect stay. For more information about activities and experiences available during your stay, check out our Activities Guide.</p>', 5 from nodes where node_type = 'article' and slug = 'maldives-accommodation-guide-where-to-stay-in-paradise' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-accommodation-guide-where-to-stay-in-paradise'
-  and c.node_type = 'category' and c.slug = 'islands'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-accommodation-guide-where-to-stay-in-paradise' and c.node_type = 'category' and c.slug = 'islands' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'maldives-accommodation-guide-where-to-stay-in-paradise'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'maldives-accommodation-guide-where-to-stay-in-paradise' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'image', 'legacy/images/activities/full-day/full-day-activity-male-atoll.webp', 'Maldives Accommodation Guide: Where to Stay in Paradise', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'image', 'legacy/images/activities/full-day/full-day-activity-male-atoll.webp', 'Maldives Accommodation Guide: Where to Stay in Paradise', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-accommodation-guide-where-to-stay-in-paradise'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-accommodation-guide-where-to-stay-in-paradise' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives on a Budget: Complete 2024 Guide to Affordable Travel
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel', 'Maldives on a Budget: Complete 2024 Guide to Affordable Travel', 'Maldives budget travel guide 2024 - Discover how to experience paradise for less with affordable local islands, guesthouses & budget-friendly activities. Complete guide to Maldives on a budget with tips to save 50-70% on your trip.', 'published', 'Maldives on a Budget: Complete 2024 Guide to Affordable Travel | Maldives Travel Guide | MTG', 'Maldives budget travel guide 2024 - Discover how to experience paradise for less with affordable local islands, guesthouses & budget-friendly activities. Complete guide to Maldives on a budget with tips to save 50-70% on your trip.', ARRAY['/articles/maldives-budget-travel.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel', 'Maldives on a Budget: Complete 2024 Guide to Affordable Travel', 'Maldives budget travel guide 2024 - Discover how to experience paradise for less with affordable local islands, guesthouses & budget-friendly activities. Complete guide to Maldives on a budget with tips to save 50-70% on your trip.', 'published', 'Maldives on a Budget: Complete 2024 Guide to Affordable Travel | Maldives Travel Guide | MTG', 'Maldives budget travel guide 2024 - Discover how to experience paradise for less with affordable local islands, guesthouses & budget-friendly activities. Complete guide to Maldives on a budget with tips to save 50-70% on your trip.', ARRAY['/articles/maldives-budget-travel.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<figure><img src="legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel.webp" alt="Affordable beach in Maldives local island" loading="lazy" /></figure>
+insert into articles (id, body, reading_time_minutes) select id, '<figure><img src="legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel.webp" alt="Affordable beach in Maldives local island" loading="lazy" /></figure>
 <p>Maldives Local Island Beach - experience paradise without breaking the bank</p>
 <p>Yes, you can experience the Maldives on a budget! This comprehensive guide reveals how to enjoy the same pristine beaches, turquoise waters, and incredible marine life for a fraction of the cost of luxury resorts. Discover local islands, affordable guesthouses, and money-saving strategies that can reduce your Maldives vacation cost by 50-70% while still experiencing the paradise you''ve dreamed about.</p>
 <div data-youtube-id="6eRExf-ixRw" data-video-title="Maldives Budget Travel Guide"></div>
@@ -1893,86 +1453,40 @@ select id, '<figure><img src="legacy/hotels/kaanibeach-maafushi/images/kaani-bea
 <p>A popular and cost-effective strategy is the &quot;split stay&quot; approach, where you spend most of your trip on budget-friendly local islands, then treat yourself to 1-2 nights at a resort for the full luxury experience. This gives you the best of both worlds: authentic local experiences and significant savings, plus the iconic overwater villa experience. If a resort stay is still beyond your budget, consider a resort day trip ($80-150) which allows you to experience resort facilities, including pools, beaches, and dining, without the overnight cost. Many guesthouses on local islands can arrange these day trips to nearby resorts, giving you a taste of luxury while still maintaining your budget travel approach.</p>
 <h2>Final Thoughts on Budget Travel in the Maldives</h2>
 <p>The Maldives on a budget isn''t just possible—it''s an incredible way to experience this island paradise more authentically while saving thousands of dollars. By staying on local islands, using public transportation, and being strategic about your activities, you can enjoy the same stunning beaches, crystal-clear waters, and amazing marine life that make the Maldives famous without the luxury resort price tag.</p>
-<p>Budget travel in the Maldives also offers something many resort guests never experience: genuine cultural connections with Maldivians and insights into local island life. Whether you''re a backpacker looking to stretch your funds or a value-conscious traveler who prefers to spend smartly, the local island approach offers an unforgettable Maldives experience that''s accessible to a much wider range of travelers. With careful planning using the tips in this guide, you can create your own slice of paradise for a fraction of the traditional cost.</p>', 6
-from nodes where node_type = 'article' and slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel'
-on conflict (id) do nothing;
+<p>Budget travel in the Maldives also offers something many resort guests never experience: genuine cultural connections with Maldivians and insights into local island life. Whether you''re a backpacker looking to stretch your funds or a value-conscious traveler who prefers to spend smartly, the local island approach offers an unforgettable Maldives experience that''s accessible to a much wider range of travelers. With careful planning using the tips in this guide, you can create your own slice of paradise for a fraction of the traditional cost.</p>', 6 from nodes where node_type = 'article' and slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel'
-  and c.node_type = 'category' and c.slug = 'transportation'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel' and c.node_type = 'category' and c.slug = 'transportation' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel'
-  and l.node_type = 'location' and l.slug = 'dhiffushi'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel' and l.node_type = 'location' and l.slug = 'dhiffushi' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel'
-  and l.node_type = 'location' and l.slug = 'maafushi'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel' and l.node_type = 'location' and l.slug = 'maafushi' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('a42f6b6a-be87-5b65-2770-cb1f24fe13e5'::uuid, 'image', 'legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel.webp', 'Maldives on a Budget: Complete 2024 Guide to Affordable Travel', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('a42f6b6a-be87-5b65-2770-cb1f24fe13e5'::uuid, 'image', 'legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel.webp', 'Maldives on a Budget: Complete 2024 Guide to Affordable Travel', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'a42f6b6a-be87-5b65-2770-cb1f24fe13e5'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'a42f6b6a-be87-5b65-2770-cb1f24fe13e5'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('b3787b70-ef88-f3ef-48ef-0c388737dca8'::uuid, 'image', 'legacy/images/activities/maafushi-island.webp', 'Maldives on a Budget: Complete 2024 Guide to Affordable Travel', 'Legacy MTG site archive', 500, 375)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('b3787b70-ef88-f3ef-48ef-0c388737dca8'::uuid, 'image', 'legacy/images/activities/maafushi-island.webp', 'Maldives on a Budget: Complete 2024 Guide to Affordable Travel', 'Legacy MTG site archive', 500, 375) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'b3787b70-ef88-f3ef-48ef-0c388737dca8'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'b3787b70-ef88-f3ef-48ef-0c388737dca8'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('a90df2c7-481e-7f55-18e7-bc4a0748b911'::uuid, 'image', 'legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel-maldives.webp', 'Maldives on a Budget: Complete 2024 Guide to Affordable Travel', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('a90df2c7-481e-7f55-18e7-bc4a0748b911'::uuid, 'image', 'legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel-maldives.webp', 'Maldives on a Budget: Complete 2024 Guide to Affordable Travel', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'a90df2c7-481e-7f55-18e7-bc4a0748b911'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'a90df2c7-481e-7f55-18e7-bc4a0748b911'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('1252ee18-2500-652f-31db-6174cfc5982e'::uuid, 'image', 'legacy/images/activities/sandbank-excursion-male-atoll.webp', 'Maldives on a Budget: Complete 2024 Guide to Affordable Travel', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1252ee18-2500-652f-31db-6174cfc5982e'::uuid, 'image', 'legacy/images/activities/sandbank-excursion-male-atoll.webp', 'Maldives on a Budget: Complete 2024 Guide to Affordable Travel', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '1252ee18-2500-652f-31db-6174cfc5982e'::uuid, 'content', 3
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '1252ee18-2500-652f-31db-6174cfc5982e'::uuid, 'content', 3 from nodes n where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('f16e57bc-78bc-5a11-3c5a-ca8608f2052b'::uuid, 'image', 'legacy/images/activities/six-senses-laamu.webp', 'Maldives on a Budget: Complete 2024 Guide to Affordable Travel', 'Legacy MTG site archive', 640, 360)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('f16e57bc-78bc-5a11-3c5a-ca8608f2052b'::uuid, 'image', 'legacy/images/activities/six-senses-laamu.webp', 'Maldives on a Budget: Complete 2024 Guide to Affordable Travel', 'Legacy MTG site archive', 640, 360) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'f16e57bc-78bc-5a11-3c5a-ca8608f2052b'::uuid, 'content', 4
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'f16e57bc-78bc-5a11-3c5a-ca8608f2052b'::uuid, 'content', 4 from nodes n where n.node_type = 'article' and n.slug = 'maldives-on-a-budget-complete-2024-guide-to-affordable-travel' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives Culture Guide: Traditions, Customs & Cultural Experiences
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-culture-guide-traditions-customs-cultural-experiences', 'Maldives Culture Guide: Traditions, Customs & Cultural Experiences', 'Maldives culture guide - Discover the rich traditions, customs, food, music, and arts of the Maldivian people. Experience authentic cultural immersion during your visit.', 'published', 'Maldives Culture Guide: Traditions, Customs & Cultural Experiences | Maldives Travel Guide | MTG', 'Maldives culture guide - Discover the rich traditions, customs, food, music, and arts of the Maldivian people. Experience authentic cultural immersion during your visit.', ARRAY['/articles/maldives-culture.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-culture-guide-traditions-customs-cultural-experiences', 'Maldives Culture Guide: Traditions, Customs & Cultural Experiences', 'Maldives culture guide - Discover the rich traditions, customs, food, music, and arts of the Maldivian people. Experience authentic cultural immersion during your visit.', 'published', 'Maldives Culture Guide: Traditions, Customs & Cultural Experiences | Maldives Travel Guide | MTG', 'Maldives culture guide - Discover the rich traditions, customs, food, music, and arts of the Maldivian people. Experience authentic cultural immersion during your visit.', ARRAY['/articles/maldives-culture.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>Experience the rich cultural heritage of the Maldives through traditional performances and customs</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>Experience the rich cultural heritage of the Maldives through traditional performances and customs</p>
 <p>Beyond the pristine beaches and luxury resorts, the Maldives offers a rich cultural tapestry shaped by centuries of influences from South Asia, Arabia, and Africa. This island nation''s unique heritage is expressed through vibrant traditions, distinctive cuisine, intricate crafts, and a way of life deeply connected to the sea. While many visitors focus solely on the natural beauty of the Maldives, understanding and experiencing the local culture adds a profound dimension to any trip. This comprehensive guide explores Maldivian traditions, customs, arts, and cultural experiences that provide insight into the authentic soul of this island paradise.</p>
 <div data-youtube-id="Sea-aiuXZNY" data-video-title="Maldives Culture Guide"></div>
 <p>Video: Experience the rich cultural heritage of the Maldives</p>
@@ -2066,29 +1580,16 @@ select id, '<p>Experience the rich cultural heritage of the Maldives through tra
 <p>The Maldivian people have developed a unique way of life adapted to their island environment over thousands of years. Their resilience, creativity, and community spirit are reflected in everything from their boat-building techniques to their communal celebrations. By participating in cultural experiences, visitors gain appreciation for how the Maldivians have thrived in this remote archipelago and developed their distinctive identity.</p>
 <p>While the &quot;one island, one resort&quot; tourism model has historically created separation between visitors and local culture, opportunities for cultural immersion are increasing. Whether through a day trip to a local island, a cooking class featuring traditional cuisine, or a conversation with Maldivian staff at your resort, these cultural connections often become the most memorable aspects of a Maldives vacation.</p>
 <p>As the Maldives continues to develop its tourism industry, cultural preservation becomes increasingly important. By showing interest in authentic Maldivian experiences and supporting traditional artisans and practices, visitors play a role in ensuring these cultural treasures continue for future generations.</p>
-<p>The true magic of the Maldives lies not just in its natural beauty but in the harmonious way its people have lived within this extraordinary environment. By embracing both the paradise beaches and the cultural heritage, visitors can experience the complete soul of this remarkable island nation.</p>', 16
-from nodes where node_type = 'article' and slug = 'maldives-culture-guide-traditions-customs-cultural-experiences'
-on conflict (id) do nothing;
+<p>The true magic of the Maldives lies not just in its natural beauty but in the harmonious way its people have lived within this extraordinary environment. By embracing both the paradise beaches and the cultural heritage, visitors can experience the complete soul of this remarkable island nation.</p>', 16 from nodes where node_type = 'article' and slug = 'maldives-culture-guide-traditions-customs-cultural-experiences' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-culture-guide-traditions-customs-cultural-experiences'
-  and c.node_type = 'category' and c.slug = 'islands'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-culture-guide-traditions-customs-cultural-experiences' and c.node_type = 'category' and c.slug = 'islands' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'maldives-culture-guide-traditions-customs-cultural-experiences'
-  and l.node_type = 'location' and l.slug = 'thulhaadhoo'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'maldives-culture-guide-traditions-customs-cultural-experiences' and l.node_type = 'location' and l.slug = 'thulhaadhoo' on conflict (node_id, location_id) do nothing;
 
 -- Article: Best Maldives Diving Spots: Ultimate Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'best-maldives-diving-spots-ultimate-guide', 'Best Maldives Diving Spots: Ultimate Guide', 'Maldives diving spots - Discover the best dive sites with detailed information on marine life, visibility, currents & difficulty levels. Complete guide to diving in Maldives for beginners to advanced divers.', 'published', 'Best Maldives Diving Spots: Ultimate Guide | Maldives Travel Guide | MTG', 'Maldives diving spots - Discover the best dive sites with detailed information on marine life, visibility, currents & difficulty levels. Complete guide to diving in Maldives for beginners to advanced divers.', ARRAY['/articles/maldives-diving-spots.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'best-maldives-diving-spots-ultimate-guide', 'Best Maldives Diving Spots: Ultimate Guide', 'Maldives diving spots - Discover the best dive sites with detailed information on marine life, visibility, currents & difficulty levels. Complete guide to diving in Maldives for beginners to advanced divers.', 'published', 'Best Maldives Diving Spots: Ultimate Guide | Maldives Travel Guide | MTG', 'Maldives diving spots - Discover the best dive sites with detailed information on marine life, visibility, currents & difficulty levels. Complete guide to diving in Maldives for beginners to advanced divers.', ARRAY['/articles/maldives-diving-spots.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>Diver exploring the vibrant coral formations at Maaya Thila, one of the Maldives'' most famous dive sites</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>Diver exploring the vibrant coral formations at Maaya Thila, one of the Maldives'' most famous dive sites</p>
 <p>Discover the underwater paradise of the Maldives, home to some of the world''s most spectacular dive sites. With crystal-clear waters, vibrant coral reefs, and an incredible diversity of marine life from tiny nudibranchs to majestic whale sharks, the Maldives offers diving experiences for every skill level. Our comprehensive guide covers the best diving spots across the archipelago, with detailed information on marine life, visibility, currents, and the best time to visit each site.</p>
 <div data-youtube-id="lKN9hrfiuKE" data-video-title="Maldives Diving Spots Guide"></div>
 <p>Video: Explore the underwater wonders of the Maldives'' top dive sites</p>
@@ -2180,74 +1681,34 @@ select id, '<p>Diver exploring the vibrant coral formations at Maaya Thila, one 
 <p>Each Maldives atoll offers unique diving experiences, making &quot;best&quot; subjective based on your interests. Ari Atoll is renowned for consistent pelagic sightings (sharks, mantas, whale sharks) and iconic sites like Fish Head and Maaya Thila. Baa Atoll, a UNESCO Biosphere Reserve, features Hanifaru Bay''s manta congregations during southwest monsoon. North and South Male Atolls offer convenient access to diverse sites from the airport, including wrecks, thilas, and channels. For pristine reefs and fewer divers, the southern atolls (Laamu, Huvadhoo, Fuvahmulah) provide exceptional experiences including tiger sharks and hammerheads. Liveaboards typically visit multiple atolls, offering the most comprehensive diving experience, while resort-based divers should choose locations based on their specific marine life interests and the season of their visit.</p>
 <h2>Final Thoughts on Maldives Diving</h2>
 <p>The Maldives offers some of the world''s most spectacular diving experiences, combining pristine reefs, abundant marine life, and excellent visibility in warm, tropical waters. Whether you''re a beginner taking your first breaths underwater or an experienced diver seeking adrenaline-pumping channel dives with sharks and mantas, the archipelago''s 26 atolls provide dive sites suited to every preference and skill level.</p>
-<p>What makes Maldives diving truly special is the combination of healthy coral ecosystems and the opportunity to encounter large pelagic species on the same dive. Few destinations offer such reliable sightings of manta rays, whale sharks, and multiple shark species in such comfortable diving conditions. With year-round diving possibilities and specialized seasonal experiences, the Maldives deserves its reputation as a bucket-list destination for divers from around the world.</p>', 6
-from nodes where node_type = 'article' and slug = 'best-maldives-diving-spots-ultimate-guide'
-on conflict (id) do nothing;
+<p>What makes Maldives diving truly special is the combination of healthy coral ecosystems and the opportunity to encounter large pelagic species on the same dive. Few destinations offer such reliable sightings of manta rays, whale sharks, and multiple shark species in such comfortable diving conditions. With year-round diving possibilities and specialized seasonal experiences, the Maldives deserves its reputation as a bucket-list destination for divers from around the world.</p>', 6 from nodes where node_type = 'article' and slug = 'best-maldives-diving-spots-ultimate-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'best-maldives-diving-spots-ultimate-guide'
-  and c.node_type = 'category' and c.slug = 'diving'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'best-maldives-diving-spots-ultimate-guide' and c.node_type = 'category' and c.slug = 'diving' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'best-maldives-diving-spots-ultimate-guide'
-  and l.node_type = 'location' and l.slug = 'maamigili'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'best-maldives-diving-spots-ultimate-guide' and l.node_type = 'location' and l.slug = 'maamigili' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'best-maldives-diving-spots-ultimate-guide'
-  and l.node_type = 'location' and l.slug = 'rasdhoo'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'best-maldives-diving-spots-ultimate-guide' and l.node_type = 'location' and l.slug = 'rasdhoo' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'best-maldives-diving-spots-ultimate-guide'
-  and l.node_type = 'location' and l.slug = 'dhigurah'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'best-maldives-diving-spots-ultimate-guide' and l.node_type = 'location' and l.slug = 'dhigurah' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'best-maldives-diving-spots-ultimate-guide'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'best-maldives-diving-spots-ultimate-guide' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('2cfb4323-ece8-675a-85b9-15503018a7fb'::uuid, 'image', 'legacy/images/activities/hp-reef-male-atoll.webp', 'Best Maldives Diving Spots: Ultimate Guide', 'Legacy MTG site archive', 640, 427)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('2cfb4323-ece8-675a-85b9-15503018a7fb'::uuid, 'image', 'legacy/images/activities/hp-reef-male-atoll.webp', 'Best Maldives Diving Spots: Ultimate Guide', 'Legacy MTG site archive', 640, 427) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '2cfb4323-ece8-675a-85b9-15503018a7fb'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'best-maldives-diving-spots-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '2cfb4323-ece8-675a-85b9-15503018a7fb'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'best-maldives-diving-spots-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('21f35349-02c7-0ad2-d2f3-19f084ddaa86'::uuid, 'image', 'legacy/images/diving/ari-atoll-maaya-thila-maldives.webp', 'Best Maldives Diving Spots: Ultimate Guide', 'Legacy MTG site archive', 640, 428)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('21f35349-02c7-0ad2-d2f3-19f084ddaa86'::uuid, 'image', 'legacy/images/diving/ari-atoll-maaya-thila-maldives.webp', 'Best Maldives Diving Spots: Ultimate Guide', 'Legacy MTG site archive', 640, 428) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '21f35349-02c7-0ad2-d2f3-19f084ddaa86'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'best-maldives-diving-spots-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '21f35349-02c7-0ad2-d2f3-19f084ddaa86'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'best-maldives-diving-spots-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('e7e26582-7d9a-7efe-1fe8-d662c7688e5e'::uuid, 'image', 'legacy/images/activities/manta-point-lankanfinolhu-island.webp', 'Best Maldives Diving Spots: Ultimate Guide', 'Legacy MTG site archive', 640, 359)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('e7e26582-7d9a-7efe-1fe8-d662c7688e5e'::uuid, 'image', 'legacy/images/activities/manta-point-lankanfinolhu-island.webp', 'Best Maldives Diving Spots: Ultimate Guide', 'Legacy MTG site archive', 640, 359) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'e7e26582-7d9a-7efe-1fe8-d662c7688e5e'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'best-maldives-diving-spots-ultimate-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'e7e26582-7d9a-7efe-1fe8-d662c7688e5e'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'best-maldives-diving-spots-ultimate-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Best Maldives Honeymoon Packages for
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'best-maldives-honeymoon-packages-for', 'Best Maldives Honeymoon Packages for', 'Maldives honeymoon packages - Discover the most romantic all-inclusive packages, overwater villas & exclusive experiences. Compare top 20 honeymoon resorts with private pools, sunset cruises & couples spa treatments.', 'published', 'Best Maldives Honeymoon Packages for | Maldives Travel Guide | MTG', 'Maldives honeymoon packages - Discover the most romantic all-inclusive packages, overwater villas & exclusive experiences. Compare top 20 honeymoon resorts with private pools, sunset cruises & couples spa treatments.', ARRAY['/articles/maldives-honeymoon-packages.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'best-maldives-honeymoon-packages-for', 'Best Maldives Honeymoon Packages for', 'Maldives honeymoon packages - Discover the most romantic all-inclusive packages, overwater villas & exclusive experiences. Compare top 20 honeymoon resorts with private pools, sunset cruises & couples spa treatments.', 'published', 'Best Maldives Honeymoon Packages for | Maldives Travel Guide | MTG', 'Maldives honeymoon packages - Discover the most romantic all-inclusive packages, overwater villas & exclusive experiences. Compare top 20 honeymoon resorts with private pools, sunset cruises & couples spa treatments.', ARRAY['/articles/maldives-honeymoon-packages.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>Romantic sunset dinner at an overwater villa - the perfect start to your Maldives honeymoon</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>Romantic sunset dinner at an overwater villa - the perfect start to your Maldives honeymoon</p>
 <p>Begin your married life with the ultimate romantic getaway in the Maldives, where crystal-clear waters, pristine beaches, and luxurious private villas create the perfect backdrop for newlywed bliss. Our travel experts have curated the definitive guide to the top Maldives honeymoon packages, featuring exclusive experiences from underwater dining to couples'' spa treatments and private island excursions.</p>
 <div data-youtube-id="HLJ0KjimEyA" data-video-title="Maldives Honeymoon Packages Tour"></div>
 <p>Video: Experience the magic of a Maldives honeymoon</p>
@@ -2302,56 +1763,28 @@ select id, '<p>Romantic sunset dinner at an overwater villa - the perfect start 
 <p>Pack light for your Maldives honeymoon as the dress code is casual even at luxury resorts. Essential items include multiple swimwear sets, lightweight breathable clothing, sun protection (high SPF sunscreen, hat, sunglasses), insect repellent, underwater camera or waterproof phone case, and any medications you need. For evenings, pack a few smart-casual outfits as some restaurants have dress codes. Don''t forget adapters for electronics (the Maldives uses Type D, G, and L plugs). Most resorts provide snorkeling equipment, but bringing your own mask can be more comfortable for extended use.</p>
 <h2>Final Thoughts on Planning Your Maldives Honeymoon</h2>
 <p>A Maldives honeymoon represents the pinnacle of romantic getaways, offering unparalleled privacy, luxury, and natural beauty that creates the perfect backdrop for beginning your married life together. From overwater villas with direct lagoon access to exclusive experiences like underwater dining and private sandbank picnics, the memories created here will last a lifetime. The key to the perfect honeymoon lies in selecting the package that aligns with your preferences, whether you prioritize unique experiences, ultimate luxury, or excellent value.</p>
-<p>When planning your Maldives honeymoon, consider factors beyond just the resort itself—transfer times, dining options, included activities, and special honeymoon perks can significantly impact your experience. Many resorts offer substantial benefits for honeymooners, from room upgrades to complimentary experiences, making it essential to mention your honeymoon status when booking. Whether you choose an ultra-luxury resort with a private butler or a more affordable option with the essential romantic elements, the Maldives promises an unforgettable start to your journey together.</p>', 6
-from nodes where node_type = 'article' and slug = 'best-maldives-honeymoon-packages-for'
-on conflict (id) do nothing;
+<p>When planning your Maldives honeymoon, consider factors beyond just the resort itself—transfer times, dining options, included activities, and special honeymoon perks can significantly impact your experience. Many resorts offer substantial benefits for honeymooners, from room upgrades to complimentary experiences, making it essential to mention your honeymoon status when booking. Whether you choose an ultra-luxury resort with a private butler or a more affordable option with the essential romantic elements, the Maldives promises an unforgettable start to your journey together.</p>', 6 from nodes where node_type = 'article' and slug = 'best-maldives-honeymoon-packages-for' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'best-maldives-honeymoon-packages-for'
-  and c.node_type = 'category' and c.slug = 'islands'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'best-maldives-honeymoon-packages-for' and c.node_type = 'category' and c.slug = 'islands' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'best-maldives-honeymoon-packages-for'
-  and l.node_type = 'location' and l.slug = 'baros'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'best-maldives-honeymoon-packages-for' and l.node_type = 'location' and l.slug = 'baros' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('a93f256b-062c-747f-e550-0c85c39e7ea2'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-water-villa.webp', 'Best Maldives Honeymoon Packages for', 'Legacy MTG site archive', 600, 337)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('a93f256b-062c-747f-e550-0c85c39e7ea2'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-water-villa.webp', 'Best Maldives Honeymoon Packages for', 'Legacy MTG site archive', 600, 337) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'a93f256b-062c-747f-e550-0c85c39e7ea2'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'best-maldives-honeymoon-packages-for'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'a93f256b-062c-747f-e550-0c85c39e7ea2'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'best-maldives-honeymoon-packages-for' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('df1a234a-f8a1-743d-7069-cc0750519361'::uuid, 'image', 'legacy/images/maldives/ukulhas-island-maldives.webp', 'Best Maldives Honeymoon Packages for', 'Legacy MTG site archive', 720, 405)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('df1a234a-f8a1-743d-7069-cc0750519361'::uuid, 'image', 'legacy/images/maldives/ukulhas-island-maldives.webp', 'Best Maldives Honeymoon Packages for', 'Legacy MTG site archive', 720, 405) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'df1a234a-f8a1-743d-7069-cc0750519361'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'best-maldives-honeymoon-packages-for'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'df1a234a-f8a1-743d-7069-cc0750519361'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'best-maldives-honeymoon-packages-for' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('10eee094-26e9-30ae-39be-d9ffe3b03068'::uuid, 'image', 'legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp', 'Best Maldives Honeymoon Packages for', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('10eee094-26e9-30ae-39be-d9ffe3b03068'::uuid, 'image', 'legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp', 'Best Maldives Honeymoon Packages for', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '10eee094-26e9-30ae-39be-d9ffe3b03068'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'best-maldives-honeymoon-packages-for'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '10eee094-26e9-30ae-39be-d9ffe3b03068'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'best-maldives-honeymoon-packages-for' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives Huts On Water : The Ultimate Overwater Villas
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-huts-on-water-the-ultimate-overwater-villas', 'Maldives Huts On Water : The Ultimate Overwater Villas', 'Discover the iconic Maldives water villas and overwater bungalows - the ultimate luxury experience. Find the best water villas, pricing, features, and insider tips for your dream vacation.', 'published', 'Maldives Huts On Water : The Ultimate Overwater Villas | Maldives Travel Guide | MTG', 'Discover the iconic Maldives water villas and overwater bungalows - the ultimate luxury experience. Find the best water villas, pricing, features, and insider tips for your dream vacation.', ARRAY['/articles/maldives-huts-on-water.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-huts-on-water-the-ultimate-overwater-villas', 'Maldives Huts On Water : The Ultimate Overwater Villas', 'Discover the iconic Maldives water villas and overwater bungalows - the ultimate luxury experience. Find the best water villas, pricing, features, and insider tips for your dream vacation.', 'published', 'Maldives Huts On Water : The Ultimate Overwater Villas | Maldives Travel Guide | MTG', 'Discover the iconic Maldives water villas and overwater bungalows - the ultimate luxury experience. Find the best water villas, pricing, features, and insider tips for your dream vacation.', ARRAY['/articles/maldives-huts-on-water.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>The iconic water villas of the Maldives offer a unique luxury experience with direct access to the crystal-clear lagoon</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>The iconic water villas of the Maldives offer a unique luxury experience with direct access to the crystal-clear lagoon</p>
 <p>The Maldives is synonymous with luxury overwater villas—those iconic thatched-roof bungalows perched on stilts above crystal-clear turquoise lagoons. These architectural marvels have become the ultimate symbol of luxury travel and a bucket-list experience for travelers worldwide. From waking up to panoramic ocean views to stepping directly from your private deck into warm waters teeming with colorful marine life, water villas offer an unparalleled connection with the Indian Ocean that has captivated the imagination of travelers for decades. This comprehensive guide explores everything you need to know about Maldives water villas—from their fascinating history and architectural features to the best resorts offering these overwater accommodations, and practical tips for making the most of your stay in these floating paradises.</p>
 <div data-youtube-id="UFqQa9o8-TQ" data-video-title="Maldives Luxury Water Villas Experience"></div>
 <p>Video: Experience the luxury and beauty of Maldives water villas</p>
@@ -2461,38 +1894,20 @@ select id, '<p>The iconic water villas of the Maldives offer a unique luxury exp
 <p>The magic of waking up surrounded by the Indian Ocean, stepping directly from your villa into crystal-clear waters, and watching the sunset paint the sky from your private deck is an experience that defines the Maldives for many travelers. While water villas command a premium price, the unique experience they offer—combining privacy, luxury, and an intimate connection with the marine environment—makes them worth the splurge for special occasions or once-in-a-lifetime trips.</p>
 <p>As water villa design continues to evolve with innovative features and enhanced sustainability, these overwater accommodations remain at the forefront of luxury travel experiences worldwide. Whether you''re planning a honeymoon, anniversary celebration, or simply a dream vacation, a stay in a Maldives water villa promises an extraordinary escape from the ordinary.</p>
 <h4>Ready to Experience a Maldives Water Villa?</h4>
-<p>Browse our curated selection of Maldives Resorts with water villas to find your perfect overwater accommodation. For a comprehensive overview of all accommodation options in the Maldives, check our Maldives Accommodation Guide.</p>', 10
-from nodes where node_type = 'article' and slug = 'maldives-huts-on-water-the-ultimate-overwater-villas'
-on conflict (id) do nothing;
+<p>Browse our curated selection of Maldives Resorts with water villas to find your perfect overwater accommodation. For a comprehensive overview of all accommodation options in the Maldives, check our Maldives Accommodation Guide.</p>', 10 from nodes where node_type = 'article' and slug = 'maldives-huts-on-water-the-ultimate-overwater-villas' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-huts-on-water-the-ultimate-overwater-villas'
-  and c.node_type = 'category' and c.slug = 'accommodation'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-huts-on-water-the-ultimate-overwater-villas' and c.node_type = 'category' and c.slug = 'accommodation' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'maldives-huts-on-water-the-ultimate-overwater-villas'
-  and l.node_type = 'location' and l.slug = 'kunfunadhoo'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'maldives-huts-on-water-the-ultimate-overwater-villas' and l.node_type = 'location' and l.slug = 'kunfunadhoo' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('10eee094-26e9-30ae-39be-d9ffe3b03068'::uuid, 'image', 'legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp', 'Maldives Huts On Water : The Ultimate Overwater Villas', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('10eee094-26e9-30ae-39be-d9ffe3b03068'::uuid, 'image', 'legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp', 'Maldives Huts On Water : The Ultimate Overwater Villas', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '10eee094-26e9-30ae-39be-d9ffe3b03068'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-huts-on-water-the-ultimate-overwater-villas'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '10eee094-26e9-30ae-39be-d9ffe3b03068'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-huts-on-water-the-ultimate-overwater-villas' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives in April: Perfect Weather, Lower Prices
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-in-april-perfect-weather-lower-prices', 'Maldives in April: Perfect Weather, Lower Prices', 'Planning a trip to Maldives in April? Discover perfect weather conditions, lower prices, special events, and insider tips for an unforgettable April vacation in paradise.', 'published', 'Maldives in April: Perfect Weather, Lower Prices | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in April? Discover perfect weather conditions, lower prices, special events, and insider tips for an unforgettable April vacation in paradise.', ARRAY['/articles/maldives-in-april.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-in-april-perfect-weather-lower-prices', 'Maldives in April: Perfect Weather, Lower Prices', 'Planning a trip to Maldives in April? Discover perfect weather conditions, lower prices, special events, and insider tips for an unforgettable April vacation in paradise.', 'published', 'Maldives in April: Perfect Weather, Lower Prices | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in April? Discover perfect weather conditions, lower prices, special events, and insider tips for an unforgettable April vacation in paradise.', ARRAY['/articles/maldives-in-april.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>April offers some of the best weather conditions in the Maldives with sunny days, calm seas, and excellent visibility for water activities</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>April offers some of the best weather conditions in the Maldives with sunny days, calm seas, and excellent visibility for water activities</p>
 <p>April is widely considered one of the best months to visit the Maldives, offering a perfect balance of ideal weather conditions, decreasing tourist crowds, and better value as the high season begins to wind down. With consistently sunny days, calm seas, and exceptional underwater visibility, April provides optimal conditions for enjoying everything this tropical paradise has to offer—from beach relaxation to water sports and marine life encounters.</p>
 <div data-youtube-id="-8PM1dNvSKc" data-video-title="Maldives in April - Weather and Experience"></div>
 <p>Video: Experience the perfect April conditions in the Maldives</p>
@@ -2582,47 +1997,24 @@ select id, '<p>April offers some of the best weather conditions in the Maldives 
 <p>For those with flexible travel dates, late April represents a particularly sweet spot—offering high season weather conditions at shoulder season prices. If you''re planning a Maldives vacation and can travel in April, you''ll be rewarded with one of the best overall experiences this tropical paradise has to offer.</p>
 <p>For more information about other months, check our guides on Maldives in May, Maldives in December, or our comprehensive seasonal guide to the Maldives.</p>
 <h4>Ready to Book Your April Maldives Vacation?</h4>
-<p>Browse our curated selection of Maldives Resorts and Maldives Hotels to find your perfect April accommodation. For more information about activities and experiences available during your stay, check out our Activities Guide.</p>', 5
-from nodes where node_type = 'article' and slug = 'maldives-in-april-perfect-weather-lower-prices'
-on conflict (id) do nothing;
+<p>Browse our curated selection of Maldives Resorts and Maldives Hotels to find your perfect April accommodation. For more information about activities and experiences available during your stay, check out our Activities Guide.</p>', 5 from nodes where node_type = 'article' and slug = 'maldives-in-april-perfect-weather-lower-prices' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-in-april-perfect-weather-lower-prices'
-  and c.node_type = 'category' and c.slug = 'islands'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-in-april-perfect-weather-lower-prices' and c.node_type = 'category' and c.slug = 'islands' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'maldives-in-april-perfect-weather-lower-prices'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'maldives-in-april-perfect-weather-lower-prices' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('b1e944d9-8909-19a3-b841-3fdf4f7a166e'::uuid, 'image', 'legacy/images/maldives-sunset-cruise.webp', 'Maldives in April: Perfect Weather, Lower Prices', 'Legacy MTG site archive', 1814, 1360)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('b1e944d9-8909-19a3-b841-3fdf4f7a166e'::uuid, 'image', 'legacy/images/maldives-sunset-cruise.webp', 'Maldives in April: Perfect Weather, Lower Prices', 'Legacy MTG site archive', 1814, 1360) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'b1e944d9-8909-19a3-b841-3fdf4f7a166e'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-april-perfect-weather-lower-prices'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'b1e944d9-8909-19a3-b841-3fdf4f7a166e'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-april-perfect-weather-lower-prices' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'image', 'legacy/images/activities/full-day/full-day-activity-male-atoll.webp', 'Maldives in April: Perfect Weather, Lower Prices', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'image', 'legacy/images/activities/full-day/full-day-activity-male-atoll.webp', 'Maldives in April: Perfect Weather, Lower Prices', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-april-perfect-weather-lower-prices'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-april-perfect-weather-lower-prices' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives in August: Weather, Activities & Expert Travel Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-in-august-weather-activities-expert-travel-guide', 'Maldives in August: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in August? Discover weather patterns, activities, prices, and expert tips for visiting during the wet season. Find the best resorts and experiences for an August vacation.', 'published', 'Maldives in August: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in August? Discover weather patterns, activities, prices, and expert tips for visiting during the wet season. Find the best resorts and experiences for an August vacation.', ARRAY['/articles/maldives-in-august.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-in-august-weather-activities-expert-travel-guide', 'Maldives in August: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in August? Discover weather patterns, activities, prices, and expert tips for visiting during the wet season. Find the best resorts and experiences for an August vacation.', 'published', 'Maldives in August: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in August? Discover weather patterns, activities, prices, and expert tips for visiting during the wet season. Find the best resorts and experiences for an August vacation.', ARRAY['/articles/maldives-in-august.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>August in the Maldives offers exceptional value with fewer crowds during the wet season</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>August in the Maldives offers exceptional value with fewer crowds during the wet season</p>
 <p>August is firmly within the southwest monsoon season in the Maldives, characterized by increased rainfall, higher humidity, and more variable weather conditions. While this means more frequent rain showers and occasional stormy days, it also brings significant advantages: dramatically lower prices, fewer tourists, excellent surfing conditions, and unique marine life encounters. With proper planning and realistic expectations, August can offer an exceptional Maldives experience at a fraction of high-season costs.</p>
 <h4>August in the Maldives at a Glance</h4>
 <ul><li>Weather: Peak southwest monsoon with increased rainfall and humidity</li><li>Tourist Traffic: Low (one of the quietest months)</li><li>Pricing: 30-50% lower than peak season rates</li><li>Water Visibility: Variable (5-15 meters), better on western sides of atolls</li><li>Marine Life: Excellent for manta rays and whale sharks in certain regions</li><li>Surf Conditions: Peak season for surfing with consistent swells</li><li>Special Events: Independence Day celebrations (July 26th) may extend into early August</li></ul>
@@ -2760,59 +2152,30 @@ select id, '<p>August in the Maldives offers exceptional value with fewer crowds
 <ul><li>Your primary goal is guaranteed sunshine every day of your trip</li><li>You''re planning a very short stay (3 days or less) where a day or two of rain would significantly impact your experience</li><li>You''re specifically interested in activities that require perfect weather conditions and clear visibility</li><li>You''re uncomfortable with humidity or prefer consistently dry conditions</li><li>You have inflexible plans that cannot be adjusted for weather</li><li>You''re planning a special occasion where weather is critical</li></ul>
 <p>For many travelers, the substantial cost savings and unique experiences available in August more than compensate for the occasional rain shower. With proper planning, flexible expectations, and the right choice of resort, an August visit to the Maldives can offer an exceptional experience that balances luxury and value in one of the world''s most beautiful destinations.</p>
 <p>If you''re considering an August visit to the Maldives, it''s worth comparing with other months to find the perfect timing for your preferences. Check our guides on visiting in July and visiting in September to compare conditions across different periods of the year.</p>
-<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 12
-from nodes where node_type = 'article' and slug = 'maldives-in-august-weather-activities-expert-travel-guide'
-on conflict (id) do nothing;
+<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 12 from nodes where node_type = 'article' and slug = 'maldives-in-august-weather-activities-expert-travel-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-in-august-weather-activities-expert-travel-guide'
-  and c.node_type = 'category' and c.slug = 'surfing'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-in-august-weather-activities-expert-travel-guide' and c.node_type = 'category' and c.slug = 'surfing' on conflict (node_id, category_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', 'Maldives in August: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 427)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', 'Maldives in August: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 427) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-august-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-august-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'image', 'legacy/images/fishing/night-fishing-in-maldives.webp', 'Maldives in August: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 945, 1024)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'image', 'legacy/images/fishing/night-fishing-in-maldives.webp', 'Maldives in August: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 945, 1024) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-august-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-august-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('f164cf64-2808-9527-ba28-1fd1ff8358aa'::uuid, 'image', 'legacy/resorts/soneva-fushi/images/soneva-fushi-maldives.webp', 'Maldives in August: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('f164cf64-2808-9527-ba28-1fd1ff8358aa'::uuid, 'image', 'legacy/resorts/soneva-fushi/images/soneva-fushi-maldives.webp', 'Maldives in August: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'f164cf64-2808-9527-ba28-1fd1ff8358aa'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-august-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'f164cf64-2808-9527-ba28-1fd1ff8358aa'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-august-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', 'Maldives in August: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 427)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', 'Maldives in August: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 427) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'content', 3
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-august-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'content', 3 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-august-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives in December: Weather, Activities & Expert Travel Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-in-december-weather-activities-expert-travel-guide', 'Maldives in December: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in December? Discover weather patterns, activities, prices, and expert tips for visiting during the peak dry season. Find the best resorts and experiences for a December vacation.', 'published', 'Maldives in December: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in December? Discover weather patterns, activities, prices, and expert tips for visiting during the peak dry season. Find the best resorts and experiences for a December vacation.', ARRAY['/articles/maldives-in-december.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-in-december-weather-activities-expert-travel-guide', 'Maldives in December: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in December? Discover weather patterns, activities, prices, and expert tips for visiting during the peak dry season. Find the best resorts and experiences for a December vacation.', 'published', 'Maldives in December: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in December? Discover weather patterns, activities, prices, and expert tips for visiting during the peak dry season. Find the best resorts and experiences for a December vacation.', ARRAY['/articles/maldives-in-december.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>December in the Maldives offers perfect weather conditions during the peak dry season</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>December in the Maldives offers perfect weather conditions during the peak dry season</p>
 <p>December marks the beginning of the peak season in the Maldives, with the northeast monsoon (Iruvai) firmly established, bringing perfect weather conditions. With minimal rainfall, low humidity, calm seas, and exceptional underwater visibility, December offers ideal tropical vacation conditions. As tourist numbers reach their annual peak, especially during the Christmas and New Year period, December combines the year''s best weather with the most vibrant resort atmosphere, though at premium prices.</p>
 <h4>December in the Maldives at a Glance</h4>
 <ul><li>Weather: Peak dry season with minimal rainfall and low humidity</li><li>Tourist Traffic: High (peak season begins, especially during holidays)</li><li>Pricing: Premium rates, especially during Christmas and New Year</li><li>Water Visibility: Excellent (25-30+ meters)</li><li>Marine Life: Abundant with exceptional visibility for spotting various species</li><li>Special Events: Christmas and New Year celebrations at resorts</li><li>Advance Booking: Essential, especially for holiday period</li></ul>
@@ -2954,50 +2317,26 @@ select id, '<p>December in the Maldives offers perfect weather conditions during
 <ul><li>You''re seeking the lowest possible prices (May-October offers deeper discounts)</li><li>You prefer a quieter, more secluded experience with fewer guests</li><li>You''re booking last-minute as availability is extremely limited</li><li>You''re on a tight budget and concerned about additional holiday charges</li><li>You''re specifically interested in manta ray aggregations (more common during southwest monsoon)</li><li>You prefer an authentic cultural experience rather than Western-style holiday celebrations</li><li>You dislike minimum stay requirements and mandatory gala dinner charges</li><li>You''re seeking a completely private experience at resort facilities</li></ul>
 <p>For most travelers with flexible budgets who prioritize perfect weather, December represents the ideal time to experience the Maldives at its absolute best. The combination of ideal weather conditions, special holiday celebrations, and vibrant resort atmosphere creates a truly memorable experience, albeit at premium prices. For those with budget constraints or preferences for quieter environments, shoulder season months like November or May offer excellent alternatives with very good weather at more moderate prices.</p>
 <p>If you''re considering a December visit to the Maldives, it''s worth comparing with other months to find the perfect timing for your preferences. Check our guides on visiting in November and visiting in January to compare conditions across different periods of the year.</p>
-<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 14
-from nodes where node_type = 'article' and slug = 'maldives-in-december-weather-activities-expert-travel-guide'
-on conflict (id) do nothing;
+<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 14 from nodes where node_type = 'article' and slug = 'maldives-in-december-weather-activities-expert-travel-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-in-december-weather-activities-expert-travel-guide'
-  and c.node_type = 'category' and c.slug = 'atolls'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-in-december-weather-activities-expert-travel-guide' and c.node_type = 'category' and c.slug = 'atolls' on conflict (node_id, category_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('bf39851a-0019-c28f-6f3c-8be91ec35ee0'::uuid, 'image', 'legacy/images/diving/manta-point-lankanfinolhu-island.webp', 'Maldives in December: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 359)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('bf39851a-0019-c28f-6f3c-8be91ec35ee0'::uuid, 'image', 'legacy/images/diving/manta-point-lankanfinolhu-island.webp', 'Maldives in December: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 359) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'bf39851a-0019-c28f-6f3c-8be91ec35ee0'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-december-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'bf39851a-0019-c28f-6f3c-8be91ec35ee0'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-december-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'image', 'legacy/images/fishing/maldives-night-fishing.webp', 'Maldives in December: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 507)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'image', 'legacy/images/fishing/maldives-night-fishing.webp', 'Maldives in December: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 507) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-december-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-december-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'image', 'legacy/images/fishing/maldives-night-fishing.webp', 'Maldives in December: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 507)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'image', 'legacy/images/fishing/maldives-night-fishing.webp', 'Maldives in December: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 507) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-december-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-december-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives in February: Weather, Activities & Expert Travel Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-in-february-weather-activities-expert-travel-guide', 'Maldives in February: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in February? Discover excellent weather conditions, activities, prices, and expert tips for visiting during the dry season. Find the best resorts and experiences for a February vacation.', 'published', 'Maldives in February: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in February? Discover excellent weather conditions, activities, prices, and expert tips for visiting during the dry season. Find the best resorts and experiences for a February vacation.', ARRAY['/articles/maldives-in-february.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-in-february-weather-activities-expert-travel-guide', 'Maldives in February: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in February? Discover excellent weather conditions, activities, prices, and expert tips for visiting during the dry season. Find the best resorts and experiences for a February vacation.', 'published', 'Maldives in February: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in February? Discover excellent weather conditions, activities, prices, and expert tips for visiting during the dry season. Find the best resorts and experiences for a February vacation.', ARRAY['/articles/maldives-in-february.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>February in the Maldives offers excellent weather conditions during the peak dry season</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>February in the Maldives offers excellent weather conditions during the peak dry season</p>
 <p>February continues the excellent dry season (Iruvai) conditions in the Maldives, offering minimal rainfall, low humidity, and consistent sunshine. With calm seas, excellent underwater visibility, and perfect beach conditions, February delivers a classic Maldives experience. While still considered peak season, February sees a gradual transition toward the end of the month, with slightly decreasing tourist numbers and the first hints of potential early shoulder season offers, though still predominantly at premium pricing.</p>
 <h4>February in the Maldives at a Glance</h4>
 <ul><li>Weather: Excellent dry season conditions with minimal rainfall</li><li>Tourist Traffic: High (peak season continues, gradually decreasing toward month-end)</li><li>Pricing: Premium rates, with potential early shoulder season offers late month</li><li>Water Visibility: Excellent (25-30 meters)</li><li>Marine Life: Abundant with excellent visibility for spotting various species</li><li>Special Events: Valentine''s Day celebrations at resorts</li><li>Advance Booking: Recommended, though slightly more availability than December/January</li></ul>
@@ -3141,68 +2480,34 @@ select id, '<p>February in the Maldives offers excellent weather conditions duri
 <ul><li>You''re seeking the absolute lowest prices (May-October offers deeper discounts)</li><li>You want to avoid Valentine''s Day premiums in mid-February</li><li>You prefer a completely quiet, secluded experience with minimal other guests</li><li>You''re specifically interested in manta ray aggregations (more common during southwest monsoon)</li><li>You''re seeking the absolute lowest humidity (January offers this)</li><li>You''re looking for cultural festivals (few occur in February)</li><li>You''re seeking the absolute best visibility (January slightly edges out February)</li><li>You prefer a family-focused atmosphere (February has a couples focus)</li></ul>
 <p>For most travelers who prioritize excellent weather and can accommodate peak season pricing, February represents an excellent time to experience the Maldives. The combination of ideal weather conditions, excellent visibility, and the romantic atmosphere around Valentine''s Day creates a memorable experience. For those with budget constraints or preferences for specific marine life encounters, shoulder season months like April or November offer good alternatives with very good weather at more moderate prices.</p>
 <p>If you''re considering a February visit to the Maldives, it''s worth comparing with other months to find the perfect timing for your preferences. Check our guides on visiting in January and visiting in March to compare conditions across different periods of the year.</p>
-<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 14
-from nodes where node_type = 'article' and slug = 'maldives-in-february-weather-activities-expert-travel-guide'
-on conflict (id) do nothing;
+<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 14 from nodes where node_type = 'article' and slug = 'maldives-in-february-weather-activities-expert-travel-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-in-february-weather-activities-expert-travel-guide'
-  and c.node_type = 'category' and c.slug = 'travel-tips'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-in-february-weather-activities-expert-travel-guide' and c.node_type = 'category' and c.slug = 'travel-tips' on conflict (node_id, category_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'image', 'legacy/images/activities/sunset-cruise-maldives.webp', 'Maldives in February: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1814, 1360)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'image', 'legacy/images/activities/sunset-cruise-maldives.webp', 'Maldives in February: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1814, 1360) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-february-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-february-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('177d517a-c13c-80a3-5909-99f4d4076cbe'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-isalnd-maldives-resort.webp', 'Maldives in February: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 480, 320)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('177d517a-c13c-80a3-5909-99f4d4076cbe'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-isalnd-maldives-resort.webp', 'Maldives in February: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 480, 320) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '177d517a-c13c-80a3-5909-99f4d4076cbe'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-february-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '177d517a-c13c-80a3-5909-99f4d4076cbe'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-february-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('3010fffd-82b4-262f-3bf4-415ae933062c'::uuid, 'image', 'legacy/resorts/velassaru/images/velassaru-maldives-beach-villa-pool.webp', 'Maldives in February: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('3010fffd-82b4-262f-3bf4-415ae933062c'::uuid, 'image', 'legacy/resorts/velassaru/images/velassaru-maldives-beach-villa-pool.webp', 'Maldives in February: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '3010fffd-82b4-262f-3bf4-415ae933062c'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-february-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '3010fffd-82b4-262f-3bf4-415ae933062c'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-february-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('1d71b3d6-5468-1177-9368-70afdbb90fc5'::uuid, 'image', 'legacy/images/baros-maldives-island-resort-beach-dinner.webp', 'Maldives in February: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1d71b3d6-5468-1177-9368-70afdbb90fc5'::uuid, 'image', 'legacy/images/baros-maldives-island-resort-beach-dinner.webp', 'Maldives in February: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '1d71b3d6-5468-1177-9368-70afdbb90fc5'::uuid, 'content', 3
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-february-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '1d71b3d6-5468-1177-9368-70afdbb90fc5'::uuid, 'content', 3 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-february-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'image', 'legacy/images/activities/sunset-cruise-maldives.webp', 'Maldives in February: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1814, 1360)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'image', 'legacy/images/activities/sunset-cruise-maldives.webp', 'Maldives in February: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1814, 1360) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'content', 4
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-february-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'content', 4 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-february-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives in January: Weather, Activities & Expert Travel Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-in-january-weather-activities-expert-travel-guide', 'Maldives in January: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in January? Discover perfect weather conditions, activities, prices, and expert tips for visiting during the peak dry season. Find the best resorts and experiences for a January vacation.', 'published', 'Maldives in January: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in January? Discover perfect weather conditions, activities, prices, and expert tips for visiting during the peak dry season. Find the best resorts and experiences for a January vacation.', ARRAY['/articles/maldives-in-january.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-in-january-weather-activities-expert-travel-guide', 'Maldives in January: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in January? Discover perfect weather conditions, activities, prices, and expert tips for visiting during the peak dry season. Find the best resorts and experiences for a January vacation.', 'published', 'Maldives in January: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in January? Discover perfect weather conditions, activities, prices, and expert tips for visiting during the peak dry season. Find the best resorts and experiences for a January vacation.', ARRAY['/articles/maldives-in-january.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>January in the Maldives offers the year''s best weather conditions during the peak dry season</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>January in the Maldives offers the year''s best weather conditions during the peak dry season</p>
 <p>January is widely considered the absolute best month to visit the Maldives, representing the pinnacle of the dry season (Iruvai) with the year''s lowest rainfall, lowest humidity, and most consistent sunshine. With calm seas, exceptional underwater visibility, and perfect beach conditions, January delivers the quintessential Maldives experience. While still firmly in the peak tourist season, January offers a slightly more relaxed atmosphere after the holiday rush of December, though still at premium pricing.</p>
 <h4>January in the Maldives at a Glance</h4>
 <ul><li>Weather: Peak dry season with the year''s lowest rainfall and humidity</li><li>Tourist Traffic: High (peak season continues, but less intense than December)</li><li>Pricing: Premium rates, though slightly lower than December holiday period</li><li>Water Visibility: Exceptional (30+ meters)</li><li>Marine Life: Abundant with perfect visibility for spotting various species</li><li>Special Events: Post-holiday relaxed atmosphere at resorts</li><li>Advance Booking: Recommended, though slightly more availability than December</li></ul>
@@ -3343,77 +2648,38 @@ select id, '<p>January in the Maldives offers the year''s best weather condition
 <ul><li>You''re seeking the lowest possible prices (May-October offers deeper discounts)</li><li>You prefer a completely quiet, secluded experience with minimal other guests</li><li>You''re booking last-minute as availability can be limited</li><li>You''re on a tight budget and concerned about peak season pricing</li><li>You''re specifically interested in manta ray aggregations (more common during southwest monsoon)</li><li>You prefer a festive holiday atmosphere with special celebrations (December offers this)</li><li>You''re seeking the absolute lowest international airfares (shoulder seasons offer better value)</li><li>You prefer slightly cooler temperatures (January is consistently warm)</li></ul>
 <p>For most travelers who prioritize perfect weather and can accommodate peak season pricing, January represents the ideal time to experience the Maldives at its absolute best. The combination of ideal weather conditions, exceptional visibility, and slightly more relaxed atmosphere after the holiday period creates a truly memorable experience. For those with budget constraints or preferences for specific marine life encounters, shoulder season months like November or May offer excellent alternatives with very good weather at more moderate prices.</p>
 <p>If you''re considering a January visit to the Maldives, it''s worth comparing with other months to find the perfect timing for your preferences. Check our guides on visiting in December and visiting in February to compare conditions across different periods of the year.</p>
-<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 14
-from nodes where node_type = 'article' and slug = 'maldives-in-january-weather-activities-expert-travel-guide'
-on conflict (id) do nothing;
+<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 14 from nodes where node_type = 'article' and slug = 'maldives-in-january-weather-activities-expert-travel-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-in-january-weather-activities-expert-travel-guide'
-  and c.node_type = 'category' and c.slug = 'travel-tips'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-in-january-weather-activities-expert-travel-guide' and c.node_type = 'category' and c.slug = 'travel-tips' on conflict (node_id, category_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'image', 'legacy/images/fishing/maldives-night-fishing.webp', 'Maldives in January: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 507)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'image', 'legacy/images/fishing/maldives-night-fishing.webp', 'Maldives in January: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 507) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-january-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-january-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'image', 'legacy/images/activities/sunset-cruise-maldives.webp', 'Maldives in January: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1814, 1360)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'image', 'legacy/images/activities/sunset-cruise-maldives.webp', 'Maldives in January: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1814, 1360) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-january-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-january-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('9b8db8dc-f547-6730-e627-efa5b1c20fb5'::uuid, 'image', 'legacy/resorts/soneva-fushi/images/soneva-fushi-island-resort-maldives.webp', 'Maldives in January: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('9b8db8dc-f547-6730-e627-efa5b1c20fb5'::uuid, 'image', 'legacy/resorts/soneva-fushi/images/soneva-fushi-island-resort-maldives.webp', 'Maldives in January: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '9b8db8dc-f547-6730-e627-efa5b1c20fb5'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-january-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '9b8db8dc-f547-6730-e627-efa5b1c20fb5'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-january-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('48f4113a-34bb-51ab-4a70-56791633dae9'::uuid, 'image', 'legacy/resorts/six-senses-laamu/images/six-senses-laamu-maldives-beach.webp', 'Maldives in January: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('48f4113a-34bb-51ab-4a70-56791633dae9'::uuid, 'image', 'legacy/resorts/six-senses-laamu/images/six-senses-laamu-maldives-beach.webp', 'Maldives in January: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '48f4113a-34bb-51ab-4a70-56791633dae9'::uuid, 'content', 3
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-january-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '48f4113a-34bb-51ab-4a70-56791633dae9'::uuid, 'content', 3 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-january-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('72d57239-0ddf-2e16-248f-15b5a91edac0'::uuid, 'image', 'legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-activities.webp', 'Maldives in January: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('72d57239-0ddf-2e16-248f-15b5a91edac0'::uuid, 'image', 'legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-activities.webp', 'Maldives in January: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '72d57239-0ddf-2e16-248f-15b5a91edac0'::uuid, 'content', 4
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-january-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '72d57239-0ddf-2e16-248f-15b5a91edac0'::uuid, 'content', 4 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-january-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'image', 'legacy/images/fishing/maldives-night-fishing.webp', 'Maldives in January: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 507)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'image', 'legacy/images/fishing/maldives-night-fishing.webp', 'Maldives in January: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 507) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'content', 5
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-january-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'content', 5 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-january-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives in July: Weather, Activities & Expert Travel Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-in-july-weather-activities-expert-travel-guide', 'Maldives in July: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in July? Discover weather patterns, activities, prices, and expert tips for visiting during the wet season. Find the best resorts and experiences for a July vacation.', 'published', 'Maldives in July: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in July? Discover weather patterns, activities, prices, and expert tips for visiting during the wet season. Find the best resorts and experiences for a July vacation.', ARRAY['/articles/maldives-in-july.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-in-july-weather-activities-expert-travel-guide', 'Maldives in July: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in July? Discover weather patterns, activities, prices, and expert tips for visiting during the wet season. Find the best resorts and experiences for a July vacation.', 'published', 'Maldives in July: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in July? Discover weather patterns, activities, prices, and expert tips for visiting during the wet season. Find the best resorts and experiences for a July vacation.', ARRAY['/articles/maldives-in-july.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>July in the Maldives offers incredible value with fewer crowds during the wet season</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>July in the Maldives offers incredible value with fewer crowds during the wet season</p>
 <p>July marks the heart of the southwest monsoon season in the Maldives, bringing a different experience compared to the dry season months. While rainfall increases and weather becomes more variable, July offers significant advantages for budget-conscious travelers and those seeking a more authentic, less crowded Maldivian experience. With substantial discounts across resorts, excellent surfing conditions, and unique marine life encounters, July can be an excellent time to visit for travelers with the right expectations and a flexible attitude.</p>
 <h4>July in the Maldives at a Glance</h4>
 <ul><li>Weather: Peak of southwest monsoon with increased rainfall, humidity, and occasional strong winds</li><li>Tourist Traffic: Very low (off-season)</li><li>Pricing: 40-60% lower than peak season rates</li><li>Water Visibility: Variable (5-15 meters), better on western sides of atolls</li><li>Marine Life: Excellent for manta rays and whale sharks in certain regions</li><li>Surf Conditions: Peak surf season with excellent waves on eastern reef breaks</li></ul>
@@ -3548,59 +2814,30 @@ select id, '<p>July in the Maldives offers incredible value with fewer crowds du
 <ul><li>Your primary goal is guaranteed sunshine every day of your trip</li><li>You''re planning a very short stay (3 days or less) where a day or two of rain would significantly impact your experience</li><li>You''re specifically interested in activities that require perfect weather conditions and clear visibility</li><li>You''re uncomfortable with humidity or prefer consistently dry conditions</li></ul>
 <p>For many travelers, the significant cost savings and reduced crowds more than compensate for the occasional rain shower. With proper planning, flexible expectations, and the right choice of resort, a July visit to the Maldives can offer an exceptional experience that balances luxury and value in one of the world''s most beautiful destinations.</p>
 <p>If you''re considering a July visit to the Maldives, it''s worth comparing with other months to find the perfect timing for your preferences. Check our guides on visiting in June and visiting in May to compare conditions across different periods of the year.</p>
-<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 12
-from nodes where node_type = 'article' and slug = 'maldives-in-july-weather-activities-expert-travel-guide'
-on conflict (id) do nothing;
+<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 12 from nodes where node_type = 'article' and slug = 'maldives-in-july-weather-activities-expert-travel-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-in-july-weather-activities-expert-travel-guide'
-  and c.node_type = 'category' and c.slug = 'surfing'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-in-july-weather-activities-expert-travel-guide' and c.node_type = 'category' and c.slug = 'surfing' on conflict (node_id, category_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', 'Maldives in July: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 427)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', 'Maldives in July: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 427) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-july-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-july-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', 'Maldives in July: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 427)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', 'Maldives in July: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 427) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-july-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-july-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'image', 'legacy/images/fishing/night-fishing-in-maldives.webp', 'Maldives in July: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 945, 1024)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'image', 'legacy/images/fishing/night-fishing-in-maldives.webp', 'Maldives in July: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 945, 1024) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-july-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-july-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'image', 'legacy/images/activities/full-day/full-day-activity-male-atoll.webp', 'Maldives in July: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'image', 'legacy/images/activities/full-day/full-day-activity-male-atoll.webp', 'Maldives in July: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'content', 3
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-july-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'content', 3 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-july-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives in June: Weather, Activities & Travel Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-in-june-weather-activities-travel-guide', 'Maldives in June: Weather, Activities & Travel Guide', 'Planning a trip to Maldives in June? Discover the weather, activities, prices, and insider tips for visiting the Maldives during June - the start of the wet season with great deals and fewer crowds.', 'published', 'Maldives in June: Weather, Activities & Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in June? Discover the weather, activities, prices, and insider tips for visiting the Maldives during June - the start of the wet season with great deals and fewer crowds.', ARRAY['/articles/maldives-in-june.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-in-june-weather-activities-travel-guide', 'Maldives in June: Weather, Activities & Travel Guide', 'Planning a trip to Maldives in June? Discover the weather, activities, prices, and insider tips for visiting the Maldives during June - the start of the wet season with great deals and fewer crowds.', 'published', 'Maldives in June: Weather, Activities & Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in June? Discover the weather, activities, prices, and insider tips for visiting the Maldives during June - the start of the wet season with great deals and fewer crowds.', ARRAY['/articles/maldives-in-june.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>June marks the beginning of the wet season in the Maldives, offering great deals and fewer crowds</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>June marks the beginning of the wet season in the Maldives, offering great deals and fewer crowds</p>
 <p>June in the Maldives marks the beginning of the southwest monsoon season, bringing a shift in weather patterns and a different experience for travelers. While this month sees the start of the official &quot;wet season,&quot; it offers unique advantages including significantly lower prices, fewer tourists, and still plenty of sunshine between rain showers. For budget-conscious travelers and those who don''t mind the occasional tropical downpour, June can be an excellent time to experience the Maldives'' beauty without the peak season crowds and prices.</p>
 <h4>June in the Maldives: Quick Overview</h4>
 <ul><li>Weather: Start of the southwest monsoon (wet season), with increased rainfall but still plenty of sunshine</li><li>Average Temperature: 27-30°C (81-86°F)</li><li>Rainfall: Moderate to heavy, typically in short bursts</li><li>Tourist Season: Low season with fewer crowds</li><li>Prices: Significantly reduced rates (30-50% lower than peak season)</li><li>Best For: Budget travelers, surfers, divers, and those seeking tranquility</li></ul>
@@ -3732,56 +2969,28 @@ select id, '<p>June marks the beginning of the wet season in the Maldives, offer
 <ul><li>Your primary goal is guaranteed sunshine every day of your trip</li><li>You''re planning a very short stay (3 days or less) where a day or two of rain would significantly impact your experience</li><li>You''re specifically interested in activities that require perfect weather conditions and clear visibility</li></ul>
 <p>For many travelers, the significant cost savings and reduced crowds more than compensate for the occasional rain shower. With proper planning, flexible expectations, and the right choice of resort, a June visit to the Maldives can offer an exceptional experience that balances luxury and value in one of the world''s most beautiful destinations.</p>
 <p>If you''re considering a June visit to the Maldives, it''s worth comparing with other months to find the perfect timing for your preferences. Check our guides on visiting in April and visiting in May to compare conditions across the transition from dry to wet season.</p>
-<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 10
-from nodes where node_type = 'article' and slug = 'maldives-in-june-weather-activities-travel-guide'
-on conflict (id) do nothing;
+<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 10 from nodes where node_type = 'article' and slug = 'maldives-in-june-weather-activities-travel-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-in-june-weather-activities-travel-guide'
-  and c.node_type = 'category' and c.slug = 'atolls'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-in-june-weather-activities-travel-guide' and c.node_type = 'category' and c.slug = 'atolls' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'maldives-in-june-weather-activities-travel-guide'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'maldives-in-june-weather-activities-travel-guide' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', 'Maldives in June: Weather, Activities & Travel Guide', 'Legacy MTG site archive', 640, 427)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', 'Maldives in June: Weather, Activities & Travel Guide', 'Legacy MTG site archive', 640, 427) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-june-weather-activities-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-june-weather-activities-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'image', 'legacy/images/fishing/night-fishing-in-maldives.webp', 'Maldives in June: Weather, Activities & Travel Guide', 'Legacy MTG site archive', 945, 1024)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'image', 'legacy/images/fishing/night-fishing-in-maldives.webp', 'Maldives in June: Weather, Activities & Travel Guide', 'Legacy MTG site archive', 945, 1024) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-june-weather-activities-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-june-weather-activities-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'image', 'legacy/images/activities/full-day/full-day-activity-male-atoll.webp', 'Maldives in June: Weather, Activities & Travel Guide', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'image', 'legacy/images/activities/full-day/full-day-activity-male-atoll.webp', 'Maldives in June: Weather, Activities & Travel Guide', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-june-weather-activities-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-june-weather-activities-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives in March: Weather, Activities & Expert Travel Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-in-march-weather-activities-expert-travel-guide', 'Maldives in March: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in March? Discover transitional weather conditions, activities, prices, and expert tips for visiting during this shoulder season. Find the best resorts and experiences for a March vacation.', 'published', 'Maldives in March: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in March? Discover transitional weather conditions, activities, prices, and expert tips for visiting during this shoulder season. Find the best resorts and experiences for a March vacation.', ARRAY['/articles/maldives-in-march.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-in-march-weather-activities-expert-travel-guide', 'Maldives in March: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in March? Discover transitional weather conditions, activities, prices, and expert tips for visiting during this shoulder season. Find the best resorts and experiences for a March vacation.', 'published', 'Maldives in March: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in March? Discover transitional weather conditions, activities, prices, and expert tips for visiting during this shoulder season. Find the best resorts and experiences for a March vacation.', ARRAY['/articles/maldives-in-march.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>March in the Maldives offers excellent value during the transition from peak dry season to shoulder season</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>March in the Maldives offers excellent value during the transition from peak dry season to shoulder season</p>
 <p>March represents a transitional period in the Maldives, as the northeast monsoon (Iruvai) begins to give way to the approaching southwest monsoon. While the first half of March typically maintains excellent dry season conditions, the latter half may see gradually increasing humidity, occasional rainfall, and changing wind patterns. This transition brings excellent value opportunities, with decreasing tourist numbers and more favorable pricing, while still offering predominantly good weather and excellent marine life encounters.</p>
 <h4>March in the Maldives at a Glance</h4>
 <ul><li>Weather: Transitional conditions (excellent early month, gradually changing late month)</li><li>Tourist Traffic: Moderate (decreasing from peak season)</li><li>Pricing: Transitioning to shoulder season rates (excellent value)</li><li>Water Visibility: Very good (20-25 meters, decreasing late month)</li><li>Marine Life: Excellent with increasing plankton attracting larger species</li><li>Special Events: Easter celebrations (when Easter falls in March)</li><li>Advance Booking: Recommended but less essential than peak season months</li></ul>
@@ -3917,59 +3126,30 @@ select id, '<p>March in the Maldives offers excellent value during the transitio
 <h3>Humidity Comparison</h3>
 <h3>Sunshine Hours Comparison</h3>
 <h2>Detailed Comparison: February vs. March vs. April</h2>
-<table><tbody><tr><td>Feature</td><td>February</td><td>March</td><td>April</td></tr><tr><td>Average Temperature</td><td>29-31°C (84-88°F)</td><td>30-32°C (86-90°F)</td><td>31-33°C (88-91°F)</td></tr><tr><td>Rainfall</td><td>60-90mm (minimal)</td><td>80-120mm (increasing)</td><td>130-180mm (moderate)</td></tr><tr><td>Humidity</td><td>65-75% (comfortable)</td><td>70-80% (increasing)</td><td>75-85% (higher)</td></tr><tr><td>Water Visibility</td><td>25-30m (excellent)</td><td>20-25m (very good)</td><td>15-20m (good)</td></tr><tr><td>Tourist Traffic</td><td>High (peak season)</td><td>Moderate (decreasing)</td><td>Moderate to low</td></tr><tr><td>Pricing</td><td>Peak season rates</td><td>Transitioning to shoulder</td><td>Shoulder season rates</td></tr><tr><td>Marine Life</td><td>Excellent visibility for reef species</td><td>Transitional with increasing plankton</td><td>Increasing plankton attracting larger species</td></tr><tr><td>Wind Conditions</td><td>Light to moderate, northeast</td><td>Variable, transitioning</td><td>Increasingly variable, shifting to southwest</td></tr><tr><td>Special Events</td><td>Valentine''s Day celebrations</td><td>Easter (when it falls in March)</td><td>Maldivian New Year (Sinhala &amp; Tamil)</td></tr><tr><td>Best For</td><td>Perfect weather, underwater visibility</td><td>Value, fewer crowds, transitional marine life</td><td>Better deals, marine life encounters</td></tr></tbody></table>', 13
-from nodes where node_type = 'article' and slug = 'maldives-in-march-weather-activities-expert-travel-guide'
-on conflict (id) do nothing;
+<table><tbody><tr><td>Feature</td><td>February</td><td>March</td><td>April</td></tr><tr><td>Average Temperature</td><td>29-31°C (84-88°F)</td><td>30-32°C (86-90°F)</td><td>31-33°C (88-91°F)</td></tr><tr><td>Rainfall</td><td>60-90mm (minimal)</td><td>80-120mm (increasing)</td><td>130-180mm (moderate)</td></tr><tr><td>Humidity</td><td>65-75% (comfortable)</td><td>70-80% (increasing)</td><td>75-85% (higher)</td></tr><tr><td>Water Visibility</td><td>25-30m (excellent)</td><td>20-25m (very good)</td><td>15-20m (good)</td></tr><tr><td>Tourist Traffic</td><td>High (peak season)</td><td>Moderate (decreasing)</td><td>Moderate to low</td></tr><tr><td>Pricing</td><td>Peak season rates</td><td>Transitioning to shoulder</td><td>Shoulder season rates</td></tr><tr><td>Marine Life</td><td>Excellent visibility for reef species</td><td>Transitional with increasing plankton</td><td>Increasing plankton attracting larger species</td></tr><tr><td>Wind Conditions</td><td>Light to moderate, northeast</td><td>Variable, transitioning</td><td>Increasingly variable, shifting to southwest</td></tr><tr><td>Special Events</td><td>Valentine''s Day celebrations</td><td>Easter (when it falls in March)</td><td>Maldivian New Year (Sinhala &amp; Tamil)</td></tr><tr><td>Best For</td><td>Perfect weather, underwater visibility</td><td>Value, fewer crowds, transitional marine life</td><td>Better deals, marine life encounters</td></tr></tbody></table>', 13 from nodes where node_type = 'article' and slug = 'maldives-in-march-weather-activities-expert-travel-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-in-march-weather-activities-expert-travel-guide'
-  and c.node_type = 'category' and c.slug = 'travel-tips'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-in-march-weather-activities-expert-travel-guide' and c.node_type = 'category' and c.slug = 'travel-tips' on conflict (node_id, category_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'image', 'legacy/images/activities/sunset-cruise-maldives.webp', 'Maldives in March: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1814, 1360)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'image', 'legacy/images/activities/sunset-cruise-maldives.webp', 'Maldives in March: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1814, 1360) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-march-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-march-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'image', 'legacy/images/activities/sunset-cruise-maldives.webp', 'Maldives in March: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1814, 1360)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'image', 'legacy/images/activities/sunset-cruise-maldives.webp', 'Maldives in March: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1814, 1360) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-march-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '85b25fa5-ecd2-dfe0-e028-440391b5635a'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-march-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('36ab9bfe-c6aa-3147-99d1-86e75d5a1975'::uuid, 'image', 'legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives.webp', 'Maldives in March: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('36ab9bfe-c6aa-3147-99d1-86e75d5a1975'::uuid, 'image', 'legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives.webp', 'Maldives in March: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '36ab9bfe-c6aa-3147-99d1-86e75d5a1975'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-march-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '36ab9bfe-c6aa-3147-99d1-86e75d5a1975'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-march-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('3010fffd-82b4-262f-3bf4-415ae933062c'::uuid, 'image', 'legacy/resorts/velassaru/images/velassaru-maldives-beach-villa-pool.webp', 'Maldives in March: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('3010fffd-82b4-262f-3bf4-415ae933062c'::uuid, 'image', 'legacy/resorts/velassaru/images/velassaru-maldives-beach-villa-pool.webp', 'Maldives in March: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '3010fffd-82b4-262f-3bf4-415ae933062c'::uuid, 'content', 3
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-march-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '3010fffd-82b4-262f-3bf4-415ae933062c'::uuid, 'content', 3 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-march-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives in May: The Perfect Shoulder Season Escape
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-in-may-the-perfect-shoulder-season-escape', 'Maldives in May: The Perfect Shoulder Season Escape', 'Planning a trip to Maldives in May? Discover the perfect balance of weather, prices, and activities. Our comprehensive guide covers everything you need to know about visiting the Maldives in May.', 'published', 'Maldives in May: The Perfect Shoulder Season Escape | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in May? Discover the perfect balance of weather, prices, and activities. Our comprehensive guide covers everything you need to know about visiting the Maldives in May.', ARRAY['/articles/maldives-in-may.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-in-may-the-perfect-shoulder-season-escape', 'Maldives in May: The Perfect Shoulder Season Escape', 'Planning a trip to Maldives in May? Discover the perfect balance of weather, prices, and activities. Our comprehensive guide covers everything you need to know about visiting the Maldives in May.', 'published', 'Maldives in May: The Perfect Shoulder Season Escape | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in May? Discover the perfect balance of weather, prices, and activities. Our comprehensive guide covers everything you need to know about visiting the Maldives in May.', ARRAY['/articles/maldives-in-may.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>May offers the perfect balance of good weather, fewer crowds, and excellent value in the Maldives</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>May offers the perfect balance of good weather, fewer crowds, and excellent value in the Maldives</p>
 <p>May marks a transitional period in the Maldives, sitting at the cusp between the dry northeast monsoon and the wet southwest monsoon. This shoulder season offers a unique combination of advantages: generally favorable weather, significantly reduced crowds, and some of the best accommodation deals of the year. For savvy travelers looking to experience the Maldives'' legendary beauty without the peak season prices or crowds, May presents an excellent opportunity to visit this tropical paradise.</p>
 <h4>May in the Maldives at a Glance</h4>
 <ul><li>Weather: Transitional period with mostly sunny days, occasional brief showers, and increasing humidity</li><li>Tourist Traffic: Low to moderate (shoulder season)</li><li>Pricing: 30-50% lower than peak season rates</li><li>Water Visibility: Very good (15-30 meters)</li><li>Marine Life: Excellent, with manta rays beginning to appear on the western atolls</li><li>Surf Conditions: Beginning of surf season with swells starting to build</li></ul>
@@ -4089,41 +3269,22 @@ select id, '<p>May offers the perfect balance of good weather, fewer crowds, and
 <ul><li>Value-conscious luxury travelers looking to experience premium resorts at significantly reduced rates</li><li>Couples seeking privacy and tranquility with fewer guests at resorts</li><li>Snorkeling and diving enthusiasts who will appreciate the excellent visibility and abundant marine life</li><li>Photographers who can capture dramatic skies and stunning sunsets created by the transitional weather</li><li>Flexible travelers who can adjust their daily plans based on weather conditions</li></ul>
 <p>While June through October offers even lower rates, these months come with a significantly higher chance of extended rainfall and wind. May hits the sweet spot where discounts are substantial but weather conditions remain generally favorable, making it an ideal choice for a Maldives vacation that balances experience and value.</p>
 <h4>Ready to Book Your May Trip to the Maldives?</h4>
-<p>Browse our curated selection of Maldives Resorts and Maldives Hotels to find your perfect stay. For more information about activities and experiences available during your stay, check out our Activities Guide.</p>', 10
-from nodes where node_type = 'article' and slug = 'maldives-in-may-the-perfect-shoulder-season-escape'
-on conflict (id) do nothing;
+<p>Browse our curated selection of Maldives Resorts and Maldives Hotels to find your perfect stay. For more information about activities and experiences available during your stay, check out our Activities Guide.</p>', 10 from nodes where node_type = 'article' and slug = 'maldives-in-may-the-perfect-shoulder-season-escape' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-in-may-the-perfect-shoulder-season-escape'
-  and c.node_type = 'category' and c.slug = 'atolls'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-in-may-the-perfect-shoulder-season-escape' and c.node_type = 'category' and c.slug = 'atolls' on conflict (node_id, category_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('ea357590-893c-721b-cf78-f24fa707b820'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort-beach.webp', 'Maldives in May: The Perfect Shoulder Season Escape', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('ea357590-893c-721b-cf78-f24fa707b820'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort-beach.webp', 'Maldives in May: The Perfect Shoulder Season Escape', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'ea357590-893c-721b-cf78-f24fa707b820'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-may-the-perfect-shoulder-season-escape'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'ea357590-893c-721b-cf78-f24fa707b820'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-may-the-perfect-shoulder-season-escape' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'image', 'legacy/images/activities/full-day/full-day-activity-male-atoll.webp', 'Maldives in May: The Perfect Shoulder Season Escape', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'image', 'legacy/images/activities/full-day/full-day-activity-male-atoll.webp', 'Maldives in May: The Perfect Shoulder Season Escape', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-may-the-perfect-shoulder-season-escape'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '67336692-acbc-3bb2-6e4f-28d76e7e91df'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-may-the-perfect-shoulder-season-escape' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives in November: Weather, Activities & Expert Travel Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-in-november-weather-activities-expert-travel-guide', 'Maldives in November: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in November? Discover weather patterns, activities, prices, and expert tips for visiting during the start of the dry season. Find the best resorts and experiences for a November vacation.', 'published', 'Maldives in November: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in November? Discover weather patterns, activities, prices, and expert tips for visiting during the start of the dry season. Find the best resorts and experiences for a November vacation.', ARRAY['/articles/maldives-in-november.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-in-november-weather-activities-expert-travel-guide', 'Maldives in November: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in November? Discover weather patterns, activities, prices, and expert tips for visiting during the start of the dry season. Find the best resorts and experiences for a November vacation.', 'published', 'Maldives in November: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in November? Discover weather patterns, activities, prices, and expert tips for visiting during the start of the dry season. Find the best resorts and experiences for a November vacation.', ARRAY['/articles/maldives-in-november.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>November in the Maldives marks the beginning of the dry season with excellent weather and pre-peak season value</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>November in the Maldives marks the beginning of the dry season with excellent weather and pre-peak season value</p>
 <p>November marks the beginning of the dry season in the Maldives, as the northeast monsoon (Iruvai) takes hold, bringing significantly improved weather conditions. With decreasing rainfall, lower humidity, calmer seas, and excellent underwater visibility, November offers an ideal combination of favorable weather and pre-peak season value. As tourist numbers begin to increase but remain below high season levels, November represents one of the best value-for-money periods to experience the Maldives at its near-best.</p>
 <h4>November in the Maldives at a Glance</h4>
 <ul><li>Weather: Beginning of dry season with decreasing rainfall and humidity</li><li>Tourist Traffic: Moderate (beginning to increase for high season)</li><li>Pricing: 15-30% lower than peak season rates</li><li>Water Visibility: Excellent (20-30 meters)</li><li>Marine Life: Abundant with excellent visibility for spotting various species</li><li>Surf Conditions: Decreasing swells as northeast monsoon establishes</li><li>Special Events: Republic Day celebrations (November 11th)</li></ul>
@@ -4268,77 +3429,38 @@ select id, '<p>November in the Maldives marks the beginning of the dry season wi
 <ul><li>You''re seeking the absolute lowest prices possible (July-September offers deeper discounts)</li><li>You require absolutely guaranteed perfect weather every day (January-February would be better)</li><li>You''re specifically interested in surfing, as swells decrease with the northeast monsoon</li><li>You''re visiting very early in November and have a very short stay, as the transition from wet season is still in progress</li><li>You''re looking for the most vibrant resort atmosphere with maximum occupancy (peak season offers more)</li></ul>
 <p>For most travelers, November represents an excellent compromise between weather quality and value. The improving conditions, decreasing rainfall, and increasing sunshine hours combined with pre-peak season pricing make it one of the best &quot;value months&quot; in the Maldives calendar. The gradually increasing tourist numbers also mean that resorts are more lively than during the wet season months, but still far from the crowded conditions of the peak season.</p>
 <p>If you''re considering a November visit to the Maldives, it''s worth comparing with other months to find the perfect timing for your preferences. Check our guides on visiting in October and visiting in December to compare conditions across different periods of the year.</p>
-<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 13
-from nodes where node_type = 'article' and slug = 'maldives-in-november-weather-activities-expert-travel-guide'
-on conflict (id) do nothing;
+<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 13 from nodes where node_type = 'article' and slug = 'maldives-in-november-weather-activities-expert-travel-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-in-november-weather-activities-expert-travel-guide'
-  and c.node_type = 'category' and c.slug = 'atolls'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-in-november-weather-activities-expert-travel-guide' and c.node_type = 'category' and c.slug = 'atolls' on conflict (node_id, category_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', 'Maldives in November: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 427)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', 'Maldives in November: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 427) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-november-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-november-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'image', 'legacy/images/fishing/night-fishing-in-maldives.webp', 'Maldives in November: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 945, 1024)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'image', 'legacy/images/fishing/night-fishing-in-maldives.webp', 'Maldives in November: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 945, 1024) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-november-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-november-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('3155d9dc-380b-ac00-3242-23d72abb7a84'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives.webp', 'Maldives in November: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('3155d9dc-380b-ac00-3242-23d72abb7a84'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives.webp', 'Maldives in November: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '3155d9dc-380b-ac00-3242-23d72abb7a84'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-november-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '3155d9dc-380b-ac00-3242-23d72abb7a84'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-november-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('68a6101f-09a4-0320-5a39-c4a8ecbbe92e'::uuid, 'image', 'legacy/resorts/velassaru/images/velassaru-maldives.webp', 'Maldives in November: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('68a6101f-09a4-0320-5a39-c4a8ecbbe92e'::uuid, 'image', 'legacy/resorts/velassaru/images/velassaru-maldives.webp', 'Maldives in November: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '68a6101f-09a4-0320-5a39-c4a8ecbbe92e'::uuid, 'content', 3
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-november-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '68a6101f-09a4-0320-5a39-c4a8ecbbe92e'::uuid, 'content', 3 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-november-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('36ab9bfe-c6aa-3147-99d1-86e75d5a1975'::uuid, 'image', 'legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives.webp', 'Maldives in November: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('36ab9bfe-c6aa-3147-99d1-86e75d5a1975'::uuid, 'image', 'legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives.webp', 'Maldives in November: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '36ab9bfe-c6aa-3147-99d1-86e75d5a1975'::uuid, 'content', 4
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-november-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '36ab9bfe-c6aa-3147-99d1-86e75d5a1975'::uuid, 'content', 4 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-november-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'image', 'legacy/images/fishing/night-fishing-in-maldives.webp', 'Maldives in November: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 945, 1024)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'image', 'legacy/images/fishing/night-fishing-in-maldives.webp', 'Maldives in November: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 945, 1024) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'content', 5
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-november-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'content', 5 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-november-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives in October: Weather, Activities & Expert Travel Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-in-october-weather-activities-expert-travel-guide', 'Maldives in October: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in October? Discover weather patterns, activities, prices, and expert tips for visiting during this transitional month. Find the best resorts and experiences for an October vacation.', 'published', 'Maldives in October: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in October? Discover weather patterns, activities, prices, and expert tips for visiting during this transitional month. Find the best resorts and experiences for an October vacation.', ARRAY['/articles/maldives-in-october.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-in-october-weather-activities-expert-travel-guide', 'Maldives in October: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in October? Discover weather patterns, activities, prices, and expert tips for visiting during this transitional month. Find the best resorts and experiences for an October vacation.', 'published', 'Maldives in October: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in October? Discover weather patterns, activities, prices, and expert tips for visiting during this transitional month. Find the best resorts and experiences for an October vacation.', ARRAY['/articles/maldives-in-october.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>October in the Maldives offers excellent value with improving weather as the transition from wet to dry season begins</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>October in the Maldives offers excellent value with improving weather as the transition from wet to dry season begins</p>
 <p>October marks a significant transition period in the Maldives, as the southwest monsoon begins to give way to the northeast monsoon. This transitional month brings gradually improving weather conditions, with decreasing rainfall and increasing sunshine compared to the preceding wet season months. With attractive pricing, fewer tourists than peak season, and improving underwater visibility, October offers an excellent balance of value and experience for travelers seeking the Maldivian paradise.</p>
 <h4>October in the Maldives at a Glance</h4>
 <ul><li>Weather: Transitional period with improving conditions, decreasing rainfall</li><li>Tourist Traffic: Low to moderate (beginning to increase from wet season lows)</li><li>Pricing: 25-40% lower than peak season rates</li><li>Water Visibility: Improving (15-25 meters), especially in the second half of the month</li><li>Marine Life: Good for manta rays and whale sharks in certain regions</li><li>Surf Conditions: Decreasing swells as the month progresses</li><li>Special Events: Potential for local cultural celebrations depending on the Islamic calendar</li></ul>
@@ -4477,59 +3599,30 @@ select id, '<p>October in the Maldives offers excellent value with improving wea
 <ul><li>You absolutely require guaranteed perfect weather every day of your trip (December-March would be better)</li><li>You''re seeking the absolute lowest prices possible (July-September offers deeper discounts)</li><li>You''re visiting very early in October and have a very short stay, as the transition from wet season is still in progress</li><li>You''re specifically interested in activities that require absolutely perfect visibility or conditions</li><li>You want to experience the Maldives at its most vibrant in terms of tourist atmosphere and events (high season offers more)</li></ul>
 <p>For most travelers, October represents an excellent compromise between weather quality and value. The improving conditions, reduced rainfall, and increasing sunshine hours combined with pre-peak season pricing make it one of the best &quot;value months&quot; in the Maldives calendar. The gradually increasing tourist numbers also mean that resorts are more lively than during the wet season months, but still far from the crowded conditions of the peak season.</p>
 <p>If you''re considering an October visit to the Maldives, it''s worth comparing with other months to find the perfect timing for your preferences. Check our guides on visiting in September and visiting in November to compare conditions across different periods of the year.</p>
-<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 13
-from nodes where node_type = 'article' and slug = 'maldives-in-october-weather-activities-expert-travel-guide'
-on conflict (id) do nothing;
+<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 13 from nodes where node_type = 'article' and slug = 'maldives-in-october-weather-activities-expert-travel-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-in-october-weather-activities-expert-travel-guide'
-  and c.node_type = 'category' and c.slug = 'atolls'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-in-october-weather-activities-expert-travel-guide' and c.node_type = 'category' and c.slug = 'atolls' on conflict (node_id, category_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('1252ee18-2500-652f-31db-6174cfc5982e'::uuid, 'image', 'legacy/images/activities/sandbank-excursion-male-atoll.webp', 'Maldives in October: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1252ee18-2500-652f-31db-6174cfc5982e'::uuid, 'image', 'legacy/images/activities/sandbank-excursion-male-atoll.webp', 'Maldives in October: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '1252ee18-2500-652f-31db-6174cfc5982e'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-october-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '1252ee18-2500-652f-31db-6174cfc5982e'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-october-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('a0396492-c61d-9a26-f750-712a914f5b22'::uuid, 'image', 'legacy/images/fishing/maldives-fishing-trip.webp', 'Maldives in October: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1024, 576)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('a0396492-c61d-9a26-f750-712a914f5b22'::uuid, 'image', 'legacy/images/fishing/maldives-fishing-trip.webp', 'Maldives in October: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1024, 576) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'a0396492-c61d-9a26-f750-712a914f5b22'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-october-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'a0396492-c61d-9a26-f750-712a914f5b22'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-october-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('10eee094-26e9-30ae-39be-d9ffe3b03068'::uuid, 'image', 'legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp', 'Maldives in October: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('10eee094-26e9-30ae-39be-d9ffe3b03068'::uuid, 'image', 'legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunset-water-bangalow1.webp', 'Maldives in October: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '10eee094-26e9-30ae-39be-d9ffe3b03068'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-october-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '10eee094-26e9-30ae-39be-d9ffe3b03068'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-october-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp', 'Maldives in October: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp', 'Maldives in October: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'content', 3
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-october-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'content', 3 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-october-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives in September: Weather, Activities & Expert Travel Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-in-september-weather-activities-expert-travel-guide', 'Maldives in September: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in September? Discover weather patterns, activities, prices, and expert tips for visiting during the late wet season. Find the best resorts and experiences for a September vacation.', 'published', 'Maldives in September: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in September? Discover weather patterns, activities, prices, and expert tips for visiting during the late wet season. Find the best resorts and experiences for a September vacation.', ARRAY['/articles/maldives-in-september.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-in-september-weather-activities-expert-travel-guide', 'Maldives in September: Weather, Activities & Expert Travel Guide', 'Planning a trip to Maldives in September? Discover weather patterns, activities, prices, and expert tips for visiting during the late wet season. Find the best resorts and experiences for a September vacation.', 'published', 'Maldives in September: Weather, Activities & Expert Travel Guide | Maldives Travel Guide | MTG', 'Planning a trip to Maldives in September? Discover weather patterns, activities, prices, and expert tips for visiting during the late wet season. Find the best resorts and experiences for a September vacation.', ARRAY['/articles/maldives-in-september.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>September in the Maldives offers exceptional value with the fewest crowds of the year</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>September in the Maldives offers exceptional value with the fewest crowds of the year</p>
 <p>September marks the late phase of the southwest monsoon season in the Maldives, bringing a gradual transition toward more favorable weather conditions. While still considered part of the &quot;wet season,&quot; September offers unique advantages for travelers seeking exceptional value, minimal crowds, and special experiences like manta ray encounters and surfing. With significant discounts at luxury resorts, improving weather conditions as the month progresses, and some of the year''s best marine life encounters, September can be an ideal time to visit for budget-conscious travelers and those seeking a more authentic Maldivian experience.</p>
 <h4>September in the Maldives at a Glance</h4>
 <ul><li>Weather: Late southwest monsoon with gradually decreasing rainfall and improving conditions</li><li>Tourist Traffic: Very low (quietest month of the year)</li><li>Pricing: 40-60% lower than peak season rates</li><li>Water Visibility: Improving (10-20 meters), better on western sides of atolls</li><li>Marine Life: Excellent for manta rays and whale sharks in certain regions</li><li>Surf Conditions: Good to excellent waves on eastern reef breaks</li><li>Special Features: Gradual transition toward better weather as the month progresses</li></ul>
@@ -4667,94 +3760,48 @@ select id, '<p>September in the Maldives offers exceptional value with the fewes
 <ul><li>Your primary goal is guaranteed sunshine every day of your trip</li><li>You''re planning a very short stay (3 days or less) where a day or two of rain would significantly impact your experience</li><li>You''re specifically interested in activities that require perfect weather conditions and clear visibility</li><li>You''re uncomfortable with humidity or prefer consistently dry conditions</li><li>You have inflexible plans that cannot be adjusted for weather</li><li>You''re planning a special occasion where weather is critical</li></ul>
 <p>For many travelers, the substantial cost savings and unique experiences available in September more than compensate for the occasional rain shower. With proper planning, flexible expectations, and the right choice of resort, a September visit to the Maldives can offer an exceptional experience that balances luxury and value in one of the world''s most beautiful destinations.</p>
 <p>If you''re considering a September visit to the Maldives, it''s worth comparing with other months to find the perfect timing for your preferences. Check our guides on visiting in August and visiting in October to compare conditions across different periods of the year.</p>
-<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 13
-from nodes where node_type = 'article' and slug = 'maldives-in-september-weather-activities-expert-travel-guide'
-on conflict (id) do nothing;
+<p>For comprehensive information about the best times to visit throughout the year, see our complete guide on the cheapest time to visit the Maldives, which provides a month-by-month breakdown of weather, prices, and crowd levels.</p>', 13 from nodes where node_type = 'article' and slug = 'maldives-in-september-weather-activities-expert-travel-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-in-september-weather-activities-expert-travel-guide'
-  and c.node_type = 'category' and c.slug = 'surfing'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-in-september-weather-activities-expert-travel-guide' and c.node_type = 'category' and c.slug = 'surfing' on conflict (node_id, category_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', 'Maldives in September: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 427)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', 'Maldives in September: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 427) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-september-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-september-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'image', 'legacy/images/fishing/night-fishing-in-maldives.webp', 'Maldives in September: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 945, 1024)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'image', 'legacy/images/fishing/night-fishing-in-maldives.webp', 'Maldives in September: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 945, 1024) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-september-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-september-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('f164cf64-2808-9527-ba28-1fd1ff8358aa'::uuid, 'image', 'legacy/resorts/soneva-fushi/images/soneva-fushi-maldives.webp', 'Maldives in September: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('f164cf64-2808-9527-ba28-1fd1ff8358aa'::uuid, 'image', 'legacy/resorts/soneva-fushi/images/soneva-fushi-maldives.webp', 'Maldives in September: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'f164cf64-2808-9527-ba28-1fd1ff8358aa'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-september-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'f164cf64-2808-9527-ba28-1fd1ff8358aa'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-september-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', 'Maldives in September: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 427)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'image', 'legacy/images/diving/addu-manta-point.webp', 'Maldives in September: Weather, Activities & Expert Travel Guide', 'Legacy MTG site archive', 640, 427) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'content', 3
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-september-weather-activities-expert-travel-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '7aee5f90-4f9a-5821-f5d7-3468badba656'::uuid, 'content', 3 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-september-weather-activities-expert-travel-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Malé Airport | Velana International Airport
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'male-airport-velana-international-airport', 'Malé Airport | Velana International Airport', 'Discover all you need to know about Malé Airport, also known as Velana International Airport, the primary gateway to the Maldives. Find information on flights, facilities, and more.', 'published', 'Malé Airport | Velana International Airport | Maldives Travel Guide | MTG', 'Discover all you need to know about Malé Airport, also known as Velana International Airport, the primary gateway to the Maldives. Find information on flights, facilities, and more.', ARRAY['/articles/maldives-international-airport.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'male-airport-velana-international-airport', 'Malé Airport | Velana International Airport', 'Discover all you need to know about Malé Airport, also known as Velana International Airport, the primary gateway to the Maldives. Find information on flights, facilities, and more.', 'published', 'Malé Airport | Velana International Airport | Maldives Travel Guide | MTG', 'Discover all you need to know about Malé Airport, also known as Velana International Airport, the primary gateway to the Maldives. Find information on flights, facilities, and more.', ARRAY['/articles/maldives-international-airport.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<h2>Introduction</h2>
+insert into articles (id, body, reading_time_minutes) select id, '<h2>Introduction</h2>
 <p>Velana International Airport, widely known as Malé Airport, is the main international gateway to the breathtaking islands of the Maldives. Situated on Hulhulé Island, a short distance from the capital city, Malé, this airport is a crucial hub for travelers from around the globe. Offering state-of-the-art facilities, extensive connectivity, and world-class services, Malé Airport plays a vital role in the Maldivian tourism industry, handling millions of passengers annually.</p>
 <p>The Maldives is renowned for its idyllic beaches, crystal-clear waters, and luxurious resorts. Whether you''re arriving for a family vacation, a romantic getaway, or an adventurous solo trip, your journey begins at Velana International Airport. This guide provides an in-depth look at everything you need to know about Malé Airport, including its history, facilities, transportation options, and travel tips.</p>
 <h4>Quick Navigations</h4>
 <p>Airport Overview Flight Informationl Facilities and Services Transportation and Accessibility Travel Tips for Velana International Airport Maldives Airport Map Things to do at the maldives airport List of Maldives Airports Frequently Asked Questions</p>
 <h2>Airport Overview</h2>
 <p>Velana International Airport (IATA: MLE, ICAO: VRMM) is the busiest and most prominent airport in the Maldives, serving as the primary entry point for both international tourists and domestic travelers. The airport''s strategic location on Hulhulé Island, adjacent to the capital city of Malé, makes it an essential hub for air travel in the region.</p>
-<p>Originally known as Hulhulé Airport, it was inaugurated in 1960 and has since undergone several expansions and upgrades to accommodate the growing number of visitors to the Maldives. In 2017, the airport was renamed Velana International Airport in honor of Ibrahim Nasir, the second President of the Maldives, who played a significant role in the nation''s development. Today, Velana International Airport is equipped with modern facilities, including a new runway capable of handling the world''s largest aircraft, such as the Airbus A380.</p>', 2
-from nodes where node_type = 'article' and slug = 'male-airport-velana-international-airport'
-on conflict (id) do nothing;
+<p>Originally known as Hulhulé Airport, it was inaugurated in 1960 and has since undergone several expansions and upgrades to accommodate the growing number of visitors to the Maldives. In 2017, the airport was renamed Velana International Airport in honor of Ibrahim Nasir, the second President of the Maldives, who played a significant role in the nation''s development. Today, Velana International Airport is equipped with modern facilities, including a new runway capable of handling the world''s largest aircraft, such as the Airbus A380.</p>', 2 from nodes where node_type = 'article' and slug = 'male-airport-velana-international-airport' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'male-airport-velana-international-airport'
-  and c.node_type = 'category' and c.slug = 'airports'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'male-airport-velana-international-airport' and c.node_type = 'category' and c.slug = 'airports' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'male-airport-velana-international-airport'
-  and l.node_type = 'location' and l.slug = 'male-city'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'male-airport-velana-international-airport' and l.node_type = 'location' and l.slug = 'male-city' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'male-airport-velana-international-airport'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'male-airport-velana-international-airport' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
 -- Article: The People of the Maldives: A Cultural Tapestry of Resilience and Tradition
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition', 'The People of the Maldives: A Cultural Tapestry of Resilience and Tradition', 'The Maldivian people, or Dhivehis, are a unique blend of various cultural influences. Historically, the Maldives has been a crossroads of trade and migration. Its population is a melting pot of South Asian, Arab, and African heritage, with influences from India, Sri Lanka, and even the Swahili coast', 'published', 'The People of the Maldives: A Cultural Tapestry of Resilience and Tradition | Maldives Travel Guide | MTG', 'The Maldivian people, or Dhivehis, are a unique blend of various cultural influences. Historically, the Maldives has been a crossroads of trade and migration. Its population is a melting pot of South Asian, Arab, and African heritage, with influences from India, Sri Lanka, and even the Swahili coast.', ARRAY['/articles/maldives-people.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition', 'The People of the Maldives: A Cultural Tapestry of Resilience and Tradition', 'The Maldivian people, or Dhivehis, are a unique blend of various cultural influences. Historically, the Maldives has been a crossroads of trade and migration. Its population is a melting pot of South Asian, Arab, and African heritage, with influences from India, Sri Lanka, and even the Swahili coast', 'published', 'The People of the Maldives: A Cultural Tapestry of Resilience and Tradition | Maldives Travel Guide | MTG', 'The Maldivian people, or Dhivehis, are a unique blend of various cultural influences. Historically, the Maldives has been a crossroads of trade and migration. Its population is a melting pot of South Asian, Arab, and African heritage, with influences from India, Sri Lanka, and even the Swahili coast.', ARRAY['/articles/maldives-people.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>Nestled in the turquoise waters of the Indian Ocean, the Maldives is renowned for its stunning coral reefs, crystal-clear waters, and luxurious resorts. Yet, beneath the surface of this tropical paradise lies a vibrant and diverse culture shaped by its people—the Maldivians.</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>Nestled in the turquoise waters of the Indian Ocean, the Maldives is renowned for its stunning coral reefs, crystal-clear waters, and luxurious resorts. Yet, beneath the surface of this tropical paradise lies a vibrant and diverse culture shaped by its people—the Maldivians.</p>
 <h3>Quick Navigations (Topics covered in this guide)</h3>
 <p>A Diverse Heritage Language and Communication Traditional Life and Society Cultural Expressions and Festivals Craftsmanship and Art Challenges and Resilience Modern Influencesn Traditional Society and Family Structure The Maritime Connection Population? Ancient Settlements and Early Influences Colonial Era and Modern Influences Marriage and Gender Roles Eid Celebrations Bodu Beru Economic Growth and Tourism</p>
 <h2>A Diverse Heritage</h2>
@@ -4804,35 +3851,18 @@ select id, '<p>Nestled in the turquoise waters of the Indian Ocean, the Maldives
 <h4>Economic Growth and Tourism</h4>
 <p>The Maldives'' economic growth has been significantly influenced by the expansion of the tourism industry. Luxury resorts, international hotels, and marine-based activities attract visitors from around the world. The influx of tourists has led to increased investment in infrastructure, including transportation, healthcare, and education.</p>
 <p>However, the rapid growth of tourism has also raised concerns about its impact on local communities and the environment. Issues such as overdevelopment, waste management, and the preservation of cultural heritage have become important considerations. Balancing economic development with environmental conservation and cultural preservation is a key challenge for the Maldives in the 21st century.</p>
-<p>The Maldivian people are at the heart of the nation''s identity, embodying a rich and diverse cultural heritage shaped by centuries of history and adaptation. Their resilience in the face of modern challenges and their commitment to preserving their traditions reflect the enduring strength of their culture. As the Maldives continues to navigate the complexities of globalization and environmental change, the spirit of its people remains a testament to the beauty and resilience of their way of life. Through their traditions, craftsmanship, and communal bonds, the Maldivians continue to inspire admiration and respect, both locally and globally.</p>', 10
-from nodes where node_type = 'article' and slug = 'the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition'
-on conflict (id) do nothing;
+<p>The Maldivian people are at the heart of the nation''s identity, embodying a rich and diverse cultural heritage shaped by centuries of history and adaptation. Their resilience in the face of modern challenges and their commitment to preserving their traditions reflect the enduring strength of their culture. As the Maldives continues to navigate the complexities of globalization and environmental change, the spirit of its people remains a testament to the beauty and resilience of their way of life. Through their traditions, craftsmanship, and communal bonds, the Maldivians continue to inspire admiration and respect, both locally and globally.</p>', 10 from nodes where node_type = 'article' and slug = 'the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition'
-  and c.node_type = 'category' and c.slug = 'islands'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition' and c.node_type = 'category' and c.slug = 'islands' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition'
-  and l.node_type = 'location' and l.slug = 'fuvahmulah'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition' and l.node_type = 'location' and l.slug = 'fuvahmulah' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
 -- Article: Maldives Private Islands: Ultimate Luxury Getaway Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-private-islands-ultimate-luxury-getaway-guide', 'Maldives Private Islands: Ultimate Luxury Getaway Guide', 'Discover exclusive Maldives private islands for the ultimate luxury vacation. Find private island resorts, rentals, and experiences for a secluded paradise getaway.', 'published', 'Maldives Private Islands: Ultimate Luxury Getaway Guide | Maldives Travel Guide | MTG', 'Discover exclusive Maldives private islands for the ultimate luxury vacation. Find private island resorts, rentals, and experiences for a secluded paradise getaway.', ARRAY['/articles/maldives-private-island.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-private-islands-ultimate-luxury-getaway-guide', 'Maldives Private Islands: Ultimate Luxury Getaway Guide', 'Discover exclusive Maldives private islands for the ultimate luxury vacation. Find private island resorts, rentals, and experiences for a secluded paradise getaway.', 'published', 'Maldives Private Islands: Ultimate Luxury Getaway Guide | Maldives Travel Guide | MTG', 'Discover exclusive Maldives private islands for the ultimate luxury vacation. Find private island resorts, rentals, and experiences for a secluded paradise getaway.', ARRAY['/articles/maldives-private-island.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>Experience the ultimate exclusivity with a private island resort in the Maldives</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>Experience the ultimate exclusivity with a private island resort in the Maldives</p>
 <p>The Maldives is synonymous with luxury, but for those seeking the pinnacle of exclusivity and privacy, a private island experience represents the ultimate indulgence. Whether you''re looking for a completely private island rental or an ultra-exclusive resort that offers unparalleled seclusion, the Maldives offers some of the world''s most spectacular private island experiences. This comprehensive guide explores everything you need to know about private islands in the Maldives, from what to expect to how to book your dream escape.</p>
 <h4>Maldives Private Islands at a Glance</h4>
 <ul><li>Experience: Ultimate privacy and exclusivity in paradise</li><li>Price Range: $2,000-$50,000+ per night depending on island size and amenities</li><li>Best For: Celebrities, honeymooners, milestone celebrations, corporate retreats</li><li>Booking Lead Time: 3-12 months in advance recommended</li><li>Typical Size: From intimate 1-villa islands to larger exclusive resorts</li><li>Staff Ratio: Often 5-15 staff members per guest for complete personalization</li><li>Transfer Options: Private yacht, seaplane, or helicopter transfers</li></ul>
@@ -4964,80 +3994,38 @@ select id, '<p>Experience the ultimate exclusivity with a private island resort 
 <p>Let us help you find the perfect private island for your next extraordinary Maldives getaway. Our luxury travel specialists can arrange every detail of your exclusive escape.</p>
 <h2>Private Island Gallery</h2>
 <figure><img src="legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp" alt="Private Beach Dining" loading="lazy" /></figure>
-<figure><img src="legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-activities.webp" alt="Gili Lankanfushi Private Reserve" loading="lazy" /></figure>', 10
-from nodes where node_type = 'article' and slug = 'maldives-private-islands-ultimate-luxury-getaway-guide'
-on conflict (id) do nothing;
+<figure><img src="legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-activities.webp" alt="Gili Lankanfushi Private Reserve" loading="lazy" /></figure>', 10 from nodes where node_type = 'article' and slug = 'maldives-private-islands-ultimate-luxury-getaway-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-private-islands-ultimate-luxury-getaway-guide'
-  and c.node_type = 'category' and c.slug = 'islands'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-private-islands-ultimate-luxury-getaway-guide' and c.node_type = 'category' and c.slug = 'islands' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'maldives-private-islands-ultimate-luxury-getaway-guide'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'maldives-private-islands-ultimate-luxury-getaway-guide' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'maldives-private-islands-ultimate-luxury-getaway-guide'
-  and l.node_type = 'location' and l.slug = 'lankanfushi'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'maldives-private-islands-ultimate-luxury-getaway-guide' and l.node_type = 'location' and l.slug = 'lankanfushi' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('d1c05767-2467-0d92-1943-73085df38a99'::uuid, 'image', 'legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-lagoon-villa.webp', 'Maldives Private Islands: Ultimate Luxury Getaway Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('d1c05767-2467-0d92-1943-73085df38a99'::uuid, 'image', 'legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-lagoon-villa.webp', 'Maldives Private Islands: Ultimate Luxury Getaway Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'd1c05767-2467-0d92-1943-73085df38a99'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-private-islands-ultimate-luxury-getaway-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'd1c05767-2467-0d92-1943-73085df38a99'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-private-islands-ultimate-luxury-getaway-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('72d57239-0ddf-2e16-248f-15b5a91edac0'::uuid, 'image', 'legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-activities.webp', 'Maldives Private Islands: Ultimate Luxury Getaway Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('72d57239-0ddf-2e16-248f-15b5a91edac0'::uuid, 'image', 'legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-activities.webp', 'Maldives Private Islands: Ultimate Luxury Getaway Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '72d57239-0ddf-2e16-248f-15b5a91edac0'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-private-islands-ultimate-luxury-getaway-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '72d57239-0ddf-2e16-248f-15b5a91edac0'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'maldives-private-islands-ultimate-luxury-getaway-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp', 'Maldives Private Islands: Ultimate Luxury Getaway Guide', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp', 'Maldives Private Islands: Ultimate Luxury Getaway Guide', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-private-islands-ultimate-luxury-getaway-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'maldives-private-islands-ultimate-luxury-getaway-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp', 'Maldives Private Islands: Ultimate Luxury Getaway Guide', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp', 'Maldives Private Islands: Ultimate Luxury Getaway Guide', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'content', 3
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-private-islands-ultimate-luxury-getaway-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'content', 3 from nodes n where n.node_type = 'article' and n.slug = 'maldives-private-islands-ultimate-luxury-getaway-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('72d57239-0ddf-2e16-248f-15b5a91edac0'::uuid, 'image', 'legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-activities.webp', 'Maldives Private Islands: Ultimate Luxury Getaway Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('72d57239-0ddf-2e16-248f-15b5a91edac0'::uuid, 'image', 'legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-activities.webp', 'Maldives Private Islands: Ultimate Luxury Getaway Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '72d57239-0ddf-2e16-248f-15b5a91edac0'::uuid, 'content', 4
-from nodes n where n.node_type = 'article' and n.slug = 'maldives-private-islands-ultimate-luxury-getaway-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '72d57239-0ddf-2e16-248f-15b5a91edac0'::uuid, 'content', 4 from nodes n where n.node_type = 'article' and n.slug = 'maldives-private-islands-ultimate-luxury-getaway-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Maldives Religion: A Comprehensive Analysis of Faith, History, and Demographics
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-religion-a-comprehensive-analysis-of-faith-history-and-demographics', 'Maldives Religion: A Comprehensive Analysis of Faith, History, and Demographics', 'Explore the Maldives religion landscape, including its Islamic dominance, historical religions, and demographic insights.', 'published', 'Maldives Religion: A Comprehensive Analysis of Faith, History, and Demographics | Maldives Travel Guide | MTG', 'Explore the Maldives religion landscape, including its Islamic dominance, historical religions, and demographic insights.', ARRAY['/articles/maldives-religion.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-religion-a-comprehensive-analysis-of-faith-history-and-demographics', 'Maldives Religion: A Comprehensive Analysis of Faith, History, and Demographics', 'Explore the Maldives religion landscape, including its Islamic dominance, historical religions, and demographic insights.', 'published', 'Maldives Religion: A Comprehensive Analysis of Faith, History, and Demographics | Maldives Travel Guide | MTG', 'Explore the Maldives religion landscape, including its Islamic dominance, historical religions, and demographic insights.', ARRAY['/articles/maldives-religion.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>The Maldives, an archipelago of 26 atolls scattered across the Indian Ocean, is renowned for its stunning white-sand beaches, crystal-clear waters, and luxurious resorts. However, beyond its postcard-perfect exterior lies a rich cultural tapestry deeply intertwined with religion. This article delves into the Maldives religion, offering a comprehensive overview of the nation''s predominant faith, religions before islam, percentages, and the role of religion in daily life.</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>The Maldives, an archipelago of 26 atolls scattered across the Indian Ocean, is renowned for its stunning white-sand beaches, crystal-clear waters, and luxurious resorts. However, beyond its postcard-perfect exterior lies a rich cultural tapestry deeply intertwined with religion. This article delves into the Maldives religion, offering a comprehensive overview of the nation''s predominant faith, religions before islam, percentages, and the role of religion in daily life.</p>
 <h3>Quick Navigations (Topics covered in this guide)</h3>
 <p>Religion in the Maldives Maldives Religion Before Islam Maldives Islamic history Maldives Religion Percentage The Impact of Islam on Maldivian Society Daily Religious Practices Modern Influencesn The Preservation and Transformation of Religious Sites Challenges and Controversies</p>
 <h2>Religion in the Maldives</h2>
@@ -5068,23 +4056,14 @@ select id, '<p>The Maldives, an archipelago of 26 atolls scattered across the In
 <h3>Challenges and Controversies</h3>
 <p>The Maldives'' strict adherence to Islam and the prohibition of other religions have led to ongoing debates about religious freedom and human rights. International organizations have criticized the Maldives for its lack of religious tolerance, particularly regarding the treatment of non-Muslims and those who may wish to convert to another faith. The government has faced pressure to relax these restrictions, but any move in this direction is met with significant resistance from religious leaders and the broader public.</p>
 <h3>Balancing Tradition and Modernization</h3>
-<p>As the Maldives continues to develop, it faces the challenge of balancing its deep-rooted Islamic traditions with the demands of modernization. The influx of tourists and the increasing exposure to global cultures have introduced new ideas and practices that sometimes conflict with traditional Islamic values. This tension is particularly evident among the younger generation, who are more exposed to global influences through the internet and social media.</p>', 4
-from nodes where node_type = 'article' and slug = 'maldives-religion-a-comprehensive-analysis-of-faith-history-and-demographics'
-on conflict (id) do nothing;
+<p>As the Maldives continues to develop, it faces the challenge of balancing its deep-rooted Islamic traditions with the demands of modernization. The influx of tourists and the increasing exposure to global cultures have introduced new ideas and practices that sometimes conflict with traditional Islamic values. This tension is particularly evident among the younger generation, who are more exposed to global influences through the internet and social media.</p>', 4 from nodes where node_type = 'article' and slug = 'maldives-religion-a-comprehensive-analysis-of-faith-history-and-demographics' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-religion-a-comprehensive-analysis-of-faith-history-and-demographics'
-  and c.node_type = 'category' and c.slug = 'atolls'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-religion-a-comprehensive-analysis-of-faith-history-and-demographics' and c.node_type = 'category' and c.slug = 'atolls' on conflict (node_id, category_id) do nothing;
 
 -- Article: Maldives Weather Guide: Month by Month Climate Information for
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'maldives-weather-guide-month-by-month-climate-information-for', 'Maldives Weather Guide: Month by Month Climate Information for', 'Maldives weather guide - Detailed monthly climate information with temperature, rainfall, humidity & sunshine data. Find the best time to visit Maldives based on your preferences.', 'published', 'Maldives Weather Guide: Month by Month Climate Information for | Maldives Travel Guide | MTG', 'Maldives weather guide - Detailed monthly climate information with temperature, rainfall, humidity & sunshine data. Find the best time to visit Maldives based on your preferences.', ARRAY['/articles/maldives-weather.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'maldives-weather-guide-month-by-month-climate-information-for', 'Maldives Weather Guide: Month by Month Climate Information for', 'Maldives weather guide - Detailed monthly climate information with temperature, rainfall, humidity & sunshine data. Find the best time to visit Maldives based on your preferences.', 'published', 'Maldives Weather Guide: Month by Month Climate Information for | Maldives Travel Guide | MTG', 'Maldives weather guide - Detailed monthly climate information with temperature, rainfall, humidity & sunshine data. Find the best time to visit Maldives based on your preferences.', ARRAY['/articles/maldives-weather.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>Perfect sunny day at Baros Maldives during the dry season</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>Perfect sunny day at Baros Maldives during the dry season</p>
 <p>Planning your dream Maldives vacation? Understanding the weather patterns is essential for choosing the perfect time to visit this tropical paradise. While the Maldives enjoys warm temperatures year-round, distinct seasonal variations in rainfall, humidity, and wind can significantly impact your experience. Our comprehensive weather guide provides detailed month-by-month climate information to help you plan the ideal Maldives getaway based on your preferences and priorities.</p>
 <h2>Maldives Climate Overview</h2>
 <p>The Maldives enjoys a tropical monsoon climate with two distinct seasons:</p>
@@ -5150,35 +4129,18 @@ select id, '<p>Perfect sunny day at Baros Maldives during the dry season</p>
 <h2>Final Thoughts on Maldives Weather</h2>
 <p>The Maldives offers a tropical paradise experience year-round, with each season providing its own unique advantages. While the dry season (December-April) delivers the picture-perfect weather most associated with Maldives marketing materials, the wet season (May-November) offers excellent value, fewer crowds, and special natural phenomena like manta ray aggregations.</p>
 <p>When planning your trip, consider your priorities—whether that''s guaranteed sunshine, budget considerations, specific activities like diving or surfing, or witnessing particular marine life events. The good news is that even during the wet season, rain typically comes in short bursts rather than prolonged periods, and the warm temperatures ensure that the Maldives remains a delightful destination regardless of when you visit.</p>
-<p>For the ideal balance of good weather and value, consider the shoulder months of April-May or November, when you might enjoy dry season conditions at wet season prices. Whichever season you choose, the Maldives'' turquoise waters, white sand beaches, and abundant marine life await to create memories that will last a lifetime.</p>', 7
-from nodes where node_type = 'article' and slug = 'maldives-weather-guide-month-by-month-climate-information-for'
-on conflict (id) do nothing;
+<p>For the ideal balance of good weather and value, consider the shoulder months of April-May or November, when you might enjoy dry season conditions at wet season prices. Whichever season you choose, the Maldives'' turquoise waters, white sand beaches, and abundant marine life await to create memories that will last a lifetime.</p>', 7 from nodes where node_type = 'article' and slug = 'maldives-weather-guide-month-by-month-climate-information-for' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'maldives-weather-guide-month-by-month-climate-information-for'
-  and c.node_type = 'category' and c.slug = 'diving'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'maldives-weather-guide-month-by-month-climate-information-for' and c.node_type = 'category' and c.slug = 'diving' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'maldives-weather-guide-month-by-month-climate-information-for'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'maldives-weather-guide-month-by-month-climate-information-for' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'maldives-weather-guide-month-by-month-climate-information-for'
-  and l.node_type = 'location' and l.slug = 'baros'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'maldives-weather-guide-month-by-month-climate-information-for' and l.node_type = 'location' and l.slug = 'baros' on conflict (node_id, location_id) do nothing;
 
 -- Article: Malediven Urlaub
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'malediven-urlaub', 'Malediven Urlaub', 'Alles, was ein Besucher von den Malediven braucht, ist hier mit Live-Chat. Hier finden Sie Informationen, die Sie benötigen, Aktivitäten oder ein Hotel zum Verweilen', 'published', 'Malediven Urlaub | Maldives Travel Guide | MTG', 'Alles, was ein Besucher von den Malediven braucht, ist hier mit Live-Chat. Hier finden Sie Informationen, die Sie benötigen, Aktivitäten oder ein Hotel zum Verweilen', ARRAY['/articles/malediven-urlaub.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'malediven-urlaub', 'Malediven Urlaub', 'Alles, was ein Besucher von den Malediven braucht, ist hier mit Live-Chat. Hier finden Sie Informationen, die Sie benötigen, Aktivitäten oder ein Hotel zum Verweilen', 'published', 'Malediven Urlaub | Maldives Travel Guide | MTG', 'Alles, was ein Besucher von den Malediven braucht, ist hier mit Live-Chat. Hier finden Sie Informationen, die Sie benötigen, Aktivitäten oder ein Hotel zum Verweilen', ARRAY['/articles/malediven-urlaub.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<h3>13.Die Gemeinschaft</h3>
+insert into articles (id, body, reading_time_minutes) select id, '<h3>13.Die Gemeinschaft</h3>
 <p>Mit 515.696 Einwohnern auf einer Fläche von 298 Quadratkilometern sind die Malediven das kleinste Land in Asien und geografisch eines der am stärksten zerstreuten Länder der Welt. Das Land ist in 26 Gebiete (Atolle) unterteilt. Von den insgesamt 1200 Inseln leben Menschen auf 200 Inseln. Die durchschnittliche Bevölkerung der Inseln beträgt 2000 Menschen. Einige Inseln sind mit 400 Menschen bewohnt, aber jede Insel ist durch das Meer getrennt, weshalb das Reisen zwischen den Inseln für uns (Einheimische) und Besucher immer eine Herausforderung war.</p>
 <h4>Kämpfe des Landes</h4>
 <p>Die Malediven wurde auf der Top - 20 ärmsten Ländern der Welt in den 1980er Jahren aufgeführt Bericht der Weltbank. In der Vergangenheit war das Land hauptsächlich auf kostenlose Spenden angewiesen. Nachdem der Tourismus 1972 langsam begann, begann das Land zu wachsen und heute steht das Land auf den Beinen, aber die Streuung des Landes macht es dennoch schwierig, das Land zu regieren.</p>
@@ -5193,23 +4155,14 @@ select id, '<h3>13.Die Gemeinschaft</h3>
 <h4>Ocean Day</h4>
 <p>Obwohl die gesamte Wirtschaft der Malediven vom Tourismus abhängt, ist Nachlässigkeit ein Teil der Gemeinschaft. Viele Kunststoffe werden im Malediven Ozean gegründet. Auf den Malediven wird jedes Jahr am 8. Juni der Weltmeertag gefeiert, und einige der Organisatoren des Zivildienstes organisieren die Reinigung unserer Hausriffe und entfernen Plastik aus dem Meer.</p>
 <h4>Das Leben eines Maledivers - eine Erfahrung jenseits Ihrer Vorstellungskraft -</h4>
-<p>Die Malediven sind facettenreich. Die Kultur, Traditionen und Bräuche des Landes werden hauptsächlich von srilankischen, malaysischen, arabischen, indischen, persischen, indonesischen und sogar afrikanischen Einflüssen beeinflusst. Eine fabelhafte kulturelle Mischung, die den ganzen Reichtum der Malediven ausmacht.</p>', 2
-from nodes where node_type = 'article' and slug = 'malediven-urlaub'
-on conflict (id) do nothing;
+<p>Die Malediven sind facettenreich. Die Kultur, Traditionen und Bräuche des Landes werden hauptsächlich von srilankischen, malaysischen, arabischen, indischen, persischen, indonesischen und sogar afrikanischen Einflüssen beeinflusst. Eine fabelhafte kulturelle Mischung, die den ganzen Reichtum der Malediven ausmacht.</p>', 2 from nodes where node_type = 'article' and slug = 'malediven-urlaub' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'malediven-urlaub'
-  and c.node_type = 'category' and c.slug = 'transportation'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'malediven-urlaub' and c.node_type = 'category' and c.slug = 'transportation' on conflict (node_id, category_id) do nothing;
 
 -- Article: Most Famous Places In The World
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'most-famous-places-in-the-world', 'Most Famous Places In The World', 'List of the most famouse places and destinations in the world with facts for tourists', 'published', 'Most Famous Places In The World | Maldives Travel Guide | MTG', 'List of the most famouse places and destinations in the world with facts for tourists', ARRAY['/articles/most-famous-places-in-the-world-tovisit.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'most-famous-places-in-the-world', 'Most Famous Places In The World', 'List of the most famouse places and destinations in the world with facts for tourists', 'published', 'Most Famous Places In The World | Maldives Travel Guide | MTG', 'List of the most famouse places and destinations in the world with facts for tourists', ARRAY['/articles/most-famous-places-in-the-world-tovisit.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>Author: Shayad Saeed</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>Author: Shayad Saeed</p>
 <p>Date: 2021.02.02</p>
 <p>There are 100s of famous places in the world, out of them i will highlight the top 10 most famous places according to my researches. We get a sense of location from landmarks. This historical sites and natural wonders bind us to a place and entice us to visit. The Eiffel Tower is located in Paris, and the Statue of Liberty is located in New York City. These 10 attractions, all significant to their respective locations and histories, should be on your travel bucket list.</p>
 <h4>Burj Khalifa, Dubai</h4>
@@ -5232,23 +4185,14 @@ select id, '<p>Author: Shayad Saeed</p>
 <h4>Bora Bora Island</h4>
 <p>Bora Bora is a small island off the coast of Polynesia (is just about 6 miles long and a little more than 2 miles wide). At its heart, a dormant volcano erupts, fanning out into lush jungle before crashing into an aquamarine lagoon. These details make it one of the best travel destinations:</p>
 <h4>South Island, New Zealand</h4>
-<p>New Zealand''s South Island brims with majestic landscapes at every turn, It is a UNESCO World Heritage Area. the following facts makes it on of the famous places to to travel.</p>', 3
-from nodes where node_type = 'article' and slug = 'most-famous-places-in-the-world'
-on conflict (id) do nothing;
+<p>New Zealand''s South Island brims with majestic landscapes at every turn, It is a UNESCO World Heritage Area. the following facts makes it on of the famous places to to travel.</p>', 3 from nodes where node_type = 'article' and slug = 'most-famous-places-in-the-world' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'most-famous-places-in-the-world'
-  and c.node_type = 'category' and c.slug = 'transportation'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'most-famous-places-in-the-world' and c.node_type = 'category' and c.slug = 'transportation' on conflict (node_id, category_id) do nothing;
 
 -- Article: Romantic Things to Do in the Maldives for Couples
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'romantic-things-to-do-in-the-maldives-for-couples', 'Romantic Things to Do in the Maldives for Couples', 'The Maldives is an idyllic destination for couples, offering a perfect blend of romance, adventure, and tranquility. With its pristine beaches, crystal-clear waters, and luxurious resorts, it’s no wonder the Maldives is a top choice for honeymooners and couples seeking a romantic escape.', 'published', 'Romantic Things to Do in the Maldives for Couples | Maldives Travel Guide | MTG', 'The Maldives is an idyllic destination for couples, offering a perfect blend of romance, adventure, and tranquility. With its pristine beaches, crystal-clear waters, and luxurious resorts, it’s no wonder the Maldives is a top choice for honeymooners and couples seeking a romantic escape.', ARRAY['/articles/things-to-do-in-maldives-for-couples.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'romantic-things-to-do-in-the-maldives-for-couples', 'Romantic Things to Do in the Maldives for Couples', 'The Maldives is an idyllic destination for couples, offering a perfect blend of romance, adventure, and tranquility. With its pristine beaches, crystal-clear waters, and luxurious resorts, it’s no wonder the Maldives is a top choice for honeymooners and couples seeking a romantic escape.', 'published', 'Romantic Things to Do in the Maldives for Couples | Maldives Travel Guide | MTG', 'The Maldives is an idyllic destination for couples, offering a perfect blend of romance, adventure, and tranquility. With its pristine beaches, crystal-clear waters, and luxurious resorts, it’s no wonder the Maldives is a top choice for honeymooners and couples seeking a romantic escape.', ARRAY['/articles/things-to-do-in-maldives-for-couples.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>The Maldives is a dream destination for couples, offering pristine beaches, luxurious overwater bungalows, and breathtaking natural beauty. Whether you''re on your honeymoon, celebrating an anniversary, or simply looking for a romantic getaway, the Maldives provides an idyllic setting for creating unforgettable memories. Here are 40 incredible things to do in the Maldives for couples.</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>The Maldives is a dream destination for couples, offering pristine beaches, luxurious overwater bungalows, and breathtaking natural beauty. Whether you''re on your honeymoon, celebrating an anniversary, or simply looking for a romantic getaway, the Maldives provides an idyllic setting for creating unforgettable memories. Here are 40 incredible things to do in the Maldives for couples.</p>
 <h2>1. Relax in an Overwater Bungalow</h2>
 <p>Experience the epitome of luxury by staying in an overwater bungalow. These villas offer direct access to the turquoise lagoon, stunning ocean views, and ultimate privacy, making it the perfect setting for a romantic escape.</p>
 <h2>2. Enjoy a Private Sandbank Picnic</h2>
@@ -5332,59 +4276,30 @@ select id, '<p>The Maldives is a dream destination for couples, offering pristin
 <h3>39. Vow Renewal Ceremony</h3>
 <p>Celebrate your love with a vow renewal ceremony in paradise. Many resorts offer beautifully arranged vow renewals, whether on the beach, in a chapel, or even underwater. This symbolic gesture is a beautiful way to reaffirm your commitment to each other.</p>
 <h3>40. Tandem Parasailing</h3>
-<p>Experience the thrill of flying together with tandem parasailing. Soar above the Maldivian waters, enjoying panoramic views of the islands from the sky. It’s a fun and exhilarating way to share an adventure with your partner.</p>', 8
-from nodes where node_type = 'article' and slug = 'romantic-things-to-do-in-the-maldives-for-couples'
-on conflict (id) do nothing;
+<p>Experience the thrill of flying together with tandem parasailing. Soar above the Maldivian waters, enjoying panoramic views of the islands from the sky. It’s a fun and exhilarating way to share an adventure with your partner.</p>', 8 from nodes where node_type = 'article' and slug = 'romantic-things-to-do-in-the-maldives-for-couples' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'romantic-things-to-do-in-the-maldives-for-couples'
-  and c.node_type = 'category' and c.slug = 'accommodation'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'romantic-things-to-do-in-the-maldives-for-couples' and c.node_type = 'category' and c.slug = 'accommodation' on conflict (node_id, category_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('620e9b62-c59f-86ab-1f1a-c29236b081c2'::uuid, 'image', 'legacy/images/articles/dolphin-cruise.webp', 'Romantic Things to Do in the Maldives for Couples', 'Legacy MTG site archive', 640, 452)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('620e9b62-c59f-86ab-1f1a-c29236b081c2'::uuid, 'image', 'legacy/images/articles/dolphin-cruise.webp', 'Romantic Things to Do in the Maldives for Couples', 'Legacy MTG site archive', 640, 452) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '620e9b62-c59f-86ab-1f1a-c29236b081c2'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'romantic-things-to-do-in-the-maldives-for-couples'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '620e9b62-c59f-86ab-1f1a-c29236b081c2'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'romantic-things-to-do-in-the-maldives-for-couples' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp', 'Romantic Things to Do in the Maldives for Couples', 'Legacy MTG site archive', 1280, 720)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'image', 'legacy/resorts/baros-island/images/baros-maldives-island-resort-beach-dinner.webp', 'Romantic Things to Do in the Maldives for Couples', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'romantic-things-to-do-in-the-maldives-for-couples'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '1907c26d-f2cb-85fa-2760-21dcfe4c0fa0'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'romantic-things-to-do-in-the-maldives-for-couples' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'image', 'legacy/images/fishing/maldives-night-fishing.webp', 'Romantic Things to Do in the Maldives for Couples', 'Legacy MTG site archive', 640, 507)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'image', 'legacy/images/fishing/maldives-night-fishing.webp', 'Romantic Things to Do in the Maldives for Couples', 'Legacy MTG site archive', 640, 507) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'romantic-things-to-do-in-the-maldives-for-couples'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '9a0dcad4-60ab-74d1-31cb-9ea1b325a38f'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'romantic-things-to-do-in-the-maldives-for-couples' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('b168136b-5954-7363-1938-3ebc25d6ef97'::uuid, 'image', 'legacy/images/diving/meedhoo-coral-garden.webp', 'Romantic Things to Do in the Maldives for Couples', 'Legacy MTG site archive', 640, 480)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('b168136b-5954-7363-1938-3ebc25d6ef97'::uuid, 'image', 'legacy/images/diving/meedhoo-coral-garden.webp', 'Romantic Things to Do in the Maldives for Couples', 'Legacy MTG site archive', 640, 480) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'b168136b-5954-7363-1938-3ebc25d6ef97'::uuid, 'content', 3
-from nodes n where n.node_type = 'article' and n.slug = 'romantic-things-to-do-in-the-maldives-for-couples'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'b168136b-5954-7363-1938-3ebc25d6ef97'::uuid, 'content', 3 from nodes n where n.node_type = 'article' and n.slug = 'romantic-things-to-do-in-the-maldives-for-couples' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Things to Do in the Maldives for Family: A Comprehensive Guide
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide', 'Things to Do in the Maldives for Family: A Comprehensive Guide', 'Explore the best things to do in the Maldives for family, from snorkeling and diving to cultural experiences and beach relaxation.', 'published', 'Things to Do in the Maldives for Family: A Comprehensive Guide | Maldives Travel Guide | MTG', 'Explore the best things to do in the Maldives for family, from snorkeling and diving to cultural experiences and beach relaxation.', ARRAY['/articles/things-to-do-in-maldives-for-family.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide', 'Things to Do in the Maldives for Family: A Comprehensive Guide', 'Explore the best things to do in the Maldives for family, from snorkeling and diving to cultural experiences and beach relaxation.', 'published', 'Things to Do in the Maldives for Family: A Comprehensive Guide | Maldives Travel Guide | MTG', 'Explore the best things to do in the Maldives for family, from snorkeling and diving to cultural experiences and beach relaxation.', ARRAY['/articles/things-to-do-in-maldives-for-family.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>The Maldives, a tropical paradise in the Indian Ocean, is often synonymous with romantic getaways and honeymoon escapes. However, it''s also an excellent destination for families seeking adventure, relaxation, and unforgettable experiences. With its pristine beaches, vibrant marine life, and rich cultural heritage, the Maldives offers a wide range of activities that cater to all ages. In this comprehensive guide, we’ll explore the top things to do in the Maldives for families, ensuring your trip is filled with fun, learning, and bonding moments.</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>The Maldives, a tropical paradise in the Indian Ocean, is often synonymous with romantic getaways and honeymoon escapes. However, it''s also an excellent destination for families seeking adventure, relaxation, and unforgettable experiences. With its pristine beaches, vibrant marine life, and rich cultural heritage, the Maldives offers a wide range of activities that cater to all ages. In this comprehensive guide, we’ll explore the top things to do in the Maldives for families, ensuring your trip is filled with fun, learning, and bonding moments.</p>
 <h3>Quick Navigations (Topics covered in this guide)</h3>
 <p>Things to Do in Maldives With Kids Things to do in the Maldives with babies and toddlers Things to do in the Maldives with tweens and teenagers Things to do in the Maldives with Parents Best kid-friendly resorts in maldives Places to Visit in Maldives With Family</p>
 <h2>1. Things to Do in Maldives With Kids</h2>
@@ -5509,98 +4424,46 @@ select id, '<p>The Maldives, a tropical paradise in the Indian Ocean, is often s
 <figure><img src="legacy/images/male/male-city-beach.webp" alt="rtificial Beach, Malé" loading="lazy" /></figure>
 <h3>6.5 Maafushi Island</h3>
 <p>Maafushi is one of the most popular local islands for tourists, offering a more budget-friendly option compared to the luxury resorts. It''s a great place for families to experience local culture and enjoy a range of activities.</p>
-<figure><img src="legacy/images/activities/maafushi-island.webp" alt="Maafushi Island" loading="lazy" /></figure>', 18
-from nodes where node_type = 'article' and slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide'
-on conflict (id) do nothing;
+<figure><img src="legacy/images/activities/maafushi-island.webp" alt="Maafushi Island" loading="lazy" /></figure>', 18 from nodes where node_type = 'article' and slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide'
-  and c.node_type = 'category' and c.slug = 'islands'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide' and c.node_type = 'category' and c.slug = 'islands' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide'
-  and l.node_type = 'location' and l.slug = 'baros'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide' and l.node_type = 'location' and l.slug = 'baros' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('b1e944d9-8909-19a3-b841-3fdf4f7a166e'::uuid, 'image', 'legacy/images/maldives-sunset-cruise.webp', 'Things to Do in the Maldives for Family: A Comprehensive Guide', 'Legacy MTG site archive', 1814, 1360)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('b1e944d9-8909-19a3-b841-3fdf4f7a166e'::uuid, 'image', 'legacy/images/maldives-sunset-cruise.webp', 'Things to Do in the Maldives for Family: A Comprehensive Guide', 'Legacy MTG site archive', 1814, 1360) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'b1e944d9-8909-19a3-b841-3fdf4f7a166e'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'b1e944d9-8909-19a3-b841-3fdf4f7a166e'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'image', 'legacy/images/fishing/night-fishing-in-maldives.webp', 'Things to Do in the Maldives for Family: A Comprehensive Guide', 'Legacy MTG site archive', 945, 1024)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'image', 'legacy/images/fishing/night-fishing-in-maldives.webp', 'Things to Do in the Maldives for Family: A Comprehensive Guide', 'Legacy MTG site archive', 945, 1024) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '0270bec0-67a7-d923-e3cf-45e1009af53f'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('6c7a21e8-2802-edea-c196-c2730560add3'::uuid, 'image', 'legacy/resorts/soneva-fushi/images/soneva-fushi-kunfunadhoo-island-maldives-resort.webp', 'Things to Do in the Maldives for Family: A Comprehensive Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('6c7a21e8-2802-edea-c196-c2730560add3'::uuid, 'image', 'legacy/resorts/soneva-fushi/images/soneva-fushi-kunfunadhoo-island-maldives-resort.webp', 'Things to Do in the Maldives for Family: A Comprehensive Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '6c7a21e8-2802-edea-c196-c2730560add3'::uuid, 'content', 2
-from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '6c7a21e8-2802-edea-c196-c2730560add3'::uuid, 'content', 2 from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('3cccd65d-0b38-b5a5-1722-e0c202e46aeb'::uuid, 'image', 'legacy/resorts/kurumba/images/kurumba-maldives-vihamanaafushi-resort.webp', 'Things to Do in the Maldives for Family: A Comprehensive Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('3cccd65d-0b38-b5a5-1722-e0c202e46aeb'::uuid, 'image', 'legacy/resorts/kurumba/images/kurumba-maldives-vihamanaafushi-resort.webp', 'Things to Do in the Maldives for Family: A Comprehensive Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '3cccd65d-0b38-b5a5-1722-e0c202e46aeb'::uuid, 'content', 3
-from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '3cccd65d-0b38-b5a5-1722-e0c202e46aeb'::uuid, 'content', 3 from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('36ab9bfe-c6aa-3147-99d1-86e75d5a1975'::uuid, 'image', 'legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives.webp', 'Things to Do in the Maldives for Family: A Comprehensive Guide', 'Legacy MTG site archive', 1920, 1080)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('36ab9bfe-c6aa-3147-99d1-86e75d5a1975'::uuid, 'image', 'legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives.webp', 'Things to Do in the Maldives for Family: A Comprehensive Guide', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '36ab9bfe-c6aa-3147-99d1-86e75d5a1975'::uuid, 'content', 4
-from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '36ab9bfe-c6aa-3147-99d1-86e75d5a1975'::uuid, 'content', 4 from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('1e638f32-b0ce-fd12-0f2f-566849e78011'::uuid, 'image', 'legacy/images/male/male-city-beach.webp', 'Things to Do in the Maldives for Family: A Comprehensive Guide', 'Legacy MTG site archive', 2048, 2560)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1e638f32-b0ce-fd12-0f2f-566849e78011'::uuid, 'image', 'legacy/images/male/male-city-beach.webp', 'Things to Do in the Maldives for Family: A Comprehensive Guide', 'Legacy MTG site archive', 2048, 2560) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '1e638f32-b0ce-fd12-0f2f-566849e78011'::uuid, 'content', 5
-from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '1e638f32-b0ce-fd12-0f2f-566849e78011'::uuid, 'content', 5 from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('b3787b70-ef88-f3ef-48ef-0c388737dca8'::uuid, 'image', 'legacy/images/activities/maafushi-island.webp', 'Things to Do in the Maldives for Family: A Comprehensive Guide', 'Legacy MTG site archive', 500, 375)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('b3787b70-ef88-f3ef-48ef-0c388737dca8'::uuid, 'image', 'legacy/images/activities/maafushi-island.webp', 'Things to Do in the Maldives for Family: A Comprehensive Guide', 'Legacy MTG site archive', 500, 375) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, 'b3787b70-ef88-f3ef-48ef-0c388737dca8'::uuid, 'content', 6
-from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, 'b3787b70-ef88-f3ef-48ef-0c388737dca8'::uuid, 'content', 6 from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Things to do in Maldives
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'things-to-do-in-maldives', 'Things to do in Maldives', 'Top 12 things to do in Maldives during your holiday. Most of these activities are available in all resorts.', 'published', 'Things to do in Maldives | Maldives Travel Guide | MTG', 'Top 12 things to do in Maldives during your holiday. Most of these activities are available in all resorts.', ARRAY['/articles/things-to-do-in-maldives.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'things-to-do-in-maldives', 'Things to do in Maldives', 'Top 12 things to do in Maldives during your holiday. Most of these activities are available in all resorts.', 'published', 'Things to do in Maldives | Maldives Travel Guide | MTG', 'Top 12 things to do in Maldives during your holiday. Most of these activities are available in all resorts.', ARRAY['/articles/things-to-do-in-maldives.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<h3>Snorkeling</h3>
+insert into articles (id, body, reading_time_minutes) select id, '<h3>Snorkeling</h3>
 <p>The Maldives offers some of the most spectacular snorkeling in the world. This is due to the abundance of coral reefs in the region, as well as extremely clear waters. There are, in fact, close to 70 distinct species of coral reefs and more than 700 species of marine life. This means when you snorkel here you are sure to see an amazing variety of flora and fauna. Just some of the species you are likely to see include reef sharks, various kinds of turtles, rays, napoleons and morays. Whether you are an expert on marine life or not, you can still appreciate the colorful array of creatures you will be able to observe. Snorkeling highly recommended thing to do in Maldives.</p>
 <h3>Diving</h3>
 <p>The Maldives has become one of the world''s best scuba diving destinations because of the white sand beaches, coral reefs, clear warm waters, numerous scuba diving sites and rich marine life.</p>
@@ -5629,53 +4492,26 @@ select id, '<h3>Snorkeling</h3>
 <p>There are many types of other excursions and water sports offered in Maldives. Below are some of the most common excursion list.</p>
 <p>Manta ray watching Whale Watching Dolphin watching Shark feeding Stingray feeding Sunset cruise Sunrise cruise Equator trip</p>
 <p>Jet Ski riding Banana riding Kayak riding Wind surf Parasailing Water ski Katamarani ride</p>
-<figure><img src="legacy/images/articles/dolphin-cruise.webp" alt="maldives" loading="lazy" /></figure>', 4
-from nodes where node_type = 'article' and slug = 'things-to-do-in-maldives'
-on conflict (id) do nothing;
+<figure><img src="legacy/images/articles/dolphin-cruise.webp" alt="maldives" loading="lazy" /></figure>', 4 from nodes where node_type = 'article' and slug = 'things-to-do-in-maldives' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'things-to-do-in-maldives'
-  and c.node_type = 'category' and c.slug = 'diving'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'things-to-do-in-maldives' and c.node_type = 'category' and c.slug = 'diving' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'things-to-do-in-maldives'
-  and l.node_type = 'location' and l.slug = 'fuvahmulah'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'things-to-do-in-maldives' and l.node_type = 'location' and l.slug = 'fuvahmulah' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'things-to-do-in-maldives'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'things-to-do-in-maldives' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('32e80985-5a6b-f00d-2fa6-244717b399bb'::uuid, 'image', 'legacy/images/articles/fishing.webp', 'Things to do in Maldives', 'Legacy MTG site archive', 640, 452)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('32e80985-5a6b-f00d-2fa6-244717b399bb'::uuid, 'image', 'legacy/images/articles/fishing.webp', 'Things to do in Maldives', 'Legacy MTG site archive', 640, 452) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '32e80985-5a6b-f00d-2fa6-244717b399bb'::uuid, 'hero', 0
-from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-maldives'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '32e80985-5a6b-f00d-2fa6-244717b399bb'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-maldives' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)
-values ('620e9b62-c59f-86ab-1f1a-c29236b081c2'::uuid, 'image', 'legacy/images/articles/dolphin-cruise.webp', 'Things to do in Maldives', 'Legacy MTG site archive', 640, 452)
-on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('620e9b62-c59f-86ab-1f1a-c29236b081c2'::uuid, 'image', 'legacy/images/articles/dolphin-cruise.webp', 'Things to do in Maldives', 'Legacy MTG site archive', 640, 452) on conflict (id) do nothing;
 
-insert into node_media (node_id, media_id, role, sort_order)
-select n.id, '620e9b62-c59f-86ab-1f1a-c29236b081c2'::uuid, 'content', 1
-from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-maldives'
-on conflict (node_id, media_id, role) do nothing;
+insert into node_media (node_id, media_id, role, sort_order) select n.id, '620e9b62-c59f-86ab-1f1a-c29236b081c2'::uuid, 'content', 1 from nodes n where n.node_type = 'article' and n.slug = 'things-to-do-in-maldives' on conflict (node_id, media_id, role) do nothing;
 
 -- Article: Underwater Hotels and Restaurants In Maldives
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'underwater-hotels-and-restaurants-in-maldives', 'Underwater Hotels and Restaurants In Maldives', 'List of underwater hotels and restaurants in maldives.', 'published', 'Underwater Hotels and Restaurants In Maldives | Maldives Travel Guide | MTG', 'List of underwater hotels and restaurants in maldives.', ARRAY['/articles/underwater-hotel-in-maldives.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'underwater-hotels-and-restaurants-in-maldives', 'Underwater Hotels and Restaurants In Maldives', 'List of underwater hotels and restaurants in maldives.', 'published', 'Underwater Hotels and Restaurants In Maldives | Maldives Travel Guide | MTG', 'List of underwater hotels and restaurants in maldives.', ARRAY['/articles/underwater-hotel-in-maldives.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<p>Maldives Underwater SPA Maldives Underwater Restaurants Ithaa M6M 5.8 SUBSIX SEA H2O Maldives Underwater Resort Rooms The Muraka The Aqua Villa FAQs</p>
+insert into articles (id, body, reading_time_minutes) select id, '<p>Maldives Underwater SPA Maldives Underwater Restaurants Ithaa M6M 5.8 SUBSIX SEA H2O Maldives Underwater Resort Rooms The Muraka The Aqua Villa FAQs</p>
 <h2>Maldives Underwater Spa</h2>
 <h3>PEARL Underwater Spa at Huvafen Fushi</h3>
 <p>PEARL Underwater Spa is the first underwater Spa in the world</p>
@@ -5741,29 +4577,16 @@ select id, '<p>Maldives Underwater SPA Maldives Underwater Restaurants Ithaa M6M
 <p>The underwater hotel room in the Pullman Maldives cost around 650$ per night</p>
 <p>And it''s not beach eating anymore; instead, there are five magnificent underwater restaurants in the Maldives that you must visit if you want to make your stay on the island a memorable one. To make this a night to remember, book a reservation at one of these restaurants with your significant other.</p>
 <p>According to various NASA and USGS estimates, about 80% of the Maldives might become uninhabitable by 2050 if global warming continues at its current rate. &quot;Our islands are gradually being swamped by the water, one by one,&quot; Maldives President Ibrahim Mohamed Solih told the United Nations.</p>
-<p>Before taxes, the Muraka costs $50,000 each night. However, this price includes a three-bedroom villa with two bathrooms, a kitchen, living room, dining area, and an infinity pool on the terrace.</p>', 8
-from nodes where node_type = 'article' and slug = 'underwater-hotels-and-restaurants-in-maldives'
-on conflict (id) do nothing;
+<p>Before taxes, the Muraka costs $50,000 each night. However, this price includes a three-bedroom villa with two bathrooms, a kitchen, living room, dining area, and an infinity pool on the terrace.</p>', 8 from nodes where node_type = 'article' and slug = 'underwater-hotels-and-restaurants-in-maldives' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'underwater-hotels-and-restaurants-in-maldives'
-  and c.node_type = 'category' and c.slug = 'islands'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'underwater-hotels-and-restaurants-in-maldives' and c.node_type = 'category' and c.slug = 'islands' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'underwater-hotels-and-restaurants-in-maldives'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'underwater-hotels-and-restaurants-in-maldives' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
 -- Article: Where Is Maldives Located?
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'where-is-maldives-located', 'Where Is Maldives Located?', 'Where is maldives located? Discover where the Maldives is located and why this tropical paradise is a top destination for travelers around the world.', 'published', 'Where Is Maldives Located? | Maldives Travel Guide | MTG', 'Where is maldives located? Discover where the Maldives is located and why this tropical paradise is a top destination for travelers around the world.', ARRAY['/articles/where-is-maldives-located.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'where-is-maldives-located', 'Where Is Maldives Located?', 'Where is maldives located? Discover where the Maldives is located and why this tropical paradise is a top destination for travelers around the world.', 'published', 'Where Is Maldives Located? | Maldives Travel Guide | MTG', 'Where is maldives located? Discover where the Maldives is located and why this tropical paradise is a top destination for travelers around the world.', ARRAY['/articles/where-is-maldives-located.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<h2>An Overview of Maldives'' Location</h2>
+insert into articles (id, body, reading_time_minutes) select id, '<h2>An Overview of Maldives'' Location</h2>
 <p>The Maldives, officially known as the Republic of Maldives, is a tropical paradise located in the Indian Ocean. Situated southwest of Sri Lanka and India, the Maldives is a chain of 26 atolls, which are made up of over 1,000 coral islands. This beautiful nation is renowned for its stunning white-sand beaches, crystal-clear turquoise waters, and vibrant coral reefs, making it a sought-after destination for travelers seeking tranquility and natural beauty.</p>
 <h2>Maldives Map</h2>
 <h2>Geographical Coordinates</h2>
@@ -5777,29 +4600,16 @@ select id, '<h2>An Overview of Maldives'' Location</h2>
 <h2>How to Get to the Maldives</h2>
 <p>Getting to the Maldives is relatively easy, with direct flights available from several major cities around the world. Most visitors arrive at Velana International Airport, located on Hulhulé Island near the capital city of Malé. From there, travelers can reach their resort islands by speedboat, seaplane, or domestic flight, depending on the distance from the airport. The Maldives'' remote location means that once you arrive, you''ll be surrounded by the tranquility of the ocean, with nothing but the sound of waves to accompany your stay.</p>
 <h2>Conclusion: A Remote Tropical Paradise</h2>
-<p>The Maldives'' location in the middle of the Indian Ocean makes it a truly unique destination. Its geographical setting, combined with its natural beauty and tranquil environment, attracts visitors from all over the world. Whether you''re planning a romantic getaway, a family vacation, or an adventure-filled holiday, the Maldives offers something for everyone, all set against the backdrop of one of the most beautiful locations on Earth.</p>', 3
-from nodes where node_type = 'article' and slug = 'where-is-maldives-located'
-on conflict (id) do nothing;
+<p>The Maldives'' location in the middle of the Indian Ocean makes it a truly unique destination. Its geographical setting, combined with its natural beauty and tranquil environment, attracts visitors from all over the world. Whether you''re planning a romantic getaway, a family vacation, or an adventure-filled holiday, the Maldives offers something for everyone, all set against the backdrop of one of the most beautiful locations on Earth.</p>', 3 from nodes where node_type = 'article' and slug = 'where-is-maldives-located' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'where-is-maldives-located'
-  and c.node_type = 'category' and c.slug = 'airports'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'where-is-maldives-located' and c.node_type = 'category' and c.slug = 'airports' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'where-is-maldives-located'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'where-is-maldives-located' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
 -- Article: The Maldives
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)
-values ('article', 'the-maldives', 'The Maldives', 'The maldives islands travel guide for visitors explaining everything about the country', 'published', 'The Maldives | Maldives Travel Guide | MTG', 'The maldives islands travel guide for visitors explaining everything about the country', ARRAY['/the-maldives-islands-travel-guide.html']::text[], now())
-on conflict (node_type, slug) do nothing;
+insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', 'the-maldives', 'The Maldives', 'The maldives islands travel guide for visitors explaining everything about the country', 'published', 'The Maldives | Maldives Travel Guide | MTG', 'The maldives islands travel guide for visitors explaining everything about the country', ARRAY['/the-maldives-islands-travel-guide.html']::text[], now()) on conflict (node_type, slug) do nothing;
 
-insert into articles (id, body, reading_time_minutes)
-select id, '<div data-youtube-id="3wtrnR2BJoQ" data-video-title="the maldives facts"></div>
+insert into articles (id, body, reading_time_minutes) select id, '<div data-youtube-id="3wtrnR2BJoQ" data-video-title="the maldives facts"></div>
 <p>The Maldives is an island republic located near the equator in the Indian Ocean. A habitat for 500000 humans and 700 different species of fish. The islands are linked together in a chain. The Maldives islands are the world''s most dispersed country. The country is divided into 26 zones, which are referred to as &quot;regions&quot; (atolls). People dwell on 200 of the 1200 islands that make up the archipelago. The local language is (dhivehi), and the currency is (Maldivian Rufiya), with a 1USD=15.42Rufiya exchange rate. An island''s average population is 2000 persons. Although some islands are sparsely populated, each island is isolated from the others by the water, making transit between them a problem for both natives and visitors. The Maldives is Asia''s smallest country and one of the world''s lowest. Because of its low elevation above sea level, the Maldives is in risk of being submerged in the ocean if global warming continues at its current rate.</p>
 <h3>Quick Navigation (Topics covered)</h3>
 <p>Recommended Videos Geography Capital City Maldives Resorts Maldives Hotels Activities Transfers Maldives Airports Glowing Planktons Maldives Beaches Reefs and Marine Life Cleaning Station Things you should know before you travel Weather &amp; Climate Economical Situation Religion &amp; Culture Astronomical Observations People and Community History Health Care Networks Governement Language Shopping Places To Visit List of Maldives Islands</p>
@@ -6059,25 +4869,11 @@ select id, '<div data-youtube-id="3wtrnR2BJoQ" data-video-title="the maldives fa
 <h3>Inhabited Islands</h3>
 <ul><li>Hithadhoo (capital of Addu_City Dhekunu Province)</li><li>Maradhoo</li><li>Maradhoo-Feydhoo</li><li>Feydhoo</li><li>Hulhudhoo (Addu)</li><li>Meedhoo (Addu)</li></ul>
 <h3>Uninhabited Islands</h3>
-<ul><li>Aboohéra</li><li>Boda Hajara</li><li>Bodahéraganda</li><li>Dhigihéra</li><li>Dhiyarudi</li><li>Fahikédéhéraganda</li><li>Gan</li><li>Gaukendi</li><li>Geskalhahéra</li><li>Gomahera</li><li>Hankedé</li><li>Hankedé Hajara</li><li>Herathera</li><li>Hikahera</li><li>Ismehela Hera</li><li>Kafathalhaa Héra</li><li>Kandihera</li><li>Kédévaahéra</li><li>Koahera</li><li>Kandihéréganda</li><li>Koattay</li><li>Maahera</li><li>Maamendhoo</li><li>Madihéra</li><li>Mulikédé</li><li>Odessau-boda</li><li>Odessau-kudhu</li><li>Rasgedhara</li><li>Rujjehera</li><li>Savaaheli</li><li>Vashahéra</li><li>Villingili</li><li>Naanu</li></ul>', 30
-from nodes where node_type = 'article' and slug = 'the-maldives'
-on conflict (id) do nothing;
+<ul><li>Aboohéra</li><li>Boda Hajara</li><li>Bodahéraganda</li><li>Dhigihéra</li><li>Dhiyarudi</li><li>Fahikédéhéraganda</li><li>Gan</li><li>Gaukendi</li><li>Geskalhahéra</li><li>Gomahera</li><li>Hankedé</li><li>Hankedé Hajara</li><li>Herathera</li><li>Hikahera</li><li>Ismehela Hera</li><li>Kafathalhaa Héra</li><li>Kandihera</li><li>Kédévaahéra</li><li>Koahera</li><li>Kandihéréganda</li><li>Koattay</li><li>Maahera</li><li>Maamendhoo</li><li>Madihéra</li><li>Mulikédé</li><li>Odessau-boda</li><li>Odessau-kudhu</li><li>Rasgedhara</li><li>Rujjehera</li><li>Savaaheli</li><li>Vashahéra</li><li>Villingili</li><li>Naanu</li></ul>', 30 from nodes where node_type = 'article' and slug = 'the-maldives' on conflict (id) do nothing;
 
-insert into node_categories (node_id, category_id)
-select n.id, c.id from nodes n, nodes c
-where n.node_type = 'article' and n.slug = 'the-maldives'
-  and c.node_type = 'category' and c.slug = 'airports'
-on conflict (node_id, category_id) do nothing;
+insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'the-maldives' and c.node_type = 'category' and c.slug = 'airports' on conflict (node_id, category_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'the-maldives'
-  and l.node_type = 'location' and l.slug = 'male'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'the-maldives' and l.node_type = 'location' and l.slug = 'male' on conflict (node_id, location_id) do nothing;
 
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'secondary' from nodes n, nodes l
-where n.node_type = 'article' and n.slug = 'the-maldives'
-  and l.node_type = 'location' and l.slug = 'hulhumale'
-on conflict (node_id, location_id) do nothing;
+insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'the-maldives' and l.node_type = 'location' and l.slug = 'hulhumale' on conflict (node_id, location_id) do nothing;
 

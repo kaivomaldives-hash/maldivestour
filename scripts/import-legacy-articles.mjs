@@ -467,14 +467,19 @@ function writeCommitMigration(readyArticles) {
     lines.push("-- Article categories actually used by migrated content.");
     for (const cat of usedCategories) {
       const catSlug = CATEGORY_SLUGS[cat] ?? slugify(cat);
-      lines.push(`insert into nodes (node_type, slug, title, status, published_at)`);
-      lines.push(`values ('category', ${sqlString(catSlug)}, ${sqlString(cat)}, 'published', now())`);
-      lines.push(`on conflict (node_type, slug) do nothing;`);
+      // Every statement below is emitted as ONE line (never split across
+      // several lines.push calls) — a multi-line statement pasted into the
+      // Supabase SQL Editor has been observed arriving at Postgres split
+      // apart (e.g. "on conflict ..." submitted as its own query, which
+      // isn't valid standalone SQL even though the full statement is).
+      // One line per statement is immune to that regardless of cause.
+      lines.push(
+        `insert into nodes (node_type, slug, title, status, published_at) values ('category', ${sqlString(catSlug)}, ${sqlString(cat)}, 'published', now()) on conflict (node_type, slug) do nothing;`,
+      );
       lines.push("");
-      lines.push(`insert into categories (id, category_group, path)`);
-      lines.push(`select id, 'article-category', text2ltree(${sqlString(catSlug.replace(/-/g, "_"))}) from nodes`);
-      lines.push(`where node_type = 'category' and slug = ${sqlString(catSlug)}`);
-      lines.push(`on conflict (id) do nothing;`);
+      lines.push(
+        `insert into categories (id, category_group, path) select id, 'article-category', text2ltree(${sqlString(catSlug.replace(/-/g, "_"))}) from nodes where node_type = 'category' and slug = ${sqlString(catSlug)} on conflict (id) do nothing;`,
+      );
       lines.push("");
     }
   }
@@ -494,35 +499,34 @@ function writeCommitMigration(readyArticles) {
     const readingMinutes = Math.max(1, Math.round(article.wordCount / 200));
 
     lines.push(`-- Article: ${article.candidateTitle}`);
-    lines.push(`insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at)`);
     lines.push(
-      `values ('article', ${sqlString(article.candidateSlug)}, ${sqlString(article.candidateTitle)}, ${sqlString(summary)}, 'published', ${sqlString(metaTitle)}, ${sqlString(metaDescription)}, ARRAY[${sqlString(article.oldUrl)}]::text[], now())`,
+      `insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', ${sqlString(article.candidateSlug)}, ${sqlString(article.candidateTitle)}, ${sqlString(summary)}, 'published', ${sqlString(metaTitle)}, ${sqlString(metaDescription)}, ARRAY[${sqlString(article.oldUrl)}]::text[], now()) on conflict (node_type, slug) do nothing;`,
     );
-    lines.push(`on conflict (node_type, slug) do nothing;`);
     lines.push("");
 
-    lines.push(`insert into articles (id, body, reading_time_minutes)`);
-    lines.push(`select id, ${sqlString(bodyHtml)}, ${readingMinutes}`);
-    lines.push(`from nodes where node_type = 'article' and slug = ${sqlString(article.candidateSlug)}`);
-    lines.push(`on conflict (id) do nothing;`);
+    // The body HTML itself contains real newlines (one per paragraph/
+    // block — see renderHtml in main()); those stay embedded inside the
+    // single-quoted string literal below, which is safe (a SQL client has
+    // to track quote state to paste large content like this at all), so
+    // this statement is still emitted as one lines.push call even though
+    // the resulting text spans many physical lines.
+    lines.push(
+      `insert into articles (id, body, reading_time_minutes) select id, ${sqlString(bodyHtml)}, ${readingMinutes} from nodes where node_type = 'article' and slug = ${sqlString(article.candidateSlug)} on conflict (id) do nothing;`,
+    );
     lines.push("");
     articleCount += 1;
 
-    lines.push(`insert into node_categories (node_id, category_id)`);
-    lines.push(`select n.id, c.id from nodes n, nodes c`);
-    lines.push(`where n.node_type = 'article' and n.slug = ${sqlString(article.candidateSlug)}`);
-    lines.push(`  and c.node_type = 'category' and c.slug = ${sqlString(catSlug)}`);
-    lines.push(`on conflict (node_id, category_id) do nothing;`);
+    lines.push(
+      `insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = ${sqlString(article.candidateSlug)} and c.node_type = 'category' and c.slug = ${sqlString(catSlug)} on conflict (node_id, category_id) do nothing;`,
+    );
     lines.push("");
 
     // Related location entities -> node_locations (secondary — an article
     // isn't primarily "about" one place the way an accommodation is).
     for (const rel of article.relatedEntities.filter((e) => e.type === "island" || e.type === "atoll")) {
-      lines.push(`insert into node_locations (node_id, location_id, relation)`);
-      lines.push(`select n.id, l.id, 'secondary' from nodes n, nodes l`);
-      lines.push(`where n.node_type = 'article' and n.slug = ${sqlString(article.candidateSlug)}`);
-      lines.push(`  and l.node_type = 'location' and l.slug = ${sqlString(rel.slug)}`);
-      lines.push(`on conflict (node_id, location_id) do nothing;`);
+      lines.push(
+        `insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = ${sqlString(article.candidateSlug)} and l.node_type = 'location' and l.slug = ${sqlString(rel.slug)} on conflict (node_id, location_id) do nothing;`,
+      );
       lines.push("");
       locationTagCount += 1;
     }
@@ -538,20 +542,17 @@ function writeCommitMigration(readyArticles) {
       const mediaId = deterministicUuid(mediaKey);
       const storagePath = m.storagePath;
 
-      lines.push(`insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height)`);
       lines.push(
-        `values (${sqlString(mediaId)}::uuid, 'image', ${sqlString(storagePath)}, ${sqlString(article.candidateTitle)}, ${sqlString("Legacy MTG site archive")}, ${m.width ?? "null"}, ${m.height ?? "null"})`,
+        `insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values (${sqlString(mediaId)}::uuid, 'image', ${sqlString(storagePath)}, ${sqlString(article.candidateTitle)}, ${sqlString("Legacy MTG site archive")}, ${m.width ?? "null"}, ${m.height ?? "null"}) on conflict (id) do nothing;`,
       );
-      lines.push(`on conflict (id) do nothing;`);
       lines.push("");
       mediaCount += 1;
       uploadManifest.push({ mediaId, relativePath: m.relativePath, storagePath });
 
       const role = index === 0 ? "hero" : "content";
-      lines.push(`insert into node_media (node_id, media_id, role, sort_order)`);
-      lines.push(`select n.id, ${sqlString(mediaId)}::uuid, ${sqlString(role)}, ${index}`);
-      lines.push(`from nodes n where n.node_type = 'article' and n.slug = ${sqlString(article.candidateSlug)}`);
-      lines.push(`on conflict (node_id, media_id, role) do nothing;`);
+      lines.push(
+        `insert into node_media (node_id, media_id, role, sort_order) select n.id, ${sqlString(mediaId)}::uuid, ${sqlString(role)}, ${index} from nodes n where n.node_type = 'article' and n.slug = ${sqlString(article.candidateSlug)} on conflict (node_id, media_id, role) do nothing;`,
+      );
       lines.push("");
       attachCount += 1;
     });

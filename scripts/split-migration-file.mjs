@@ -65,7 +65,7 @@ chunks.forEach((chunkBlocks, i) => {
   const partNum = String(i + 1).padStart(digits, "0");
   const outPath = path.join(outputDir, `part-${partNum}-of-${chunks.length}.sql`);
   const content =
-    `-- Part ${i + 1} of ${chunks.length} — run this in the Supabase SQL Editor AFTER the previous parts.\n` +
+    `-- Part ${i + 1} of ${chunks.length} - run this in the Supabase SQL Editor AFTER the previous parts.\n` +
     `-- Safe to re-run: every statement uses "on conflict ... do nothing".\n\n` +
     preamble +
     chunkBlocks.join("\n");

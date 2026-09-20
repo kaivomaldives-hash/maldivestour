@@ -32,6 +32,7 @@ import {
   distinctiveTokens,
   slugify,
   storagePathForRelativePath,
+  toAsciiSafe,
   tokenOverlapScore,
 } from "./lib/legacy-shared.mjs";
 
@@ -427,7 +428,7 @@ function renderHtml(blocks) {
 
 function sqlString(value) {
   if (value === null || value === undefined) return "null";
-  return `'${String(value).replace(/'/g, "''")}'`;
+  return `'${toAsciiSafe(value).replace(/'/g, "''")}'`;
 }
 
 const CATEGORY_SLUGS = {
@@ -450,12 +451,12 @@ const CATEGORY_SLUGS = {
 function writeCommitMigration(readyArticles) {
   const lines = [];
   lines.push("-- Task 14: legacy Travel Guide articles migrated into the existing");
-  lines.push("-- `articles` table (Task 2/3 foundation — no new content system).");
-  lines.push("-- GENERATED FILE — do not hand-edit. Regenerate with:");
+  lines.push("-- `articles` table (Task 2/3 foundation - no new content system).");
+  lines.push("-- GENERATED FILE - do not hand-edit. Regenerate with:");
   lines.push("--   node scripts/import-legacy-articles.mjs --commit");
   lines.push("-- Source: data/maldives/content/article-migration-report.json (status=ready).");
   lines.push("--");
-  lines.push("-- Article category nodes are created on first use only (Task 14 §16 —");
+  lines.push("-- Article category nodes are created on first use only (Task 14 section 16 -");
   lines.push("-- no empty categories). Content/hero image node_media rows reuse the");
   lines.push("-- SAME deterministic media_assets ids scripts/import-legacy-media.mjs");
   lines.push("-- generates for the same source file, so running both migrations never");
@@ -498,7 +499,7 @@ function writeCommitMigration(readyArticles) {
     const summary = (article.metaDescription ?? article.candidateTitle ?? "").slice(0, 300);
     const readingMinutes = Math.max(1, Math.round(article.wordCount / 200));
 
-    lines.push(`-- Article: ${article.candidateTitle}`);
+    lines.push(`-- Article: ${toAsciiSafe(article.candidateTitle)}`);
     lines.push(
       `insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, legacy_slugs, published_at) values ('article', ${sqlString(article.candidateSlug)}, ${sqlString(article.candidateTitle)}, ${sqlString(summary)}, 'published', ${sqlString(metaTitle)}, ${sqlString(metaDescription)}, ARRAY[${sqlString(article.oldUrl)}]::text[], now()) on conflict (node_type, slug) do nothing;`,
     );

@@ -26,6 +26,41 @@ export function slugify(input) {
     .replace(/^-+|-+$/g, "");
 }
 
+// Accented/"smart"-typography characters (Malé, curly quotes, em dashes,
+// ellipses — all genuinely present in the legacy content) were traced to
+// real, reproducible failures when a generated migration SQL file was
+// copy-pasted into the Supabase Studio SQL Editor: some Windows/browser
+// clipboard path was corrupting or dropping specific non-ASCII bytes,
+// silently truncating statements or scrambling nearby text (surfaced as,
+// e.g., "relation \"crystal\" does not exist" — a word from unrelated
+// prose ending up mid-statement). Transliterating to plain ASCII before
+// this text ever reaches a SQL string literal makes that whole class of
+// corruption structurally impossible, at the cost of e.g. "Malé"
+// rendering as "Male" in generated SQL values (titles/slugs elsewhere in
+// the app are unaffected — this only touches text embedded in migration
+// SQL). Used by both import scripts' sqlString().
+const SMART_CHAR_MAP = {
+  "‘": "'",
+  "’": "'",
+  "“": '"',
+  "”": '"',
+  "–": "-",
+  "—": "-",
+  "…": "...",
+  " ": " ",
+};
+
+export function toAsciiSafe(input) {
+  if (input === null || input === undefined) return input;
+  let text = String(input);
+  for (const [char, replacement] of Object.entries(SMART_CHAR_MAP)) {
+    text = text.split(char).join(replacement);
+  }
+  text = text.normalize("NFD").replace(/[̀-ͯ]/g, "");
+  text = text.replace(/[^\x00-\x7F]/g, "");
+  return text;
+}
+
 export function assignUniqueSlug(name, existingSlugs, disambiguator) {
   let slug = slugify(name);
   if (!existingSlugs.has(slug)) {

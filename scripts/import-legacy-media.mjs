@@ -35,6 +35,7 @@ import {
   deterministicUuid,
   distinctiveTokens,
   storagePathForRelativePath,
+  toAsciiSafe,
   tokenOverlapScore,
 } from "./lib/legacy-shared.mjs";
 
@@ -337,7 +338,7 @@ function main() {
 
 function sqlString(value) {
   if (value === null || value === undefined) return "null";
-  return `'${String(value).replace(/'/g, "''")}'`;
+  return `'${toAsciiSafe(value).replace(/'/g, "''")}'`;
 }
 
 /** Storage object path each high-confidence file will live at once
@@ -396,12 +397,12 @@ function writeCommitMigration(highConfidenceRecords) {
 
   const lines = [];
   lines.push("-- Task 14: high-confidence legacy media attached to existing MTG entities.");
-  lines.push("-- GENERATED FILE — do not hand-edit. Regenerate with:");
+  lines.push("-- GENERATED FILE - do not hand-edit. Regenerate with:");
   lines.push("--   node scripts/import-legacy-media.mjs --commit");
   lines.push("-- Source: data/maldives/media/media-match-report.json (highConfidenceMatches).");
   lines.push("--");
   lines.push("-- media_assets.storage_path values below are where");
-  lines.push("-- scripts/upload-legacy-media.mjs uploads the matching local file — run");
+  lines.push("-- scripts/upload-legacy-media.mjs uploads the matching local file - run");
   lines.push("-- that script (separately, needs live Supabase Storage access) so these");
   lines.push("-- paths resolve to a real object. Idempotent: media_assets uses a");
   lines.push("-- deterministic id (ON CONFLICT DO NOTHING), node_media uses its own");

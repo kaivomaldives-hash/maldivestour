@@ -1,10 +1,10 @@
 -- Task 14: high-confidence legacy media attached to existing MTG entities.
--- GENERATED FILE — do not hand-edit. Regenerate with:
+-- GENERATED FILE - do not hand-edit. Regenerate with:
 --   node scripts/import-legacy-media.mjs --commit
 -- Source: data/maldives/media/media-match-report.json (highConfidenceMatches).
 --
 -- media_assets.storage_path values below are where
--- scripts/upload-legacy-media.mjs uploads the matching local file — run
+-- scripts/upload-legacy-media.mjs uploads the matching local file - run
 -- that script (separately, needs live Supabase Storage access) so these
 -- paths resolve to a real object. Idempotent: media_assets uses a
 -- deterministic id (ON CONFLICT DO NOTHING), node_media uses its own
@@ -42,27 +42,27 @@ insert into media_assets (id, media_type, storage_path, alt_text, credit, width,
 
 insert into node_media (node_id, media_id, role, sort_order) select n.id, '972921db-90ec-5d43-45e8-b3a87da18fe6'::uuid, 'hero', 0 from nodes n where n.node_type = 'location' and n.slug = 'lhaviyani' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('e639b5c7-5366-3384-60ce-601340c72055'::uuid, 'image', 'legacy/hotels/images/hotels-in-male.webp', 'Malé Island, Maldives', 'Legacy MTG site archive', 400, 225) on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('e639b5c7-5366-3384-60ce-601340c72055'::uuid, 'image', 'legacy/hotels/images/hotels-in-male.webp', 'Male Island, Maldives', 'Legacy MTG site archive', 400, 225) on conflict (id) do nothing;
 
 insert into node_media (node_id, media_id, role, sort_order) select n.id, 'e639b5c7-5366-3384-60ce-601340c72055'::uuid, 'hero', 0 from nodes n where n.node_type = 'location' and n.slug = 'male' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1b561b49-4212-7ce6-57a1-8dbecae18baf'::uuid, 'image', 'legacy/hotels/images/male-maldives-hotels.webp', 'Malé Island, Maldives', 'Legacy MTG site archive', 400, 225) on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1b561b49-4212-7ce6-57a1-8dbecae18baf'::uuid, 'image', 'legacy/hotels/images/male-maldives-hotels.webp', 'Male Island, Maldives', 'Legacy MTG site archive', 400, 225) on conflict (id) do nothing;
 
 insert into node_media (node_id, media_id, role, sort_order) select n.id, '1b561b49-4212-7ce6-57a1-8dbecae18baf'::uuid, 'gallery', 1 from nodes n where n.node_type = 'location' and n.slug = 'male' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('b5f6c10b-a91c-0a96-3131-09bcb77d2d69'::uuid, 'image', 'legacy/images/maldives/male-island.webp', 'Malé Island, Maldives', 'Legacy MTG site archive', 720, 508) on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('b5f6c10b-a91c-0a96-3131-09bcb77d2d69'::uuid, 'image', 'legacy/images/maldives/male-island.webp', 'Male Island, Maldives', 'Legacy MTG site archive', 720, 508) on conflict (id) do nothing;
 
 insert into node_media (node_id, media_id, role, sort_order) select n.id, 'b5f6c10b-a91c-0a96-3131-09bcb77d2d69'::uuid, 'gallery', 2 from nodes n where n.node_type = 'location' and n.slug = 'male' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('638cee71-770a-f4f2-98b7-29fc7b4804c0'::uuid, 'image', 'legacy/images/male.jpg', 'Malé Island, Maldives', 'Legacy MTG site archive', 1625, 833) on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('638cee71-770a-f4f2-98b7-29fc7b4804c0'::uuid, 'image', 'legacy/images/male.jpg', 'Male Island, Maldives', 'Legacy MTG site archive', 1625, 833) on conflict (id) do nothing;
 
 insert into node_media (node_id, media_id, role, sort_order) select n.id, '638cee71-770a-f4f2-98b7-29fc7b4804c0'::uuid, 'gallery', 3 from nodes n where n.node_type = 'location' and n.slug = 'male' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('ff119bc5-97bf-f729-06cf-38367d9908f3'::uuid, 'image', 'legacy/images/male.webp', 'Malé Island, Maldives', 'Legacy MTG site archive', 1625, 833) on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('ff119bc5-97bf-f729-06cf-38367d9908f3'::uuid, 'image', 'legacy/images/male.webp', 'Male Island, Maldives', 'Legacy MTG site archive', 1625, 833) on conflict (id) do nothing;
 
 insert into node_media (node_id, media_id, role, sort_order) select n.id, 'ff119bc5-97bf-f729-06cf-38367d9908f3'::uuid, 'gallery', 4 from nodes n where n.node_type = 'location' and n.slug = 'male' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('a9f14a0c-42d3-88da-83cb-a44cba21db51'::uuid, 'image', 'legacy/images/male/male-island.webp', 'Malé Island, Maldives', 'Legacy MTG site archive', 720, 508) on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('a9f14a0c-42d3-88da-83cb-a44cba21db51'::uuid, 'image', 'legacy/images/male/male-island.webp', 'Male Island, Maldives', 'Legacy MTG site archive', 720, 508) on conflict (id) do nothing;
 
 insert into node_media (node_id, media_id, role, sort_order) select n.id, 'a9f14a0c-42d3-88da-83cb-a44cba21db51'::uuid, 'gallery', 5 from nodes n where n.node_type = 'location' and n.slug = 'male' on conflict (node_id, media_id, role) do nothing;
 
@@ -142,7 +142,7 @@ insert into media_assets (id, media_type, storage_path, alt_text, credit, width,
 
 insert into node_media (node_id, media_id, role, sort_order) select n.id, '8d9a66a1-39a6-1bd4-7b55-1d30a7cb021a'::uuid, 'hero', 0 from nodes n where n.node_type = 'location' and n.slug = 'villingili' on conflict (node_id, media_id, role) do nothing;
 
-insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1e7c5424-22a2-ed33-791f-9fcd358c1756'::uuid, 'image', 'legacy/images/maldives/hulhumale-island.webp', 'Hulhumalé Island, Maldives', 'Legacy MTG site archive', 640, 400) on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('1e7c5424-22a2-ed33-791f-9fcd358c1756'::uuid, 'image', 'legacy/images/maldives/hulhumale-island.webp', 'Hulhumale Island, Maldives', 'Legacy MTG site archive', 640, 400) on conflict (id) do nothing;
 
 insert into node_media (node_id, media_id, role, sort_order) select n.id, '1e7c5424-22a2-ed33-791f-9fcd358c1756'::uuid, 'hero', 0 from nodes n where n.node_type = 'location' and n.slug = 'hulhumale' on conflict (node_id, media_id, role) do nothing;
 

@@ -143,14 +143,6 @@ insert into node_locations (node_id, location_id, relation) select n.id, l.id, '
 
 insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'maldives-in-june-weather-activities-travel-guide' and l.node_type = 'location' and l.slug = 'sultans' on conflict (node_id, location_id) do nothing;
 
-insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', 0 from nodes n, nodes r where n.node_type = 'article' and n.slug = 'maldives-in-june-weather-activities-travel-guide' and r.node_type = 'article' and r.slug = 'maldives-weather-guide-month-by-month-climate-information-for' on conflict (node_id, related_node_id, relation_type) do nothing;
-
-insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', 1 from nodes n, nodes r where n.node_type = 'article' and n.slug = 'maldives-in-june-weather-activities-travel-guide' and r.node_type = 'article' and r.slug = 'beautiful-places-to-visit-in-maldives' on conflict (node_id, related_node_id, relation_type) do nothing;
-
-insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', 2 from nodes n, nodes r where n.node_type = 'article' and n.slug = 'maldives-in-june-weather-activities-travel-guide' and r.node_type = 'article' and r.slug = '100-best-things-to-do-in-the-maldives-an-ultimate-guide' on conflict (node_id, related_node_id, relation_type) do nothing;
-
-insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', 3 from nodes n, nodes r where n.node_type = 'article' and n.slug = 'maldives-in-june-weather-activities-travel-guide' and r.node_type = 'article' and r.slug = 'ilhas-maldivas-para-visitantes' on conflict (node_id, related_node_id, relation_type) do nothing;
-
 insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('90f2de08-70bc-02aa-91df-7f1be7502f97'::uuid, 'image', 'legacy/images/resorts/over-water-room-maldives-w.webp', 'Maldives in June: Weather, Activities & Travel Guide', 'Legacy MTG site archive', 720, 405) on conflict (id) do nothing;
 
 insert into node_media (node_id, media_id, role, sort_order) select n.id, '90f2de08-70bc-02aa-91df-7f1be7502f97'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-in-june-weather-activities-travel-guide' on conflict (node_id, media_id, role) do nothing;

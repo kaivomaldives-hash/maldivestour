@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20T12:50:05.037Z",
+  "generatedAt": "2026-09-20T12:57:25.078Z",
   "note": "Task 15 §12-16. Every 'ready' entry has real JSON-LD-sourced commercial data (name/price/currency/duration) and a real, already-seeded destination accommodation + island — never fabricated. 'needs-review' entries are never silently dropped; each carries a specific reason (see scripts/import-legacy-transfers.mjs).",
   "totalTransferPages": 88,
   "byMigrationStatus": {

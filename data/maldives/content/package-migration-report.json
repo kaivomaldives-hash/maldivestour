@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20T12:52:32.966Z",
+  "generatedAt": "2026-09-20T12:57:25.181Z",
   "note": "Task 15 §17-20. A page only reaches migrationStatus='ready' when it names a specific accommodation that confidently matches the real MTG catalogue AND carries a real extractable price and night count — never a package built around a generic/unidentified resort. See scripts/import-legacy-packages.mjs for the full classification rules.",
   "totalPackagePages": 64,
   "byMigrationStatus": {

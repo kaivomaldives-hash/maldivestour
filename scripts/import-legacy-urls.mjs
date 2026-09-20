@@ -50,6 +50,38 @@ function extractTag(html, regex) {
   return m ? m[1].replace(/\s+/g, " ").trim() : null;
 }
 
+// Task 15 §50: the directory-based `classify()` rule below is deliberately
+// coarse (one pageType per top-level legacy folder) and, for "package" and
+// "transfer", that coarseness hides real, very different content types —
+// discovered while building the dedicated transfer/package migrations
+// (scripts/import-legacy-transfers.mjs, scripts/import-legacy-packages.mjs):
+// most of tours/*.html turned out to be bare checkout widgets, several
+// packages/*.html are B2B partner-recruitment pages, and several more are
+// generic templated marketing copy with a fabricated star rating. This
+// second, cheap pass adds that real sub-type as its own field WITHOUT
+// touching pageType (nothing downstream that filters on pageType breaks),
+// using only lightweight structural/keyword signals — the heavier
+// real-entity matching that decides an actual migration outcome stays in
+// the two dedicated scripts above, which remain the source of truth for
+// migrationStatus.
+const FABRICATED_RATING_PATTERN = /\b\d(?:\.\d)?\s*\(\d{1,4}\s*reviews?\)/i;
+
+function classifyContentSubType(pageType, title, html) {
+  if (pageType !== "package" && pageType !== "transfer") return null;
+
+  const text = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const t = (title ?? "").trim().toLowerCase();
+
+  if (t === "booking form" || t === "") return "booking-form-widget";
+  if (/<form[\s>]/i.test(html) && text.length < 400) return "booking-form-widget";
+  if (/join our network|become a partner|partner with us|tour operators & package providers|list your (resort|hotel|guesthouse|business)/i.test(`${title ?? ""} ${text}`)) {
+    return "partner-recruitment";
+  }
+  if (/<script type="application\/ld\+json">/i.test(html)) return "structured-listing";
+  if (pageType === "package" && FABRICATED_RATING_PATTERN.test(text)) return "generic-template-marketing";
+  return "content-page";
+}
+
 function classify(relPath) {
   const parts = relPath.split(path.sep);
   const top = parts[0];
@@ -114,6 +146,7 @@ function main() {
     const title = extractTag(html, /<title[^>]*>([^<]*)<\/title>/i);
     const metaDescription = extractTag(html, /<meta\s+name=["']description["']\s+content=["']([^"']*)["']/i);
     const pageType = classify(rel);
+    const contentSubType = classifyContentSubType(pageType, title, html);
     const isEmpty = html.replace(/<[^>]+>/g, "").trim().length < 80;
 
     const urlPath = "/" + rel.split(path.sep).join("/");
@@ -153,6 +186,7 @@ function main() {
       oldUrl: urlPath,
       sourceFile: rel.split(path.sep).join("/"),
       pageType,
+      contentSubType,
       title,
       metaDescription,
       isEmptyOrThin: isEmpty,
@@ -167,9 +201,11 @@ function main() {
 
   const byType = {};
   const byStatus = {};
+  const byContentSubType = {};
   for (const r of records) {
     byType[r.pageType] = (byType[r.pageType] ?? 0) + 1;
     byStatus[r.migrationStatus] = (byStatus[r.migrationStatus] ?? 0) + 1;
+    if (r.contentSubType) byContentSubType[r.contentSubType] = (byContentSubType[r.contentSubType] ?? 0) + 1;
   }
 
   writeFileSync(
@@ -181,6 +217,7 @@ function main() {
         totalPages: records.length,
         byPageType: byType,
         byMigrationStatus: byStatus,
+        byContentSubType: byContentSubType,
         emptyOrThinPages: records.filter((r) => r.isEmptyOrThin).map((r) => r.sourceFile),
         pages: records,
       },
@@ -192,6 +229,7 @@ function main() {
   console.log(`Classified ${records.length} legacy HTML pages`);
   console.log("By type:", byType);
   console.log("By migration status:", byStatus);
+  console.log("By content sub-type (package/transfer only):", byContentSubType);
   console.log(`Wrote data/maldives/content/url-inventory.json`);
 }
 

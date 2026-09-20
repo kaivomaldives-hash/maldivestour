@@ -345,7 +345,7 @@ function writeCommitMigration(readyTransfers) {
     serviceCount += 1;
   }
 
-  const migrationPath = path.join(ROOT, "supabase", "migrations", "20250110000500_legacy_transfers.sql");
+  const migrationPath = path.join(ROOT, "supabase", "migrations", "20250110000700_legacy_transfers.sql");
   writeFileSync(migrationPath, lines.join("\n") + "\n");
   console.log(`\nWrote ${migrationPath}`);
   console.log(`  routes: ${routeCount}, services: ${serviceCount}`);

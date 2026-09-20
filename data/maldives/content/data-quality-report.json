@@ -1,10 +1,17 @@
 {
-  "generatedAt": "2026-09-20T09:54:49.261Z",
+  "generatedAt": "2026-09-20T12:59:17.563Z",
   "note": "Read-only Task 14 data-quality summary. Nothing here was deleted or modified — it's an input to human review, same as media-match-report.json and article-migration-report.json.",
   "pages": {
     "totalClassified": 1037,
     "emptyOrThinCount": 0,
-    "emptyOrThinPages": []
+    "emptyOrThinPages": [],
+    "byContentSubType": {
+      "content-page": 22,
+      "partner-recruitment": 4,
+      "generic-template-marketing": 12,
+      "booking-form-widget": 40,
+      "structured-listing": 74
+    }
   },
   "duplicateTitles": {
     "groupCount": 18,
@@ -4823,5 +4830,39 @@
     },
     "nonEnglishExcluded": 5,
     "duplicateContentExcluded": 1
+  },
+  "transfers": {
+    "totalPages": 88,
+    "byMigrationStatus": {
+      "needs-review": 86,
+      "already-covered": 2
+    },
+    "alreadyCoveredNotDuplicated": 2
+  },
+  "packages": {
+    "totalPages": 64,
+    "byMigrationStatus": {
+      "needs-review": 22,
+      "skipped": 42
+    },
+    "byPageSubType": {
+      "generic-template-marketing": 22,
+      "partner-recruitment": 4,
+      "booking-form-widget": 38
+    },
+    "fabricatedTrustSignalPages": [
+      "packages/business-travel-package.html",
+      "packages/diving-holiday-package.html",
+      "packages/family-holiday-package.html",
+      "packages/fishing-holiday-package.html",
+      "packages/honeymoon-package.html",
+      "packages/liveaboard-safari-package.html",
+      "packages/longstay-holiday-package.html",
+      "packages/maldives-luxury-package.html",
+      "packages/multi-island-package.html",
+      "packages/solo-traveler-package.html",
+      "packages/surfing-holiday-package.html",
+      "packages/wedding-package.html"
+    ]
   }
 }

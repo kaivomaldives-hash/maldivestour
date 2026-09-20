@@ -59,14 +59,6 @@ insert into node_locations (node_id, location_id, relation) select n.id, l.id, '
 
 insert into node_relationships (node_id, related_node_id, relation_type, confidence) select n.id, r.id, 'related', 0.7 from nodes n, nodes r where n.node_type = 'article' and n.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide' and r.node_type = 'accommodation' and r.slug = 'baros-maldives' on conflict (node_id, related_node_id, relation_type) do nothing;
 
-insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', 0 from nodes n, nodes r where n.node_type = 'article' and n.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide' and r.node_type = 'article' and r.slug = 'beautiful-places-to-visit-in-maldives' on conflict (node_id, related_node_id, relation_type) do nothing;
-
-insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', 1 from nodes n, nodes r where n.node_type = 'article' and n.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide' and r.node_type = 'article' and r.slug = '12-best-beaches-in-maldives-ultimate-paradise-guide' on conflict (node_id, related_node_id, relation_type) do nothing;
-
-insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', 2 from nodes n, nodes r where n.node_type = 'article' and n.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide' and r.node_type = 'article' and r.slug = 'best-maldives-honeymoon-packages-for' on conflict (node_id, related_node_id, relation_type) do nothing;
-
-insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', 3 from nodes n, nodes r where n.node_type = 'article' and n.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide' and r.node_type = 'article' and r.slug = 'maldives-weather-guide-month-by-month-climate-information-for' on conflict (node_id, related_node_id, relation_type) do nothing;
-
 insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('3a026c96-ee91-6bdc-6997-0bb4c46a947e'::uuid, 'image', 'legacy/images/maldives-honeymoons.webp', 'Maldives Honeymoon: Ultimate Romantic Getaway Guide', 'Legacy MTG site archive', 1280, 720) on conflict (id) do nothing;
 
 insert into node_media (node_id, media_id, role, sort_order) select n.id, '3a026c96-ee91-6bdc-6997-0bb4c46a947e'::uuid, 'hero', 0 from nodes n where n.node_type = 'article' and n.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide' on conflict (node_id, media_id, role) do nothing;
@@ -104,8 +96,6 @@ insert into articles (id, body, reading_time_minutes) select id, '<figure><img s
 insert into node_categories (node_id, category_id) select n.id, c.id from nodes n, nodes c where n.node_type = 'article' and n.slug = 'best-adults-only-maldives-resorts' and c.node_type = 'category' and c.slug = 'islands' on conflict (node_id, category_id) do nothing;
 
 insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = 'best-adults-only-maldives-resorts' and l.node_type = 'location' and l.slug = 'komandoo' on conflict (node_id, location_id) do nothing;
-
-insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', 0 from nodes n, nodes r where n.node_type = 'article' and n.slug = 'best-adults-only-maldives-resorts' and r.node_type = 'article' and r.slug = 'best-maldives-resorts-for-couples-romantic-getaways' on conflict (node_id, related_node_id, relation_type) do nothing;
 
 insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('c9810cff-bfca-2cb6-043f-7531ab1f50f5'::uuid, 'image', 'legacy/resorts/hurawalhi-island/images/hurawalhi-island-resort-maldives-beach-pool-villa.webp', 'Best Adults-Only Maldives Resorts', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
@@ -174,12 +164,6 @@ insert into node_locations (node_id, location_id, relation) select n.id, l.id, '
 insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found' and l.node_type = 'location' and l.slug = 'fuvahmulah' on conflict (node_id, location_id) do nothing;
 
 insert into node_locations (node_id, location_id, relation) select n.id, l.id, 'secondary' from nodes n, nodes l where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found' and l.node_type = 'location' and l.slug = 'maaya-thila' on conflict (node_id, location_id) do nothing;
-
-insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', 0 from nodes n, nodes r where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found' and r.node_type = 'article' and r.slug = 'best-maldives-diving-spots-ultimate-guide' on conflict (node_id, related_node_id, relation_type) do nothing;
-
-insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', 1 from nodes n, nodes r where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found' and r.node_type = 'article' and r.slug = 'the-people-of-the-maldives-a-cultural-tapestry-of-resilience-and-tradition' on conflict (node_id, related_node_id, relation_type) do nothing;
-
-insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', 2 from nodes n, nodes r where n.node_type = 'article' and n.slug = '15-most-beautiful-places-in-maldives-paradise-found' and r.node_type = 'article' and r.slug = 'things-to-do-in-maldives' on conflict (node_id, related_node_id, relation_type) do nothing;
 
 insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('34269a28-5274-c074-84ac-d296ad1a4930'::uuid, 'image', 'legacy/images/articles/maldives-beaches.webp', '15 Most Beautiful Places in Maldives: Paradise Found', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 
@@ -260,14 +244,6 @@ insert into node_locations (node_id, location_id, relation) select n.id, l.id, '
 insert into node_relationships (node_id, related_node_id, relation_type, confidence) select n.id, r.id, 'related', 0.7 from nodes n, nodes r where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' and r.node_type = 'accommodation' and r.slug = 'baros-maldives' on conflict (node_id, related_node_id, relation_type) do nothing;
 
 insert into node_relationships (node_id, related_node_id, relation_type, confidence) select n.id, r.id, 'related', 0.7 from nodes n, nodes r where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' and r.node_type = 'package' and r.slug = 'maldives-fishing-island-hopping-package' on conflict (node_id, related_node_id, relation_type) do nothing;
-
-insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', 0 from nodes n, nodes r where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' and r.node_type = 'article' and r.slug = 'maldives-weather-guide-month-by-month-climate-information-for' on conflict (node_id, related_node_id, relation_type) do nothing;
-
-insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', 1 from nodes n, nodes r where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' and r.node_type = 'article' and r.slug = 'things-to-do-in-the-maldives-for-family-a-comprehensive-guide' on conflict (node_id, related_node_id, relation_type) do nothing;
-
-insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', 2 from nodes n, nodes r where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' and r.node_type = 'article' and r.slug = 'maldives-honeymoon-ultimate-romantic-getaway-guide' on conflict (node_id, related_node_id, relation_type) do nothing;
-
-insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', 3 from nodes n, nodes r where n.node_type = 'article' and n.slug = 'beautiful-places-to-visit-in-maldives' and r.node_type = 'article' and r.slug = '12-best-beaches-in-maldives-ultimate-paradise-guide' on conflict (node_id, related_node_id, relation_type) do nothing;
 
 insert into media_assets (id, media_type, storage_path, alt_text, credit, width, height) values ('ea28628d-2eb7-adf3-a3eb-4448812924fd'::uuid, 'image', 'legacy/images/things-to-do-in-maldives-with-kids.webp', 'Beautiful Places to Visit in Maldives', 'Legacy MTG site archive', 1920, 1080) on conflict (id) do nothing;
 

@@ -119,6 +119,8 @@ function main() {
   const mediaMatchReport = loadJsonIfExists(path.join(DATA_DIR, "media", "media-match-report.json"));
   const mediaDuplicates = loadJsonIfExists(path.join(DATA_DIR, "media", "media-duplicates.json"));
   const articleReport = loadJsonIfExists(path.join(CONTENT_DATA_DIR, "article-migration-report.json"));
+  const transferReport = loadJsonIfExists(path.join(CONTENT_DATA_DIR, "transfer-migration-report.json"));
+  const packageReport = loadJsonIfExists(path.join(CONTENT_DATA_DIR, "package-migration-report.json"));
 
   const pages = urlInventory.pages;
   const duplicateTitles = findDuplicateTitles(pages);
@@ -133,6 +135,12 @@ function main() {
       totalClassified: pages.length,
       emptyOrThinCount: urlInventory.emptyOrThinPages?.length ?? 0,
       emptyOrThinPages: urlInventory.emptyOrThinPages ?? [],
+      // Task 15 §50: real content sub-type within the coarse "package"/
+      // "transfer" pageType buckets (booking-form widgets, B2B
+      // partner-recruitment pages, generic templated marketing, real
+      // structured content) — see classifyContentSubType() in
+      // scripts/import-legacy-urls.mjs.
+      byContentSubType: urlInventory.byContentSubType ?? null,
     },
     duplicateTitles: {
       groupCount: duplicateTitles.length,
@@ -163,6 +171,27 @@ function main() {
           duplicateContentExcluded: articleReport.articles.filter((a) => a.duplicateOfSlug).length,
         }
       : null,
+    // Task 15 §22-23/§51.
+    transfers: transferReport
+      ? {
+          totalPages: transferReport.totalTransferPages,
+          byMigrationStatus: transferReport.byMigrationStatus,
+          alreadyCoveredNotDuplicated: transferReport.pages.filter((p) => p.migrationStatus === "already-covered").length,
+        }
+      : null,
+    packages: packageReport
+      ? {
+          totalPages: packageReport.totalPackagePages,
+          byMigrationStatus: packageReport.byMigrationStatus,
+          byPageSubType: packageReport.byPageSubType,
+          // Legacy pages that published a star rating / review count with
+          // no real, checkable review data behind it (e.g. "5.0 (128
+          // reviews)" on a page naming no specific resort) — a genuine
+          // "outdated/untrustworthy content" flag worth a human's
+          // attention, never migrated as if it were real (Task 15 §22-23).
+          fabricatedTrustSignalPages: packageReport.pages.filter((p) => p.hasFabricatedRating).map((p) => p.sourceFile),
+        }
+      : null,
   };
 
   const outPath = path.join(CONTENT_DATA_DIR, "data-quality-report.json");
@@ -177,6 +206,11 @@ function main() {
       `Media exact-duplicate groups: ${report.mediaDuplicates.exactDuplicateGroups} (${report.mediaDuplicates.exactDuplicateFiles} redundant files)`,
     );
   if (report.articles) console.log(`Article candidates: ${report.articles.totalCandidates}`, report.articles.byConfidence);
+  if (report.transfers) console.log(`Transfer pages: ${report.transfers.totalPages}`, report.transfers.byMigrationStatus);
+  if (report.packages) {
+    console.log(`Package pages: ${report.packages.totalPages}`, report.packages.byMigrationStatus);
+    console.log(`Package pages with a fabricated trust signal: ${report.packages.fabricatedTrustSignalPages.length}`);
+  }
   console.log(`Wrote ${path.relative(ROOT, outPath)}`);
 }
 

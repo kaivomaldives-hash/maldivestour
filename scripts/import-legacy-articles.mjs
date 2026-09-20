@@ -733,15 +733,6 @@ function writeCommitMigration(readyArticles) {
       relationshipCount += 1;
     }
 
-    // Article-to-article relatedness computed above (shared real entities).
-    article.relatedArticles.forEach((rel, idx) => {
-      lines.push(
-        `insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', ${idx} from nodes n, nodes r where n.node_type = 'article' and n.slug = ${sqlString(article.candidateSlug)} and r.node_type = 'article' and r.slug = ${sqlString(rel.slug)} on conflict (node_id, related_node_id, relation_type) do nothing;`,
-      );
-      lines.push("");
-      relationshipCount += 1;
-    });
-
     // Content images actually embedded in this article's body (already
     // filtered to real uploaded-file matches when the body was rendered —
     // see the img handler in main()). Using article.embeddedImages
@@ -766,6 +757,26 @@ function writeCommitMigration(readyArticles) {
       );
       lines.push("");
       attachCount += 1;
+    });
+  }
+
+  // Article-to-article relatedness (computed above, from shared real
+  // entities) is inserted only AFTER every article node above has been
+  // created — not interleaved into the per-article loop. An article's
+  // relatedArticles can point at an article that hasn't been inserted YET
+  // in file order (they aren't alphabetical), so an interleaved insert's
+  // `nodes n, nodes r where r.node_type = 'article' and r.slug = ...` join
+  // would silently match zero rows for a forward reference and only
+  // self-heal on a second re-run — caught by a from-scratch local Postgres
+  // apply (Task 15 §31/§54), fixed by this separate second pass instead.
+  lines.push("-- Article-to-article relationships (all articles above must exist first).");
+  for (const article of readyArticles) {
+    article.relatedArticles.forEach((rel, idx) => {
+      lines.push(
+        `insert into node_relationships (node_id, related_node_id, relation_type, sort_order) select n.id, r.id, 'related', ${idx} from nodes n, nodes r where n.node_type = 'article' and n.slug = ${sqlString(article.candidateSlug)} and r.node_type = 'article' and r.slug = ${sqlString(rel.slug)} on conflict (node_id, related_node_id, relation_type) do nothing;`,
+      );
+      lines.push("");
+      relationshipCount += 1;
     });
   }
 

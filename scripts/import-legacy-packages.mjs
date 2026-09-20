@@ -305,7 +305,7 @@ function writeCommitMigration(readyPackages) {
     packageCount += 1;
   }
 
-  const migrationPath = path.join(ROOT, "supabase", "migrations", "20250110000600_legacy_packages.sql");
+  const migrationPath = path.join(ROOT, "supabase", "migrations", "20250110000800_legacy_packages.sql");
   writeFileSync(migrationPath, lines.join("\n") + "\n");
   console.log(`\nWrote ${migrationPath}`);
   console.log(`  packages: ${packageCount}`);

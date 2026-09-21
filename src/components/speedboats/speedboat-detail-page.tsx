@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 
 import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
-import { CARD_CLASS } from "@/components/ui/card";
+import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
@@ -146,8 +146,13 @@ export async function SpeedboatDetailPage({ slug }: { slug: string }) {
             <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
               {relatedBoats.map((b) => (
                 <li key={b.id} className={CARD_CLASS}>
-                  <Link href={`/maldives-speedboats-charter/${b.slug}/`} className="font-medium text-ocean-900 hover:text-maldives-600">
-                    {b.title}
+                  <Link href={`/maldives-speedboats-charter/${b.slug}/`}>
+                    {b.heroImage && (
+                      <div className={CARD_IMAGE_BLEED_CLASS}>
+                        <MediaImage asset={b.heroImage} alt={b.title} aspectClassName="aspect-[4/3]" />
+                      </div>
+                    )}
+                    <span className="font-medium text-ocean-900 hover:text-maldives-600">{b.title}</span>
                   </Link>
                   <p className="mt-1 text-sm text-neutral-600">{b.capacity} seats</p>
                 </li>

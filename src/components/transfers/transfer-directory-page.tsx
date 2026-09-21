@@ -6,7 +6,9 @@ import { RouteVideo, routeVideoJsonLd } from "@/components/transfers/route-video
 import { TransferFinder } from "@/components/transfers/transfer-finder";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CarTransfersSection } from "@/components/vehicles/car-transfers-section";
+import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
+import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { getFerryRoutes } from "@/lib/ferries/repository";
 import { getLocationBySlug } from "@/lib/locations/repository";
@@ -180,7 +182,12 @@ export async function TransferDirectoryPage() {
             <p className="mt-1 text-sm text-neutral-600">Our own fleet, available for private hire — hourly, destination-based, or custom trip. No fixed public price.</p>
             <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {boats.slice(0, 6).map((boat) => (
-                <li key={boat.id} className="rounded-2xl border border-neutral-200 p-4">
+                <li key={boat.id} className={CARD_CLASS}>
+                  {boat.heroImage && (
+                    <div className={CARD_IMAGE_BLEED_CLASS}>
+                      <MediaImage asset={boat.heroImage} alt={boat.title} aspectClassName="aspect-[4/3]" />
+                    </div>
+                  )}
                   <Link href={`/maldives-speedboats-charter/${boat.slug}/`} className="font-medium text-ocean-900 hover:text-maldives-600">
                     {boat.title}
                   </Link>

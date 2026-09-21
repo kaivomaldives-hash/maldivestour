@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20T18:40:59.451Z",
+  "generatedAt": "2026-09-21T04:31:31.697Z",
   "files": [
     {
       "mediaId": "aacbe0cc-9a97-a4c9-66cb-97f01a2dde22",
@@ -21550,6 +21550,1021 @@
       "mediaId": "01bbd318-52e3-48eb-8b8b-206ab900e59e",
       "relativePath": "resorts/w-maldives/images/wmaldives-island-resort-ari-atoll.webp",
       "storagePath": "legacy/resorts/w-maldives/images/wmaldives-island-resort-ari-atoll.webp"
+    },
+    {
+      "mediaId": "4de1ca29-81f0-2f11-82eb-03b2182d2aa5",
+      "relativePath": "hotels/Amra-Palace/images/Amra-Palace-Hotel-Deluxe-Room.webp",
+      "storagePath": "legacy/hotels/amra-palace/images/amra-palace-hotel-deluxe-room.webp"
+    },
+    {
+      "mediaId": "64b667b8-43eb-ee1b-1d6e-b0d797be2d77",
+      "relativePath": "hotels/Amra-Palace/images/Amra-Palace-Hotel-Deluxe-Room1.webp",
+      "storagePath": "legacy/hotels/amra-palace/images/amra-palace-hotel-deluxe-room1.webp"
+    },
+    {
+      "mediaId": "61031541-c3a1-2ed9-71e5-ffa67797c02d",
+      "relativePath": "hotels/Amra-Palace/images/Amra-Palace-Hotel-Maldives-Activity.webp",
+      "storagePath": "legacy/hotels/amra-palace/images/amra-palace-hotel-maldives-activity.webp"
+    },
+    {
+      "mediaId": "ba1f7043-f7d9-4fd1-c30e-ec3cfd5e2892",
+      "relativePath": "hotels/Amra-Palace/images/Amra-Palace-Hotel-Maldives-Dinning.webp",
+      "storagePath": "legacy/hotels/amra-palace/images/amra-palace-hotel-maldives-dinning.webp"
+    },
+    {
+      "mediaId": "bad2036d-8878-cc6b-fa8c-954d164a78c3",
+      "relativePath": "hotels/Amra-Palace/images/Amra-Palace-Hotel-Maldives-Gan-Island-Laamu-Atoll.webp",
+      "storagePath": "legacy/hotels/amra-palace/images/amra-palace-hotel-maldives-gan-island-laamu-atoll.webp"
+    },
+    {
+      "mediaId": "ab5e52ca-1e1f-d5c5-a05a-9992d6c4bc6c",
+      "relativePath": "hotels/Amra-Palace/images/Amra-Palace-Hotel-Maldives-Gan-Island.webp",
+      "storagePath": "legacy/hotels/amra-palace/images/amra-palace-hotel-maldives-gan-island.webp"
+    },
+    {
+      "mediaId": "4511c4d4-c7c5-d3c7-004c-bf1a0a85c54a",
+      "relativePath": "hotels/Amra-Palace/images/Amra-Palace-Hotel-Maldives-Gan.webp",
+      "storagePath": "legacy/hotels/amra-palace/images/amra-palace-hotel-maldives-gan.webp"
+    },
+    {
+      "mediaId": "6f439a93-a5c4-7ffa-1196-a4eace31ea25",
+      "relativePath": "hotels/Amra-Palace/images/Amra-Palace-Hotel-Maldives-Garden.webp",
+      "storagePath": "legacy/hotels/amra-palace/images/amra-palace-hotel-maldives-garden.webp"
+    },
+    {
+      "mediaId": "2756c3d9-7bdd-d8bf-a4c4-d2e9a96b31ba",
+      "relativePath": "hotels/Amra-Palace/images/Amra-Palace-Hotel-Maldives-Laamu.webp",
+      "storagePath": "legacy/hotels/amra-palace/images/amra-palace-hotel-maldives-laamu.webp"
+    },
+    {
+      "mediaId": "db6cc26a-47d9-7e49-db5e-5d4331cc0b74",
+      "relativePath": "hotels/Amra-Palace/images/Amra-Palace-Hotel-Maldives-Pool-Laamu-Atoll.webp",
+      "storagePath": "legacy/hotels/amra-palace/images/amra-palace-hotel-maldives-pool-laamu-atoll.webp"
+    },
+    {
+      "mediaId": "2f2604eb-25da-613f-3570-e81382a5b053",
+      "relativePath": "hotels/Amra-Palace/images/Amra-Palace-Hotel-Maldives-Pool.webp",
+      "storagePath": "legacy/hotels/amra-palace/images/amra-palace-hotel-maldives-pool.webp"
+    },
+    {
+      "mediaId": "0d4f8e93-f305-ac50-2dca-187d99b17d2e",
+      "relativePath": "hotels/Amra-Palace/images/Amra-Palace-Hotel-Maldives-map.webp",
+      "storagePath": "legacy/hotels/amra-palace/images/amra-palace-hotel-maldives-map.webp"
+    },
+    {
+      "mediaId": "e980e5a2-4a9a-df28-cee8-a030d36c86d7",
+      "relativePath": "hotels/Amra-Palace/images/Amra-Palace-Hotel-Maldives.webp",
+      "storagePath": "legacy/hotels/amra-palace/images/amra-palace-hotel-maldives.webp"
+    },
+    {
+      "mediaId": "94d4a0c9-09e5-c0c9-1971-618e4423b65e",
+      "relativePath": "hotels/Amra-Palace/images/Amra-Palace-Hotel-Superior-Room.webp",
+      "storagePath": "legacy/hotels/amra-palace/images/amra-palace-hotel-superior-room.webp"
+    },
+    {
+      "mediaId": "f752e210-4ab0-5c2a-8429-1b1715c37cd3",
+      "relativePath": "hotels/Amra-Palace/images/Amra-Palace-Hotel-Superior-Room1.webp",
+      "storagePath": "legacy/hotels/amra-palace/images/amra-palace-hotel-superior-room1.webp"
+    },
+    {
+      "mediaId": "7021d13c-ef4f-2db6-6798-79dd08416b53",
+      "relativePath": "hotels/Amra-Palace/images/Amra-Palace-Hotel-map.webp",
+      "storagePath": "legacy/hotels/amra-palace/images/amra-palace-hotel-map.webp"
+    },
+    {
+      "mediaId": "9575e9f7-bf40-8629-751f-2297690462b3",
+      "relativePath": "hotels/arena-maafushi/images/arean-beach-hotel-in-maafushi-maldives.jpg",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-beach-hotel-in-maafushi-maldives.jpg"
+    },
+    {
+      "mediaId": "b38342d6-8b73-dbb6-b35b-8cfabdfee69c",
+      "relativePath": "hotels/arena-maafushi/images/arean-beach-hotel-in-maafushi-maldives.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-beach-hotel-in-maafushi-maldives.webp"
+    },
+    {
+      "mediaId": "17e55473-8b04-2c8b-1ad2-8fd99df3791c",
+      "relativePath": "hotels/arena-maafushi/images/arean-beach-hotel-maldives.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-beach-hotel-maldives.webp"
+    },
+    {
+      "mediaId": "73bdd20e-bb4e-ac5f-46e5-574c83dcae71",
+      "relativePath": "hotels/arena-maafushi/images/arean-beach-maafushi-hotel-maldives.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-beach-maafushi-hotel-maldives.webp"
+    },
+    {
+      "mediaId": "3af9fd20-b9d1-c228-cf4c-8187c70f9eed",
+      "relativePath": "hotels/arena-maafushi/images/arean-beach-maafushi-island-hotel-maldives.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-beach-maafushi-island-hotel-maldives.webp"
+    },
+    {
+      "mediaId": "e3128603-5cff-038a-c26a-6b07dfd3d9fe",
+      "relativePath": "hotels/arena-maafushi/images/arean-beach-maafushi-island-hotel.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-beach-maafushi-island-hotel.webp"
+    },
+    {
+      "mediaId": "9e668f08-f3cb-2ec2-5c70-17b293e7d94f",
+      "relativePath": "hotels/arena-maafushi/images/arean-beach-maafushi-island-maldives.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-beach-maafushi-island-maldives.webp"
+    },
+    {
+      "mediaId": "023e19a1-b4fb-883c-2152-0271b1f9849d",
+      "relativePath": "hotels/arena-maafushi/images/arean-beach-maafushi-island.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-beach-maafushi-island.webp"
+    },
+    {
+      "mediaId": "7261cdbc-1f54-7562-bcdc-8c7f71bf3aec",
+      "relativePath": "hotels/arena-maafushi/images/arean-beach-maafushi-seaview-room.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-beach-maafushi-seaview-room.webp"
+    },
+    {
+      "mediaId": "896d02c3-e824-4b5c-7b30-b7fdda73c0d6",
+      "relativePath": "hotels/arena-maafushi/images/arean-beach-maafushi-seaview-room1.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-beach-maafushi-seaview-room1.webp"
+    },
+    {
+      "mediaId": "126b6616-98fc-f3c7-1804-814acf9e425f",
+      "relativePath": "hotels/arena-maafushi/images/arean-beach-maafushi-standard-room.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-beach-maafushi-standard-room.webp"
+    },
+    {
+      "mediaId": "acbe08c4-6032-bb04-cf0a-bd9ac058baee",
+      "relativePath": "hotels/arena-maafushi/images/arean-beach-maafushi-standard-room1.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-beach-maafushi-standard-room1.webp"
+    },
+    {
+      "mediaId": "7b24dfd6-0b9a-8e21-0fbc-6959622c2f58",
+      "relativePath": "hotels/arena-maafushi/images/arean-beach-maafushi-tripple-seaview-room.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-beach-maafushi-tripple-seaview-room.webp"
+    },
+    {
+      "mediaId": "30682d41-e659-b5db-b5ee-82797f1d9291",
+      "relativePath": "hotels/arena-maafushi/images/arean-beach-maafushi-tripple-seaview-room1.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-beach-maafushi-tripple-seaview-room1.webp"
+    },
+    {
+      "mediaId": "3af59795-b719-7159-0238-6b1f068348d5",
+      "relativePath": "hotels/arena-maafushi/images/arean-beach-maafushi.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-beach-maafushi.webp"
+    },
+    {
+      "mediaId": "3ec84a6c-1472-e6d7-4810-b826a3c0994f",
+      "relativePath": "hotels/arena-maafushi/images/arean-maafushi-island-hotel-maldives.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-maafushi-island-hotel-maldives.webp"
+    },
+    {
+      "mediaId": "f2f6261b-93d7-bd27-73f9-b04b4e4b4fc5",
+      "relativePath": "hotels/arena-maafushi/images/arean-maafushi-island-hotel.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arean-maafushi-island-hotel.webp"
+    },
+    {
+      "mediaId": "41423d74-b228-1035-f33d-bd1c96cd8e1f",
+      "relativePath": "hotels/arena-maafushi/images/arena-beach-map.webp",
+      "storagePath": "legacy/hotels/arena-maafushi/images/arena-beach-map.webp"
+    },
+    {
+      "mediaId": "5e8141f9-961f-1779-f7d4-360b47fbf502",
+      "relativePath": "hotels/casa-retreat/images/casa-retreat-hotel-hulhumale-island-maldives.webp",
+      "storagePath": "legacy/hotels/casa-retreat/images/casa-retreat-hotel-hulhumale-island-maldives.webp"
+    },
+    {
+      "mediaId": "16191afa-c2ba-eb04-b311-1770f7ce466e",
+      "relativePath": "hotels/casa-retreat/images/casa-retreat-hotel-hulhumale-island.webp",
+      "storagePath": "legacy/hotels/casa-retreat/images/casa-retreat-hotel-hulhumale-island.webp"
+    },
+    {
+      "mediaId": "f1c7fe9e-2b19-e0a5-2869-229a56d7b897",
+      "relativePath": "hotels/casa-retreat/images/casa-retreat-hotel-hulhumale-maldives.webp",
+      "storagePath": "legacy/hotels/casa-retreat/images/casa-retreat-hotel-hulhumale-maldives.webp"
+    },
+    {
+      "mediaId": "c084e92e-d9d5-6706-e040-b1c248005ef0",
+      "relativePath": "hotels/casa-retreat/images/casa-retreat-hotel-hulhumale-room.webp",
+      "storagePath": "legacy/hotels/casa-retreat/images/casa-retreat-hotel-hulhumale-room.webp"
+    },
+    {
+      "mediaId": "61be21cd-2da8-85ea-6d4f-8842c6909eae",
+      "relativePath": "hotels/casa-retreat/images/casa-retreat-hotel-hulhumale.webp",
+      "storagePath": "legacy/hotels/casa-retreat/images/casa-retreat-hotel-hulhumale.webp"
+    },
+    {
+      "mediaId": "c0a70094-cdaa-d2da-a7aa-b9a3753f5b4b",
+      "relativePath": "hotels/casa-retreat/images/casa-retreat-hotel-in-hulhumale-island-maldives.jpg",
+      "storagePath": "legacy/hotels/casa-retreat/images/casa-retreat-hotel-in-hulhumale-island-maldives.jpg"
+    },
+    {
+      "mediaId": "a9ccb950-cccf-1931-b293-b2188762d283",
+      "relativePath": "hotels/casa-retreat/images/casa-retreat-hotel-in-hulhumale-island-maldives.webp",
+      "storagePath": "legacy/hotels/casa-retreat/images/casa-retreat-hotel-in-hulhumale-island-maldives.webp"
+    },
+    {
+      "mediaId": "68c6e8d6-dd88-3c41-3c84-303d2fbc4f68",
+      "relativePath": "hotels/casa-retreat/images/casa-retreat-hotel.webp",
+      "storagePath": "legacy/hotels/casa-retreat/images/casa-retreat-hotel.webp"
+    },
+    {
+      "mediaId": "b102a560-22f4-5b73-73a6-97ae191d80da",
+      "relativePath": "hotels/casa-retreat/images/casa-retreat-map.webp",
+      "storagePath": "legacy/hotels/casa-retreat/images/casa-retreat-map.webp"
+    },
+    {
+      "mediaId": "3bd7d937-df77-4c3f-88e4-6407f680f260",
+      "relativePath": "hotels/crystal-beach/images/crystal-beach-hotel-in-hulhumale-maldives.jpg",
+      "storagePath": "legacy/hotels/crystal-beach/images/crystal-beach-hotel-in-hulhumale-maldives.jpg"
+    },
+    {
+      "mediaId": "b9293402-7aa5-a1b7-4e61-0fe0462f99ba",
+      "relativePath": "hotels/crystal-beach/images/crystal-beach-hotel-in-hulhumale-maldives.webp",
+      "storagePath": "legacy/hotels/crystal-beach/images/crystal-beach-hotel-in-hulhumale-maldives.webp"
+    },
+    {
+      "mediaId": "355a0c3c-1aed-249e-5f0c-1bee404c2ded",
+      "relativePath": "hotels/crystal-beach/images/crystal-beach-in-hotel-hulhumale-maldives.webp",
+      "storagePath": "legacy/hotels/crystal-beach/images/crystal-beach-in-hotel-hulhumale-maldives.webp"
+    },
+    {
+      "mediaId": "4952dd70-5517-aa0f-d79f-bdc7a61e43fe",
+      "relativePath": "hotels/crystal-beach/images/crystal-beach-in-hotel-hulhumale-room1.webp",
+      "storagePath": "legacy/hotels/crystal-beach/images/crystal-beach-in-hotel-hulhumale-room1.webp"
+    },
+    {
+      "mediaId": "4871c06f-cdeb-cd44-0e97-b07421ab497d",
+      "relativePath": "hotels/crystal-beach/images/crystal-beach-in-hotel-hulhumale-room2.webp",
+      "storagePath": "legacy/hotels/crystal-beach/images/crystal-beach-in-hotel-hulhumale-room2.webp"
+    },
+    {
+      "mediaId": "59c84cf4-fca9-4ae6-99f4-f85f8b973d09",
+      "relativePath": "hotels/crystal-beach/images/crystal-beach-in-hotel-hulhumale.webp",
+      "storagePath": "legacy/hotels/crystal-beach/images/crystal-beach-in-hotel-hulhumale.webp"
+    },
+    {
+      "mediaId": "9e030b3d-2338-d7d3-3d9c-2751eed164e4",
+      "relativePath": "hotels/crystal-beach/images/crystal-beach-in-hotel-maldives.webp",
+      "storagePath": "legacy/hotels/crystal-beach/images/crystal-beach-in-hotel-maldives.webp"
+    },
+    {
+      "mediaId": "b31df8da-d758-b2f4-c7bf-5ad5b95f8e0f",
+      "relativePath": "hotels/crystal-beach/images/crystal-beach-in-hotel.webp",
+      "storagePath": "legacy/hotels/crystal-beach/images/crystal-beach-in-hotel.webp"
+    },
+    {
+      "mediaId": "86db18e1-ed5a-d03e-dcc0-c0cb85063837",
+      "relativePath": "hotels/crystal-beach/images/crystal-beach-in-hulhumale-maldives.webp",
+      "storagePath": "legacy/hotels/crystal-beach/images/crystal-beach-in-hulhumale-maldives.webp"
+    },
+    {
+      "mediaId": "4c8ff439-01cc-7bb5-8e58-264f7d2b1ed5",
+      "relativePath": "hotels/crystal-beach/images/crystal-beach-in.webp",
+      "storagePath": "legacy/hotels/crystal-beach/images/crystal-beach-in.webp"
+    },
+    {
+      "mediaId": "66cc7e80-08b2-2266-ecdf-7c7e0c5abb39",
+      "relativePath": "hotels/crystal-beach/images/crystal-beach-map.webp",
+      "storagePath": "legacy/hotels/crystal-beach/images/crystal-beach-map.webp"
+    },
+    {
+      "mediaId": "c26b5f9c-817a-5a4c-d17c-da1818e022d3",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-hotel.jpg",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-hotel.jpg"
+    },
+    {
+      "mediaId": "faad26ef-67c4-6ab0-a91b-25a53533f73d",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-hotel.webp",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-hotel.webp"
+    },
+    {
+      "mediaId": "7218d4a0-0fbb-dde6-1809-4719fb818bbc",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-inn-maldives-hotel.jpg",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-inn-maldives-hotel.jpg"
+    },
+    {
+      "mediaId": "3a5a4e7c-9892-7d6b-3728-5da3bc7ee7c1",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-inn-maldives-hotel.webp",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-inn-maldives-hotel.webp"
+    },
+    {
+      "mediaId": "0a7852ca-5fe7-a2a2-8694-8ac5d0646f00",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-inn-maldives.jpg",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-inn-maldives.jpg"
+    },
+    {
+      "mediaId": "608842c5-b696-d663-5daf-6f733fb56cf3",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-inn-maldives.webp",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-inn-maldives.webp"
+    },
+    {
+      "mediaId": "68161a53-748d-0416-8661-6fd0d2f01ba8",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-inn.jpg",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-inn.jpg"
+    },
+    {
+      "mediaId": "19228a28-1c53-7f8a-eedc-a855eddc13a2",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-inn.webp",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-inn.webp"
+    },
+    {
+      "mediaId": "86b2559f-6dbb-7d10-9eda-be3f75bf6459",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-hotel.jpg",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-hotel.jpg"
+    },
+    {
+      "mediaId": "c4b5f217-2f67-7f9f-3342-ab4217af1dc5",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-hotel.webp",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-hotel.webp"
+    },
+    {
+      "mediaId": "a12acd2c-c5ea-a1d0-40df-4f2f14fc3a92",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-map.jpg",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-map.jpg"
+    },
+    {
+      "mediaId": "37055bbf-107d-774f-381d-4de9f992f019",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-map.webp",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-map.webp"
+    },
+    {
+      "mediaId": "b54aba94-0545-a73b-ff91-a3b8e6f80469",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-room.jpg",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-room.jpg"
+    },
+    {
+      "mediaId": "61697551-aff2-1c00-2816-40e2043aee9c",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-room.webp",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-room.webp"
+    },
+    {
+      "mediaId": "641c16ff-9253-733b-23cb-e553d743fc0d",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-room1.jpg",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-room1.jpg"
+    },
+    {
+      "mediaId": "b763919b-5364-e4f0-f6c6-127fa55b32f5",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-room1.webp",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-room1.webp"
+    },
+    {
+      "mediaId": "38dc65ff-af8a-eb94-cdad-cdcfebae5d43",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives.jpg",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives.jpg"
+    },
+    {
+      "mediaId": "1e4cd17c-5339-68dd-618c-975b6e9da365",
+      "relativePath": "hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives.webp",
+      "storagePath": "legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives.webp"
+    },
+    {
+      "mediaId": "e639b5c7-5366-3384-60ce-601340c72055",
+      "relativePath": "hotels/images/hotels-in-male.webp",
+      "storagePath": "legacy/hotels/images/hotels-in-male.webp"
+    },
+    {
+      "mediaId": "4c1ae359-8c62-adff-e558-809492a701f8",
+      "relativePath": "hotels/images/hotels-in-malediven.webp",
+      "storagePath": "legacy/hotels/images/hotels-in-malediven.webp"
+    },
+    {
+      "mediaId": "31c98f19-fe6e-abf1-91f7-e7016bab5b1e",
+      "relativePath": "hotels/images/islas-maldivas-hoteles.webp",
+      "storagePath": "legacy/hotels/images/islas-maldivas-hoteles.webp"
+    },
+    {
+      "mediaId": "cd56e4f3-13ae-9a8b-0a4f-620aaca93cde",
+      "relativePath": "hotels/images/maldives-beach-hotels.webp",
+      "storagePath": "legacy/hotels/images/maldives-beach-hotels.webp"
+    },
+    {
+      "mediaId": "ac776975-6163-5137-0a0c-00ffebe60975",
+      "relativePath": "hotels/images/maldives-city-hotels.webp",
+      "storagePath": "legacy/hotels/images/maldives-city-hotels.webp"
+    },
+    {
+      "mediaId": "1b561b49-4212-7ce6-57a1-8dbecae18baf",
+      "relativePath": "hotels/images/male-maldives-hotels.webp",
+      "storagePath": "legacy/hotels/images/male-maldives-hotels.webp"
+    },
+    {
+      "mediaId": "504ac1e7-9d94-cb41-97a1-85c4fb6a7cee",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-fulidhoo.JPG",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-fulidhoo.jpg"
+    },
+    {
+      "mediaId": "cbc120c9-f05e-5fd3-81d6-f1282c55a664",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-fulidhoo.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-fulidhoo.webp"
+    },
+    {
+      "mediaId": "f046a205-7663-64eb-c29f-4608a443c66a",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-fulidhoo1.JPG",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-fulidhoo1.jpg"
+    },
+    {
+      "mediaId": "f6cb8782-dcb0-a374-d749-8620a365f01f",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-fulidhoo1.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-fulidhoo1.webp"
+    },
+    {
+      "mediaId": "9faba721-9046-62ce-a3a4-b7d5d77dac1f",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-guest-house.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-guest-house.webp"
+    },
+    {
+      "mediaId": "24863eea-892d-a207-5b5e-d58893ffb04a",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-hotel.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-hotel.webp"
+    },
+    {
+      "mediaId": "0562d4f1-a894-c391-e582-bf3e11fe002d",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room.webp"
+    },
+    {
+      "mediaId": "5b96265c-4bc5-cc61-ab6f-7a6b070e1634",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room11.jpg",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room11.jpg"
+    },
+    {
+      "mediaId": "0b03b161-b441-531b-e254-289878f12036",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room11.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room11.webp"
+    },
+    {
+      "mediaId": "2473c475-d43a-c5ea-71bd-89796fae73e7",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room12.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room12.webp"
+    },
+    {
+      "mediaId": "0f427e3d-23d9-a1a3-5e59-541d8ff112e5",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room13.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room13.webp"
+    },
+    {
+      "mediaId": "3cb775e6-8696-4723-5c0e-373ac72a2b56",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room14.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room14.webp"
+    },
+    {
+      "mediaId": "6caf73c1-d544-2a99-0961-58d40ed808f4",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room21.jpg",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room21.jpg"
+    },
+    {
+      "mediaId": "7a25e7ec-c409-39ee-105b-6d2bf565f51c",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room21.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room21.webp"
+    },
+    {
+      "mediaId": "24fe181a-2324-8303-096c-dca9322c4330",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room22.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room22.webp"
+    },
+    {
+      "mediaId": "9c8e01ee-77ef-3d29-e110-2f27bfff4a46",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room23.jpg",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room23.jpg"
+    },
+    {
+      "mediaId": "54fe5571-8966-74dd-0f75-33bfbd0b4600",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room23.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room23.webp"
+    },
+    {
+      "mediaId": "a2f7a178-24da-9aaa-b844-b15affab5e4a",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room24.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room24.webp"
+    },
+    {
+      "mediaId": "d0cfdff4-f87d-810a-3cc2-29f319d77ab3",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room31.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room31.webp"
+    },
+    {
+      "mediaId": "9e97d74e-d0a9-ff3e-68c0-8018ae0dc9d2",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room32.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room32.webp"
+    },
+    {
+      "mediaId": "a96b845b-6def-9341-fad1-b832736a0785",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room33.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room33.webp"
+    },
+    {
+      "mediaId": "69a3fc60-f14a-a444-4cc4-0e2e32ef7057",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room34.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room34.webp"
+    },
+    {
+      "mediaId": "01b9bb87-bbd8-8932-b5bf-fded70dca797",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room41.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room41.webp"
+    },
+    {
+      "mediaId": "04080131-d69c-c43a-d5e0-8066423dff50",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room42.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room42.webp"
+    },
+    {
+      "mediaId": "38ef0d7f-5dcb-efeb-c0f7-f15484b7bb1f",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room43.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room43.webp"
+    },
+    {
+      "mediaId": "90829c81-73dd-8c2c-a7bb-fca4296ce127",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room51.jpg",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room51.jpg"
+    },
+    {
+      "mediaId": "fe1071dc-6688-3c4f-e484-9854208ca359",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room51.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room51.webp"
+    },
+    {
+      "mediaId": "cbd8d314-4fda-e72c-95a9-68da420c3b73",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room52.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room52.webp"
+    },
+    {
+      "mediaId": "a2891aed-7b94-2547-d3ab-5f3a7c3cc972",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room53.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room53.webp"
+    },
+    {
+      "mediaId": "01620241-ef17-ba0d-30ad-1a8d9cb68fd6",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room61.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room61.webp"
+    },
+    {
+      "mediaId": "277818cb-43ee-7dc2-1c69-f0a1c9c0c838",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room62.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room62.webp"
+    },
+    {
+      "mediaId": "5c34a410-c4d7-a04e-4610-80250518eb2c",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room63.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room63.webp"
+    },
+    {
+      "mediaId": "d084d291-20b0-1f58-48ef-ed6ff0850bb4",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room64.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room64.webp"
+    },
+    {
+      "mediaId": "c2f0fbf8-2b3e-2e5c-2dd8-1fbf0577cdf9",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room71.jpg",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room71.jpg"
+    },
+    {
+      "mediaId": "39033be8-fe5d-dba4-27e8-2ca69054115c",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room71.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room71.webp"
+    },
+    {
+      "mediaId": "2819e085-4546-10f9-76f2-fea112505919",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room72.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room72.webp"
+    },
+    {
+      "mediaId": "bc946638-7b8c-602a-fa05-5119905dbf8f",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room73.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room73.webp"
+    },
+    {
+      "mediaId": "d0b46d30-6350-376f-8b27-049c1ab426a7",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives-room74.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room74.webp"
+    },
+    {
+      "mediaId": "b40fbfb8-02a6-4c9d-4842-8fd44c32610e",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-maldives.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-maldives.webp"
+    },
+    {
+      "mediaId": "492d8138-d3ae-1db4-efcd-de3b9c00ff6e",
+      "relativePath": "hotels/island-break-fulidhoo/images/island-break-map.webp",
+      "storagePath": "legacy/hotels/island-break-fulidhoo/images/island-break-map.webp"
+    },
+    {
+      "mediaId": "57d97e22-92a2-a86e-45b0-b3d487546305",
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-hotel-in-maafushi-maldives.jpg",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-hotel-in-maafushi-maldives.jpg"
+    },
+    {
+      "mediaId": "9e7a83fe-0c44-9ef9-95c1-813b9cf7fa53",
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-hotel-in-maafushi-maldives.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-hotel-in-maafushi-maldives.webp"
+    },
+    {
+      "mediaId": "f747bc41-b4ca-66a0-e1a6-804d2332a410",
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-hotel-maafushi-island-maldives.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-hotel-maafushi-island-maldives.webp"
+    },
+    {
+      "mediaId": "d19a0ea9-d00a-3e74-6ca0-cff793306732",
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-hotel-maldives.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-hotel-maldives.webp"
+    },
+    {
+      "mediaId": "a90df2c7-481e-7f55-18e7-bc4a0748b911",
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel-maldives.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel-maldives.webp"
+    },
+    {
+      "mediaId": "a42f6b6a-be87-5b65-2770-cb1f24fe13e5",
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel.webp"
+    },
+    {
+      "mediaId": "15a66c60-01db-c6a6-7ed4-bddab90df80b",
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island.webp"
+    },
+    {
+      "mediaId": "2dffb5db-f8e4-5860-bf6e-4f8cd991f0c6",
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-seaview-room.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-seaview-room.webp"
+    },
+    {
+      "mediaId": "55f5f867-c6f9-331c-f2f6-1cf96535721b",
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-seaview-room1.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-seaview-room1.webp"
+    },
+    {
+      "mediaId": "745db38b-4f24-91c9-d270-a28aa8da4d2c",
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-tripple-seaview-room.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-tripple-seaview-room.webp"
+    },
+    {
+      "mediaId": "895ccc7a-dfe7-3751-09d0-38e3d2739bd1",
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-tripple-seaview-room1.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-tripple-seaview-room1.webp"
+    },
+    {
+      "mediaId": "9bbead44-417f-23d5-a02d-e7741f6d21ac",
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-maafushi.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi.webp"
+    },
+    {
+      "mediaId": "84b72022-368a-83e6-0b30-07803a5ea42e",
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach-map.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-map.webp"
+    },
+    {
+      "mediaId": "147831aa-9752-c56c-c276-1d29a6144e8a",
+      "relativePath": "hotels/kaanibeach-maafushi/images/kaani-beach.webp",
+      "storagePath": "legacy/hotels/kaanibeach-maafushi/images/kaani-beach.webp"
+    },
+    {
+      "mediaId": "efe80858-d3a2-c0c5-91d4-5ae8f36ea30c",
+      "relativePath": "hotels/maagiri/images/maagiri-hotel-city-maldives.webp",
+      "storagePath": "legacy/hotels/maagiri/images/maagiri-hotel-city-maldives.webp"
+    },
+    {
+      "mediaId": "10b0b4b6-714a-c818-3c5e-c0e72cea0f8b",
+      "relativePath": "hotels/maagiri/images/maagiri-hotel-in-male-maldives.jpg",
+      "storagePath": "legacy/hotels/maagiri/images/maagiri-hotel-in-male-maldives.jpg"
+    },
+    {
+      "mediaId": "1dcfd9c6-2f8d-f907-9e21-c7a16d8ed6ac",
+      "relativePath": "hotels/maagiri/images/maagiri-hotel-in-male-maldives.webp",
+      "storagePath": "legacy/hotels/maagiri/images/maagiri-hotel-in-male-maldives.webp"
+    },
+    {
+      "mediaId": "6e1b971b-a8d9-b814-1805-56b4e3a6d898",
+      "relativePath": "hotels/maagiri/images/maagiri-hotel-male-city-junior-suit.webp",
+      "storagePath": "legacy/hotels/maagiri/images/maagiri-hotel-male-city-junior-suit.webp"
+    },
+    {
+      "mediaId": "1b81005e-77bc-c697-56ac-4621559d0880",
+      "relativePath": "hotels/maagiri/images/maagiri-hotel-male-city-junior-suit1.webp",
+      "storagePath": "legacy/hotels/maagiri/images/maagiri-hotel-male-city-junior-suit1.webp"
+    },
+    {
+      "mediaId": "33ca3e65-25b1-a571-9c1c-48f1c1adc69b",
+      "relativePath": "hotels/maagiri/images/maagiri-hotel-male-city-maldives.webp",
+      "storagePath": "legacy/hotels/maagiri/images/maagiri-hotel-male-city-maldives.webp"
+    },
+    {
+      "mediaId": "25337ec5-5194-8ca8-cc92-82177e6a9f9d",
+      "relativePath": "hotels/maagiri/images/maagiri-hotel-male-city-premier-room.webp",
+      "storagePath": "legacy/hotels/maagiri/images/maagiri-hotel-male-city-premier-room.webp"
+    },
+    {
+      "mediaId": "3c27bee7-c36c-8b9f-0528-c87f12b8e90c",
+      "relativePath": "hotels/maagiri/images/maagiri-hotel-male-city-premier-room1.webp",
+      "storagePath": "legacy/hotels/maagiri/images/maagiri-hotel-male-city-premier-room1.webp"
+    },
+    {
+      "mediaId": "262c6e46-605b-4654-72d4-634f8ba3da9b",
+      "relativePath": "hotels/maagiri/images/maagiri-hotel-male-city.webp",
+      "storagePath": "legacy/hotels/maagiri/images/maagiri-hotel-male-city.webp"
+    },
+    {
+      "mediaId": "048f12a0-60b9-10cc-3c5d-ecfc3deb8c67",
+      "relativePath": "hotels/maagiri/images/maagiri-hotel-male-maldives.webp",
+      "storagePath": "legacy/hotels/maagiri/images/maagiri-hotel-male-maldives.webp"
+    },
+    {
+      "mediaId": "01879936-de3a-7989-5be8-b7c84b320d0c",
+      "relativePath": "hotels/maagiri/images/maagiri-hotel-male.webp",
+      "storagePath": "legacy/hotels/maagiri/images/maagiri-hotel-male.webp"
+    },
+    {
+      "mediaId": "45569577-e8c0-8092-a5d7-409c43d2a6e7",
+      "relativePath": "hotels/maagiri/images/maagiri-hotel-map.webp",
+      "storagePath": "legacy/hotels/maagiri/images/maagiri-hotel-map.webp"
+    },
+    {
+      "mediaId": "e1f40a48-3481-ab89-8047-8d4bea9cfe52",
+      "relativePath": "hotels/maagiri/images/maagiri-hotel.webp",
+      "storagePath": "legacy/hotels/maagiri/images/maagiri-hotel.webp"
+    },
+    {
+      "mediaId": "a166a45d-13b2-2809-13ea-72f990bf1da1",
+      "relativePath": "hotels/mantha-view-hotel/images/hotel-mantha-view-maldives.jpg",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/hotel-mantha-view-maldives.jpg"
+    },
+    {
+      "mediaId": "a8e034a9-95fa-aad2-a48e-8c6e70a4491f",
+      "relativePath": "hotels/mantha-view-hotel/images/hotel-mantha-view-maldives.webp",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/hotel-mantha-view-maldives.webp"
+    },
+    {
+      "mediaId": "a428e423-ebb9-a8f8-3721-28d5f122c756",
+      "relativePath": "hotels/mantha-view-hotel/images/hotel-mantha-view.jpg",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/hotel-mantha-view.jpg"
+    },
+    {
+      "mediaId": "aa70bde9-0ac7-7c50-cfbf-efc3acb9c4ae",
+      "relativePath": "hotels/mantha-view-hotel/images/hotel-mantha-view.webp",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/hotel-mantha-view.webp"
+    },
+    {
+      "mediaId": "7008fd8c-31f6-8609-dba5-6801d6305995",
+      "relativePath": "hotels/mantha-view-hotel/images/mantha-view-hotel-maldives.jpg",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/mantha-view-hotel-maldives.jpg"
+    },
+    {
+      "mediaId": "8f9644b8-d5e5-e7d2-6c1c-772116afd9d0",
+      "relativePath": "hotels/mantha-view-hotel/images/mantha-view-hotel-maldives.webp",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/mantha-view-hotel-maldives.webp"
+    },
+    {
+      "mediaId": "46b0f061-fb75-384e-5a83-ab84a5bc390b",
+      "relativePath": "hotels/mantha-view-hotel/images/mantha-view-hotel.jpg",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/mantha-view-hotel.jpg"
+    },
+    {
+      "mediaId": "cb1f311b-f026-52e0-b054-ddea1b81009d",
+      "relativePath": "hotels/mantha-view-hotel/images/mantha-view-hotel.webp",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/mantha-view-hotel.webp"
+    },
+    {
+      "mediaId": "3b90a524-c162-d1c3-8d05-53593ec6edac",
+      "relativePath": "hotels/mantha-view-hotel/images/mantha-view-keyodhoo.jpg",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/mantha-view-keyodhoo.jpg"
+    },
+    {
+      "mediaId": "7a1964f7-97c0-92b5-cc99-8fe60a426a06",
+      "relativePath": "hotels/mantha-view-hotel/images/mantha-view-keyodhoo.webp",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/mantha-view-keyodhoo.webp"
+    },
+    {
+      "mediaId": "eef40f4b-6ffe-dc76-9c69-f2c0a383501d",
+      "relativePath": "hotels/mantha-view-hotel/images/mantha-view-maldives-hotel.jpg",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/mantha-view-maldives-hotel.jpg"
+    },
+    {
+      "mediaId": "aedbd63e-5b28-a818-a7c0-8b04137730e8",
+      "relativePath": "hotels/mantha-view-hotel/images/mantha-view-maldives-hotel.webp",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/mantha-view-maldives-hotel.webp"
+    },
+    {
+      "mediaId": "e50d35f2-672f-2bbe-e777-1866d9e766d8",
+      "relativePath": "hotels/mantha-view-hotel/images/mantha-view-maldives.jpg",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/mantha-view-maldives.jpg"
+    },
+    {
+      "mediaId": "4f8081f4-39f4-273e-5fbc-5171bd49497e",
+      "relativePath": "hotels/mantha-view-hotel/images/mantha-view-maldives.webp",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/mantha-view-maldives.webp"
+    },
+    {
+      "mediaId": "2c7908c0-f816-3f9c-3713-e78d837dec9a",
+      "relativePath": "hotels/mantha-view-hotel/images/mantha-view-room.jpg",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/mantha-view-room.jpg"
+    },
+    {
+      "mediaId": "a418823c-270d-5350-f8b0-e470b9ad98a5",
+      "relativePath": "hotels/mantha-view-hotel/images/mantha-view-room.webp",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/mantha-view-room.webp"
+    },
+    {
+      "mediaId": "99907345-4e2a-1688-0928-d04bc3c75ec6",
+      "relativePath": "hotels/mantha-view-hotel/images/mantha-view.jpg",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/mantha-view.jpg"
+    },
+    {
+      "mediaId": "4ffe8efb-5a28-1651-be80-0606182f17c8",
+      "relativePath": "hotels/mantha-view-hotel/images/mantha-view.webp",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/mantha-view.webp"
+    },
+    {
+      "mediaId": "32f8bd8e-fb91-8fff-1b69-a8aec8f5b47d",
+      "relativePath": "hotels/mantha-view-hotel/images/manthaview-map.jpg",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/manthaview-map.jpg"
+    },
+    {
+      "mediaId": "585bccb1-826d-1613-f180-e731d194cf76",
+      "relativePath": "hotels/mantha-view-hotel/images/paradise-island-maldives-resort.webp",
+      "storagePath": "legacy/hotels/mantha-view-hotel/images/paradise-island-maldives-resort.webp"
+    },
+    {
+      "mediaId": "83905af0-37e0-824e-389c-0b4390e2b18a",
+      "relativePath": "hotels/reveries-village/reveries-diving-fishing.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-fishing.webp"
+    },
+    {
+      "mediaId": "e1dfff38-c22d-e419-4855-f410d92e35e4",
+      "relativePath": "hotels/reveries-village/reveries-diving-hotel-map.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-hotel-map.webp"
+    },
+    {
+      "mediaId": "4e279022-2f43-bc6e-55f1-654e8aa42fce",
+      "relativePath": "hotels/reveries-village/reveries-diving-hotel-watersports.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-hotel-watersports.webp"
+    },
+    {
+      "mediaId": "b001a499-dc57-1945-e295-88279da1acc6",
+      "relativePath": "hotels/reveries-village/reveries-diving-hotel.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-hotel.webp"
+    },
+    {
+      "mediaId": "fbb8a44a-98dd-ed15-4d1f-8278122efe30",
+      "relativePath": "hotels/reveries-village/reveries-diving-village-excursions.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-village-excursions.webp"
+    },
+    {
+      "mediaId": "afe8df3e-7a32-15a9-9077-5b382e8f8018",
+      "relativePath": "hotels/reveries-village/reveries-diving-village-guesthouse.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-village-guesthouse.webp"
+    },
+    {
+      "mediaId": "2948662c-0dc9-10a2-1362-efd39e246312",
+      "relativePath": "hotels/reveries-village/reveries-diving-village-gym.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-village-gym.webp"
+    },
+    {
+      "mediaId": "273538fa-4756-f604-3785-4b9d541c6e5d",
+      "relativePath": "hotels/reveries-village/reveries-diving-village-hotel-maldives.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-village-hotel-maldives.webp"
+    },
+    {
+      "mediaId": "b6b980cd-b786-28fb-6e78-42d50d4c7700",
+      "relativePath": "hotels/reveries-village/reveries-diving-village-hotel.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-village-hotel.webp"
+    },
+    {
+      "mediaId": "510eb326-dfc1-7cb5-9605-f0e0067d5f93",
+      "relativePath": "hotels/reveries-village/reveries-diving-village-room.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-village-room.webp"
+    },
+    {
+      "mediaId": "07974ea3-0ce5-1f72-ebf3-2b33b510f7cd",
+      "relativePath": "hotels/reveries-village/reveries-diving-village-snorkeling.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-village-snorkeling.webp"
+    },
+    {
+      "mediaId": "cd5db5da-5d88-7e48-cba8-93064a278d5c",
+      "relativePath": "hotels/reveries-village/reveries-diving-village-surfandSpa-dining.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-village-surfandspa-dining.webp"
+    },
+    {
+      "mediaId": "982a4ae3-984c-9bbc-a9cb-29e06d16cfcf",
+      "relativePath": "hotels/reveries-village/reveries-diving-village-surfandSpa-hotel.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-village-surfandspa-hotel.webp"
+    },
+    {
+      "mediaId": "f4f07785-3cbe-9e79-cce2-2e259164823f",
+      "relativePath": "hotels/reveries-village/reveries-diving-village-surfandSpa-room.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-village-surfandspa-room.webp"
+    },
+    {
+      "mediaId": "6690819d-d030-8960-c761-70d0fbdd8416",
+      "relativePath": "hotels/reveries-village/reveries-diving-village-surfandSpa-room2.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-village-surfandspa-room2.webp"
+    },
+    {
+      "mediaId": "6ad86073-8b20-9bdb-5549-8afd22a982a9",
+      "relativePath": "hotels/reveries-village/reveries-diving-village-surfing.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-village-surfing.webp"
+    },
+    {
+      "mediaId": "bfc76619-b0d6-2b44-86a8-67a9d3b3534b",
+      "relativePath": "hotels/reveries-village/reveries-diving-village.webp",
+      "storagePath": "legacy/hotels/reveries-village/reveries-diving-village.webp"
+    },
+    {
+      "mediaId": "19b85eef-1f7e-10c0-d85e-04cf6beed688",
+      "relativePath": "hotels/rosemery-maafushi/images/rosemary-hotel-map.webp",
+      "storagePath": "legacy/hotels/rosemery-maafushi/images/rosemary-hotel-map.webp"
+    },
+    {
+      "mediaId": "fd61f1ad-a114-e629-5a28-2b1051f5df36",
+      "relativePath": "hotels/rosemery-maafushi/images/rosemary-island-hotel-in-maafushi-maldives.jpg",
+      "storagePath": "legacy/hotels/rosemery-maafushi/images/rosemary-island-hotel-in-maafushi-maldives.jpg"
+    },
+    {
+      "mediaId": "bf0c0018-0ed4-bbb8-5159-cd94bcea6f1d",
+      "relativePath": "hotels/rosemery-maafushi/images/rosemary-island-hotel-in-maafushi-maldives.webp",
+      "storagePath": "legacy/hotels/rosemery-maafushi/images/rosemary-island-hotel-in-maafushi-maldives.webp"
+    },
+    {
+      "mediaId": "60f3e5e6-cbae-ed05-f25e-befd0dfd011e",
+      "relativePath": "hotels/rosemery-maafushi/images/rosemary-maafushi-island-hotel-maldives.webp",
+      "storagePath": "legacy/hotels/rosemery-maafushi/images/rosemary-maafushi-island-hotel-maldives.webp"
+    },
+    {
+      "mediaId": "71936a5f-6242-2af9-41ec-0fb8ce8c5352",
+      "relativePath": "hotels/rosemery-maafushi/images/rosemary-maafushi-island-hotel.webp",
+      "storagePath": "legacy/hotels/rosemery-maafushi/images/rosemary-maafushi-island-hotel.webp"
+    },
+    {
+      "mediaId": "cfc2fb1a-cc28-949a-f4e9-d81dbe769e2a",
+      "relativePath": "hotels/rosemery-maafushi/images/rosemery-maafushi-double-balcony-room.webp",
+      "storagePath": "legacy/hotels/rosemery-maafushi/images/rosemery-maafushi-double-balcony-room.webp"
+    },
+    {
+      "mediaId": "a78824af-1cef-0cc0-a45b-0dbb9006686c",
+      "relativePath": "hotels/rosemery-maafushi/images/rosemery-maafushi-hotel-maldives.webp",
+      "storagePath": "legacy/hotels/rosemery-maafushi/images/rosemery-maafushi-hotel-maldives.webp"
+    },
+    {
+      "mediaId": "0be8c070-e906-6845-8394-2aa729166814",
+      "relativePath": "hotels/rosemery-maafushi/images/rosemery-maafushi-island-maldives.webp",
+      "storagePath": "legacy/hotels/rosemery-maafushi/images/rosemery-maafushi-island-maldives.webp"
+    },
+    {
+      "mediaId": "e5d79447-ee74-1493-11af-ddaf92eb7316",
+      "relativePath": "hotels/rosemery-maafushi/images/rosemery-maafushi-island.webp",
+      "storagePath": "legacy/hotels/rosemery-maafushi/images/rosemery-maafushi-island.webp"
+    },
+    {
+      "mediaId": "2eff104e-1b9c-328e-58b8-1766846f39f9",
+      "relativePath": "hotels/rosemery-maafushi/images/rosemery-maafushi-tripple-room.webp",
+      "storagePath": "legacy/hotels/rosemery-maafushi/images/rosemery-maafushi-tripple-room.webp"
+    },
+    {
+      "mediaId": "98ab6a7d-5772-07bc-df57-0a8814ee7722",
+      "relativePath": "hotels/rosemery-maafushi/images/rosemery-maafushi.webp",
+      "storagePath": "legacy/hotels/rosemery-maafushi/images/rosemery-maafushi.webp"
+    },
+    {
+      "mediaId": "7838258e-6e3f-4ef1-a5f5-15419eb78d13",
+      "relativePath": "hotels/surfview-male/images/surfview-hotel-in-male-maldives.jpg",
+      "storagePath": "legacy/hotels/surfview-male/images/surfview-hotel-in-male-maldives.jpg"
+    },
+    {
+      "mediaId": "a049c777-a314-d092-c6e8-5fe4093e28eb",
+      "relativePath": "hotels/surfview-male/images/surfview-hotel-in-male-maldives.webp",
+      "storagePath": "legacy/hotels/surfview-male/images/surfview-hotel-in-male-maldives.webp"
+    },
+    {
+      "mediaId": "9e16e0aa-d769-2b25-c255-d0235d25a94b",
+      "relativePath": "hotels/surfview-male/images/surfview-hotel-male-city-maldives.webp",
+      "storagePath": "legacy/hotels/surfview-male/images/surfview-hotel-male-city-maldives.webp"
+    },
+    {
+      "mediaId": "b6d5ca8c-d13f-a1c5-3f3e-135a40e8ae40",
+      "relativePath": "hotels/surfview-male/images/surfview-hotel-male-city.webp",
+      "storagePath": "legacy/hotels/surfview-male/images/surfview-hotel-male-city.webp"
+    },
+    {
+      "mediaId": "d466fbad-97b7-f828-349d-e8786f36c457",
+      "relativePath": "hotels/surfview-male/images/surfview-hotel-male-maldives.webp",
+      "storagePath": "legacy/hotels/surfview-male/images/surfview-hotel-male-maldives.webp"
+    },
+    {
+      "mediaId": "4055ef6a-4e8c-f008-dae4-266b835f422b",
+      "relativePath": "hotels/surfview-male/images/surfview-hotel-male.webp",
+      "storagePath": "legacy/hotels/surfview-male/images/surfview-hotel-male.webp"
+    },
+    {
+      "mediaId": "6f102954-2760-c153-6183-2c6fc9d16b2d",
+      "relativePath": "hotels/surfview-male/images/surfview-hotel-map.webp",
+      "storagePath": "legacy/hotels/surfview-male/images/surfview-hotel-map.webp"
+    },
+    {
+      "mediaId": "d99512c8-1da1-248a-ae79-b9659f652544",
+      "relativePath": "hotels/surfview-male/images/surfview-hotel-seaview-room.webp",
+      "storagePath": "legacy/hotels/surfview-male/images/surfview-hotel-seaview-room.webp"
+    },
+    {
+      "mediaId": "81343a02-36d7-c1ea-ccd7-0c1ff3562344",
+      "relativePath": "hotels/surfview-male/images/surfview-hotel-superior-room.webp",
+      "storagePath": "legacy/hotels/surfview-male/images/surfview-hotel-superior-room.webp"
+    },
+    {
+      "mediaId": "da8347ad-9eb7-c81d-5a51-50043e40ab3d",
+      "relativePath": "hotels/surfview-male/images/surfview-hotel.webp",
+      "storagePath": "legacy/hotels/surfview-male/images/surfview-hotel.webp"
     }
   ]
 }

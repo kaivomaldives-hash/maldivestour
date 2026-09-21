@@ -33,7 +33,7 @@ import path from "node:path";
 import { DATA_DIR, deterministicUuid, RELEASE_DIR, ROOT, storagePathForRelativePath, toAsciiSafe } from "./lib/legacy-shared.mjs";
 
 const COMMIT = process.argv.includes("--commit");
-const ROOT_FOLDERS = ["images", "atolls", "fishing", "resorts"];
+const ROOT_FOLDERS = ["images", "atolls", "fishing", "resorts", "hotels"];
 
 const IMAGE_EXTENSIONS = new Set([".webp", ".jpg", ".jpeg", ".png", ".gif", ".avif", ".svg"]);
 const SKIP_FILENAMES = new Set(["thumbs.db"]);
@@ -149,7 +149,7 @@ function main() {
 
   const sql = [
     "-- Full legacy image library (Task 20 follow-up): every real image",
-    "-- file under release/public_html/{images,atolls,fishing,resorts}/,",
+    "-- file under release/public_html/{images,atolls,fishing,resorts,hotels}/,",
     "-- not just the subset wired into specific pages -- available for",
     "-- future pages to reference by its own storage_path. GENERATED FILE,",
     "-- regenerate with:",

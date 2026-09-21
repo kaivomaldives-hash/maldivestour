@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ComingSoonSection } from "@/components/transfers/coming-soon-section";
+import { RouteVideo, routeVideoJsonLd } from "@/components/transfers/route-video";
 import { TransferFinder } from "@/components/transfers/transfer-finder";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CarTransfersSection } from "@/components/vehicles/car-transfers-section";
@@ -140,6 +141,7 @@ export async function TransferDirectoryPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Transfers" }], "/maldives/transfers")) }}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(routeVideoJsonLd()) }} />
 
       <PageHero
         breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Transfers" }]}
@@ -254,6 +256,9 @@ export async function TransferDirectoryPage() {
             </ul>
           </section>
         )}
+
+        {/* Getting-around explainer video */}
+        <RouteVideo />
 
         {/* 11. Why use MTG */}
         <section className="mt-12 border-t border-neutral-200 pt-10">

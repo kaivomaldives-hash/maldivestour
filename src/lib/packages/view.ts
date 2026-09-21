@@ -4,6 +4,7 @@ import type { ActivitySummary } from "@/lib/activities/types";
 import { activityHref } from "@/lib/activities/types";
 import type { LocationSummary } from "@/lib/locations/types";
 import type { MediaAsset } from "@/lib/media/types";
+import { ACCOMMODATION_GALLERY_IMAGES, PACKAGE_HERO_OVERRIDES } from "@/lib/packages/package-images";
 import type { PackageDetail, PackageItineraryStage } from "@/lib/packages/types";
 import type {
   PackageCategorySlug,
@@ -112,6 +113,28 @@ function deriveHeroImage(stages: PackageItineraryStage[]): MediaAsset | null {
   return null;
 }
 
+/** A package's Gallery section: its hero first, then a few extra genuine
+ * photos of whatever accommodation(s) it's anchored to (from
+ * ACCOMMODATION_GALLERY_IMAGES — real legacy photos beyond that
+ * accommodation's single node_media hero row), deduped by media id and
+ * capped so the section stays a gallery, not the whole photo library. */
+export function buildGalleryImages(hero: MediaAsset | null, accommodations: Array<{ accommodation: { slug: string; heroImage: MediaAsset | null } }>): MediaAsset[] {
+  const seen = new Set<string>();
+  const images: MediaAsset[] = [];
+  const add = (asset: MediaAsset | null | undefined) => {
+    if (!asset || seen.has(asset.id)) return;
+    seen.add(asset.id);
+    images.push(asset);
+  };
+
+  add(hero);
+  for (const { accommodation } of accommodations) {
+    add(accommodation.heroImage);
+    for (const extra of ACCOMMODATION_GALLERY_IMAGES[accommodation.slug] ?? []) add(extra);
+  }
+  return images.slice(0, 6);
+}
+
 function collectLinkedEntities(stages: PackageItineraryStage[]): {
   accommodations: PackageLinkedAccommodation[];
   activities: PackageLinkedActivity[];
@@ -175,7 +198,7 @@ function deriveIncluded(pkg: PackageDetail, hasTransfer: boolean, hasActivity: b
 export function realPackageToView(pkg: PackageDetail): PackageView {
   const { accommodations, activities } = collectLinkedEntities(pkg.stages);
   const transfer = firstTransferLink(pkg.stages);
-  const heroImage = deriveHeroImage(pkg.stages);
+  const heroImage = PACKAGE_HERO_OVERRIDES[pkg.slug] ?? deriveHeroImage(pkg.stages);
   const categories = deriveCategories([...pkg.travelerTypes, ...pkg.styles, ...pkg.themes]);
   const priceType: PackagePriceType | null = pkg.priceFrom !== null ? "per-person" : null;
 
@@ -198,7 +221,8 @@ export function realPackageToView(pkg: PackageDetail): PackageView {
     rating: null,
     ratingCount: null,
     heroImage,
-    images: accommodations.filter((a) => a.accommodation.heroImage).map((a) => a.accommodation.heroImage as MediaAsset),
+    images: buildGalleryImages(heroImage, accommodations),
+    youtubeId: null,
     highlights: deriveHighlights(pkg, activities, accommodations),
     bestFor,
     included: deriveIncluded(pkg, transfer.included === true, activities.length > 0),

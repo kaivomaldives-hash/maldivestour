@@ -14,7 +14,7 @@ import type { MediaAsset } from "@/lib/media/types";
  * reach this fallback at all — see demo.ts's resolution order.
  */
 
-function asset(id: string, storagePath: string, altText: string): MediaAsset {
+export function asset(id: string, storagePath: string, altText: string): MediaAsset {
   return { id, mediaType: "image", storagePath, youtubeId: null, altText, credit: null, width: null, height: null };
 }
 

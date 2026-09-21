@@ -8,7 +8,8 @@ import type { LocationSummary } from "@/lib/locations/types";
 import type { MediaAsset } from "@/lib/media/types";
 import { PACKAGE_CATEGORY_FALLBACK_IMAGES } from "@/lib/packages/category-images";
 import { DEMO_PACKAGES, type DemoItineraryDay, type DemoPackageInput } from "@/lib/packages/demo-packages";
-import { accommodationHref, buildPackageFaqs, STANDARD_EXCLUSIONS } from "@/lib/packages/view";
+import { PACKAGE_HERO_OVERRIDES } from "@/lib/packages/package-images";
+import { accommodationHref, buildGalleryImages, buildPackageFaqs, STANDARD_EXCLUSIONS } from "@/lib/packages/view";
 import type { PackageItineraryDayView, PackageLinkedAccommodation, PackageLinkedActivity, PackageView } from "@/lib/packages/view-types";
 
 /**
@@ -69,7 +70,7 @@ async function resolveOneDemoPackage(input: DemoPackageInput): Promise<PackageVi
 
   const resolvedAtoll: LocationSummary | null = atoll ?? null;
 
-  const heroImage = accommodation?.heroImage ?? categoryFallbackImage(input);
+  const heroImage = PACKAGE_HERO_OVERRIDES[input.slug] ?? accommodation?.heroImage ?? categoryFallbackImage(input);
 
   const view: PackageView = {
     id: `demo-${input.slug}`,
@@ -88,7 +89,8 @@ async function resolveOneDemoPackage(input: DemoPackageInput): Promise<PackageVi
     rating: input.rating,
     ratingCount: input.ratingCount,
     heroImage,
-    images: [],
+    images: buildGalleryImages(heroImage, accommodations),
+    youtubeId: null,
     highlights: input.highlights,
     bestFor: input.bestFor,
     included: input.included,

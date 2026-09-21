@@ -148,6 +148,11 @@ export interface PackageView {
 
   heroImage: MediaAsset | null;
   images: MediaAsset[];
+  /** A real YouTube video id for this specific package, when one exists —
+   * null means no video section renders (Task 21 follow-up: the plumbing
+   * exists so a real video can be wired in later, but nothing is
+   * fabricated in the meantime). */
+  youtubeId: string | null;
 
   highlights: string[];
   bestFor: string[];

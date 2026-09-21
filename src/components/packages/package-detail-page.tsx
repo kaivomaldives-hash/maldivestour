@@ -179,6 +179,36 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
           </section>
         )}
 
+        {/* Gallery */}
+        {pkg.images.length > 0 && (
+          <section className="mt-8">
+            <h2 className="text-xl font-semibold text-ocean-900">Gallery</h2>
+            <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {pkg.images.map((image) => (
+                <MediaImage key={image.id} asset={image} alt={pkg.title} aspectClassName="aspect-[4/3]" />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Video */}
+        {pkg.youtubeId && (
+          <section className="mt-8">
+            <h2 className="text-xl font-semibold text-ocean-900">Video</h2>
+            <div className="mt-3 aspect-video w-full overflow-hidden rounded-2xl bg-neutral-100">
+              <iframe
+                className="h-full w-full"
+                src={`https://www.youtube.com/embed/${pkg.youtubeId}`}
+                title={pkg.title}
+                loading="lazy"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            </div>
+          </section>
+        )}
+
         {/* Highlights */}
         {pkg.highlights.length > 0 && (
           <section className="mt-8">

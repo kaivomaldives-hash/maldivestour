@@ -31,6 +31,11 @@
 //   node scripts/upload-legacy-media.mjs                        # dry run, every manifest
 //   node scripts/upload-legacy-media.mjs --commit                # real upload, every manifest (needs live Supabase)
 //   node scripts/upload-legacy-media.mjs --commit --only=uploaded # real upload, just one manifest (fast, targeted)
+//   node scripts/upload-legacy-media.mjs --commit --only=full-library --prefix=hotels/ # real upload, just files whose
+//                                                                 # relativePath starts with this prefix — for when only
+//                                                                 # part of a large manifest (e.g. a folder added to
+//                                                                 # build-full-legacy-image-library.mjs after the last
+//                                                                 # full upload) actually needs pushing to Storage.
 
 import { existsSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
@@ -39,6 +44,7 @@ import { DATA_DIR, RELEASE_DIR, ROOT } from "./lib/legacy-shared.mjs";
 
 const COMMIT = process.argv.includes("--commit");
 const ONLY = process.argv.find((a) => a.startsWith("--only="))?.slice("--only=".length);
+const PREFIX = process.argv.find((a) => a.startsWith("--prefix="))?.slice("--prefix=".length);
 const BUCKET = "media";
 
 const CONTENT_TYPE_BY_EXT = {
@@ -121,8 +127,12 @@ function mergeManifests(only) {
 function main() {
   loadEnvLocal();
 
-  const { files, conflicts } = mergeManifests(ONLY);
+  let { files, conflicts } = mergeManifests(ONLY);
   if (ONLY) console.log(`--only=${ONLY}: uploading just this manifest.\n`);
+  if (PREFIX) {
+    files = files.filter((f) => f.relativePath.startsWith(PREFIX));
+    console.log(`--prefix=${PREFIX}: uploading just files under this path.\n`);
+  }
   if (files.length === 0) {
     console.error(
       "No storage manifests found. Run `node scripts/import-legacy-media.mjs --commit` and " +

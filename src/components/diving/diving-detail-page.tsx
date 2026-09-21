@@ -12,7 +12,7 @@ import {
   getDiveSitesForActivity,
   getDivingTypesForActivity,
 } from "@/lib/diving/repository";
-import { getPackagesByActivity } from "@/lib/packages/repository";
+import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
 function formatDuration(minutes: number | null): string | null {
@@ -49,7 +49,7 @@ export async function DivingDetailPage({ slug }: { slug: string }) {
     getDivingTypesForActivity(activity.id),
     getDiveSitesForActivity(activity.id),
     primaryLocation ? getDivingActivitiesByLocation(primaryLocation.id) : Promise.resolve([]),
-    getPackagesByActivity(activity.id),
+    getPackageViewsByActivity(activity.id),
   ]);
   const relatedActivities = sameIslandActivities.filter((a) => a.id !== activity.id).slice(0, 4);
 

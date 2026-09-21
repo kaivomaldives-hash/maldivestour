@@ -15,7 +15,7 @@ import { getActivitiesByAtoll } from "@/lib/activities/repository";
 import { getDiveSitesByAtoll } from "@/lib/diving/repository";
 import { getAtollBySlug, getIslandsByAtoll } from "@/lib/locations/repository";
 import { getHeroMediaByNodeIds } from "@/lib/media/repository";
-import { getPackagesByAtoll } from "@/lib/packages/repository";
+import { getPackageViewsByAtoll } from "@/lib/packages/view-repository";
 import { canonicalUrl } from "@/lib/seo/site";
 import { getSurfBreaksByAtoll } from "@/lib/surfing/repository";
 import { getTransferRoutesByAtoll } from "@/lib/transfers/repository";
@@ -61,7 +61,7 @@ export default async function AtollPage({ params }: { params: Promise<Params> })
     getDiveSitesByAtoll(atoll.id),
     getSurfBreaksByAtoll(atoll.id),
     getTransferRoutesByAtoll(atoll.id),
-    getPackagesByAtoll(atoll.id),
+    getPackageViewsByAtoll(atoll.id),
   ]);
   // See the identical split on the island page (Task 7, Task 8, Task 9):
   // fishing, diving, and surfing each have their own dedicated

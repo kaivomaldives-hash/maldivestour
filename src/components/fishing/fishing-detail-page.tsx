@@ -6,7 +6,7 @@ import { PackageCard } from "@/components/packages/package-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getFishingActivitiesByLocation, getFishingActivityBySlug, getFishingTypesForActivity } from "@/lib/fishing/repository";
-import { getPackagesByActivity } from "@/lib/packages/repository";
+import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
 function formatDuration(minutes: number | null): string | null {
@@ -42,7 +42,7 @@ export async function FishingDetailPage({ slug }: { slug: string }) {
   const [fishingTypes, sameIslandTrips, packages] = await Promise.all([
     getFishingTypesForActivity(activity.id),
     primaryLocation ? getFishingActivitiesByLocation(primaryLocation.id) : Promise.resolve([]),
-    getPackagesByActivity(activity.id),
+    getPackageViewsByActivity(activity.id),
   ]);
   const relatedTrips = sameIslandTrips.filter((t) => t.id !== activity.id).slice(0, 4);
 

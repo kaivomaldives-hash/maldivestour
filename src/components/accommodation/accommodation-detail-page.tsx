@@ -7,7 +7,7 @@ import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodationBySlug } from "@/lib/accommodations/repository";
 import { ACCOMMODATION_TYPE_SEGMENT, type AccommodationType } from "@/lib/accommodations/types";
-import { getPackagesByAccommodation } from "@/lib/packages/repository";
+import { getPackageViewsByAccommodation } from "@/lib/packages/view-repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
 const TYPE_LABEL: Record<AccommodationType, string> = {
@@ -60,7 +60,7 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
 
   const segment = ACCOMMODATION_TYPE_SEGMENT[type];
   const { primaryLocation, atoll } = accommodation;
-  const packages = await getPackagesByAccommodation(accommodation.id);
+  const packages = await getPackageViewsByAccommodation(accommodation.id);
 
   return (
     <main>

@@ -2,36 +2,32 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
+import { PackageCard } from "@/components/packages/package-card";
 import { Badge } from "@/components/ui/badge";
-import { CARD_CLASS } from "@/components/ui/card";
+import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
+import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
-import { ACCOMMODATION_TYPE_SEGMENT } from "@/lib/accommodations/types";
-import { activityHref } from "@/lib/activities/types";
-import { getPackageBySlug } from "@/lib/packages/repository";
-import type { PackageItineraryItem } from "@/lib/packages/types";
-import { canonicalUrl } from "@/lib/seo/site";
+import { getRelatedPackageViews, getPackageViewBySlug } from "@/lib/packages/view-repository";
+import { PACKAGE_CATEGORY_TITLE } from "@/lib/packages/view-types";
+import type { PackageView } from "@/lib/packages/view-types";
+import { breadcrumbJsonLd, canonicalUrl, getSiteUrl } from "@/lib/seo/site";
 
-function accommodationHref(accommodation: { accommodationType: keyof typeof ACCOMMODATION_TYPE_SEGMENT; slug: string }): string {
-  return `/maldives/${ACCOMMODATION_TYPE_SEGMENT[accommodation.accommodationType]}/${accommodation.slug}/`;
-}
+const WHATSAPP_NUMBER = "9607794332";
 
-const ROLE_LABEL: Record<PackageItineraryItem["componentRole"], string> = {
-  accommodation: "Stay",
-  activity: "Activity",
-  transfer: "Transfer",
-  meal: "Meal",
-  free_time: "Free time",
-  excursion: "Excursion",
-  other: "Other",
+const PRICE_TYPE_LABEL: Record<string, string> = {
+  "per-person": "per person",
+  "per-couple": "per couple",
+  "per-package": "per package",
 };
 
 export async function packageDetailMetadata(slug: string): Promise<Metadata> {
-  const pkg = await getPackageBySlug(slug);
+  const pkg = await getPackageViewBySlug(slug);
   if (!pkg) return {};
 
-  const title = pkg.metaTitle ?? `${pkg.title} | Maldives Packages | MTG`;
-  const description = pkg.metaDescription ?? pkg.summary ?? undefined;
+  const title = `${pkg.title} | ${pkg.nights ?? "?"} Nights / ${pkg.days ?? "?"} Days`;
+  const description = pkg.shortDescription ?? undefined;
   const url = canonicalUrl(`/maldives/packages/${pkg.slug}`);
 
   return {
@@ -39,155 +35,364 @@ export async function packageDetailMetadata(slug: string): Promise<Metadata> {
     description,
     alternates: { canonical: url },
     openGraph: { title, description, url },
+    // Demo packages are real, useful content but not a real commercial
+    // offer yet — never let search engines index them as if they were
+    // (Task 21 §59/§60). Real packages stay fully indexable.
+    robots: pkg.isDemo ? { index: false, follow: true } : undefined,
   };
 }
 
-function ItineraryItemRow({ item }: { item: PackageItineraryItem }) {
+/** Product/Offer only for REAL, bookable packages — a demo package is
+ * never described to search engines as a real commercial offer (Task 21
+ * §41). No Review/AggregateRating is ever emitted, for either kind —
+ * this project has no genuine package review data yet. */
+function packageJsonLd(pkg: PackageView) {
+  const url = canonicalUrl(`/maldives/packages/${pkg.slug}`);
+  const breadcrumb = breadcrumbJsonLd(
+    [{ label: "Maldives", href: "/maldives/" }, { label: "Packages", href: "/maldives/packages/" }, { label: pkg.title }],
+    `/maldives/packages/${pkg.slug}`,
+  );
+
+  if (pkg.isDemo || pkg.price === null) return [breadcrumb];
+
+  const product = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: pkg.title,
+    description: pkg.shortDescription ?? undefined,
+    url,
+    brand: { "@type": "Organization", name: "Maldives Tour Guide", url: getSiteUrl() },
+    offers: {
+      "@type": "Offer",
+      price: pkg.price,
+      priceCurrency: pkg.currency ?? "USD",
+      availability: "https://schema.org/InStock",
+      url,
+    },
+  };
+  return [breadcrumb, product];
+}
+
+function faqJsonLd(pkg: PackageView) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: pkg.faqs.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })),
+  };
+}
+
+function DemoEnquiryCta({ pkg }: { pkg: PackageView }) {
+  const message = encodeURIComponent(`Hi, I'm interested in the "${pkg.title}" package (${pkg.nights} nights) — is something like this available?`);
   return (
-    <li className="border-t border-neutral-100 pt-2 first:border-t-0 first:pt-0">
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <span className="text-xs font-medium uppercase tracking-wide text-neutral-500">{ROLE_LABEL[item.componentRole]}</span>
-      </div>
-
-      {item.accommodation && (
-        <Link href={accommodationHref(item.accommodation)} className="font-medium hover:underline">
-          {item.accommodation.title}
-        </Link>
-      )}
-
-      {item.activity && (
-        <Link href={activityHref(item.activity)} className="font-medium hover:underline">
-          {item.activity.title}
-        </Link>
-      )}
-
-      {item.transferService && (
-        <div className="font-medium">
-          {item.transferRoute ? (
-            <Link href={`/maldives/transfers/${item.transferRoute.slug}/`} className="hover:underline">
-              {item.transferRoute.title}
-            </Link>
-          ) : (
-            "Transfer"
-          )}
-          {item.transferService.provider && <span className="ml-1 font-normal text-neutral-600">— {item.transferService.provider.title}</span>}
-        </div>
-      )}
-
-      {!item.accommodation && !item.activity && !item.transferService && <p className="font-medium text-neutral-700">{ROLE_LABEL[item.componentRole]}</p>}
-
-      {item.notes && <p className="mt-0.5 text-sm text-neutral-600">{item.notes}</p>}
-    </li>
+    <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+      <p className="text-sm text-amber-900">
+        This is a sample itinerary while our real commercial package inventory is being finalized. Message us and we&rsquo;ll help build a real
+        package around what you want.
+      </p>
+      <a
+        href={`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-3 inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-medium text-white hover:opacity-90"
+      >
+        Enquire on WhatsApp
+      </a>
+    </div>
   );
 }
 
 export async function PackageDetailPage({ slug }: { slug: string }) {
-  const pkg = await getPackageBySlug(slug);
+  const pkg = await getPackageViewBySlug(slug);
   if (!pkg) notFound();
 
-  const allTags = [...pkg.travelerTypes, ...pkg.styles, ...(pkg.durationBand ? [pkg.durationBand] : []), ...pkg.themes, ...pkg.inclusions];
+  const related = await getRelatedPackageViews(pkg, 6);
 
   return (
     <main>
+      {packageJsonLd(pkg).map((entry, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(entry) }} />
+      ))}
+      {pkg.faqs.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(pkg)) }} />}
+
       <PageHero
         breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },
           { label: "Packages", href: "/maldives/packages/" },
           { label: pkg.title },
         ]}
-        eyebrow="Package"
+        eyebrow="Maldives package"
         title={pkg.title}
-        description={pkg.summary ?? undefined}
+        description={pkg.shortDescription ?? undefined}
+        image={pkg.heroImage}
         meta={
-          pkg.isMtgCurated ? (
-            <Badge tone="aqua">MTG-curated itinerary</Badge>
-          ) : pkg.provider ? (
-            <span className="text-neutral-600">
-              Operated by{" "}
-              <Link href={`/maldives/providers/${pkg.provider.slug}/`} className="text-maldives-600 underline">
-                {pkg.provider.title}
+          <div className="flex flex-wrap items-center gap-2">
+            {pkg.isMtgCurated && !pkg.isDemo && <Badge tone="aqua">MTG-curated</Badge>}
+            {pkg.provider && !pkg.isDemo && <span className="text-neutral-600">Operated by {pkg.provider.title}</span>}
+            {pkg.categories.map((c) => (
+              <Link key={c} href={`/maldives/packages/${c}/`} className="rounded-full border border-white/40 px-2.5 py-1 text-xs text-white hover:bg-white/10">
+                {PACKAGE_CATEGORY_TITLE[c]}
               </Link>
-            </span>
-          ) : undefined
+            ))}
+          </div>
         }
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
-      {allTags.length > 0 && (
-        <div className="flex flex-wrap gap-2 text-sm">
-          {allTags.map((tag) => (
-            <span key={tag.id} className="rounded-full border border-neutral-300 px-3 py-1 text-neutral-700">
-              {tag.title}
-            </span>
-          ))}
-        </div>
-      )}
-
-      <dl className="mt-6 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
-        {pkg.durationNights !== null && (
+        {/* Price + duration + CTA */}
+        <div className="flex flex-wrap items-end justify-between gap-4 rounded-2xl border border-neutral-200 p-5">
           <div>
-            <dt className="text-neutral-500">Duration</dt>
-            <dd className="font-medium">
-              {pkg.durationNights} night{pkg.durationNights === 1 ? "" : "s"}
-            </dd>
+            {pkg.nights !== null && (
+              <p className="text-xl font-semibold text-ocean-900">
+                {pkg.nights} Night{pkg.nights === 1 ? "" : "s"} / {pkg.days} Days
+              </p>
+            )}
+            <p className="mt-1 text-lg text-neutral-800">
+              {pkg.price !== null ? (
+                <>
+                  From <span className="font-semibold text-ocean-900">{pkg.currency ?? "USD"} {pkg.price.toLocaleString()}</span>{" "}
+                  {pkg.priceType && <span className="text-sm text-neutral-500">{PRICE_TYPE_LABEL[pkg.priceType]}</span>}
+                </>
+              ) : (
+                "Quote on request"
+              )}
+            </p>
+            {pkg.rating !== null && (
+              <p className="mt-1 flex items-center gap-1 text-sm text-amber-600">
+                <span aria-hidden="true">&#9733;</span>
+                <span className="font-medium">{pkg.rating.toFixed(1)}</span>
+                {pkg.ratingCount !== null && <span className="text-neutral-500">({pkg.ratingCount} demo ratings)</span>}
+              </p>
+            )}
           </div>
-        )}
-        <div>
-          <dt className="text-neutral-500">Price</dt>
-          <dd className="font-medium">
-            {pkg.priceFrom !== null ? `From ${pkg.currency ?? "USD"} ${pkg.priceFrom}` : "Quote on request"}
-          </dd>
+          {pkg.isDemo ? (
+            <DemoEnquiryCta pkg={pkg} />
+          ) : (
+            <NodeInquiryToggle productNodeId={pkg.id} productTitle={pkg.title} submitLabel="Enquire About This Package" toggleLabel="Enquire About This Package" />
+          )}
         </div>
+
+        {/* Overview */}
+        {pkg.description && (
+          <section className="mt-10">
+            <h2 className="text-xl font-semibold text-ocean-900">Overview</h2>
+            <p className="mt-2 text-sm text-neutral-700">{pkg.description}</p>
+          </section>
+        )}
+
+        {/* Highlights */}
+        {pkg.highlights.length > 0 && (
+          <section className="mt-8">
+            <h2 className="text-xl font-semibold text-ocean-900">Highlights</h2>
+            <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {pkg.highlights.map((h) => (
+                <li key={h} className="flex items-start gap-2 text-sm text-neutral-700">
+                  <span aria-hidden="true" className="mt-0.5 text-maldives-600">
+                    &#10003;
+                  </span>
+                  <span>{h}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* Who it's for */}
+        {pkg.bestFor.length > 0 && (
+          <section className="mt-8">
+            <h2 className="text-xl font-semibold text-ocean-900">Who This Package Is For</h2>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {pkg.bestFor.map((b) => (
+                <span key={b} className="rounded-full bg-lagoon-50 px-3 py-1 text-sm text-ocean-800">
+                  {b}
+                </span>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Itinerary */}
+        {pkg.itinerary.length > 0 && (
+          <section className="mt-10">
+            <h2 className="text-xl font-semibold text-ocean-900">Itinerary</h2>
+            <ol className="mt-4 space-y-4">
+              {pkg.itinerary.map((day) => (
+                <li key={day.dayLabel} className={CARD_CLASS}>
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <h3 className="text-lg font-medium text-ocean-900">{day.title}</h3>
+                    <span className="text-sm text-neutral-500">{day.dayLabel}</span>
+                  </div>
+                  {day.description && <p className="mt-2 text-sm text-neutral-700">{day.description}</p>}
+                  {day.links.length > 0 && (
+                    <ul className="mt-2 flex flex-wrap gap-2">
+                      {day.links.map((link) => (
+                        <li key={link.href + link.label}>
+                          <Link href={link.href} className="rounded-full border border-neutral-300 px-2.5 py-1 text-xs text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                            {link.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
+
+        {/* Accommodation */}
+        {pkg.accommodations.length > 0 && (
+          <section className="mt-10">
+            <h2 className="text-xl font-semibold text-ocean-900">Accommodation</h2>
+            <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {pkg.accommodations.map((a) => (
+                <li key={a.accommodation.id} className={CARD_CLASS}>
+                  {a.accommodation.heroImage && (
+                    <div className={CARD_IMAGE_BLEED_CLASS}>
+                      <MediaImage asset={a.accommodation.heroImage} alt={a.accommodation.title} aspectClassName="aspect-[16/10]" />
+                    </div>
+                  )}
+                  <Link href={a.href} className="font-medium text-ocean-900 hover:text-maldives-600">
+                    {a.accommodation.title}
+                  </Link>
+                  {a.accommodation.primaryLocation && <p className="mt-1 text-sm text-neutral-600">{a.accommodation.primaryLocation.title}</p>}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* Included / Excluded */}
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {pkg.included.length > 0 && (
+            <section>
+              <h2 className="text-lg font-semibold text-ocean-900">What&rsquo;s Included</h2>
+              <ul className="mt-3 space-y-1.5 text-sm text-neutral-700">
+                {pkg.included.map((i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span aria-hidden="true" className="mt-0.5 text-maldives-600">
+                      &#10003;
+                    </span>
+                    <span>{i}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {pkg.excluded.length > 0 && (
+            <section>
+              <h2 className="text-lg font-semibold text-ocean-900">What&rsquo;s Not Included</h2>
+              <ul className="mt-3 space-y-1.5 text-sm text-neutral-700">
+                {pkg.excluded.map((e) => (
+                  <li key={e} className="flex items-start gap-2">
+                    <span aria-hidden="true" className="mt-0.5 text-neutral-400">
+                      &#10005;
+                    </span>
+                    <span>{e}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </div>
+
+        {/* Activities */}
+        {pkg.activities.length > 0 && (
+          <section className="mt-10">
+            <h2 className="text-xl font-semibold text-ocean-900">Activities</h2>
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {pkg.activities.map((a) => (
+                <li key={a.activity.id}>
+                  <Link href={a.href} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                    {a.activity.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* Transfers */}
+        {pkg.transferHref && (
+          <section className="mt-8">
+            <h2 className="text-xl font-semibold text-ocean-900">Transfers</h2>
+            <p className="mt-2 text-sm text-neutral-700">
+              {pkg.transferIncluded ? "Airport Transfer Included" : "Airport Transfer Available"}
+              {pkg.transferLabel && ` — ${pkg.transferLabel}`}.{" "}
+              <Link href={pkg.transferHref} className="text-maldives-600 hover:underline">
+                {pkg.transferLabel ?? "See Maldives Transfers"}
+              </Link>
+            </p>
+          </section>
+        )}
+
+        {/* Destination information */}
         {pkg.destinations.length > 0 && (
-          <div>
-            <dt className="text-neutral-500">Destinations</dt>
-            <dd className="font-medium">
-              {pkg.destinations.map((destination, index) => (
-                <span key={destination.id}>
-                  {index > 0 && ", "}
-                  <Link href={`/maldives/islands/${destination.slug}/`} className="hover:underline">
-                    {destination.title}
+          <section className="mt-8">
+            <h2 className="text-xl font-semibold text-ocean-900">Destination</h2>
+            <p className="mt-2 flex flex-wrap gap-x-1 text-sm text-neutral-700">
+              {pkg.destinations.map((d, i) => (
+                <span key={d.id}>
+                  {i > 0 && ", "}
+                  <Link href={d.locationType === "atoll" ? `/maldives/atolls/${d.slug}/` : `/maldives/islands/${d.slug}/`} className="text-maldives-600 hover:underline">
+                    {d.title}
                   </Link>
                 </span>
               ))}
-            </dd>
-          </div>
+              {pkg.atoll && !pkg.destinations.some((d) => d.id === pkg.atoll?.id) && (
+                <>
+                  {" · "}
+                  <Link href={`/maldives/atolls/${pkg.atoll.slug}/`} className="text-maldives-600 hover:underline">
+                    {pkg.atoll.title}
+                  </Link>
+                </>
+              )}
+            </p>
+          </section>
         )}
-      </dl>
 
-      <section className="mt-10">
-        <h2 className="text-xl font-semibold text-ocean-900">Itinerary</h2>
-        {pkg.stages.length === 0 ? (
-          <p className="mt-2 text-sm text-neutral-600">No itinerary recorded for this package yet.</p>
-        ) : (
-          <ol className="mt-4 space-y-6">
-            {pkg.stages.map((stage) => (
-              <li key={stage.id} className={CARD_CLASS}>
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="text-lg font-medium text-ocean-900">
-                    {stage.title ?? `Days ${stage.dayStart}–${stage.dayEnd}`}
-                  </h3>
-                  <span className="text-sm text-neutral-500">
-                    {stage.dayStart === stage.dayEnd ? `Day ${stage.dayStart}` : `Days ${stage.dayStart}–${stage.dayEnd}`}
-                    {stage.nightCount > 0 && ` · ${stage.nightCount} night${stage.nightCount === 1 ? "" : "s"}`}
-                  </span>
+        {/* FAQs */}
+        {pkg.faqs.length > 0 && (
+          <section className="mt-12 border-t border-neutral-200 pt-10">
+            <h2 className="text-xl font-semibold text-ocean-900">Frequently Asked Questions</h2>
+            <dl className="mt-4 space-y-6">
+              {pkg.faqs.map((faq) => (
+                <div key={faq.question}>
+                  <dt className="font-medium text-ocean-900">{faq.question}</dt>
+                  <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
                 </div>
-                {stage.description && <p className="mt-2 text-sm text-neutral-700">{stage.description}</p>}
-                {stage.items.length > 0 && (
-                  <ul className="mt-3 space-y-2">
-                    {stage.items.map((item) => (
-                      <ItineraryItemRow key={item.id} item={item} />
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
-          </ol>
+              ))}
+            </dl>
+          </section>
         )}
-      </section>
 
-      {/* Booking/inquiry UI is not built yet — Task 11 only establishes the
-          bookable_products relationship (see pkg.isBookable). */}
+        {/* Related packages */}
+        {related.length > 0 && (
+          <section className="mt-12 border-t border-neutral-200 pt-10">
+            <h2 className="text-xl font-semibold text-ocean-900">You May Also Like</h2>
+            <ul className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {related.map((r) => (
+                <PackageCard key={r.slug} pkg={r} />
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* Related Maldives content */}
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Explore More Maldives</h2>
+          <nav aria-label="Related Maldives links" className="mt-4 flex flex-wrap gap-2">
+            {[
+              { href: "/maldives/packages/", label: "All Maldives Packages" },
+              ...pkg.categories.map((c) => ({ href: `/maldives/packages/${c}/`, label: PACKAGE_CATEGORY_TITLE[c] })),
+              { href: "/maldives/transfers/", label: "Maldives Transfers" },
+              { href: "/maldives/travel-guide/", label: "Travel Guide" },
+            ].map((link) => (
+              <Link key={link.href} href={link.href} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </section>
       </div>
     </main>
   );

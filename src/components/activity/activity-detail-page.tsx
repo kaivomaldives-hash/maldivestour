@@ -7,7 +7,7 @@ import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getActivityBySlug } from "@/lib/activities/repository";
 import { hasDedicatedRoute } from "@/lib/activities/types";
-import { getPackagesByActivity } from "@/lib/packages/repository";
+import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -65,7 +65,7 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
 
   const { primaryLocation, atoll } = activity;
   const duration = formatDuration(activity.durationMinutes);
-  const packages = await getPackagesByActivity(activity.id);
+  const packages = await getPackageViewsByActivity(activity.id);
 
   return (
     <main>

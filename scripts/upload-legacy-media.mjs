@@ -226,15 +226,15 @@ async function runCommit(present, missing) {
     // die partway through (killed terminal, machine sleep, etc.) there's
     // a record of what got uploaded so far instead of nothing at all.
     if ((i + 1) % 200 === 0) {
-      writeUploadReport(present, missing, true, results);
+      writeUploadReport(present, missing, true, results, /* complete */ false);
     }
   }
 
   console.log(`\nUploaded ${uploaded}/${present.length} files (${failed} failed).`);
-  writeUploadReport(present, missing, true, results);
+  writeUploadReport(present, missing, true, results, /* complete */ true);
 }
 
-function writeUploadReport(present, missing, committed, results) {
+function writeUploadReport(present, missing, committed, results, complete = true) {
   const reportPath = path.join(DATA_DIR, "media", "storage-upload-report.json");
   writeFileSync(
     reportPath,
@@ -242,6 +242,13 @@ function writeUploadReport(present, missing, committed, results) {
       {
         generatedAt: new Date().toISOString(),
         committed,
+        // Distinct from `committed` (which just means --commit was
+        // passed): a mid-run checkpoint write and the final "the whole
+        // batch is done" write both have committed=true, so a reader
+        // checking this file to see whether an upload actually finished
+        // (e.g. after the terminal running it got closed) needs this
+        // field, not `committed`, to tell the two apart.
+        complete,
         bucket: BUCKET,
         totalManifestFiles: present.length + missing.length,
         foundOnDisk: present.length,

@@ -49,6 +49,17 @@ const STATIC_PATHS = [
   "/maldives/hotels/",
   "/maldives/islands/",
   "/maldives/packages/",
+  "/maldives/packages/luxury/",
+  "/maldives/packages/family/",
+  "/maldives/packages/adults-only/",
+  "/maldives/packages/long-stay/",
+  "/maldives/packages/budget/",
+  "/maldives/packages/honeymoon/",
+  "/maldives/packages/solo/",
+  "/maldives/packages/diving/",
+  "/maldives/packages/fishing/",
+  "/maldives/packages/surfing/",
+  "/maldives/packages/liveaboard/",
   "/maldives/providers/",
   "/maldives/resorts/",
   "/maldives/surf-breaks/",
@@ -90,6 +101,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const a of activities) entries.push({ url: url(activityHref(a)), changeFrequency: "monthly", priority: 0.6 });
   for (const d of diveSites) entries.push({ url: url(`/maldives/dive-sites/${d.slug}/`), changeFrequency: "monthly", priority: 0.5 });
   for (const s of surfBreaks) entries.push({ url: url(`/maldives/surf-breaks/${s.slug}/`), changeFrequency: "monthly", priority: 0.5 });
+  // getPackages() only ever returns real DB packages — Task 21's demo
+  // package inventory (src/lib/packages/demo-packages.ts) is deliberately
+  // excluded here (each demo package page is also `noindex,follow` — see
+  // packageDetailMetadata) so it's never presented to search engines as
+  // real commercial inventory.
   for (const p of packages) entries.push({ url: url(`/maldives/packages/${p.slug}/`), changeFrequency: "weekly", priority: 0.7 });
   for (const t of transferRoutes) entries.push({ url: url(`/maldives/transfers/${t.slug}/`), changeFrequency: "monthly", priority: 0.6 });
   for (const b of speedboats) entries.push({ url: url(`/maldives-speedboats-charter/${b.slug}/`), changeFrequency: "monthly", priority: 0.5 });

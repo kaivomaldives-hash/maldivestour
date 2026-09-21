@@ -13,7 +13,7 @@ import { CARD_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getLocationBySlug, getLocationSummaryById } from "@/lib/locations/repository";
-import { getPackagesByTransferRoute } from "@/lib/packages/repository";
+import { getPackageViewsByTransferRoute } from "@/lib/packages/view-repository";
 import { getReviewsForNode } from "@/lib/reviews/repository";
 import { breadcrumbJsonLd, canonicalUrl, getSiteUrl } from "@/lib/seo/site";
 import {
@@ -280,7 +280,7 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
   const reverseSlug = route.origin && route.destination ? `${route.destination.slug}-to-${route.origin.slug}` : null;
   const [reverseRoute, packages, originRoutes, destinationRoutes, atollRoutes, reviews, originDetail, destinationDetail, originAtoll] = await Promise.all([
     reverseSlug ? getTransferRouteBySlug(reverseSlug) : Promise.resolve(null),
-    getPackagesByTransferRoute(route.id),
+    getPackageViewsByTransferRoute(route.id),
     route.origin ? getTransferRoutesByOrigin(route.origin.id) : Promise.resolve([]),
     route.destination ? getTransferRoutesByDestination(route.destination.id) : Promise.resolve([]),
     route.origin?.parentId ? getTransferRoutesByAtoll(route.origin.parentId) : Promise.resolve([]),

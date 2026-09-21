@@ -15,7 +15,7 @@ import { getAccommodations } from "@/lib/accommodations/repository";
 import { getActivities } from "@/lib/activities/repository";
 import { getRecentArticles } from "@/lib/articles/repository";
 import { getAtolls } from "@/lib/locations/repository";
-import { getPackages } from "@/lib/packages/repository";
+import { getFeaturedPackageViews } from "@/lib/packages/view-repository";
 import { canonicalUrl } from "@/lib/seo/site";
 import { getTransferRoutes } from "@/lib/transfers/repository";
 
@@ -43,7 +43,7 @@ export default async function Home() {
     getAccommodations({ type: "resort", pageSize: 6 }),
     getActivities({ pageSize: 6 }),
     getTransferRoutes({ pageSize: 4 }),
-    getPackages({ pageSize: 6 }),
+    getFeaturedPackageViews(6),
     getRecentArticles(3),
   ]);
 
@@ -218,19 +218,20 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Packages — deliberately not padded out with invented entries; the
-          section is designed to look complete with a small, real dataset. */}
-      {packages.items.length > 0 && (
+      {/* Packages — a curated mix of the real, verified packages plus a
+          diverse spread of demo listings (Task 21) while commercial
+          inventory grows; never all 20-plus at once (Task 21 §44). */}
+      {packages.length > 0 && (
         <section className="py-14 sm:py-20">
           <Container>
             <SectionHeader
               eyebrow="Packages"
-              title="Ready-made Maldives itineraries"
-              description="Multi-day itineraries built entirely from real, verified accommodation, activities and transfers."
+              title="Maldives holiday packages"
+              description="Multi-day itineraries built from real accommodation, activities and transfers — honeymoon, family, diving, fishing, surfing, luxury and budget."
               action={{ label: "View all packages", href: "/maldives/packages/" }}
             />
-            <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {packages.items.map((pkg) => (
+            <ul className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {packages.map((pkg) => (
                 <PackageCard key={pkg.id} pkg={pkg} />
               ))}
             </ul>

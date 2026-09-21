@@ -15,7 +15,7 @@ import { getActivitiesByLocation } from "@/lib/activities/repository";
 import { getDiveSitesByLocation } from "@/lib/diving/repository";
 import { getChildLocations, getIslandBySlug } from "@/lib/locations/repository";
 import { getHeroMediaByNodeIds } from "@/lib/media/repository";
-import { getPackagesByLocation } from "@/lib/packages/repository";
+import { getPackageViewsByLocation } from "@/lib/packages/view-repository";
 import { canonicalUrl } from "@/lib/seo/site";
 import { getSurfBreaksByLocation } from "@/lib/surfing/repository";
 import { createClient } from "@/lib/supabase/server";
@@ -69,7 +69,7 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
     getDiveSitesByLocation(island.id),
     getSurfBreaksByLocation(island.id),
     getTransferRoutesByLocation(island.id),
-    getPackagesByLocation(island.id),
+    getPackageViewsByLocation(island.id),
     getHeroMediaByNodeIds([island.id]),
   ]);
   const heroImage = heroById.get(island.id) ?? null;

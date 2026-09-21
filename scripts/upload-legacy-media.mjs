@@ -28,8 +28,9 @@
 // environment with real Supabase access to actually populate Storage.
 //
 // Usage:
-//   node scripts/upload-legacy-media.mjs            # dry run
-//   node scripts/upload-legacy-media.mjs --commit    # real upload (needs live Supabase)
+//   node scripts/upload-legacy-media.mjs                        # dry run, every manifest
+//   node scripts/upload-legacy-media.mjs --commit                # real upload, every manifest (needs live Supabase)
+//   node scripts/upload-legacy-media.mjs --commit --only=uploaded # real upload, just one manifest (fast, targeted)
 
 import { existsSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
@@ -37,6 +38,7 @@ import path from "node:path";
 import { DATA_DIR, RELEASE_DIR, ROOT } from "./lib/legacy-shared.mjs";
 
 const COMMIT = process.argv.includes("--commit");
+const ONLY = process.argv.find((a) => a.startsWith("--only="))?.slice("--only=".length);
 const BUCKET = "media";
 
 const CONTENT_TYPE_BY_EXT = {
@@ -75,18 +77,33 @@ function loadManifest(relPath) {
   return parsed.files ?? [];
 }
 
-function mergeManifests() {
-  const mediaManifest = loadManifest("data/maldives/media/media-storage-manifest.json");
-  const articleManifest = loadManifest("data/maldives/content/article-storage-manifest.json");
-  const ferryManifest = loadManifest("data/maldives/migration/task20-ferry-storage-manifest.json");
-  const routeImageManifest = loadManifest("data/maldives/migration/transfer-route-image-manifest.json");
-  const categoryImageManifest = loadManifest("data/maldives/migration/transfer-category-image-manifest.json");
-  const fullLibraryManifest = loadManifest("data/maldives/migration/full-legacy-image-library-manifest.json");
-  const uploadedMediaManifest = loadManifest("data/maldives/migration/uploaded-media-manifest.json");
+// Every manifest this script knows about, keyed by the short name used
+// with --only=<key> so a targeted re-run (e.g. after adding a handful of
+// new photos) doesn't have to re-touch the other ~4500 already-uploaded
+// files just to reach the new ones — upsert:true makes that safe either
+// way, but it costs a real ~20-30 minute run every time for no reason.
+const MANIFEST_SOURCES = {
+  media: "data/maldives/media/media-storage-manifest.json",
+  articles: "data/maldives/content/article-storage-manifest.json",
+  ferry: "data/maldives/migration/task20-ferry-storage-manifest.json",
+  "route-images": "data/maldives/migration/transfer-route-image-manifest.json",
+  "category-images": "data/maldives/migration/transfer-category-image-manifest.json",
+  "full-library": "data/maldives/migration/full-legacy-image-library-manifest.json",
+  uploaded: "data/maldives/migration/uploaded-media-manifest.json",
+};
+
+function mergeManifests(only) {
+  const keys = only ? [only] : Object.keys(MANIFEST_SOURCES);
+  const unknown = keys.filter((k) => !(k in MANIFEST_SOURCES));
+  if (unknown.length > 0) {
+    console.error(`Unknown --only value(s): ${unknown.join(", ")}. Valid: ${Object.keys(MANIFEST_SOURCES).join(", ")}`);
+    process.exit(1);
+  }
 
   const byId = new Map();
   const conflicts = [];
-  for (const entry of [...mediaManifest, ...articleManifest, ...ferryManifest, ...routeImageManifest, ...categoryImageManifest, ...fullLibraryManifest, ...uploadedMediaManifest]) {
+  const allEntries = keys.flatMap((k) => loadManifest(MANIFEST_SOURCES[k]));
+  for (const entry of allEntries) {
     const existing = byId.get(entry.mediaId);
     if (!existing) {
       byId.set(entry.mediaId, entry);
@@ -104,7 +121,8 @@ function mergeManifests() {
 function main() {
   loadEnvLocal();
 
-  const { files, conflicts } = mergeManifests();
+  const { files, conflicts } = mergeManifests(ONLY);
+  if (ONLY) console.log(`--only=${ONLY}: uploading just this manifest.\n`);
   if (files.length === 0) {
     console.error(
       "No storage manifests found. Run `node scripts/import-legacy-media.mjs --commit` and " +

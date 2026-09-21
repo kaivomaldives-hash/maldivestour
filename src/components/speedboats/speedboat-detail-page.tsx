@@ -146,15 +146,17 @@ export async function SpeedboatDetailPage({ slug }: { slug: string }) {
             <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
               {relatedBoats.map((b) => (
                 <li key={b.id} className={CARD_CLASS}>
-                  <Link href={`/maldives-speedboats-charter/${b.slug}/`}>
-                    {b.heroImage && (
-                      <div className={CARD_IMAGE_BLEED_CLASS}>
-                        <MediaImage asset={b.heroImage} alt={b.title} aspectClassName="aspect-[4/3]" />
-                      </div>
-                    )}
-                    <span className="font-medium text-ocean-900 hover:text-maldives-600">{b.title}</span>
+                  {b.heroImage && (
+                    <div className={CARD_IMAGE_BLEED_CLASS}>
+                      <MediaImage asset={b.heroImage} alt={b.title} aspectClassName="aspect-[4/3]" />
+                    </div>
+                  )}
+                  <Link href={`/maldives-speedboats-charter/${b.slug}/`} className="font-medium text-ocean-900 hover:text-maldives-600">
+                    {b.title}
                   </Link>
-                  <p className="mt-1 text-sm text-neutral-600">{b.capacity} seats</p>
+                  <p className="mt-1 text-sm text-neutral-600">
+                    {b.capacity} seats{b.lengthFeet ? ` · ${b.lengthFeet} ft` : ""}
+                  </p>
                 </li>
               ))}
             </ul>

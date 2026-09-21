@@ -82,10 +82,11 @@ function mergeManifests() {
   const routeImageManifest = loadManifest("data/maldives/migration/transfer-route-image-manifest.json");
   const categoryImageManifest = loadManifest("data/maldives/migration/transfer-category-image-manifest.json");
   const fullLibraryManifest = loadManifest("data/maldives/migration/full-legacy-image-library-manifest.json");
+  const uploadedMediaManifest = loadManifest("data/maldives/migration/uploaded-media-manifest.json");
 
   const byId = new Map();
   const conflicts = [];
-  for (const entry of [...mediaManifest, ...articleManifest, ...ferryManifest, ...routeImageManifest, ...categoryImageManifest, ...fullLibraryManifest]) {
+  for (const entry of [...mediaManifest, ...articleManifest, ...ferryManifest, ...routeImageManifest, ...categoryImageManifest, ...fullLibraryManifest, ...uploadedMediaManifest]) {
     const existing = byId.get(entry.mediaId);
     if (!existing) {
       byId.set(entry.mediaId, entry);
@@ -119,7 +120,11 @@ function main() {
 
   const resolved = files.map((f) => ({
     ...f,
-    localPath: path.join(RELEASE_DIR, f.relativePath),
+    // Every manifest's relativePath is relative to RELEASE_DIR (the
+    // extracted legacy site export) EXCEPT the owner's own directly
+    // -uploaded photos (assets/uploads/...), which live in the repo
+    // itself and are relative to ROOT instead.
+    localPath: f.relativePath.startsWith("assets/") ? path.join(ROOT, f.relativePath) : path.join(RELEASE_DIR, f.relativePath),
   }));
   const missing = resolved.filter((f) => !existsSync(f.localPath));
   const present = resolved.filter((f) => existsSync(f.localPath));

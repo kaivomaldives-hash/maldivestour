@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { ActivitiesVideo, activitiesVideoJsonLd } from "@/components/activity/activities-video";
 import { ActivityCard } from "@/components/activity/activity-card";
+import { ActivityFilterBar } from "@/components/activity/activity-filter-bar";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Pagination } from "@/components/ui/pagination";
 import { PageHero } from "@/components/ui/page-hero";
 import { getActivities, searchActivities } from "@/lib/activities/repository";
-import { activityDirectorySegment, hasDedicatedRoute, type ActivityCategory, type ActivityDifficulty } from "@/lib/activities/types";
-import { getAtollBySlug, getIslandBySlug } from "@/lib/locations/repository";
+import { hasDedicatedRoute, type ActivityCategory, type ActivityDifficulty } from "@/lib/activities/types";
+import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
 import { asset } from "@/lib/packages/category-images";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 
@@ -62,7 +64,6 @@ const CATEGORY_LABEL: Record<ActivityCategory, string> = {
 // a direct link to that vertical's landing page below, not a `?category=`
 // filter chip here — that dedicated page is their real home.
 const CATEGORIES = (Object.keys(CATEGORY_LABEL) as ActivityCategory[]).filter((c) => !hasDedicatedRoute(c));
-const DEDICATED_CATEGORIES = (Object.keys(CATEGORY_LABEL) as ActivityCategory[]).filter((c) => hasDedicatedRoute(c));
 const PAGE_SIZE = 24;
 
 export interface ActivityDirectorySearchParams {
@@ -72,10 +73,11 @@ export interface ActivityDirectorySearchParams {
   atoll?: string;
   island?: string;
   difficulty?: string;
+  maxPrice?: string;
 }
 
 function hasAnyFilter(sp: ActivityDirectorySearchParams): boolean {
-  return Boolean(sp.q || sp.category || sp.atoll || sp.island || sp.difficulty);
+  return Boolean(sp.q || sp.category || sp.atoll || sp.island || sp.difficulty || sp.maxPrice);
 }
 
 export async function activityDirectoryMetadata(searchParams: Promise<ActivityDirectorySearchParams>): Promise<Metadata> {
@@ -106,10 +108,15 @@ export async function ActivityDirectoryPage({
   const query = sp.q?.trim() ?? "";
   const isSearching = query.length > 0;
   const category = CATEGORIES.includes(sp.category as ActivityCategory) ? (sp.category as ActivityCategory) : undefined;
+  const difficulty = (["beginner", "intermediate", "advanced", "all_levels"] as ActivityDifficulty[]).includes(sp.difficulty as ActivityDifficulty)
+    ? (sp.difficulty as ActivityDifficulty)
+    : undefined;
+  const maxPrice = sp.maxPrice ? Number(sp.maxPrice) : undefined;
 
-  const [atoll, island] = await Promise.all([
+  const [atoll, island, atolls] = await Promise.all([
     sp.atoll ? getAtollBySlug(sp.atoll) : Promise.resolve(null),
     sp.island ? getIslandBySlug(sp.island) : Promise.resolve(null),
+    getAtolls(),
   ]);
 
   const results = isSearching
@@ -125,7 +132,8 @@ export async function ActivityDirectoryPage({
         pageSize: PAGE_SIZE,
         atollId: island ? undefined : atoll?.id,
         locationId: island?.id,
-        difficulty: sp.difficulty as ActivityDifficulty | undefined,
+        difficulty,
+        maxPriceFrom: maxPrice,
       });
 
   const totalPages = isSearching ? 1 : Math.max(1, Math.ceil(results.total / PAGE_SIZE));
@@ -134,12 +142,15 @@ export async function ActivityDirectoryPage({
   if (category) baseParams.set("category", category);
   if (sp.atoll) baseParams.set("atoll", sp.atoll);
   if (sp.island) baseParams.set("island", sp.island);
+  if (difficulty) baseParams.set("difficulty", difficulty);
+  if (maxPrice !== undefined) baseParams.set("maxPrice", String(maxPrice));
   const baseQuery = baseParams.toString();
 
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Activities" }], "/maldives/activities")) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(activitiesVideoJsonLd()) }} />
 
       <PageHero
         breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Activities" }]}
@@ -172,50 +183,19 @@ export async function ActivityDirectoryPage({
           </p>
         )}
 
-        <nav aria-label="Filter by category" className="mt-4 flex flex-wrap gap-2 text-sm">
-          <Link
-            href="/maldives/activities/"
-            className={`rounded-full border px-3 py-1 ${!category ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
-          >
-            All
-          </Link>
-          {CATEGORIES.map((c) => (
-            <Link
-              key={c}
-              href={`/maldives/activities/?category=${c}`}
-              className={`rounded-full border px-3 py-1 ${category === c ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
-            >
-              {CATEGORY_LABEL[c]}
-            </Link>
-          ))}
-          {DEDICATED_CATEGORIES.map((c) => (
-            <Link
-              key={c}
-              href={`/maldives/${activityDirectorySegment(c)}/`}
-              className="rounded-full border border-dashed border-neutral-400 px-3 py-1 text-neutral-700"
-            >
-              {CATEGORY_LABEL[c]} →
-            </Link>
-          ))}
-        </nav>
-
-        <form method="get" className="mt-4 flex gap-2">
-          {category && <input type="hidden" name="category" value={category} />}
-          <label htmlFor="activity-search" className="sr-only">
-            Search activities
-          </label>
-          <input
-            id="activity-search"
-            type="search"
-            name="q"
-            defaultValue={query}
-            placeholder="Search activities…"
-            className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+        <div className="mt-4">
+          <ActivityFilterBar
+            basePath="/maldives/activities/"
+            currentParams={baseParams}
+            activeCategory={category}
+            atolls={atolls}
+            activeAtoll={sp.atoll}
+            activeDifficulty={difficulty}
+            maxPrice={sp.maxPrice ?? ""}
+            query={query}
+            resultCount={isSearching ? results.items.length : results.total}
           />
-          <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
-            Search
-          </button>
-        </form>
+        </div>
 
         {results.items.length === 0 ? (
           <EmptyState title="No activities recorded for this filter yet" />
@@ -228,6 +208,8 @@ export async function ActivityDirectoryPage({
         )}
 
         {!isSearching && <Pagination page={page} totalPages={totalPages} basePath="/maldives/activities/" baseQuery={baseQuery} />}
+
+        <ActivitiesVideo />
 
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Explore More Maldives</h2>

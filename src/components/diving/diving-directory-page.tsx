@@ -3,12 +3,15 @@ import Link from "next/link";
 
 import { ActivityCard } from "@/components/activity/activity-card";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
+import { DiveSitesMap } from "@/components/diving/dive-sites-map";
+import { DivingFilterBar } from "@/components/diving/diving-filter-bar";
 import { DivingVideo, divingVideoJsonLd } from "@/components/diving/diving-video";
 import { PackageCard } from "@/components/packages/package-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
 import { Pagination } from "@/components/ui/pagination";
+import type { ActivityDifficulty } from "@/lib/activities/types";
 import { getArticleBySlug } from "@/lib/articles/repository";
 import { articleHref } from "@/lib/articles/types";
 import {
@@ -18,10 +21,12 @@ import {
   getDivingTypesInUse,
   searchDivingActivities,
 } from "@/lib/diving/repository";
-import { getAtollBySlug, getIslandBySlug } from "@/lib/locations/repository";
+import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
 import { PACKAGE_CATEGORY_FALLBACK_IMAGES } from "@/lib/packages/category-images";
 import { filterPackageViews, getAllPackageViews } from "@/lib/packages/view-repository";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+
+const DIFFICULTIES: ActivityDifficulty[] = ["beginner", "intermediate", "advanced", "all_levels"];
 
 const PAGE_SIZE = 24;
 
@@ -58,10 +63,12 @@ export interface DivingDirectorySearchParams {
   type?: string;
   atoll?: string;
   island?: string;
+  difficulty?: string;
+  maxPrice?: string;
 }
 
 function hasAnyFilter(sp: DivingDirectorySearchParams): boolean {
-  return Boolean(sp.q || sp.type || sp.atoll || sp.island);
+  return Boolean(sp.q || sp.type || sp.atoll || sp.island || sp.difficulty || sp.maxPrice);
 }
 
 export async function divingDirectoryMetadata(searchParams: Promise<DivingDirectorySearchParams>): Promise<Metadata> {
@@ -89,24 +96,28 @@ export async function DivingDirectoryPage({
   const query = sp.q?.trim() ?? "";
   const isSearching = query.length > 0;
 
-  const [atoll, island, divingTypes, diveSites, allPackages, divingArticle] = await Promise.all([
+  const [atoll, island, atolls, divingTypes, diveSites, allPackages, divingArticle] = await Promise.all([
     sp.atoll ? getAtollBySlug(sp.atoll) : Promise.resolve(null),
     sp.island ? getIslandBySlug(sp.island) : Promise.resolve(null),
+    getAtolls(),
     getDivingTypesInUse(),
-    getDiveSites({ pageSize: 6 }),
+    getDiveSites({ pageSize: 12 }),
     getAllPackageViews(),
     getArticleBySlug("best-maldives-diving-spots-ultimate-guide"),
   ]);
   const divingPackages = filterPackageViews(allPackages, { category: "diving" });
 
   const activeType = sp.type ? divingTypes.find((t) => t.slug === sp.type) : undefined;
+  const difficulty = DIFFICULTIES.includes(sp.difficulty as ActivityDifficulty) ? (sp.difficulty as ActivityDifficulty) : undefined;
+  const maxPrice = sp.maxPrice ? Number(sp.maxPrice) : undefined;
   const locationOptions = { atollId: island ? undefined : atoll?.id, locationId: island?.id };
+  const filterOptions = { ...locationOptions, difficulty, maxPriceFrom: maxPrice };
 
   const results = isSearching
     ? { items: await searchDivingActivities(query, { limit: 100 }), total: 0, page: 1, pageSize: 100 }
     : activeType
-      ? await getDivingActivitiesByType(activeType.slug, { page, pageSize: PAGE_SIZE, ...locationOptions })
-      : await getDivingActivities({ page, pageSize: PAGE_SIZE, ...locationOptions });
+      ? await getDivingActivitiesByType(activeType.slug, { page, pageSize: PAGE_SIZE, ...filterOptions })
+      : await getDivingActivities({ page, pageSize: PAGE_SIZE, ...filterOptions });
 
   const totalPages = isSearching ? 1 : Math.max(1, Math.ceil(results.total / PAGE_SIZE));
 
@@ -114,6 +125,8 @@ export async function DivingDirectoryPage({
   if (sp.type) baseParams.set("type", sp.type);
   if (sp.atoll) baseParams.set("atoll", sp.atoll);
   if (sp.island) baseParams.set("island", sp.island);
+  if (difficulty) baseParams.set("difficulty", difficulty);
+  if (maxPrice !== undefined) baseParams.set("maxPrice", String(maxPrice));
   const baseQuery = baseParams.toString();
 
   return (
@@ -157,42 +170,20 @@ export async function DivingDirectoryPage({
           </p>
         )}
 
-        {divingTypes.length > 0 && (
-          <nav aria-label="Filter by diving type" className="mt-6 flex flex-wrap gap-2 text-sm">
-            <Link
-              href="/maldives/diving/"
-              className={`rounded-full border px-3 py-1 ${!activeType ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
-            >
-              All types
-            </Link>
-            {divingTypes.map((type) => (
-              <Link
-                key={type.id}
-                href={`/maldives/diving/?type=${type.slug}`}
-                className={`rounded-full border px-3 py-1 ${activeType?.id === type.id ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
-              >
-                {type.title}
-              </Link>
-            ))}
-          </nav>
-        )}
-
-        <form method="get" className="mt-4 flex gap-2">
-          <label htmlFor="diving-search" className="sr-only">
-            Search diving activities
-          </label>
-          <input
-            id="diving-search"
-            type="search"
-            name="q"
-            defaultValue={query}
-            placeholder="Search diving activities…"
-            className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+        <div className="mt-6">
+          <DivingFilterBar
+            basePath="/maldives/diving/"
+            currentParams={baseParams}
+            divingTypes={divingTypes}
+            activeType={activeType}
+            atolls={atolls}
+            activeAtoll={sp.atoll}
+            activeDifficulty={difficulty}
+            maxPrice={sp.maxPrice ?? ""}
+            query={query}
+            resultCount={isSearching ? results.items.length : results.total}
           />
-          <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
-            Search
-          </button>
-        </form>
+        </div>
 
         {results.items.length === 0 ? (
           <EmptyState title="No diving activities recorded for this filter yet" />
@@ -220,6 +211,8 @@ export async function DivingDirectoryPage({
             <Link href="/maldives/dive-sites/" className="mt-4 inline-block text-sm font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
               View all dive sites →
             </Link>
+
+            <DiveSitesMap sites={diveSites.items} />
           </section>
         )}
 

@@ -1,4 +1,5 @@
 import type { LocationSummary } from "@/lib/locations/types";
+import type { MediaAsset } from "@/lib/media/types";
 
 /**
  * Physical dive sites are represented as `locations` rows
@@ -19,10 +20,11 @@ export interface DiveSiteSummary {
   title: string;
   summary: string | null;
   siteType: DiveSiteType | null;
+  heroImage: MediaAsset | null;
+  atoll: LocationSummary | null;
 }
 
 export interface DiveSiteDetail extends DiveSiteSummary {
-  atoll: LocationSummary | null;
   nearbyIsland: LocationSummary | null;
   depthMinMeters: number | null;
   depthMaxMeters: number | null;

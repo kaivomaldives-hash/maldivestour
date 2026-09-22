@@ -9,6 +9,8 @@ import {
 import type { ActivityDetail, ActivitySummary, PaginatedResult as ActivityPaginatedResult } from "@/lib/activities/types";
 import { getCategoriesByGroup, getCategoryBySlug, getNodeIdsByCategory } from "@/lib/categories/repository";
 import type { CategorySummary } from "@/lib/categories/types";
+import { getHeroMediaByNodeIds } from "@/lib/media/repository";
+import type { MediaAsset } from "@/lib/media/types";
 import { createClient } from "@/lib/supabase/server";
 import {
   getLocationBySlugAndType,
@@ -132,8 +134,12 @@ export async function getDiveSitesForActivity(activityId: string): Promise<DiveS
   const siteSummaries = Array.from(summaries.values()).filter((l) => l.locationType === "dive_site");
   if (siteSummaries.length === 0) return [];
 
-  const attrsById = await getNodeAttributesByIds(siteSummaries.map((s) => s.id));
-  return siteSummaries.map((s) => toDiveSiteSummary(s, attrsById.get(s.id)));
+  const [attrsById, heroById, atollById] = await Promise.all([
+    getNodeAttributesByIds(siteSummaries.map((s) => s.id)),
+    getHeroMediaByNodeIds(siteSummaries.map((s) => s.id)),
+    getAtollsByParentId(siteSummaries),
+  ]);
+  return siteSummaries.map((s) => toDiveSiteSummary(s, attrsById.get(s.id), heroById.get(s.id) ?? null, atollById.get(s.id) ?? null));
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -141,7 +147,12 @@ export async function getDiveSitesForActivity(activityId: string): Promise<DiveS
 // getLocationsByType/getLocationBySlugAndType added in this task)
 // ─────────────────────────────────────────────────────────────────
 
-function toDiveSiteSummary(location: LocationSummary, attributes: Record<string, unknown> | undefined): DiveSiteSummary {
+function toDiveSiteSummary(
+  location: LocationSummary,
+  attributes: Record<string, unknown> | undefined,
+  heroImage: MediaAsset | null = null,
+  atoll: LocationSummary | null = null,
+): DiveSiteSummary {
   const siteType = typeof attributes?.site_type === "string" ? (attributes.site_type as DiveSiteType) : null;
   return {
     id: location.id,
@@ -149,7 +160,24 @@ function toDiveSiteSummary(location: LocationSummary, attributes: Record<string,
     title: location.title,
     summary: location.summary,
     siteType,
+    heroImage,
+    atoll,
   };
+}
+
+/** Every dive site's parent location IS its atoll (see the seed migration —
+ * dive sites are always inserted directly under an atoll node), so a single
+ * batched getLocationSummariesByIds over each item's parentId is enough —
+ * no per-item round trip. */
+async function getAtollsByParentId(items: LocationSummary[]): Promise<Map<string, LocationSummary>> {
+  const parentIds = Array.from(new Set(items.map((i) => i.parentId).filter((id): id is string => Boolean(id))));
+  if (parentIds.length === 0) return new Map();
+  const atollsById = await getLocationSummariesByIds(parentIds);
+  const result = new Map<string, LocationSummary>();
+  for (const item of items) {
+    if (item.parentId && atollsById.has(item.parentId)) result.set(item.id, atollsById.get(item.parentId)!);
+  }
+  return result;
 }
 
 export async function getDiveSites(options: GetDiveSitesOptions = {}): Promise<PaginatedResult<DiveSiteSummary>> {
@@ -167,8 +195,12 @@ export async function getDiveSites(options: GetDiveSitesOptions = {}): Promise<P
     total = result.total;
   }
 
-  const attrsById = await getNodeAttributesByIds(items.map((i) => i.id));
-  let sites = items.map((i) => toDiveSiteSummary(i, attrsById.get(i.id)));
+  const [attrsById, heroById, atollById] = await Promise.all([
+    getNodeAttributesByIds(items.map((i) => i.id)),
+    getHeroMediaByNodeIds(items.map((i) => i.id)),
+    getAtollsByParentId(items),
+  ]);
+  let sites = items.map((i) => toDiveSiteSummary(i, attrsById.get(i.id), heroById.get(i.id) ?? null, atollById.get(i.id) ?? null));
 
   if (options.siteType) {
     sites = sites.filter((s) => s.siteType === options.siteType);
@@ -194,16 +226,21 @@ export async function getDiveSitesByLocation(locationId: string): Promise<DiveSi
   const siteSummaries = Array.from(summaries.values()).filter((l) => l.locationType === "dive_site");
   if (siteSummaries.length === 0) return [];
 
-  const attrsById = await getNodeAttributesByIds(siteSummaries.map((s) => s.id));
-  return siteSummaries.map((s) => toDiveSiteSummary(s, attrsById.get(s.id)));
+  const [attrsById, heroById, atollById] = await Promise.all([
+    getNodeAttributesByIds(siteSummaries.map((s) => s.id)),
+    getHeroMediaByNodeIds(siteSummaries.map((s) => s.id)),
+    getAtollsByParentId(siteSummaries),
+  ]);
+  return siteSummaries.map((s) => toDiveSiteSummary(s, attrsById.get(s.id), heroById.get(s.id) ?? null, atollById.get(s.id) ?? null));
 }
 
 export async function getDiveSiteBySlug(slug: string): Promise<DiveSiteDetail | null> {
   const location = await getLocationBySlugAndType(slug, "dive_site");
   if (!location) return null;
 
-  const [attrs, atoll, nearbyIslandId] = await Promise.all([
+  const [attrs, hero, atoll, nearbyIslandId] = await Promise.all([
     getNodeAttributesByIds([location.id]).then((m) => m.get(location.id) ?? {}),
+    getHeroMediaByNodeIds([location.id]).then((m) => m.get(location.id) ?? null),
     location.parentId ? getLocationSummaryById(location.parentId) : Promise.resolve(null),
     getLocationIdsForNode(location.id).then(async (ids) => {
       const summaries = await getLocationSummariesByIds(ids);
@@ -212,8 +249,7 @@ export async function getDiveSiteBySlug(slug: string): Promise<DiveSiteDetail | 
   ]);
 
   return {
-    ...toDiveSiteSummary(location, attrs),
-    atoll,
+    ...toDiveSiteSummary(location, attrs, hero, atoll),
     nearbyIsland: nearbyIslandId,
     depthMinMeters: typeof attrs.depth_min_meters === "number" ? attrs.depth_min_meters : null,
     depthMaxMeters: typeof attrs.depth_max_meters === "number" ? attrs.depth_max_meters : null,

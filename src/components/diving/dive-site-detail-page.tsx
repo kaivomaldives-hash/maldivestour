@@ -51,6 +51,7 @@ export async function DiveSiteDetailPage({ slug }: { slug: string }) {
         eyebrow="Dive site"
         title={site.title}
         description={site.summary ?? undefined}
+        image={site.heroImage}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>

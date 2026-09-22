@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import { CARD_CLASS } from "@/components/ui/card";
+import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
+import { MediaImage } from "@/components/ui/media-image";
 import { activityHref, type ActivitySummary } from "@/lib/activities/types";
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -27,6 +28,11 @@ export function ActivityCard({ activity }: { activity: ActivitySummary }) {
 
   return (
     <li className={CARD_CLASS}>
+      {activity.heroImage && (
+        <div className={CARD_IMAGE_BLEED_CLASS}>
+          <MediaImage asset={activity.heroImage} alt={activity.title} aspectClassName="aspect-[4/3]" />
+        </div>
+      )}
       <Link href={activityHref(activity)} className="text-lg font-medium text-ocean-900 transition-colors hover:text-maldives-600">
         {activity.title}
       </Link>

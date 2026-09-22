@@ -291,7 +291,7 @@ async function getRelatedContentForArticle(
       type: "activity" as const,
       title: a.title,
       href: activityHref(a),
-      image: null,
+      image: a.heroImage,
     })),
     ...Array.from(packages.values()).map((p) => ({
       id: p.id,

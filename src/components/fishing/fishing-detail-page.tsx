@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { PackageCard } from "@/components/packages/package-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
+import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { getFishingActivitiesByLocation, getFishingActivityBySlug, getFishingTypesForActivity } from "@/lib/fishing/repository";
 import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
@@ -57,9 +58,17 @@ export async function FishingDetailPage({ slug }: { slug: string }) {
         eyebrow="Fishing"
         title={activity.title}
         description={activity.summary ?? undefined}
+        image={activity.heroImage}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+      {activity.gallery.length > 0 && (
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          {activity.gallery.map((asset) => (
+            <MediaImage key={asset.id} asset={asset} alt={activity.title} aspectClassName="aspect-[4/3]" />
+          ))}
+        </div>
+      )}
       {fishingTypes.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {fishingTypes.map((type) => (

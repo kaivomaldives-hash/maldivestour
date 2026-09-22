@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { PackageCard } from "@/components/packages/package-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
+import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { getActivityBySlug } from "@/lib/activities/repository";
 import { hasDedicatedRoute } from "@/lib/activities/types";
@@ -78,10 +79,18 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
         eyebrow="Activity"
         title={activity.title}
         description={activity.summary ?? undefined}
+        image={activity.heroImage}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
-      <dl className="grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
+      {activity.gallery.length > 0 && (
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          {activity.gallery.map((asset) => (
+            <MediaImage key={asset.id} asset={asset} alt={activity.title} aspectClassName="aspect-[4/3]" />
+          ))}
+        </div>
+      )}
+      <dl className="mt-6 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
         <div>
           <dt className="text-neutral-500">Category</dt>
           <dd className="font-medium">{CATEGORY_LABEL[activity.activityCategory] ?? activity.activityCategory}</dd>

@@ -2,6 +2,8 @@ import "server-only";
 
 import { getLocationSummariesByIds, getLocationSummaryById } from "@/lib/locations/repository";
 import type { LocationSummary } from "@/lib/locations/types";
+import { getHeroMediaByNodeIds, getMediaForNode } from "@/lib/media/repository";
+import type { MediaAsset } from "@/lib/media/types";
 import { getProviderSummariesByIds } from "@/lib/providers/repository";
 import type { ProviderSummary } from "@/lib/providers/types";
 import { createClient } from "@/lib/supabase/server";
@@ -98,7 +100,7 @@ function bareActivityOf(row: NodeActivityRow): BareActivity | null {
   };
 }
 
-function toSummary(bare: BareActivity, primaryLocation: LocationSummary | null): ActivitySummary {
+function toSummary(bare: BareActivity, primaryLocation: LocationSummary | null, heroImage: MediaAsset | null): ActivitySummary {
   return {
     id: bare.id,
     slug: bare.slug,
@@ -110,6 +112,7 @@ function toSummary(bare: BareActivity, primaryLocation: LocationSummary | null):
     priceFrom: bare.priceFrom,
     currency: bare.currency,
     primaryLocation,
+    heroImage,
   };
 }
 
@@ -204,9 +207,12 @@ export async function getActivities(options: GetActivitiesOptions = {}): Promise
   if (error || !data) return { items: [], total: 0, page, pageSize };
 
   const bares = data.map(bareActivityOf).filter((b): b is BareActivity => b !== null);
-  const locationsByNodeId = await attachPrimaryLocations(bares.map((b) => b.id));
+  const [locationsByNodeId, heroByNodeId] = await Promise.all([
+    attachPrimaryLocations(bares.map((b) => b.id)),
+    getHeroMediaByNodeIds(bares.map((b) => b.id)),
+  ]);
 
-  const items = bares.map((b) => toSummary(b, locationsByNodeId.get(b.id) ?? null));
+  const items = bares.map((b) => toSummary(b, locationsByNodeId.get(b.id) ?? null, heroByNodeId.get(b.id) ?? null));
   return { items, total: count ?? items.length, page, pageSize };
 }
 
@@ -246,16 +252,19 @@ export async function getActivityBySlug(slug: string): Promise<ActivityDetail | 
   const bare = bareActivityOf(data);
   if (!bare) return null;
 
-  const [primaryLocation, providersById, bookableRow] = await Promise.all([
+  const [primaryLocation, media, providersById, bookableRow] = await Promise.all([
     attachPrimaryLocations([bare.id]).then((m) => m.get(bare.id) ?? null),
+    getMediaForNode(bare.id),
     bare.providerId ? getProviderSummariesByIds([bare.providerId]) : Promise.resolve(new Map<string, ProviderSummary>()),
     supabase.from("bookable_products").select("id").eq("id", bare.id).maybeSingle(),
   ]);
+  const heroImage = media.find((m) => m.role === "hero")?.asset ?? null;
+  const gallery = media.filter((m) => m.role === "gallery").map((m) => m.asset);
 
   const atoll = primaryLocation?.parentId ? await getLocationSummaryById(primaryLocation.parentId) : null;
 
   return {
-    ...toSummary(bare, primaryLocation),
+    ...toSummary(bare, primaryLocation, heroImage),
     minAge: bare.minAge,
     maxParticipants: bare.maxParticipants,
     metaTitle: bare.metaTitle,
@@ -263,6 +272,7 @@ export async function getActivityBySlug(slug: string): Promise<ActivityDetail | 
     provider: bare.providerId ? providersById.get(bare.providerId) ?? null : null,
     atoll,
     isBookable: Boolean(bookableRow.data),
+    gallery,
   };
 }
 
@@ -284,9 +294,12 @@ export async function getActivitySummariesByIds(ids: string[]): Promise<Map<stri
   if (error || !data) return map;
 
   const bares = data.map(bareActivityOf).filter((b): b is BareActivity => b !== null);
-  const locationsByNodeId = await attachPrimaryLocations(bares.map((b) => b.id));
+  const [locationsByNodeId, heroByNodeId] = await Promise.all([
+    attachPrimaryLocations(bares.map((b) => b.id)),
+    getHeroMediaByNodeIds(bares.map((b) => b.id)),
+  ]);
   for (const bare of bares) {
-    map.set(bare.id, toSummary(bare, locationsByNodeId.get(bare.id) ?? null));
+    map.set(bare.id, toSummary(bare, locationsByNodeId.get(bare.id) ?? null, heroByNodeId.get(bare.id) ?? null));
   }
   return map;
 }
@@ -313,6 +326,9 @@ export async function searchActivities(query: string, options: SearchActivitiesO
   if (error || !data) return [];
 
   const bares = data.map(bareActivityOf).filter((b): b is BareActivity => b !== null);
-  const locationsByNodeId = await attachPrimaryLocations(bares.map((b) => b.id));
-  return bares.map((b) => toSummary(b, locationsByNodeId.get(b.id) ?? null));
+  const [locationsByNodeId, heroByNodeId] = await Promise.all([
+    attachPrimaryLocations(bares.map((b) => b.id)),
+    getHeroMediaByNodeIds(bares.map((b) => b.id)),
+  ]);
+  return bares.map((b) => toSummary(b, locationsByNodeId.get(b.id) ?? null, heroByNodeId.get(b.id) ?? null));
 }

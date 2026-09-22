@@ -1,4 +1,5 @@
 import type { LocationSummary } from "@/lib/locations/types";
+import type { MediaAsset } from "@/lib/media/types";
 import type { ProviderSummary } from "@/lib/providers/types";
 
 export type ActivityCategory =
@@ -25,6 +26,7 @@ export interface ActivitySummary {
   priceFrom: number | null;
   currency: string | null;
   primaryLocation: LocationSummary | null;
+  heroImage: MediaAsset | null;
 }
 
 export interface ActivityDetail extends ActivitySummary {
@@ -35,6 +37,7 @@ export interface ActivityDetail extends ActivitySummary {
   provider: ProviderSummary | null;
   atoll: LocationSummary | null;
   isBookable: boolean;
+  gallery: MediaAsset[];
 }
 
 export interface PaginatedResult<T> {

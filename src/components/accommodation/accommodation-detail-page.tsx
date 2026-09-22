@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ActivityCard } from "@/components/activity/activity-card";
 import { PackageCard } from "@/components/packages/package-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodationBySlug } from "@/lib/accommodations/repository";
 import { ACCOMMODATION_TYPE_SEGMENT, type AccommodationType } from "@/lib/accommodations/types";
+import { getActivitiesByLocation } from "@/lib/activities/repository";
 import { getPackageViewsByAccommodation } from "@/lib/packages/view-repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
@@ -60,7 +62,10 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
 
   const segment = ACCOMMODATION_TYPE_SEGMENT[type];
   const { primaryLocation, atoll } = accommodation;
-  const packages = await getPackageViewsByAccommodation(accommodation.id);
+  const [packages, activities] = await Promise.all([
+    getPackageViewsByAccommodation(accommodation.id),
+    primaryLocation ? getActivitiesByLocation(primaryLocation.id) : Promise.resolve([]),
+  ]);
 
   return (
     <main>
@@ -143,6 +148,17 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
           </div>
         )}
       </dl>
+
+      {activities.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Activities at {primaryLocation?.title ?? accommodation.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {activities.slice(0, 6).map((activity) => (
+              <ActivityCard key={activity.id} activity={activity} />
+            ))}
+          </ul>
+        </section>
+      )}
 
       {packages.length > 0 && (
         <section className="mt-10">

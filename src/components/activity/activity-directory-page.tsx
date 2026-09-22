@@ -9,7 +9,42 @@ import { PageHero } from "@/components/ui/page-hero";
 import { getActivities, searchActivities } from "@/lib/activities/repository";
 import { activityDirectorySegment, hasDedicatedRoute, type ActivityCategory, type ActivityDifficulty } from "@/lib/activities/types";
 import { getAtollBySlug, getIslandBySlug } from "@/lib/locations/repository";
-import { canonicalUrl } from "@/lib/seo/site";
+import { asset } from "@/lib/packages/category-images";
+import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+
+// A real legacy island-hopping photo (already verified against
+// data/maldives/migration/full-legacy-image-library-manifest.json and used
+// elsewhere in this project — see src/lib/packages/package-images.ts) —
+// there's no dedicated "general activities" category fallback image yet,
+// so this is the closest genuinely on-topic hero available.
+const ACTIVITIES_HERO = asset(
+  "1169d556-fa59-fd56-3eb2-660d07d28e40",
+  "legacy/images/activities/island-hopping/island-hopping-tour.webp",
+  "Island hopping tour, Maldives",
+);
+
+const FAQS = [
+  {
+    question: "What's the difference between an activity and a package?",
+    answer: "An activity is a single experience or trip — a few hours to a day. A package bundles activities with accommodation, meals and transfers into a multi-night holiday — see Maldives Packages for those.",
+  },
+  {
+    question: "Do I need to book activities in advance?",
+    answer: "It depends on the operator — enquire on any activity's own page and we'll confirm real availability before you book.",
+  },
+  {
+    question: "Are fishing, diving and surfing activities listed here too?",
+    answer: "They have their own dedicated pages — see Fishing, Diving and Surfing — since each has enough real activities to warrant its own hub. Every other category (excursions, watersports, island hopping, spa, culture) is listed directly here.",
+  },
+];
+
+function faqJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQS.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })),
+  };
+}
 
 const CATEGORY_LABEL: Record<ActivityCategory, string> = {
   general: "General",
@@ -45,8 +80,8 @@ function hasAnyFilter(sp: ActivityDirectorySearchParams): boolean {
 
 export async function activityDirectoryMetadata(searchParams: Promise<ActivityDirectorySearchParams>): Promise<Metadata> {
   const sp = await searchParams;
-  const title = "Maldives Activities | MTG";
-  const description = "Bookable activities and excursions in the Maldives, by category, atoll, and island.";
+  const title = "Maldives Activities | Things to Do, Tours & Experiences";
+  const description = "Real, bookable Maldives activities and excursions — island hopping, watersports, dolphin cruises and more — by category, atoll and island.";
   const url = canonicalUrl("/maldives/activities");
 
   return {
@@ -103,16 +138,31 @@ export async function ActivityDirectoryPage({
 
   return (
     <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Activities" }], "/maldives/activities")) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }} />
+
       <PageHero
         breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Activities" }]}
         eyebrow="Things to do"
-        title="Activities in the Maldives"
+        title="Maldives Activities"
         description={
-          (atoll || island) ? undefined : "Real, individually verified activities and excursions, sourced from official operator and resort information."
+          (atoll || island) ? undefined : "Real, individually verified things to do in the Maldives — excursions, watersports, island hopping and more, sourced from official operator and resort information."
         }
+        image={(atoll || island) ? undefined : ACTIVITIES_HERO}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+        {!(atoll || island) && !isSearching && !category && (
+          <section className="prose-sm max-w-none text-sm text-neutral-700">
+            <p>
+              Beyond diving, fishing and surfing (each with their own dedicated page), the Maldives offers a real range of things to
+              do — sandbank picnics, dolphin cruises, snorkeling trips, island hopping tours, spa treatments and guided cultural visits to
+              Malé. Every activity below is a real, individually sourced experience from a resort or independent operator, not a generic
+              stock listing.
+            </p>
+          </section>
+        )}
+
         {(atoll || island) && (
           <p className="text-sm text-neutral-600">
             Filtered to {island ? island.title : atoll?.title}.{" "}
@@ -178,6 +228,37 @@ export async function ActivityDirectoryPage({
         )}
 
         {!isSearching && <Pagination page={page} totalPages={totalPages} basePath="/maldives/activities/" baseQuery={baseQuery} />}
+
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Explore More Maldives</h2>
+          <nav aria-label="Related Maldives links" className="mt-4 flex flex-wrap gap-2">
+            {[
+              { href: "/maldives/fishing/", label: "Fishing" },
+              { href: "/maldives/diving/", label: "Diving" },
+              { href: "/maldives/surfing/", label: "Surfing" },
+              { href: "/maldives/packages/", label: "Packages" },
+              { href: "/maldives/resorts/", label: "Resorts" },
+              { href: "/maldives/transfers/", label: "Transfers" },
+              { href: "/maldives/travel-guide/", label: "Travel Guide" },
+            ].map((link) => (
+              <Link key={link.href} href={link.href} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </section>
+
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Frequently Asked Questions</h2>
+          <dl className="mt-4 space-y-6">
+            {FAQS.map((faq) => (
+              <div key={faq.question}>
+                <dt className="font-medium text-ocean-900">{faq.question}</dt>
+                <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
       </div>
     </main>
   );

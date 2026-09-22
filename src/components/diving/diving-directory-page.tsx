@@ -3,10 +3,14 @@ import Link from "next/link";
 
 import { ActivityCard } from "@/components/activity/activity-card";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
+import { DivingVideo, divingVideoJsonLd } from "@/components/diving/diving-video";
+import { PackageCard } from "@/components/packages/package-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
 import { Pagination } from "@/components/ui/pagination";
+import { getArticleBySlug } from "@/lib/articles/repository";
+import { articleHref } from "@/lib/articles/types";
 import {
   getDiveSites,
   getDivingActivities,
@@ -15,9 +19,38 @@ import {
   searchDivingActivities,
 } from "@/lib/diving/repository";
 import { getAtollBySlug, getIslandBySlug } from "@/lib/locations/repository";
-import { canonicalUrl } from "@/lib/seo/site";
+import { PACKAGE_CATEGORY_FALLBACK_IMAGES } from "@/lib/packages/category-images";
+import { filterPackageViews, getAllPackageViews } from "@/lib/packages/view-repository";
+import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 
 const PAGE_SIZE = 24;
+
+const FAQS = [
+  {
+    question: "Do I need a diving certification to dive in the Maldives?",
+    answer: "No — Discover Scuba Diving sessions and PADI Open Water courses (see below) are available for complete beginners with no prior certification.",
+  },
+  {
+    question: "What's the difference between a dive site and a diving activity?",
+    answer: "A dive site is a physical location — a reef, channel or wreck. A diving activity is a bookable trip or course run by an operator, which may visit one or more sites — see the activities above, and Dive Sites below for the locations themselves.",
+  },
+  {
+    question: "When is the best time to dive in the Maldives?",
+    answer: "It varies by region and season — check each dive site's own page for what's known about it, and enquire with the operator running your chosen activity for current conditions.",
+  },
+  {
+    question: "Can I combine diving with a package holiday?",
+    answer: "Yes — see Diving Packages below for multi-night holidays that include diving, or enquire on any package to ask about adding a dive.",
+  },
+];
+
+function faqJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQS.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })),
+  };
+}
 
 export interface DivingDirectorySearchParams {
   q?: string;
@@ -33,8 +66,8 @@ function hasAnyFilter(sp: DivingDirectorySearchParams): boolean {
 
 export async function divingDirectoryMetadata(searchParams: Promise<DivingDirectorySearchParams>): Promise<Metadata> {
   const sp = await searchParams;
-  const title = "Diving in the Maldives | MTG";
-  const description = "Real, source-verified diving activities, dive centers, and dive sites in the Maldives.";
+  const title = "Maldives Diving | Dive Trips, Packages & Dive Sites";
+  const description = "Real, source-verified Maldives diving activities, dive centers, dive sites and diving packages — search by type, location and provider.";
   const url = canonicalUrl("/maldives/diving");
 
   return {
@@ -56,12 +89,15 @@ export async function DivingDirectoryPage({
   const query = sp.q?.trim() ?? "";
   const isSearching = query.length > 0;
 
-  const [atoll, island, divingTypes, diveSites] = await Promise.all([
+  const [atoll, island, divingTypes, diveSites, allPackages, divingArticle] = await Promise.all([
     sp.atoll ? getAtollBySlug(sp.atoll) : Promise.resolve(null),
     sp.island ? getIslandBySlug(sp.island) : Promise.resolve(null),
     getDivingTypesInUse(),
     getDiveSites({ pageSize: 6 }),
+    getAllPackageViews(),
+    getArticleBySlug("best-maldives-diving-spots-ultimate-guide"),
   ]);
+  const divingPackages = filterPackageViews(allPackages, { category: "diving" });
 
   const activeType = sp.type ? divingTypes.find((t) => t.slug === sp.type) : undefined;
   const locationOptions = { atollId: island ? undefined : atoll?.id, locationId: island?.id };
@@ -82,15 +118,29 @@ export async function DivingDirectoryPage({
 
   return (
     <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Diving" }], "/maldives/diving")) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(divingVideoJsonLd()) }} />
+
       <PageHero
         breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Diving" }]}
-        eyebrow="Things to do"
-        title="Diving in the Maldives"
-        description="Real, individually verified diving activities and dive centers — sourced from official operator and resort information rather than a generic directory."
+        eyebrow="Maldives diving"
+        title="Maldives Diving"
+        description="Real, individually verified diving activities, dive sites and diving packages — sourced from official operator and resort information rather than a generic directory."
+        image={PACKAGE_CATEGORY_FALLBACK_IMAGES.diving}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
-        <p className="text-sm text-neutral-600">
+        <section className="prose-sm max-w-none text-sm text-neutral-700">
+          <p>
+            The Maldives is one of the world&rsquo;s best-known diving destinations — warm water year-round, real visibility, and reef systems
+            spanning thila (submerged pinnacles), kandu (channels) and wall dives across the country&rsquo;s atolls. Whether you&rsquo;re
+            starting with a Discover Scuba Diving session, working toward a PADI Open Water certification, or already certified and looking
+            for a specific site, the activities and dive sites below are real, individually sourced entries — not a generic stock listing.
+          </p>
+        </section>
+
+        <p className="mt-6 text-sm text-neutral-600">
           See{" "}
           <Link href="/maldives/activities/" className="underline">
             all activities
@@ -172,6 +222,75 @@ export async function DivingDirectoryPage({
             </Link>
           </section>
         )}
+
+        {divingPackages.length > 0 && (
+          <section className="mt-12 border-t border-neutral-200 pt-10">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <h2 className="text-xl font-semibold text-ocean-900">Maldives Diving Packages</h2>
+              <Link href="/maldives/packages/diving/" className="text-sm font-medium text-maldives-600 hover:underline">
+                See all diving packages ({divingPackages.length}) →
+              </Link>
+            </div>
+            <ul className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {divingPackages.slice(0, 6).map((pkg) => (
+                <PackageCard key={pkg.slug} pkg={pkg} />
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <DivingVideo />
+
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Diving Guides</h2>
+          {divingArticle ? (
+            <p className="mt-2 text-sm text-neutral-700">
+              <Link href={articleHref(divingArticle)} className="text-maldives-600 hover:underline">
+                {divingArticle.title}
+              </Link>{" "}
+              — {divingArticle.summary}
+            </p>
+          ) : (
+            <p className="mt-2 text-sm text-neutral-700">
+              Browse our{" "}
+              <Link href="/maldives/travel-guide/" className="text-maldives-600 hover:underline">
+                Travel Guide
+              </Link>{" "}
+              for more Maldives planning content.
+            </p>
+          )}
+        </section>
+
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Explore More Maldives</h2>
+          <nav aria-label="Related Maldives links" className="mt-4 flex flex-wrap gap-2">
+            {[
+              { href: "/maldives/fishing/", label: "Fishing" },
+              { href: "/maldives/surfing/", label: "Surfing" },
+              { href: "/maldives/activities/", label: "All Activities" },
+              { href: "/maldives/packages/", label: "All Packages" },
+              { href: "/maldives/packages/diving/", label: "Diving Packages" },
+              { href: "/maldives/resorts/", label: "Resorts" },
+              { href: "/maldives/travel-guide/", label: "Travel Guide" },
+            ].map((link) => (
+              <Link key={link.href} href={link.href} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </section>
+
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Frequently Asked Questions</h2>
+          <dl className="mt-4 space-y-6">
+            {FAQS.map((faq) => (
+              <div key={faq.question}>
+                <dt className="font-medium text-ocean-900">{faq.question}</dt>
+                <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
       </div>
     </main>
   );

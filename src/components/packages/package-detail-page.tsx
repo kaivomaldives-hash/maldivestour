@@ -9,6 +9,7 @@ import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
+import { MFH_PRICE_TABLES } from "@/lib/packages/mfh-price-tables";
 import { getRelatedPackageViews, getPackageViewBySlug } from "@/lib/packages/view-repository";
 import { PACKAGE_CATEGORY_TITLE } from "@/lib/packages/view-types";
 import type { PackageView } from "@/lib/packages/view-types";
@@ -170,6 +171,42 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
             <NodeInquiryToggle productNodeId={pkg.id} productTitle={pkg.title} submitLabel="Enquire About This Package" toggleLabel="Enquire About This Package" />
           )}
         </div>
+
+        {/* Guest-count pricing table — only present for packages sourced from
+            a real per-guest-tier rate sheet (currently just the MFH fishing
+            packages). pkg.price already shows the 5-guest "best value" rate
+            above; this table is the full 1-5 guest breakdown from the same
+            source, never a separate/different figure. */}
+        {MFH_PRICE_TABLES[pkg.slug] && (
+          <section className="mt-8">
+            <h2 className="text-lg font-semibold text-ocean-900">Price by Group Size</h2>
+            <p className="mt-1 text-sm text-neutral-600">Per person, based on guests sharing the boat — from Maldives Fishing and Holiday&rsquo;s own rate sheet.</p>
+            <div className="mt-3 overflow-x-auto">
+              <table className="min-w-full text-sm">
+                <thead>
+                  <tr className="border-b border-neutral-200 text-left text-neutral-500">
+                    <th className="py-2 pr-4 font-medium">Guests</th>
+                    <th className="py-2 pr-4 font-medium">Price per person</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {MFH_PRICE_TABLES[pkg.slug].map((row) => (
+                    <tr key={row.guests} className={`border-b border-neutral-100 ${row.isBestValue ? "bg-lagoon-50" : ""}`}>
+                      <td className="py-2 pr-4">
+                        {row.guests} guest{row.guests === 1 ? "" : "s"}
+                        {row.isBestValue && <span className="ml-2 rounded-full bg-maldives-600 px-2 py-0.5 text-xs font-medium text-white">Best value</span>}
+                      </td>
+                      <td className="py-2 pr-4 font-medium text-ocean-900">
+                        USD {row.websitePrice.toLocaleString()}
+                        <span className="ml-2 text-xs font-normal text-neutral-400 line-through">USD {row.sourcePrice.toLocaleString()}</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
 
         {/* Overview */}
         {pkg.description && (

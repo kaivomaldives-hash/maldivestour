@@ -161,7 +161,7 @@ export async function FishingDetailPage({ slug }: { slug: string }) {
       {packages.length > 0 && (
         <section className="mt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Packages featuring {activity.title}</h2>
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {packages.map((pkg) => (
               <PackageCard key={pkg.id} pkg={pkg} />
             ))}

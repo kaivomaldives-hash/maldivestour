@@ -237,7 +237,7 @@ export async function FishingDirectoryPage({
               Maldives Fishing and Holiday Pvt Ltd&rsquo;s own private charter, aboard &ldquo;Emperor&rdquo;, a 32-foot fishing boat with twin
               200&nbsp;HP engines (max 5 passengers) — departing from Maamendhoo, Gaafu Alifu Atoll.
             </p>
-            <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {realCharters.map((charter) => (
                 <li key={charter.id} className={CARD_CLASS}>
                   {charter.heroImage && (
@@ -410,7 +410,7 @@ export async function FishingDirectoryPage({
           {results.items.length === 0 ? (
             <EmptyState title="No fishing activities recorded for this filter yet" />
           ) : (
-            <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {results.items.map((activity) => (
                 <ActivityCard key={activity.id} activity={activity} />
               ))}

@@ -134,7 +134,7 @@ export async function AccommodationDirectoryPage({
             title={`No ${label.toLowerCase()} recorded ${island || atoll ? "for this location " : ""}yet`}
           />
         ) : (
-          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {results.items.map((accommodation) => (
               <AccommodationCard key={accommodation.id} accommodation={accommodation} />
             ))}

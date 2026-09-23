@@ -188,7 +188,7 @@ export async function DivingDirectoryPage({
         {results.items.length === 0 ? (
           <EmptyState title="No diving activities recorded for this filter yet" />
         ) : (
-          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {results.items.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
             ))}
@@ -203,7 +203,7 @@ export async function DivingDirectoryPage({
             <p className="mt-1 text-sm text-neutral-600">
               Physical dive sites — not bookable themselves; see the operators above for trips that visit them.
             </p>
-            <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {diveSites.items.map((site) => (
                 <DiveSiteCard key={site.id} site={site} />
               ))}

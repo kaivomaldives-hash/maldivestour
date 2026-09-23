@@ -110,7 +110,7 @@ export async function DiveSiteDirectoryPage({
         {results.items.length === 0 ? (
           <EmptyState title="No dive sites recorded for this filter yet" />
         ) : (
-          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {results.items.map((site) => (
               <DiveSiteCard key={site.id} site={site} />
             ))}

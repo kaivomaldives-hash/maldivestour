@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { ActivityCard } from "@/components/activity/activity-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
+import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { getActivitiesByLocation } from "@/lib/activities/repository";
 import { getAttractionBySlug } from "@/lib/attractions/repository";
 import { getArticleBySlug } from "@/lib/articles/repository";
@@ -56,8 +58,9 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
   const attraction = await getAttractionBySlug(slug);
   if (!attraction) notFound();
 
-  const [activities, sourceArticle] = await Promise.all([
+  const [activities, accommodations, sourceArticle] = await Promise.all([
     attraction.island ? getActivitiesByLocation(attraction.island.id) : Promise.resolve([]),
+    attraction.island ? getAccommodationsByLocation(attraction.island.id) : Promise.resolve([]),
     attraction.sourceArticleSlug ? getArticleBySlug(attraction.sourceArticleSlug) : Promise.resolve(null),
   ]);
 
@@ -147,6 +150,37 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
             </ul>
           </section>
         )}
+
+        {accommodations.length > 0 && (
+          <section className="mt-10">
+            <h2 className="text-xl font-semibold text-ocean-900">Nearby places to stay</h2>
+            <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {accommodations.slice(0, 6).map((accommodation) => (
+                <AccommodationCard key={accommodation.id} accommodation={accommodation} />
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Getting there</h2>
+          <p className="mt-2 text-sm text-neutral-700">
+            {attraction.island
+              ? `${attraction.title} is on ${attraction.island.title}. See our real, source-verified transfer routes for how to get there.`
+              : "See our real, source-verified transfer routes for how to get around the Maldives."}
+          </p>
+          <nav aria-label="Getting there" className="mt-3 flex flex-wrap gap-2">
+            {[
+              { href: "/maldives/airport-transfers/", label: "Airport Transfers" },
+              { href: "/maldives/island-transfers/", label: "Island Transfers" },
+              { href: "/maldives/transfers/", label: "All Transfers" },
+            ].map((link) => (
+              <Link key={link.href} href={link.href} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </section>
 
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Explore More Maldives</h2>

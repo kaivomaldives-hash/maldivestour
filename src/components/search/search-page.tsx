@@ -48,6 +48,7 @@ const GROUP_FILTER_TYPES: Record<SearchGroupKey, SearchFilterType[]> = {
   destinations: ["location"],
   stay: ["resort", "hotel", "guesthouse"],
   "things-to-do": ["activity", "fishing", "diving", "surfing"],
+  attractions: ["attraction"],
   transfers: ["transfer"],
   packages: ["package"],
   "travel-guide": ["article"],

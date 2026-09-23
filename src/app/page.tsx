@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { ActivityCard } from "@/components/activity/activity-card";
 import { ArticleCard } from "@/components/articles/article-card";
+import { AttractionCard } from "@/components/attractions/attraction-card";
 import { PackageCard } from "@/components/packages/package-card";
 import { SearchBox } from "@/components/search/search-box";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
@@ -14,6 +15,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { getAccommodations } from "@/lib/accommodations/repository";
 import { getActivities } from "@/lib/activities/repository";
 import { getRecentArticles } from "@/lib/articles/repository";
+import { getAttractions } from "@/lib/attractions/repository";
 import { getAtolls } from "@/lib/locations/repository";
 import { getFeaturedPackageViews } from "@/lib/packages/view-repository";
 import { canonicalUrl } from "@/lib/seo/site";
@@ -38,10 +40,11 @@ export function generateMetadata(): Metadata {
 }
 
 export default async function Home() {
-  const [atolls, accommodations, activities, transferRoutes, packages, articles] = await Promise.all([
+  const [atolls, accommodations, activities, attractions, transferRoutes, packages, articles] = await Promise.all([
     getAtolls(),
     getAccommodations({ type: "resort", pageSize: 6 }),
     getActivities({ pageSize: 6 }),
+    getAttractions({ pageSize: 6 }),
     getTransferRoutes({ pageSize: 4 }),
     getFeaturedPackageViews(6),
     getRecentArticles(3),
@@ -184,6 +187,27 @@ export default async function Home() {
                 <CompassIcon className="h-4 w-4" /> Surfing
               </Link>
             </div>
+          </Container>
+        </section>
+      )}
+
+      {/* Attractions — deliberately its own section, not folded into
+          Things to Do: an attraction is a place to see, not a bookable
+          activity (Task 15 §21). */}
+      {attractions.items.length > 0 && (
+        <section className="py-14 sm:py-20">
+          <Container>
+            <SectionHeader
+              eyebrow="Places to visit"
+              title="Maldives Attractions"
+              description="Real, individually documented landmarks, museums, monuments and public beaches — not bookable, but part of any Maldives trip."
+              action={{ label: "Explore Maldives attractions", href: "/maldives/attractions/" }}
+            />
+            <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {attractions.items.map((attraction) => (
+                <AttractionCard key={attraction.id} attraction={attraction} />
+              ))}
+            </ul>
           </Container>
         </section>
       )}

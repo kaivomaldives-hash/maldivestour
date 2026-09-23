@@ -20,12 +20,13 @@ export type SearchResultType =
   | "surfing"
   | "transfer"
   | "package"
-  | "article";
+  | "article"
+  | "attraction";
 
 /** The broader section a result is grouped under on the search page —
  * coarser than SearchResultType (e.g. atoll/island/dive_site/surf_break
  * all group under "destinations"). */
-export type SearchGroupKey = "destinations" | "stay" | "things-to-do" | "transfers" | "packages" | "travel-guide";
+export type SearchGroupKey = "destinations" | "stay" | "things-to-do" | "attractions" | "transfers" | "packages" | "travel-guide";
 
 export interface SearchResult {
   id: string;
@@ -67,6 +68,7 @@ export const SEARCH_FILTER_TYPES = [
   "fishing",
   "diving",
   "surfing",
+  "attraction",
   "transfer",
   "package",
   "article",
@@ -83,6 +85,7 @@ export const SEARCH_FILTER_LABEL: Record<SearchFilterType, string> = {
   fishing: "Fishing",
   diving: "Diving",
   surfing: "Surfing",
+  attraction: "Attractions",
   transfer: "Transfers",
   package: "Packages",
   article: "Travel Guide",

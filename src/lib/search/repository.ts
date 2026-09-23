@@ -57,6 +57,7 @@ const LOCATION_TYPE_LABEL: Partial<Record<LocationType, string>> = {
   island: "Island",
   dive_site: "Dive Site",
   surf_break: "Surf Break",
+  poi: "Attraction",
 };
 
 /** Only location types with a real, independent detail page get a result
@@ -76,6 +77,8 @@ function locationHref(loc: { locationType: LocationType; slug: string }): string
       return `/maldives/dive-sites/${loc.slug}/`;
     case "surf_break":
       return `/maldives/surf-breaks/${loc.slug}/`;
+    case "poi":
+      return `/maldives/attractions/${loc.slug}/`;
     default:
       return null;
   }
@@ -93,6 +96,8 @@ function locationResultType(locationType: LocationType): SearchResultType | null
       return "dive_site";
     case "surf_break":
       return "surf_break";
+    case "poi":
+      return "attraction";
     default:
       return null;
   }
@@ -166,7 +171,12 @@ function mapLocation(loc: LocationSummary, atollByParentId: Map<string, Location
   return {
     id: loc.id,
     type,
-    group: "destinations",
+    // Attractions (location_type = 'poi') get their own "attractions"
+    // group rather than "destinations" — Task 15 §21 asks for Activities
+    // ("what can I DO?") and Attractions ("what can I SEE?") to stay
+    // visually distinct, including in search results, not lumped in with
+    // atolls/islands/dive sites.
+    group: loc.locationType === "poi" ? "attractions" : "destinations",
     typeLabel: LOCATION_TYPE_LABEL[loc.locationType] ?? "Location",
     title: loc.title,
     href,
@@ -529,12 +539,24 @@ async function fetchFlatResults(type: SearchFilterType, query: string, cap = 60)
 
   switch (type) {
     case "location": {
-      const items = await searchLocations(query, { limit: cap });
+      // Attractions (location_type = 'poi') have their own filter/group
+      // below — excluded here so the "Locations" chip stays atolls/
+      // islands/dive sites/surf breaks only (Task 15 §21).
+      const items = (await searchLocations(query, { limit: cap })).filter((l) => l.locationType !== "poi");
       const atollByParentId = await resolveAtollContext(items.map((l) => l.parentId));
       const mapped = items
         .map((l) => mapLocation(l, atollByParentId, scoreTitleMatch(l.title, query)))
         .filter((r): r is SearchResult => r !== null);
       const fallback = multiToken.filter((r) => ["country", "atoll", "island", "dive_site", "surf_break"].includes(r.type));
+      return dedupe([...mapped, ...fallback]);
+    }
+    case "attraction": {
+      const items = (await searchLocations(query, { limit: cap })).filter((l) => l.locationType === "poi");
+      const atollByParentId = await resolveAtollContext(items.map((l) => l.parentId));
+      const mapped = items
+        .map((l) => mapLocation(l, atollByParentId, scoreTitleMatch(l.title, query)))
+        .filter((r): r is SearchResult => r !== null);
+      const fallback = multiToken.filter((r) => r.type === "attraction");
       return dedupe([...mapped, ...fallback]);
     }
     case "resort":
@@ -591,12 +613,13 @@ const GROUP_LABEL: Record<SearchGroupKey, string> = {
   destinations: "Destinations",
   stay: "Places to Stay",
   "things-to-do": "Things to Do",
+  attractions: "Attractions",
   transfers: "Transfers",
   packages: "Packages",
   "travel-guide": "Travel Guide",
 };
 
-const GROUP_ORDER: SearchGroupKey[] = ["destinations", "stay", "things-to-do", "transfers", "packages", "travel-guide"];
+const GROUP_ORDER: SearchGroupKey[] = ["destinations", "stay", "things-to-do", "attractions", "transfers", "packages", "travel-guide"];
 const GROUP_CAP = 6;
 
 /** The full search-results page: either a mixed, grouped view (no `type`

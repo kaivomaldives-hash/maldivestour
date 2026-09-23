@@ -5,6 +5,8 @@
 // Once real generated types exist, these can be narrowed to
 // `Database["public"]["Tables"]["nodes"]["Row"]` etc.
 
+import type { MediaAsset } from "@/lib/media/types";
+
 export type LocationType =
   | "country"
   | "atoll"
@@ -27,6 +29,10 @@ export interface LocationSummary {
   locationType: LocationType;
   parentId: string | null;
   isInhabited: boolean | null;
+  /** Real legacy/uploaded photo, when one has been attached (see
+   * scripts/attach-island-images.mjs) — never a placeholder. Most
+   * locations don't have one; null is the normal case, not an error. */
+  heroImage: MediaAsset | null;
 }
 
 /** Adds the fields a detail page needs beyond a listing card. */

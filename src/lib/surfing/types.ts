@@ -1,4 +1,5 @@
 import type { LocationSummary } from "@/lib/locations/types";
+import type { MediaAsset } from "@/lib/media/types";
 
 /**
  * Physical surf breaks are represented as `locations` rows
@@ -19,10 +20,11 @@ export interface SurfBreakSummary {
   title: string;
   summary: string | null;
   breakType: SurfBreakType | null;
+  heroImage: MediaAsset | null;
+  atoll: LocationSummary | null;
 }
 
 export interface SurfBreakDetail extends SurfBreakSummary {
-  atoll: LocationSummary | null;
   nearbyIsland: LocationSummary | null;
   difficulty: string | null;
   waveNotes: string | null;

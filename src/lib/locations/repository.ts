@@ -1,5 +1,7 @@
 import "server-only";
 
+import { getHeroMediaByNodeIds } from "@/lib/media/repository";
+import type { MediaAsset } from "@/lib/media/types";
 import { createClient } from "@/lib/supabase/server";
 import type {
   AtollContentProfile,
@@ -79,7 +81,7 @@ type NodeLocationRow = {
     | null;
 };
 
-function locationDetailOf(row: NodeLocationRow): LocationDetail | null {
+function locationDetailOf(row: NodeLocationRow, heroImage: MediaAsset | null = null): LocationDetail | null {
   const loc = Array.isArray(row.locations) ? row.locations[0] : row.locations;
   if (!loc) return null;
 
@@ -91,6 +93,7 @@ function locationDetailOf(row: NodeLocationRow): LocationDetail | null {
     locationType: loc.location_type,
     parentId: loc.parent_id,
     isInhabited: loc.is_inhabited,
+    heroImage,
     metaTitle: row.meta_title,
     metaDescription: row.meta_description,
     lat: loc.lat,
@@ -100,11 +103,11 @@ function locationDetailOf(row: NodeLocationRow): LocationDetail | null {
   };
 }
 
-function locationSummaryOf(row: NodeLocationRow): LocationSummary | null {
-  const detail = locationDetailOf(row);
+function locationSummaryOf(row: NodeLocationRow, heroImage: MediaAsset | null = null): LocationSummary | null {
+  const detail = locationDetailOf(row, heroImage);
   if (!detail) return null;
   const { id, slug, title, summary, locationType, parentId, isInhabited } = detail;
-  return { id, slug, title, summary, locationType, parentId, isInhabited };
+  return { id, slug, title, summary, locationType, parentId, isInhabited, heroImage };
 }
 
 /** The single `location_type = 'country'` node (Maldives). */
@@ -120,7 +123,8 @@ export async function getCountry(): Promise<LocationDetail | null> {
     .maybeSingle<NodeLocationRow>();
 
   if (error || !data) return null;
-  return locationDetailOf(data);
+  const heroImage = (await getHeroMediaByNodeIds([data.id])).get(data.id) ?? null;
+  return locationDetailOf(data, heroImage);
 }
 
 /** Every published atoll, with its inhabited-island count, ordered by name. */
@@ -139,11 +143,11 @@ export async function getAtolls(): Promise<AtollSummary[]> {
   if (error || !data) return [];
 
   const atollIds = data.map((row) => row.id).filter(Boolean);
-  const counts = await getIslandCountsByAtoll(atollIds);
+  const [counts, heroByNodeId] = await Promise.all([getIslandCountsByAtoll(atollIds), getHeroMediaByNodeIds(atollIds)]);
 
   return data
     .map((row) => {
-      const summary = locationSummaryOf(row);
+      const summary = locationSummaryOf(row, heroByNodeId.get(row.id) ?? null);
       if (!summary || summary.locationType !== "atoll") return null;
       return { ...summary, locationType: "atoll" as const, islandCount: counts.get(summary.id) ?? 0 };
     })
@@ -192,7 +196,8 @@ export async function getAtollBySlug(slug: string): Promise<AtollDetail | null> 
     .maybeSingle<NodeLocationRow>();
 
   if (error || !data) return null;
-  const detail = locationDetailOf(data);
+  const heroImage = (await getHeroMediaByNodeIds([data.id])).get(data.id) ?? null;
+  const detail = locationDetailOf(data, heroImage);
   if (!detail || detail.locationType !== "atoll") return null;
   return { ...detail, locationType: "atoll" };
 }
@@ -224,9 +229,10 @@ export async function getIslands(options: GetIslandsOptions = {}): Promise<Pagin
     return { items: [], total: 0, page, pageSize };
   }
 
+  const heroByNodeId = await getHeroMediaByNodeIds(data.map((row) => row.id));
   const items = data
     .map((row) => {
-      const summary = locationSummaryOf(row);
+      const summary = locationSummaryOf(row, heroByNodeId.get(row.id) ?? null);
       if (!summary || summary.locationType !== "island") return null;
       return { ...summary, locationType: "island" as const, atollId: summary.parentId };
     })
@@ -253,9 +259,10 @@ export async function getIslandsByAtoll(atollSlug: string): Promise<IslandSummar
 
   if (error || !data) return [];
 
+  const heroByNodeId = await getHeroMediaByNodeIds(data.map((row) => row.id));
   return data
     .map((row) => {
-      const summary = locationSummaryOf(row);
+      const summary = locationSummaryOf(row, heroByNodeId.get(row.id) ?? null);
       if (!summary || summary.locationType !== "island") return null;
       return { ...summary, locationType: "island" as const, atollId: summary.parentId };
     })
@@ -274,7 +281,8 @@ export async function getIslandBySlug(slug: string): Promise<IslandDetail | null
     .maybeSingle<NodeLocationRow>();
 
   if (error || !data) return null;
-  const detail = locationDetailOf(data);
+  const heroImage = (await getHeroMediaByNodeIds([data.id])).get(data.id) ?? null;
+  const detail = locationDetailOf(data, heroImage);
   if (!detail || detail.locationType !== "island") return null;
   return { ...detail, locationType: "island" };
 }
@@ -293,7 +301,8 @@ export async function getChildLocations(locationId: string): Promise<LocationSum
 
   if (error || !data) return [];
 
-  return data.map(locationSummaryOf).filter((l): l is LocationSummary => l !== null);
+  const heroByNodeId = await getHeroMediaByNodeIds(data.map((row) => row.id));
+  return data.map((row) => locationSummaryOf(row, heroByNodeId.get(row.id) ?? null)).filter((l): l is LocationSummary => l !== null);
 }
 
 export interface SearchLocationsOptions {
@@ -326,7 +335,8 @@ export async function searchLocations(
   const { data, error } = await builder.returns<NodeLocationRow[]>();
   if (error || !data) return [];
 
-  return data.map(locationSummaryOf).filter((l): l is LocationSummary => l !== null);
+  const heroByNodeId = await getHeroMediaByNodeIds(data.map((row) => row.id));
+  return data.map((row) => locationSummaryOf(row, heroByNodeId.get(row.id) ?? null)).filter((l): l is LocationSummary => l !== null);
 }
 
 /**
@@ -351,8 +361,9 @@ export async function getLocationSummariesByIds(ids: string[]): Promise<Map<stri
 
   if (error || !data) return map;
 
+  const heroByNodeId = await getHeroMediaByNodeIds(data.map((row) => row.id));
   for (const row of data) {
-    const summary = locationSummaryOf(row);
+    const summary = locationSummaryOf(row, heroByNodeId.get(row.id) ?? null);
     if (summary) map.set(summary.id, summary);
   }
   return map;
@@ -382,8 +393,9 @@ export async function getLocationSummariesBySlugs(slugs: string[]): Promise<Map<
 
   if (error || !data) return map;
 
+  const heroByNodeId = await getHeroMediaByNodeIds(data.map((row) => row.id));
   for (const row of data) {
-    const summary = locationSummaryOf(row);
+    const summary = locationSummaryOf(row, heroByNodeId.get(row.id) ?? null);
     if (summary) map.set(summary.slug, summary);
   }
   return map;
@@ -425,7 +437,8 @@ export async function getLocationsByType(
 
   if (error || !data) return { items: [], total: 0, page, pageSize };
 
-  const items = data.map(locationSummaryOf).filter((l): l is LocationSummary => l !== null);
+  const heroByNodeId = await getHeroMediaByNodeIds(data.map((row) => row.id));
+  const items = data.map((row) => locationSummaryOf(row, heroByNodeId.get(row.id) ?? null)).filter((l): l is LocationSummary => l !== null);
   return { items, total: count ?? items.length, page, pageSize };
 }
 
@@ -442,7 +455,8 @@ export async function getLocationsByTypeAndAtoll(locationType: LocationType, ato
     .returns<NodeLocationRow[]>();
 
   if (error || !data) return [];
-  return data.map(locationSummaryOf).filter((l): l is LocationSummary => l !== null);
+  const heroByNodeId = await getHeroMediaByNodeIds(data.map((row) => row.id));
+  return data.map((row) => locationSummaryOf(row, heroByNodeId.get(row.id) ?? null)).filter((l): l is LocationSummary => l !== null);
 }
 
 export async function getLocationBySlugAndType(slug: string, locationType: LocationType): Promise<LocationDetail | null> {
@@ -457,7 +471,8 @@ export async function getLocationBySlugAndType(slug: string, locationType: Locat
     .maybeSingle<NodeLocationRow>();
 
   if (error || !data) return null;
-  return locationDetailOf(data);
+  const heroImage = (await getHeroMediaByNodeIds([data.id])).get(data.id) ?? null;
+  return locationDetailOf(data, heroImage);
 }
 
 /** Same as getLocationBySlugAndType but without a location_type filter —
@@ -475,7 +490,8 @@ export async function getLocationBySlug(slug: string): Promise<LocationDetail | 
     .maybeSingle<NodeLocationRow>();
 
   if (error || !data) return null;
-  return locationDetailOf(data);
+  const heroImage = (await getHeroMediaByNodeIds([data.id])).get(data.id) ?? null;
+  return locationDetailOf(data, heroImage);
 }
 
 /** `nodes.attributes` for one node — the JSONB home for genuinely flexible,

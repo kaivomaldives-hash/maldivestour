@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import { CARD_CLASS } from "@/components/ui/card";
+import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
+import { MediaImage } from "@/components/ui/media-image";
 import type { SurfBreakSummary } from "@/lib/surfing/types";
 
 const BREAK_TYPE_LABEL: Record<string, string> = {
@@ -13,6 +14,11 @@ const BREAK_TYPE_LABEL: Record<string, string> = {
 export function SurfBreakCard({ surfBreak }: { surfBreak: SurfBreakSummary }) {
   return (
     <li className={CARD_CLASS}>
+      {surfBreak.heroImage && (
+        <div className={CARD_IMAGE_BLEED_CLASS}>
+          <MediaImage asset={surfBreak.heroImage} alt={surfBreak.title} aspectClassName="aspect-[4/3]" />
+        </div>
+      )}
       <Link href={`/maldives/surf-breaks/${surfBreak.slug}/`} className="text-lg font-medium text-ocean-900 transition-colors hover:text-maldives-600">
         {surfBreak.title}
       </Link>

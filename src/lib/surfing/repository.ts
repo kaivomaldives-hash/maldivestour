@@ -139,8 +139,11 @@ export async function getSurfBreaksForActivity(activityId: string): Promise<Surf
   const breakSummaries = Array.from(summaries.values()).filter((l) => l.locationType === "surf_break");
   if (breakSummaries.length === 0) return [];
 
-  const attrsById = await getNodeAttributesByIds(breakSummaries.map((s) => s.id));
-  return breakSummaries.map((s) => toSurfBreakSummary(s, attrsById.get(s.id)));
+  const [attrsById, atollById] = await Promise.all([
+    getNodeAttributesByIds(breakSummaries.map((s) => s.id)),
+    getAtollsByParentId(breakSummaries),
+  ]);
+  return breakSummaries.map((s) => toSurfBreakSummary(s, attrsById.get(s.id), atollById.get(s.id) ?? null));
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -149,7 +152,11 @@ export async function getSurfBreaksForActivity(activityId: string): Promise<Surf
 // here unmodified)
 // ─────────────────────────────────────────────────────────────────
 
-function toSurfBreakSummary(location: LocationSummary, attributes: Record<string, unknown> | undefined): SurfBreakSummary {
+function toSurfBreakSummary(
+  location: LocationSummary,
+  attributes: Record<string, unknown> | undefined,
+  atoll: LocationSummary | null = null,
+): SurfBreakSummary {
   const breakType = typeof attributes?.break_type === "string" ? (attributes.break_type as SurfBreakType) : null;
   return {
     id: location.id,
@@ -157,7 +164,26 @@ function toSurfBreakSummary(location: LocationSummary, attributes: Record<string
     title: location.title,
     summary: location.summary,
     breakType,
+    // location.heroImage already comes populated from the shared locations
+    // repository (getLocationsByType/getLocationSummariesByIds/etc. all
+    // batch-fetch it) — no separate media lookup needed here.
+    heroImage: location.heroImage,
+    atoll,
   };
+}
+
+/** Every surf break's parent location IS its atoll (same seed convention
+ * as dive sites — see diving/repository.ts's getAtollsByParentId), so a
+ * single batched lookup over each item's parentId is enough. */
+async function getAtollsByParentId(items: LocationSummary[]): Promise<Map<string, LocationSummary>> {
+  const parentIds = Array.from(new Set(items.map((i) => i.parentId).filter((id): id is string => Boolean(id))));
+  if (parentIds.length === 0) return new Map();
+  const atollsById = await getLocationSummariesByIds(parentIds);
+  const result = new Map<string, LocationSummary>();
+  for (const item of items) {
+    if (item.parentId && atollsById.has(item.parentId)) result.set(item.id, atollsById.get(item.parentId)!);
+  }
+  return result;
 }
 
 export async function getSurfBreaks(options: GetSurfBreaksOptions = {}): Promise<PaginatedResult<SurfBreakSummary>> {
@@ -175,8 +201,8 @@ export async function getSurfBreaks(options: GetSurfBreaksOptions = {}): Promise
     total = result.total;
   }
 
-  const attrsById = await getNodeAttributesByIds(items.map((i) => i.id));
-  let breaks = items.map((i) => toSurfBreakSummary(i, attrsById.get(i.id)));
+  const [attrsById, atollById] = await Promise.all([getNodeAttributesByIds(items.map((i) => i.id)), getAtollsByParentId(items)]);
+  let breaks = items.map((i) => toSurfBreakSummary(i, attrsById.get(i.id), atollById.get(i.id) ?? null));
 
   if (options.breakType) {
     breaks = breaks.filter((b) => b.breakType === options.breakType);
@@ -202,8 +228,11 @@ export async function getSurfBreaksByLocation(locationId: string): Promise<SurfB
   const breakSummaries = Array.from(summaries.values()).filter((l) => l.locationType === "surf_break");
   if (breakSummaries.length === 0) return [];
 
-  const attrsById = await getNodeAttributesByIds(breakSummaries.map((s) => s.id));
-  return breakSummaries.map((s) => toSurfBreakSummary(s, attrsById.get(s.id)));
+  const [attrsById, atollById] = await Promise.all([
+    getNodeAttributesByIds(breakSummaries.map((s) => s.id)),
+    getAtollsByParentId(breakSummaries),
+  ]);
+  return breakSummaries.map((s) => toSurfBreakSummary(s, attrsById.get(s.id), atollById.get(s.id) ?? null));
 }
 
 export async function getSurfBreakBySlug(slug: string): Promise<SurfBreakDetail | null> {
@@ -220,8 +249,7 @@ export async function getSurfBreakBySlug(slug: string): Promise<SurfBreakDetail 
   ]);
 
   return {
-    ...toSurfBreakSummary(location, attrs),
-    atoll,
+    ...toSurfBreakSummary(location, attrs, atoll),
     nearbyIsland: nearbyIslandId,
     difficulty: typeof attrs.difficulty === "string" ? attrs.difficulty : null,
     waveNotes: typeof attrs.wave_notes === "string" ? attrs.wave_notes : null,

@@ -203,6 +203,7 @@ export function buildEntityIndex() {
       slug,
       title: island.name,
       atollSlug,
+      isInhabited: true,
       href: `/maldives/islands/${slug}/`,
       tokens: new Set(distinctiveTokens(island.name)),
     });
@@ -226,6 +227,7 @@ export function buildEntityIndex() {
       slug,
       title: acc.island_name,
       atollSlug,
+      isInhabited: false,
       href: `/maldives/islands/${slug}/`,
       tokens: new Set(distinctiveTokens(acc.island_name)),
     });

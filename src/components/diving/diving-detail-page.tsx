@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { WhereToStaySection } from "@/components/accommodation/where-to-stay-section";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
 import { PackageCard } from "@/components/packages/package-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
+import { getNearbyAccommodations } from "@/lib/accommodations/repository";
 import { activityServiceJsonLd } from "@/lib/activities/types";
 import {
   getDivingActivitiesByLocation,
@@ -47,11 +49,12 @@ export async function DivingDetailPage({ slug }: { slug: string }) {
   const { primaryLocation, atoll } = activity;
   const duration = formatDuration(activity.durationMinutes);
 
-  const [divingTypes, diveSites, sameIslandActivities, packages] = await Promise.all([
+  const [divingTypes, diveSites, sameIslandActivities, packages, nearbyStays] = await Promise.all([
     getDivingTypesForActivity(activity.id),
     getDiveSitesForActivity(activity.id),
     primaryLocation ? getDivingActivitiesByLocation(primaryLocation.id) : Promise.resolve([]),
     getPackageViewsByActivity(activity.id),
+    getNearbyAccommodations({ islandId: primaryLocation?.id ?? null, atollId: atoll?.id ?? null }),
   ]);
   const relatedActivities = sameIslandActivities.filter((a) => a.id !== activity.id).slice(0, 4);
 
@@ -212,6 +215,8 @@ export async function DivingDetailPage({ slug }: { slug: string }) {
           </ul>
         </section>
       )}
+
+      <WhereToStaySection nearby={nearbyStays} islandTitle={primaryLocation?.title ?? null} atollTitle={atoll?.title ?? null} />
 
       {/* Booking/inquiry UI is not built yet — Task 8 only establishes the
           bookable_products relationship (see activity.isBookable). */}

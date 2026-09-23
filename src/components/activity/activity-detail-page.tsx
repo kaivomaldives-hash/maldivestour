@@ -6,6 +6,8 @@ import { PackageCard } from "@/components/packages/package-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
+import { WhereToStaySection } from "@/components/accommodation/where-to-stay-section";
+import { getNearbyAccommodations } from "@/lib/accommodations/repository";
 import { getActivityBySlug } from "@/lib/activities/repository";
 import { activityServiceJsonLd, hasDedicatedRoute } from "@/lib/activities/types";
 import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
@@ -66,7 +68,10 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
 
   const { primaryLocation, atoll } = activity;
   const duration = formatDuration(activity.durationMinutes);
-  const packages = await getPackageViewsByActivity(activity.id);
+  const [packages, nearbyStays] = await Promise.all([
+    getPackageViewsByActivity(activity.id),
+    getNearbyAccommodations({ islandId: primaryLocation?.id ?? null, atollId: atoll?.id ?? null }),
+  ]);
 
   return (
     <main>
@@ -189,6 +194,8 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
           </ul>
         </section>
       )}
+
+      <WhereToStaySection nearby={nearbyStays} islandTitle={primaryLocation?.title ?? null} atollTitle={atoll?.title ?? null} />
 
       {/* Booking/inquiry UI is not built yet — Task 6 only establishes the
           bookable_products relationship (see activity.isBookable). */}

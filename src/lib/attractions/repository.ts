@@ -127,6 +127,32 @@ export async function getAttractionsByAtoll(atollId: string): Promise<Attraction
   return result.items;
 }
 
+export interface NearbyAttractions {
+  islandAttractions: AttractionSummary[];
+  /** Attractions elsewhere in the same atoll, excluding anything already
+   * in `islandAttractions`. */
+  atollAttractions: AttractionSummary[];
+}
+
+/** Same two-tier (island, then atoll) matching as
+ * src/lib/activities/repository.ts's getNearbyActivities, and for the
+ * same reason: no fabricated "same property" or distance tier. */
+export async function getNearbyAttractions(
+  location: { islandId?: string | null; atollId?: string | null },
+  limit = 6,
+): Promise<NearbyAttractions> {
+  const islandAttractionsFull = location.islandId ? await getAttractionsByIsland(location.islandId) : [];
+  const atollAttractionsFull = location.atollId ? await getAttractionsByAtoll(location.atollId) : [];
+
+  const islandIds = new Set(islandAttractionsFull.map((a) => a.id));
+  const atollOnly = atollAttractionsFull.filter((a) => !islandIds.has(a.id));
+
+  return {
+    islandAttractions: islandAttractionsFull.slice(0, limit),
+    atollAttractions: atollOnly.slice(0, limit),
+  };
+}
+
 export async function getAttractionBySlug(slug: string): Promise<AttractionDetail | null> {
   const location = await getLocationBySlugAndType(slug, "poi");
   if (!location) return null;

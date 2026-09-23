@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { ActivityCard } from "@/components/activity/activity-card";
+import { AttractionCard } from "@/components/attractions/attraction-card";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
 import { PackageCard } from "@/components/packages/package-card";
 import { SurfBreakCard } from "@/components/surfing/surf-break-card";
@@ -12,6 +13,7 @@ import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { getActivitiesByLocation } from "@/lib/activities/repository";
+import { getAttractionsByIsland } from "@/lib/attractions/repository";
 import { getDiveSitesByLocation } from "@/lib/diving/repository";
 import { getChildLocations, getIslandBySlug } from "@/lib/locations/repository";
 import { getHeroMediaByNodeIds } from "@/lib/media/repository";
@@ -61,17 +63,19 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
   const island = await getIslandBySlug(slug);
   if (!island) notFound();
 
-  const [atoll, children, accommodations, activities, diveSites, surfBreaks, transferRoutes, packages, heroById] = await Promise.all([
-    getAtollSummary(island.parentId),
-    getChildLocations(island.id),
-    getAccommodationsByLocation(island.id),
-    getActivitiesByLocation(island.id),
-    getDiveSitesByLocation(island.id),
-    getSurfBreaksByLocation(island.id),
-    getTransferRoutesByLocation(island.id),
-    getPackageViewsByLocation(island.id),
-    getHeroMediaByNodeIds([island.id]),
-  ]);
+  const [atoll, children, accommodations, activities, attractions, diveSites, surfBreaks, transferRoutes, packages, heroById] =
+    await Promise.all([
+      getAtollSummary(island.parentId),
+      getChildLocations(island.id),
+      getAccommodationsByLocation(island.id),
+      getActivitiesByLocation(island.id),
+      getAttractionsByIsland(island.id),
+      getDiveSitesByLocation(island.id),
+      getSurfBreaksByLocation(island.id),
+      getTransferRoutesByLocation(island.id),
+      getPackageViewsByLocation(island.id),
+      getHeroMediaByNodeIds([island.id]),
+    ]);
   const heroImage = heroById.get(island.id) ?? null;
   // Fishing, diving, and surfing each have their own dedicated
   // vertical/section (Task 7, Task 8, Task 9) and, per
@@ -143,6 +147,17 @@ export default async function IslandPage({ params }: { params: Promise<Params> }
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {accommodations.map((accommodation) => (
               <AccommodationCard key={accommodation.id} accommodation={accommodation} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {attractions.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Attractions on {island.title}</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {attractions.map((attraction) => (
+              <AttractionCard key={attraction.id} attraction={attraction} />
             ))}
           </ul>
         </section>

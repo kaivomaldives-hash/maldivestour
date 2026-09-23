@@ -233,6 +233,44 @@ export async function getActivitiesByAtoll(atollId: string): Promise<ActivitySum
   return result.items;
 }
 
+export interface NearbyActivities {
+  /** Activities on the exact same island/resort location as the given
+   * accommodation, atoll, or other location-bearing entity. */
+  islandActivities: ActivitySummary[];
+  /** Activities elsewhere in the same atoll, excluding anything already
+   * returned in `islandActivities` — a genuinely wider-but-real tier, not
+   * a "nearest six" cutoff. */
+  atollActivities: ActivitySummary[];
+}
+
+/**
+ * Location-aware activity matching for any page that wants to answer
+ * "what can I do near here" without an explicit accommodation↔activity
+ * relationship — accommodation pages today, potentially island/attraction
+ * pages later. Deliberately two tiers only (island, then atoll): a
+ * "same property" tier would need a real accommodation↔activity
+ * relationship this schema doesn't have, and a geographic-distance tier
+ * would need real coordinates most locations don't have — inventing
+ * either would violate the "no fabricated proximity claims" rule this was
+ * built under, so both are left for a future task with real data to
+ * support them, rather than faked here.
+ */
+export async function getNearbyActivities(
+  location: { islandId?: string | null; atollId?: string | null },
+  limit = 6,
+): Promise<NearbyActivities> {
+  const islandActivitiesFull = location.islandId ? await getActivitiesByLocation(location.islandId) : [];
+  const atollActivitiesFull = location.atollId ? await getActivitiesByAtoll(location.atollId) : [];
+
+  const islandIds = new Set(islandActivitiesFull.map((a) => a.id));
+  const atollOnly = atollActivitiesFull.filter((a) => !islandIds.has(a.id));
+
+  return {
+    islandActivities: islandActivitiesFull.slice(0, limit),
+    atollActivities: atollOnly.slice(0, limit),
+  };
+}
+
 export async function getActivitiesByProvider(providerId: string): Promise<ActivitySummary[]> {
   const result = await getActivities({ providerId, pageSize: 100 });
   return result.items;

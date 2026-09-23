@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { WhereToStaySection } from "@/components/accommodation/where-to-stay-section";
 import { SurfBreakCard } from "@/components/surfing/surf-break-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
+import { getNearbyAccommodations } from "@/lib/accommodations/repository";
 import { activityServiceJsonLd } from "@/lib/activities/types";
 import {
   getSurfingActivitiesByLocation,
@@ -45,10 +47,11 @@ export async function SurfingDetailPage({ slug }: { slug: string }) {
   const { primaryLocation, atoll } = activity;
   const duration = formatDuration(activity.durationMinutes);
 
-  const [surfingTypes, surfBreaks, sameIslandActivities] = await Promise.all([
+  const [surfingTypes, surfBreaks, sameIslandActivities, nearbyStays] = await Promise.all([
     getSurfingTypesForActivity(activity.id),
     getSurfBreaksForActivity(activity.id),
     primaryLocation ? getSurfingActivitiesByLocation(primaryLocation.id) : Promise.resolve([]),
+    getNearbyAccommodations({ islandId: primaryLocation?.id ?? null, atollId: atoll?.id ?? null }),
   ]);
   const relatedActivities = sameIslandActivities.filter((a) => a.id !== activity.id).slice(0, 4);
 
@@ -198,6 +201,8 @@ export async function SurfingDetailPage({ slug }: { slug: string }) {
           </ul>
         </section>
       )}
+
+      <WhereToStaySection nearby={nearbyStays} islandTitle={primaryLocation?.title ?? null} atollTitle={atoll?.title ?? null} />
 
       {/* Booking/inquiry UI is not built yet — Task 9 only establishes the
           bookable_products relationship (see activity.isBookable). */}

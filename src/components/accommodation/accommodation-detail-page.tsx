@@ -2,15 +2,19 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { ActivityCard } from "@/components/activity/activity-card";
+import { NearbyActivitiesSection } from "@/components/activity/nearby-activities-section";
+import { AttractionCard } from "@/components/attractions/attraction-card";
 import { PackageCard } from "@/components/packages/package-card";
+import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodationBySlug } from "@/lib/accommodations/repository";
 import { ACCOMMODATION_TYPE_SEGMENT, type AccommodationType } from "@/lib/accommodations/types";
-import { getActivitiesByLocation } from "@/lib/activities/repository";
+import { getNearbyActivities } from "@/lib/activities/repository";
+import { getNearbyAttractions } from "@/lib/attractions/repository";
 import { getPackageViewsByAccommodation } from "@/lib/packages/view-repository";
 import { canonicalUrl } from "@/lib/seo/site";
+import { getTransferRoutesByLocation } from "@/lib/transfers/repository";
 
 const TYPE_LABEL: Record<AccommodationType, string> = {
   hotel: "Hotel",
@@ -62,9 +66,12 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
 
   const segment = ACCOMMODATION_TYPE_SEGMENT[type];
   const { primaryLocation, atoll } = accommodation;
-  const [packages, activities] = await Promise.all([
+  const locationFilter = { islandId: primaryLocation?.id ?? null, atollId: atoll?.id ?? null };
+  const [packages, nearbyActivities, nearbyAttractions, transferRoutes] = await Promise.all([
     getPackageViewsByAccommodation(accommodation.id),
-    primaryLocation ? getActivitiesByLocation(primaryLocation.id) : Promise.resolve([]),
+    getNearbyActivities(locationFilter),
+    getNearbyAttractions(locationFilter),
+    primaryLocation ? getTransferRoutesByLocation(primaryLocation.id) : Promise.resolve([]),
   ]);
 
   return (
@@ -149,14 +156,38 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
         )}
       </dl>
 
-      {activities.length > 0 && (
+      <NearbyActivitiesSection
+        nearby={nearbyActivities}
+        heading={`Things to Do Near ${accommodation.title}`}
+        islandTitle={primaryLocation?.title ?? null}
+        atollTitle={atoll?.title ?? null}
+        viewAllHref="/maldives/activities/"
+      />
+
+      {(nearbyAttractions.islandAttractions.length > 0 || nearbyAttractions.atollAttractions.length > 0) && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Activities at {primaryLocation?.title ?? accommodation.title}</h2>
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {activities.slice(0, 6).map((activity) => (
-              <ActivityCard key={activity.id} activity={activity} />
-            ))}
-          </ul>
+          <h2 className="text-xl font-semibold text-ocean-900">Nearby Attractions</h2>
+          <p className="mt-1 text-sm text-neutral-600">Real places to visit in the area — not bookable, just worth knowing about during your stay.</p>
+          {nearbyAttractions.islandAttractions.length > 0 && (
+            <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {nearbyAttractions.islandAttractions.map((attraction) => (
+                <AttractionCard key={attraction.id} attraction={attraction} />
+              ))}
+            </ul>
+          )}
+          {nearbyAttractions.atollAttractions.length > 0 && (
+            <div className="mt-6">
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">More Attractions in {atoll?.title ?? "the Area"}</h3>
+              <ul className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {nearbyAttractions.atollAttractions.map((attraction) => (
+                  <AttractionCard key={attraction.id} attraction={attraction} />
+                ))}
+              </ul>
+            </div>
+          )}
+          <Link href="/maldives/attractions/" className="mt-4 inline-block text-sm font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
+            View all attractions →
+          </Link>
         </section>
       )}
 
@@ -168,6 +199,21 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
               <PackageCard key={pkg.id} pkg={pkg} />
             ))}
           </ul>
+        </section>
+      )}
+
+      {transferRoutes.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Getting Here</h2>
+          <p className="mt-1 text-sm text-neutral-600">Real, source-verified transfer routes to and from {primaryLocation?.title ?? accommodation.title}.</p>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {transferRoutes.slice(0, 6).map((route) => (
+              <TransferRouteCard key={route.id} route={route} />
+            ))}
+          </ul>
+          <Link href="/maldives/transfers/" className="mt-4 inline-block text-sm font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
+            View all transfers →
+          </Link>
         </section>
       )}
 

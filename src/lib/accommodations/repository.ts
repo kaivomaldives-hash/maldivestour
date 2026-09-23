@@ -242,6 +242,32 @@ export async function getAccommodationsByAtoll(atollId: string): Promise<Accommo
   return result.items;
 }
 
+export interface NearbyAccommodations {
+  islandAccommodations: AccommodationSummary[];
+  /** Accommodation elsewhere in the same atoll, excluding anything
+   * already in `islandAccommodations`. */
+  atollAccommodations: AccommodationSummary[];
+}
+
+/** The reverse of getNearbyActivities/getNearbyAttractions — "where can I
+ * stay for this activity/attraction" — same two real tiers, same reason
+ * for stopping there (see that function's own comment). */
+export async function getNearbyAccommodations(
+  location: { islandId?: string | null; atollId?: string | null },
+  limit = 6,
+): Promise<NearbyAccommodations> {
+  const islandFull = location.islandId ? await getAccommodationsByLocation(location.islandId) : [];
+  const atollFull = location.atollId ? await getAccommodationsByAtoll(location.atollId) : [];
+
+  const islandIds = new Set(islandFull.map((a) => a.id));
+  const atollOnly = atollFull.filter((a) => !islandIds.has(a.id));
+
+  return {
+    islandAccommodations: islandFull.slice(0, limit),
+    atollAccommodations: atollOnly.slice(0, limit),
+  };
+}
+
 /** Every accommodation operated by a given provider — powers the reverse
  * "Provider → Accommodations" link (§17). */
 export async function getAccommodationsByProvider(providerId: string): Promise<AccommodationSummary[]> {

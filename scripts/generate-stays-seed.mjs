@@ -150,8 +150,18 @@ function main() {
   // Pass 1: resolve every property's island (existing inhabited island for
   // hotel/guesthouse types, or a new/deduped resort-island for resorts —
   // see header comment for why resorts never match an inhabited island).
+  // Properties flagged mergeIntoExistingSlug are the same real resort as
+  // an already-seeded Task 5 accommodation (see
+  // merge-accommodation-research.mjs's MERGE_INTO_EXISTING_SLUG comment)
+  // — they skip island/accommodation creation entirely and are enriched
+  // in place further down instead.
   const resolved = [];
+  const mergeList = [];
   for (const p of properties) {
+    if (p.mergeIntoExistingSlug) {
+      mergeList.push(p);
+      continue;
+    }
     const cleanIsland = cleanIslandName(p.islandName);
     const atollSlug = atollSlugByCode.get(p.atollCode);
     if (!atollSlug) {
@@ -258,10 +268,46 @@ function main() {
     }
   }
 
+  // ── Enrich already-seeded Task 5 accommodations ──────────────────
+  // Same real resorts/hotels as above — see mergeIntoExistingSlug's own
+  // comment. No new node, no new island, no node_locations row (the
+  // existing one is already correct); just the fields Task 5 never had
+  // (price_from, video, rooms, overview paragraphs) added to the
+  // existing row.
+  if (mergeList.length > 0) {
+    lines.push("-- Enriching already-seeded Task 5 accommodations with this round's");
+    lines.push("-- real price/video/room/overview data (same physical resorts — see");
+    lines.push("-- mergeIntoExistingSlug in merge-accommodation-research.mjs).");
+    for (const p of mergeList) {
+      const existingSlug = p.mergeIntoExistingSlug;
+      lines.push(`-- ${p.folder} -> ${existingSlug}`);
+      lines.push(`update accommodations set`);
+      lines.push(`  price_from = coalesce(accommodations.price_from, ${sqlLiteral(p.priceFrom)}),`);
+      lines.push(`  video_youtube_id = coalesce(accommodations.video_youtube_id, ${sqlString(p.videoId)})`);
+      lines.push(`from nodes n where n.id = accommodations.id and n.node_type = 'accommodation' and n.slug = ${sqlString(existingSlug)};`);
+      lines.push("");
+
+      if ((p.descriptionParagraphs ?? []).length > 0) {
+        lines.push(`update nodes set attributes = attributes || ${sqlString(JSON.stringify({ overview_paragraphs: p.descriptionParagraphs }))}::jsonb`);
+        lines.push(`where node_type = 'accommodation' and slug = ${sqlString(existingSlug)} and not (attributes ? 'overview_paragraphs');`);
+        lines.push("");
+      }
+
+      for (const [i, room] of (p.rooms ?? []).entries()) {
+        lines.push(`insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)`);
+        lines.push(`select id, ${sqlString(room.name)}, ${sqlLiteral(room.priceFrom)}, ${sqlString(room.currency ?? "USD")}, ${sqlString(room.bedType)}, ${sqlLiteral(room.maxOccupancy)}, ${i}`);
+        lines.push(`from nodes where node_type = 'accommodation' and slug = ${sqlString(existingSlug)}`);
+        lines.push(`on conflict (accommodation_id, name) do nothing;`);
+        lines.push("");
+        roomCount += 1;
+      }
+    }
+  }
+
   writeFileSync(MIGRATION_PATH, lines.join("\n") + "\n");
 
   console.log(`New resort islands: ${newIslandByKey.size}`);
-  console.log(`Accommodations: ${resolved.length - skipped} (skipped ${skipped}), Rooms: ${roomCount}`);
+  console.log(`Accommodations: ${resolved.length - skipped} (skipped ${skipped}), Merged into existing: ${mergeList.length}, Rooms: ${roomCount}`);
   if (warnings.length > 0) {
     console.log(`\nWarnings (${warnings.length}):`);
     for (const w of warnings) console.log(`  - ${w}`);

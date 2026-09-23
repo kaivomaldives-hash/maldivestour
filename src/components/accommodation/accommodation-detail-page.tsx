@@ -3,7 +3,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { NearbyActivitiesSection } from "@/components/activity/nearby-activities-section";
+import { GallerySection } from "@/components/accommodation/gallery-section";
+import { RoomsSection } from "@/components/accommodation/rooms-section";
+import { TypicalAmenitiesSection } from "@/components/accommodation/typical-amenities-section";
+import { accommodationVideoJsonLd, VideoSection } from "@/components/accommodation/video-section";
 import { AttractionCard } from "@/components/attractions/attraction-card";
+import { NodeInquiryForm } from "@/components/bookings/node-inquiry-form";
 import { PackageCard } from "@/components/packages/package-card";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
@@ -75,8 +80,13 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
     primaryLocation ? getTransferRoutesByLocation(primaryLocation.id) : Promise.resolve([]),
   ]);
 
+  const videoJsonLd = accommodationVideoJsonLd(accommodation.videoYoutubeId, accommodation.title, accommodation.summary);
+
   return (
     <main>
+      {videoJsonLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd) }} />
+      )}
       <PageHero
         breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },
@@ -90,7 +100,15 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
-      <dl className="grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
+      {accommodation.overviewParagraphs.length > 0 && (
+        <section className="max-w-3xl space-y-4 text-neutral-700">
+          {accommodation.overviewParagraphs.map((paragraph, i) => (
+            <p key={i}>{paragraph}</p>
+          ))}
+        </section>
+      )}
+
+      <dl className="mt-8 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
         <div>
           <dt className="text-neutral-500">Type</dt>
           <dd className="font-medium">{TYPE_LABEL[type]}</dd>
@@ -157,6 +175,10 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
         )}
       </dl>
 
+      <RoomsSection rooms={accommodation.rooms} accommodationTitle={accommodation.title} />
+
+      <TypicalAmenitiesSection accommodationType={accommodation.accommodationType} />
+
       <NearbyActivitiesSection
         nearby={nearbyActivities}
         heading={`Things to Do Near ${accommodation.title}`}
@@ -218,8 +240,21 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
         </section>
       )}
 
-      {/* Booking/inquiry UI is not built yet — Task 5 only establishes the
-          bookable_products relationship (see accommodation.isBookable). */}
+      <GallerySection images={accommodation.galleryImages} accommodationTitle={accommodation.title} />
+
+      <VideoSection youtubeId={accommodation.videoYoutubeId} accommodationTitle={accommodation.title} />
+
+      {accommodation.isBookable && (
+        <section className="mt-10 rounded-2xl border border-neutral-200 p-6">
+          <h2 className="text-xl font-semibold text-ocean-900">Request an Offer</h2>
+          <p className="mt-1 text-sm text-neutral-600">
+            Prices change with season and availability — tell us your dates and we&rsquo;ll send current rates for {accommodation.title}.
+          </p>
+          <div className="mt-4">
+            <NodeInquiryForm productNodeId={accommodation.id} productTitle={accommodation.title} submitLabel="Request an Offer" />
+          </div>
+        </section>
+      )}
       </div>
     </main>
   );

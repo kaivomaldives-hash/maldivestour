@@ -31,6 +31,21 @@ export function AccommodationCard({ accommodation }: { accommodation: Accommodat
         {accommodation.allInclusive && <span>All-inclusive</span>}
         {accommodation.overwaterVillas && <span>Overwater villas</span>}
       </div>
+      {/* A real "from" figure is fine on a card/listing — it's the one
+          place the task spec allows a price at all. The property's own
+          detail page never shows one (see accommodation-detail-page.tsx's
+          Request-an-Offer CTA) since a single legacy snapshot price isn't
+          a live rate. */}
+      {accommodation.priceFrom !== null && (
+        <p className="mt-2 text-sm text-neutral-600">
+          From{" "}
+          <span className="font-semibold text-ocean-900">
+            {accommodation.priceFromCurrency === "USD" ? "$" : `${accommodation.priceFromCurrency} `}
+            {accommodation.priceFrom.toLocaleString()}
+          </span>{" "}
+          / night
+        </p>
+      )}
     </li>
   );
 }

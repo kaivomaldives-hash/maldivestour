@@ -62,6 +62,32 @@ function normalizeResearchEntry(entry) {
 // "Vakarufalhi" page is the property's own former name, not a second
 // current resort on the same island. Keeping both would show two
 // "different" resorts occupying one island, which is actively misleading.
+// These 6 folders are the SAME real resorts as 6 of the original Task 5
+// accommodations (data/maldives/accommodations/accommodations.json),
+// already seeded under a shorter name ("Gili Lankanfushi" vs this
+// extraction's own "Gili Lankanfushi Maldives Island Resort") with the
+// correct real island already attached — confirmed by cross-checking
+// supabase/migrations/20250103000100_seed_accommodations.sql's own
+// slugs and islands, which independently match this round's own
+// WebSearch-verified island names exactly. Creating a second node for
+// each would be a real duplicate-listing bug (and, since neither this
+// script nor generate-stays-seed.mjs's new-island dedup checks against
+// Task 5's own already-created resort islands, a duplicate island node
+// too), so these are merged INTO the existing accommodation instead of
+// seeded as new — see generate-stays-seed.mjs's mergeIntoExistingSlug
+// handling.
+const MERGE_INTO_EXISTING_SLUG = {
+  Kurumba: "kurumba-maldives",
+  "Baros-Island": "baros-maldives",
+  "Gili-Lankanfushi": "gili-lankanfushi",
+  "Six-Senses-Laamu": "six-senses-laamu",
+  "Soneva-Fushi": "soneva-fushi",
+  Velassaru: "velassaru-maldives",
+  // Same check, same result, for the two Task 5 hotels on Maafushi.
+  "arena-maafushi": "arena-beach-hotel",
+  "kaanibeach-maafushi": "kaani-beach-hotel",
+};
+
 const EXCLUDED_FOLDERS = {
   Vakarufalhi: "Rebranded to NOVA Maldives (2019) — same physical resort/island as the 'Nova' folder, kept under its current name only.",
   // The legacy page itself is corrupted: Holiday-Island/Holiday-Island-
@@ -134,6 +160,7 @@ function main() {
       propertyKind: summary.propertyKind,
       name: profile.legacyH1 ?? summary.folder,
       accommodationType,
+      mergeIntoExistingSlug: MERGE_INTO_EXISTING_SLUG[summary.folder] ?? null,
       atollCode: r.atollCode,
       islandName: r.islandName,
       starRating: profile.starRating,

@@ -202,17 +202,6 @@ where n.node_type = 'location' and n.slug = 'vabbinfaru'
 on conflict (id) do nothing;
 
 insert into nodes (node_type, slug, title, summary, status, published_at)
-values ('location', 'baros', 'Baros', 'Baros is a resort island in Kaafu Atoll, Maldives.', 'published', now())
-on conflict (node_type, slug) do nothing;
-
-insert into locations (id, location_type, parent_id, path, is_inhabited)
-select n.id, 'island', p.id, (p_loc.path || 'baros'::ltree), false
-from nodes n, nodes p join locations p_loc on p_loc.id = p.id
-where n.node_type = 'location' and n.slug = 'baros'
-  and p.node_type = 'location' and p.slug = 'kaafu'
-on conflict (id) do nothing;
-
-insert into nodes (node_type, slug, title, summary, status, published_at)
 values ('location', 'makunufushi', 'Makunufushi', 'Makunufushi is a resort island in Kaafu Atoll, Maldives.', 'published', now())
 on conflict (node_type, slug) do nothing;
 
@@ -521,17 +510,6 @@ where n.node_type = 'location' and n.slug = 'gangehi'
 on conflict (id) do nothing;
 
 insert into nodes (node_type, slug, title, summary, status, published_at)
-values ('location', 'lankanfushi', 'Lankanfushi', 'Lankanfushi is a resort island in Kaafu Atoll, Maldives.', 'published', now())
-on conflict (node_type, slug) do nothing;
-
-insert into locations (id, location_type, parent_id, path, is_inhabited)
-select n.id, 'island', p.id, (p_loc.path || 'lankanfushi'::ltree), false
-from nodes n, nodes p join locations p_loc on p_loc.id = p.id
-where n.node_type = 'location' and n.slug = 'lankanfushi'
-  and p.node_type = 'location' and p.slug = 'kaafu'
-on conflict (id) do nothing;
-
-insert into nodes (node_type, slug, title, summary, status, published_at)
 values ('location', 'kodhipparu', 'Kodhipparu', 'Kodhipparu is a resort island in Kaafu Atoll, Maldives.', 'published', now())
 on conflict (node_type, slug) do nothing;
 
@@ -705,17 +683,6 @@ select n.id, 'island', p.id, (p_loc.path || 'kudadoo'::ltree), false
 from nodes n, nodes p join locations p_loc on p_loc.id = p.id
 where n.node_type = 'location' and n.slug = 'kudadoo'
   and p.node_type = 'location' and p.slug = 'lhaviyani'
-on conflict (id) do nothing;
-
-insert into nodes (node_type, slug, title, summary, status, published_at)
-values ('location', 'vihamanaafushi', 'Vihamanaafushi', 'Vihamanaafushi is a resort island in Kaafu Atoll, Maldives.', 'published', now())
-on conflict (node_type, slug) do nothing;
-
-insert into locations (id, location_type, parent_id, path, is_inhabited)
-select n.id, 'island', p.id, (p_loc.path || 'vihamanaafushi'::ltree), false
-from nodes n, nodes p join locations p_loc on p_loc.id = p.id
-where n.node_type = 'location' and n.slug = 'vihamanaafushi'
-  and p.node_type = 'location' and p.slug = 'kaafu'
 on conflict (id) do nothing;
 
 insert into nodes (node_type, slug, title, summary, status, published_at)
@@ -1170,17 +1137,6 @@ where n.node_type = 'location' and n.slug = 'kanuhura'
 on conflict (id) do nothing;
 
 insert into nodes (node_type, slug, title, summary, status, published_at)
-values ('location', 'olhuveli', 'Olhuveli', 'Olhuveli is a resort island in Laamu Atoll, Maldives.', 'published', now())
-on conflict (node_type, slug) do nothing;
-
-insert into locations (id, location_type, parent_id, path, is_inhabited)
-select n.id, 'island', p.id, (p_loc.path || 'olhuveli'::ltree), false
-from nodes n, nodes p join locations p_loc on p_loc.id = p.id
-where n.node_type = 'location' and n.slug = 'olhuveli'
-  and p.node_type = 'location' and p.slug = 'laamu'
-on conflict (id) do nothing;
-
-insert into nodes (node_type, slug, title, summary, status, published_at)
 values ('location', 'iru-fushi', 'Iru Fushi', 'Iru Fushi is a resort island in Noonu Atoll, Maldives.', 'published', now())
 on conflict (node_type, slug) do nothing;
 
@@ -1189,17 +1145,6 @@ select n.id, 'island', p.id, (p_loc.path || 'iru_fushi'::ltree), false
 from nodes n, nodes p join locations p_loc on p_loc.id = p.id
 where n.node_type = 'location' and n.slug = 'iru-fushi'
   and p.node_type = 'location' and p.slug = 'noonu'
-on conflict (id) do nothing;
-
-insert into nodes (node_type, slug, title, summary, status, published_at)
-values ('location', 'kunfunadhoo', 'Kunfunadhoo', 'Kunfunadhoo is a resort island in Baa Atoll, Maldives.', 'published', now())
-on conflict (node_type, slug) do nothing;
-
-insert into locations (id, location_type, parent_id, path, is_inhabited)
-select n.id, 'island', p.id, (p_loc.path || 'kunfunadhoo'::ltree), false
-from nodes n, nodes p join locations p_loc on p_loc.id = p.id
-where n.node_type = 'location' and n.slug = 'kunfunadhoo'
-  and p.node_type = 'location' and p.slug = 'baa'
 on conflict (id) do nothing;
 
 insert into nodes (node_type, slug, title, summary, status, published_at)
@@ -1247,13 +1192,13 @@ where n.node_type = 'location' and n.slug = 'aloofushi'
 on conflict (id) do nothing;
 
 insert into nodes (node_type, slug, title, summary, status, published_at)
-values ('location', 'olhuveli-kaafu', 'Olhuveli', 'Olhuveli is a resort island in Kaafu Atoll, Maldives.', 'published', now())
+values ('location', 'olhuveli', 'Olhuveli', 'Olhuveli is a resort island in Kaafu Atoll, Maldives.', 'published', now())
 on conflict (node_type, slug) do nothing;
 
 insert into locations (id, location_type, parent_id, path, is_inhabited)
-select n.id, 'island', p.id, (p_loc.path || 'olhuveli_kaafu'::ltree), false
+select n.id, 'island', p.id, (p_loc.path || 'olhuveli'::ltree), false
 from nodes n, nodes p join locations p_loc on p_loc.id = p.id
-where n.node_type = 'location' and n.slug = 'olhuveli-kaafu'
+where n.node_type = 'location' and n.slug = 'olhuveli'
   and p.node_type = 'location' and p.slug = 'kaafu'
 on conflict (id) do nothing;
 
@@ -1310,17 +1255,6 @@ select n.id, 'island', p.id, (p_loc.path || 'vakkaru'::ltree), false
 from nodes n, nodes p join locations p_loc on p_loc.id = p.id
 where n.node_type = 'location' and n.slug = 'vakkaru'
   and p.node_type = 'location' and p.slug = 'baa'
-on conflict (id) do nothing;
-
-insert into nodes (node_type, slug, title, summary, status, published_at)
-values ('location', 'velassaru', 'Velassaru', 'Velassaru is a resort island in Kaafu Atoll, Maldives.', 'published', now())
-on conflict (node_type, slug) do nothing;
-
-insert into locations (id, location_type, parent_id, path, is_inhabited)
-select n.id, 'island', p.id, (p_loc.path || 'velassaru'::ltree), false
-from nodes n, nodes p join locations p_loc on p_loc.id = p.id
-where n.node_type = 'location' and n.slug = 'velassaru'
-  and p.node_type = 'location' and p.slug = 'kaafu'
 on conflict (id) do nothing;
 
 insert into nodes (node_type, slug, title, summary, status, published_at)
@@ -2068,40 +2002,6 @@ on conflict (id) do nothing;
 insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
 select id, 'Beach Pool Villa', 980, 'USD', 'King', 3, 0
 from nodes where node_type = 'accommodation' and slug = 'banyan-tree-vabbinfaru-island-resort-maldives'
-on conflict (accommodation_id, name) do nothing;
-
--- Baros-Island
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, attributes, published_at)
-values ('accommodation', 'baros-island-resort-maldives', 'Baros Island Resort Maldives', 'Turquoise seas lap against white-sand beaches. Palm trees rustle in the breeze. Welcome to Baros, a lush island canopy natural paradise about 25 minutes by speedboat from the Maldives'' international airport. We''ve been greeting visitors since 1973, and we''ve spent decades polishing our services and developing our surroundings to create what we feel to be a renowned resort. Today, we''re one of the most popular Maldives resorts, and we can''t wait to show you what makes us so unique.', 'published', 'Baros Island Resort Maldives | Maldives Resorts | MTG', 'Turquoise seas lap against white-sand beaches. Palm trees rustle in the breeze. Welcome to Baros, a lush island canopy natural paradise about 25 minutes by speedboat from the Maldives'' international airport. We''ve been greeting visitors since 1973, and we''ve spent decades polishing our services and developing our surroundings to create what we feel to be a renowned resort. Today, we''re one of the most popular Maldives resorts, and we can''t wait to show you what makes us so unique.', '{"overview_paragraphs":["Turquoise seas lap against white-sand beaches. Palm trees rustle in the breeze. Welcome to Baros, a lush island canopy natural paradise about 25 minutes by speedboat from the Maldives'' international airport. We''ve been greeting visitors since 1973, and we''ve spent decades polishing our services and developing our surroundings to create what we feel to be a renowned resort. Today, we''re one of the most popular Maldives resorts, and we can''t wait to show you what makes us so unique.","Unrivaled in its attention to detail, Baros creates really transformative experiences by putting the individual first, customising to their specific needs and expectations in a spirit of true generosity. Allow us to contact you in order to design your Maldives vacation.","The lavish furniture and unique artworks in this enormous property create a warm and welcome atmosphere. A private pool is bordered by tropical flowers in the garden courtyard, and a front balcony leads to your own length of Baros beach. Butler service is available 24 hours a day, seven days a week, ensuring that you have whatever you need, when you need it.","Turquoise seas lap against white-sand beaches. Palm trees rustle in the breeze. A beautiful island canopy in a natural wonderland within 25 minutes by speedboat from the Maldives'' international airport. We''ve been greeting visitors since 1973, and we''ve spent decades perfecting our services and nurturing our surroundings.","Take a supper cruise for two on a dhoni. Or, for a special gourmet supper, come to the Piano Deck with your own private chef. Alternatively, enjoy the sunset with cocktails and canapés at The Lighthouse. Every meal is yours to savour at these gourmet restaurants in Baros, and every mouthful is meant to inspire. For more than 40 years, we''ve been working to refine classic meals while experimenting with new techniques and ingredients from across the world. From opulent buffet breakfasts by the pool to exquisite dining at the famed Lighthouse, each meal is another chance to indulge in a favourite or try something new.","Serenity Spa, a haven of relaxation and a sanctuary nestled in the forest, welcomes you into a world of luxurious spa and beauty rituals. You can come here to unwind for a few hours or to create a personalised wellness journey with a series of daily treatments. From daily yoga classes to therapeutic massage, everything here is geared to help you regain your balance and find your peace. Request a yoga session anywhere on the island for something out of the usual, or get a soothing massage in the privacy of your comfy home."]}'::jsonb, now())
-on conflict (node_type, slug) do nothing;
-
-insert into accommodations (
-  id, accommodation_type, star_rating, price_from, video_youtube_id, currency
-)
-select
-  n.id, 'resort', null, 780, '9NssgRLiKF8', 'USD'
-from nodes n where n.node_type = 'accommodation' and n.slug = 'baros-island-resort-maldives'
-on conflict (id) do nothing;
-
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'primary'
-from nodes n, nodes l
-where n.node_type = 'accommodation' and n.slug = 'baros-island-resort-maldives'
-  and l.node_type = 'location' and l.slug = 'baros'
-on conflict (node_id, location_id) do nothing;
-
-insert into bookable_products (id, booking_mode)
-select id, 'inquiry' from nodes where node_type = 'accommodation' and slug = 'baros-island-resort-maldives'
-on conflict (id) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Deluxe Villa', 780, 'USD', 'King', 3, 0
-from nodes where node_type = 'accommodation' and slug = 'baros-island-resort-maldives'
-on conflict (accommodation_id, name) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Water Villa', 1100, 'USD', 'King', 3, 1
-from nodes where node_type = 'accommodation' and slug = 'baros-island-resort-maldives'
 on conflict (accommodation_id, name) do nothing;
 
 -- COMO-Cocoa
@@ -3076,45 +2976,6 @@ select id, 'Over Water Villa', 500, 'USD', 'King', 3, 1
 from nodes where node_type = 'accommodation' and slug = 'gangehi-island-resort-maldives'
 on conflict (accommodation_id, name) do nothing;
 
--- Gili-Lankanfushi
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, attributes, published_at)
-values ('accommodation', 'gili-lankanfushi-maldives-island-resort', 'Gili Lankanfushi Maldives Island Resort', 'With sustainably designed homes hanging above turquoise seas that reach as far as the eye can see, our exclusive island refuge provides peace by design. Spend your days doing anything you want—snorkeling, relaxing at the spa, sailing on a catamaran—and don''t be afraid to ask for help and guidance from our helpful staff. Nourish your body with locally produced products and worldwide cuisines, enjoy the sunset from your rustic-luxe villa, and fall asleep with the moon shining gloriously in the sky.', 'published', 'Gili Lankanfushi Maldives Island Resort | Maldives Resorts | MTG', 'With sustainably designed homes hanging above turquoise seas that reach as far as the eye can see, our exclusive island refuge provides peace by design. Spend your days doing anything you want—snorkeling, relaxing at the spa, sailing on a catamaran—and don''t be afraid to ask for help and guidance from our helpful staff. Nourish your body with locally produced products and worldwide cuisines, enjoy the sunset from your rustic-luxe villa, and fall asleep with the moon shining gloriously in the sky.', '{"overview_paragraphs":["With sustainably designed homes hanging above turquoise seas that reach as far as the eye can see, our exclusive island refuge provides peace by design. Spend your days doing anything you want—snorkeling, relaxing at the spa, sailing on a catamaran—and don''t be afraid to ask for help and guidance from our helpful staff. Nourish your body with locally produced products and worldwide cuisines, enjoy the sunset from your rustic-luxe villa, and fall asleep with the moon shining gloriously in the sky.","These 18 one-bedroom retreats are ideal for couples. Each apartment has an open-air living area, a huge bathroom, and a separate rooftop terrace from which to take in the vistas. Spend your days swimming and snorkelling in the coral gardens at the base of your sundeck, which has direct ocean access. At night, relax on catamaran nets while watching the sky.","Our five overwater Gili Lagoon Villas face west and provide breathtaking sunset views. The one-bedroom hideaways with thatched roofs are split across two storeys and include open-air living spaces, big bathrooms, and private rooftop terraces. Relax on the deck or swim out to your own own water hammock. You may pass by eagle rays, reef sharks, and shoals of luminous fish.","The Family Villa, perched at the end of our Western-facing jetty, is an open-air paradise with unrivalled views of the surrounding seascape. The main bedroom has an en-suite bathroom as well as an outdoor tub and shower. Two huge, air-conditioned living areas offer plenty of living (and sleeping) space. When you''re not napping off in the sun, take use of your own gym, steam room, or rooftop Jacuzzi. Alternatively, venture off the quiet Three Palm Island to relax in a magnificent cabana.","45 rustic-chic thatched villas float over the clear lagoon waters of Gili Lankanfushi in the Maldives. Many are linked to wooden jetties that extend from a little island, while others stand alone in the water. Simple, yet magnificent abodes (all created from sustainable materials) can serve as the ideal foundation for any modern-day Robinson Crusoe trip.","Gili Lankanfushi Maldives, perched above the Indian Ocean, offers exquisite accommodation near to the sun and water. Gili Lankanfushi Maldives is located on the private island of Lankanfushi in Male Atoll, a 20-minute speedboat journey from Male International Airport."]}'::jsonb, now())
-on conflict (node_type, slug) do nothing;
-
-insert into accommodations (
-  id, accommodation_type, star_rating, price_from, video_youtube_id, currency
-)
-select
-  n.id, 'resort', null, 1600, 'Xx61PgIeXRA', 'USD'
-from nodes n where n.node_type = 'accommodation' and n.slug = 'gili-lankanfushi-maldives-island-resort'
-on conflict (id) do nothing;
-
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'primary'
-from nodes n, nodes l
-where n.node_type = 'accommodation' and n.slug = 'gili-lankanfushi-maldives-island-resort'
-  and l.node_type = 'location' and l.slug = 'lankanfushi'
-on conflict (node_id, location_id) do nothing;
-
-insert into bookable_products (id, booking_mode)
-select id, 'inquiry' from nodes where node_type = 'accommodation' and slug = 'gili-lankanfushi-maldives-island-resort'
-on conflict (id) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Villa Suite', 1600, 'USD', 'King', 3, 0
-from nodes where node_type = 'accommodation' and slug = 'gili-lankanfushi-maldives-island-resort'
-on conflict (accommodation_id, name) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Gili Lagoon Villa', 1800, 'USD', 'King', 3, 1
-from nodes where node_type = 'accommodation' and slug = 'gili-lankanfushi-maldives-island-resort'
-on conflict (accommodation_id, name) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Family Villa', 4000, 'USD', 'King', 9, 2
-from nodes where node_type = 'accommodation' and slug = 'gili-lankanfushi-maldives-island-resort'
-on conflict (accommodation_id, name) do nothing;
-
 -- Grand-Park-Kodhipparu
 insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, attributes, published_at)
 values ('accommodation', 'grand-park-kodhipparu-maldives-island-resort', 'Grand Park Kodhipparu Maldives Island Resort', 'Welcome to Grand Park Kodhipparu, Maldives, the first luxury resort of Park Hotel Group and your unique address in the stunning Maldives. We invite you to explore your paradise on an island with a variety of gorgeous villas, pristine beaches, and stunning scenery, nestled in North Male Atoll, a simple 20-minute speedboat trip from Velana International Airport, Malé, Maldives. The resort, designed by Hirsch Bedner Associates, has elegant architecture and a modern façade with Maldives'' traditional influence of wood and rattan, innovative rustic charm, and an appealing serene ambiance.', 'published', 'Grand Park Kodhipparu Maldives Island Resort | Maldives Resorts | MTG', 'Welcome to Grand Park Kodhipparu, Maldives, the first luxury resort of Park Hotel Group and your unique address in the stunning Maldives. We invite you to explore your paradise on an island with a variety of gorgeous villas, pristine beaches, and stunning scenery, nestled in North Male Atoll, a simple 20-minute speedboat trip from Velana International Airport, Malé, Maldives. The resort, designed by Hirsch Bedner Associates, has elegant architecture and a modern façade with Maldives'' traditional influence of wood and rattan, innovative rustic charm, and an appealing serene ambiance.', '{"overview_paragraphs":["Welcome to Grand Park Kodhipparu, Maldives, the first luxury resort of Park Hotel Group and your unique address in the stunning Maldives. We invite you to explore your paradise on an island with a variety of gorgeous villas, pristine beaches, and stunning scenery, nestled in North Male Atoll, a simple 20-minute speedboat trip from Velana International Airport, Malé, Maldives. The resort, designed by Hirsch Bedner Associates, has elegant architecture and a modern façade with Maldives'' traditional influence of wood and rattan, innovative rustic charm, and an appealing serene ambiance.","With its assortment of beach and water villas, award-winning dining venues, recreational areas, and an award-winning overwater spa, the exquisite one-island-one-resort location invites you into an oasis of peace. Grand Park Kodhipparu, Maldives, is ideal for any traveller, whether a couple or honeymooners, since it is surrounded by thrilling underwater adventures of renowned snorkelling and diving locations surrounding the island. Families may also enjoy their stay on the island because the island has family-friendly facilities that provide a variety of children''s activities.","The beach home in Maldives is surrounded by lush foliage and has a private plunge pool overlooking the horizon. Listen to the waves crashing on the coast or take a walk on the beach to feel the white powdery sand beneath your feet; the beach is only a few steps away from your terrace.","Wake up to a gorgeous bright day in one of the greatest water villas in Maldives by Grand Park Kodhipparu, Maldives, which offers unrivalled views of the serene blue ocean and sky. The property also has a large bathroom, indoor and outdoor showers, and direct access to the seaside through an attractive stairway.","Our exquisite one-island-one-resort location features 120 Maldives villas with stunning vistas and opulent in-room amenities. All of our beach, ocean, and lagoon villas have stunning tropical views and private pools, and are designed with a contemporary façade with Maldives'' traditional influence. Relax with the calming sounds of the waves while sitting on your balcony or resting in the plunge pool, feet from the beach - ready for you to discover the colourful marine life.","If you like the sand and sea, the beach pool villas are surrounded by lush flora and are only steps from from the beach while staying near to the resort''s amenities. Our Grand Residences provide a perfect holiday home-away-from-home with two bedrooms, a living room, an infinity pool with spectacular ocean views, and an outside private dining space."]}'::jsonb, now())
@@ -3652,40 +3513,6 @@ on conflict (id) do nothing;
 insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
 select id, 'Ocean Pool Residence Single Bedroom', 4300, 'USD', 'King', 3, 0
 from nodes where node_type = 'accommodation' and slug = 'kudadoo-maldives-private-island-resort'
-on conflict (accommodation_id, name) do nothing;
-
--- Kurumba
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, attributes, published_at)
-values ('accommodation', 'kurumba-maldives-island-resort', 'Kurumba Maldives Island Resort', 'Kurumba Maldives welcomes you. A Maldives island resort with more to offer than sun, sand, and water! A resort full of surprises, engaging activities, energetic entertainment, and friendly people that will make your Maldives vacation that much more memorable. Kurumba is appropriate for guests of all ages. We are glad to offer couples, honeymooners, friends, families, and small groups with a grin and a splash of Maldivian charm via our choice of entertainment, facilities, activities, and social events.', 'published', 'Kurumba Maldives Island Resort | Maldives Resorts | MTG', 'Kurumba Maldives welcomes you. A Maldives island resort with more to offer than sun, sand, and water! A resort full of surprises, engaging activities, energetic entertainment, and friendly people that will make your Maldives vacation that much more memorable. Kurumba is appropriate for guests of all ages. We are glad to offer couples, honeymooners, friends, families, and small groups with a grin and a splash of Maldivian charm via our choice of entertainment, facilities, activities, and social events.', '{"overview_paragraphs":["Kurumba Maldives welcomes you. A Maldives island resort with more to offer than sun, sand, and water! A resort full of surprises, engaging activities, energetic entertainment, and friendly people that will make your Maldives vacation that much more memorable. Kurumba is appropriate for guests of all ages. We are glad to offer couples, honeymooners, friends, families, and small groups with a grin and a splash of Maldivian charm via our choice of entertainment, facilities, activities, and social events.","Accommodation that is both spacious and reasonably priced. Walk onto the beach, the water beneath your feet and Malé in the distance.","A huge pool villa with a large balcony. An open-plan area with views of the Maldives ocean on the east and seclusion and excellent lagoon on the west.","Kurumba Maldives provides classic modern style with character and thoughtful touches in 8 different room types.","Make every opportunity count. We are only a 10-minute speedboat trip from Velana International Airport (open 24 hours), so you may be on the beach with a beverage in hand within seconds of landing.","Veli Spa is a real Maldivian experience, set among beautiful grounds. While embracing contemporary therapies, our Spa is inspired by the tranquillity of the Maldives Islands, the balance of the waters, the vitality of the Maldivian indigenous people, and the healing powers of human touch."]}'::jsonb, now())
-on conflict (node_type, slug) do nothing;
-
-insert into accommodations (
-  id, accommodation_type, star_rating, price_from, video_youtube_id, currency
-)
-select
-  n.id, 'resort', null, 300, '8ODifdytxy4', 'USD'
-from nodes n where n.node_type = 'accommodation' and n.slug = 'kurumba-maldives-island-resort'
-on conflict (id) do nothing;
-
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'primary'
-from nodes n, nodes l
-where n.node_type = 'accommodation' and n.slug = 'kurumba-maldives-island-resort'
-  and l.node_type = 'location' and l.slug = 'vihamanaafushi'
-on conflict (node_id, location_id) do nothing;
-
-insert into bookable_products (id, booking_mode)
-select id, 'inquiry' from nodes where node_type = 'accommodation' and slug = 'kurumba-maldives-island-resort'
-on conflict (id) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Superior Room', 300, 'USD', 'King', 3, 0
-from nodes where node_type = 'accommodation' and slug = 'kurumba-maldives-island-resort'
-on conflict (accommodation_id, name) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Deluxe Pool Villa', 900, 'USD', 'King', 3, 1
-from nodes where node_type = 'accommodation' and slug = 'kurumba-maldives-island-resort'
 on conflict (accommodation_id, name) do nothing;
 
 -- LUX-South
@@ -5082,40 +4909,6 @@ select id, 'Over Water Villa', 775, 'USD', 'King', 3, 2
 from nodes where node_type = 'accommodation' and slug = 'six-senses-kanuhura-maldives-private-island'
 on conflict (accommodation_id, name) do nothing;
 
--- Six-Senses-Laamu
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, attributes, published_at)
-values ('accommodation', 'six-senses-laamu-maldives-island-resort', 'Six Senses Laamu Maldives Island Resort', 'Award-winning marine conservation effort located at Six Senses Laamu in conjunction with three partner NGOs: The Manta Trust, Blue Marine Foundation, and Olive Ridley Project, all of which collaborate to achieve research, guest education, and community outreach objectives. Is this your ideal palm-fringed paradise? It''s the sole resort in the secluded Laamu Atoll in the Maldives'' south, yet it''s only a short inter-island flight and boat ride away. On-land and over-water homes, dolphins playing in the warm sapphire waters, and restaurants offering delectable East-West cuisine combine to create an amazing, natural paradise.', 'published', 'Six Senses Laamu Maldives Island Resort | Maldives Resorts | MTG', 'Award-winning marine conservation effort located at Six Senses Laamu in conjunction with three partner NGOs: The Manta Trust, Blue Marine Foundation, and Olive Ridley Project, all of which collaborate to achieve research, guest education, and community outreach objectives. Is this your ideal palm-fringed paradise? It''s the sole resort in the secluded Laamu Atoll in the Maldives'' south, yet it''s only a short inter-island flight and boat ride away. On-land and over-water homes, dolphins playing in the warm sapphire waters, and restaurants offering delectable East-West cuisine combine to create an amazing, natural paradise.', '{"overview_paragraphs":["Award-winning marine conservation effort located at Six Senses Laamu in conjunction with three partner NGOs: The Manta Trust, Blue Marine Foundation, and Olive Ridley Project, all of which collaborate to achieve research, guest education, and community outreach objectives. Is this your ideal palm-fringed paradise? It''s the sole resort in the secluded Laamu Atoll in the Maldives'' south, yet it''s only a short inter-island flight and boat ride away. On-land and over-water homes, dolphins playing in the warm sapphire waters, and restaurants offering delectable East-West cuisine combine to create an amazing, natural paradise.","These beach homes, hidden among the thick tropical flora overlooking the lagoon, feature a private pool and give complete seclusion surrounded by the turquoise lagoon waters. The pool is only a few metres from the beach, and sun loungers are strategically placed beside the pool deck for sun and shade. Feel the soothing sea wind streaming through the leaves while you bathe in the open-air branch-encircled shower or outdoor bathtub, or simply rest in the secluded garden area. Climb to your treetop terrace, which has a comfortable seating and dining space, for a unique panoramic view of Maldivian nature, sapphire ocean, and an incredible beautiful sunset.","A short bike ride on the aged timber jetties will take you to these overwater hideaways, which are surrounded by towering wooden walls. With direct access to the sea, you may go swimming or snorkelling around the lagoon, or simply rest on the overwater netted hammock. If you want to soak up some sun or watch the sunset over the lagoon, you may relax on the sun loungers or around the glass-bottom table on the outdoor deck. The water villas have an outdoor rain shower and a glass overwater bathtub with a view of the lagoon. You may obtain a unique panoramic view of the Indian Ocean, sapphire seascape, and an outstanding vivid tropical sunset here.","Six Senses Laamu''s beautifully built, air-conditioned villas have an outdoor bathroom with rain shower where guests may shower beneath the stars. Guests may enjoy the Maldivian sun from the luxury of their villas thanks to private day beds and sun loungers. The rooms include an electric kettle, slippers, and a dental kit.","The Six Senses Laamu is the sole resort in the Laamu Atoll, which is located in the Maldives'' south. Olhuveli Island is a 35-minute inter-island domestic flight from Male International Airport to Kadhdhoo, followed by a short motorboat journey.","Every day begins with a hearty breakfast with buffet and a la carte selections, as well as a daily changing live cooking station and fruit cut to order. Dinners are international themed events with a concentration on South Asia. There are also live cooking nights where chefs produce fresh meals from a range of different cuisines on the spot."]}'::jsonb, now())
-on conflict (node_type, slug) do nothing;
-
-insert into accommodations (
-  id, accommodation_type, star_rating, price_from, video_youtube_id, currency
-)
-select
-  n.id, 'resort', 5, 1000, 'nR4SchedAl8', 'USD'
-from nodes n where n.node_type = 'accommodation' and n.slug = 'six-senses-laamu-maldives-island-resort'
-on conflict (id) do nothing;
-
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'primary'
-from nodes n, nodes l
-where n.node_type = 'accommodation' and n.slug = 'six-senses-laamu-maldives-island-resort'
-  and l.node_type = 'location' and l.slug = 'olhuveli'
-on conflict (node_id, location_id) do nothing;
-
-insert into bookable_products (id, booking_mode)
-select id, 'inquiry' from nodes where node_type = 'accommodation' and slug = 'six-senses-laamu-maldives-island-resort'
-on conflict (id) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Lagoon Beach Villa Pool', 1080, 'USD', 'King', 3, 0
-from nodes where node_type = 'accommodation' and slug = 'six-senses-laamu-maldives-island-resort'
-on conflict (accommodation_id, name) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Lagoon Water Villa', 1000, 'USD', 'King', 3, 1
-from nodes where node_type = 'accommodation' and slug = 'six-senses-laamu-maldives-island-resort'
-on conflict (accommodation_id, name) do nothing;
-
 -- Siyam-World
 insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, attributes, published_at)
 values ('accommodation', 'siyam-world-maldives-island-resort', 'Siyam World Maldives Island Resort', 'Siyam World is a stunning new picture of the Maldives'' rich natural beauties, a carefree playground with an intriguing, diversified, and never-before-seen assortment of ''never-seen-before'' experiences guaranteed to leave you speechless. Premium An all-inclusive island vacation that bridges cultures and boundaries. Designed for fun-loving, open-minded couples, romance seekers, families, or bigger groups of friends who like to wander, socialise, and participate in an island community. Siyam World is one of the Maldives'' biggest islands, including a resort and spectacular villas - The Beach House Collection.', 'published', 'Siyam World Maldives Island Resort | Maldives Resorts | MTG', 'Siyam World is a stunning new picture of the Maldives'' rich natural beauties, a carefree playground with an intriguing, diversified, and never-before-seen assortment of ''never-seen-before'' experiences guaranteed to leave you speechless. Premium An all-inclusive island vacation that bridges cultures and boundaries. Designed for fun-loving, open-minded couples, romance seekers, families, or bigger groups of friends who like to wander, socialise, and participate in an island community. Siyam World is one of the Maldives'' biggest islands, including a resort and spectacular villas - The Beach House Collection.', '{"overview_paragraphs":["Siyam World is a stunning new picture of the Maldives'' rich natural beauties, a carefree playground with an intriguing, diversified, and never-before-seen assortment of ''never-seen-before'' experiences guaranteed to leave you speechless. Premium An all-inclusive island vacation that bridges cultures and boundaries. Designed for fun-loving, open-minded couples, romance seekers, families, or bigger groups of friends who like to wander, socialise, and participate in an island community. Siyam World is one of the Maldives'' biggest islands, including a resort and spectacular villas - The Beach House Collection.","Are there any sunset chasers around? Sunset Pool Beach Villas are located on the beachfront and have easy access to the beach where you may sway into the sunset on a fun fox swing. Take use of a private pool, a mini bar, Wi-Fi, a bathroom with a bathtub, and indoor and outdoor showers. Isn''t it amazing?","These unique Water Villas provide your own private pool as well as a fun slide. Ideal for people who enjoy having a little fun on their vacations in order to create great memories. Enjoy your private sundeck with sun loungers, a bathroom with an indoor shower, a mini bar, Wi-Fi, and breathtaking views. We believe that sliding into the lagoon is more enjoyable.","Our villas are located right on the beach. All of the villas are on the beach or on stilts over the lagoon, and half have their own pool. They not only provide excellent amenities, but also a high level of seclusion - while you sleep, rest, and wash outside. Dreams come true at our villas, which have been identified as being among the top Maldives island resorts!","Located in the famous Noonu Atoll, the resort is only a 45-minute direct seaplane journey or a 40-minute domestic flight from Maafaru International Airport, followed by a 10-minute speedboat ride.","Tempo, located east of the island and set on a gorgeous beach terrace, serves a variety of world cuisines. This casual dining restaurant serves a worldwide marketplace of scents and sensations in a buffet format with live cooking stations."]}'::jsonb, now())
@@ -5148,45 +4941,6 @@ on conflict (accommodation_id, name) do nothing;
 insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
 select id, 'Water Pool Villa Slide', 700, 'USD', 'King', 3, 1
 from nodes where node_type = 'accommodation' and slug = 'siyam-world-maldives-island-resort'
-on conflict (accommodation_id, name) do nothing;
-
--- Soneva-Fushi
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, attributes, published_at)
-values ('accommodation', 'soneva-fushi-maldives-island-resort', 'Soneva Fushi Maldives Island Resort', 'Soneva Fushi is a natural wonder located in the UNESCO Biosphere Reserve of Baa Atoll, one of the Maldives'' biggest islands. Sixty-four private island homes are tucked away in a lush expanse of lush vegetation. All have expansive living areas and views of the dawn or sunset, and most have their own pools in addition to being just steps from the beach. Our eight Water Retreats are among the largest of their kind in the world, boasting a terrace with a private pool and an ocean water slide. All Soneva Fushi villas have our personalised Barefoot Guardian service, which is available 24 hours a day, seven days a week.', 'published', 'Soneva Fushi Maldives Island Resort | Maldives Resorts | MTG', 'Soneva Fushi is a natural wonder located in the UNESCO Biosphere Reserve of Baa Atoll, one of the Maldives'' biggest islands. Sixty-four private island homes are tucked away in a lush expanse of lush vegetation. All have expansive living areas and views of the dawn or sunset, and most have their own pools in addition to being just steps from the beach. Our eight Water Retreats are among the largest of their kind in the world, boasting a terrace with a private pool and an ocean water slide. All Soneva Fushi villas have our personalised Barefoot Guardian service, which is available 24 hours a day, seven days a week.', '{"overview_paragraphs":["Soneva Fushi is a natural wonder located in the UNESCO Biosphere Reserve of Baa Atoll, one of the Maldives'' biggest islands. Sixty-four private island homes are tucked away in a lush expanse of lush vegetation. All have expansive living areas and views of the dawn or sunset, and most have their own pools in addition to being just steps from the beach. Our eight Water Retreats are among the largest of their kind in the world, boasting a terrace with a private pool and an ocean water slide. All Soneva Fushi villas have our personalised Barefoot Guardian service, which is available 24 hours a day, seven days a week.","Take a relaxing plunge in your private pool, which is protected by trees. If you wish to experience the pristine Maldivian ocean''s underwater delights, you''re only a few steps away. Relax among the whimsically rustic-chic apartments and balconies and succumb to the shipwrecked vibe.","Sunrise over the water has a mystical quality about it. With three two-story bungalows facing the ocean, there are infinite opportunities to enjoy the sunrise at this expansive seaside Retreat. Promenade the elevated walkway. Swim in the cool private pool. Bathe under the stars in the open-air garden bathrooms. Enjoy a leisurely lunch on the elevated dining pavilion, complemented by a cold beverage from the in-villa wine cooler.","The 1 Bedroom Water Retreat with Slide is positioned right over the pristine waters of the Indian Ocean and is accessible from the main island through a curving dock. The vast home has a light-filled, wide living space with a neighbouring pantry and minibar, as well as sleek and modest décor inspired by the sea.","Fifty-seven individual villas, each with its own length of beach, are tucked away among deep greenery and within touching distance of a magnificent coral reef. Our Soneva Fushi villas are located on the island''s sunset or dawn side. Despite the fact that there are little distinctions, both sides boast the Maldives'' characteristic white-sand beaches and crystal clear turquoise seas. Mr./Ms. Friday butlers deliver intuitive service.","Guests may fly directly to Soneva Fushi from Malé International Airport. Please keep in mind that the seaplane only operates throughout the day, with the latest trip departing at 17:00. Guests can also fly domestically to the neighbouring Dharavandhoo Airport, then take a 15-minute speedboat journey to the resorts. The final domestic flight departs at 23:15. Both flights last between 30 and 40 minutes. We recommend arriving by seaplane to get a bird''s eye perspective of the Maldives'' gorgeous islands."]}'::jsonb, now())
-on conflict (node_type, slug) do nothing;
-
-insert into accommodations (
-  id, accommodation_type, star_rating, price_from, video_youtube_id, currency
-)
-select
-  n.id, 'resort', 5, 2000, 'SPn2V6YP_eg', 'USD'
-from nodes n where n.node_type = 'accommodation' and n.slug = 'soneva-fushi-maldives-island-resort'
-on conflict (id) do nothing;
-
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'primary'
-from nodes n, nodes l
-where n.node_type = 'accommodation' and n.slug = 'soneva-fushi-maldives-island-resort'
-  and l.node_type = 'location' and l.slug = 'kunfunadhoo'
-on conflict (node_id, location_id) do nothing;
-
-insert into bookable_products (id, booking_mode)
-select id, 'inquiry' from nodes where node_type = 'accommodation' and slug = 'soneva-fushi-maldives-island-resort'
-on conflict (id) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Crusoe Villa Pool', 2000, 'USD', 'King', 3, 0
-from nodes where node_type = 'accommodation' and slug = 'soneva-fushi-maldives-island-resort'
-on conflict (accommodation_id, name) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Villa 41 Three Bedroom Pool Residence', 21700, 'USD', 'King', 9, 1
-from nodes where node_type = 'accommodation' and slug = 'soneva-fushi-maldives-island-resort'
-on conflict (accommodation_id, name) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, '1 Bedroom Water Retreat Slide', 5700, 'USD', 'King', 3, 2
-from nodes where node_type = 'accommodation' and slug = 'soneva-fushi-maldives-island-resort'
 on conflict (accommodation_id, name) do nothing;
 
 -- Soneva-Jani
@@ -5342,7 +5096,7 @@ insert into node_locations (node_id, location_id, relation)
 select n.id, l.id, 'primary'
 from nodes n, nodes l
 where n.node_type = 'accommodation' and n.slug = 'sun-siyam-olhuveli-maldives-island-resort'
-  and l.node_type = 'location' and l.slug = 'olhuveli-kaafu'
+  and l.node_type = 'location' and l.slug = 'olhuveli'
 on conflict (node_id, location_id) do nothing;
 
 insert into bookable_products (id, booking_mode)
@@ -5561,45 +5315,6 @@ on conflict (accommodation_id, name) do nothing;
 insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
 select id, 'Over Water Villa', 3000, 'USD', 'King', 3, 1
 from nodes where node_type = 'accommodation' and slug = 'vakkaru-maldives-island-resort'
-on conflict (accommodation_id, name) do nothing;
-
--- Velassaru
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, attributes, published_at)
-values ('accommodation', 'velassaru-maldives-island-resort', 'Velassaru Maldives Island Resort', 'Crystal-clear oceans, soft white beaches. A picture-perfect lovely lagoon with breathtaking sunset views. Chic private hideaways dot the coastline. Five restaurants and two pubs serve exquisite flavours from all around the world. Explore our abundant coral reefs, sail beyond the horizon, or simply unwind on our idyllic Maldivian beaches.', 'published', 'Velassaru Maldives Island Resort | Maldives Resorts | MTG', 'Crystal-clear oceans, soft white beaches. A picture-perfect lovely lagoon with breathtaking sunset views. Chic private hideaways dot the coastline. Five restaurants and two pubs serve exquisite flavours from all around the world. Explore our abundant coral reefs, sail beyond the horizon, or simply unwind on our idyllic Maldivian beaches.', '{"overview_paragraphs":["Crystal-clear oceans, soft white beaches. A picture-perfect lovely lagoon with breathtaking sunset views. Chic private hideaways dot the coastline. Five restaurants and two pubs serve exquisite flavours from all around the world. Explore our abundant coral reefs, sail beyond the horizon, or simply unwind on our idyllic Maldivian beaches.","Luxurious in a subtle way. Your Deluxe Villa is a haven unto itself, with easy access to a lovely white sandy beach:","Each Beach Villa with Pool is located on the beach and has direct access to the ocean. Each one has all you need for a comfortable stay:","Our 24 Water Villas are sophisticated over-water ocean villas with stunning lagoon views. Each one has all you need for a comfortable stay:","Contemporary-styled villas and bungalows offer stylish seclusion tucked away in gorgeous gardens, located along the seaside, or perched above water. Every villa in Velassaru Maldives has everything you need for a relaxing stay.","Velassaru Maldives is a 25-minute speedboat journey from Malé International Airport in South Malé Atoll. Our guest services crew will be at the airport to greet visitors and transport them to waiting speedboats."]}'::jsonb, now())
-on conflict (node_type, slug) do nothing;
-
-insert into accommodations (
-  id, accommodation_type, star_rating, price_from, video_youtube_id, currency
-)
-select
-  n.id, 'resort', 5, 800, 'UBywDUXX3dA', 'USD'
-from nodes n where n.node_type = 'accommodation' and n.slug = 'velassaru-maldives-island-resort'
-on conflict (id) do nothing;
-
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'primary'
-from nodes n, nodes l
-where n.node_type = 'accommodation' and n.slug = 'velassaru-maldives-island-resort'
-  and l.node_type = 'location' and l.slug = 'velassaru'
-on conflict (node_id, location_id) do nothing;
-
-insert into bookable_products (id, booking_mode)
-select id, 'inquiry' from nodes where node_type = 'accommodation' and slug = 'velassaru-maldives-island-resort'
-on conflict (id) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Deluxe Villa', 800, 'USD', 'King', 3, 0
-from nodes where node_type = 'accommodation' and slug = 'velassaru-maldives-island-resort'
-on conflict (accommodation_id, name) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Beach Pool Villa', 1050, 'USD', 'King', 3, 1
-from nodes where node_type = 'accommodation' and slug = 'velassaru-maldives-island-resort'
-on conflict (accommodation_id, name) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Water Villa', 1400, 'USD', 'King', 3, 2
-from nodes where node_type = 'accommodation' and slug = 'velassaru-maldives-island-resort'
 on conflict (accommodation_id, name) do nothing;
 
 -- Veligandu-Island
@@ -6229,45 +5944,6 @@ insert into bookable_products (id, booking_mode)
 select id, 'inquiry' from nodes where node_type = 'accommodation' and slug = 'amra-palace-island-hotel-maldives'
 on conflict (id) do nothing;
 
--- arena-maafushi
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, attributes, published_at)
-values ('accommodation', 'arena-beach-hotel-maafushi-maldives', 'Arena Beach Hotel Maafushi Maldives', 'The Arena Beach Hotel in Maafushi, Maldives, is located on the coast of the South Male Atoll. The island has a breathtaking view of the Indian Ocean and the turquoise lagoon. Let go of your worries and revel in the thrills that await you at every stop. Arena Beach Hotel offers the most accessible way to explore the real Maldives.', 'published', 'Arena Beach Hotel Maafushi Maldives | Maldives Hotels | MTG', 'The Arena Beach Hotel in Maafushi, Maldives, is located on the coast of the South Male Atoll. The island has a breathtaking view of the Indian Ocean and the turquoise lagoon. Let go of your worries and revel in the thrills that await you at every stop. Arena Beach Hotel offers the most accessible way to explore the real Maldives.', '{"overview_paragraphs":["The Arena Beach Hotel in Maafushi, Maldives, is located on the coast of the South Male Atoll. The island has a breathtaking view of the Indian Ocean and the turquoise lagoon. Let go of your worries and revel in the thrills that await you at every stop. Arena Beach Hotel offers the most accessible way to explore the real Maldives.","Seven Double Deluxe Rooms with balconies have views of the city with coconut trees swaying softly in the breeze, while nine Double Deluxe Rooms with balconies have views of the island''s stunning turquoise lagoon reaching out across the Indian Ocean. In addition, Arena Beach Hotel offers two Super Deluxe Sea View Rooms, which deliver just what the name implies."]}'::jsonb, now())
-on conflict (node_type, slug) do nothing;
-
-insert into accommodations (
-  id, accommodation_type, star_rating, price_from, video_youtube_id, currency
-)
-select
-  n.id, 'hotel', null, 59, null, 'USD'
-from nodes n where n.node_type = 'accommodation' and n.slug = 'arena-beach-hotel-maafushi-maldives'
-on conflict (id) do nothing;
-
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'primary'
-from nodes n, nodes l
-where n.node_type = 'accommodation' and n.slug = 'arena-beach-hotel-maafushi-maldives'
-  and l.node_type = 'location' and l.slug = 'maafushi'
-on conflict (node_id, location_id) do nothing;
-
-insert into bookable_products (id, booking_mode)
-select id, 'inquiry' from nodes where node_type = 'accommodation' and slug = 'arena-beach-hotel-maafushi-maldives'
-on conflict (id) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Standard Room', 59, 'USD', 'Double', null, 0
-from nodes where node_type = 'accommodation' and slug = 'arena-beach-hotel-maafushi-maldives'
-on conflict (accommodation_id, name) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Double Sea View Balcony Room', 89, 'USD', 'Double', null, 1
-from nodes where node_type = 'accommodation' and slug = 'arena-beach-hotel-maafushi-maldives'
-on conflict (accommodation_id, name) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Balcony Sea View Tripple Room', 112, 'USD', 'Double', null, 2
-from nodes where node_type = 'accommodation' and slug = 'arena-beach-hotel-maafushi-maldives'
-on conflict (accommodation_id, name) do nothing;
-
 -- casa-retreat
 insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, attributes, published_at)
 values ('accommodation', 'casa-retreat', 'casa-retreat', 'Casa Retreat is an ideal place to stay in Male City and Airport for travelers seeking beauty, comfort, and convenience. This is a convenient property that is near to the airport and easily accessible from both Male'' and Hulhumale''. The hotel has its own spa, which will deliver a 1-hour spa treatment at a reduced rate, as well as other excursions.', 'published', 'casa-retreat | Maldives Guesthouses | MTG', 'Casa Retreat is an ideal place to stay in Male City and Airport for travelers seeking beauty, comfort, and convenience. This is a convenient property that is near to the airport and easily accessible from both Male'' and Hulhumale''. The hotel has its own spa, which will deliver a 1-hour spa treatment at a reduced rate, as well as other excursions.', '{"overview_paragraphs":["Casa Retreat is an ideal place to stay in Male City and Airport for travelers seeking beauty, comfort, and convenience. This is a convenient property that is near to the airport and easily accessible from both Male'' and Hulhumale''. The hotel has its own spa, which will deliver a 1-hour spa treatment at a reduced rate, as well as other excursions.","Hotel have excellent services and amenities, ensuring that you have a pleasant stay. The hotel offers complimentary Wi-Fi in all rooms, as well as daily housekeeping and a restaurant. Some facilities, such as \"things to do and ways to relax,\" are available outside of the accommodation."]}'::jsonb, now())
@@ -6368,40 +6044,6 @@ on conflict (accommodation_id, name) do nothing;
 insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
 select id, 'Luxury Coconut Suit with Balcony Twin Room', 75, 'USD', 'Double', null, 3
 from nodes where node_type = 'accommodation' and slug = 'island-break-fulidhoo-maldives'
-on conflict (accommodation_id, name) do nothing;
-
--- kaanibeach-maafushi
-insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, attributes, published_at)
-values ('accommodation', 'kaani-beach-hotel-maafushi-maldives', 'Kaani Beach Hotel Maafushi Maldives', 'On Maafushi Island, a sunny beach getaway surrounded by coconut palm trees, the 3-star Kaani Beach Hotel is located. On-site activities include scuba diving, island picnics, dolphin viewing, and snorkeling. Kaani Beach Hotel is the ideal choice for anyone looking for a romantic getaway or something a little more laid-back.', 'published', 'Kaani Beach Hotel Maafushi Maldives | Maldives Hotels | MTG', 'On Maafushi Island, a sunny beach getaway surrounded by coconut palm trees, the 3-star Kaani Beach Hotel is located. On-site activities include scuba diving, island picnics, dolphin viewing, and snorkeling. Kaani Beach Hotel is the ideal choice for anyone looking for a romantic getaway or something a little more laid-back.', '{"overview_paragraphs":["On Maafushi Island, a sunny beach getaway surrounded by coconut palm trees, the 3-star Kaani Beach Hotel is located. On-site activities include scuba diving, island picnics, dolphin viewing, and snorkeling. Kaani Beach Hotel is the ideal choice for anyone looking for a romantic getaway or something a little more laid-back.","Sea View rooms with private balconies are available at Kaani Beach Hotel, a sunny beach getaway surrounded by coconut palm trees. All of the rooms have air conditioning, a hot water shower, satellite television, wireless Internet, a mini bar, a hair dryer, and a safe. There is also a restaurant offering buffet breakfast and dinner, as well as a rooftop open-air terrace with loungers."]}'::jsonb, now())
-on conflict (node_type, slug) do nothing;
-
-insert into accommodations (
-  id, accommodation_type, star_rating, price_from, video_youtube_id, currency
-)
-select
-  n.id, 'hotel', 3, 71, null, 'USD'
-from nodes n where n.node_type = 'accommodation' and n.slug = 'kaani-beach-hotel-maafushi-maldives'
-on conflict (id) do nothing;
-
-insert into node_locations (node_id, location_id, relation)
-select n.id, l.id, 'primary'
-from nodes n, nodes l
-where n.node_type = 'accommodation' and n.slug = 'kaani-beach-hotel-maafushi-maldives'
-  and l.node_type = 'location' and l.slug = 'maafushi'
-on conflict (node_id, location_id) do nothing;
-
-insert into bookable_products (id, booking_mode)
-select id, 'inquiry' from nodes where node_type = 'accommodation' and slug = 'kaani-beach-hotel-maafushi-maldives'
-on conflict (id) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Deluxe Sea View Balcony Room', 71, 'USD', 'Double', null, 0
-from nodes where node_type = 'accommodation' and slug = 'kaani-beach-hotel-maafushi-maldives'
-on conflict (accommodation_id, name) do nothing;
-
-insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
-select id, 'Tripple Sea View Balcony Room', 84, 'USD', 'Tripple', null, 1
-from nodes where node_type = 'accommodation' and slug = 'kaani-beach-hotel-maafushi-maldives'
 on conflict (accommodation_id, name) do nothing;
 
 -- maagiri
@@ -6562,5 +6204,180 @@ on conflict (accommodation_id, name) do nothing;
 insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
 select id, 'Sea View Room', 93, 'USD', null, null, 1
 from nodes where node_type = 'accommodation' and slug = 'surfview-hotel-male-maldives'
+on conflict (accommodation_id, name) do nothing;
+
+-- Enriching already-seeded Task 5 accommodations with this round's
+-- real price/video/room/overview data (same physical resorts — see
+-- mergeIntoExistingSlug in merge-accommodation-research.mjs).
+-- Baros-Island -> baros-maldives
+update accommodations set
+  price_from = coalesce(accommodations.price_from, 780),
+  video_youtube_id = coalesce(accommodations.video_youtube_id, '9NssgRLiKF8')
+from nodes n where n.id = accommodations.id and n.node_type = 'accommodation' and n.slug = 'baros-maldives';
+
+update nodes set attributes = attributes || '{"overview_paragraphs":["Turquoise seas lap against white-sand beaches. Palm trees rustle in the breeze. Welcome to Baros, a lush island canopy natural paradise about 25 minutes by speedboat from the Maldives'' international airport. We''ve been greeting visitors since 1973, and we''ve spent decades polishing our services and developing our surroundings to create what we feel to be a renowned resort. Today, we''re one of the most popular Maldives resorts, and we can''t wait to show you what makes us so unique.","Unrivaled in its attention to detail, Baros creates really transformative experiences by putting the individual first, customising to their specific needs and expectations in a spirit of true generosity. Allow us to contact you in order to design your Maldives vacation.","The lavish furniture and unique artworks in this enormous property create a warm and welcome atmosphere. A private pool is bordered by tropical flowers in the garden courtyard, and a front balcony leads to your own length of Baros beach. Butler service is available 24 hours a day, seven days a week, ensuring that you have whatever you need, when you need it.","Turquoise seas lap against white-sand beaches. Palm trees rustle in the breeze. A beautiful island canopy in a natural wonderland within 25 minutes by speedboat from the Maldives'' international airport. We''ve been greeting visitors since 1973, and we''ve spent decades perfecting our services and nurturing our surroundings.","Take a supper cruise for two on a dhoni. Or, for a special gourmet supper, come to the Piano Deck with your own private chef. Alternatively, enjoy the sunset with cocktails and canapés at The Lighthouse. Every meal is yours to savour at these gourmet restaurants in Baros, and every mouthful is meant to inspire. For more than 40 years, we''ve been working to refine classic meals while experimenting with new techniques and ingredients from across the world. From opulent buffet breakfasts by the pool to exquisite dining at the famed Lighthouse, each meal is another chance to indulge in a favourite or try something new.","Serenity Spa, a haven of relaxation and a sanctuary nestled in the forest, welcomes you into a world of luxurious spa and beauty rituals. You can come here to unwind for a few hours or to create a personalised wellness journey with a series of daily treatments. From daily yoga classes to therapeutic massage, everything here is geared to help you regain your balance and find your peace. Request a yoga session anywhere on the island for something out of the usual, or get a soothing massage in the privacy of your comfy home."]}'::jsonb
+where node_type = 'accommodation' and slug = 'baros-maldives' and not (attributes ? 'overview_paragraphs');
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Deluxe Villa', 780, 'USD', 'King', 3, 0
+from nodes where node_type = 'accommodation' and slug = 'baros-maldives'
+on conflict (accommodation_id, name) do nothing;
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Water Villa', 1100, 'USD', 'King', 3, 1
+from nodes where node_type = 'accommodation' and slug = 'baros-maldives'
+on conflict (accommodation_id, name) do nothing;
+
+-- Gili-Lankanfushi -> gili-lankanfushi
+update accommodations set
+  price_from = coalesce(accommodations.price_from, 1600),
+  video_youtube_id = coalesce(accommodations.video_youtube_id, 'Xx61PgIeXRA')
+from nodes n where n.id = accommodations.id and n.node_type = 'accommodation' and n.slug = 'gili-lankanfushi';
+
+update nodes set attributes = attributes || '{"overview_paragraphs":["With sustainably designed homes hanging above turquoise seas that reach as far as the eye can see, our exclusive island refuge provides peace by design. Spend your days doing anything you want—snorkeling, relaxing at the spa, sailing on a catamaran—and don''t be afraid to ask for help and guidance from our helpful staff. Nourish your body with locally produced products and worldwide cuisines, enjoy the sunset from your rustic-luxe villa, and fall asleep with the moon shining gloriously in the sky.","These 18 one-bedroom retreats are ideal for couples. Each apartment has an open-air living area, a huge bathroom, and a separate rooftop terrace from which to take in the vistas. Spend your days swimming and snorkelling in the coral gardens at the base of your sundeck, which has direct ocean access. At night, relax on catamaran nets while watching the sky.","Our five overwater Gili Lagoon Villas face west and provide breathtaking sunset views. The one-bedroom hideaways with thatched roofs are split across two storeys and include open-air living spaces, big bathrooms, and private rooftop terraces. Relax on the deck or swim out to your own own water hammock. You may pass by eagle rays, reef sharks, and shoals of luminous fish.","The Family Villa, perched at the end of our Western-facing jetty, is an open-air paradise with unrivalled views of the surrounding seascape. The main bedroom has an en-suite bathroom as well as an outdoor tub and shower. Two huge, air-conditioned living areas offer plenty of living (and sleeping) space. When you''re not napping off in the sun, take use of your own gym, steam room, or rooftop Jacuzzi. Alternatively, venture off the quiet Three Palm Island to relax in a magnificent cabana.","45 rustic-chic thatched villas float over the clear lagoon waters of Gili Lankanfushi in the Maldives. Many are linked to wooden jetties that extend from a little island, while others stand alone in the water. Simple, yet magnificent abodes (all created from sustainable materials) can serve as the ideal foundation for any modern-day Robinson Crusoe trip.","Gili Lankanfushi Maldives, perched above the Indian Ocean, offers exquisite accommodation near to the sun and water. Gili Lankanfushi Maldives is located on the private island of Lankanfushi in Male Atoll, a 20-minute speedboat journey from Male International Airport."]}'::jsonb
+where node_type = 'accommodation' and slug = 'gili-lankanfushi' and not (attributes ? 'overview_paragraphs');
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Villa Suite', 1600, 'USD', 'King', 3, 0
+from nodes where node_type = 'accommodation' and slug = 'gili-lankanfushi'
+on conflict (accommodation_id, name) do nothing;
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Gili Lagoon Villa', 1800, 'USD', 'King', 3, 1
+from nodes where node_type = 'accommodation' and slug = 'gili-lankanfushi'
+on conflict (accommodation_id, name) do nothing;
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Family Villa', 4000, 'USD', 'King', 9, 2
+from nodes where node_type = 'accommodation' and slug = 'gili-lankanfushi'
+on conflict (accommodation_id, name) do nothing;
+
+-- Kurumba -> kurumba-maldives
+update accommodations set
+  price_from = coalesce(accommodations.price_from, 300),
+  video_youtube_id = coalesce(accommodations.video_youtube_id, '8ODifdytxy4')
+from nodes n where n.id = accommodations.id and n.node_type = 'accommodation' and n.slug = 'kurumba-maldives';
+
+update nodes set attributes = attributes || '{"overview_paragraphs":["Kurumba Maldives welcomes you. A Maldives island resort with more to offer than sun, sand, and water! A resort full of surprises, engaging activities, energetic entertainment, and friendly people that will make your Maldives vacation that much more memorable. Kurumba is appropriate for guests of all ages. We are glad to offer couples, honeymooners, friends, families, and small groups with a grin and a splash of Maldivian charm via our choice of entertainment, facilities, activities, and social events.","Accommodation that is both spacious and reasonably priced. Walk onto the beach, the water beneath your feet and Malé in the distance.","A huge pool villa with a large balcony. An open-plan area with views of the Maldives ocean on the east and seclusion and excellent lagoon on the west.","Kurumba Maldives provides classic modern style with character and thoughtful touches in 8 different room types.","Make every opportunity count. We are only a 10-minute speedboat trip from Velana International Airport (open 24 hours), so you may be on the beach with a beverage in hand within seconds of landing.","Veli Spa is a real Maldivian experience, set among beautiful grounds. While embracing contemporary therapies, our Spa is inspired by the tranquillity of the Maldives Islands, the balance of the waters, the vitality of the Maldivian indigenous people, and the healing powers of human touch."]}'::jsonb
+where node_type = 'accommodation' and slug = 'kurumba-maldives' and not (attributes ? 'overview_paragraphs');
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Superior Room', 300, 'USD', 'King', 3, 0
+from nodes where node_type = 'accommodation' and slug = 'kurumba-maldives'
+on conflict (accommodation_id, name) do nothing;
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Deluxe Pool Villa', 900, 'USD', 'King', 3, 1
+from nodes where node_type = 'accommodation' and slug = 'kurumba-maldives'
+on conflict (accommodation_id, name) do nothing;
+
+-- Six-Senses-Laamu -> six-senses-laamu
+update accommodations set
+  price_from = coalesce(accommodations.price_from, 1000),
+  video_youtube_id = coalesce(accommodations.video_youtube_id, 'nR4SchedAl8')
+from nodes n where n.id = accommodations.id and n.node_type = 'accommodation' and n.slug = 'six-senses-laamu';
+
+update nodes set attributes = attributes || '{"overview_paragraphs":["Award-winning marine conservation effort located at Six Senses Laamu in conjunction with three partner NGOs: The Manta Trust, Blue Marine Foundation, and Olive Ridley Project, all of which collaborate to achieve research, guest education, and community outreach objectives. Is this your ideal palm-fringed paradise? It''s the sole resort in the secluded Laamu Atoll in the Maldives'' south, yet it''s only a short inter-island flight and boat ride away. On-land and over-water homes, dolphins playing in the warm sapphire waters, and restaurants offering delectable East-West cuisine combine to create an amazing, natural paradise.","These beach homes, hidden among the thick tropical flora overlooking the lagoon, feature a private pool and give complete seclusion surrounded by the turquoise lagoon waters. The pool is only a few metres from the beach, and sun loungers are strategically placed beside the pool deck for sun and shade. Feel the soothing sea wind streaming through the leaves while you bathe in the open-air branch-encircled shower or outdoor bathtub, or simply rest in the secluded garden area. Climb to your treetop terrace, which has a comfortable seating and dining space, for a unique panoramic view of Maldivian nature, sapphire ocean, and an incredible beautiful sunset.","A short bike ride on the aged timber jetties will take you to these overwater hideaways, which are surrounded by towering wooden walls. With direct access to the sea, you may go swimming or snorkelling around the lagoon, or simply rest on the overwater netted hammock. If you want to soak up some sun or watch the sunset over the lagoon, you may relax on the sun loungers or around the glass-bottom table on the outdoor deck. The water villas have an outdoor rain shower and a glass overwater bathtub with a view of the lagoon. You may obtain a unique panoramic view of the Indian Ocean, sapphire seascape, and an outstanding vivid tropical sunset here.","Six Senses Laamu''s beautifully built, air-conditioned villas have an outdoor bathroom with rain shower where guests may shower beneath the stars. Guests may enjoy the Maldivian sun from the luxury of their villas thanks to private day beds and sun loungers. The rooms include an electric kettle, slippers, and a dental kit.","The Six Senses Laamu is the sole resort in the Laamu Atoll, which is located in the Maldives'' south. Olhuveli Island is a 35-minute inter-island domestic flight from Male International Airport to Kadhdhoo, followed by a short motorboat journey.","Every day begins with a hearty breakfast with buffet and a la carte selections, as well as a daily changing live cooking station and fruit cut to order. Dinners are international themed events with a concentration on South Asia. There are also live cooking nights where chefs produce fresh meals from a range of different cuisines on the spot."]}'::jsonb
+where node_type = 'accommodation' and slug = 'six-senses-laamu' and not (attributes ? 'overview_paragraphs');
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Lagoon Beach Villa Pool', 1080, 'USD', 'King', 3, 0
+from nodes where node_type = 'accommodation' and slug = 'six-senses-laamu'
+on conflict (accommodation_id, name) do nothing;
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Lagoon Water Villa', 1000, 'USD', 'King', 3, 1
+from nodes where node_type = 'accommodation' and slug = 'six-senses-laamu'
+on conflict (accommodation_id, name) do nothing;
+
+-- Soneva-Fushi -> soneva-fushi
+update accommodations set
+  price_from = coalesce(accommodations.price_from, 2000),
+  video_youtube_id = coalesce(accommodations.video_youtube_id, 'SPn2V6YP_eg')
+from nodes n where n.id = accommodations.id and n.node_type = 'accommodation' and n.slug = 'soneva-fushi';
+
+update nodes set attributes = attributes || '{"overview_paragraphs":["Soneva Fushi is a natural wonder located in the UNESCO Biosphere Reserve of Baa Atoll, one of the Maldives'' biggest islands. Sixty-four private island homes are tucked away in a lush expanse of lush vegetation. All have expansive living areas and views of the dawn or sunset, and most have their own pools in addition to being just steps from the beach. Our eight Water Retreats are among the largest of their kind in the world, boasting a terrace with a private pool and an ocean water slide. All Soneva Fushi villas have our personalised Barefoot Guardian service, which is available 24 hours a day, seven days a week.","Take a relaxing plunge in your private pool, which is protected by trees. If you wish to experience the pristine Maldivian ocean''s underwater delights, you''re only a few steps away. Relax among the whimsically rustic-chic apartments and balconies and succumb to the shipwrecked vibe.","Sunrise over the water has a mystical quality about it. With three two-story bungalows facing the ocean, there are infinite opportunities to enjoy the sunrise at this expansive seaside Retreat. Promenade the elevated walkway. Swim in the cool private pool. Bathe under the stars in the open-air garden bathrooms. Enjoy a leisurely lunch on the elevated dining pavilion, complemented by a cold beverage from the in-villa wine cooler.","The 1 Bedroom Water Retreat with Slide is positioned right over the pristine waters of the Indian Ocean and is accessible from the main island through a curving dock. The vast home has a light-filled, wide living space with a neighbouring pantry and minibar, as well as sleek and modest décor inspired by the sea.","Fifty-seven individual villas, each with its own length of beach, are tucked away among deep greenery and within touching distance of a magnificent coral reef. Our Soneva Fushi villas are located on the island''s sunset or dawn side. Despite the fact that there are little distinctions, both sides boast the Maldives'' characteristic white-sand beaches and crystal clear turquoise seas. Mr./Ms. Friday butlers deliver intuitive service.","Guests may fly directly to Soneva Fushi from Malé International Airport. Please keep in mind that the seaplane only operates throughout the day, with the latest trip departing at 17:00. Guests can also fly domestically to the neighbouring Dharavandhoo Airport, then take a 15-minute speedboat journey to the resorts. The final domestic flight departs at 23:15. Both flights last between 30 and 40 minutes. We recommend arriving by seaplane to get a bird''s eye perspective of the Maldives'' gorgeous islands."]}'::jsonb
+where node_type = 'accommodation' and slug = 'soneva-fushi' and not (attributes ? 'overview_paragraphs');
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Crusoe Villa Pool', 2000, 'USD', 'King', 3, 0
+from nodes where node_type = 'accommodation' and slug = 'soneva-fushi'
+on conflict (accommodation_id, name) do nothing;
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Villa 41 Three Bedroom Pool Residence', 21700, 'USD', 'King', 9, 1
+from nodes where node_type = 'accommodation' and slug = 'soneva-fushi'
+on conflict (accommodation_id, name) do nothing;
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, '1 Bedroom Water Retreat Slide', 5700, 'USD', 'King', 3, 2
+from nodes where node_type = 'accommodation' and slug = 'soneva-fushi'
+on conflict (accommodation_id, name) do nothing;
+
+-- Velassaru -> velassaru-maldives
+update accommodations set
+  price_from = coalesce(accommodations.price_from, 800),
+  video_youtube_id = coalesce(accommodations.video_youtube_id, 'UBywDUXX3dA')
+from nodes n where n.id = accommodations.id and n.node_type = 'accommodation' and n.slug = 'velassaru-maldives';
+
+update nodes set attributes = attributes || '{"overview_paragraphs":["Crystal-clear oceans, soft white beaches. A picture-perfect lovely lagoon with breathtaking sunset views. Chic private hideaways dot the coastline. Five restaurants and two pubs serve exquisite flavours from all around the world. Explore our abundant coral reefs, sail beyond the horizon, or simply unwind on our idyllic Maldivian beaches.","Luxurious in a subtle way. Your Deluxe Villa is a haven unto itself, with easy access to a lovely white sandy beach:","Each Beach Villa with Pool is located on the beach and has direct access to the ocean. Each one has all you need for a comfortable stay:","Our 24 Water Villas are sophisticated over-water ocean villas with stunning lagoon views. Each one has all you need for a comfortable stay:","Contemporary-styled villas and bungalows offer stylish seclusion tucked away in gorgeous gardens, located along the seaside, or perched above water. Every villa in Velassaru Maldives has everything you need for a relaxing stay.","Velassaru Maldives is a 25-minute speedboat journey from Malé International Airport in South Malé Atoll. Our guest services crew will be at the airport to greet visitors and transport them to waiting speedboats."]}'::jsonb
+where node_type = 'accommodation' and slug = 'velassaru-maldives' and not (attributes ? 'overview_paragraphs');
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Deluxe Villa', 800, 'USD', 'King', 3, 0
+from nodes where node_type = 'accommodation' and slug = 'velassaru-maldives'
+on conflict (accommodation_id, name) do nothing;
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Beach Pool Villa', 1050, 'USD', 'King', 3, 1
+from nodes where node_type = 'accommodation' and slug = 'velassaru-maldives'
+on conflict (accommodation_id, name) do nothing;
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Water Villa', 1400, 'USD', 'King', 3, 2
+from nodes where node_type = 'accommodation' and slug = 'velassaru-maldives'
+on conflict (accommodation_id, name) do nothing;
+
+-- arena-maafushi -> arena-beach-hotel
+update accommodations set
+  price_from = coalesce(accommodations.price_from, 59),
+  video_youtube_id = coalesce(accommodations.video_youtube_id, null)
+from nodes n where n.id = accommodations.id and n.node_type = 'accommodation' and n.slug = 'arena-beach-hotel';
+
+update nodes set attributes = attributes || '{"overview_paragraphs":["The Arena Beach Hotel in Maafushi, Maldives, is located on the coast of the South Male Atoll. The island has a breathtaking view of the Indian Ocean and the turquoise lagoon. Let go of your worries and revel in the thrills that await you at every stop. Arena Beach Hotel offers the most accessible way to explore the real Maldives.","Seven Double Deluxe Rooms with balconies have views of the city with coconut trees swaying softly in the breeze, while nine Double Deluxe Rooms with balconies have views of the island''s stunning turquoise lagoon reaching out across the Indian Ocean. In addition, Arena Beach Hotel offers two Super Deluxe Sea View Rooms, which deliver just what the name implies."]}'::jsonb
+where node_type = 'accommodation' and slug = 'arena-beach-hotel' and not (attributes ? 'overview_paragraphs');
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Standard Room', 59, 'USD', 'Double', null, 0
+from nodes where node_type = 'accommodation' and slug = 'arena-beach-hotel'
+on conflict (accommodation_id, name) do nothing;
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Double Sea View Balcony Room', 89, 'USD', 'Double', null, 1
+from nodes where node_type = 'accommodation' and slug = 'arena-beach-hotel'
+on conflict (accommodation_id, name) do nothing;
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Balcony Sea View Tripple Room', 112, 'USD', 'Double', null, 2
+from nodes where node_type = 'accommodation' and slug = 'arena-beach-hotel'
+on conflict (accommodation_id, name) do nothing;
+
+-- kaanibeach-maafushi -> kaani-beach-hotel
+update accommodations set
+  price_from = coalesce(accommodations.price_from, 71),
+  video_youtube_id = coalesce(accommodations.video_youtube_id, null)
+from nodes n where n.id = accommodations.id and n.node_type = 'accommodation' and n.slug = 'kaani-beach-hotel';
+
+update nodes set attributes = attributes || '{"overview_paragraphs":["On Maafushi Island, a sunny beach getaway surrounded by coconut palm trees, the 3-star Kaani Beach Hotel is located. On-site activities include scuba diving, island picnics, dolphin viewing, and snorkeling. Kaani Beach Hotel is the ideal choice for anyone looking for a romantic getaway or something a little more laid-back.","Sea View rooms with private balconies are available at Kaani Beach Hotel, a sunny beach getaway surrounded by coconut palm trees. All of the rooms have air conditioning, a hot water shower, satellite television, wireless Internet, a mini bar, a hair dryer, and a safe. There is also a restaurant offering buffet breakfast and dinner, as well as a rooftop open-air terrace with loungers."]}'::jsonb
+where node_type = 'accommodation' and slug = 'kaani-beach-hotel' and not (attributes ? 'overview_paragraphs');
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Deluxe Sea View Balcony Room', 71, 'USD', 'Double', null, 0
+from nodes where node_type = 'accommodation' and slug = 'kaani-beach-hotel'
+on conflict (accommodation_id, name) do nothing;
+
+insert into accommodation_rooms (accommodation_id, name, price_from, price_currency, bed_type, max_occupancy, sort_order)
+select id, 'Tripple Sea View Balcony Room', 84, 'USD', 'Tripple', null, 1
+from nodes where node_type = 'accommodation' and slug = 'kaani-beach-hotel'
 on conflict (accommodation_id, name) do nothing;
 

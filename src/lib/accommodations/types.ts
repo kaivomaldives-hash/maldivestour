@@ -61,6 +61,10 @@ export interface AccommodationDetail extends AccommodationSummary {
    * found (most hotels/guesthouses; 109/110 resorts have one). */
   videoYoutubeId: string | null;
   rooms: AccommodationRoom[];
+  /** Real legacy marketing description paragraphs (nodes.attributes.
+   * overview_paragraphs) — verbatim source text, never rewritten. Empty
+   * for the original 14 Task 5 accommodations, which predate this field. */
+  overviewParagraphs: string[];
   /** Every gallery-role image attached to this property (role='gallery'
    * in node_media) — separate from heroImage. */
   galleryImages: MediaAsset[];

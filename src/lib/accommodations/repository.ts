@@ -1,6 +1,6 @@
 import "server-only";
 
-import { getLocationSummariesByIds, getLocationSummaryById } from "@/lib/locations/repository";
+import { getLocationSummariesByIds, getLocationSummaryById, getNodeAttributesByIds } from "@/lib/locations/repository";
 import type { LocationSummary } from "@/lib/locations/types";
 import { getHeroMediaByNodeIds, getMediaAssetsByIds, getMediaForNode } from "@/lib/media/repository";
 import type { MediaAsset } from "@/lib/media/types";
@@ -368,14 +368,18 @@ export async function getAccommodationBySlug(slug: string): Promise<Accommodatio
   const bare = bareAccommodationOf(data);
   if (!bare) return null;
 
-  const [primaryLocation, providersById, bookableRow, heroImage, rooms, galleryMedia] = await Promise.all([
+  const [primaryLocation, providersById, bookableRow, heroImage, rooms, galleryMedia, attributesById] = await Promise.all([
     attachPrimaryLocations([bare.id]).then((m) => m.get(bare.id) ?? null),
     bare.providerId ? getProviderSummariesByIds([bare.providerId]) : Promise.resolve(new Map<string, ProviderSummary>()),
     supabase.from("bookable_products").select("id").eq("id", bare.id).maybeSingle(),
     getHeroMediaByNodeIds([bare.id]).then((m) => m.get(bare.id) ?? null),
     getAccommodationRooms(bare.id),
     getMediaForNode(bare.id),
+    getNodeAttributesByIds([bare.id]),
   ]);
+
+  const overviewParagraphsRaw = attributesById.get(bare.id)?.overview_paragraphs;
+  const overviewParagraphs = Array.isArray(overviewParagraphsRaw) ? overviewParagraphsRaw.filter((p): p is string => typeof p === "string") : [];
 
   const atoll = primaryLocation?.parentId ? await getLocationSummaryById(primaryLocation.parentId) : null;
 
@@ -393,6 +397,7 @@ export async function getAccommodationBySlug(slug: string): Promise<Accommodatio
     videoYoutubeId: bare.videoYoutubeId,
     rooms,
     galleryImages: galleryMedia.filter((item) => item.role === "gallery").map((item) => item.asset),
+    overviewParagraphs,
   };
 }
 

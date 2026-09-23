@@ -118,9 +118,17 @@ function main() {
       }
     });
 
+    // Properties merged into an already-seeded Task 5 accommodation (see
+    // mergeIntoExistingSlug's comment in merge-accommodation-research.mjs)
+    // have a node whose title is the Task 5 one, not this property's own
+    // p.name — match by the known real slug instead for those; title
+    // match for everyone else (no locally-recomputed slug to rely on).
+    const nodeSelector = p.mergeIntoExistingSlug
+      ? `slug = '${p.mergeIntoExistingSlug}'`
+      : `title = '${p.name.replace(/'/g, "''")}'`;
     for (const op of mediaOps) {
       lines.push(
-        `insert into node_media (node_id, media_id, role, sort_order) select id, '${op.mediaId}', '${op.role}', ${op.sortOrder} from nodes where node_type = 'accommodation' and title = '${p.name.replace(/'/g, "''")}' on conflict (node_id, media_id, role) do nothing;`,
+        `insert into node_media (node_id, media_id, role, sort_order) select id, '${op.mediaId}', '${op.role}', ${op.sortOrder} from nodes where node_type = 'accommodation' and ${nodeSelector} on conflict (node_id, media_id, role) do nothing;`,
       );
     }
     if (mediaOps.length > 0) lines.push("");
@@ -138,7 +146,7 @@ function main() {
           return;
         }
         lines.push(
-          `insert into accommodation_room_media (room_id, media_id, sort_order) select r.id, '${mediaId}', ${i} from accommodation_rooms r join nodes n on n.id = r.accommodation_id where n.node_type = 'accommodation' and n.title = '${p.name.replace(/'/g, "''")}' and r.name = '${room.name.replace(/'/g, "''")}' on conflict (room_id, media_id) do nothing;`,
+          `insert into accommodation_room_media (room_id, media_id, sort_order) select r.id, '${mediaId}', ${i} from accommodation_rooms r join nodes n on n.id = r.accommodation_id where n.node_type = 'accommodation' and ${nodeSelector} and r.name = '${room.name.replace(/'/g, "''")}' on conflict (room_id, media_id) do nothing;`,
         );
         roomImageCount += 1;
       });

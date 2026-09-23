@@ -96,6 +96,7 @@ const MANIFEST_SOURCES = {
   "category-images": "data/maldives/migration/transfer-category-image-manifest.json",
   "full-library": "data/maldives/migration/full-legacy-image-library-manifest.json",
   uploaded: "data/maldives/migration/uploaded-media-manifest.json",
+  "fishing-uploads": "data/maldives/migration/fishing-uploads-manifest.json",
 };
 
 function mergeManifests(only) {

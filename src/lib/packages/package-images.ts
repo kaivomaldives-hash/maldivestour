@@ -40,6 +40,88 @@ export const PACKAGE_HERO_OVERRIDES: Record<string, MediaAsset> = {
     "Kaani Beach Hotel seaview room, Maafushi",
   ),
 
+  // Maldives Fishing and Holiday (MFH) packages — 14 real packages, all the
+  // same product (a stay at Maldives Fishing and Holidays Lodge plus the
+  // operator's own charter) at different night counts, so there's no
+  // per-package location/subject to photograph uniquely. These are the
+  // owner's own newly-uploaded fishing photos (assets/uploads/fishing/images/packages/,
+  // confirmed via AskUserQuestion to be extra decorative photos for this one
+  // real listing, not separate businesses despite the filenames) — see
+  // scripts/attach-fishing-uploads.mjs, which registers each file's
+  // media_assets row and printed this exact id/storagePath list. Not yet in
+  // Storage until `upload-legacy-media.mjs --commit --only=fishing-uploads`
+  // is run.
+  "2-night-maldives-fishing-package-full-day-fishing": asset(
+    "34d3a832-9c47-4608-4b21-3ab917b11418",
+    "uploads/assets/uploads/fishing/images/packages/big-game-fishing-in-maldives.webp",
+    "Big game fishing in the Maldives",
+  ),
+  "3-night-maldives-fishing-package-full-day-fishing": asset(
+    "468db768-64ec-c26a-3fb0-1e39e4862f27",
+    "uploads/assets/uploads/fishing/images/packages/bottom-meemu.webp",
+    "Maldives fishing package",
+  ),
+  "4-night-maldives-fishing-package-full-day-fishing": asset(
+    "5a298822-ac29-e70d-ab95-86e81ccc1977",
+    "uploads/assets/uploads/fishing/images/packages/deep-laamu.webp",
+    "Maldives fishing package",
+  ),
+  "5-night-maldives-fishing-package-full-day-fishing": asset(
+    "d7cdb13d-0b83-4bca-fa8a-2ede82941941",
+    "uploads/assets/uploads/fishing/images/packages/explorer-gaaf.webp",
+    "Maldives fishing package",
+  ),
+  "6-night-maldives-fishing-package-full-day-fishing": asset(
+    "6438802c-801f-b2aa-a77d-af0e3c1df112",
+    "uploads/assets/uploads/fishing/images/packages/family-ari.webp",
+    "Maldives fishing package",
+  ),
+  "7-night-maldives-fishing-package-full-day-fishing": asset(
+    "824e6e0b-16f8-2420-1d18-964d52647acf",
+    "uploads/assets/uploads/fishing/images/packages/fishing-tours-maldives.webp",
+    "Maldives fishing tours",
+  ),
+  "8-night-maldives-fishing-package-full-day-fishing": asset(
+    "a36d4a5b-78ec-d507-256b-4aa72ce70a05",
+    "uploads/assets/uploads/fishing/images/packages/fly-addu.webp",
+    "Maldives fishing package",
+  ),
+  "2-night-maldives-fishing-package-half-day-fishing": asset(
+    "f8056c21-0415-bd3a-bb0e-eae40c5c0a7e",
+    "uploads/assets/uploads/fishing/images/packages/grand-slam-ari.webp",
+    "Maldives fishing package",
+  ),
+  "3-night-maldives-fishing-package-half-day-fishing": asset(
+    "6b7a8751-b720-7f64-f773-6ecf5e25287c",
+    "uploads/assets/uploads/fishing/images/packages/gt-safari-male.webp",
+    "Maldives fishing package",
+  ),
+  "4-night-maldives-fishing-package-half-day-fishing": asset(
+    "0d2a1fac-1296-34d1-de17-05f73ce2228b",
+    "uploads/assets/uploads/fishing/images/packages/jigging-lhaviyani.webp",
+    "Maldives fishing package",
+  ),
+  "5-night-maldives-fishing-package-half-day-fishing": asset(
+    "35f87a59-f0dc-f8d5-cf1f-dd2eeeee2203",
+    "uploads/assets/uploads/fishing/images/packages/luxury-dhaalu.webp",
+    "Maldives fishing package",
+  ),
+  "6-night-maldives-fishing-package-half-day-fishing": asset(
+    "870b3478-e43e-f532-e4b3-63a7001ca306",
+    "uploads/assets/uploads/fishing/images/packages/mahi-mahi-fish.webp",
+    "Mahi-mahi caught fishing in the Maldives",
+  ),
+  "7-night-maldives-fishing-package-half-day-fishing": asset(
+    "7d531cad-b82a-e7e1-ecce-a68073a0959c",
+    "uploads/assets/uploads/fishing/images/packages/maldives-fishing.webp",
+    "Maldives fishing package",
+  ),
+  "8-night-maldives-fishing-package-half-day-fishing": asset(
+    "75c3a404-3596-d027-80ae-bff1528c8b8e",
+    "uploads/assets/uploads/fishing/images/packages/marlin-ari.webp",
+    "Marlin fishing in the Maldives",
+  ),
+
   // Demo packages
   "maafushi-local-island-getaway": asset(
     "9bbead44-417f-23d5-a02d-e7741f6d21ac",
@@ -153,6 +235,11 @@ export const ACCOMMODATION_GALLERY_IMAGES: Record<string, MediaAsset[]> = {
     asset("17e55473-8b04-2c8b-1ad2-8fd99df3791c", "legacy/hotels/arena-maafushi/images/arean-beach-hotel-maldives.webp", "Arena Beach Hotel, Maafushi"),
     asset("73bdd20e-bb4e-ac5f-46e5-574c83dcae71", "legacy/hotels/arena-maafushi/images/arean-beach-maafushi-hotel-maldives.webp", "Arena Beach Hotel, Maafushi"),
     asset("e3128603-5cff-038a-c26a-6b07dfd3d9fe", "legacy/hotels/arena-maafushi/images/arean-beach-maafushi-island-hotel.webp", "Arena Beach Hotel, Maafushi"),
+  ],
+  "maldives-fishing-and-holidays-lodge": [
+    asset("bb2efb47-152b-60e9-2443-dacc2bd61f65", "uploads/assets/uploads/fishing/images/packages/sunset-raa.webp", "Sunset fishing in the Maldives"),
+    asset("fdcb6dcb-87a4-1f21-4095-4e9ffc1be220", "uploads/assets/uploads/fishing/images/packages/trolling-fishing.webp", "Trolling fishing in the Maldives"),
+    asset("4ff44b0e-81a3-a18f-cf0f-d781fccc47e6", "uploads/assets/uploads/fishing/images/packages/yellowfin-tuna.webp", "Yellowfin tuna caught fishing in the Maldives"),
   ],
   "kaani-beach-hotel": [
     asset("f747bc41-b4ca-66a0-e1a6-804d2332a410", "legacy/hotels/kaanibeach-maafushi/images/kaani-beach-hotel-maafushi-island-maldives.webp", "Kaani Beach Hotel, Maafushi"),

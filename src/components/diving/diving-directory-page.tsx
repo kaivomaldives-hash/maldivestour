@@ -23,7 +23,7 @@ import {
   searchDivingActivities,
 } from "@/lib/diving/repository";
 import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
-import { PACKAGE_CATEGORY_FALLBACK_IMAGES } from "@/lib/packages/category-images";
+import { DIVING_HERO_IMAGE } from "@/lib/packages/category-images";
 import { filterPackageViews, getAllPackageViews } from "@/lib/packages/view-repository";
 import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd } from "@/lib/seo/site";
 
@@ -160,7 +160,7 @@ export async function DivingDirectoryPage({
         eyebrow="Maldives diving"
         title="Maldives Diving"
         description="Real, individually verified diving activities, dive sites and diving packages — sourced from official operator and resort information rather than a generic directory."
-        image={PACKAGE_CATEGORY_FALLBACK_IMAGES.diving}
+        image={DIVING_HERO_IMAGE}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>

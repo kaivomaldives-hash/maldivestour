@@ -32,3 +32,27 @@ export const PACKAGE_CATEGORY_FALLBACK_IMAGES = {
 } as const;
 
 export type PackageCategoryFallbackKey = keyof typeof PACKAGE_CATEGORY_FALLBACK_IMAGES;
+
+/**
+ * Dedicated hero images for the /maldives/diving/ and /maldives/fishing/
+ * hub pages specifically — kept separate from PACKAGE_CATEGORY_FALLBACK_IMAGES
+ * above (which also doubles as the category fallback thumbnail for demo
+ * packages with no accommodation photo of their own, via demo.ts) so
+ * swapping just these two hub-page heroes never changes any package card
+ * elsewhere on the site.
+ *
+ * DIVING_HERO_IMAGE: a different real legacy diving photo (verified against
+ * data/maldives/migration/full-legacy-image-library-manifest.json) than the
+ * one still used as the general diving category fallback.
+ *
+ * FISHING_HERO_IMAGE: one of the owner's own newly-uploaded fishing photos
+ * (assets/uploads/fishing/images/gallery/) rather than a legacy image — see
+ * scripts/attach-fishing-uploads.mjs, which registers this file's
+ * media_assets row (not yet in the legacy library).
+ */
+export const DIVING_HERO_IMAGE = asset("eec07825-78df-21de-fc72-7e604440e43c", "legacy/images/diving/scuba-divers-maldives.webp", "Scuba divers in the Maldives");
+export const FISHING_HERO_IMAGE = asset(
+  "cdb0fc20-985d-4734-a1c8-79b6d020e07a",
+  "uploads/assets/uploads/fishing/images/gallery/fishing-charter-boat.webp",
+  "Maldives fishing charter boat",
+);

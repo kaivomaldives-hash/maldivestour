@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ActivityCard } from "@/components/activity/activity-card";
+import { FishingGallerySection } from "@/components/fishing/fishing-gallery-section";
 import { FishingVideo, fishingVideoJsonLd } from "@/components/fishing/fishing-video";
+import { FishSpeciesSection } from "@/components/fishing/fish-species-section";
 import { PackageCard } from "@/components/packages/package-card";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
@@ -19,7 +21,7 @@ import {
   searchFishingActivities,
 } from "@/lib/fishing/repository";
 import { getAtollBySlug, getIslandBySlug } from "@/lib/locations/repository";
-import { PACKAGE_CATEGORY_FALLBACK_IMAGES } from "@/lib/packages/category-images";
+import { FISHING_HERO_IMAGE } from "@/lib/packages/category-images";
 import { filterPackageViews, getAllPackageViews } from "@/lib/packages/view-repository";
 import { getProviderBySlug } from "@/lib/providers/repository";
 import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd } from "@/lib/seo/site";
@@ -210,7 +212,7 @@ export async function FishingDirectoryPage({
         eyebrow="Maldives fishing"
         title="Maldives Fishing"
         description="Real fishing charters, trips and packages — private full-day and half-day charters from a verified operator, plus big game, reef, handline, night and traditional fishing trips from real resort and independent operators across the Maldives."
-        image={PACKAGE_CATEGORY_FALLBACK_IMAGES.fishing}
+        image={FISHING_HERO_IMAGE}
         action={
           <div className="flex flex-wrap gap-3">
             <a href="#fishing-charters" className="rounded-full bg-maldives-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-ocean-800">
@@ -241,48 +243,171 @@ export async function FishingDirectoryPage({
           </p>
         </section>
 
-        {/* Fishing Charter Listings */}
-        {realCharters.length > 0 && (
-          <section id="fishing-charters" className="mt-12 scroll-mt-20 border-t border-neutral-200 pt-10">
-            <h2 className="text-xl font-semibold text-ocean-900">Maldives Fishing Charters</h2>
-            <p className="mt-2 text-sm text-neutral-700">
-              Maldives Fishing and Holiday Pvt Ltd&rsquo;s own private charter, aboard &ldquo;Emperor&rdquo;, a 32-foot fishing boat with twin
-              200&nbsp;HP engines (max 5 passengers) — departing from Maamendhoo, Gaafu Alifu Atoll.
-            </p>
-            <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {realCharters.map((charter) => (
-                <li key={charter.id} className={CARD_CLASS}>
-                  {charter.heroImage && (
-                    <div className={CARD_IMAGE_BLEED_CLASS}>
-                      <MediaImage asset={charter.heroImage} alt={charter.title} aspectClassName="aspect-[4/3]" />
+        {/* Fishing Charters & Activities — charter cards, technique/operator
+            context, and the full searchable activities directory all in one
+            top section, since a charter IS a fishing activity (Task 22
+            follow-up §user request: "fishing charters are same as fishing
+            activities on top"). Fishing Packages stays its own separate
+            section right after. */}
+        <section id="fishing-charters" className="mt-12 scroll-mt-20 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Maldives Fishing Charters &amp; Activities</h2>
+
+          {realCharters.length > 0 && (
+            <>
+              <p className="mt-2 text-sm text-neutral-700">
+                Maldives Fishing and Holiday Pvt Ltd&rsquo;s own private charter, aboard &ldquo;Emperor&rdquo;, a 32-foot fishing boat with twin
+                200&nbsp;HP engines (max 5 passengers) — departing from Maamendhoo, Gaafu Alifu Atoll.
+              </p>
+              <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {realCharters.map((charter) => (
+                  <li key={charter.id} className={CARD_CLASS}>
+                    {charter.heroImage && (
+                      <div className={CARD_IMAGE_BLEED_CLASS}>
+                        <MediaImage asset={charter.heroImage} alt={charter.title} aspectClassName="aspect-[4/3]" />
+                      </div>
+                    )}
+                    <Link href={`/maldives/fishing/${charter.slug}/`} className="text-lg font-medium text-ocean-900 hover:text-maldives-600">
+                      {charter.title}
+                    </Link>
+                    <p className="mt-1 text-sm text-neutral-600">{charter.summary}</p>
+                    <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-neutral-700">
+                      {charter.maxParticipants && <span>Up to {charter.maxParticipants} passengers</span>}
+                      {charter.primaryLocation && <span>{charter.primaryLocation.title}</span>}
+                      {charter.provider && <span>Operated by {charter.provider.title}</span>}
                     </div>
-                  )}
-                  <Link href={`/maldives/fishing/${charter.slug}/`} className="text-lg font-medium text-ocean-900 hover:text-maldives-600">
-                    {charter.title}
-                  </Link>
-                  <p className="mt-1 text-sm text-neutral-600">{charter.summary}</p>
-                  <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-neutral-700">
-                    {charter.maxParticipants && <span>Up to {charter.maxParticipants} passengers</span>}
-                    {charter.primaryLocation && <span>{charter.primaryLocation.title}</span>}
-                    {charter.provider && <span>Operated by {charter.provider.title}</span>}
+                    {charter.priceFrom !== null && (
+                      <p className="mt-2 text-lg font-semibold text-ocean-900">
+                        From {charter.currency ?? "USD"} {charter.priceFrom}
+                        <span className="ml-2 text-sm font-normal text-neutral-500">per boat</span>
+                      </p>
+                    )}
+                    <Link
+                      href={`/maldives/fishing/${charter.slug}/`}
+                      className="mt-3 inline-flex items-center justify-center rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800"
+                    >
+                      View Charter
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+
+          {/* Fishing by Technique */}
+          {typesWithActivities.length > 0 && (
+            <div className="mt-10">
+              <h3 className="text-lg font-semibold text-ocean-900">Fishing by Technique</h3>
+              <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
+                {typesWithActivities.map(({ type, content, activities }) => (
+                  <div key={type.id}>
+                    <h4 className="font-medium text-ocean-900">{content.title}</h4>
+                    <p className="mt-1 text-sm text-neutral-700">{content.body}</p>
+                    {activities.length > 0 && (
+                      <ul className="mt-2 flex flex-wrap gap-2">
+                        {activities.map((a) => (
+                          <li key={a.id}>
+                            <Link href={`/maldives/fishing/${a.slug}/`} className="rounded-full border border-neutral-300 px-3 py-1 text-xs text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                              {a.title}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
-                  {charter.priceFrom !== null && (
-                    <p className="mt-2 text-lg font-semibold text-ocean-900">
-                      From {charter.currency ?? "USD"} {charter.priceFrom}
-                      <span className="ml-2 text-sm font-normal text-neutral-500">per boat</span>
-                    </p>
-                  )}
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Operators */}
+          {realOperators.length > 0 && (
+            <div className="mt-10">
+              <h3 className="text-lg font-semibold text-ocean-900">Fishing Operators</h3>
+              <p className="mt-2 text-sm text-neutral-700">Real operators running fishing trips on record in this directory.</p>
+              <ul className="mt-4 flex flex-wrap gap-2">
+                {realOperators.map((p) => (
+                  <li key={p.id}>
+                    <Link href={`/maldives/providers/${p.slug}/`} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                      {p.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* All Fishing Activities — the searchable/filterable directory,
+              grouped here with the charters above since both are "fishing
+              activities" in the same sense. */}
+          <div className="mt-10">
+            <h3 className="text-lg font-semibold text-ocean-900">All Fishing Activities</h3>
+            <p className="mt-2 text-sm text-neutral-600">
+              See{" "}
+              <Link href="/maldives/activities/" className="underline">
+                all activities
+              </Link>{" "}
+              for other things to do.
+            </p>
+
+            {(atoll || island) && (
+              <p className="mt-3 text-sm text-neutral-600">
+                Filtered to {island ? island.title : atoll?.title}.{" "}
+                <Link href="/maldives/fishing/" className="underline">
+                  Clear
+                </Link>
+              </p>
+            )}
+
+            {fishingTypes.length > 0 && (
+              <nav aria-label="Filter by fishing type" className="mt-6 flex flex-wrap gap-2 text-sm">
+                <Link
+                  href="/maldives/fishing/"
+                  className={`rounded-full border px-3 py-1 ${!activeType ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
+                >
+                  All types
+                </Link>
+                {fishingTypes.map((type) => (
                   <Link
-                    href={`/maldives/fishing/${charter.slug}/`}
-                    className="mt-3 inline-flex items-center justify-center rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800"
+                    key={type.id}
+                    href={`/maldives/fishing/?type=${type.slug}`}
+                    className={`rounded-full border px-3 py-1 ${activeType?.id === type.id ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
                   >
-                    View Charter
+                    {type.title}
                   </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+                ))}
+              </nav>
+            )}
+
+            <form method="get" className="mt-4 flex gap-2">
+              <label htmlFor="fishing-search" className="sr-only">
+                Search fishing activities
+              </label>
+              <input
+                id="fishing-search"
+                type="search"
+                name="q"
+                defaultValue={query}
+                placeholder="Search fishing trips…"
+                className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+              />
+              <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
+                Search
+              </button>
+            </form>
+
+            {results.items.length === 0 ? (
+              <EmptyState title="No fishing activities recorded for this filter yet" />
+            ) : (
+              <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {results.items.map((activity) => (
+                  <ActivityCard key={activity.id} activity={activity} />
+                ))}
+              </ul>
+            )}
+
+            {!isSearching && <Pagination page={page} totalPages={totalPages} basePath="/maldives/fishing/" baseQuery={baseQuery} />}
+          </div>
+        </section>
 
         {/* Fishing Packages */}
         {fishingPackages.length > 0 && (
@@ -305,50 +430,29 @@ export async function FishingDirectoryPage({
           </section>
         )}
 
-        {/* Fishing by Technique */}
-        {typesWithActivities.length > 0 && (
-          <section className="mt-12 border-t border-neutral-200 pt-10">
-            <h2 className="text-xl font-semibold text-ocean-900">Fishing by Technique</h2>
-            <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
-              {typesWithActivities.map(({ type, content, activities }) => (
-                <div key={type.id}>
-                  <h3 className="font-medium text-ocean-900">{content.title}</h3>
-                  <p className="mt-1 text-sm text-neutral-700">{content.body}</p>
-                  {activities.length > 0 && (
-                    <ul className="mt-2 flex flex-wrap gap-2">
-                      {activities.map((a) => (
-                        <li key={a.id}>
-                          <Link href={`/maldives/fishing/${a.slug}/`} className="rounded-full border border-neutral-300 px-3 py-1 text-xs text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
-                            {a.title}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Operators */}
-        {realOperators.length > 0 && (
-          <section className="mt-12 border-t border-neutral-200 pt-10">
-            <h2 className="text-xl font-semibold text-ocean-900">Fishing Operators</h2>
-            <p className="mt-2 text-sm text-neutral-700">Real operators running fishing trips on record in this directory.</p>
-            <ul className="mt-4 flex flex-wrap gap-2">
-              {realOperators.map((p) => (
-                <li key={p.id}>
-                  <Link href={`/maldives/providers/${p.slug}/`} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
-                    {p.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+        <FishingGallerySection />
 
         <FishingVideo />
+
+        <FishSpeciesSection />
+
+        {/* Explore Maldives Fishing — cross-links to the sections above, per
+            the requested page structure (charters, packages, fishes). */}
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Explore Maldives Fishing</h2>
+          <nav aria-label="Explore Maldives fishing sections" className="mt-4 flex flex-wrap gap-2">
+            {[
+              { href: "#fishing-charters", label: "Maldives Fishing Charters" },
+              { href: "#fishing-packages", label: "Maldives Fishing Packages" },
+              { href: "#fishing-gallery", label: "Fishing Gallery" },
+              { href: "#fish-species", label: "Maldives Fishes" },
+            ].map((link) => (
+              <Link key={link.href} href={link.href} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </section>
 
         {/* Guides */}
         <section className="mt-12 border-t border-neutral-200 pt-10">
@@ -360,76 +464,6 @@ export async function FishingDirectoryPage({
             </Link>{" "}
             for more Maldives planning content in the meantime.
           </p>
-        </section>
-
-        {/* Directory / search */}
-        <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">All Fishing Activities</h2>
-          <p className="mt-2 text-sm text-neutral-600">
-            See{" "}
-            <Link href="/maldives/activities/" className="underline">
-              all activities
-            </Link>{" "}
-            for other things to do.
-          </p>
-
-          {(atoll || island) && (
-            <p className="mt-3 text-sm text-neutral-600">
-              Filtered to {island ? island.title : atoll?.title}.{" "}
-              <Link href="/maldives/fishing/" className="underline">
-                Clear
-              </Link>
-            </p>
-          )}
-
-          {fishingTypes.length > 0 && (
-            <nav aria-label="Filter by fishing type" className="mt-6 flex flex-wrap gap-2 text-sm">
-              <Link
-                href="/maldives/fishing/"
-                className={`rounded-full border px-3 py-1 ${!activeType ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
-              >
-                All types
-              </Link>
-              {fishingTypes.map((type) => (
-                <Link
-                  key={type.id}
-                  href={`/maldives/fishing/?type=${type.slug}`}
-                  className={`rounded-full border px-3 py-1 ${activeType?.id === type.id ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
-                >
-                  {type.title}
-                </Link>
-              ))}
-            </nav>
-          )}
-
-          <form method="get" className="mt-4 flex gap-2">
-            <label htmlFor="fishing-search" className="sr-only">
-              Search fishing activities
-            </label>
-            <input
-              id="fishing-search"
-              type="search"
-              name="q"
-              defaultValue={query}
-              placeholder="Search fishing trips…"
-              className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none"
-            />
-            <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
-              Search
-            </button>
-          </form>
-
-          {results.items.length === 0 ? (
-            <EmptyState title="No fishing activities recorded for this filter yet" />
-          ) : (
-            <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {results.items.map((activity) => (
-                <ActivityCard key={activity.id} activity={activity} />
-              ))}
-            </ul>
-          )}
-
-          {!isSearching && <Pagination page={page} totalPages={totalPages} basePath="/maldives/fishing/" baseQuery={baseQuery} />}
         </section>
 
         {/* Related content */}

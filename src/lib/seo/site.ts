@@ -27,3 +27,28 @@ export function breadcrumbJsonLd(items: Array<{ label: string; href?: string }>,
     })),
   };
 }
+
+/** ItemList structured data for any real, currently-listed set of
+ * entities on a directory/hub page (activities, dive sites, attractions,
+ * ...) — one shared implementation instead of a bespoke one per page.
+ * `itemType` is the schema.org type of each listed entity (e.g.
+ * "Service" for a bookable activity, "TouristAttraction" for a place). */
+export function itemListJsonLd(
+  items: Array<{ title: string; href: string; summary: string | null }>,
+  itemType: string,
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": itemType,
+        name: item.title,
+        description: item.summary ?? undefined,
+        url: canonicalUrl(item.href),
+      },
+    })),
+  };
+}

@@ -6,13 +6,14 @@ import { SurfBreakCard } from "@/components/surfing/surf-break-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
+import { activityServiceJsonLd } from "@/lib/activities/types";
 import {
   getSurfingActivitiesByLocation,
   getSurfingActivityBySlug,
   getSurfBreaksForActivity,
   getSurfingTypesForActivity,
 } from "@/lib/surfing/repository";
-import { canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 
 function formatDuration(minutes: number | null): string | null {
   if (!minutes) return null;
@@ -53,6 +54,19 @@ export async function SurfingDetailPage({ slug }: { slug: string }) {
 
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd(
+              [{ label: "Maldives", href: "/maldives/" }, { label: "Surfing", href: "/maldives/surfing/" }, { label: activity.title }],
+              `/maldives/surfing/${activity.slug}`,
+            ),
+          ),
+        }}
+      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(activityServiceJsonLd(activity)) }} />
+
       <PageHero
         breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },

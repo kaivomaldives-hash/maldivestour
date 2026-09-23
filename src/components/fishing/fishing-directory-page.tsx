@@ -10,6 +10,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { Pagination } from "@/components/ui/pagination";
+import { activityHref } from "@/lib/activities/types";
 import {
   getFishingActivities,
   getFishingActivitiesByType,
@@ -21,7 +22,7 @@ import { getAtollBySlug, getIslandBySlug } from "@/lib/locations/repository";
 import { PACKAGE_CATEGORY_FALLBACK_IMAGES } from "@/lib/packages/category-images";
 import { filterPackageViews, getAllPackageViews } from "@/lib/packages/view-repository";
 import { getProviderBySlug } from "@/lib/providers/repository";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd } from "@/lib/seo/site";
 
 const PAGE_SIZE = 24;
 
@@ -192,6 +193,17 @@ export async function FishingDirectoryPage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Fishing" }], "/maldives/fishing")) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(fishingVideoJsonLd()) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            itemListJsonLd(
+              results.items.map((a) => ({ title: a.title, href: activityHref(a), summary: a.summary })),
+              "Service",
+            ),
+          ),
+        }}
+      />
 
       <PageHero
         breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Fishing" }]}

@@ -10,11 +10,11 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Pagination } from "@/components/ui/pagination";
 import { PageHero } from "@/components/ui/page-hero";
 import { getActivities, searchActivities } from "@/lib/activities/repository";
-import { hasDedicatedRoute, type ActivityCategory, type ActivityDifficulty } from "@/lib/activities/types";
+import { activityHref, hasDedicatedRoute, type ActivityCategory, type ActivityDifficulty } from "@/lib/activities/types";
 import { getAttractions } from "@/lib/attractions/repository";
 import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
 import { asset } from "@/lib/packages/category-images";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd } from "@/lib/seo/site";
 
 // A real legacy island-hopping photo (already verified against
 // data/maldives/migration/full-legacy-image-library-manifest.json and used
@@ -33,12 +33,32 @@ const FAQS = [
     answer: "An activity is a single experience or trip — a few hours to a day. A package bundles activities with accommodation, meals and transfers into a multi-night holiday — see Maldives Packages for those.",
   },
   {
+    question: "What's the difference between an activity and an attraction?",
+    answer: "An activity is something you book and do — a trip, tour or lesson. An attraction is a place you visit — a mosque, museum, beach or natural site — never bookable itself. See Maldives Attractions for those.",
+  },
+  {
     question: "Do I need to book activities in advance?",
     answer: "It depends on the operator — enquire on any activity's own page and we'll confirm real availability before you book.",
   },
   {
     question: "Are fishing, diving and surfing activities listed here too?",
     answer: "They have their own dedicated pages — see Fishing, Diving and Surfing — since each has enough real activities to warrant its own hub. Every other category (excursions, watersports, island hopping, spa, culture) is listed directly here.",
+  },
+  {
+    question: "What is there to see and do in Malé?",
+    answer: "Malé has real landmarks worth visiting — the historic Hukuru Miskiy mosque, the National Museum, Sultan Park, the Islamic Centre and more — see Maldives Attractions for the full list, alongside any bookable activities based in or near Malé.",
+  },
+  {
+    question: "What water activities are available in the Maldives?",
+    answer: "Snorkeling, watersports (jet ski, parasailing, banana boating and similar), plus diving, fishing and surfing on their own dedicated pages — filter by category above to browse what's currently listed.",
+  },
+  {
+    question: "Are Maldives activities suitable for families?",
+    answer: "Many are — use the difficulty filter (All levels) and shorter durations above to narrow to easier, family-friendly options; we don't fabricate a separate \"family\" label where the underlying data doesn't support it.",
+  },
+  {
+    question: "Can I do activities on local islands, not just at resorts?",
+    answer: "Yes — filter by atoll or island above, or search a specific island by name; several listed activities (island tours, local excursions) are based on inhabited local islands, not only resorts.",
   },
 ];
 
@@ -154,6 +174,17 @@ export async function ActivityDirectoryPage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Activities" }], "/maldives/activities")) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(activitiesVideoJsonLd()) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            itemListJsonLd(
+              results.items.map((a) => ({ title: a.title, href: activityHref(a), summary: a.summary })),
+              "Service",
+            ),
+          ),
+        }}
+      />
 
       <PageHero
         breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Activities" }]}
@@ -173,6 +204,14 @@ export async function ActivityDirectoryPage({
               do — sandbank picnics, dolphin cruises, snorkeling trips, island hopping tours, spa treatments and guided cultural visits to
               Malé. Every activity below is a real, individually sourced experience from a resort or independent operator, not a generic
               stock listing.
+            </p>
+            <p>
+              Activities are things you can book and do; for real places worth visiting or seeing — mosques, museums, beaches, natural
+              sites — see{" "}
+              <Link href="/maldives/attractions/" className="text-maldives-600 hover:underline">
+                Maldives Attractions
+              </Link>{" "}
+              further down this page.
             </p>
           </section>
         )}
@@ -231,6 +270,79 @@ export async function ActivityDirectoryPage({
         )}
 
         <ActivitiesVideo />
+
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Planning Your Maldives Activities</h2>
+          <dl className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+              <dt className="font-medium text-ocean-900">First time in the Maldives?</dt>
+              <dd className="mt-1 text-sm text-neutral-700">
+                Start with the category and location filters above, or browse{" "}
+                <Link href="/maldives/attractions/" className="text-maldives-600 hover:underline">
+                  Maldives Attractions
+                </Link>{" "}
+                for places to visit alongside bookable trips.
+              </dd>
+            </div>
+            <div>
+              <dt className="font-medium text-ocean-900">Planning a couples or honeymoon trip?</dt>
+              <dd className="mt-1 text-sm text-neutral-700">
+                Sunset cruises, spa treatments and private excursions are listed here individually — for a full
+                itinerary, see{" "}
+                <Link href="/maldives/packages/honeymoon/" className="text-maldives-600 hover:underline">
+                  Honeymoon Packages
+                </Link>
+                .
+              </dd>
+            </div>
+            <div>
+              <dt className="font-medium text-ocean-900">Travelling on a budget or staying on a local island?</dt>
+              <dd className="mt-1 text-sm text-neutral-700">
+                Filter by island above — several activities are based on inhabited local islands, typically cheaper
+                than resort-run equivalents. See{" "}
+                <Link href="/maldives/guesthouses/" className="text-maldives-600 hover:underline">
+                  Guesthouses
+                </Link>{" "}
+                for where to stay.
+              </dd>
+            </div>
+            <div>
+              <dt className="font-medium text-ocean-900">Looking for adventure?</dt>
+              <dd className="mt-1 text-sm text-neutral-700">
+                See the dedicated{" "}
+                <Link href="/maldives/diving/" className="text-maldives-600 hover:underline">
+                  Diving
+                </Link>
+                ,{" "}
+                <Link href="/maldives/fishing/" className="text-maldives-600 hover:underline">
+                  Fishing
+                </Link>{" "}
+                and{" "}
+                <Link href="/maldives/surfing/" className="text-maldives-600 hover:underline">
+                  Surfing
+                </Link>{" "}
+                hubs — each has real charters, courses and trips beyond what&rsquo;s listed on this page.
+              </dd>
+            </div>
+            <div>
+              <dt className="font-medium text-ocean-900">Getting to your activity</dt>
+              <dd className="mt-1 text-sm text-neutral-700">
+                Most activities depart from a resort or local island jetty — see{" "}
+                <Link href="/maldives/transfers/" className="text-maldives-600 hover:underline">
+                  Maldives Transfers
+                </Link>{" "}
+                for real airport, speedboat and island transfer routes.
+              </dd>
+            </div>
+            <div>
+              <dt className="font-medium text-ocean-900">Booking an activity</dt>
+              <dd className="mt-1 text-sm text-neutral-700">
+                Enquire directly on any activity&rsquo;s own page — availability, exact pricing and schedules are confirmed
+                with the operator, never guessed or pre-filled here.
+              </dd>
+            </div>
+          </dl>
+        </section>
 
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Explore More Maldives</h2>

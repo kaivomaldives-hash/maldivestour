@@ -7,9 +7,9 @@ import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { getActivityBySlug } from "@/lib/activities/repository";
-import { hasDedicatedRoute } from "@/lib/activities/types";
+import { activityServiceJsonLd, hasDedicatedRoute } from "@/lib/activities/types";
 import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
-import { canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 
 const CATEGORY_LABEL: Record<string, string> = {
   general: "General",
@@ -70,6 +70,19 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
 
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd(
+              [{ label: "Maldives", href: "/maldives/" }, { label: "Activities", href: "/maldives/activities/" }, { label: activity.title }],
+              `/maldives/activities/${activity.slug}`,
+            ),
+          ),
+        }}
+      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(activityServiceJsonLd(activity)) }} />
+
       <PageHero
         breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },

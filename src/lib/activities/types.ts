@@ -1,6 +1,7 @@
 import type { LocationSummary } from "@/lib/locations/types";
 import type { MediaAsset } from "@/lib/media/types";
 import type { ProviderSummary } from "@/lib/providers/types";
+import { canonicalUrl } from "@/lib/seo/site";
 
 export type ActivityCategory =
   | "general"
@@ -92,4 +93,39 @@ export function activityHref(activity: { activityCategory: ActivityCategory; slu
  * should no longer be independently reachable at /maldives/activities/. */
 export function hasDedicatedRoute(category: ActivityCategory): boolean {
   return category in ACTIVITY_CATEGORY_SEGMENT;
+}
+
+/**
+ * Shared `Service`/`Offer` structured data for any activity detail page
+ * (generic /maldives/activities/, and the fishing/diving/surfing dedicated
+ * verticals) — one implementation instead of four near-duplicates. Offer
+ * pricing is included only when `priceFrom` is a real configured price
+ * (Task 15 §48/§27: never a fabricated $0 placeholder); activities without
+ * one still get the base Service entry, just no `offers`.
+ */
+export function activityServiceJsonLd(activity: ActivityDetail) {
+  const url = canonicalUrl(activityHref(activity));
+  const base = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: activity.title,
+    description: activity.summary ?? undefined,
+    url,
+    image: activity.heroImage ? [activity.heroImage.storagePath] : undefined,
+    areaServed: activity.primaryLocation?.title ?? "Maldives",
+    provider: activity.provider ? { "@type": "Organization", name: activity.provider.title } : undefined,
+  };
+
+  if (activity.priceFrom === null) return base;
+
+  return {
+    ...base,
+    offers: {
+      "@type": "Offer",
+      price: activity.priceFrom,
+      priceCurrency: activity.currency ?? "USD",
+      availability: "https://schema.org/InStock",
+      url,
+    },
+  };
 }

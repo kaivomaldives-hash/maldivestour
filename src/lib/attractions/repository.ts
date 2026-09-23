@@ -24,6 +24,7 @@ function toAttractionSummary(
   attributes: Record<string, unknown> | undefined,
   heroImage: MediaAsset | null,
   island: LocationSummary | null,
+  atoll: LocationSummary | null,
 ): AttractionSummary {
   const attractionType = typeof attributes?.attraction_type === "string" ? (attributes.attraction_type as AttractionType) : null;
   return {
@@ -34,6 +35,7 @@ function toAttractionSummary(
     attractionType,
     heroImage,
     island,
+    atoll,
   };
 }
 
@@ -57,12 +59,17 @@ export async function getAttractions(options: GetAttractionsOptions = {}): Promi
     total = items.length;
   }
 
-  const [attrsById, heroById, islandById] = await Promise.all([
+  const [attrsById, heroById, directParentById] = await Promise.all([
     getNodeAttributesByIds(items.map((i) => i.id)),
     getHeroMediaByNodeIds(items.map((i) => i.id)),
-    getIslandsByParentId(items),
+    getDirectParentsById(items),
   ]);
-  let attractions = items.map((i) => toAttractionSummary(i, attrsById.get(i.id), heroById.get(i.id) ?? null, islandById.get(i.id) ?? null));
+  const atollById = await getAtollsForDirectParents(directParentById);
+  let attractions = items.map((i) => {
+    const directParent = directParentById.get(i.id) ?? null;
+    const island = directParent?.locationType === "island" ? directParent : null;
+    return toAttractionSummary(i, attrsById.get(i.id), heroById.get(i.id) ?? null, island, atollById.get(i.id) ?? null);
+  });
 
   if (options.attractionType) {
     attractions = attractions.filter((a) => a.attractionType === options.attractionType);
@@ -72,17 +79,40 @@ export async function getAttractions(options: GetAttractionsOptions = {}): Promi
   return { items: attractions, total, page, pageSize };
 }
 
-/** Every attraction's direct parent location is the island (or, for a
- * handful that aren't tied to one inhabited island, the atoll) it's
- * physically on — a single batched getLocationSummariesByIds over each
+/** Every attraction's direct parent location is the island it's physically
+ * on — or, for a handful not tied to one inhabited island (Hanifaru Bay,
+ * an open-water reserve; Ozen Maadhoo, an unseeded resort island), the
+ * atoll directly. A single batched getLocationSummariesByIds over each
  * item's parentId, no per-item round trip. */
-async function getIslandsByParentId(items: LocationSummary[]): Promise<Map<string, LocationSummary>> {
+async function getDirectParentsById(items: LocationSummary[]): Promise<Map<string, LocationSummary>> {
   const parentIds = Array.from(new Set(items.map((i) => i.parentId).filter((id): id is string => Boolean(id))));
   if (parentIds.length === 0) return new Map();
   const parentsById = await getLocationSummariesByIds(parentIds);
   const result = new Map<string, LocationSummary>();
   for (const item of items) {
     if (item.parentId && parentsById.has(item.parentId)) result.set(item.id, parentsById.get(item.parentId)!);
+  }
+  return result;
+}
+
+/** The atoll for each item: its direct parent when that's already an
+ * atoll, otherwise its island parent's own parent — resolved with one
+ * more batched lookup, never per item. */
+async function getAtollsForDirectParents(directParentById: Map<string, LocationSummary>): Promise<Map<string, LocationSummary>> {
+  const result = new Map<string, LocationSummary>();
+  const islandParentIdsToResolve = new Set<string>();
+  for (const parent of directParentById.values()) {
+    if (parent.locationType === "island" && parent.parentId) islandParentIdsToResolve.add(parent.parentId);
+  }
+  const atollsByIslandParentId = islandParentIdsToResolve.size > 0 ? await getLocationSummariesByIds(Array.from(islandParentIdsToResolve)) : new Map();
+
+  for (const [itemId, parent] of directParentById) {
+    if (parent.locationType === "atoll") {
+      result.set(itemId, parent);
+    } else if (parent.locationType === "island" && parent.parentId) {
+      const atoll = atollsByIslandParentId.get(parent.parentId);
+      if (atoll?.locationType === "atoll") result.set(itemId, atoll);
+    }
   }
   return result;
 }
@@ -107,25 +137,18 @@ export async function getAttractionBySlug(slug: string): Promise<AttractionDetai
     location.parentId ? getLocationSummaryById(location.parentId) : Promise.resolve(null),
   ]);
 
-  // The direct parent is an island for every attraction seeded so far; a
-  // future atoll-direct attraction (no single host island) would have
-  // island === null and atoll set instead — both read the same parent.
+  // The direct parent is an island for most attractions; a handful
+  // (Hanifaru Bay, Ozen Maadhoo) have no single host island and are
+  // parented straight to their atoll instead.
   const island = parent?.locationType === "island" ? parent : null;
-  const atoll = parent?.locationType === "atoll" ? parent : island ? await resolveIslandAtoll(island) : null;
+  const atoll = parent?.locationType === "atoll" ? parent : island?.parentId ? await getLocationSummaryById(island.parentId) : null;
 
   return {
-    ...toAttractionSummary(location, attrs, hero, island),
-    atoll,
+    ...toAttractionSummary(location, attrs, hero, island, atoll?.locationType === "atoll" ? atoll : null),
     body: typeof attrs.body === "string" ? attrs.body : null,
     bestFor: typeof attrs.best_for === "string" ? attrs.best_for : null,
     sourceArticleSlug: typeof attrs.source_article_slug === "string" ? attrs.source_article_slug : null,
   };
-}
-
-async function resolveIslandAtoll(island: LocationSummary): Promise<LocationSummary | null> {
-  if (!island.parentId) return null;
-  const parent = await getLocationSummaryById(island.parentId);
-  return parent?.locationType === "atoll" ? parent : null;
 }
 
 export type { AttractionType };

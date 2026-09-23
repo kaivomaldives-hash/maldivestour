@@ -7,6 +7,7 @@ import { PackageCard } from "@/components/packages/package-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
+import { activityServiceJsonLd } from "@/lib/activities/types";
 import {
   getDivingActivitiesByLocation,
   getDivingActivityBySlug,
@@ -14,7 +15,7 @@ import {
   getDivingTypesForActivity,
 } from "@/lib/diving/repository";
 import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
-import { canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 
 function formatDuration(minutes: number | null): string | null {
   if (!minutes) return null;
@@ -56,6 +57,19 @@ export async function DivingDetailPage({ slug }: { slug: string }) {
 
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd(
+              [{ label: "Maldives", href: "/maldives/" }, { label: "Diving", href: "/maldives/diving/" }, { label: activity.title }],
+              `/maldives/diving/${activity.slug}`,
+            ),
+          ),
+        }}
+      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(activityServiceJsonLd(activity)) }} />
+
       <PageHero
         breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },

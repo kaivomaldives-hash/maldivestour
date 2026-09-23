@@ -6,23 +6,13 @@ import { AccommodationCard } from "@/components/accommodation/accommodation-card
 import { ActivityCard } from "@/components/activity/activity-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
-import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
-import { getActivitiesByLocation } from "@/lib/activities/repository";
+import { getAccommodationsByAtoll, getAccommodationsByLocation } from "@/lib/accommodations/repository";
+import { getActivitiesByAtoll, getActivitiesByLocation } from "@/lib/activities/repository";
 import { getAttractionBySlug } from "@/lib/attractions/repository";
+import { ATTRACTION_TYPE_LABEL } from "@/lib/attractions/types";
 import { getArticleBySlug } from "@/lib/articles/repository";
 import { articleHref } from "@/lib/articles/types";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
-
-const ATTRACTION_TYPE_LABEL: Record<string, string> = {
-  religious: "Religious site",
-  museum: "Museum",
-  monument: "Monument",
-  park: "Park",
-  beach: "Beach",
-  market: "Market",
-  landmark: "Landmark",
-  infrastructure: "Landmark",
-};
 
 export async function attractionDetailMetadata(slug: string): Promise<Metadata> {
   const attraction = await getAttractionBySlug(slug);
@@ -47,9 +37,10 @@ function touristAttractionJsonLd(attraction: NonNullable<Awaited<ReturnType<type
     name: attraction.title,
     description: attraction.summary ?? undefined,
     image: attraction.heroImage ? [attraction.heroImage.storagePath] : undefined,
-    address: attraction.island
-      ? { "@type": "PostalAddress", addressLocality: attraction.island.title, addressCountry: "MV" }
-      : undefined,
+    address:
+      attraction.island || attraction.atoll
+        ? { "@type": "PostalAddress", addressLocality: (attraction.island ?? attraction.atoll)!.title, addressCountry: "MV" }
+        : undefined,
     url: canonicalUrl(`/maldives/attractions/${attraction.slug}`),
   };
 }
@@ -58,9 +49,21 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
   const attraction = await getAttractionBySlug(slug);
   if (!attraction) notFound();
 
+  // Every attraction has either a direct island parent or, for the handful
+  // tied to an open-water/atoll-wide site (Hanifaru Bay) or an unseeded
+  // resort island (Ozen Maadhoo), an atoll parent instead — fall back to
+  // atoll-level activities/accommodations rather than showing nothing.
   const [activities, accommodations, sourceArticle] = await Promise.all([
-    attraction.island ? getActivitiesByLocation(attraction.island.id) : Promise.resolve([]),
-    attraction.island ? getAccommodationsByLocation(attraction.island.id) : Promise.resolve([]),
+    attraction.island
+      ? getActivitiesByLocation(attraction.island.id)
+      : attraction.atoll
+        ? getActivitiesByAtoll(attraction.atoll.id)
+        : Promise.resolve([]),
+    attraction.island
+      ? getAccommodationsByLocation(attraction.island.id)
+      : attraction.atoll
+        ? getAccommodationsByAtoll(attraction.atoll.id)
+        : Promise.resolve([]),
     attraction.sourceArticleSlug ? getArticleBySlug(attraction.sourceArticleSlug) : Promise.resolve(null),
   ]);
 

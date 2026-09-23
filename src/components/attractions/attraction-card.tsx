@@ -2,18 +2,7 @@ import Link from "next/link";
 
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { MediaImage } from "@/components/ui/media-image";
-import { attractionHref, type AttractionSummary } from "@/lib/attractions/types";
-
-const ATTRACTION_TYPE_LABEL: Record<string, string> = {
-  religious: "Religious site",
-  museum: "Museum",
-  monument: "Monument",
-  park: "Park",
-  beach: "Beach",
-  market: "Market",
-  landmark: "Landmark",
-  infrastructure: "Landmark",
-};
+import { ATTRACTION_TYPE_LABEL, attractionHref, type AttractionSummary } from "@/lib/attractions/types";
 
 export function AttractionCard({ attraction }: { attraction: AttractionSummary }) {
   return (

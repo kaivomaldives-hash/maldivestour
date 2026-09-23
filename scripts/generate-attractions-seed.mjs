@@ -45,7 +45,7 @@ for (const a of attractions) {
     `insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, attributes, published_at) values ('location', ${sqlString(a.slug)}, ${sqlString(a.title)}, ${sqlString(a.summary)}, 'published', ${sqlString(`${a.title} | Maldives Attractions | MTG`)}, ${sqlString(a.summary)}, '${attrsJson}'::jsonb, now()) on conflict (node_type, slug) do nothing;`,
   );
   lines.push(
-    `insert into locations (id, location_type, parent_id, path) select n.id, 'poi', p.id, (p_loc.path || '${ltreeLabel(a.slug)}'::ltree) from nodes n, nodes p join locations p_loc on p_loc.id = p.id where n.node_type = 'location' and n.slug = ${sqlString(a.slug)} and p.node_type = 'location' and p.slug = ${sqlString(a.parent_island_slug)} on conflict (id) do nothing;`,
+    `insert into locations (id, location_type, parent_id, path) select n.id, 'poi', p.id, (p_loc.path || '${ltreeLabel(a.slug)}'::ltree) from nodes n, nodes p join locations p_loc on p_loc.id = p.id where n.node_type = 'location' and n.slug = ${sqlString(a.slug)} and p.node_type = 'location' and p.slug = ${sqlString(a.parent_location_slug)} on conflict (id) do nothing;`,
   );
 
   if (a.image) {

@@ -18,7 +18,47 @@ export type AttractionType =
   | "beach"
   | "market"
   | "landmark"
-  | "infrastructure";
+  | "infrastructure"
+  | "natural"
+  | "marine";
+
+/** Broad groupings for the "browse by type" view (Task 15 §6/§11) — a
+ * coarser layer over AttractionType, the same relationship
+ * SearchGroupKey has to SearchResultType. Every AttractionType maps to
+ * exactly one group. */
+export type AttractionSuperGroup = "natural" | "marine" | "cultural";
+
+export const ATTRACTION_SUPER_GROUP: Record<AttractionType, AttractionSuperGroup> = {
+  natural: "natural",
+  beach: "natural",
+  park: "natural",
+  marine: "marine",
+  religious: "cultural",
+  museum: "cultural",
+  monument: "cultural",
+  market: "cultural",
+  landmark: "cultural",
+  infrastructure: "cultural",
+};
+
+export const ATTRACTION_SUPER_GROUP_LABEL: Record<AttractionSuperGroup, string> = {
+  natural: "Natural Attractions",
+  marine: "Marine & Wildlife",
+  cultural: "Cultural & Historical",
+};
+
+export const ATTRACTION_TYPE_LABEL: Record<AttractionType, string> = {
+  religious: "Religious site",
+  museum: "Museum",
+  monument: "Monument",
+  park: "Park",
+  beach: "Beach",
+  market: "Market",
+  landmark: "Landmark",
+  infrastructure: "Landmark",
+  natural: "Natural site",
+  marine: "Marine & wildlife site",
+};
 
 export interface AttractionSummary {
   id: string;
@@ -28,10 +68,10 @@ export interface AttractionSummary {
   attractionType: AttractionType | null;
   heroImage: MediaAsset | null;
   island: LocationSummary | null;
+  atoll: LocationSummary | null;
 }
 
 export interface AttractionDetail extends AttractionSummary {
-  atoll: LocationSummary | null;
   body: string | null;
   bestFor: string | null;
   sourceArticleSlug: string | null;

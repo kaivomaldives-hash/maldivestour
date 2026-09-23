@@ -7,23 +7,32 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
 import { Pagination } from "@/components/ui/pagination";
 import { getAttractions } from "@/lib/attractions/repository";
-import type { AttractionType } from "@/lib/attractions/types";
+import {
+  ATTRACTION_SUPER_GROUP,
+  ATTRACTION_SUPER_GROUP_LABEL,
+  type AttractionSuperGroup,
+  ATTRACTION_TYPE_LABEL,
+  type AttractionSummary,
+  type AttractionType,
+} from "@/lib/attractions/types";
+import { attractionHref } from "@/lib/attractions/types";
 import { getAtollBySlug } from "@/lib/locations/repository";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
-
-const ATTRACTION_TYPE_LABEL: Record<AttractionType, string> = {
-  religious: "Religious sites",
-  museum: "Museums",
-  monument: "Monuments",
-  park: "Parks",
-  beach: "Beaches",
-  market: "Markets",
-  landmark: "Landmarks",
-  infrastructure: "Landmarks",
-};
+import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd } from "@/lib/seo/site";
 
 const ATTRACTION_TYPES = Object.keys(ATTRACTION_TYPE_LABEL) as AttractionType[];
+const SUPER_GROUP_ORDER: AttractionSuperGroup[] = ["cultural", "natural", "marine"];
 const PAGE_SIZE = 48;
+
+function groupBySuperGroup(items: AttractionSummary[]): Map<AttractionSuperGroup, AttractionSummary[]> {
+  const groups = new Map<AttractionSuperGroup, AttractionSummary[]>();
+  for (const item of items) {
+    if (!item.attractionType) continue;
+    const group = ATTRACTION_SUPER_GROUP[item.attractionType];
+    if (!groups.has(group)) groups.set(group, []);
+    groups.get(group)!.push(item);
+  }
+  return groups;
+}
 
 export interface AttractionDirectorySearchParams {
   page?: string;
@@ -50,23 +59,6 @@ export async function attractionDirectoryMetadata(searchParams: Promise<Attracti
   };
 }
 
-function attractionListJsonLd(items: { title: string; slug: string; summary: string | null }[]) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: items.map((item, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      item: {
-        "@type": "TouristAttraction",
-        name: item.title,
-        description: item.summary ?? undefined,
-        url: canonicalUrl(`/maldives/attractions/${item.slug}`),
-      },
-    })),
-  };
-}
-
 export async function AttractionDirectoryPage({
   searchParams,
 }: {
@@ -79,11 +71,34 @@ export async function AttractionDirectoryPage({
   const atoll = sp.atoll ? await getAtollBySlug(sp.atoll) : null;
   const results = await getAttractions({ page, pageSize: PAGE_SIZE, atollId: atoll?.id, attractionType });
   const totalPages = Math.max(1, Math.ceil(results.total / PAGE_SIZE));
+  const isUnfiltered = !attractionType && !atoll;
+  const superGroups = isUnfiltered ? groupBySuperGroup(results.items) : null;
+
+  // A real, populated list of atolls to browse by — only atolls that
+  // actually have an attraction, never every administrative atoll (Task
+  // 15 §14: "do NOT automatically create a page/section for every atoll
+  // unless enough attraction data exists"). Reuses the unfiltered result
+  // set when there's no active filter; only fetches separately when a
+  // filter has already narrowed `results`.
+  const allForAtollNav = isUnfiltered ? results.items : (await getAttractions({ pageSize: PAGE_SIZE })).items;
+  const atollsInUse = Array.from(new Map(allForAtollNav.filter((a) => a.atoll).map((a) => [a.atoll!.id, a.atoll!])).values()).sort((a, b) =>
+    a.title.localeCompare(b.title),
+  );
 
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Attractions" }], "/maldives/attractions")) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(attractionListJsonLd(results.items)) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            itemListJsonLd(
+              results.items.map((a) => ({ title: a.title, href: attractionHref(a), summary: a.summary })),
+              "TouristAttraction",
+            ),
+          ),
+        }}
+      />
 
       <PageHero
         breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Attractions" }]}
@@ -128,8 +143,35 @@ export async function AttractionDirectoryPage({
           ))}
         </nav>
 
+        {atollsInUse.length > 1 && (
+          <nav aria-label="Filter by atoll" className="mt-3 flex flex-wrap gap-2 text-sm">
+            {atollsInUse.map((a) => (
+              <Link
+                key={a.id}
+                href={`/maldives/attractions/?atoll=${a.slug}`}
+                className={`rounded-full border px-3 py-1 ${atoll?.id === a.id ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
+              >
+                Attractions in {a.title}
+              </Link>
+            ))}
+          </nav>
+        )}
+
         {results.items.length === 0 ? (
           <EmptyState title="No attractions recorded for this filter yet" />
+        ) : superGroups ? (
+          <div className="mt-8 space-y-12">
+            {SUPER_GROUP_ORDER.filter((group) => superGroups.has(group)).map((group) => (
+              <section key={group}>
+                <h2 className="text-xl font-semibold text-ocean-900">{ATTRACTION_SUPER_GROUP_LABEL[group]}</h2>
+                <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {superGroups.get(group)!.map((attraction) => (
+                    <AttractionCard key={attraction.id} attraction={attraction} />
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
         ) : (
           <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {results.items.map((attraction) => (

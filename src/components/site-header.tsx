@@ -10,7 +10,7 @@ import { CloseIcon, MenuIcon, SearchIcon } from "@/components/ui/icons";
 
 const PRIMARY_NAV = [
   { label: "Maldives", href: "/maldives/" },
-  { label: "Resorts", href: "/maldives/resorts/" },
+  { label: "Stays", href: "/maldives/stays/" },
   { label: "Activities", href: "/maldives/activities/" },
   { label: "Diving", href: "/maldives/diving/" },
   { label: "Fishing", href: "/maldives/fishing/" },

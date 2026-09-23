@@ -64,6 +64,7 @@ const STATIC_PATHS = [
   "/maldives/packages/liveaboard/",
   "/maldives/providers/",
   "/maldives/resorts/",
+  "/maldives/stays/",
   "/maldives/surf-breaks/",
   "/maldives/surfing/",
   "/maldives/transfers/",

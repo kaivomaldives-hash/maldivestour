@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { ActivityCard } from "@/components/activity/activity-card";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
-import { DiveSitesMap } from "@/components/diving/dive-sites-map";
+import { DiveSitesMap } from "@/components/diving/dive-sites-map-loader";
 import { DivingFilterBar } from "@/components/diving/diving-filter-bar";
 import { DivingVideo, divingVideoJsonLd } from "@/components/diving/diving-video";
 import { PackageCard } from "@/components/packages/package-card";

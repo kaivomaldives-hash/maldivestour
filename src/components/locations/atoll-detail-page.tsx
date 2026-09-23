@@ -69,6 +69,13 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
   // to give resorts a real location to attach to) alongside the inhabited
   // islands Task 4 seeded — split them rather than mislabel the count.
   const islands = allIslands.filter((island) => island.isInhabited !== false);
+  // Visit Maldives' own atoll pages consistently separate local-island
+  // guesthouses/hotels from private-island resorts rather than listing
+  // every stay together — real, verifiable structural pattern (checked
+  // against their site), applied here with our own real accommodationType
+  // data, not copied content.
+  const resortAccommodations = accommodations.filter((a) => a.accommodationType === "resort");
+  const localStayAccommodations = accommodations.filter((a) => a.accommodationType !== "resort");
 
   // See the identical split on the island page (Task 7, Task 8, Task 9):
   // fishing, diving, and surfing each have their own dedicated
@@ -150,11 +157,24 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
         )}
       </section>
 
-      {accommodations.length > 0 && (
+      {resortAccommodations.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Where to Stay in {atoll.title}</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Resorts in {atoll.title}</h2>
+          <p className="mt-1 text-sm text-neutral-600">Private island resorts, each its own destination.</p>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {accommodations.map((accommodation) => (
+            {resortAccommodations.map((accommodation) => (
+              <AccommodationCard key={accommodation.id} accommodation={accommodation} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {localStayAccommodations.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Guesthouses & Hotels in {atoll.title}</h2>
+          <p className="mt-1 text-sm text-neutral-600">Stays on real local islands, inside their communities.</p>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {localStayAccommodations.map((accommodation) => (
               <AccommodationCard key={accommodation.id} accommodation={accommodation} />
             ))}
           </ul>

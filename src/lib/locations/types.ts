@@ -63,3 +63,40 @@ export interface PaginatedResult<T> {
   page: number;
   pageSize: number;
 }
+
+/** Destination guide content stored in an island's own `nodes.attributes`
+ * jsonb (see getNodeAttributes) — MTG's own previously-published guide
+ * content, cleaned and restructured, never fabricated facts (see
+ * scripts/import-legacy-island-content.mjs for the sanitization pass that
+ * strips unverifiable prices/transfer-times before this is written). Not
+ * every island has one — only those with usable legacy source content. */
+export interface IslandQuickFact {
+  label: string;
+  value: string;
+}
+
+export interface IslandContentSection {
+  heading: string;
+  paragraphs: string[];
+}
+
+export interface IslandFaq {
+  question: string;
+  answer: string;
+}
+
+export interface IslandContentProfile {
+  contentSource: string;
+  quickFacts: IslandQuickFact[];
+  overview: string[];
+  sections: IslandContentSection[];
+  faqs: IslandFaq[];
+  nearbyIslandSlugs: string[];
+}
+
+/** Same idea as IslandContentProfile, for atolls — see
+ * scripts/import-legacy-atoll-content.mjs. */
+export interface AtollContentProfile {
+  contentSource: string;
+  sections: IslandContentSection[];
+}

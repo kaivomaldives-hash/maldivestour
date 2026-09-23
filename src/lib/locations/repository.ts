@@ -2,9 +2,13 @@ import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
 import type {
+  AtollContentProfile,
   AtollDetail,
   AtollSummary,
+  IslandContentProfile,
   IslandDetail,
+  IslandFaq,
+  IslandQuickFact,
   IslandSummary,
   LocationDetail,
   LocationSummary,
@@ -354,6 +358,32 @@ export async function getLocationSummaryById(id: string): Promise<LocationSummar
   return map.get(id) ?? null;
 }
 
+/** Batched slug lookup — used to resolve IslandContentProfile.nearbyIslandSlugs
+ * (real MTG island slugs, verified at import time — see
+ * import-legacy-island-content.mjs) into renderable summaries without one
+ * query per nearby island. */
+export async function getLocationSummariesBySlugs(slugs: string[]): Promise<Map<string, LocationSummary>> {
+  const map = new Map<string, LocationSummary>();
+  if (slugs.length === 0) return map;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("nodes")
+    .select(NODE_LOCATION_SELECT)
+    .eq("node_type", "location")
+    .eq("status", "published")
+    .in("slug", slugs)
+    .returns<NodeLocationRow[]>();
+
+  if (error || !data) return map;
+
+  for (const row of data) {
+    const summary = locationSummaryOf(row);
+    if (summary) map.set(summary.slug, summary);
+  }
+  return map;
+}
+
 /**
  * Generic site-type queries, added for Task 8. Dive sites, and later surf
  * breaks (Task 9), are both `locations` rows distinguished only by
@@ -467,6 +497,39 @@ export async function getNodeAttributesByIds(nodeIds: string[]): Promise<Map<str
     map.set(row.id, row.attributes ?? {});
   }
   return map;
+}
+
+/** An island's own destination-guide content, if it has one — reads the
+ * `island_*` keys import-legacy-island-content.mjs writes into
+ * `nodes.attributes` (see IslandContentProfile). Returns null rather than
+ * an empty-arrays object when nothing was ever written for this island,
+ * so callers can tell "no content" from "content, but every field empty". */
+export async function getIslandContent(nodeId: string): Promise<IslandContentProfile | null> {
+  const attrs = await getNodeAttributes(nodeId);
+  const source = attrs.island_content_source;
+  if (typeof source !== "string") return null;
+
+  return {
+    contentSource: source,
+    quickFacts: Array.isArray(attrs.island_quick_facts) ? (attrs.island_quick_facts as IslandQuickFact[]) : [],
+    overview: Array.isArray(attrs.island_overview) ? (attrs.island_overview as string[]) : [],
+    sections: Array.isArray(attrs.island_sections) ? (attrs.island_sections as IslandContentProfile["sections"]) : [],
+    faqs: Array.isArray(attrs.island_faqs) ? (attrs.island_faqs as IslandFaq[]) : [],
+    nearbyIslandSlugs: Array.isArray(attrs.island_nearby_slugs) ? (attrs.island_nearby_slugs as string[]) : [],
+  };
+}
+
+/** An atoll's own destination-guide content, if it has one — see
+ * getIslandContent for the identical island-level pattern. */
+export async function getAtollContent(nodeId: string): Promise<AtollContentProfile | null> {
+  const attrs = await getNodeAttributes(nodeId);
+  const source = attrs.atoll_content_source;
+  if (typeof source !== "string") return null;
+
+  return {
+    contentSource: source,
+    sections: Array.isArray(attrs.atoll_sections) ? (attrs.atoll_sections as AtollContentProfile["sections"]) : [],
+  };
 }
 
 /** Every node tagged to `locationId` via node_locations, regardless of

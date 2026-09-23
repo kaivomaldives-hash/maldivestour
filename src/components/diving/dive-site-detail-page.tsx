@@ -6,7 +6,7 @@ import { ActivityCard } from "@/components/activity/activity-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getDiveSiteBySlug, getDivingActivitiesAtSite } from "@/lib/diving/repository";
-import { canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 
 const SITE_TYPE_LABEL: Record<string, string> = {
   reef: "Reef",
@@ -42,6 +42,18 @@ export async function DiveSiteDetailPage({ slug }: { slug: string }) {
 
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd(
+              [{ label: "Maldives", href: "/maldives/" }, { label: "Dive Sites", href: "/maldives/dive-sites/" }, { label: site.title }],
+              `/maldives/dive-sites/${site.slug}`,
+            ),
+          ),
+        }}
+      />
+
       <PageHero
         breadcrumbs={[
           { label: "Maldives", href: "/maldives/" },
@@ -131,6 +143,14 @@ export async function DiveSiteDetailPage({ slug }: { slug: string }) {
           </ul>
         </section>
       )}
+
+      <p className="mt-10 text-sm text-neutral-600">
+        Planning a trip?{" "}
+        <Link href="/maldives/diving/" className="font-medium text-maldives-600 hover:underline">
+          See all Maldives diving activities, packages and dive sites
+        </Link>
+        .
+      </p>
       </div>
     </main>
   );

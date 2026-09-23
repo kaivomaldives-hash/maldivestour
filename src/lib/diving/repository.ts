@@ -265,4 +265,35 @@ export async function getDivingActivitiesAtSite(siteId: string): Promise<Activit
   return getDivingActivitiesByLocation(siteId);
 }
 
+/** Most recent `updated_at` across every diving activity and dive site node
+ * — a real, non-fabricated freshness signal for the /maldives/diving/ hub
+ * page (never a hand-set "last verified" date, since nothing here tracks a
+ * separate verification event). Returns null rather than guessing if
+ * either query fails or nothing is diving-related yet. */
+export async function getDivingContentUpdatedAt(): Promise<string | null> {
+  const supabase = await createClient();
+  const [activityRes, siteRes] = await Promise.all([
+    supabase
+      .from("nodes")
+      .select("updated_at, activities!inner(activity_category)")
+      .eq("activities.activity_category", "diving")
+      .order("updated_at", { ascending: false })
+      .limit(1)
+      .returns<Array<{ updated_at: string }>>(),
+    supabase
+      .from("nodes")
+      .select("updated_at, locations!locations_id_fkey!inner(location_type)")
+      .eq("locations.location_type", "dive_site")
+      .order("updated_at", { ascending: false })
+      .limit(1)
+      .returns<Array<{ updated_at: string }>>(),
+  ]);
+
+  const dates = [activityRes.data?.[0]?.updated_at, siteRes.data?.[0]?.updated_at].filter(
+    (d): d is string => typeof d === "string",
+  );
+  if (dates.length === 0) return null;
+  return dates.sort().at(-1) ?? null;
+}
+
 export type { DiveSiteType };

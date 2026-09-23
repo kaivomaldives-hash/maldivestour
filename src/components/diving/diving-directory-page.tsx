@@ -18,6 +18,7 @@ import {
   getDiveSites,
   getDivingActivities,
   getDivingActivitiesByType,
+  getDivingContentUpdatedAt,
   getDivingTypesInUse,
   searchDivingActivities,
 } from "@/lib/diving/repository";
@@ -73,7 +74,14 @@ function hasAnyFilter(sp: DivingDirectorySearchParams): boolean {
 
 export async function divingDirectoryMetadata(searchParams: Promise<DivingDirectorySearchParams>): Promise<Metadata> {
   const sp = await searchParams;
-  const title = "Maldives Diving | Dive Trips, Packages & Dive Sites";
+  // Real, live-counted total — never a hand-set number that can go stale,
+  // since this route has no revalidate/ISR cache and re-runs every request.
+  const { total: diveSiteTotal } = await getDiveSites({ pageSize: 1 });
+  const year = new Date().getFullYear();
+  const title =
+    diveSiteTotal > 0
+      ? `Maldives Diving ${year} | ${diveSiteTotal} Dive Sites, Trips & Packages`
+      : "Maldives Diving | Dive Trips, Packages & Dive Sites";
   const description = "Real, source-verified Maldives diving activities, dive centers, dive sites and diving packages — search by type, location and provider.";
   const url = canonicalUrl("/maldives/diving");
 
@@ -96,7 +104,7 @@ export async function DivingDirectoryPage({
   const query = sp.q?.trim() ?? "";
   const isSearching = query.length > 0;
 
-  const [atoll, island, atolls, divingTypes, diveSites, allPackages, divingArticle] = await Promise.all([
+  const [atoll, island, atolls, divingTypes, diveSites, allPackages, divingArticle, contentUpdatedAt] = await Promise.all([
     sp.atoll ? getAtollBySlug(sp.atoll) : Promise.resolve(null),
     sp.island ? getIslandBySlug(sp.island) : Promise.resolve(null),
     getAtolls(),
@@ -104,6 +112,7 @@ export async function DivingDirectoryPage({
     getDiveSites({ pageSize: 12 }),
     getAllPackageViews(),
     getArticleBySlug("best-maldives-diving-spots-ultimate-guide"),
+    getDivingContentUpdatedAt(),
   ]);
   const divingPackages = filterPackageViews(allPackages, { category: "diving" });
 
@@ -162,6 +171,43 @@ export async function DivingDirectoryPage({
             starting with a Discover Scuba Diving session, working toward a PADI Open Water certification, or already certified and looking
             for a specific site, the activities and dive sites below are real, individually sourced entries — not a generic stock listing.
           </p>
+        </section>
+
+        <section className="mt-8 rounded-2xl border border-neutral-200 bg-sand-50 p-6">
+          <h2 className="text-lg font-semibold text-ocean-900">Maldives Diving: Essential Information</h2>
+          <dl className="mt-4 grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
+            <div>
+              <dt className="text-neutral-500">Water temperature</dt>
+              <dd className="font-medium">26–30°C (79–86°F) year-round</dd>
+            </div>
+            <div>
+              <dt className="text-neutral-500">Visibility</dt>
+              <dd className="font-medium">15–40+ meters (50–130+ feet)</dd>
+            </div>
+            <div>
+              <dt className="text-neutral-500">Northeast monsoon (Dec–Apr)</dt>
+              <dd className="mt-1">
+                Best visibility in the eastern atolls, calmer seas — manta cleaning stations (Jan–Apr) and hammerhead sharks in Rasdhoo Atoll
+                (early morning).
+              </dd>
+            </div>
+            <div>
+              <dt className="text-neutral-500">Southwest monsoon (May–Nov)</dt>
+              <dd className="mt-1">
+                Stronger currents bring more pelagic species — manta rays gather at Hanifaru Bay (Jul–Nov), and whale sharks are regularly
+                sighted in South Ari Atoll year-round.
+              </dd>
+            </div>
+          </dl>
+          {divingArticle && (
+            <p className="mt-4 text-sm text-neutral-700">
+              For a full site-by-site breakdown — depth, currents and marine life at named dive sites across every atoll — read{" "}
+              <Link href={articleHref(divingArticle)} className="font-medium text-maldives-600 hover:underline">
+                {divingArticle.title}
+              </Link>
+              .
+            </p>
+          )}
         </section>
 
         <p className="mt-6 text-sm text-neutral-600">
@@ -295,6 +341,12 @@ export async function DivingDirectoryPage({
             ))}
           </dl>
         </section>
+
+        <p className="mt-10 text-xs text-neutral-500">
+          Diving activities and dive sites on this page are sourced from official operator and resort information.
+          {contentUpdatedAt &&
+            ` Content last updated ${new Date(contentUpdatedAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}.`}
+        </p>
       </div>
     </main>
   );

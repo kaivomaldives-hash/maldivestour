@@ -1,7 +1,7 @@
 import "server-only";
 
 import { getAccommodations, searchAccommodations } from "@/lib/accommodations/repository";
-import type { AccommodationSummary, AccommodationType } from "@/lib/accommodations/types";
+import { ACCOMMODATION_TYPE_SEGMENT, type AccommodationSummary, type AccommodationType } from "@/lib/accommodations/types";
 import { getActivities, searchActivities } from "@/lib/activities/repository";
 import { activityHref } from "@/lib/activities/types";
 import type { ActivityCategory, ActivitySummary } from "@/lib/activities/types";
@@ -115,8 +115,7 @@ function accommodationResultType(type: AccommodationType): SearchResultType | nu
 }
 
 function accommodationHref(type: AccommodationType, slug: string): string {
-  const segment = type === "resort" ? "resorts" : type === "guesthouse" ? "guesthouses" : "hotels";
-  return `/maldives/${segment}/${slug}/`;
+  return `/maldives/${ACCOMMODATION_TYPE_SEGMENT[type]}/${slug}/`;
 }
 
 const ACCOMMODATION_TYPE_LABEL: Record<AccommodationType, string> = {
@@ -124,6 +123,7 @@ const ACCOMMODATION_TYPE_LABEL: Record<AccommodationType, string> = {
   resort: "Resort",
   guesthouse: "Guesthouse",
   villa: "Villa",
+  liveaboard: "Liveaboard",
   other: "Accommodation",
 };
 

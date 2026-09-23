@@ -2,7 +2,7 @@ import "server-only";
 
 import { getLocationSummariesByIds, getLocationSummaryById } from "@/lib/locations/repository";
 import type { LocationSummary } from "@/lib/locations/types";
-import { getHeroMediaByNodeIds } from "@/lib/media/repository";
+import { getHeroMediaByNodeIds, getMediaAssetsByIds, getMediaForNode } from "@/lib/media/repository";
 import type { MediaAsset } from "@/lib/media/types";
 import { getProviderSummariesByIds } from "@/lib/providers/repository";
 import type { ProviderSummary } from "@/lib/providers/types";
@@ -10,6 +10,7 @@ import { createClient } from "@/lib/supabase/server";
 import type {
   AccommodationDetail,
   AccommodationFilters,
+  AccommodationRoom,
   AccommodationSummary,
   AccommodationType,
   PaginatedResult,
@@ -33,7 +34,7 @@ import type {
 // in src/lib/locations/repository.ts: without `!inner`, filtering on an
 // embedded column doesn't restrict which `nodes` rows come back.
 const NODE_ACCOMMODATION_SELECT =
-  "id, slug, title, summary, meta_title, meta_description, accommodations!inner(accommodation_type, star_rating, price_tier, room_count, all_inclusive, overwater_villas, check_in_time, check_out_time, currency, operated_by_provider_id)";
+  "id, slug, title, summary, meta_title, meta_description, accommodations!inner(accommodation_type, star_rating, price_tier, room_count, all_inclusive, overwater_villas, check_in_time, check_out_time, currency, operated_by_provider_id, price_from, video_youtube_id)";
 
 type AccommodationFields = {
   accommodation_type: AccommodationType;
@@ -46,6 +47,8 @@ type AccommodationFields = {
   check_out_time: string | null;
   currency: string | null;
   operated_by_provider_id: string | null;
+  price_from: number | null;
+  video_youtube_id: string | null;
 };
 
 type NodeAccommodationRow = {
@@ -78,6 +81,8 @@ interface BareAccommodation {
   checkOutTime: string | null;
   currency: string | null;
   providerId: string | null;
+  priceFrom: number | null;
+  videoYoutubeId: string | null;
 }
 
 function bareAccommodationOf(row: NodeAccommodationRow): BareAccommodation | null {
@@ -101,6 +106,8 @@ function bareAccommodationOf(row: NodeAccommodationRow): BareAccommodation | nul
     checkOutTime: a.check_out_time,
     currency: a.currency,
     providerId: a.operated_by_provider_id,
+    priceFrom: a.price_from,
+    videoYoutubeId: a.video_youtube_id,
   };
 }
 
@@ -117,6 +124,8 @@ function toSummary(bare: BareAccommodation, primaryLocation: LocationSummary | n
     overwaterVillas: bare.overwaterVillas,
     primaryLocation,
     heroImage,
+    priceFrom: bare.priceFrom,
+    priceFromCurrency: bare.priceFrom !== null ? (bare.currency ?? "USD") : null,
   };
 }
 
@@ -291,6 +300,60 @@ export async function getAccommodationsByProvider(providerId: string): Promise<A
   return bares.map((b) => toSummary(b, locationsByNodeId.get(b.id) ?? null, heroByNodeId.get(b.id) ?? null));
 }
 
+type AccommodationRoomRow = {
+  id: string;
+  name: string;
+  price_from: number | null;
+  price_currency: string | null;
+  bed_type: string | null;
+  max_occupancy: number | null;
+};
+
+/** Real room/villa-type rows for one property, with their 1-2 real
+ * per-room photos batched in — never an N+1 (one query for rooms, one
+ * for the room->media join, one for the media assets themselves). Detail
+ * pages only; listing/card queries never fetch rooms. */
+async function getAccommodationRooms(accommodationId: string): Promise<AccommodationRoom[]> {
+  const supabase = await createClient();
+  const { data: roomRows, error } = await supabase
+    .from("accommodation_rooms")
+    .select("id, name, price_from, price_currency, bed_type, max_occupancy")
+    .eq("accommodation_id", accommodationId)
+    .order("sort_order", { ascending: true })
+    .returns<AccommodationRoomRow[]>();
+
+  if (error || !roomRows || roomRows.length === 0) return [];
+
+  const { data: mediaRows } = await supabase
+    .from("accommodation_room_media")
+    .select("room_id, media_id, sort_order")
+    .in("room_id", roomRows.map((r) => r.id))
+    .order("sort_order", { ascending: true })
+    .returns<Array<{ room_id: string; media_id: string; sort_order: number }>>();
+
+  const mediaIds = Array.from(new Set((mediaRows ?? []).map((r) => r.media_id)));
+  const assetsById = await getMediaAssetsByIds(mediaIds);
+
+  const imagesByRoom = new Map<string, MediaAsset[]>();
+  for (const row of mediaRows ?? []) {
+    const asset = assetsById.get(row.media_id);
+    if (!asset) continue;
+    const list = imagesByRoom.get(row.room_id) ?? [];
+    list.push(asset);
+    imagesByRoom.set(row.room_id, list);
+  }
+
+  return roomRows.map((r) => ({
+    id: r.id,
+    name: r.name,
+    priceFrom: r.price_from,
+    currency: r.price_currency,
+    bedType: r.bed_type,
+    maxOccupancy: r.max_occupancy,
+    images: imagesByRoom.get(r.id) ?? [],
+  }));
+}
+
 export async function getAccommodationBySlug(slug: string): Promise<AccommodationDetail | null> {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -305,11 +368,13 @@ export async function getAccommodationBySlug(slug: string): Promise<Accommodatio
   const bare = bareAccommodationOf(data);
   if (!bare) return null;
 
-  const [primaryLocation, providersById, bookableRow, heroImage] = await Promise.all([
+  const [primaryLocation, providersById, bookableRow, heroImage, rooms, galleryMedia] = await Promise.all([
     attachPrimaryLocations([bare.id]).then((m) => m.get(bare.id) ?? null),
     bare.providerId ? getProviderSummariesByIds([bare.providerId]) : Promise.resolve(new Map<string, ProviderSummary>()),
     supabase.from("bookable_products").select("id").eq("id", bare.id).maybeSingle(),
     getHeroMediaByNodeIds([bare.id]).then((m) => m.get(bare.id) ?? null),
+    getAccommodationRooms(bare.id),
+    getMediaForNode(bare.id),
   ]);
 
   const atoll = primaryLocation?.parentId ? await getLocationSummaryById(primaryLocation.parentId) : null;
@@ -325,6 +390,9 @@ export async function getAccommodationBySlug(slug: string): Promise<Accommodatio
     provider: bare.providerId ? providersById.get(bare.providerId) ?? null : null,
     atoll,
     isBookable: Boolean(bookableRow.data),
+    videoYoutubeId: bare.videoYoutubeId,
+    rooms,
+    galleryImages: galleryMedia.filter((item) => item.role === "gallery").map((item) => item.asset),
   };
 }
 

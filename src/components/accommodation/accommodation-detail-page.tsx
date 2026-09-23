@@ -21,6 +21,7 @@ const TYPE_LABEL: Record<AccommodationType, string> = {
   resort: "Resort",
   guesthouse: "Guesthouse",
   villa: "Villa",
+  liveaboard: "Liveaboard",
   other: "Accommodation",
 };
 

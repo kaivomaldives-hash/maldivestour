@@ -5,6 +5,7 @@ import { ACCOMMODATION_TYPE_SEGMENT } from "@/lib/accommodations/types";
 import { getActivities } from "@/lib/activities/repository";
 import { activityHref } from "@/lib/activities/types";
 import { getArticles } from "@/lib/articles/repository";
+import { getAttractions } from "@/lib/attractions/repository";
 import { articleHref } from "@/lib/articles/types";
 import { getDiveSites } from "@/lib/diving/repository";
 import { getAtolls, getIslands } from "@/lib/locations/repository";
@@ -41,6 +42,7 @@ const STATIC_PATHS = [
   "/",
   "/maldives/",
   "/maldives/activities/",
+  "/maldives/attractions/",
   "/maldives/atolls/",
   "/maldives/dive-sites/",
   "/maldives/diving/",
@@ -79,11 +81,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl();
   const url = (path: string) => `${siteUrl}${path}`;
 
-  const [atolls, islands, accommodations, activities, diveSites, surfBreaks, packages, transferRoutes, articles, providers, speedboats] = await Promise.all([
+  const [atolls, islands, accommodations, activities, attractions, diveSites, surfBreaks, packages, transferRoutes, articles, providers, speedboats] = await Promise.all([
     getAtolls(),
     fetchAllPages((page) => getIslands({ page, pageSize: PAGE_SIZE })),
     fetchAllPages((page) => getAccommodations({ page, pageSize: PAGE_SIZE })),
     fetchAllPages((page) => getActivities({ page, pageSize: PAGE_SIZE })),
+    fetchAllPages((page) => getAttractions({ page, pageSize: PAGE_SIZE })),
     fetchAllPages((page) => getDiveSites({ page, pageSize: PAGE_SIZE })),
     fetchAllPages((page) => getSurfBreaks({ page, pageSize: PAGE_SIZE })),
     fetchAllPages((page) => getPackages({ page, pageSize: PAGE_SIZE })),
@@ -99,6 +102,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const i of islands) entries.push({ url: url(`/maldives/islands/${i.slug}/`), changeFrequency: "monthly", priority: 0.6 });
   for (const a of accommodations) entries.push({ url: url(`/maldives/${ACCOMMODATION_TYPE_SEGMENT[a.accommodationType]}/${a.slug}/`), changeFrequency: "weekly", priority: 0.7 });
   for (const a of activities) entries.push({ url: url(activityHref(a)), changeFrequency: "monthly", priority: 0.6 });
+  for (const a of attractions) entries.push({ url: url(`/maldives/attractions/${a.slug}/`), changeFrequency: "monthly", priority: 0.5 });
   for (const d of diveSites) entries.push({ url: url(`/maldives/dive-sites/${d.slug}/`), changeFrequency: "monthly", priority: 0.5 });
   for (const s of surfBreaks) entries.push({ url: url(`/maldives/surf-breaks/${s.slug}/`), changeFrequency: "monthly", priority: 0.5 });
   // getPackages() only ever returns real DB packages — Task 21's demo

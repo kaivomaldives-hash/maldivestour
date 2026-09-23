@@ -4,12 +4,14 @@ import Link from "next/link";
 import { ActivitiesVideo, activitiesVideoJsonLd } from "@/components/activity/activities-video";
 import { ActivityCard } from "@/components/activity/activity-card";
 import { ActivityFilterBar } from "@/components/activity/activity-filter-bar";
+import { AttractionCard } from "@/components/attractions/attraction-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Pagination } from "@/components/ui/pagination";
 import { PageHero } from "@/components/ui/page-hero";
 import { getActivities, searchActivities } from "@/lib/activities/repository";
 import { hasDedicatedRoute, type ActivityCategory, type ActivityDifficulty } from "@/lib/activities/types";
+import { getAttractions } from "@/lib/attractions/repository";
 import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
 import { asset } from "@/lib/packages/category-images";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
@@ -113,10 +115,11 @@ export async function ActivityDirectoryPage({
     : undefined;
   const maxPrice = sp.maxPrice ? Number(sp.maxPrice) : undefined;
 
-  const [atoll, island, atolls] = await Promise.all([
+  const [atoll, island, atolls, attractions] = await Promise.all([
     sp.atoll ? getAtollBySlug(sp.atoll) : Promise.resolve(null),
     sp.island ? getIslandBySlug(sp.island) : Promise.resolve(null),
     getAtolls(),
+    getAttractions({ pageSize: 6 }),
   ]);
 
   const results = isSearching
@@ -209,6 +212,24 @@ export async function ActivityDirectoryPage({
 
         {!isSearching && <Pagination page={page} totalPages={totalPages} basePath="/maldives/activities/" baseQuery={baseQuery} />}
 
+        {attractions.items.length > 0 && (
+          <section className="mt-12 border-t border-neutral-200 pt-10">
+            <h2 className="text-xl font-semibold text-ocean-900">Maldives Attractions</h2>
+            <p className="mt-1 text-sm text-neutral-600">
+              Real, individually documented places to visit — mosques, museums, monuments and public beaches — not
+              bookable, but part of any Maldives trip.
+            </p>
+            <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {attractions.items.map((attraction) => (
+                <AttractionCard key={attraction.id} attraction={attraction} />
+              ))}
+            </ul>
+            <Link href="/maldives/attractions/" className="mt-4 inline-block text-sm font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
+              View all attractions →
+            </Link>
+          </section>
+        )}
+
         <ActivitiesVideo />
 
         <section className="mt-12 border-t border-neutral-200 pt-10">
@@ -218,6 +239,7 @@ export async function ActivityDirectoryPage({
               { href: "/maldives/fishing/", label: "Fishing" },
               { href: "/maldives/diving/", label: "Diving" },
               { href: "/maldives/surfing/", label: "Surfing" },
+              { href: "/maldives/attractions/", label: "Attractions" },
               { href: "/maldives/packages/", label: "Packages" },
               { href: "/maldives/resorts/", label: "Resorts" },
               { href: "/maldives/transfers/", label: "Transfers" },

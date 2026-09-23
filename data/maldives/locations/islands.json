@@ -168,11 +168,11 @@
 
   { "name": "Dhanbidhoo", "atoll_administrative_code": "L", "notes": "" },
   { "name": "Fonadhoo", "atoll_administrative_code": "L", "notes": "Atoll capital." },
-  { "name": "Gaadhoo", "atoll_administrative_code": "L", "notes": "" },
+  { "name": "Gaadhoo", "atoll_administrative_code": "L", "is_inhabited": false, "notes": "Residents have been relocating to Fonadhoo in the same atoll; island administration is being wound down. Not currently an active local-island community — verified via Wikipedia/press reporting, not MTG's own legacy content." },
   { "name": "Gan", "atoll_administrative_code": "L", "notes": "Distinct from the uninhabited airport island of the same name in Seenu (Addu) Atoll." },
   { "name": "Hithadhoo", "atoll_administrative_code": "L", "notes": "Distinct from the atoll capital of Seenu Atoll, also named Hithadhoo." },
   { "name": "Isdhoo", "atoll_administrative_code": "L", "notes": "" },
-  { "name": "Kalhaidhoo", "atoll_administrative_code": "L", "notes": "Also spelled Kalaidhoo in some sources." },
+  { "name": "Kalhaidhoo", "atoll_administrative_code": "L", "is_inhabited": false, "notes": "Also spelled Kalaidhoo in some sources. Declared uninhabited by the government a week after the 2004 tsunami; the community permanently relocated to Gan in the same atoll. Population 0 since — verified via Wikipedia, not MTG's own legacy content." },
   { "name": "Kunahandhoo", "atoll_administrative_code": "L", "notes": "" },
   { "name": "Maabaidhoo", "atoll_administrative_code": "L", "notes": "" },
   { "name": "Maamendhoo", "atoll_administrative_code": "L", "notes": "One source additionally listed a separate 'Maandhoo' for this atoll, which appears to be a variant/duplicate spelling of Maamendhoo rather than a distinct island; not included separately to avoid inventing an entry. See SOURCES.md." },

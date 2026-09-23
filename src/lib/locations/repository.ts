@@ -151,8 +151,12 @@ export async function getAtolls(): Promise<AtollSummary[]> {
 }
 
 /**
- * Island counts per atoll in a single grouped query, so the atoll
- * directory never runs one count query per atoll (no N+1).
+ * Inhabited-island counts per atoll in a single grouped query, so the
+ * atoll directory never runs one count query per atoll (no N+1). Filtered
+ * to is_inhabited=true — every caller of getAtolls() presents this number
+ * as "N islands"/"N inhabited islands", so it must exclude both the
+ * uninhabited resort islands (Task 5) and any local island whose
+ * community has since relocated (e.g. Kalhaidhoo, Gaadhoo).
  */
 async function getIslandCountsByAtoll(atollIds: string[]): Promise<Map<string, number>> {
   const counts = new Map<string, number>();
@@ -163,6 +167,7 @@ async function getIslandCountsByAtoll(atollIds: string[]): Promise<Map<string, n
     .from("locations")
     .select("parent_id")
     .eq("location_type", "island")
+    .eq("is_inhabited", true)
     .in("parent_id", atollIds)
     .returns<Array<{ parent_id: string | null }>>();
 

@@ -180,7 +180,15 @@ function main() {
 
     const atollName = atolls.find((a) => a.administrative_code === island.atoll_administrative_code)?.name ?? atollSlug;
     const slug = assignUniqueSlug(island.name, usedSlugs, atollSlug);
-    const summary = `${island.name} is an inhabited island in ${atollName}, Maldives.`;
+    // Defaults to true (every island in this file has historically been an
+    // inhabited local island) — false only for islands.json entries that
+    // explicitly override it, e.g. Kalhaidhoo/Gaadhoo, whose communities
+    // relocated (2004 tsunami / an active government resettlement) and are
+    // no longer inhabited, per Wikipedia/press verification.
+    const isInhabited = island.is_inhabited !== false;
+    const summary = isInhabited
+      ? `${island.name} is an inhabited island in ${atollName}, Maldives.`
+      : `${island.name} is an island in ${atollName}, Maldives, no longer inhabited after its community relocated.`;
     const metaTitle = `${island.name}, ${atollName} | Maldives Islands | MTG`;
 
     lines.push(`insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, published_at)`);
@@ -191,7 +199,7 @@ function main() {
     lines.push("");
     lines.push(`insert into locations (id, location_type, parent_id, path, is_inhabited)`);
     lines.push(
-      `select n.id, 'island', p.id, (p_loc.path || ${sqlString(ltreeLabel(slug))}::ltree), true`,
+      `select n.id, 'island', p.id, (p_loc.path || ${sqlString(ltreeLabel(slug))}::ltree), ${isInhabited}`,
     );
     lines.push(`from nodes n, nodes p join locations p_loc on p_loc.id = p.id`);
     lines.push(`where n.node_type = 'location' and n.slug = ${sqlString(slug)}`);

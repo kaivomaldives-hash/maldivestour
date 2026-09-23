@@ -1948,11 +1948,11 @@ where n.node_type = 'location' and n.slug = 'fonadhoo'
 on conflict (id) do nothing;
 
 insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, published_at)
-values ('location', 'gaadhoo', 'Gaadhoo', 'Gaadhoo is an inhabited island in Laamu Atoll, Maldives.', 'published', 'Gaadhoo, Laamu Atoll | Maldives Islands | MTG', 'Gaadhoo is an inhabited island in Laamu Atoll, Maldives.', now())
+values ('location', 'gaadhoo', 'Gaadhoo', 'Gaadhoo is an island in Laamu Atoll, Maldives, no longer inhabited after its community relocated.', 'published', 'Gaadhoo, Laamu Atoll | Maldives Islands | MTG', 'Gaadhoo is an island in Laamu Atoll, Maldives, no longer inhabited after its community relocated.', now())
 on conflict (node_type, slug) do nothing;
 
 insert into locations (id, location_type, parent_id, path, is_inhabited)
-select n.id, 'island', p.id, (p_loc.path || 'gaadhoo'::ltree), true
+select n.id, 'island', p.id, (p_loc.path || 'gaadhoo'::ltree), false
 from nodes n, nodes p join locations p_loc on p_loc.id = p.id
 where n.node_type = 'location' and n.slug = 'gaadhoo'
   and p.node_type = 'location' and p.slug = 'laamu'
@@ -1992,11 +1992,11 @@ where n.node_type = 'location' and n.slug = 'isdhoo'
 on conflict (id) do nothing;
 
 insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, published_at)
-values ('location', 'kalhaidhoo', 'Kalhaidhoo', 'Kalhaidhoo is an inhabited island in Laamu Atoll, Maldives.', 'published', 'Kalhaidhoo, Laamu Atoll | Maldives Islands | MTG', 'Kalhaidhoo is an inhabited island in Laamu Atoll, Maldives.', now())
+values ('location', 'kalhaidhoo', 'Kalhaidhoo', 'Kalhaidhoo is an island in Laamu Atoll, Maldives, no longer inhabited after its community relocated.', 'published', 'Kalhaidhoo, Laamu Atoll | Maldives Islands | MTG', 'Kalhaidhoo is an island in Laamu Atoll, Maldives, no longer inhabited after its community relocated.', now())
 on conflict (node_type, slug) do nothing;
 
 insert into locations (id, location_type, parent_id, path, is_inhabited)
-select n.id, 'island', p.id, (p_loc.path || 'kalhaidhoo'::ltree), true
+select n.id, 'island', p.id, (p_loc.path || 'kalhaidhoo'::ltree), false
 from nodes n, nodes p join locations p_loc on p_loc.id = p.id
 where n.node_type = 'location' and n.slug = 'kalhaidhoo'
   and p.node_type = 'location' and p.slug = 'laamu'

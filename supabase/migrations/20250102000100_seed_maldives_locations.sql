@@ -463,11 +463,11 @@ where n.node_type = 'location' and n.slug = 'kumundhoo'
 on conflict (id) do nothing;
 
 insert into nodes (node_type, slug, title, summary, status, meta_title, meta_description, published_at)
-values ('location', 'kunburudhoo', 'Kunburudhoo', 'Kunburudhoo is an inhabited island in Haa Dhaalu Atoll, Maldives.', 'published', 'Kunburudhoo, Haa Dhaalu Atoll | Maldives Islands | MTG', 'Kunburudhoo is an inhabited island in Haa Dhaalu Atoll, Maldives.', now())
+values ('location', 'kunburudhoo', 'Kunburudhoo', 'Kunburudhoo is an island in Haa Dhaalu Atoll, Maldives, no longer inhabited after its community relocated.', 'published', 'Kunburudhoo, Haa Dhaalu Atoll | Maldives Islands | MTG', 'Kunburudhoo is an island in Haa Dhaalu Atoll, Maldives, no longer inhabited after its community relocated.', now())
 on conflict (node_type, slug) do nothing;
 
 insert into locations (id, location_type, parent_id, path, is_inhabited)
-select n.id, 'island', p.id, (p_loc.path || 'kunburudhoo'::ltree), true
+select n.id, 'island', p.id, (p_loc.path || 'kunburudhoo'::ltree), false
 from nodes n, nodes p join locations p_loc on p_loc.id = p.id
 where n.node_type = 'location' and n.slug = 'kunburudhoo'
   and p.node_type = 'location' and p.slug = 'haa-dhaalu'

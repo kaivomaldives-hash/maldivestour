@@ -19,7 +19,7 @@
   { "name": "Hirimaradhoo", "atoll_administrative_code": "HDh", "notes": "" },
   { "name": "Kulhudhuffushi", "atoll_administrative_code": "HDh", "notes": "Atoll capital; also constituted as a separate 'Kulhudhuffushi City'." },
   { "name": "Kumundhoo", "atoll_administrative_code": "HDh", "notes": "" },
-  { "name": "Kunburudhoo", "atoll_administrative_code": "HDh", "notes": "" },
+  { "name": "Kunburudhoo", "atoll_administrative_code": "HDh", "is_inhabited": false, "notes": "Distinct from the island of the same name in Alif Dhaalu Atoll. Population reached 0 by the 2014 census; residents relocated to Nolhivaranfaru under the government's 2009 island-consolidation program, driven partly by severe coastal erosion. Verified via Wikipedia/press reporting, not MTG's own legacy content." },
   { "name": "Kurinbi", "atoll_administrative_code": "HDh", "notes": "" },
   { "name": "Makunudhoo", "atoll_administrative_code": "HDh", "notes": "" },
   { "name": "Naivaadhoo", "atoll_administrative_code": "HDh", "notes": "" },

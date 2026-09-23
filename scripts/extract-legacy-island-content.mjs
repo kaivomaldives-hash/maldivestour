@@ -56,6 +56,53 @@ const NOISE_SELECTORS = [
   ".top-header", "#top-nav", ".menu-toggle",
 ];
 
+// Human-verified matches the automated scorer can't reach: either a
+// colloquial/alternate name (the legacy page titles itself "Mulah
+// Island" — a short form of "Boli Mulah" — and Meemu Atoll's actual atoll
+// capital "Muli" already has its own separate, already-matched legacy
+// page, so this is confirmed a different island, not a duplicate), or a
+// compound name the legacy site wrote as one unhyphenated word
+// ("Faresmaathodaa" vs MTG's "Fares-Maathodaa" — an exact name match once
+// the hyphen is accounted for, not a guess).
+const MANUAL_MATCH_OVERRIDES = {
+  "boli-mulah": "atolls/meemu-atoll/meemu-mulah-island-maldives.html",
+  "fares-maathodaa": "atolls/gaafu-dhaalu-atoll/gaafu-dhaalu-faresmaathodaa-island-maldives.html",
+  // These three MTG islands are administratively grouped under "Malé
+  // City" (a distinct atoll-level division from Kaafu Atoll in MTG's own
+  // data), but the legacy site filed all three under its Kaafu Atoll
+  // folder by *geography* instead — real content for the right islands,
+  // just outside where the atoll-code folder lookup would ever look. Two
+  // also use a "-city-maldives.html"/differently-worded filename, outside
+  // the "-island-maldives.html" pattern this script otherwise scans for.
+  male: "atolls/kaafu-atoll/kaafu-male-city-maldives.html",
+  hulhumale: "atolls/kaafu-atoll/kaafu-hulhumale-island-maldives.html",
+  villingili: "atolls/kaafu-atoll/kaafu-vilimale-island-maldives.html",
+};
+
+// Human-reviewed and confirmed as genuinely different islands from their
+// flagged candidate (not a naming variant) — real, distinct Maldivian
+// islands that happen to score moderately on token similarity to a
+// nearby island's legacy filename:
+//  - Kunburudhoo (Haa Dhaalu) vs "Kumundhoo": a different island in the
+//    same atoll that already has its own separately-matched legacy page.
+//  - Rinbudhoo (Dhaalu) vs "Bandidhoo": different island names, no
+//    genuine transliteration relationship.
+//  - Gaadhoo (Laamu) vs "Fonadhoo": different island names.
+//  - Kalhaidhoo (Laamu) vs "Maabaidhoo": different island names.
+//  - Dhiyadhoo (Gaafu Alifu) vs "Dhevvadhoo": different island names.
+//  - Maradhoo-Feydhoo (Seenu/Addu) vs "Hulhudhoo-Meedhoo": both are real,
+//    separate merged-island communities within Addu Atoll's linked-island
+//    chain (Hithadhoo, Maradhoo, Feydhoo, Maradhoo-Feydhoo, Hulhudhoo-
+//    Meedhoo, Gan), not the same place.
+const CONFIRMED_NO_MATCH = new Set([
+  "kunburudhoo",
+  "rinbudhoo",
+  "gaadhoo",
+  "kalhaidhoo",
+  "dhiyadhoo",
+  "maradhoo-feydhoo",
+]);
+
 const MIN_MATCH_SCORE = 0.5;
 // Legacy filenames and MTG's islands.json transliterate Dhivehi island
 // names slightly differently in many cases (single/double vowel or
@@ -160,24 +207,30 @@ function main() {
 
     let best = null;
     let bestFuzzy = null;
-    for (const folder of candidateFolders) {
-      const folderPath = path.join(ATOLLS_DIR, folder);
-      if (!existsSync(folderPath)) continue;
-      for (const file of readdirSync(folderPath)) {
-        if (!file.endsWith("-island-maldives.html")) continue;
-        const fileTokens = new Set(distinctiveTokens(file));
-        const score = tokenOverlapScore(fileTokens, island.tokens);
-        if (!best || score > best.score) best = { folder, file, score, relativePath: `atolls/${folder}/${file}` };
+    if (MANUAL_MATCH_OVERRIDES[island.slug]) {
+      best = { score: 1, relativePath: MANUAL_MATCH_OVERRIDES[island.slug] };
+    } else {
+      for (const folder of candidateFolders) {
+        const folderPath = path.join(ATOLLS_DIR, folder);
+        if (!existsSync(folderPath)) continue;
+        for (const file of readdirSync(folderPath)) {
+          if (!file.endsWith("-island-maldives.html")) continue;
+          const fileTokens = new Set(distinctiveTokens(file));
+          const score = tokenOverlapScore(fileTokens, island.tokens);
+          if (!best || score > best.score) best = { folder, file, score, relativePath: `atolls/${folder}/${file}` };
 
-        const fuzzyScore = fuzzyTokenScore(fileTokens, island.tokens);
-        if (!bestFuzzy || fuzzyScore > bestFuzzy.score) bestFuzzy = { folder, file, score: fuzzyScore, relativePath: `atolls/${folder}/${file}` };
+          const fuzzyScore = fuzzyTokenScore(fileTokens, island.tokens);
+          if (!bestFuzzy || fuzzyScore > bestFuzzy.score) bestFuzzy = { folder, file, score: fuzzyScore, relativePath: `atolls/${folder}/${file}` };
+        }
       }
     }
 
-    const exactMatch = best && best.score >= MIN_MATCH_SCORE;
-    const fuzzyMatch = !exactMatch && bestFuzzy && bestFuzzy.score >= FUZZY_ACCEPT_SCORE;
-    const needsReview = !exactMatch && !fuzzyMatch && bestFuzzy && bestFuzzy.score >= FUZZY_REVIEW_SCORE;
-    const winner = exactMatch ? best : fuzzyMatch ? bestFuzzy : null;
+    const manualMatch = Boolean(MANUAL_MATCH_OVERRIDES[island.slug]);
+    const exactMatch = !manualMatch && best && best.score >= MIN_MATCH_SCORE;
+    const fuzzyMatch = !manualMatch && !exactMatch && bestFuzzy && bestFuzzy.score >= FUZZY_ACCEPT_SCORE;
+    const needsReview =
+      !manualMatch && !exactMatch && !fuzzyMatch && !CONFIRMED_NO_MATCH.has(island.slug) && bestFuzzy && bestFuzzy.score >= FUZZY_REVIEW_SCORE;
+    const winner = manualMatch ? best : exactMatch ? best : fuzzyMatch ? bestFuzzy : null;
     const matched = Boolean(winner);
 
     const record = {
@@ -187,7 +240,7 @@ function main() {
       atollTitle: atoll?.title ?? null,
       legacyFile: matched ? winner.relativePath : null,
       matchScore: winner ? Number(winner.score.toFixed(3)) : best ? Number(best.score.toFixed(3)) : 0,
-      matchMethod: exactMatch ? "exact" : fuzzyMatch ? "fuzzy" : null,
+      matchMethod: manualMatch ? "manual" : exactMatch ? "exact" : fuzzyMatch ? "fuzzy" : null,
       status: matched ? "matched" : needsReview ? "needs_review" : "no_legacy_page",
       reviewCandidate: needsReview ? { file: bestFuzzy.relativePath, score: Number(bestFuzzy.score.toFixed(3)) } : null,
     };

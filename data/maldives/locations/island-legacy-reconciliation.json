@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-09-23T15:02:59.790Z",
+  "generatedAt": "2026-09-23T15:35:56.244Z",
   "summary": {
     "expectedMtgIslands": 193,
     "legacyIslandPagesFound": 183,
-    "matched": 179,
-    "matchedExact": 166,
+    "matched": 184,
+    "matchedExact": 171,
     "matchedFuzzy": 13,
-    "needsReview": 6,
-    "noLegacyPage": 8,
-    "extracted": 179,
+    "needsReview": 0,
+    "noLegacyPage": 9,
+    "extracted": 184,
     "extractionFailures": 0,
-    "orphanLegacyFiles": 5
+    "orphanLegacyFiles": 1
   },
   "islands": [
     {
@@ -230,11 +230,8 @@
       "legacyFile": null,
       "matchScore": 0,
       "matchMethod": null,
-      "status": "needs_review",
-      "reviewCandidate": {
-        "file": "atolls/haa-dhaalu-atoll/haa-dhaalu-kumundhoo-island-maldives.html",
-        "score": 0.636
-      }
+      "status": "no_legacy_page",
+      "reviewCandidate": null
     },
     {
       "slug": "kurinbi",
@@ -1352,10 +1349,10 @@
       "title": "Boli Mulah",
       "atollSlug": "meemu",
       "atollTitle": "Meemu Atoll",
-      "legacyFile": null,
-      "matchScore": 0.333,
-      "matchMethod": null,
-      "status": "no_legacy_page",
+      "legacyFile": "atolls/meemu-atoll/meemu-mulah-island-maldives.html",
+      "matchScore": 1,
+      "matchMethod": "manual",
+      "status": "matched",
       "reviewCandidate": null
     },
     {
@@ -1542,11 +1539,8 @@
       "legacyFile": null,
       "matchScore": 0,
       "matchMethod": null,
-      "status": "needs_review",
-      "reviewCandidate": {
-        "file": "atolls/dhaalu-atoll/dhaalu-bandidhoo-island-maldives.html",
-        "score": 0.556
-      }
+      "status": "no_legacy_page",
+      "reviewCandidate": null
     },
     {
       "slug": "burunee",
@@ -1721,11 +1715,8 @@
       "legacyFile": null,
       "matchScore": 0,
       "matchMethod": null,
-      "status": "needs_review",
-      "reviewCandidate": {
-        "file": "atolls/laamu-atoll/laamu-fonadhoo-island-maldives.html",
-        "score": 0.625
-      }
+      "status": "no_legacy_page",
+      "reviewCandidate": null
     },
     {
       "slug": "gan",
@@ -1768,11 +1759,8 @@
       "legacyFile": null,
       "matchScore": 0,
       "matchMethod": null,
-      "status": "needs_review",
-      "reviewCandidate": {
-        "file": "atolls/laamu-atoll/laamu-maabaidhoo-island-maldives.html",
-        "score": 0.7
-      }
+      "status": "no_legacy_page",
+      "reviewCandidate": null
     },
     {
       "slug": "kunahandhoo",
@@ -1859,11 +1847,8 @@
       "legacyFile": null,
       "matchScore": 0,
       "matchMethod": null,
-      "status": "needs_review",
-      "reviewCandidate": {
-        "file": "atolls/gaafu-alifu-atoll/gaafu-alifu-dhevvadhoo-island-maldives.html",
-        "score": 0.7
-      }
+      "status": "no_legacy_page",
+      "reviewCandidate": null
     },
     {
       "slug": "gemanafushi",
@@ -1947,10 +1932,10 @@
       "title": "Fares-Maathodaa",
       "atollSlug": "gaafu-dhaalu",
       "atollTitle": "Gaafu Dhaalu Atoll",
-      "legacyFile": null,
-      "matchScore": 0,
-      "matchMethod": null,
-      "status": "no_legacy_page",
+      "legacyFile": "atolls/gaafu-dhaalu-atoll/gaafu-dhaalu-faresmaathodaa-island-maldives.html",
+      "matchScore": 1,
+      "matchMethod": "manual",
+      "status": "matched",
       "reviewCandidate": null
     },
     {
@@ -2082,11 +2067,8 @@
       "legacyFile": null,
       "matchScore": 0.333,
       "matchMethod": null,
-      "status": "needs_review",
-      "reviewCandidate": {
-        "file": "atolls/seenu-atoll/seenu-hulhudhoo-meedhoo-island-maldives.html",
-        "score": 0.625
-      }
+      "status": "no_legacy_page",
+      "reviewCandidate": null
     },
     {
       "slug": "feydhoo-seenu",
@@ -2126,10 +2108,10 @@
       "title": "Malé",
       "atollSlug": "male-city",
       "atollTitle": "Malé City",
-      "legacyFile": null,
-      "matchScore": 0,
-      "matchMethod": null,
-      "status": "no_legacy_page",
+      "legacyFile": "atolls/kaafu-atoll/kaafu-male-city-maldives.html",
+      "matchScore": 1,
+      "matchMethod": "manual",
+      "status": "matched",
       "reviewCandidate": null
     },
     {
@@ -2137,10 +2119,10 @@
       "title": "Hulhumalé",
       "atollSlug": "male-city",
       "atollTitle": "Malé City",
-      "legacyFile": null,
-      "matchScore": 0,
-      "matchMethod": null,
-      "status": "no_legacy_page",
+      "legacyFile": "atolls/kaafu-atoll/kaafu-hulhumale-island-maldives.html",
+      "matchScore": 1,
+      "matchMethod": "manual",
+      "status": "matched",
       "reviewCandidate": null
     },
     {
@@ -2148,19 +2130,15 @@
       "title": "Villingili",
       "atollSlug": "male-city",
       "atollTitle": "Malé City",
-      "legacyFile": null,
-      "matchScore": 0,
-      "matchMethod": null,
-      "status": "no_legacy_page",
+      "legacyFile": "atolls/kaafu-atoll/kaafu-vilimale-island-maldives.html",
+      "matchScore": 1,
+      "matchMethod": "manual",
+      "status": "matched",
       "reviewCandidate": null
     }
   ],
   "orphanLegacyFiles": [
-    "atolls/gaafu-dhaalu-atoll/gaafu-dhaalu-faresmaathodaa-island-maldives.html",
-    "atolls/kaafu-atoll/kaafu-hulhumale-island-maldives.html",
-    "atolls/kaafu-atoll/kaafu-vilimale-island-maldives.html",
-    "atolls/lhaviyani-atoll/lhaviyani-felivaru-island-maldives.html",
-    "atolls/meemu-atoll/meemu-mulah-island-maldives.html"
+    "atolls/lhaviyani-atoll/lhaviyani-felivaru-island-maldives.html"
   ],
   "extractionFailures": []
 }

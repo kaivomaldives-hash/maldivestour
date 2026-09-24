@@ -20,9 +20,10 @@ import { getAttractionsByIsland } from "@/lib/attractions/repository";
 import { getDiveSitesByLocation } from "@/lib/diving/repository";
 import { applyContextualLinks, escapeHtml } from "@/lib/linking/contextual-links";
 import { buildEntityLinkMap } from "@/lib/linking/entity-link-map";
+import { LocationGallerySection } from "@/components/locations/location-gallery-section";
 import { getChildLocations, getIslandBySlug, getIslandContent } from "@/lib/locations/repository";
 import { getNearbyIslands } from "@/lib/locations/nearby-islands";
-import { getHeroMediaByNodeIds } from "@/lib/media/repository";
+import { getHeroMediaByNodeIds, getMediaForNode } from "@/lib/media/repository";
 import { getPackageViewsByLocation } from "@/lib/packages/view-repository";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 import { getSurfBreaksByLocation } from "@/lib/surfing/repository";
@@ -93,11 +94,13 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
     ]);
   const heroImage = heroById.get(island.id) ?? null;
 
-  const [nearbyIslands, relatedGuides, entityMap] = await Promise.all([
+  const [nearbyIslands, relatedGuides, entityMap, mediaItems] = await Promise.all([
     getNearbyIslands({ id: island.id, parentId: island.parentId }, content?.nearbyIslandSlugs ?? [], NEARBY_ISLANDS_LIMIT),
     getArticlesRelatedToNodes([island.id, island.parentId].filter((id): id is string => Boolean(id))),
     buildEntityLinkMap(),
+    getMediaForNode(island.id),
   ]);
+  const galleryImages = mediaItems.filter((m) => m.role === "gallery").map((m) => m.asset);
 
   // Contextual entity linking (Task 23 §67-68) over the island's own "About"
   // prose — same engine as travel-guide articles, applied once across all
@@ -208,6 +211,8 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
           />
         </section>
       )}
+
+      <LocationGallerySection title={island.title} images={galleryImages} />
 
       {children.length > 0 && (
         <section className="mt-10">

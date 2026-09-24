@@ -19,7 +19,8 @@ import { getDiveSitesByAtoll } from "@/lib/diving/repository";
 import { applyContextualLinks, escapeHtml } from "@/lib/linking/contextual-links";
 import { buildEntityLinkMap } from "@/lib/linking/entity-link-map";
 import { getAtollBySlug, getAtollContent, getIslandsByAtoll } from "@/lib/locations/repository";
-import { getHeroMediaByNodeIds } from "@/lib/media/repository";
+import { LocationGallerySection } from "@/components/locations/location-gallery-section";
+import { getHeroMediaByNodeIds, getMediaForNode } from "@/lib/media/repository";
 import { getPackageViewsByAtoll } from "@/lib/packages/view-repository";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 import { getSurfBreaksByAtoll } from "@/lib/surfing/repository";
@@ -56,7 +57,7 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
   const atoll = await getAtollBySlug(slug);
   if (!atoll) notFound();
 
-  const [heroById, allIslands, content, accommodations, activities, diveSites, surfBreaks, transferRoutes, packages, relatedGuides, entityMap] =
+  const [heroById, allIslands, content, accommodations, activities, diveSites, surfBreaks, transferRoutes, packages, relatedGuides, entityMap, mediaItems] =
     await Promise.all([
       getHeroMediaByNodeIds([atoll.id]),
       getIslandsByAtoll(slug),
@@ -69,7 +70,9 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
       getPackageViewsByAtoll(atoll.id),
       getArticlesRelatedToNodes([atoll.id]),
       buildEntityLinkMap(),
+      getMediaForNode(atoll.id),
     ]);
+  const galleryImages = mediaItems.filter((m) => m.role === "gallery").map((m) => m.asset);
 
   // Contextual entity linking (Task 23 §67-68) over the atoll's own "About"
   // prose, same engine and rules as article bodies — never links the atoll's
@@ -158,6 +161,8 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
           />
         </section>
       )}
+
+      <LocationGallerySection title={atoll.title} images={galleryImages} />
 
       <section className="mt-10">
         <h2 className="text-xl font-semibold text-ocean-900">Islands in {atoll.title}</h2>

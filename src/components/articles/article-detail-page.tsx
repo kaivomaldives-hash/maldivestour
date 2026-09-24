@@ -5,6 +5,9 @@ import { notFound } from "next/navigation";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getArticleBySlug } from "@/lib/articles/repository";
+import { articleHref } from "@/lib/articles/types";
+import { applyContextualLinks } from "@/lib/linking/contextual-links";
+import { buildEntityLinkMap } from "@/lib/linking/entity-link-map";
 import { publicStorageUrl } from "@/lib/media/types";
 import { canonicalUrl, getSiteUrl } from "@/lib/seo/site";
 
@@ -61,6 +64,9 @@ export async function ArticleDetailPage({ slug }: { slug: string }) {
   const article = await getArticleBySlug(slug);
   if (!article) notFound();
 
+  const entityMap = await buildEntityLinkMap();
+  const bodyHtml = applyContextualLinks(article.bodyHtml, entityMap, { excludeHref: articleHref(article) });
+
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd(article)) }} />
@@ -97,7 +103,7 @@ export async function ArticleDetailPage({ slug }: { slug: string }) {
               [&_a]:text-maldives-600 [&_a]:underline
               [&_[data-youtube-id]]:relative [&_[data-youtube-id]]:mt-6 [&_[data-youtube-id]]:aspect-video [&_[data-youtube-id]]:overflow-hidden [&_[data-youtube-id]]:rounded-2xl [&_[data-youtube-id]]:bg-neutral-100
             "
-            dangerouslySetInnerHTML={{ __html: article.bodyHtml }}
+            dangerouslySetInnerHTML={{ __html: bodyHtml }}
           />
 
           <aside className="space-y-8">

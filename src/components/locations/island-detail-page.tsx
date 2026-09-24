@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { ActivityCard } from "@/components/activity/activity-card";
+import { ArticleCard } from "@/components/articles/article-card";
 import { AttractionCard } from "@/components/attractions/attraction-card";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
 import { IslandCard } from "@/components/locations/island-card";
@@ -14,14 +15,13 @@ import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { getActivitiesByLocation } from "@/lib/activities/repository";
+import { getArticlesRelatedToNodes } from "@/lib/articles/repository";
 import { getAttractionsByIsland } from "@/lib/attractions/repository";
 import { getDiveSitesByLocation } from "@/lib/diving/repository";
-import {
-  getChildLocations,
-  getIslandBySlug,
-  getIslandContent,
-  getLocationSummariesBySlugs,
-} from "@/lib/locations/repository";
+import { applyContextualLinks, escapeHtml } from "@/lib/linking/contextual-links";
+import { buildEntityLinkMap } from "@/lib/linking/entity-link-map";
+import { getChildLocations, getIslandBySlug, getIslandContent } from "@/lib/locations/repository";
+import { getNearbyIslands } from "@/lib/locations/nearby-islands";
 import { getHeroMediaByNodeIds } from "@/lib/media/repository";
 import { getPackageViewsByLocation } from "@/lib/packages/view-repository";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
@@ -93,9 +93,29 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
     ]);
   const heroImage = heroById.get(island.id) ?? null;
 
-  const nearbyIslandSlugs = (content?.nearbyIslandSlugs ?? []).slice(0, NEARBY_ISLANDS_LIMIT);
-  const nearbyIslandsById = nearbyIslandSlugs.length > 0 ? await getLocationSummariesBySlugs(nearbyIslandSlugs) : new Map();
-  const nearbyIslands = nearbyIslandSlugs.map((s) => nearbyIslandsById.get(s)).filter((i): i is NonNullable<typeof i> => Boolean(i));
+  const [nearbyIslands, relatedGuides, entityMap] = await Promise.all([
+    getNearbyIslands({ id: island.id, parentId: island.parentId }, content?.nearbyIslandSlugs ?? [], NEARBY_ISLANDS_LIMIT),
+    getArticlesRelatedToNodes([island.id, island.parentId].filter((id): id is string => Boolean(id))),
+    buildEntityLinkMap(),
+  ]);
+
+  // Contextual entity linking (Task 23 §67-68) over the island's own "About"
+  // prose — same engine as travel-guide articles, applied once across all
+  // overview + section paragraphs together so an entity mentioned in one
+  // paragraph isn't re-linked in the next. Never links the island's own page.
+  const aboutHtml =
+    content && (content.overview.length > 0 || content.sections.length > 0)
+      ? applyContextualLinks(
+          [
+            ...content.overview.map((p) => `<p>${escapeHtml(p)}</p>`),
+            ...content.sections.map(
+              (s) => `<h3>${escapeHtml(s.heading)}</h3>${s.paragraphs.map((p) => `<p>${escapeHtml(p)}</p>`).join("")}`,
+            ),
+          ].join(""),
+          entityMap,
+          { excludeHref: `/maldives/islands/${island.slug}/` },
+        )
+      : null;
 
   // Fishing, diving, and surfing each have their own dedicated
   // vertical/section (Task 7, Task 8, Task 9) and, per
@@ -179,24 +199,13 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
         </section>
       )}
 
-      {content && (content.overview.length > 0 || content.sections.length > 0) && (
+      {aboutHtml && (
         <section className="mt-10">
           <h2 className="text-xl font-semibold text-ocean-900">About {island.title}</h2>
-          {content.overview.map((paragraph, i) => (
-            <p key={i} className="mt-3 text-sm leading-relaxed text-neutral-700">
-              {paragraph}
-            </p>
-          ))}
-          {content.sections.map((section, i) => (
-            <div key={i} className="mt-5">
-              <h3 className="text-base font-semibold text-ocean-900">{section.heading}</h3>
-              {section.paragraphs.map((paragraph, j) => (
-                <p key={j} className="mt-2 text-sm leading-relaxed text-neutral-700">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          ))}
+          <div
+            className="[&_h3]:mt-5 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-ocean-900 [&_p]:mt-3 [&_p]:text-sm [&_p]:leading-relaxed [&_p]:text-neutral-700 [&_a]:text-maldives-600 [&_a]:underline"
+            dangerouslySetInnerHTML={{ __html: aboutHtml }}
+          />
         </section>
       )}
 
@@ -344,6 +353,17 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {nearbyIslands.map((nearby) => (
               <IslandCard key={nearby.id} island={nearby} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {relatedGuides.length > 0 && (
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">{island.title} Travel Guides</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {relatedGuides.map((article) => (
+              <ArticleCard key={article.id} article={article} />
             ))}
           </ul>
         </section>

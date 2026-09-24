@@ -15,6 +15,7 @@
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.116.0",
+    "cheerio": "^1.2.0",
     "leaflet": "^1.9.4",
     "next": "16.3.5",
     "react": "19.2.8",
@@ -28,7 +29,6 @@
     "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "cheerio": "^1.2.0",
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
     "image-size": "^2.0.4",

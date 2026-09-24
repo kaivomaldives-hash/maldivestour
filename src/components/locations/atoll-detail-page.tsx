@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { ActivityCard } from "@/components/activity/activity-card";
+import { ArticleCard } from "@/components/articles/article-card";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
 import { IslandCard } from "@/components/locations/island-card";
 import { PackageCard } from "@/components/packages/package-card";
@@ -13,7 +14,10 @@ import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodationsByAtoll } from "@/lib/accommodations/repository";
 import { getActivitiesByAtoll } from "@/lib/activities/repository";
+import { getArticlesRelatedToNodes } from "@/lib/articles/repository";
 import { getDiveSitesByAtoll } from "@/lib/diving/repository";
+import { applyContextualLinks, escapeHtml } from "@/lib/linking/contextual-links";
+import { buildEntityLinkMap } from "@/lib/linking/entity-link-map";
 import { getAtollBySlug, getAtollContent, getIslandsByAtoll } from "@/lib/locations/repository";
 import { getHeroMediaByNodeIds } from "@/lib/media/repository";
 import { getPackageViewsByAtoll } from "@/lib/packages/view-repository";
@@ -52,17 +56,34 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
   const atoll = await getAtollBySlug(slug);
   if (!atoll) notFound();
 
-  const [heroById, allIslands, content, accommodations, activities, diveSites, surfBreaks, transferRoutes, packages] = await Promise.all([
-    getHeroMediaByNodeIds([atoll.id]),
-    getIslandsByAtoll(slug),
-    getAtollContent(atoll.id),
-    getAccommodationsByAtoll(atoll.id),
-    getActivitiesByAtoll(atoll.id),
-    getDiveSitesByAtoll(atoll.id),
-    getSurfBreaksByAtoll(atoll.id),
-    getTransferRoutesByAtoll(atoll.id),
-    getPackageViewsByAtoll(atoll.id),
-  ]);
+  const [heroById, allIslands, content, accommodations, activities, diveSites, surfBreaks, transferRoutes, packages, relatedGuides, entityMap] =
+    await Promise.all([
+      getHeroMediaByNodeIds([atoll.id]),
+      getIslandsByAtoll(slug),
+      getAtollContent(atoll.id),
+      getAccommodationsByAtoll(atoll.id),
+      getActivitiesByAtoll(atoll.id),
+      getDiveSitesByAtoll(atoll.id),
+      getSurfBreaksByAtoll(atoll.id),
+      getTransferRoutesByAtoll(atoll.id),
+      getPackageViewsByAtoll(atoll.id),
+      getArticlesRelatedToNodes([atoll.id]),
+      buildEntityLinkMap(),
+    ]);
+
+  // Contextual entity linking (Task 23 §67-68) over the atoll's own "About"
+  // prose, same engine and rules as article bodies — never links the atoll's
+  // own page.
+  const aboutHtml =
+    content && content.sections.length > 0
+      ? applyContextualLinks(
+          content.sections
+            .map((s) => `<h3>${escapeHtml(s.heading)}</h3>${s.paragraphs.map((p) => `<p>${escapeHtml(p)}</p>`).join("")}`)
+            .join(""),
+          entityMap,
+          { excludeHref: `/maldives/atolls/${atoll.slug}/` },
+        )
+      : null;
   const heroImage = heroById.get(atoll.id) ?? null;
   // getIslandsByAtoll returns every location_type="island" row under this
   // atoll, which now includes uninhabited resort islands (added in Task 5
@@ -128,19 +149,13 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
         </div>
       </dl>
 
-      {content && content.sections.length > 0 && (
+      {aboutHtml && (
         <section className="mt-10">
           <h2 className="text-xl font-semibold text-ocean-900">About {atoll.title}</h2>
-          {content.sections.map((section, i) => (
-            <div key={i} className="mt-5">
-              <h3 className="text-base font-semibold text-ocean-900">{section.heading}</h3>
-              {section.paragraphs.map((paragraph, j) => (
-                <p key={j} className="mt-2 text-sm leading-relaxed text-neutral-700">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          ))}
+          <div
+            className="[&_h3]:mt-5 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-ocean-900 [&_p]:mt-2 [&_p]:text-sm [&_p]:leading-relaxed [&_p]:text-neutral-700 [&_a]:text-maldives-600 [&_a]:underline"
+            dangerouslySetInnerHTML={{ __html: aboutHtml }}
+          />
         </section>
       )}
 
@@ -264,6 +279,17 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {packages.map((pkg) => (
               <PackageCard key={pkg.id} pkg={pkg} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {relatedGuides.length > 0 && (
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">{atoll.title} Travel Guides</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {relatedGuides.map((article) => (
+              <ArticleCard key={article.id} article={article} />
             ))}
           </ul>
         </section>

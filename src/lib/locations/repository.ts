@@ -241,11 +241,11 @@ export async function getIslands(options: GetIslandsOptions = {}): Promise<Pagin
   return { items, total: count ?? items.length, page, pageSize };
 }
 
-/** All islands belonging to one atoll — a single query, not one per island. */
-export async function getIslandsByAtoll(atollSlug: string): Promise<IslandSummary[]> {
-  const atoll = await getAtollBySlug(atollSlug);
-  if (!atoll) return [];
-
+/** All islands belonging to one atoll (by atoll node id) — a single query,
+ * not one per island. Split out from getIslandsByAtoll() below so a caller
+ * that already has the atoll's id (e.g. an island's own parentId) can skip
+ * the extra slug->id lookup that function does. */
+export async function getIslandsByAtollId(atollId: string): Promise<IslandSummary[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("nodes")
@@ -253,7 +253,7 @@ export async function getIslandsByAtoll(atollSlug: string): Promise<IslandSummar
     .eq("node_type", "location")
     .eq("status", "published")
     .eq("locations.location_type", "island")
-    .eq("locations.parent_id", atoll.id)
+    .eq("locations.parent_id", atollId)
     .order("title", { ascending: true })
     .returns<NodeLocationRow[]>();
 
@@ -267,6 +267,14 @@ export async function getIslandsByAtoll(atollSlug: string): Promise<IslandSummar
       return { ...summary, locationType: "island" as const, atollId: summary.parentId };
     })
     .filter((i): i is IslandSummary => i !== null);
+}
+
+/** All islands belonging to one atoll (by atoll slug) — a single query, not
+ * one per island. */
+export async function getIslandsByAtoll(atollSlug: string): Promise<IslandSummary[]> {
+  const atoll = await getAtollBySlug(atollSlug);
+  if (!atoll) return [];
+  return getIslandsByAtollId(atoll.id);
 }
 
 export async function getIslandBySlug(slug: string): Promise<IslandDetail | null> {

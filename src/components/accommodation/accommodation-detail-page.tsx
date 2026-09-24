@@ -7,6 +7,7 @@ import { GallerySection } from "@/components/accommodation/gallery-section";
 import { RoomsSection } from "@/components/accommodation/rooms-section";
 import { TypicalAmenitiesSection } from "@/components/accommodation/typical-amenities-section";
 import { accommodationVideoJsonLd, VideoSection } from "@/components/accommodation/video-section";
+import { ArticleCard } from "@/components/articles/article-card";
 import { AttractionCard } from "@/components/attractions/attraction-card";
 import { NodeInquiryForm } from "@/components/bookings/node-inquiry-form";
 import { PackageCard } from "@/components/packages/package-card";
@@ -16,6 +17,7 @@ import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodationBySlug } from "@/lib/accommodations/repository";
 import { ACCOMMODATION_TYPE_SEGMENT, type AccommodationType } from "@/lib/accommodations/types";
 import { getNearbyActivities } from "@/lib/activities/repository";
+import { getArticlesRelatedToNodes } from "@/lib/articles/repository";
 import { getNearbyAttractions } from "@/lib/attractions/repository";
 import { getPackageViewsByAccommodation } from "@/lib/packages/view-repository";
 import { canonicalUrl } from "@/lib/seo/site";
@@ -73,11 +75,12 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
   const segment = ACCOMMODATION_TYPE_SEGMENT[type];
   const { primaryLocation, atoll } = accommodation;
   const locationFilter = { islandId: primaryLocation?.id ?? null, atollId: atoll?.id ?? null };
-  const [packages, nearbyActivities, nearbyAttractions, transferRoutes] = await Promise.all([
+  const [packages, nearbyActivities, nearbyAttractions, transferRoutes, relatedGuides] = await Promise.all([
     getPackageViewsByAccommodation(accommodation.id),
     getNearbyActivities(locationFilter),
     getNearbyAttractions(locationFilter),
     primaryLocation ? getTransferRoutesByLocation(primaryLocation.id) : Promise.resolve([]),
+    getArticlesRelatedToNodes([accommodation.id, primaryLocation?.id, atoll?.id].filter((id): id is string => Boolean(id))),
   ]);
 
   const videoJsonLd = accommodationVideoJsonLd(accommodation.videoYoutubeId, accommodation.title, accommodation.summary);
@@ -237,6 +240,17 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
           <Link href="/maldives/transfers/" className="mt-4 inline-block text-sm font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
             View all transfers →
           </Link>
+        </section>
+      )}
+
+      {relatedGuides.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">{accommodation.title} Travel Guides</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {relatedGuides.map((article) => (
+              <ArticleCard key={article.id} article={article} />
+            ))}
+          </ul>
         </section>
       )}
 

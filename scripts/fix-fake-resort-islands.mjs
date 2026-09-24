@@ -183,6 +183,9 @@ function main() {
     const targetPath = resolution.targetType === "island" ? `/maldives/islands/${resolution.slug}/` : `/maldives/atolls/${resolution.slug}/`;
     const oldPath = `/maldives/islands/${fake.slug}/`;
 
+    const fakeIdExpr = `(select id from nodes where node_type = 'location' and slug = ${sqlString(fake.slug)})`;
+    const targetIdExpr = `(select id from nodes where node_type = 'location' and slug = ${sqlString(resolution.slug)})`;
+
     lines.push(`-- ${fake.title} (${fake.slug}) -> ${resolution.targetType}:${resolution.slug} [${resolution.method}]`);
     // Repointing destination_location_id can collide with an existing
     // transfer_routes row sharing the same (origin, destination) pair —
@@ -190,63 +193,35 @@ function main() {
     // to the same real atoll from the same airport. A plain UPDATE would
     // hit transfer_routes_origin_location_id_destination_location_id_key
     // (caught by applying this exact file against a full local-Postgres
-    // replay before shipping it). Handled per-route, server-side, so it
-    // stays correct regardless of what earlier statements in this same
-    // file already did: repoint when the pair is still free, otherwise
-    // 301 this route's own page to the surviving route and drop the
-    // now-redundant row (cascades to its transfer_services — a real
-    // consequence of two different legacy pages describing the same real
-    // trip, not new data loss).
-    lines.push(`do $$
-declare
-  v_fake_id uuid;
-  v_target_id uuid;
-  v_route record;
-  v_existing_route_id uuid;
-  v_existing_route_slug text;
-begin
-  select id into v_fake_id from nodes where node_type = 'location' and slug = ${sqlString(fake.slug)};
-  select id into v_target_id from nodes where node_type = 'location' and slug = ${sqlString(resolution.slug)};
-  if v_fake_id is null or v_target_id is null then
-    return;
-  end if;
-
-  for v_route in select n.id as id, n.slug as slug, tr.origin_location_id as origin_location_id from nodes n join transfer_routes tr on tr.id = n.id where tr.destination_location_id = v_fake_id loop
-    select tr2.id, n2.slug into v_existing_route_id, v_existing_route_slug
-      from transfer_routes tr2 join nodes n2 on n2.id = tr2.id
-      where tr2.origin_location_id = v_route.origin_location_id and tr2.destination_location_id = v_target_id and tr2.id <> v_route.id;
-
-    if v_existing_route_id is not null then
-      -- Collapse any redirect already pointing at this soon-to-be-deleted
-      -- route's page (e.g. a legacy .html URL) so it targets the
-      -- surviving route directly — never a chain (this project's own
-      -- prevent_redirect_chains() trigger enforces exactly this).
-      update url_redirects set target_path = '/maldives/transfers/' || v_existing_route_slug || '/', updated_at = now()
-        where target_path = '/maldives/transfers/' || v_route.slug || '/' and status_code = 301;
-      insert into url_redirects (source_path, target_type, target_path, status_code, notes)
-        values ('/maldives/transfers/' || v_route.slug || '/', 'path', '/maldives/transfers/' || v_existing_route_slug || '/', 301, 'Entity cleanup: this route duplicated an existing one once its fake destination was repointed to the real island/atoll.')
-        on conflict (source_path) do update set target_type = excluded.target_type, target_path = excluded.target_path, status_code = excluded.status_code, notes = excluded.notes, updated_at = now();
-      delete from nodes where id = v_route.id;
-    else
-      update transfer_routes set destination_location_id = v_target_id where id = v_route.id;
-    end if;
-  end loop;
-
-${
-      resolution.targetType === "island"
-        ? `  -- The fake node's own hero photo is a real photo of this real
-  -- island (it was the resort's own legacy image, taken on that
-  -- island) — move it across rather than losing it, but only when
-  -- the real island doesn't already have one of its own.
-  if not exists (select 1 from node_media where node_id = v_target_id and role = 'hero') then
-    update node_media set node_id = v_target_id
-      where node_id = v_fake_id and role = 'hero'
-        and not exists (select 1 from node_media nm3 where nm3.node_id = v_target_id and nm3.media_id = node_media.media_id and nm3.role = 'hero');
-  end if;
-`
-        : ""
-    }  update nodes set status = 'archived' where id = v_fake_id;
-end $$;`);
+    // replay before shipping it). The NOT EXISTS guard below skips the
+    // repoint for exactly the colliding routes; the three statements
+    // after it are the cleanup for those (redirect this route's own page
+    // to the surviving route — collapsing any existing chain onto it
+    // first — then drop the now-redundant row). No DO block: this file
+    // is meant to be pasted into a plain SQL runner (including the
+    // Supabase dashboard's SQL editor, which doesn't handle multi-
+    // statement dollar-quoted PL/pgSQL blocks) — every other migration
+    // in this project is plain SQL for the same reason.
+    lines.push(
+      `update transfer_routes as tr1 set destination_location_id = ${targetIdExpr} where tr1.destination_location_id = ${fakeIdExpr} and not exists (select 1 from transfer_routes tr2 where tr2.origin_location_id = tr1.origin_location_id and tr2.destination_location_id = ${targetIdExpr} and tr2.id <> tr1.id);`,
+    );
+    lines.push(
+      `update url_redirects set target_path = '/maldives/transfers/' || survivor.slug || '/', updated_at = now() from transfer_routes tr join nodes n on n.id = tr.id join transfer_routes tr2 on tr2.origin_location_id = tr.origin_location_id and tr2.destination_location_id = ${targetIdExpr} and tr2.id <> tr.id join nodes survivor on survivor.id = tr2.id where tr.destination_location_id = ${fakeIdExpr} and url_redirects.target_path = '/maldives/transfers/' || n.slug || '/' and url_redirects.status_code = 301;`,
+    );
+    lines.push(
+      `insert into url_redirects (source_path, target_type, target_path, status_code, notes) select '/maldives/transfers/' || n.slug || '/', 'path', '/maldives/transfers/' || survivor.slug || '/', 301, 'Entity cleanup: this route duplicated an existing one once its fake destination was repointed to the real island/atoll.' from transfer_routes tr join nodes n on n.id = tr.id join transfer_routes tr2 on tr2.origin_location_id = tr.origin_location_id and tr2.destination_location_id = ${targetIdExpr} and tr2.id <> tr.id join nodes survivor on survivor.id = tr2.id where tr.destination_location_id = ${fakeIdExpr} on conflict (source_path) do update set target_type = excluded.target_type, target_path = excluded.target_path, status_code = excluded.status_code, notes = excluded.notes, updated_at = now();`,
+    );
+    lines.push(`delete from nodes where id in (select tr.id from transfer_routes tr where tr.destination_location_id = ${fakeIdExpr});`);
+    if (resolution.targetType === "island") {
+      // The fake node's own hero photo is a real photo of this real
+      // island (it was the resort's own legacy image, taken on that
+      // island) — move it across rather than losing it, but only when
+      // the real island doesn't already have one of its own.
+      lines.push(
+        `update node_media as nm set node_id = ${targetIdExpr} where nm.node_id = ${fakeIdExpr} and nm.role = 'hero' and not exists (select 1 from node_media nm2 where nm2.node_id = ${targetIdExpr} and nm2.role = 'hero');`,
+      );
+    }
+    lines.push(`update nodes set status = 'archived' where node_type = 'location' and slug = ${sqlString(fake.slug)};`);
     // Archive (never delete — keeps the row and its media/history intact,
     // and status='archived' fails every repository query's
     // .eq("status","published") filter and the locations_public_read RLS

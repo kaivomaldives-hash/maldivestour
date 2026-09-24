@@ -98,6 +98,7 @@ const MANIFEST_SOURCES = {
   uploaded: "data/maldives/migration/uploaded-media-manifest.json",
   "fishing-uploads": "data/maldives/migration/fishing-uploads-manifest.json",
   "round2-uploads": "data/maldives/migration/round2-uploads-manifest.json",
+  "round3-uploads": "data/maldives/migration/round3-uploads-manifest.json",
 };
 
 function mergeManifests(only) {

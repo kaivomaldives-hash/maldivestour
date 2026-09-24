@@ -6,6 +6,7 @@ import { IslandCard } from "@/components/locations/island-card";
 import { MapPinIcon } from "@/components/ui/icons";
 import { CARD_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
+import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { SectionHeader } from "@/components/ui/section-header";
 import { getAtolls, getCountry, getIslandBySlug } from "@/lib/locations/repository";
@@ -95,9 +96,15 @@ export default async function MaldivesPage() {
           />
           <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {atolls.map((atoll) => (
-              <li key={atoll.id}>
-                <Link href={`/maldives/atolls/${atoll.slug}/`} className={`${CARD_CLASS} flex items-center gap-3`}>
-                  <MapPinIcon className="h-5 w-5 shrink-0 text-maldives-600" />
+              <li key={atoll.id} className={CARD_CLASS}>
+                <Link href={`/maldives/atolls/${atoll.slug}/`} className="flex items-center gap-3">
+                  {atoll.heroImage ? (
+                    <div className="w-14 shrink-0 overflow-hidden rounded-lg">
+                      <MediaImage asset={atoll.heroImage} alt={atoll.title} aspectClassName="aspect-square" />
+                    </div>
+                  ) : (
+                    <MapPinIcon className="h-5 w-5 shrink-0 text-maldives-600" />
+                  )}
                   <span>
                     <span className="block font-medium text-ocean-900">{atoll.title}</span>
                     <span className="text-xs text-neutral-500">

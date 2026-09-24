@@ -9,8 +9,10 @@ import { PackageCard } from "@/components/packages/package-card";
 import { SearchBox } from "@/components/search/search-box";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { Button } from "@/components/ui/button";
+import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { CompassIcon, DivingIcon, FishIcon, MapPinIcon } from "@/components/ui/icons";
+import { MediaImage } from "@/components/ui/media-image";
 import { SectionHeader } from "@/components/ui/section-header";
 import { getAccommodations } from "@/lib/accommodations/repository";
 import { getActivities } from "@/lib/activities/repository";
@@ -114,12 +116,15 @@ export default async function Home() {
             />
             <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
               {featuredAtolls.map((atoll) => (
-                <li key={atoll.id}>
-                  <Link
-                    href={`/maldives/atolls/${atoll.slug}/`}
-                    className="group flex h-full flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
-                  >
-                    <MapPinIcon className="h-5 w-5 text-maldives-600" />
+                <li key={atoll.id} className={CARD_CLASS}>
+                  <Link href={`/maldives/atolls/${atoll.slug}/`} className="group flex h-full flex-col justify-between">
+                    {atoll.heroImage ? (
+                      <div className={CARD_IMAGE_BLEED_CLASS}>
+                        <MediaImage asset={atoll.heroImage} alt={atoll.title} aspectClassName="aspect-square" />
+                      </div>
+                    ) : (
+                      <MapPinIcon className="h-5 w-5 text-maldives-600" />
+                    )}
                     <div className="mt-3">
                       <p className="font-medium text-ocean-900 group-hover:text-maldives-600">{atoll.title}</p>
                       <p className="mt-0.5 text-xs text-neutral-500">

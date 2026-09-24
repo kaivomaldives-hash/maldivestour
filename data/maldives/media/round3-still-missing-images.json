@@ -1091,12 +1091,6 @@
     ],
     "atolls": [
       {
-        "title": "Malé City",
-        "slug": "male-city",
-        "atollCode": "MLE",
-        "hasHero": false
-      },
-      {
         "title": "Thaa Atoll",
         "slug": "thaa",
         "atollCode": "Th",

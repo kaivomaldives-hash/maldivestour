@@ -21,7 +21,7 @@ export function BookingToggle(props: RequestBookingFormProps) {
 
   return (
     <Button size="sm" className="mt-4" onClick={() => setOpen(true)}>
-      Request this transfer
+      Request Transfer
     </Button>
   );
 }

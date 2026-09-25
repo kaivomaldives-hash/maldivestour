@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { WhereToStaySection } from "@/components/accommodation/where-to-stay-section";
+import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { PackageCard } from "@/components/packages/package-card";
 import { SurfBreakCard } from "@/components/surfing/surf-break-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
@@ -10,6 +11,7 @@ import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { getNearbyAccommodations } from "@/lib/accommodations/repository";
 import { activityServiceJsonLd } from "@/lib/activities/types";
+import { bookingCta } from "@/lib/bookings/copy";
 import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 import {
@@ -218,8 +220,21 @@ export async function SurfingDetailPage({ slug }: { slug: string }) {
 
       <WhereToStaySection nearby={nearbyStays} islandTitle={primaryLocation?.title ?? null} atollTitle={atoll?.title ?? null} />
 
-      {/* Booking/inquiry UI is not built yet — Task 9 only establishes the
-          bookable_products relationship (see activity.isBookable). */}
+      {activity.isBookable && (
+        <section className="mt-10 rounded-2xl border border-neutral-200 p-6">
+          <h2 className="text-xl font-semibold text-ocean-900">{bookingCta("surfing").toggleLabel}</h2>
+          <p className="mt-1 text-sm text-neutral-600">Tell us your preferred date and group size and we&rsquo;ll follow up on availability.</p>
+          <div className="mt-4">
+            <NodeInquiryToggle
+              productNodeId={activity.id}
+              productTitle={activity.title}
+              source="surfing"
+              toggleLabel={bookingCta("surfing").toggleLabel}
+              submitLabel={bookingCta("surfing").submitLabel}
+            />
+          </div>
+        </section>
+      )}
       </div>
     </main>
   );

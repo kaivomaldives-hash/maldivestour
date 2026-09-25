@@ -1,5 +1,7 @@
 "use server";
 
+import type { BookingSource } from "@/lib/bookings/copy";
+import { sendBookingNotifications } from "@/lib/bookings/notifications";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -13,12 +15,33 @@ import { createClient } from "@/lib/supabase/server";
  * own trigger. This action is a thin, typed wrapper around it — the ONLY
  * new thing here is a UI ever calling it, which nothing in the codebase
  * did before Task 18.
+ *
+ * Task 13 (Booking & Inquiries) extends this with: a honeypot spam check
+ * (rejected before the RPC is ever called, so a filled honeypot never
+ * creates a row or consumes the RPC's rate-limit budget), a structured
+ * `source` passed through to the RPC's new p_source param, and firing
+ * notifications after a successful insert. Server-side duplicate-
+ * submission and rate-limit throttling live in the RPC itself (see
+ * supabase/migrations/20250130000100_booking_source_and_throttle.sql) —
+ * not here — so they can't be bypassed by calling the RPC directly.
  */
+
+/** Classic hidden-field spam trap: real visitors never see or fill this
+ * input (see the `honeypot` field on both form components), so any
+ * non-empty value here is treated as automated spam and silently
+ * rejected before touching the database at all. */
+function isSpam(honeypot: string | undefined): boolean {
+  return Boolean(honeypot && honeypot.trim().length > 0);
+}
+
+const GENERIC_ERROR = "Something went wrong. Please try again.";
 
 export interface TransferBookingInquiryInput {
   transferServiceId: string;
   originLocationId: string | null;
   destinationLocationId: string | null;
+  originTitle: string;
+  destinationTitle: string;
   customerName: string;
   customerEmail: string;
   customerPhone: string;
@@ -35,6 +58,8 @@ export interface TransferBookingInquiryInput {
   specialRequests: string | null;
   estimatedPrice: number | null;
   currency: string;
+  /** Hidden honeypot field — must always be empty for a real submission. */
+  honeypot?: string;
 }
 
 export interface TransferBookingInquiryResult {
@@ -46,6 +71,8 @@ export interface TransferBookingInquiryResult {
 export async function createTransferBookingInquiry(
   input: TransferBookingInquiryInput,
 ): Promise<TransferBookingInquiryResult> {
+  if (isSpam(input.honeypot)) return { ok: false, error: GENERIC_ERROR };
+
   const name = input.customerName.trim();
   const email = input.customerEmail.trim();
 
@@ -86,14 +113,31 @@ export async function createTransferBookingInquiry(
     p_special_requests: input.specialRequests?.trim() || null,
     p_estimated_price: input.estimatedPrice,
     p_currency: input.currency,
+    p_source: "transfer" satisfies BookingSource,
   };
   const { data, error } = await supabase
     .rpc("create_booking_inquiry" as unknown as never, rpcArgs as unknown as undefined)
     .single<{ id: string; booking_reference: string }>();
 
   if (error || !data) {
-    return { ok: false, error: "We couldn't submit your request right now. Please try again or contact us on WhatsApp." };
+    return { ok: false, error: friendlyRpcError(error?.message) };
   }
+
+  await sendBookingNotifications({
+    bookingId: data.id,
+    bookingReference: data.booking_reference,
+    productTitle: `${input.originTitle} to ${input.destinationTitle}`,
+    source: "transfer",
+    customerName: name,
+    customerEmail: email,
+    customerPhone: input.customerPhone.trim() || null,
+    requestedDate: input.travelDate,
+    adults: input.adults,
+    children: input.children,
+    specialRequests: input.specialRequests?.trim() || null,
+    estimatedPrice: input.estimatedPrice,
+    currency: input.currency,
+  });
 
   return { ok: true, bookingReference: data.booking_reference };
 }
@@ -107,6 +151,8 @@ export async function createTransferBookingInquiry(
  */
 export interface NodeInquiryInput {
   productNodeId: string;
+  productTitle: string;
+  source: BookingSource;
   customerName: string;
   customerEmail: string;
   customerPhone: string;
@@ -116,9 +162,13 @@ export interface NodeInquiryInput {
   adults: number;
   children: number;
   specialRequests: string | null;
+  /** Hidden honeypot field — must always be empty for a real submission. */
+  honeypot?: string;
 }
 
 export async function createNodeInquiry(input: NodeInquiryInput): Promise<TransferBookingInquiryResult> {
+  if (isSpam(input.honeypot)) return { ok: false, error: GENERIC_ERROR };
+
   const name = input.customerName.trim();
   const email = input.customerEmail.trim();
 
@@ -148,14 +198,42 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
     p_special_requests: input.specialRequests?.trim() || null,
     p_estimated_price: null,
     p_currency: "USD",
+    p_source: input.source,
   };
   const { data, error } = await supabase
     .rpc("create_booking_inquiry" as unknown as never, rpcArgs as unknown as undefined)
     .single<{ id: string; booking_reference: string }>();
 
   if (error || !data) {
-    return { ok: false, error: "We couldn't submit your request right now. Please try again or contact us on WhatsApp." };
+    return { ok: false, error: friendlyRpcError(error?.message) };
   }
 
+  await sendBookingNotifications({
+    bookingId: data.id,
+    bookingReference: data.booking_reference,
+    productTitle: input.productTitle,
+    source: input.source,
+    customerName: name,
+    customerEmail: email,
+    customerPhone: input.customerPhone.trim() || null,
+    requestedDate: input.preferredDate,
+    adults: input.adults,
+    children: input.children,
+    specialRequests: input.specialRequests?.trim() || null,
+    estimatedPrice: null,
+    currency: "USD",
+  });
+
   return { ok: true, bookingReference: data.booking_reference };
+}
+
+/** The RPC's own guard-rail exceptions (duplicate submission, rate limit)
+ * are written as plain human-readable messages precisely so they can be
+ * shown to the customer as-is; anything else (a genuine failure) falls
+ * back to a generic, non-technical message. */
+function friendlyRpcError(message: string | undefined): string {
+  if (message && (message.includes("already submitted this request") || message.includes("Too many requests from this email"))) {
+    return message;
+  }
+  return "We couldn't submit your request right now. Please try again or contact us on WhatsApp.";
 }

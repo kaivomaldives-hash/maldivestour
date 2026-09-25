@@ -4,12 +4,16 @@ import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import { createNodeInquiry } from "@/lib/bookings/actions";
+import type { BookingSource } from "@/lib/bookings/copy";
 
 const WHATSAPP_NUMBER = "9607794332";
 
 export interface NodeInquiryFormProps {
   productNodeId: string;
   productTitle: string;
+  /** Structured booking source (Task 13 §18) — which vertical this
+   * inquiry came from, for later admin reporting. */
+  source: BookingSource;
   /** Shown above the submit button — e.g. "Request Private Charter",
    * "Enquire About This Vehicle". */
   submitLabel: string;
@@ -22,19 +26,52 @@ export interface NodeInquiryFormProps {
  * just without the transfer-specific origin/destination/trip-type fields
  * that don't apply here.
  */
-export function NodeInquiryForm({ productNodeId, productTitle, submitLabel }: NodeInquiryFormProps) {
+export function NodeInquiryForm({ productNodeId, productTitle, source, submitLabel }: NodeInquiryFormProps) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
-  const [reference, setReference] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState<{
+    reference: string;
+    customerName: string;
+    preferredDate: string | null;
+    adults: number;
+    children: number;
+  } | null>(null);
 
-  if (reference) {
+  if (submitted) {
+    const { reference } = submitted;
     const waMessage = encodeURIComponent(`Hi, I'd like to follow up on my request ${reference} (${productTitle}).`);
     return (
       <div className="rounded-2xl border border-maldives-200 bg-maldives-50 p-6 text-center">
-        <p className="text-lg font-semibold text-ocean-900">Request received</p>
-        <p className="mt-1 text-sm text-neutral-700">
-          Your reference is <span className="font-mono font-semibold">{reference}</span>. We&rsquo;ll follow up on the contact details you
-          provided.
+        <p className="text-lg font-semibold text-ocean-900">Booking Request Received</p>
+        <dl className="mt-3 space-y-1 text-left text-sm text-neutral-700">
+          <div>
+            <dt className="inline font-medium text-neutral-900">Reference: </dt>
+            <dd className="inline font-mono font-semibold">{reference}</dd>
+          </div>
+          <div>
+            <dt className="inline font-medium text-neutral-900">Product: </dt>
+            <dd className="inline">{productTitle}</dd>
+          </div>
+          {submitted.preferredDate && (
+            <div>
+              <dt className="inline font-medium text-neutral-900">Requested date: </dt>
+              <dd className="inline">{submitted.preferredDate}</dd>
+            </div>
+          )}
+          <div>
+            <dt className="inline font-medium text-neutral-900">Guests: </dt>
+            <dd className="inline">
+              {submitted.adults} adult{submitted.adults === 1 ? "" : "s"}
+              {submitted.children ? `, ${submitted.children} child${submitted.children === 1 ? "" : "ren"}` : ""}
+            </dd>
+          </div>
+          <div>
+            <dt className="inline font-medium text-neutral-900">Name: </dt>
+            <dd className="inline">{submitted.customerName}</dd>
+          </div>
+        </dl>
+        <p className="mt-3 text-sm text-neutral-700">
+          This is a request, not a confirmed booking. Our team will review availability and contact you using the details you provided.
         </p>
         <a
           href={`https://wa.me/${WHATSAPP_NUMBER}?text=${waMessage}`}
@@ -58,27 +95,48 @@ export function NodeInquiryForm({ productNodeId, productTitle, submitLabel }: No
         const data = new FormData(form);
 
         startTransition(async () => {
+          const customerName = String(data.get("customerName") ?? "");
+          const preferredDate = String(data.get("preferredDate") ?? "") || null;
+          const adults = Number(data.get("adults") ?? 1) || 1;
+          const children = Number(data.get("children") ?? 0) || 0;
+
           const result = await createNodeInquiry({
             productNodeId,
-            customerName: String(data.get("customerName") ?? ""),
+            productTitle,
+            source,
+            customerName,
             customerEmail: String(data.get("customerEmail") ?? ""),
             customerPhone: String(data.get("customerPhone") ?? ""),
             customerWhatsapp: String(data.get("customerWhatsapp") ?? ""),
-            preferredDate: String(data.get("preferredDate") ?? "") || null,
+            preferredDate,
             preferredTime: String(data.get("preferredTime") ?? "") || null,
-            adults: Number(data.get("adults") ?? 1) || 1,
-            children: Number(data.get("children") ?? 0) || 0,
+            adults,
+            children,
             specialRequests: String(data.get("specialRequests") ?? "") || null,
+            honeypot: String(data.get("website") ?? ""),
           });
 
           if (!result.ok) {
             setError(result.error ?? "Something went wrong. Please try again.");
             return;
           }
-          setReference(result.bookingReference ?? null);
+          if (result.bookingReference) {
+            setSubmitted({ reference: result.bookingReference, customerName, preferredDate, adults, children });
+          }
         });
       }}
     >
+      {/* Honeypot: hidden from real visitors, so any bot that fills every
+          field it finds trips this and gets silently rejected server-side
+          (see isSpam() in src/lib/bookings/actions.ts). Off-screen rather
+          than display:none, since some scrapers skip display:none fields. */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: 1, height: 1, overflow: "hidden" }}>
+        <label>
+          Website
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+        </label>
+      </div>
+
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Full name" name="customerName" type="text" required autoComplete="name" />
         <Field label="Email" name="customerEmail" type="email" required autoComplete="email" />

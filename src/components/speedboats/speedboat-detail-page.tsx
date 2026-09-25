@@ -135,7 +135,15 @@ export async function SpeedboatDetailPage({ slug }: { slug: string }) {
             No fixed public price — charter cost depends on duration, destination, and group size. Request a quote and we&rsquo;ll follow up
             directly.
           </p>
-          {boat.isBookable && <NodeInquiryToggle productNodeId={boat.id} productTitle={boat.title} submitLabel="Request Private Charter" toggleLabel="Request Private Charter" />}
+          {boat.isBookable && (
+            <NodeInquiryToggle
+              productNodeId={boat.id}
+              productTitle={boat.title}
+              source="transfer"
+              submitLabel="Request Private Charter"
+              toggleLabel="Request Private Charter"
+            />
+          )}
         </section>
 
         <ReviewsSection nodeId={boat.id} reviews={reviews} />

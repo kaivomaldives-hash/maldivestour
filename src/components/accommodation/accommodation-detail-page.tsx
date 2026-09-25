@@ -19,6 +19,7 @@ import { ACCOMMODATION_TYPE_SEGMENT, type AccommodationType } from "@/lib/accomm
 import { getNearbyActivities } from "@/lib/activities/repository";
 import { getArticlesRelatedToNodes } from "@/lib/articles/repository";
 import { getNearbyAttractions } from "@/lib/attractions/repository";
+import { bookingCta } from "@/lib/bookings/copy";
 import { getPackageViewsByAccommodation } from "@/lib/packages/view-repository";
 import { canonicalUrl } from "@/lib/seo/site";
 import { getTransferRoutesByLocation } from "@/lib/transfers/repository";
@@ -265,7 +266,12 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
             Prices change with season and availability — tell us your dates and we&rsquo;ll send current rates for {accommodation.title}.
           </p>
           <div className="mt-4">
-            <NodeInquiryForm productNodeId={accommodation.id} productTitle={accommodation.title} submitLabel="Request an Offer" />
+            <NodeInquiryForm
+              productNodeId={accommodation.id}
+              productTitle={accommodation.title}
+              source="accommodation"
+              submitLabel={bookingCta("accommodation").submitLabel}
+            />
           </div>
         </section>
       )}

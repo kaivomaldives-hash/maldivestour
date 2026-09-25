@@ -9,6 +9,7 @@ import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
+import { bookingCta, FISHING_PACKAGE_CTA } from "@/lib/bookings/copy";
 import { MFH_PRICE_TABLES } from "@/lib/packages/mfh-price-tables";
 import { getRelatedPackageViews, getPackageViewBySlug } from "@/lib/packages/view-repository";
 import { PACKAGE_CATEGORY_TITLE } from "@/lib/packages/view-types";
@@ -168,7 +169,12 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
           {pkg.isDemo ? (
             <DemoEnquiryCta pkg={pkg} />
           ) : (
-            <NodeInquiryToggle productNodeId={pkg.id} productTitle={pkg.title} submitLabel="Enquire About This Package" toggleLabel="Enquire About This Package" />
+            <NodeInquiryToggle
+              productNodeId={pkg.id}
+              productTitle={pkg.title}
+              source={pkg.categories.includes("fishing") ? "fishing" : "package"}
+              {...(pkg.categories.includes("fishing") ? FISHING_PACKAGE_CTA : bookingCta("package"))}
+            />
           )}
         </div>
 

@@ -7,6 +7,8 @@ import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { WhereToStaySection } from "@/components/accommodation/where-to-stay-section";
+import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
+import { bookingCta } from "@/lib/bookings/copy";
 import { getNearbyAccommodations } from "@/lib/accommodations/repository";
 import { getActivityBySlug } from "@/lib/activities/repository";
 import { activityServiceJsonLd, hasDedicatedRoute } from "@/lib/activities/types";
@@ -197,8 +199,21 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
 
       <WhereToStaySection nearby={nearbyStays} islandTitle={primaryLocation?.title ?? null} atollTitle={atoll?.title ?? null} />
 
-      {/* Booking/inquiry UI is not built yet — Task 6 only establishes the
-          bookable_products relationship (see activity.isBookable). */}
+      {activity.isBookable && (
+        <section className="mt-10 rounded-2xl border border-neutral-200 p-6">
+          <h2 className="text-xl font-semibold text-ocean-900">{bookingCta("activity").toggleLabel}</h2>
+          <p className="mt-1 text-sm text-neutral-600">Tell us your dates and group size and we&rsquo;ll follow up on availability.</p>
+          <div className="mt-4">
+            <NodeInquiryToggle
+              productNodeId={activity.id}
+              productTitle={activity.title}
+              source="activity"
+              toggleLabel={bookingCta("activity").toggleLabel}
+              submitLabel={bookingCta("activity").submitLabel}
+            />
+          </div>
+        </section>
+      )}
       </div>
     </main>
   );

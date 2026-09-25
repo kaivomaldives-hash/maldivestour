@@ -21,11 +21,11 @@ export interface RequestBookingFormProps {
  * Task 18: the first UI ever wired to the existing create_booking_inquiry
  * RPC (Task 2/3) — see src/lib/bookings/actions.ts for why this is a thin
  * wrapper, not a new booking system. A successful submission is a real
- * row in `bookings` with a real, sequentially-generated booking_reference;
- * there is no email/SMS delivery integration in this project to plug into
- * (checked — booking_notifications only records an email row for a
- * separate process to send, nothing sends it yet), so the confirmation
- * honestly offers WhatsApp as the immediate next step, using the site's
+ * row in `bookings` with a real, sequentially-generated booking_reference.
+ * Task 13 added actual email/Telegram delivery (src/lib/bookings/
+ * notifications.ts) on top of this, but delivery can still fail or be
+ * unconfigured in a given environment, so the confirmation still offers
+ * WhatsApp as an immediate, always-working next step, using the site's
  * own real, already-published number (src/components/site-header.tsx).
  */
 export function RequestBookingForm({
@@ -40,16 +40,50 @@ export function RequestBookingForm({
   const [isPending, startTransition] = useTransition();
   const [tripType, setTripType] = useState<"one_way" | "round_trip">("one_way");
   const [error, setError] = useState<string | null>(null);
-  const [reference, setReference] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState<{
+    reference: string;
+    customerName: string;
+    travelDate: string;
+    adults: number;
+    children: number;
+  } | null>(null);
 
-  if (reference) {
+  if (submitted) {
+    const { reference } = submitted;
     const waMessage = encodeURIComponent(`Hi, I'd like to confirm my transfer booking ${reference} (${originTitle} to ${destinationTitle}).`);
     return (
       <div className="rounded-2xl border border-maldives-200 bg-maldives-50 p-6 text-center">
-        <p className="text-lg font-semibold text-ocean-900">Request received</p>
-        <p className="mt-1 text-sm text-neutral-700">
-          Your reference is <span className="font-mono font-semibold">{reference}</span>. We&rsquo;ll confirm availability and follow up on
-          the contact details you provided.
+        <p className="text-lg font-semibold text-ocean-900">Booking Request Received</p>
+        <dl className="mt-3 space-y-1 text-left text-sm text-neutral-700">
+          <div>
+            <dt className="inline font-medium text-neutral-900">Reference: </dt>
+            <dd className="inline font-mono font-semibold">{reference}</dd>
+          </div>
+          <div>
+            <dt className="inline font-medium text-neutral-900">Route: </dt>
+            <dd className="inline">
+              {originTitle} to {destinationTitle}
+            </dd>
+          </div>
+          <div>
+            <dt className="inline font-medium text-neutral-900">Travel date: </dt>
+            <dd className="inline">{submitted.travelDate}</dd>
+          </div>
+          <div>
+            <dt className="inline font-medium text-neutral-900">Guests: </dt>
+            <dd className="inline">
+              {submitted.adults} adult{submitted.adults === 1 ? "" : "s"}
+              {submitted.children ? `, ${submitted.children} child${submitted.children === 1 ? "" : "ren"}` : ""}
+            </dd>
+          </div>
+          <div>
+            <dt className="inline font-medium text-neutral-900">Name: </dt>
+            <dd className="inline">{submitted.customerName}</dd>
+          </div>
+        </dl>
+        <p className="mt-3 text-sm text-neutral-700">
+          This is a request, not a confirmed booking. Our team will confirm availability and follow up using the contact details you
+          provided.
         </p>
         <a
           href={`https://wa.me/${WHATSAPP_NUMBER}?text=${waMessage}`}
@@ -73,36 +107,55 @@ export function RequestBookingForm({
         const data = new FormData(form);
 
         startTransition(async () => {
+          const customerName = String(data.get("customerName") ?? "");
+          const travelDate = String(data.get("travelDate") ?? "");
+          const adults = Number(data.get("adults") ?? 1) || 1;
+          const children = Number(data.get("children") ?? 0) || 0;
+
           const result = await createTransferBookingInquiry({
             transferServiceId,
             originLocationId,
             destinationLocationId,
-            customerName: String(data.get("customerName") ?? ""),
+            originTitle,
+            destinationTitle,
+            customerName,
             customerEmail: String(data.get("customerEmail") ?? ""),
             customerPhone: String(data.get("customerPhone") ?? ""),
             customerWhatsapp: String(data.get("customerWhatsapp") ?? ""),
-            travelDate: String(data.get("travelDate") ?? ""),
+            travelDate,
             travelTime: String(data.get("travelTime") ?? "") || null,
             returnDate: tripType === "round_trip" ? String(data.get("returnDate") ?? "") || null : null,
             returnTime: tripType === "round_trip" ? String(data.get("returnTime") ?? "") || null : null,
             tripType,
-            adults: Number(data.get("adults") ?? 1) || 1,
-            children: Number(data.get("children") ?? 0) || 0,
+            adults,
+            children,
             infants: Number(data.get("infants") ?? 0) || 0,
             flightNumber: String(data.get("flightNumber") ?? "") || null,
             specialRequests: String(data.get("specialRequests") ?? "") || null,
             estimatedPrice: price,
             currency,
+            honeypot: String(data.get("website") ?? ""),
           });
 
           if (!result.ok) {
             setError(result.error ?? "Something went wrong. Please try again.");
             return;
           }
-          setReference(result.bookingReference ?? null);
+          if (result.bookingReference) {
+            setSubmitted({ reference: result.bookingReference, customerName, travelDate, adults, children });
+          }
         });
       }}
     >
+      {/* Honeypot: hidden from real visitors — see the matching field/check
+          in NodeInquiryForm and isSpam() in src/lib/bookings/actions.ts. */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: 1, height: 1, overflow: "hidden" }}>
+        <label>
+          Website
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+        </label>
+      </div>
+
       <div className="flex gap-2" role="radiogroup" aria-label="Trip type">
         {(["one_way", "round_trip"] as const).map((type) => (
           <button
@@ -162,7 +215,7 @@ export function RequestBookingForm({
           From {currency} <span className="font-semibold text-ocean-900">{price}</span> per person
         </p>
         <Button type="submit" disabled={isPending}>
-          {isPending ? "Sending…" : "Request this transfer"}
+          {isPending ? "Sending…" : "Request Transfer"}
         </Button>
       </div>
     </form>

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -49,11 +50,8 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <div className={`${CONTAINER_CLASS} flex h-16 items-center justify-between gap-4`}>
-        <Link href="/" className="flex shrink-0 items-baseline gap-1.5 font-semibold text-ocean-900">
-          <span className="text-lg tracking-tight sm:text-xl">
-            <span className="text-maldives-600">MTG</span>
-          </span>
-          <span className="hidden text-sm font-medium text-neutral-500 sm:inline">Maldives Tour Guide</span>
+        <Link href="/" className="flex shrink-0 items-center">
+          <Image src="/logo.png" alt="Maldives Tour Guide" width={445} height={300} priority className="h-10 w-auto sm:h-12" />
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">

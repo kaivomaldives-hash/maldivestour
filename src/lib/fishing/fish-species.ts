@@ -162,7 +162,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Best Season",
     description:
       "Yellowfin tuna are powerful, fast-swimming predators identified by their bright yellow fins and streamlined bodies. They're a primary target for sport fishermen in the Maldives and are also commercially important. These fish can be found around the edges of atolls and in open water, often hunting in schools and capable of impressive speeds.",
-    image: asset("3bdbab0a-195e-c488-8ae5-efc2db52e38f", "legacy/fishing/images/yellowfin-tuna.webp", "Yellowfin Tuna in the Maldives"),
+    image: asset("572c610a-06c9-2ce3-7a45-a3e102138d7c", "uploads/assets/uploads/fishing/images/gallery/yellowfin-tuna.webp", "Yellowfin Tuna in the Maldives"),
   },
   {
     slug: "skipjack-tuna",
@@ -214,7 +214,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Best Season",
     description:
       "Wahoo are among the fastest fish in the ocean, capable of speeds up to 80 km/h. Their streamlined, torpedo-shaped bodies and razor-sharp teeth make them formidable predators. In the Maldives, they're often found near the edges of atolls and are prized for both their fighting ability and excellent taste. Trolling is the most effective method for targeting wahoo.",
-    image: asset("d57fcfbe-770e-6a19-c897-780fea7303d3", "legacy/fishing/images/wahoo-in-maldives.webp", "Wahoo in the Maldives"),
+    image: asset("e5ffdf3e-f374-906a-92b3-61c4c7190d3c", "uploads/assets/uploads/fishing/images/gallery/wahoo-in-maldives.webp", "Wahoo in the Maldives"),
   },
   {
     slug: "mahi-mahi",
@@ -227,7 +227,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Best Season",
     description:
       "With their vibrant colors and distinctive blunt head, Mahi-Mahi are among the most beautiful pelagic fish. Males develop a prominent forehead as they mature. These fast-growing fish are often found near floating debris or FADs (Fish Aggregating Devices) and are known for their acrobatic jumps when hooked. They're excellent table fare and a popular target for sport fishermen.",
-    image: asset("ec38b13b-21e1-0b56-a620-757e0601a38b", "legacy/fishing/images/mahi-mahi-fish.webp", "Mahi-Mahi in the Maldives"),
+    image: asset("080f091e-1114-7565-3709-c85533388ec2", "uploads/assets/uploads/fishing/images/gallery/mahi-mahi-fish.webp", "Mahi-Mahi in the Maldives"),
   },
 
   // Bottom Dwellers
@@ -255,7 +255,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Diet",
     description:
       "Snappers are common throughout Maldivian waters, with species like the Red Snapper and Humpback Snapper being particularly abundant. These fish are characterized by their strong teeth and are often found in schools around reef edges and drop-offs. They're popular targets for bottom fishing and provide excellent eating.",
-    image: asset("907cf032-d11d-5978-d51e-b3bcff7151e5", "legacy/fishing/images/redsnappers-in-maldives.webp", "Red Snapper in the Maldives"),
+    image: asset("6a568121-cf94-c905-4b2d-bba7ceff1137", "uploads/assets/uploads/fishing/images/gallery/redsnappers-in-maldives.webp", "Red Snapper in the Maldives"),
   },
   {
     slug: "emperor-fish",

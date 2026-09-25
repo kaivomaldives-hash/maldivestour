@@ -100,6 +100,7 @@ const MANIFEST_SOURCES = {
   "round2-uploads": "data/maldives/migration/round2-uploads-manifest.json",
   "round3-uploads": "data/maldives/migration/round3-uploads-manifest.json",
   "male-city-hero": "data/maldives/migration/male-city-hero-manifest.json",
+  "fishing-gallery-round2": "data/maldives/migration/fishing-gallery-round2-manifest.json",
 };
 
 function mergeManifests(only) {

@@ -16,6 +16,26 @@ const GALLERY_IMAGES = [
   asset("d647a2a4-2099-8667-168f-88c292b6de0d", "uploads/assets/uploads/fishing/images/gallery/sailfish-maldives.webp", "Sailfish caught fishing in the Maldives"),
   asset("a8ba6833-886f-504b-136f-7cb31111c497", "uploads/assets/uploads/fishing/images/gallery/yellowfin-tuna-fishing-maldives.webp", "Yellowfin tuna caught fishing in the Maldives"),
   asset("dbd93db3-e064-94a9-5883-96ea6c3aebf1", "uploads/assets/uploads/fishing/images/gallery/blue-marlin.avif", "Blue marlin caught fishing in the Maldives"),
+  // Round 2 (20 more files added to the same folder — see
+  // scripts/attach-fishing-gallery-round2.mjs). 4 of that batch replaced a
+  // broken legacy photo reference on a specific fish-species card instead
+  // (see src/lib/fishing/fish-species.ts) and 1 was a byte-identical
+  // duplicate — both excluded here to avoid showing the same photo twice.
+  asset("d21c225c-e40a-7361-63fa-3e072dd81026", "uploads/assets/uploads/fishing/images/gallery/ari-atoll-spots.webp", "Trevally caught fishing in the Maldives"),
+  asset("095196ab-f287-c9a6-604f-6b6a0a9c5a83", "uploads/assets/uploads/fishing/images/gallery/best-time-fishing.webp", "Sailfish caught fishing in the Maldives"),
+  asset("2193250b-9c16-35ad-5cff-27dd8bee233d", "uploads/assets/uploads/fishing/images/gallery/big-game-fishing-in-maldives.webp", "Sailfish caught fishing in the Maldives"),
+  asset("6bf81059-4559-5a1b-0f5f-2a8dee9ca99b", "uploads/assets/uploads/fishing/images/gallery/deep-sea-fishing-maldives.webp", "Coral grouper caught fishing in the Maldives"),
+  asset("f7b6b8e0-4d72-6329-b52b-62c5f8b24472", "uploads/assets/uploads/fishing/images/gallery/fishing-in-maldives.webp", "Trevally caught fishing in the Maldives"),
+  asset("8dc28836-323e-85d9-d5ad-4d4ddd294c13", "uploads/assets/uploads/fishing/images/gallery/fishing-tours-maldives.webp", "Yellowfin tuna caught on a Maldives fishing trip"),
+  asset("9af0b52c-d5bf-c732-f0aa-cb9272c6e983", "uploads/assets/uploads/fishing/images/gallery/fly-fishing-maldives.webp", "Fly fishing on the flats in the Maldives"),
+  asset("65ce543b-f8cb-5760-a0ed-e49aefe7280d", "uploads/assets/uploads/fishing/images/gallery/giant-yellowfin-tuna.webp", "Yellowfin tuna catch on a Maldives fishing charter"),
+  asset("63d606ab-e290-cc62-fe6e-b1fcf3bf5415", "uploads/assets/uploads/fishing/images/gallery/gt-fishing-guide.webp", "Giant trevally caught fishing in the Maldives"),
+  asset("d82258a7-f7ae-f6ea-c603-5c18159eff68", "uploads/assets/uploads/fishing/images/gallery/maldives-fishing-charters.webp", "Giant trevally caught on a Maldives fishing charter"),
+  asset("0b224be8-cf15-e001-f9b4-7d32c3b664ea", "uploads/assets/uploads/fishing/images/gallery/maldives-fishing-packages.webp", "Tuna caught on a Maldives fishing trip"),
+  asset("437c760e-0079-e191-b056-ebe871a06643", "uploads/assets/uploads/fishing/images/gallery/maldives-fishing-trips.webp", "Fish caught on a Maldives fishing trip"),
+  asset("720ed678-f61d-74c4-00d3-13879c709508", "uploads/assets/uploads/fishing/images/gallery/maldives-fishing.webp", "Coral grouper caught fishing in the Maldives"),
+  asset("f561202d-6944-41a5-6bb8-7d414cbb0447", "uploads/assets/uploads/fishing/images/gallery/sail-fishing-maldives.webp", "Sailfish caught fishing in the Maldives"),
+  asset("7fb94bc0-e308-f850-82cf-10a86c0ee91d", "uploads/assets/uploads/fishing/images/gallery/sports-fishing-maldives.webp", "Mahi-mahi caught fishing in the Maldives"),
 ];
 
 export function FishingGallerySection() {

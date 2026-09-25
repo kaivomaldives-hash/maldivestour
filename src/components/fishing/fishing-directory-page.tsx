@@ -122,6 +122,18 @@ const FAQS = [
     question: "Are prices on this page fixed?",
     answer: "Prices shown are the operator's current verified rate, subject to their own booking conditions — availability, fuel surcharges and operational costs can change rates without notice. Enquire to confirm before booking.",
   },
+  {
+    question: "Can I catch giant trevally in the Maldives?",
+    answer: "Yes — giant trevally are a common target for popping and jigging trips over channel edges and outer reef, including the Gaafu Atoll charters on this page. As with any wild fish, a catch isn't guaranteed on a given day.",
+  },
+  {
+    question: "Is fishing available from local islands, not just resorts?",
+    answer: "Yes — several charters on this page, including Maldives Fishing and Holiday's own Gaafu Atoll operation, are run from local islands rather than resorts, alongside independent Maafushi-based operators.",
+  },
+  {
+    question: "Do you provide fishing equipment?",
+    answer: "Basic fishing gear is included on the private charters on this page. If you have your own preferred rod or reel, you're welcome to bring it — check with the operator when booking.",
+  },
 ];
 
 function faqJsonLd() {
@@ -241,6 +253,120 @@ export async function FishingDirectoryPage({
             pricing from Maldives Fishing and Holiday Pvt Ltd&rsquo;s own rate sheet (valid until 31 December 2027), alongside individually
             sourced trips from resort dive/watersports centres and independent Maafushi and Malé-area operators.
           </p>
+        </section>
+
+        {/* Fishing in the Maldives — geography/context overview, the
+            broad-topic coverage a pillar page needs beyond the charter/
+            package listings below. */}
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Fishing in the Maldives</h2>
+          <div className="mt-3 space-y-3 text-sm text-neutral-700">
+            <p>
+              The Maldives is built from 26 natural atolls — rings of reef enclosing shallow lagoons, cut through by
+              channels (locally, <em>kandu</em>) where the tide pushes bait and predators between the inner lagoon and
+              the open ocean. That structure is what makes the fishing here varied rather than one single thing: reef
+              flats and channel mouths for light tackle close to shore, outer reef drop-offs where the coral gives way
+              to deep water, and open ocean beyond the atoll rim for trolling further out.
+            </p>
+            <p>
+              Fishing has been part of daily life here for longer than tourism has existed — handline fishing off a
+              local dhoni is still how many Maldivian families put food on the table, and it&rsquo;s also the
+              technique most sunset trips teach visitors with no prior experience. Sport and big game fishing grew up
+              alongside that tradition rather than replacing it, and most operators on this page — resort-based and
+              independent — run both styles.
+            </p>
+          </div>
+        </section>
+
+        {/* Best Places for Fishing — atoll overview, deliberately not ranked
+            (different atolls suit different styles/species, not a "best"
+            vs "worst" list). */}
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Best Places for Fishing in the Maldives</h2>
+          <p className="mt-2 text-sm text-neutral-700">
+            Which atoll suits you depends more on where you&rsquo;re staying and what kind of trip you want than any
+            single &ldquo;best&rdquo; location — every inhabited atoll has real channels, reef and open ocean access.
+          </p>
+          <dl className="mt-6 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+            {[
+              { atoll: "kaafu", name: "North & South Malé Atoll", body: "The most accessible fishing base — close to Velana International Airport, with the highest concentration of resort-run charters and independent Maafushi-based operators, covering everything from sunset handline trips to big game charters." },
+              { atoll: "alif-alif", name: "Ari Atoll (North)", body: "A large atoll with a deep central lagoon and extensive outer reef, well known among divers for its pelagic life — the same channels that draw manta rays and whale sharks also concentrate baitfish and gamefish." },
+              { atoll: "alif-dhaalu", name: "Ari Atoll (South)", body: "The southern half of the same atoll system, with its own set of channels and outer-reef drop-offs — resort-run charters here tend to run the same big game and reef techniques as North Ari." },
+              { atoll: "baa", name: "Baa Atoll", body: "A UNESCO Biosphere Reserve, so fishing grounds sit alongside protected marine areas — check with your operator which channels and reefs are open before booking a trip here." },
+              { atoll: "vaavu", name: "Vaavu Atoll", body: "One of the least populated atolls, with a reputation among local operators for strong channel currents and productive reef fishing, thanks to relatively light fishing pressure." },
+              { atoll: "laamu", name: "Laamu Atoll", body: "A remote southern atoll with its own outer-reef and channel systems, reached by domestic flight rather than speedboat from Malé — fishing here is generally arranged through resort operators." },
+              { atoll: "gaafu-alifu", name: "Gaafu Alifu Atoll", body: "Part of the same far-southern atoll pair as Gaafu Dhaalu — see Fishing in Gaafu Atoll below, where our own operation is based." },
+              { atoll: "gaafu-dhaalu", name: "Gaafu Dhaalu Atoll", body: "The other half of the Huvadhoo Atoll system — one of the widest, deepest natural atolls in the Maldives, with correspondingly large channels and strong currents." },
+              { atoll: "seenu", name: "Addu Atoll", body: "The southernmost atoll, closer to the equator than any other inhabited part of the Maldives, with its own distinct reef and channel system reached by domestic flight." },
+            ].map((a) => (
+              <div key={a.atoll}>
+                <dt className="font-medium text-ocean-900">
+                  <Link href={`/maldives/atolls/${a.atoll}/`} className="hover:text-maldives-600 hover:underline">
+                    {a.name}
+                  </Link>
+                </dt>
+                <dd className="mt-1 text-sm text-neutral-700">{a.body}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        {/* Fishing in Gaafu Atoll — the deliberately detailed section, since
+            this is real first-hand operating ground (Maldives Fishing and
+            Holiday Pvt Ltd, Maamendhoo, Gaafu Alifu Atoll — see
+            data/maldives/fishing/SOURCES-mfh.md), not a generic atoll
+            writeup. Boats + how-to-get-there are folded in here rather
+            than split into their own top-level sections, since both are
+            specific to this one operation, not the page's fishing
+            directory as a whole. */}
+        <section id="gaafu-fishing" className="mt-12 scroll-mt-20 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Fishing in Gaafu Atoll</h2>
+          <div className="mt-3 space-y-3 text-sm text-neutral-700">
+            <p>
+              Gaafu Alifu and Gaafu Dhaalu together form Huvadhoo, one of the widest natural atolls in the world —
+              roughly 300&nbsp;km south of Malé, well outside the North/South Malé resort cluster most visitors think
+              of first. Fewer resorts means less fishing pressure on the reefs and channels here, and the atoll&rsquo;s
+              size means genuinely deep channels between the outer reef and the open ocean.
+            </p>
+            <p>
+              <Link href="/maldives/providers/maldives-fishing-and-holiday/" className="text-maldives-600 hover:underline">
+                Maldives Fishing and Holiday Pvt Ltd
+              </Link>{" "}
+              operates out of{" "}
+              <Link href="/maldives/islands/maamendhoo-gaafu-alifu/" className="text-maldives-600 hover:underline">
+                Maamendhoo, Gaafu Alifu Atoll
+              </Link>{" "}
+              — real, currently-verified charters and multi-night packages, not a generic listing. Trips from here
+              cover popping and jigging over the outer reef and channel edges (giant trevally and dogtooth tuna are
+              the usual targets), trolling further out for yellowfin tuna, and reef fishing closer to the island for
+              a calmer session.
+            </p>
+          </div>
+
+          <div className="mt-8">
+            <h3 className="text-lg font-semibold text-ocean-900">Our Fishing Boat</h3>
+            <p className="mt-2 text-sm text-neutral-700">
+              Charters run aboard <strong>Emperor</strong>, a 32-foot fishing boat with twin 200&nbsp;HP engines,
+              carrying up to 5 passengers. Basic fishing gear is included on every trip — see{" "}
+              <a href="#fishing-charters" className="text-maldives-600 hover:underline">
+                Fishing Charters
+              </a>{" "}
+              below for current rates.
+            </p>
+          </div>
+
+          <div className="mt-8">
+            <h3 className="text-lg font-semibold text-ocean-900">How to Get There</h3>
+            <p className="mt-2 text-sm text-neutral-700">
+              The route is Velana International Airport → a domestic flight south to Gaafu Alifu Atoll&rsquo;s own
+              airport → a boat transfer to Maamendhoo. Exact transfer arrangements and costs are confirmed directly
+              with the operator when you book — see{" "}
+              <a href="#fishing-packages" className="text-maldives-600 hover:underline">
+                Fishing Packages
+              </a>{" "}
+              below, which bundle accommodation, meals and the return journey together.
+            </p>
+          </div>
         </section>
 
         {/* Fishing Charters & Activities — charter cards, technique/operator
@@ -430,11 +556,66 @@ export async function FishingDirectoryPage({
           </section>
         )}
 
+        {/* Maldives Fishing Seasons — general monsoon-pattern content, kept
+            deliberately non-prescriptive (no single "best month" claim —
+            different techniques/species have different real patterns). */}
+        <section id="fishing-seasons" className="mt-12 scroll-mt-20 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Maldives Fishing Seasons</h2>
+          <div className="mt-3 space-y-3 text-sm text-neutral-700">
+            <p>
+              The Maldives sits close enough to the equator that temperature barely changes year-round — what shifts
+              is the monsoon, and with it sea conditions. The northeast monsoon (roughly December to April) brings
+              calmer seas and clearer water, generally easier conditions for trolling and offshore trips. The
+              southwest monsoon (roughly May to November) brings rougher water and more rain, though it can also
+              stir up baitfish activity that some techniques benefit from.
+            </p>
+            <p>
+              There isn&rsquo;t one single best month for every kind of fishing — a calm-water technique like
+              trolling for tuna and wahoo can be productive through the northeast monsoon, while channel and reef
+              fishing depend more on tide and current than on the season itself. Conditions vary year to year too, so
+              treat any seasonal guidance as a general pattern rather than a guarantee.
+            </p>
+          </div>
+        </section>
+
         <FishingGallerySection />
 
         <FishingVideo />
 
         <FishSpeciesSection />
+
+        {/* Responsible Fishing — general, non-invented principles; no
+            specific regulation is cited since none was confirmed for this
+            page's sources. */}
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Responsible Fishing in the Maldives</h2>
+          <div className="mt-3 space-y-3 text-sm text-neutral-700">
+            <p>
+              Most operators on this page practice catch and release for anything not being kept for the table,
+              handling fish carefully to give them the best chance after release — wet hands, minimal time out of the
+              water, and a quick, careful unhooking. Anchoring away from live coral and following the crew&rsquo;s
+              lead on where fishing is and isn&rsquo;t appropriate near a given island protects the same reefs the
+              fishing itself depends on.
+            </p>
+            <p>
+              Rules and protected areas vary by atoll and can change — your operator&rsquo;s crew is the right source
+              for anything specific to where you&rsquo;re fishing, rather than a general guide like this one.
+            </p>
+          </div>
+        </section>
+
+        {/* Maldives Fishing Reports — honest stub, same pattern as the
+            existing Fishing Guides section below: state plainly that no
+            real reports exist yet rather than inventing sample ones, and
+            describe what a future report will actually contain. */}
+        <section id="fishing-reports" className="mt-12 scroll-mt-20 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Maldives Fishing Reports</h2>
+          <p className="mt-2 text-sm text-neutral-700">
+            We don&rsquo;t have real fishing reports published yet — when we do, each one will cover a real trip:
+            date, location, technique used, species caught, sea conditions, the boat, trip duration and photos from
+            that specific day. Check back here as real trips get logged.
+          </p>
+        </section>
 
         {/* Explore Maldives Fishing — cross-links to the sections above, per
             the requested page structure (charters, packages, fishes). */}
@@ -444,8 +625,11 @@ export async function FishingDirectoryPage({
             {[
               { href: "#fishing-charters", label: "Maldives Fishing Charters" },
               { href: "#fishing-packages", label: "Maldives Fishing Packages" },
+              { href: "#gaafu-fishing", label: "Fishing in Gaafu Atoll" },
+              { href: "#fishing-seasons", label: "Fishing Seasons" },
               { href: "#fishing-gallery", label: "Fishing Gallery" },
               { href: "#fish-species", label: "Maldives Fishes" },
+              { href: "#fishing-reports", label: "Fishing Reports" },
             ].map((link) => (
               <Link key={link.href} href={link.href} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
                 {link.label}

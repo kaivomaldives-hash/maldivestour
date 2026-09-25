@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ActivityCard } from "@/components/activity/activity-card";
+import { ArticleCard } from "@/components/articles/article-card";
 import { FishingGallerySection } from "@/components/fishing/fishing-gallery-section";
 import { FishingVideo, fishingVideoJsonLd } from "@/components/fishing/fishing-video";
 import { FishSpeciesSection } from "@/components/fishing/fish-species-section";
@@ -13,6 +14,7 @@ import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { Pagination } from "@/components/ui/pagination";
 import { activityHref } from "@/lib/activities/types";
+import { getArticleBySlug } from "@/lib/articles/repository";
 import {
   getFishingActivities,
   getFishingActivitiesByType,
@@ -29,6 +31,14 @@ import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd } from "@/lib/seo/site";
 const PAGE_SIZE = 24;
 
 const CHARTER_SLUGS = ["private-full-day-fishing-charter", "private-half-day-fishing-charter"];
+
+// Real Travel Guide articles tagged under the "Fishing" article-category
+// (see supabase/migrations/20250127000100_fishing_guide_articles.sql).
+const GUIDE_SLUGS = [
+  "maldives-fishing-seasons-month-by-month-guide",
+  "maldives-fishing-techniques-guide",
+  "gaafu-atoll-fishing-guide-mfh-maamendhoo",
+];
 
 // Real providers already on record for fishing trips in this dataset
 // (data/maldives/fishing/SOURCES.md + SOURCES-mfh.md) — never invented.
@@ -154,18 +164,20 @@ export async function FishingDirectoryPage({
   const query = sp.q?.trim() ?? "";
   const isSearching = query.length > 0;
 
-  const [atoll, island, fishingTypes, charters, allPackages, operators] = await Promise.all([
+  const [atoll, island, fishingTypes, charters, allPackages, operators, guides] = await Promise.all([
     sp.atoll ? getAtollBySlug(sp.atoll) : Promise.resolve(null),
     sp.island ? getIslandBySlug(sp.island) : Promise.resolve(null),
     getFishingTypesInUse(),
     Promise.all(CHARTER_SLUGS.map((slug) => getFishingActivityBySlug(slug))),
     getAllPackageViews(),
     Promise.all(OPERATOR_SLUGS.map((slug) => getProviderBySlug(slug))),
+    Promise.all(GUIDE_SLUGS.map((slug) => getArticleBySlug(slug))),
   ]);
 
   const realCharters = charters.filter((c): c is NonNullable<typeof c> => c !== null);
   const fishingPackages = filterPackageViews(allPackages, { category: "fishing" });
   const realOperators = operators.filter((p): p is NonNullable<typeof p> => p !== null);
+  const realGuides = guides.filter((g): g is NonNullable<typeof g> => g !== null);
 
   const activeType = sp.type ? fishingTypes.find((t) => t.slug === sp.type) : undefined;
   const locationOptions = { atollId: island ? undefined : atoll?.id, locationId: island?.id };
@@ -641,13 +653,24 @@ export async function FishingDirectoryPage({
         {/* Guides */}
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Fishing Guides</h2>
-          <p className="mt-2 text-sm text-neutral-700">
-            We don&rsquo;t yet have a dedicated Maldives fishing guide article — browse our{" "}
-            <Link href="/maldives/travel-guide/" className="text-maldives-600 hover:underline">
-              Travel Guide
-            </Link>{" "}
-            for more Maldives planning content in the meantime.
-          </p>
+          {realGuides.length > 0 ? (
+            <>
+              <p className="mt-2 text-sm text-neutral-700">In-depth guides from our Travel Guide, covering seasons, techniques and a real operator writeup.</p>
+              <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {realGuides.map((guide) => (
+                  <ArticleCard key={guide.id} article={guide} />
+                ))}
+              </ul>
+            </>
+          ) : (
+            <p className="mt-2 text-sm text-neutral-700">
+              We don&rsquo;t yet have a dedicated Maldives fishing guide article — browse our{" "}
+              <Link href="/maldives/travel-guide/" className="text-maldives-600 hover:underline">
+                Travel Guide
+              </Link>{" "}
+              for more Maldives planning content in the meantime.
+            </p>
+          )}
         </section>
 
         {/* Related content */}

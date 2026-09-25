@@ -250,8 +250,80 @@ export async function FishingDirectoryPage({
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+        {/* All Fishing Activities — the searchable/filterable directory,
+            moved to the very top of the page per the site owner's request so
+            it's the first thing visitors see, above the intro/SEO content. */}
+        <section id="all-fishing-activities" className="scroll-mt-20">
+          <h2 className="text-xl font-semibold text-ocean-900">All Fishing Activities</h2>
+          <p className="mt-2 text-sm text-neutral-600">
+            See{" "}
+            <Link href="/maldives/activities/" className="underline">
+              all activities
+            </Link>{" "}
+            for other things to do.
+          </p>
+
+          {(atoll || island) && (
+            <p className="mt-3 text-sm text-neutral-600">
+              Filtered to {island ? island.title : atoll?.title}.{" "}
+              <Link href="/maldives/fishing/" className="underline">
+                Clear
+              </Link>
+            </p>
+          )}
+
+          {fishingTypes.length > 0 && (
+            <nav aria-label="Filter by fishing type" className="mt-6 flex flex-wrap gap-2 text-sm">
+              <Link
+                href="/maldives/fishing/"
+                className={`rounded-full border px-3 py-1 ${!activeType ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
+              >
+                All types
+              </Link>
+              {fishingTypes.map((type) => (
+                <Link
+                  key={type.id}
+                  href={`/maldives/fishing/?type=${type.slug}`}
+                  className={`rounded-full border px-3 py-1 ${activeType?.id === type.id ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
+                >
+                  {type.title}
+                </Link>
+              ))}
+            </nav>
+          )}
+
+          <form method="get" className="mt-4 flex gap-2">
+            <label htmlFor="fishing-search" className="sr-only">
+              Search fishing activities
+            </label>
+            <input
+              id="fishing-search"
+              type="search"
+              name="q"
+              defaultValue={query}
+              placeholder="Search fishing trips…"
+              className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+            />
+            <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
+              Search
+            </button>
+          </form>
+
+          {results.items.length === 0 ? (
+            <EmptyState title="No fishing activities recorded for this filter yet" />
+          ) : (
+            <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {results.items.map((activity) => (
+                <ActivityCard key={activity.id} activity={activity} />
+              ))}
+            </ul>
+          )}
+
+          {!isSearching && <Pagination page={page} totalPages={totalPages} basePath="/maldives/fishing/" baseQuery={baseQuery} />}
+        </section>
+
         {/* Intro / SEO content */}
-        <section className="prose-sm max-w-none text-sm text-neutral-700">
+        <section className="mt-12 border-t border-neutral-200 pt-10 prose-sm max-w-none text-sm text-neutral-700">
           <p>
             Fishing has always been part of everyday life in the Maldives, long before tourism — and today it&rsquo;s one of the country&rsquo;s
             most genuine, least commercialized activities. Whether that means a traditional handline sunset trip taught by a local crew, a
@@ -383,11 +455,11 @@ export async function FishingDirectoryPage({
         </section>
 
         {/* Fishing Charters & Activities — charter cards, technique/operator
-            context, and the full searchable activities directory all in one
-            top section, since a charter IS a fishing activity (Task 22
-            follow-up §user request: "fishing charters are same as fishing
-            activities on top"). Fishing Packages stays its own separate
-            section right after. */}
+            context, and the real operators list. The full searchable
+            activities directory itself now lives at the very top of the
+            page (#all-fishing-activities, per the site owner's request) —
+            this section stays for the charter-specific content around it.
+            Fishing Packages stays its own separate section right after. */}
         <section id="fishing-charters" className="mt-12 scroll-mt-20 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Maldives Fishing Charters &amp; Activities</h2>
 
@@ -475,77 +547,6 @@ export async function FishingDirectoryPage({
             </div>
           )}
 
-          {/* All Fishing Activities — the searchable/filterable directory,
-              grouped here with the charters above since both are "fishing
-              activities" in the same sense. */}
-          <div className="mt-10">
-            <h3 className="text-lg font-semibold text-ocean-900">All Fishing Activities</h3>
-            <p className="mt-2 text-sm text-neutral-600">
-              See{" "}
-              <Link href="/maldives/activities/" className="underline">
-                all activities
-              </Link>{" "}
-              for other things to do.
-            </p>
-
-            {(atoll || island) && (
-              <p className="mt-3 text-sm text-neutral-600">
-                Filtered to {island ? island.title : atoll?.title}.{" "}
-                <Link href="/maldives/fishing/" className="underline">
-                  Clear
-                </Link>
-              </p>
-            )}
-
-            {fishingTypes.length > 0 && (
-              <nav aria-label="Filter by fishing type" className="mt-6 flex flex-wrap gap-2 text-sm">
-                <Link
-                  href="/maldives/fishing/"
-                  className={`rounded-full border px-3 py-1 ${!activeType ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
-                >
-                  All types
-                </Link>
-                {fishingTypes.map((type) => (
-                  <Link
-                    key={type.id}
-                    href={`/maldives/fishing/?type=${type.slug}`}
-                    className={`rounded-full border px-3 py-1 ${activeType?.id === type.id ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
-                  >
-                    {type.title}
-                  </Link>
-                ))}
-              </nav>
-            )}
-
-            <form method="get" className="mt-4 flex gap-2">
-              <label htmlFor="fishing-search" className="sr-only">
-                Search fishing activities
-              </label>
-              <input
-                id="fishing-search"
-                type="search"
-                name="q"
-                defaultValue={query}
-                placeholder="Search fishing trips…"
-                className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none"
-              />
-              <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
-                Search
-              </button>
-            </form>
-
-            {results.items.length === 0 ? (
-              <EmptyState title="No fishing activities recorded for this filter yet" />
-            ) : (
-              <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {results.items.map((activity) => (
-                  <ActivityCard key={activity.id} activity={activity} />
-                ))}
-              </ul>
-            )}
-
-            {!isSearching && <Pagination page={page} totalPages={totalPages} basePath="/maldives/fishing/" baseQuery={baseQuery} />}
-          </div>
         </section>
 
         {/* Fishing Packages */}
@@ -636,6 +637,7 @@ export async function FishingDirectoryPage({
           <h2 className="text-xl font-semibold text-ocean-900">Explore Maldives Fishing</h2>
           <nav aria-label="Explore Maldives fishing sections" className="mt-4 flex flex-wrap gap-2">
             {[
+              { href: "#all-fishing-activities", label: "All Fishing Activities" },
               { href: "#fishing-charters", label: "Maldives Fishing Charters" },
               { href: "#fishing-packages", label: "Maldives Fishing Packages" },
               { href: "#gaafu-fishing", label: "Fishing in Gaafu Atoll" },

@@ -51,7 +51,14 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <div className={`${CONTAINER_CLASS} flex h-16 items-center justify-between gap-4`}>
         <Link href="/" className="flex shrink-0 items-center">
-          <Image src="/logo.png" alt="Maldives Tour Guide" width={445} height={300} priority className="h-10 w-auto sm:h-12" />
+          {/* unoptimized: Next's image optimizer flattens this PNG's
+              transparent background onto white when it re-encodes a
+              resized variant — verified by fetching the optimized
+              srcset URL directly and checking its alpha channel. This is
+              a small, always-visible static asset, so skipping
+              optimization (serving the original file's bytes verbatim)
+              is the simplest fix and costs nothing in practice. */}
+          <Image src="/logo.png" alt="Maldives Tour Guide" width={445} height={300} priority unoptimized className="h-10 w-auto sm:h-12" />
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">

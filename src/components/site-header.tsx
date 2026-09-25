@@ -22,6 +22,10 @@ const PRIMARY_NAV = [
 
 const WHATSAPP_URL = "https://wa.me/9607794332";
 
+// Site search is temporarily disabled in the header (not removed — the
+// owner may re-enable it later). Flip this back to true to restore it.
+const SEARCH_ENABLED = false;
+
 function isActive(pathname: string, href: string): boolean {
   if (href === "/maldives/") return pathname === "/maldives" || pathname === "/maldives/";
   return pathname === href || pathname.startsWith(href);
@@ -80,7 +84,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden shrink-0 items-center gap-3 lg:flex">
-          <SearchBox variant="header" placeholder="Search MTG…" />
+          {SEARCH_ENABLED && <SearchBox variant="header" placeholder="Search MTG…" />}
           <a
             href={WHATSAPP_URL}
             target="_blank"
@@ -92,16 +96,18 @@ export function SiteHeader() {
         </div>
 
         <div className="flex items-center gap-1 lg:hidden">
-          <button
-            type="button"
-            aria-label={mobilePanel === "search" ? "Close search" : "Search"}
-            aria-expanded={mobilePanel === "search"}
-            aria-controls="mobile-search-panel"
-            onClick={() => toggle("search")}
-            className="min-touch-target inline-flex items-center justify-center rounded-full text-ocean-900 transition-colors hover:bg-neutral-100"
-          >
-            {mobilePanel === "search" ? <CloseIcon className="h-6 w-6" /> : <SearchIcon className="h-6 w-6" />}
-          </button>
+          {SEARCH_ENABLED && (
+            <button
+              type="button"
+              aria-label={mobilePanel === "search" ? "Close search" : "Search"}
+              aria-expanded={mobilePanel === "search"}
+              aria-controls="mobile-search-panel"
+              onClick={() => toggle("search")}
+              className="min-touch-target inline-flex items-center justify-center rounded-full text-ocean-900 transition-colors hover:bg-neutral-100"
+            >
+              {mobilePanel === "search" ? <CloseIcon className="h-6 w-6" /> : <SearchIcon className="h-6 w-6" />}
+            </button>
+          )}
           <button
             type="button"
             aria-label={mobilePanel === "nav" ? "Close menu" : "Open menu"}
@@ -115,7 +121,7 @@ export function SiteHeader() {
         </div>
       </div>
 
-      {mobilePanel === "search" && (
+      {SEARCH_ENABLED && mobilePanel === "search" && (
         <div id="mobile-search-panel" className="border-t border-neutral-200 bg-white p-4 lg:hidden">
           <SearchBox variant="inline" autoFocus placeholder="Search resorts, islands, activities…" onNavigate={() => setMobilePanel("none")} />
         </div>

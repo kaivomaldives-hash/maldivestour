@@ -211,7 +211,8 @@ export async function getAccommodations(
 
   if (options.type) query = query.eq("accommodations.accommodation_type", options.type);
   if (options.priceTier) query = query.eq("accommodations.price_tier", options.priceTier);
-  if (options.starRating) query = query.eq("accommodations.star_rating", options.starRating);
+  // "N stars and up" (matches the filter UI's "N★+" labeling), not an exact match.
+  if (options.starRating) query = query.gte("accommodations.star_rating", options.starRating);
   if (options.allInclusive !== undefined) query = query.eq("accommodations.all_inclusive", options.allInclusive);
   if (options.overwaterVillas !== undefined)
     query = query.eq("accommodations.overwater_villas", options.overwaterVillas);

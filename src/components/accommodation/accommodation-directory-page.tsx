@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
+import { AccommodationFilterBar } from "@/components/accommodation/accommodation-filter-bar";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
 import { Pagination } from "@/components/ui/pagination";
 import { getAccommodations, searchAccommodations } from "@/lib/accommodations/repository";
 import { ACCOMMODATION_TYPE_SEGMENT, type AccommodationType, type PriceTier } from "@/lib/accommodations/types";
-import { getAtollBySlug, getIslandBySlug } from "@/lib/locations/repository";
+import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
 const TYPE_LABEL: Record<AccommodationType, string> = {
@@ -73,10 +74,16 @@ export async function AccommodationDirectoryPage({
   const query = sp.q?.trim() ?? "";
   const isSearching = query.length > 0;
 
-  const [atoll, island] = await Promise.all([
+  const [atoll, island, atolls] = await Promise.all([
     sp.atoll ? getAtollBySlug(sp.atoll) : Promise.resolve(null),
     sp.island ? getIslandBySlug(sp.island) : Promise.resolve(null),
+    getAtolls(),
   ]);
+
+  const priceTier = sp.priceTier as PriceTier | undefined;
+  const starRating = sp.starRating ? Number(sp.starRating) : undefined;
+  const allInclusive = sp.allInclusive === "true";
+  const overwater = sp.overwater === "true";
 
   const results = isSearching
     ? { items: (await searchAccommodations(query, { limit: 100 })).filter((a) => a.accommodationType === type), total: 0, page: 1, pageSize: 100 }
@@ -86,13 +93,23 @@ export async function AccommodationDirectoryPage({
         pageSize: PAGE_SIZE,
         atollId: island ? undefined : atoll?.id,
         locationId: island?.id,
-        priceTier: sp.priceTier as PriceTier | undefined,
-        starRating: sp.starRating ? Number(sp.starRating) : undefined,
-        allInclusive: sp.allInclusive === "true" ? true : undefined,
-        overwaterVillas: sp.overwater === "true" ? true : undefined,
+        priceTier,
+        starRating,
+        allInclusive: allInclusive ? true : undefined,
+        overwaterVillas: overwater ? true : undefined,
       });
 
   const totalPages = isSearching ? 1 : Math.max(1, Math.ceil(results.total / PAGE_SIZE));
+
+  const currentParams = new URLSearchParams();
+  if (sp.atoll) currentParams.set("atoll", sp.atoll);
+  if (sp.island) currentParams.set("island", sp.island);
+  if (sp.priceTier) currentParams.set("priceTier", sp.priceTier);
+  if (sp.starRating) currentParams.set("starRating", sp.starRating);
+  if (sp.allInclusive) currentParams.set("allInclusive", sp.allInclusive);
+  if (sp.overwater) currentParams.set("overwater", sp.overwater);
+  if (query) currentParams.set("q", query);
+  const baseQuery = currentParams.toString() || undefined;
 
   return (
     <main>
@@ -113,22 +130,21 @@ export async function AccommodationDirectoryPage({
           </p>
         )}
 
-        <form method="get" className="mt-2 flex gap-2">
-          <label htmlFor={`${segment}-search`} className="sr-only">
-            Search {label.toLowerCase()}
-          </label>
-          <input
-            id={`${segment}-search`}
-            type="search"
-            name="q"
-            defaultValue={query}
-            placeholder={`Search ${label.toLowerCase()}…`}
-            className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+        <div className="mt-2">
+          <AccommodationFilterBar
+            basePath={`/maldives/${segment}/`}
+            currentParams={currentParams}
+            atolls={atolls}
+            activeAtollSlug={sp.atoll}
+            activePriceTier={priceTier}
+            activeStarRating={starRating}
+            activeAllInclusive={allInclusive}
+            activeOverwater={overwater}
+            query={query}
+            resultCount={isSearching ? results.items.length : results.total}
+            label={label}
           />
-          <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
-            Search
-          </button>
-        </form>
+        </div>
 
         {results.items.length === 0 ? (
           <EmptyState
@@ -142,7 +158,7 @@ export async function AccommodationDirectoryPage({
           </ul>
         )}
 
-        {!isSearching && <Pagination page={page} totalPages={totalPages} basePath={`/maldives/${segment}/`} />}
+        {!isSearching && <Pagination page={page} totalPages={totalPages} basePath={`/maldives/${segment}/`} baseQuery={baseQuery} />}
       </div>
     </main>
   );

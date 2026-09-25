@@ -180,7 +180,7 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
         {MFH_PRICE_TABLES[pkg.slug] && (
           <section className="mt-8">
             <h2 className="text-lg font-semibold text-ocean-900">Price by Group Size</h2>
-            <p className="mt-1 text-sm text-neutral-600">Per person, based on guests sharing the boat — from Maldives Fishing and Holiday&rsquo;s own rate sheet.</p>
+            <p className="mt-1 text-sm text-neutral-600">Per person, based on guests sharing the boat — from our own rate sheet.</p>
             <div className="mt-3 overflow-x-auto">
               <table className="min-w-full text-sm">
                 <thead>

@@ -110,7 +110,7 @@ export async function fishingDirectoryMetadata(searchParams: Promise<FishingDire
 const FAQS = [
   {
     question: "What does a private fishing charter in the Maldives cost?",
-    answer: "Maldives Fishing and Holiday's own 32-foot private charter starts from USD 980 for a half day or USD 1,380 for a full day, per boat (up to 5 passengers) — see Fishing Charters below for the exact, currently-verified rate.",
+    answer: "Our own 32-foot private charter starts from USD 980 for a half day or USD 1,380 for a full day, per boat (up to 5 passengers) — see Fishing Charters below for the exact, currently-verified rate.",
   },
   {
     question: "What's the difference between a fishing charter and a fishing package?",
@@ -126,7 +126,7 @@ const FAQS = [
   },
   {
     question: "Can I combine fishing with a resort stay?",
-    answer: "Yes — many resorts on this site (see Fishing by Technique and the activities below) run their own fishing trips alongside a normal resort stay, separate from the dedicated Maldives Fishing and Holiday packages.",
+    answer: "Yes — many resorts on this site (see Fishing by Technique and the activities below) run their own fishing trips alongside a normal resort stay, separate from our own dedicated fishing packages.",
   },
   {
     question: "Are prices on this page fixed?",
@@ -138,7 +138,7 @@ const FAQS = [
   },
   {
     question: "Is fishing available from local islands, not just resorts?",
-    answer: "Yes — several charters on this page, including Maldives Fishing and Holiday's own Gaafu Atoll operation, are run from local islands rather than resorts, alongside independent Maafushi-based operators.",
+    answer: "Yes — several charters on this page, including our own Gaafu Atoll operation, are run from local islands rather than resorts, alongside independent Maafushi-based operators.",
   },
   {
     question: "Do you provide fishing equipment?",
@@ -262,7 +262,7 @@ export async function FishingDirectoryPage({
             This page covers two distinct things travelers search for. A <strong>fishing charter</strong> is the boat trip itself — a half day
             or full day, usually priced per boat rather than per person. A <strong>fishing package</strong> bundles a charter with
             accommodation, meals and transfers into a complete multi-night holiday. Both are represented here with real, currently-verified
-            pricing from Maldives Fishing and Holiday Pvt Ltd&rsquo;s own rate sheet (valid until 31 December 2027), alongside individually
+            pricing from our own rate sheet (valid until 31 December 2027), alongside individually
             sourced trips from resort dive/watersports centres and independent Maafushi and Malé-area operators.
           </p>
         </section>
@@ -341,10 +341,11 @@ export async function FishingDirectoryPage({
               size means genuinely deep channels between the outer reef and the open ocean.
             </p>
             <p>
+              Our own{" "}
               <Link href="/maldives/providers/maldives-fishing-and-holiday/" className="text-maldives-600 hover:underline">
-                Maldives Fishing and Holiday Pvt Ltd
+                fishing operation
               </Link>{" "}
-              operates out of{" "}
+              runs out of{" "}
               <Link href="/maldives/islands/maamendhoo-gaafu-alifu/" className="text-maldives-600 hover:underline">
                 Maamendhoo, Gaafu Alifu Atoll
               </Link>{" "}
@@ -393,7 +394,7 @@ export async function FishingDirectoryPage({
           {realCharters.length > 0 && (
             <>
               <p className="mt-2 text-sm text-neutral-700">
-                Maldives Fishing and Holiday Pvt Ltd&rsquo;s own private charter, aboard &ldquo;Emperor&rdquo;, a 32-foot fishing boat with twin
+                Our own private charter, aboard &ldquo;Emperor&rdquo;, a 32-foot fishing boat with twin
                 200&nbsp;HP engines (max 5 passengers) — departing from Maamendhoo, Gaafu Alifu Atoll.
               </p>
               <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -558,7 +559,7 @@ export async function FishingDirectoryPage({
             </div>
             <p className="mt-2 text-sm text-neutral-700">
               Multi-night fishing holidays combining accommodation, full-board meals, transfers and a private charter — from 2 to 8 nights, verified
-              against Maldives Fishing and Holiday&rsquo;s own packages rate sheet.
+              against our own packages rate sheet.
             </p>
             <ul className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {fishingPackages.slice(0, 6).map((pkg) => (

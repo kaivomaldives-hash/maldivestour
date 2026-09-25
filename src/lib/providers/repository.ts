@@ -44,6 +44,18 @@ type NodeProviderRow = {
     | null;
 };
 
+// Owner asked (this session) not to display this one provider's company
+// name anywhere on the site — every page/listing that shows a provider's
+// name reads it from `title` below, which every repository function in
+// this file funnels through, so redacting it once here covers all of them
+// (accommodation/activity/package/transfer "Operated by" lines, the
+// provider directory and detail page, and JSON-LD Organization names)
+// without special-casing each individual page. The underlying node/slug/
+// contact data is untouched — only the displayed name changes.
+const REDACTED_PROVIDER_NAMES: Record<string, string> = {
+  "maldives-fishing-and-holiday": "Local Fishing Operator",
+};
+
 function providerDetailOf(row: NodeProviderRow): ProviderDetail | null {
   const p = Array.isArray(row.providers) ? row.providers[0] : row.providers;
   if (!p) return null;
@@ -51,7 +63,7 @@ function providerDetailOf(row: NodeProviderRow): ProviderDetail | null {
   return {
     id: row.id,
     slug: row.slug,
-    title: row.title,
+    title: REDACTED_PROVIDER_NAMES[row.slug] ?? row.title,
     summary: row.summary,
     isVerified: p.is_verified ?? false,
     legalName: p.legal_name,

@@ -102,6 +102,7 @@ const MANIFEST_SOURCES = {
   "male-city-hero": "data/maldives/migration/male-city-hero-manifest.json",
   "fishing-gallery-round2": "data/maldives/migration/fishing-gallery-round2-manifest.json",
   "transfer-homepage-images": "data/maldives/migration/transfer-homepage-images-manifest.json",
+  "transfer-category-images": "data/maldives/migration/transfer-category-images-manifest.json",
 };
 
 function mergeManifests(only) {

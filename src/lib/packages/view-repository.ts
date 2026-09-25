@@ -224,20 +224,48 @@ export async function getRelatedPackageViews(current: PackageView, limit = 6): P
     .map((s) => s.view);
 }
 
+/** Simple string hash -> [0, 1) float, used only to give the featured-
+ * package shuffle below a seed that changes with each ISR revalidation
+ * (see `revalidate` on the homepage) without needing real randomness —
+ * deterministic within one render, different across revalidations. */
+function seededFraction(seed: string): number {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) | 0;
+  return (hash >>> 0) / 0xffffffff;
+}
+
 export async function getFeaturedPackageViews(limit = 6): Promise<PackageView[]> {
   const all = await getAllPackageViews();
-  // A mix that always shows the real, curated inventory first, then a
-  // diverse spread of demo categories — never all 6 real ones repeated
-  // identically between the homepage and the packages hub.
+  // Real (curated, MTG's own commercial) packages are preferred over demo
+  // ones, but real packages are deduped by category too — otherwise the
+  // 14 real fishing packages alone fill every slot, since they'd all sort
+  // ahead of every other category's demo packages (the bug the site owner
+  // reported: all 6 featured cards were fishing). One representative per
+  // category, real packages winning ties, so the 6 cards are genuinely 6
+  // different kinds of holiday.
+  const seenCategories = new Set<string>();
+  function firstPerCategory(views: PackageView[]): PackageView[] {
+    return views.filter((v) => {
+      const newCategory = v.categories.some((c) => !seenCategories.has(c));
+      v.categories.forEach((c) => seenCategories.add(c));
+      return newCategory;
+    });
+  }
   const real = all.filter((v) => !v.isDemo);
   const demo = all.filter((v) => v.isDemo);
-  const seenCategories = new Set<string>();
-  const diverseDemo = demo.filter((v) => {
-    const newCategory = v.categories.some((c) => !seenCategories.has(c));
-    v.categories.forEach((c) => seenCategories.add(c));
-    return newCategory;
-  });
-  return [...real, ...diverseDemo].slice(0, limit);
+  const diverse = [...firstPerCategory(real), ...firstPerCategory(demo)];
+
+  // Shuffled (seeded by the current hour, since the homepage caches for
+  // revalidate = 3600s) so the same 6 categories don't always land in the
+  // same order/selection every time this rebuilds — a genuinely different
+  // spread of holiday types, not a fixed one, per the site owner's request.
+  const seed = String(Math.floor(Date.now() / (60 * 60 * 1000)));
+  const shuffled = diverse
+    .map((view, i) => ({ view, r: seededFraction(`${seed}:${view.slug}:${i}`) }))
+    .sort((a, b) => a.r - b.r)
+    .map((entry) => entry.view);
+
+  return shuffled.slice(0, limit);
 }
 
 async function realSummariesToViews(summaries: PackageSummary[]): Promise<PackageView[]> {

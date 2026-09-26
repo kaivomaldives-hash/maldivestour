@@ -68,7 +68,7 @@ export function ProviderForm({ initial }: { initial?: ProviderFormInitial }) {
               const title = e.target.value;
               setCore((c) => ({ ...c, title, slug: slugTouched ? c.slug : slugify(title) }));
             }}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
           />
         </label>
 
@@ -80,7 +80,7 @@ export function ProviderForm({ initial }: { initial?: ProviderFormInitial }) {
               setSlugTouched(true);
               setCore((c) => ({ ...c, slug: e.target.value }));
             }}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 font-mono text-sm focus:border-maldives-500 focus:outline-none"
+            className="w-full rounded-xl border border-neutral-300 px-3 py-2 font-mono text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
           />
           {wasPublished && slugChanged && (
             <p className="mt-1 text-xs text-amber-600">
@@ -96,7 +96,7 @@ export function ProviderForm({ initial }: { initial?: ProviderFormInitial }) {
             value={core.summary ?? ""}
             onChange={(e) => setCore((c) => ({ ...c, summary: e.target.value }))}
             rows={3}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
           />
         </label>
 
@@ -124,7 +124,7 @@ export function ProviderForm({ initial }: { initial?: ProviderFormInitial }) {
           <input
             value={fields.legalName ?? ""}
             onChange={(e) => setFields((f) => ({ ...f, legalName: e.target.value }))}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
           />
         </label>
 
@@ -135,7 +135,7 @@ export function ProviderForm({ initial }: { initial?: ProviderFormInitial }) {
               type="email"
               value={fields.contactEmail ?? ""}
               onChange={(e) => setFields((f) => ({ ...f, contactEmail: e.target.value }))}
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
             />
           </label>
           <label className="block text-sm">
@@ -143,7 +143,7 @@ export function ProviderForm({ initial }: { initial?: ProviderFormInitial }) {
             <input
               value={fields.contactPhone ?? ""}
               onChange={(e) => setFields((f) => ({ ...f, contactPhone: e.target.value }))}
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
             />
           </label>
         </div>
@@ -153,7 +153,7 @@ export function ProviderForm({ initial }: { initial?: ProviderFormInitial }) {
           <input
             value={fields.websiteUrl ?? ""}
             onChange={(e) => setFields((f) => ({ ...f, websiteUrl: e.target.value }))}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
           />
         </label>
 
@@ -162,7 +162,7 @@ export function ProviderForm({ initial }: { initial?: ProviderFormInitial }) {
           <input
             value={fields.licenseNumber ?? ""}
             onChange={(e) => setFields((f) => ({ ...f, licenseNumber: e.target.value }))}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
           />
         </label>
 
@@ -179,7 +179,7 @@ export function ProviderForm({ initial }: { initial?: ProviderFormInitial }) {
           <input
             value={core.metaTitle ?? ""}
             onChange={(e) => setCore((c) => ({ ...c, metaTitle: e.target.value }))}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
           />
         </label>
         <label className="block text-sm">
@@ -188,12 +188,16 @@ export function ProviderForm({ initial }: { initial?: ProviderFormInitial }) {
             value={core.metaDescription ?? ""}
             onChange={(e) => setCore((c) => ({ ...c, metaDescription: e.target.value }))}
             rows={2}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
           />
         </label>
       </section>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p role="alert" className="text-sm text-red-600">
+          {error}
+        </p>
+      )}
 
       <Button onClick={save} disabled={isPending}>
         {isPending ? "Saving…" : initial ? "Save changes" : "Create provider"}

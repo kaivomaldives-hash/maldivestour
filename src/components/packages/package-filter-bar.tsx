@@ -74,7 +74,7 @@ export function PackageFilterBar({
           name="q"
           defaultValue={query}
           placeholder="Search by name, island, atoll, or activity…"
-          className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+          className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
         />
         <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
           Search
@@ -147,15 +147,15 @@ export function PackageFilterBar({
 
             <label className="text-sm">
               <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-500">Min price (USD)</span>
-              <input type="number" name="minPrice" min={0} defaultValue={minPrice} className="w-full rounded-xl border border-neutral-300 px-3 py-1.5 text-sm focus:border-maldives-500 focus:outline-none sm:w-28" />
+              <input type="number" name="minPrice" min={0} defaultValue={minPrice} className="w-full rounded-xl border border-neutral-300 px-3 py-1.5 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1 sm:w-28" />
             </label>
             <label className="text-sm">
               <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-500">Max price (USD)</span>
-              <input type="number" name="maxPrice" min={0} defaultValue={maxPrice} className="w-full rounded-xl border border-neutral-300 px-3 py-1.5 text-sm focus:border-maldives-500 focus:outline-none sm:w-28" />
+              <input type="number" name="maxPrice" min={0} defaultValue={maxPrice} className="w-full rounded-xl border border-neutral-300 px-3 py-1.5 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1 sm:w-28" />
             </label>
             <label className="text-sm">
               <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-500">Min rating</span>
-              <select name="minRating" defaultValue={minRating} className="w-full rounded-xl border border-neutral-300 px-3 py-1.5 text-sm focus:border-maldives-500 focus:outline-none sm:w-28">
+              <select name="minRating" defaultValue={minRating} className="w-full rounded-xl border border-neutral-300 px-3 py-1.5 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1 sm:w-28">
                 <option value="">Any</option>
                 <option value="4">4.0+</option>
                 <option value="4.5">4.5+</option>

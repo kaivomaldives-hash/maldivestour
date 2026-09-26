@@ -169,8 +169,8 @@ export function SearchBox({
             placeholder={placeholder}
             className={
               variant === "header"
-                ? "w-56 rounded-full border border-neutral-300 bg-white py-2 pl-9 pr-3 text-sm text-ocean-900 focus:w-72 focus:border-maldives-500 focus:outline-none transition-[width]"
-                : "w-full rounded-full border border-neutral-300 bg-white py-3 pl-11 pr-4 text-base text-ocean-900 shadow-sm focus:border-maldives-500 focus:outline-none"
+                ? "w-56 rounded-full border border-neutral-300 bg-white py-2 pl-9 pr-3 text-sm text-ocean-900 focus:w-72 focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1 transition-[width]"
+                : "w-full rounded-full border border-neutral-300 bg-white py-3 pl-11 pr-4 text-base text-ocean-900 shadow-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
             }
           />
         </div>

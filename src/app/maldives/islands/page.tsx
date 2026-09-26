@@ -76,7 +76,7 @@ export default async function IslandsPage({
               name="q"
               defaultValue={query}
               placeholder="Search islands…"
-              className="w-full rounded-full border border-neutral-300 py-2 pl-9 pr-3 text-sm focus:border-maldives-500 focus:outline-none"
+              className="w-full rounded-full border border-neutral-300 py-2 pl-9 pr-3 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
             />
           </div>
           <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">

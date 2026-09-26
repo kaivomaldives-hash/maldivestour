@@ -40,7 +40,7 @@ export function BookingStatusForm({ bookingId, currentStatus, currentNotes }: { 
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+          className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
         >
           {BOOKING_STATUSES.map((s) => (
             <option key={s} value={s}>
@@ -56,11 +56,15 @@ export function BookingStatusForm({ bookingId, currentStatus, currentNotes }: { 
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           rows={4}
-          className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+          className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
         />
       </label>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p role="alert" className="text-sm text-red-600">
+          {error}
+        </p>
+      )}
 
       <div className="flex items-center gap-3">
         <Button size="sm" onClick={save} disabled={isPending || !dirty}>

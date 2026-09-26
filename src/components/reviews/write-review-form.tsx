@@ -71,26 +71,30 @@ export function WriteReviewForm({ nodeId }: { nodeId: string }) {
 
       <label className="block text-sm">
         <span className="mb-1 block font-medium text-neutral-700">Title (optional)</span>
-        <input name="title" type="text" className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none" />
+        <input name="title" type="text" className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1" />
       </label>
 
       <label className="block text-sm">
         <span className="mb-1 block font-medium text-neutral-700">Your review</span>
-        <textarea name="body" rows={3} required className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none" />
+        <textarea name="body" rows={3} required className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1" />
       </label>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label className="block text-sm">
           <span className="mb-1 block font-medium text-neutral-700">Your name</span>
-          <input name="guestName" type="text" required className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none" />
+          <input name="guestName" type="text" required className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1" />
         </label>
         <label className="block text-sm">
           <span className="mb-1 block font-medium text-neutral-700">Email (not shown publicly)</span>
-          <input name="guestEmail" type="email" required className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none" />
+          <input name="guestEmail" type="email" required className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1" />
         </label>
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p role="alert" className="text-sm text-red-600">
+          {error}
+        </p>
+      )}
 
       <Button type="submit" size="sm" disabled={isPending}>
         {isPending ? "Submitting…" : "Submit review"}

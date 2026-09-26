@@ -32,7 +32,7 @@ export default async function AdminProvidersPage({ searchParams }: { searchParam
           name="q"
           defaultValue={sp.q ?? ""}
           placeholder="Search by name"
-          className="w-72 rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+          className="w-72 rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
         />
         <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
           Search

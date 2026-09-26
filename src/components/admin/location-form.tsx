@@ -63,7 +63,7 @@ export function LocationForm({ initial }: { initial: LocationFormInitial }) {
           <input
             value={core.title}
             onChange={(e) => setCore((c) => ({ ...c, title: e.target.value }))}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
           />
         </label>
 
@@ -72,7 +72,7 @@ export function LocationForm({ initial }: { initial: LocationFormInitial }) {
           <input
             value={core.slug}
             onChange={(e) => setCore((c) => ({ ...c, slug: e.target.value }))}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 font-mono text-sm focus:border-maldives-500 focus:outline-none"
+            className="w-full rounded-xl border border-neutral-300 px-3 py-2 font-mono text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
           />
           {wasPublished && slugChanged && (
             <p className="mt-1 text-xs text-amber-600">
@@ -88,7 +88,7 @@ export function LocationForm({ initial }: { initial: LocationFormInitial }) {
             value={core.summary ?? ""}
             onChange={(e) => setCore((c) => ({ ...c, summary: e.target.value }))}
             rows={4}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
           />
         </label>
 
@@ -118,7 +118,7 @@ export function LocationForm({ initial }: { initial: LocationFormInitial }) {
               step="0.000001"
               value={fields.lat ?? ""}
               onChange={(e) => setFields((f) => ({ ...f, lat: e.target.value === "" ? null : Number(e.target.value) }))}
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
             />
           </label>
           <label className="block text-sm">
@@ -128,7 +128,7 @@ export function LocationForm({ initial }: { initial: LocationFormInitial }) {
               step="0.000001"
               value={fields.lng ?? ""}
               onChange={(e) => setFields((f) => ({ ...f, lng: e.target.value === "" ? null : Number(e.target.value) }))}
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
             />
           </label>
         </div>
@@ -138,7 +138,7 @@ export function LocationForm({ initial }: { initial: LocationFormInitial }) {
           <input
             value={fields.administrativeCode ?? ""}
             onChange={(e) => setFields((f) => ({ ...f, administrativeCode: e.target.value }))}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
           />
         </label>
 
@@ -159,7 +159,7 @@ export function LocationForm({ initial }: { initial: LocationFormInitial }) {
           <input
             value={core.metaTitle ?? ""}
             onChange={(e) => setCore((c) => ({ ...c, metaTitle: e.target.value }))}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
           />
         </label>
         <label className="block text-sm">
@@ -168,12 +168,16 @@ export function LocationForm({ initial }: { initial: LocationFormInitial }) {
             value={core.metaDescription ?? ""}
             onChange={(e) => setCore((c) => ({ ...c, metaDescription: e.target.value }))}
             rows={2}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
           />
         </label>
       </section>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p role="alert" className="text-sm text-red-600">
+          {error}
+        </p>
+      )}
 
       <Button onClick={save} disabled={isPending}>
         {isPending ? "Saving…" : "Save changes"}

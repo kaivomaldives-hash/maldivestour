@@ -160,11 +160,15 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
           name="specialRequests"
           rows={3}
           placeholder="Destination, duration, occasion, anything else useful to know"
-          className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+          className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
         />
       </label>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p role="alert" className="text-sm text-red-600">
+          {error}
+        </p>
+      )}
 
       <div className="flex items-center justify-end gap-4 border-t border-neutral-200 pt-4">
         <Button type="submit" disabled={isPending}>
@@ -205,7 +209,7 @@ function Field({
         autoComplete={autoComplete}
         min={min}
         defaultValue={defaultValue}
-        className="min-touch-target w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+        className="min-touch-target w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
       />
     </label>
   );

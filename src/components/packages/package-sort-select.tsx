@@ -32,7 +32,7 @@ export function PackageSortSelect({ basePath, current }: { basePath: string; cur
           const query = params.toString();
           router.push(`${basePath}${query ? `?${query}` : ""}`);
         }}
-        className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm focus:border-maldives-500 focus:outline-none"
+        className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
       >
         {OPTIONS.map((option) => (
           <option key={option} value={option}>

@@ -39,7 +39,7 @@ export default async function AdminLocationsPage({ searchParams }: { searchParam
           <input
             name="q"
             defaultValue={sp.q ?? ""}
-            className="w-64 rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+            className="w-64 rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
           />
         </label>
         <label className="text-sm">

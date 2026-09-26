@@ -76,7 +76,7 @@ export function ActivityFilterBar({
           name="q"
           defaultValue={query}
           placeholder="Search activities…"
-          className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+          className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
         />
         <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
           Search
@@ -136,7 +136,7 @@ export function ActivityFilterBar({
 
             <label className="text-sm">
               <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-500">Difficulty</span>
-              <select name="difficulty" defaultValue={activeDifficulty ?? ""} className="w-full rounded-xl border border-neutral-300 px-3 py-1.5 text-sm focus:border-maldives-500 focus:outline-none sm:w-36">
+              <select name="difficulty" defaultValue={activeDifficulty ?? ""} className="w-full rounded-xl border border-neutral-300 px-3 py-1.5 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1 sm:w-36">
                 <option value="">Any</option>
                 {(Object.keys(DIFFICULTY_LABEL) as ActivityDifficulty[]).map((d) => (
                   <option key={d} value={d}>
@@ -147,7 +147,7 @@ export function ActivityFilterBar({
             </label>
             <label className="text-sm">
               <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-neutral-500">Max price (USD)</span>
-              <input type="number" name="maxPrice" min={0} defaultValue={maxPrice} className="w-full rounded-xl border border-neutral-300 px-3 py-1.5 text-sm focus:border-maldives-500 focus:outline-none sm:w-28" />
+              <input type="number" name="maxPrice" min={0} defaultValue={maxPrice} className="w-full rounded-xl border border-neutral-300 px-3 py-1.5 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1 sm:w-28" />
             </label>
             <button type="submit" className="rounded-full bg-maldives-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-ocean-800">
               Apply

@@ -7,6 +7,17 @@
 -- have on a general charter, so "included" deliberately does NOT list
 -- "basic fishing gear" the way the general charters do.
 
+-- Real photos the site owner uploaded directly for this feature
+-- (assets/uploads/fishing/images/gallery/maldives-fly-fishing.jpeg and
+-- maldives-fly-fishing-packages.jpeg) — media_assets ids/storage paths use
+-- the exact same deterministicUuid("uploaded-media::" + relativePath) /
+-- storagePathForUpload() scheme as scripts/attach-fishing-uploads.mjs, so
+-- if that script (or attach-uploaded-media.mjs) is ever re-run over this
+-- same gallery/ folder, it computes these identical ids and no-ops
+-- instead of creating a duplicate row.
+insert into media_assets (id, media_type, storage_path, alt_text) values ('df242384-66bf-6063-1664-5c69a9e14f73', 'image', 'uploads/assets/uploads/fishing/images/gallery/maldives-fly-fishing.jpeg', 'maldives fly fishing — Maldives fishing') on conflict (id) do nothing;
+insert into media_assets (id, media_type, storage_path, alt_text) values ('0f934170-314e-c46a-d2e4-7899963d850f', 'image', 'uploads/assets/uploads/fishing/images/gallery/maldives-fly-fishing-packages.jpeg', 'maldives fly fishing packages — Maldives fishing') on conflict (id) do nothing;
+
 -- Fly Fishing activity-type taxonomy tag, so it's filterable alongside the
 -- existing big-game/sport/reef/handline/night/traditional types.
 insert into nodes (node_type, slug, title, status, published_at)
@@ -40,7 +51,7 @@ select n.id, c.id from nodes n, nodes c where n.node_type = 'activity' and n.slu
 on conflict (node_id, category_id) do nothing;
 
 insert into node_media (node_id, media_id, role, sort_order)
-select id, 'a36d4a5b-78ec-d507-256b-4aa72ce70a05', 'hero', 0 from nodes where node_type = 'activity' and slug = 'fly-fishing-full-day-charter'
+select id, 'df242384-66bf-6063-1664-5c69a9e14f73', 'hero', 0 from nodes where node_type = 'activity' and slug = 'fly-fishing-full-day-charter'
 on conflict (node_id, media_id, role) do nothing;
 
 -- Charter activity: Fly Fishing Half-Day Charter
@@ -66,7 +77,7 @@ select n.id, c.id from nodes n, nodes c where n.node_type = 'activity' and n.slu
 on conflict (node_id, category_id) do nothing;
 
 insert into node_media (node_id, media_id, role, sort_order)
-select id, 'a36d4a5b-78ec-d507-256b-4aa72ce70a05', 'hero', 0 from nodes where node_type = 'activity' and slug = 'fly-fishing-half-day-charter'
+select id, 'df242384-66bf-6063-1664-5c69a9e14f73', 'hero', 0 from nodes where node_type = 'activity' and slug = 'fly-fishing-half-day-charter'
 on conflict (node_id, media_id, role) do nothing;
 
 -- Package: 3-Night Maldives Fly Fishing Holiday

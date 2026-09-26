@@ -117,19 +117,21 @@ export const PACKAGE_HERO_OVERRIDES: Record<string, MediaAsset> = {
     "Maldives fishing package",
   ),
 
-  // Fly Fishing Holiday packages (site owner request) — two more of the
-  // same real, unused fishing-uploads photos, each different from every
-  // sibling package above so these two also don't look identical to each
-  // other or to an existing one in the packages grid.
+  // Fly Fishing Holiday packages — the site owner's own dedicated fly
+  // fishing photos, uploaded directly for this feature (assets/uploads/
+  // fishing/images/gallery/maldives-fly-fishing*.jpeg). The two packages
+  // get different photos from each other so they don't look identical in
+  // the packages grid; the "-packages" one is the more fitting of the two
+  // for a package listing specifically.
   "3-night-maldives-fly-fishing-holiday": asset(
-    "9dee044a-6c7e-7a4b-ebc5-3f1e13ec0ae4",
-    "uploads/assets/uploads/fishing/images/packages/sailfish-noonu.webp",
-    "Maldives fishing package",
+    "0f934170-314e-c46a-d2e4-7899963d850f",
+    "uploads/assets/uploads/fishing/images/gallery/maldives-fly-fishing-packages.jpeg",
+    "Maldives fly fishing package",
   ),
   "5-night-maldives-fly-fishing-holiday": asset(
-    "9faa8de9-cead-2c82-9035-6a94b5439343",
-    "uploads/assets/uploads/fishing/images/packages/wahoo-in-maldives.webp",
-    "Maldives fishing package",
+    "df242384-66bf-6063-1664-5c69a9e14f73",
+    "uploads/assets/uploads/fishing/images/gallery/maldives-fly-fishing.jpeg",
+    "Maldives fly fishing",
   ),
   "8-night-maldives-fishing-package-half-day-fishing": asset(
     "75c3a404-3596-d027-80ae-bff1528c8b8e",

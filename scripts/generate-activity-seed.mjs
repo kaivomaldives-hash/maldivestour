@@ -185,8 +185,9 @@ function main() {
 
     const slug = assignUniqueSlug(act.name, usedActivitySlugs, act.island_name);
     const label = CATEGORY_LABEL[act.activity_category] ?? "activity";
+    const article = /^[aeiou]/i.test(label) ? "an" : "a";
 
-    let summary = `${act.name} is a ${label} on ${act.island_name}, ${atollName}.`;
+    let summary = `${act.name} is ${article} ${label} on ${act.island_name}, ${atollName}.`;
     if (act.duration_minutes) summary += ` Duration: ${act.duration_minutes} minutes.`;
     if (act.operator_name) summary += ` It is operated by ${act.operator_name}.`;
     const metaTitle = `${act.name} | Maldives Activities | MTG`;

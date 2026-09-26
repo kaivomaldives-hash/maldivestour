@@ -7,6 +7,7 @@ import { AccommodationCard } from "@/components/accommodation/accommodation-card
 import { ActivityCard } from "@/components/activity/activity-card";
 import { CARD_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
+import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodationsByProvider } from "@/lib/accommodations/repository";
 import { getActivitiesByProvider } from "@/lib/activities/repository";
@@ -63,6 +64,7 @@ export default async function ProviderDetailPage({ params }: { params: Promise<P
   const otherActivities = activities.filter(
     (a) => a.activityCategory !== "fishing" && a.activityCategory !== "diving" && a.activityCategory !== "surfing",
   );
+  const hasAnyContent = accommodations.length > 0 || activities.length > 0 || transferServices.length > 0;
 
   return (
     <main>
@@ -85,6 +87,15 @@ export default async function ProviderDetailPage({ params }: { params: Promise<P
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+      {/* Task 17 audit: a newly created provider with nothing linked yet
+          (reachable via the admin "new provider" flow) previously rendered
+          only the PageHero with a blank content area below it. */}
+      {!hasAnyContent && (
+        <EmptyState
+          title={`No listings linked to ${provider.title} yet`}
+          description="Check back soon — accommodation, activities, and transfer services operated by this provider will appear here once added."
+        />
+      )}
       {accommodations.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold text-ocean-900">Accommodation operated by {provider.title}</h2>

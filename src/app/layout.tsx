@@ -36,6 +36,42 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             the site as a whole. */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }} />
+        {/* Task 17: Tawk.to live chat. customStyle.visibility must be set
+            before the widget script loads (Tawk reads it once, on init) —
+            offset it up 76px so the bubble clears <MobileBottomNav>'s
+            fixed bar (~60px tall) rather than sitting under it. Applied to
+            both breakpoints since the widget renders in a cross-origin
+            iframe we can't reach with our own CSS, and the exact viewport
+            width where Tawk switches its own "mobile" bucket isn't
+            documented, so relying on it to match our lg: breakpoint isn't
+            safe. Can't account for env(safe-area-inset-bottom) here since
+            customStyle only accepts plain numbers, not CSS expressions —
+            on a notched phone the bubble may sit slightly closer to the
+            nav than intended; nothing in this codebase can verify that
+            without a real device. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              var Tawk_API = Tawk_API || {};
+              Tawk_API.customStyle = {
+                visibility: {
+                  desktop: { xOffset: 15, yOffset: 76 },
+                  mobile: { xOffset: 15, yOffset: 76 }
+                }
+              };
+              var Tawk_LoadStart = new Date();
+              (function () {
+                var s1 = document.createElement("script"),
+                  s0 = document.getElementsByTagName("script")[0];
+                s1.async = true;
+                s1.src = "https://embed.tawk.to/5e2c5f46daaca76c6fcfd5ea/default";
+                s1.charset = "UTF-8";
+                s1.setAttribute("crossorigin", "*");
+                s0.parentNode.insertBefore(s1, s0);
+              })();
+            `,
+          }}
+        />
         <SiteHeader />
         {/* pb-20 clears the fixed mobile bottom nav (h-16 + safe-area inset)
             on small screens; lg:pb-0 removes it once that nav is hidden. */}

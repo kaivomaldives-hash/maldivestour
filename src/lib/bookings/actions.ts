@@ -161,6 +161,12 @@ export interface NodeInquiryInput {
   preferredTime: string | null; // HH:MM
   adults: number;
   children: number;
+  /** For products priced per day (fishing charters) where a guest wants
+   * more than one day. No dedicated bookings column exists for this yet,
+   * so it's folded into specialRequests/notes and — when more than a
+   * single day — recorded via the existing trip_type='multi_day' value
+   * (never used by node inquiries before this). */
+  numberOfDays?: number | null;
   specialRequests: string | null;
   /** Hidden honeypot field — must always be empty for a real submission. */
   honeypot?: string;
@@ -174,6 +180,14 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
 
   if (!name) return { ok: false, error: "Please enter your name." };
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, error: "Please enter a valid email address." };
+
+  const numberOfDays = input.numberOfDays && input.numberOfDays > 0 ? Math.floor(input.numberOfDays) : null;
+  const specialRequests = [
+    numberOfDays !== null ? `Number of days: ${numberOfDays}.` : null,
+    input.specialRequests?.trim() || null,
+  ]
+    .filter(Boolean)
+    .join(" ") || null;
 
   const supabase = await createClient();
   const rpcArgs = {
@@ -190,12 +204,12 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
     p_travel_time: input.preferredTime || null,
     p_return_date: null,
     p_return_time: null,
-    p_trip_type: "n_a",
+    p_trip_type: numberOfDays !== null && numberOfDays > 1 ? "multi_day" : "n_a",
     p_adults: input.adults,
     p_children: input.children,
     p_infants: 0,
     p_flight_number: null,
-    p_special_requests: input.specialRequests?.trim() || null,
+    p_special_requests: specialRequests,
     p_estimated_price: null,
     p_currency: "USD",
     p_source: input.source,

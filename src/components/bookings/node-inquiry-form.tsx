@@ -17,6 +17,11 @@ export interface NodeInquiryFormProps {
   /** Shown above the submit button — e.g. "Request Private Charter",
    * "Enquire About This Vehicle". */
   submitLabel: string;
+  /** Adds a "Number of days" field — for products priced per day (fishing
+   * charters) where a guest may want more than one day, unlike a fixed
+   * single-slot activity. Off by default so every other vertical's form
+   * is unchanged. */
+  showNumberOfDays?: boolean;
 }
 
 /**
@@ -26,7 +31,7 @@ export interface NodeInquiryFormProps {
  * just without the transfer-specific origin/destination/trip-type fields
  * that don't apply here.
  */
-export function NodeInquiryForm({ productNodeId, productTitle, source, submitLabel }: NodeInquiryFormProps) {
+export function NodeInquiryForm({ productNodeId, productTitle, source, submitLabel, showNumberOfDays }: NodeInquiryFormProps) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState<{
@@ -35,6 +40,7 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
     preferredDate: string | null;
     adults: number;
     children: number;
+    numberOfDays: number | null;
   } | null>(null);
 
   if (submitted) {
@@ -56,6 +62,12 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
             <div>
               <dt className="inline font-medium text-neutral-900">Requested date: </dt>
               <dd className="inline">{submitted.preferredDate}</dd>
+            </div>
+          )}
+          {submitted.numberOfDays !== null && (
+            <div>
+              <dt className="inline font-medium text-neutral-900">Number of days: </dt>
+              <dd className="inline">{submitted.numberOfDays}</dd>
             </div>
           )}
           <div>
@@ -99,6 +111,7 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
           const preferredDate = String(data.get("preferredDate") ?? "") || null;
           const adults = Number(data.get("adults") ?? 1) || 1;
           const children = Number(data.get("children") ?? 0) || 0;
+          const numberOfDays = showNumberOfDays ? Number(data.get("numberOfDays") ?? 1) || 1 : null;
 
           const result = await createNodeInquiry({
             productNodeId,
@@ -112,6 +125,7 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
             preferredTime: String(data.get("preferredTime") ?? "") || null,
             adults,
             children,
+            numberOfDays,
             specialRequests: String(data.get("specialRequests") ?? "") || null,
             honeypot: String(data.get("website") ?? ""),
           });
@@ -121,7 +135,7 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
             return;
           }
           if (result.bookingReference) {
-            setSubmitted({ reference: result.bookingReference, customerName, preferredDate, adults, children });
+            setSubmitted({ reference: result.bookingReference, customerName, preferredDate, adults, children, numberOfDays });
           }
         });
       }}
@@ -153,6 +167,12 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
         <Field label="Adults" name="adults" type="number" min={1} defaultValue={2} />
         <Field label="Children" name="children" type="number" min={0} defaultValue={0} />
       </div>
+
+      {showNumberOfDays && (
+        <div className="grid grid-cols-2 gap-4">
+          <Field label="Number of days" name="numberOfDays" type="number" min={1} defaultValue={1} />
+        </div>
+      )}
 
       <label className="block text-sm">
         <span className="mb-1 block font-medium text-neutral-700">What would you like to do? (optional)</span>

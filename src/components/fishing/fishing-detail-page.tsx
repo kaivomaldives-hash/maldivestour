@@ -162,6 +162,23 @@ export async function FishingDetailPage({ slug }: { slug: string }) {
         )}
       </dl>
 
+      {activity.isBookable && (
+        <section className="mt-6 rounded-2xl border border-neutral-200 p-6">
+          <h2 className="text-xl font-semibold text-ocean-900">{bookingCta("fishing").toggleLabel}</h2>
+          <p className="mt-1 text-sm text-neutral-600">Tell us your preferred date and group size and we&rsquo;ll follow up on availability.</p>
+          <div className="mt-4">
+            <NodeInquiryToggle
+              productNodeId={activity.id}
+              productTitle={activity.title}
+              source="fishing"
+              toggleLabel={bookingCta("fishing").toggleLabel}
+              submitLabel={bookingCta("fishing").submitLabel}
+              showNumberOfDays
+            />
+          </div>
+        </section>
+      )}
+
       {relatedTrips.length > 0 && primaryLocation && (
         <section className="mt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Other fishing trips on {primaryLocation.title}</h2>
@@ -189,22 +206,6 @@ export async function FishingDetailPage({ slug }: { slug: string }) {
       )}
 
       <WhereToStaySection nearby={nearbyStays} islandTitle={primaryLocation?.title ?? null} atollTitle={atoll?.title ?? null} />
-
-      {activity.isBookable && (
-        <section className="mt-10 rounded-2xl border border-neutral-200 p-6">
-          <h2 className="text-xl font-semibold text-ocean-900">{bookingCta("fishing").toggleLabel}</h2>
-          <p className="mt-1 text-sm text-neutral-600">Tell us your preferred date and group size and we&rsquo;ll follow up on availability.</p>
-          <div className="mt-4">
-            <NodeInquiryToggle
-              productNodeId={activity.id}
-              productTitle={activity.title}
-              source="fishing"
-              toggleLabel={bookingCta("fishing").toggleLabel}
-              submitLabel={bookingCta("fishing").submitLabel}
-            />
-          </div>
-        </section>
-      )}
       </div>
     </main>
   );

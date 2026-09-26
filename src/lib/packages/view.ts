@@ -45,8 +45,12 @@ export { activityHref };
  * claim about any one package. */
 export const STANDARD_EXCLUSIONS = ["International flights", "Travel insurance", "Personal expenses", "Optional activities not listed above"];
 
+/** Per site-owner instruction: an N-night package is shown as N-1 days
+ * (arrival and departure nights don't each add a full day), not the
+ * N+1 "nights+1" convention this used to apply. Floored at 1 so a
+ * short package never shows "0 Days". */
 export function nightsToDays(nights: number | null): number | null {
-  return nights === null ? null : nights + 1;
+  return nights === null ? null : Math.max(nights - 1, 1);
 }
 
 /** A single generic-but-true FAQ set, built once and reused per package —

@@ -9,7 +9,7 @@ import type { MediaAsset } from "@/lib/media/types";
 import { PACKAGE_CATEGORY_FALLBACK_IMAGES } from "@/lib/packages/category-images";
 import { DEMO_PACKAGES, type DemoItineraryDay, type DemoPackageInput } from "@/lib/packages/demo-packages";
 import { PACKAGE_HERO_OVERRIDES } from "@/lib/packages/package-images";
-import { accommodationHref, buildGalleryImages, buildPackageFaqs, STANDARD_EXCLUSIONS } from "@/lib/packages/view";
+import { accommodationHref, buildGalleryImages, buildPackageFaqs, nightsToDays, STANDARD_EXCLUSIONS } from "@/lib/packages/view";
 import type { PackageItineraryDayView, PackageLinkedAccommodation, PackageLinkedActivity, PackageView } from "@/lib/packages/view-types";
 
 /**
@@ -82,7 +82,7 @@ async function resolveOneDemoPackage(input: DemoPackageInput): Promise<PackageVi
     destinations,
     atoll: resolvedAtoll,
     nights: input.nights,
-    days: input.nights + 1,
+    days: nightsToDays(input.nights),
     price: input.price,
     currency: input.currency,
     priceType: input.priceType,

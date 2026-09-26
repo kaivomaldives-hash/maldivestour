@@ -231,7 +231,11 @@ export async function sendBookingNotifications(input: BookingNotificationInput):
     }
   } catch (err) {
     // Belt-and-braces: whatever goes wrong here, the booking itself was
-    // already created successfully before this function was called.
-    console.error("[bookings] sendBookingNotifications threw unexpectedly:", err);
+    // already created successfully before this function was called. Only
+    // the message is logged (not the raw error object), consistent with
+    // the other log statements in this file — a thrown error from an
+    // email/Telegram provider could otherwise echo request payload data
+    // (customer name/email) into server logs.
+    console.error("[bookings] sendBookingNotifications threw unexpectedly:", err instanceof Error ? err.message : String(err));
   }
 }

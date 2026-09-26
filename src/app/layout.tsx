@@ -5,7 +5,7 @@ import "./globals.css";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { getSiteUrl } from "@/lib/seo/site";
+import { getSiteUrl, organizationJsonLd, websiteJsonLd } from "@/lib/seo/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +31,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-white text-ocean-900">
+        {/* Task 17 audit: no sitewide Organization/WebSite entity existed
+            anywhere — rendered once here, not per-page, since it describes
+            the site as a whole. */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }} />
         <SiteHeader />
         {/* pb-20 clears the fixed mobile bottom nav (h-16 + safe-area inset)
             on small screens; lg:pb-0 removes it once that nav is hidden. */}

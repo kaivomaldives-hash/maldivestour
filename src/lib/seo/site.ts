@@ -28,6 +28,54 @@ export function breadcrumbJsonLd(items: Array<{ label: string; href?: string }>,
   };
 }
 
+// Real, verified MTG profiles only — the same list src/components/
+// site-footer.tsx renders (Task 12 brief: never add an account not
+// explicitly supplied). Duplicated here rather than imported from the
+// footer component to avoid a client-component -> lib import; both lists
+// must be kept in sync if a profile is ever added/removed.
+const SOCIAL_PROFILE_URLS = [
+  "https://www.youtube.com/@Maldives-Holiday",
+  "https://web.facebook.com/maldivestourguide",
+  "https://x.com/maldivestourg",
+  "https://www.pinterest.com/themaldivesholidays/",
+  "https://www.tiktok.com/@maldivestourguides",
+  "https://www.instagram.com/themaldivesholiday/",
+];
+
+/** Sitewide Organization entity — rendered once, in the root layout, not
+ * per-page. Every field is a real, already-established value (site name/
+ * URL used everywhere else via getSiteUrl(), the real logo at /logo.png,
+ * the same verified social links the footer renders) — no statistics,
+ * ratings, or awards, which this project has never had real data for. */
+export function organizationJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Maldives Tour Guide (MTG)",
+    url: getSiteUrl(),
+    logo: `${getSiteUrl()}/logo.png`,
+    sameAs: SOCIAL_PROFILE_URLS,
+  };
+}
+
+/** Sitewide WebSite entity with a real SearchAction — /maldives/search/
+ * already accepts ?q= and returns real results (src/components/search/
+ * search-page.tsx), so this isn't a fabricated capability. */
+export function websiteJsonLd() {
+  const siteUrl = getSiteUrl();
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Maldives Tour Guide (MTG)",
+    url: siteUrl,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${siteUrl}/maldives/search/?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+  };
+}
+
 /** ItemList structured data for any real, currently-listed set of
  * entities on a directory/hub page (activities, dive sites, attractions,
  * ...) — one shared implementation instead of a bespoke one per page.

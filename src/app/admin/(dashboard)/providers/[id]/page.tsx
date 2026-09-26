@@ -2,9 +2,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ProviderForm } from "@/components/admin/provider-form";
+import { requireStaff } from "@/lib/admin/auth";
 import { getProviderByIdAdmin } from "@/lib/admin/providers-repository";
 
 export default async function EditProviderPage({ params }: { params: Promise<{ id: string }> }) {
+  // Defense in depth on top of the parent layout's requireStaff() gate —
+  // see the identical note in admin/bookings/[id]/page.tsx.
+  await requireStaff();
   const { id } = await params;
   const provider = await getProviderByIdAdmin(id);
   if (!provider) notFound();

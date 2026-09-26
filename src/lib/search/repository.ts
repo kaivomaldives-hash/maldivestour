@@ -478,16 +478,23 @@ async function expandPackagesByTaxonomy(tokens: string[], limit: number): Promis
     }
   }
 
-  const results: SearchResult[] = [];
-  const matched = new Set<string>();
+  // Collect every matched (group, slug) pair first, then fetch them all
+  // concurrently — a multi-word query matching several taxonomy groups
+  // (e.g. "honeymoon diving 5 nights") previously issued one `await`ed
+  // getPackages() call per match, serially, inside this nested loop.
+  const matched = new Map<string, { key: (typeof groups)[number]["key"]; slug: string }>();
   for (const token of tokens) {
     for (const group of groups) {
       const match = group.categories.find((c) => c.title.toLowerCase() === token || c.slug === token);
-      if (!match || matched.has(`${group.key}:${match.slug}`)) continue;
-      matched.add(`${group.key}:${match.slug}`);
-      const page = await fetchFor(group.key, match.slug);
-      for (const p of page.items) results.push(mapPackage(p, EXPANSION_MATCH_SCORE));
+      if (!match) continue;
+      matched.set(`${group.key}:${match.slug}`, { key: group.key, slug: match.slug });
     }
+  }
+
+  const pages = await Promise.all(Array.from(matched.values()).map((m) => fetchFor(m.key, m.slug)));
+  const results: SearchResult[] = [];
+  for (const page of pages) {
+    for (const p of page.items) results.push(mapPackage(p, EXPANSION_MATCH_SCORE));
   }
   return results;
 }

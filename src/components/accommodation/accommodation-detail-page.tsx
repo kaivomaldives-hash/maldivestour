@@ -21,7 +21,7 @@ import { getArticlesRelatedToNodes } from "@/lib/articles/repository";
 import { getNearbyAttractions } from "@/lib/attractions/repository";
 import { bookingCta } from "@/lib/bookings/copy";
 import { getPackageViewsByAccommodation } from "@/lib/packages/view-repository";
-import { canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 import { getTransferRoutesByLocation } from "@/lib/transfers/repository";
 
 const TYPE_LABEL: Record<AccommodationType, string> = {
@@ -85,18 +85,26 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
   ]);
 
   const videoJsonLd = accommodationVideoJsonLd(accommodation.videoYoutubeId, accommodation.title, accommodation.summary);
+  const breadcrumbs = [
+    { label: "Maldives", href: "/maldives/" },
+    { label: `${TYPE_LABEL[type]}s`, href: `/maldives/${segment}/` },
+    { label: accommodation.title },
+  ];
 
   return (
     <main>
+      {/* Task 17 audit: every other detail-page type already emits this;
+          accommodation had the visual breadcrumb via PageHero below but no
+          matching structured data. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd(breadcrumbs, `/maldives/${segment}/${accommodation.slug}`)) }}
+      />
       {videoJsonLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd) }} />
       )}
       <PageHero
-        breadcrumbs={[
-          { label: "Maldives", href: "/maldives/" },
-          { label: `${TYPE_LABEL[type]}s`, href: `/maldives/${segment}/` },
-          { label: accommodation.title },
-        ]}
+        breadcrumbs={breadcrumbs}
         eyebrow={TYPE_LABEL[type]}
         title={accommodation.title}
         description={accommodation.summary ?? undefined}

@@ -121,20 +121,21 @@ function SeeAllLink({ href, total, label }: { href: string; total: number; label
 }
 
 export async function TransferDirectoryPage() {
-  const velanaAirport = await getLocationBySlug("velana-international-airport");
-
-  const [airportResult, resortResult, islandResult, boats, ferryRoutes] = await Promise.all([
+  const [velanaAirport, airportResult, resortResult, islandResult, boats, ferryRoutes] = await Promise.all([
+    getLocationBySlug("velana-international-airport"),
     getTransferRoutes({ category: "airport", pageSize: 6 }),
     getTransferRoutes({ category: "resort-transfer", pageSize: 6 }),
     getTransferRoutes({ category: "island-transfer", pageSize: 6 }),
     getSpeedboats(),
     getFerryRoutes(),
   ]);
-  const [airportTotal, resortTotal, islandTotal] = await Promise.all([
-    getTransferRoutes({ category: "airport", pageSize: 1 }).then((r) => r.total),
-    getTransferRoutes({ category: "resort-transfer", pageSize: 1 }).then((r) => r.total),
-    getTransferRoutes({ category: "island-transfer", pageSize: 1 }).then((r) => r.total),
-  ]);
+  // getTransferRoutes() already runs count: "exact" alongside its
+  // .range() page — .total above is the real total, not just this page's
+  // item count, so a second (pageSize: 1) query per category to re-fetch
+  // the same number was pure duplicate work. Task 17 production audit.
+  const airportTotal = airportResult.total;
+  const resortTotal = resortResult.total;
+  const islandTotal = islandResult.total;
 
   return (
     <main>

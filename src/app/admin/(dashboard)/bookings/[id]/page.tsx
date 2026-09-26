@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { BookingStatusForm } from "@/components/admin/booking-status-form";
+import { requireStaff } from "@/lib/admin/auth";
 import { getBookingByIdAdmin } from "@/lib/admin/bookings-repository";
 
 function Field({ label, value }: { label: string; value: string | number | null | undefined }) {
@@ -15,6 +16,12 @@ function Field({ label, value }: { label: string; value: string | number | null 
 }
 
 export default async function AdminBookingDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  // Defense in depth on top of the parent layout's requireStaff() — same
+  // pattern as /admin/users, since a page and its layout can in principle
+  // fetch in parallel. Not currently exploitable (getBookingByIdAdmin goes
+  // through RLS-respecting createClient(), so bookings_staff_read still
+  // blocks a non-staff read either way), but cheap to make explicit.
+  await requireStaff();
   const { id } = await params;
   const booking = await getBookingByIdAdmin(id);
   if (!booking) notFound();

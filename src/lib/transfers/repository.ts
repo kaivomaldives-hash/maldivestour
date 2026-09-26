@@ -268,7 +268,13 @@ async function getTransferCategoriesForRoutes(routeIds: string[]): Promise<Map<s
   const categoryIds = Array.from(new Set(tagRows.map((r) => r.category_id)));
   const { data: categoryRows, error: categoryError } = await supabase
     .from("nodes")
-    .select("id, slug, categories!inner(category_group)")
+    // Explicit FK name (categories!categories_id_fkey), not the bare
+    // categories!inner(...) this file used to have — nodes/categories can
+    // be joined two ways (this direct FK, and via node_categories), and a
+    // bare embed name is exactly the ambiguity this project has been
+    // burned by before (see src/lib/locations/repository.ts's identical
+    // note for the same pattern with locations). Task 17 production audit.
+    .select("id, slug, categories!categories_id_fkey!inner(category_group)")
     .in("id", categoryIds)
     .eq("categories.category_group", "transfer-category")
     .returns<Array<{ id: string; slug: string }>>();

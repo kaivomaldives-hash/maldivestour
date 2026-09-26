@@ -2,9 +2,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { LocationForm } from "@/components/admin/location-form";
+import { requireStaff } from "@/lib/admin/auth";
 import { getLocationByIdAdmin } from "@/lib/admin/locations-repository";
 
 export default async function EditLocationPage({ params }: { params: Promise<{ id: string }> }) {
+  // Defense in depth on top of the parent layout's requireStaff() gate —
+  // see the identical note in admin/bookings/[id]/page.tsx.
+  await requireStaff();
   const { id } = await params;
   const location = await getLocationByIdAdmin(id);
   if (!location) notFound();

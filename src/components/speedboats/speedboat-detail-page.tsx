@@ -138,7 +138,7 @@ export async function SpeedboatDetailPage({ slug }: { slug: string }) {
           {boat.isBookable && (
             <NodeInquiryToggle
               productNodeId={boat.id}
-              productTitle={boat.title}
+              productTitle={`${boat.title} (Private Speedboat Charter)`}
               source="transfer"
               submitLabel="Request Private Charter"
               toggleLabel="Request Private Charter"

@@ -408,7 +408,7 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
           </p>
           <NodeInquiryToggle
             productNodeId={route.id}
-            productTitle={route.title}
+            productTitle={`${route.title} (Private Transfer)`}
             source="transfer"
             submitLabel="Book This Trip as a Private Transfer"
             toggleLabel="Book This Trip as a Private Transfer"

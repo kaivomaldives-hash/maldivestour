@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { ActivityCard } from "@/components/activity/activity-card";
 import { ArticleCard } from "@/components/articles/article-card";
+import { fishingDurationBucketToMinutes, FishingFilterBar, isFishingDurationBucket } from "@/components/fishing/fishing-filter-bar";
 import { FishingGallerySection } from "@/components/fishing/fishing-gallery-section";
 import { FishingVideo, fishingVideoJsonLd } from "@/components/fishing/fishing-video";
 import { FishSpeciesSection } from "@/components/fishing/fish-species-section";
@@ -22,7 +23,7 @@ import {
   getFishingTypesInUse,
   searchFishingActivities,
 } from "@/lib/fishing/repository";
-import { getAtollBySlug, getIslandBySlug } from "@/lib/locations/repository";
+import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
 import { FISHING_HERO_IMAGE } from "@/lib/packages/category-images";
 import { filterPackageViews, getAllPackageViews } from "@/lib/packages/view-repository";
 import { getProviderBySlug } from "@/lib/providers/repository";
@@ -30,7 +31,12 @@ import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd } from "@/lib/seo/site";
 
 const PAGE_SIZE = 24;
 
-const CHARTER_SLUGS = ["private-full-day-fishing-charter", "private-half-day-fishing-charter"];
+const CHARTER_SLUGS = [
+  "private-full-day-fishing-charter",
+  "private-half-day-fishing-charter",
+  "fly-fishing-full-day-charter",
+  "fly-fishing-half-day-charter",
+];
 
 // Real Travel Guide articles tagged under the "Fishing" article-category
 // (see supabase/migrations/20250127000100_fishing_guide_articles.sql).
@@ -77,6 +83,10 @@ const FISHING_TYPE_CONTENT: Record<string, { title: string; body: string }> = {
     title: "Traditional Fishing",
     body: "Multi-technique trips run by local fishermen or resort dhonis, sometimes spanning several traditional methods in one outing rather than one specific style.",
   },
+  "fly-fishing": {
+    title: "Fly Fishing",
+    body: "Sight-casting a fly to fish on the flats and reef edges rather than trolling or bait fishing — a specialist technique that rewards accurate casting over shallow, clear water. Our own full-day and half-day fly fishing charters run from the same private operation as our general charters; bring your own fly rod and gear.",
+  },
 };
 
 export interface FishingDirectorySearchParams {
@@ -85,10 +95,12 @@ export interface FishingDirectorySearchParams {
   type?: string;
   atoll?: string;
   island?: string;
+  duration?: string;
+  maxPrice?: string;
 }
 
 function hasAnyFilter(sp: FishingDirectorySearchParams): boolean {
-  return Boolean(sp.q || sp.type || sp.atoll || sp.island);
+  return Boolean(sp.q || sp.type || sp.atoll || sp.island || sp.duration || sp.maxPrice);
 }
 
 export async function fishingDirectoryMetadata(searchParams: Promise<FishingDirectorySearchParams>): Promise<Metadata> {
@@ -164,9 +176,10 @@ export async function FishingDirectoryPage({
   const query = sp.q?.trim() ?? "";
   const isSearching = query.length > 0;
 
-  const [atoll, island, fishingTypes, charters, allPackages, operators, guides] = await Promise.all([
+  const [atoll, island, atolls, fishingTypes, charters, allPackages, operators, guides] = await Promise.all([
     sp.atoll ? getAtollBySlug(sp.atoll) : Promise.resolve(null),
     sp.island ? getIslandBySlug(sp.island) : Promise.resolve(null),
+    getAtolls(),
     getFishingTypesInUse(),
     Promise.all(CHARTER_SLUGS.map((slug) => getFishingActivityBySlug(slug))),
     getAllPackageViews(),
@@ -180,7 +193,15 @@ export async function FishingDirectoryPage({
   const realGuides = guides.filter((g): g is NonNullable<typeof g> => g !== null);
 
   const activeType = sp.type ? fishingTypes.find((t) => t.slug === sp.type) : undefined;
-  const locationOptions = { atollId: island ? undefined : atoll?.id, locationId: island?.id };
+  const activeDuration = isFishingDurationBucket(sp.duration) ? sp.duration : undefined;
+  const maxPrice = sp.maxPrice?.trim() ?? "";
+  const maxPriceFrom = maxPrice && !Number.isNaN(Number(maxPrice)) ? Number(maxPrice) : undefined;
+  const filterOptions = {
+    atollId: island ? undefined : atoll?.id,
+    locationId: island?.id,
+    ...fishingDurationBucketToMinutes(activeDuration),
+    maxPriceFrom,
+  };
 
   const results = isSearching
     ? {
@@ -190,8 +211,8 @@ export async function FishingDirectoryPage({
         pageSize: 100,
       }
     : activeType
-      ? await getFishingActivitiesByType(activeType.slug, { page, pageSize: PAGE_SIZE, ...locationOptions })
-      : await getFishingActivities({ page, pageSize: PAGE_SIZE, ...locationOptions });
+      ? await getFishingActivitiesByType(activeType.slug, { page, pageSize: PAGE_SIZE, ...filterOptions })
+      : await getFishingActivities({ page, pageSize: PAGE_SIZE, ...filterOptions });
 
   const totalPages = isSearching ? 1 : Math.max(1, Math.ceil(results.total / PAGE_SIZE));
 
@@ -199,6 +220,8 @@ export async function FishingDirectoryPage({
   if (sp.type) baseParams.set("type", sp.type);
   if (sp.atoll) baseParams.set("atoll", sp.atoll);
   if (sp.island) baseParams.set("island", sp.island);
+  if (activeDuration) baseParams.set("duration", activeDuration);
+  if (maxPrice) baseParams.set("maxPrice", maxPrice);
   const baseQuery = baseParams.toString();
 
   // Group already-tagged real fishing activities by technique for the
@@ -263,51 +286,29 @@ export async function FishingDirectoryPage({
             for other things to do.
           </p>
 
-          {(atoll || island) && (
+          {island && (
             <p className="mt-3 text-sm text-neutral-600">
-              Filtered to {island ? island.title : atoll?.title}.{" "}
+              Filtered to {island.title}.{" "}
               <Link href="/maldives/fishing/" className="underline">
                 Clear
               </Link>
             </p>
           )}
 
-          {fishingTypes.length > 0 && (
-            <nav aria-label="Filter by fishing type" className="mt-6 flex flex-wrap gap-2 text-sm">
-              <Link
-                href="/maldives/fishing/"
-                className={`rounded-full border px-3 py-1 ${!activeType ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
-              >
-                All types
-              </Link>
-              {fishingTypes.map((type) => (
-                <Link
-                  key={type.id}
-                  href={`/maldives/fishing/?type=${type.slug}`}
-                  className={`rounded-full border px-3 py-1 ${activeType?.id === type.id ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"}`}
-                >
-                  {type.title}
-                </Link>
-              ))}
-            </nav>
-          )}
-
-          <form method="get" className="mt-4 flex gap-2">
-            <label htmlFor="fishing-search" className="sr-only">
-              Search fishing activities
-            </label>
-            <input
-              id="fishing-search"
-              type="search"
-              name="q"
-              defaultValue={query}
-              placeholder="Search fishing trips…"
-              className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
+          <div className="mt-6">
+            <FishingFilterBar
+              basePath="/maldives/fishing/"
+              currentParams={baseParams}
+              fishingTypes={fishingTypes}
+              activeType={activeType}
+              atolls={atolls}
+              activeAtoll={sp.atoll}
+              activeDuration={activeDuration}
+              maxPrice={maxPrice}
+              query={query}
+              resultCount={isSearching ? results.items.length : results.total}
             />
-            <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
-              Search
-            </button>
-          </form>
+          </div>
 
           {results.items.length === 0 ? (
             <EmptyState title="No fishing activities recorded for this filter yet" />

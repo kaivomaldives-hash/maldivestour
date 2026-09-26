@@ -116,6 +116,21 @@ export const PACKAGE_HERO_OVERRIDES: Record<string, MediaAsset> = {
     "uploads/assets/uploads/fishing/images/packages/maldives-fishing.webp",
     "Maldives fishing package",
   ),
+
+  // Fly Fishing Holiday packages (site owner request) — two more of the
+  // same real, unused fishing-uploads photos, each different from every
+  // sibling package above so these two also don't look identical to each
+  // other or to an existing one in the packages grid.
+  "3-night-maldives-fly-fishing-holiday": asset(
+    "9dee044a-6c7e-7a4b-ebc5-3f1e13ec0ae4",
+    "uploads/assets/uploads/fishing/images/packages/sailfish-noonu.webp",
+    "Maldives fishing package",
+  ),
+  "5-night-maldives-fly-fishing-holiday": asset(
+    "9faa8de9-cead-2c82-9035-6a94b5439343",
+    "uploads/assets/uploads/fishing/images/packages/wahoo-in-maldives.webp",
+    "Maldives fishing package",
+  ),
   "8-night-maldives-fishing-package-half-day-fishing": asset(
     "75c3a404-3596-d027-80ae-bff1528c8b8e",
     "uploads/assets/uploads/fishing/images/packages/marlin-ari.webp",

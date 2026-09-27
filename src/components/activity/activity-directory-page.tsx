@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import Link from "next/link";
 
 import { ActivitiesVideo, activitiesVideoJsonLd } from "@/components/activity/activities-video";
@@ -102,6 +103,19 @@ function hasAnyFilter(sp: ActivityDirectorySearchParams): boolean {
   return Boolean(sp.q || sp.category || sp.atoll || sp.island || sp.difficulty || sp.maxPrice);
 }
 
+// The atoll list and the featured attractions strip are identical for
+// every visitor regardless of which filters are in the URL -- caching
+// them avoids paying for both queries on every single page view of this
+// (always-dynamic, due to searchParams) directory page.
+const getActivitiesSupportingContent = unstable_cache(
+  async () => {
+    const [atolls, attractions] = await Promise.all([getAtolls(), getAttractions({ pageSize: 6 })]);
+    return { atolls, attractions };
+  },
+  ["activities-directory-supporting-content"],
+  { revalidate: 3600 },
+);
+
 export async function activityDirectoryMetadata(searchParams: Promise<ActivityDirectorySearchParams>): Promise<Metadata> {
   const sp = await searchParams;
   const title = "Maldives Activities | Things to Do, Tours & Experiences";
@@ -135,12 +149,12 @@ export async function ActivityDirectoryPage({
     : undefined;
   const maxPrice = sp.maxPrice ? Number(sp.maxPrice) : undefined;
 
-  const [atoll, island, atolls, attractions] = await Promise.all([
+  const [atoll, island, supporting] = await Promise.all([
     sp.atoll ? getAtollBySlug(sp.atoll) : Promise.resolve(null),
     sp.island ? getIslandBySlug(sp.island) : Promise.resolve(null),
-    getAtolls(),
-    getAttractions({ pageSize: 6 }),
+    getActivitiesSupportingContent(),
   ]);
+  const { atolls, attractions } = supporting;
 
   const results = isSearching
     ? {

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import Link from "next/link";
 
 import { ActivityCard } from "@/components/activity/activity-card";
@@ -89,6 +90,52 @@ const FISHING_TYPE_CONTENT: Record<string, { title: string; body: string }> = {
   },
 };
 
+/**
+ * Everything here is identical for every visitor regardless of which
+ * filters are in the URL -- unlike `results` further down in
+ * FishingDirectoryPage, none of it depends on searchParams. Without
+ * caching, a single page view paid for ~30+ separate Supabase round trips
+ * (4 charter lookups + 3 guide lookups + 7 operator lookups + one
+ * paginated query per fishing technique for the "by technique" preview
+ * section, each with its own hero-media/location fan-out underneath) on
+ * every single request. Wrapping it in unstable_cache turns that into one
+ * shared cache entry, refreshed at most once an hour.
+ */
+const getFishingSupportingContent = unstable_cache(
+  async () => {
+    const [atolls, fishingTypes, charters, allPackages, operators, guides] = await Promise.all([
+      getAtolls(),
+      getFishingTypesInUse(),
+      Promise.all(CHARTER_SLUGS.map((slug) => getFishingActivityBySlug(slug))),
+      getAllPackageViews(),
+      Promise.all(OPERATOR_SLUGS.map((slug) => getProviderBySlug(slug))),
+      Promise.all(GUIDE_SLUGS.map((slug) => getArticleBySlug(slug))),
+    ]);
+
+    const typesWithActivities = await Promise.all(
+      fishingTypes
+        .filter((t) => FISHING_TYPE_CONTENT[t.slug])
+        .map(async (t) => ({
+          type: t,
+          content: FISHING_TYPE_CONTENT[t.slug],
+          activities: (await getFishingActivitiesByType(t.slug, { pageSize: 3 })).items,
+        })),
+    );
+
+    return {
+      atolls,
+      fishingTypes,
+      realCharters: charters.filter((c): c is NonNullable<typeof c> => c !== null),
+      fishingPackages: filterPackageViews(allPackages, { category: "fishing" }),
+      realOperators: operators.filter((p): p is NonNullable<typeof p> => p !== null),
+      realGuides: guides.filter((g): g is NonNullable<typeof g> => g !== null),
+      typesWithActivities,
+    };
+  },
+  ["fishing-directory-supporting-content"],
+  { revalidate: 3600 },
+);
+
 export interface FishingDirectorySearchParams {
   q?: string;
   page?: string;
@@ -176,21 +223,12 @@ export async function FishingDirectoryPage({
   const query = sp.q?.trim() ?? "";
   const isSearching = query.length > 0;
 
-  const [atoll, island, atolls, fishingTypes, charters, allPackages, operators, guides] = await Promise.all([
+  const [atoll, island, supporting] = await Promise.all([
     sp.atoll ? getAtollBySlug(sp.atoll) : Promise.resolve(null),
     sp.island ? getIslandBySlug(sp.island) : Promise.resolve(null),
-    getAtolls(),
-    getFishingTypesInUse(),
-    Promise.all(CHARTER_SLUGS.map((slug) => getFishingActivityBySlug(slug))),
-    getAllPackageViews(),
-    Promise.all(OPERATOR_SLUGS.map((slug) => getProviderBySlug(slug))),
-    Promise.all(GUIDE_SLUGS.map((slug) => getArticleBySlug(slug))),
+    getFishingSupportingContent(),
   ]);
-
-  const realCharters = charters.filter((c): c is NonNullable<typeof c> => c !== null);
-  const fishingPackages = filterPackageViews(allPackages, { category: "fishing" });
-  const realOperators = operators.filter((p): p is NonNullable<typeof p> => p !== null);
-  const realGuides = guides.filter((g): g is NonNullable<typeof g> => g !== null);
+  const { atolls, fishingTypes, realCharters, fishingPackages, realOperators, realGuides, typesWithActivities } = supporting;
 
   const activeType = sp.type ? fishingTypes.find((t) => t.slug === sp.type) : undefined;
   const activeDuration = isFishingDurationBucket(sp.duration) ? sp.duration : undefined;
@@ -223,19 +261,6 @@ export async function FishingDirectoryPage({
   if (activeDuration) baseParams.set("duration", activeDuration);
   if (maxPrice) baseParams.set("maxPrice", maxPrice);
   const baseQuery = baseParams.toString();
-
-  // Group already-tagged real fishing activities by technique for the
-  // "Fishing by Technique" section — never a new/fabricated taxonomy page,
-  // just descriptive content over real, already-existing tagged activities.
-  const typesWithActivities = await Promise.all(
-    fishingTypes
-      .filter((t) => FISHING_TYPE_CONTENT[t.slug])
-      .map(async (t) => ({
-        type: t,
-        content: FISHING_TYPE_CONTENT[t.slug],
-        activities: (await getFishingActivitiesByType(t.slug, { pageSize: 3 })).items,
-      })),
-  );
 
   return (
     <main>

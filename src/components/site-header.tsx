@@ -72,6 +72,7 @@ export function SiteHeader() {
               <Link
                 key={item.href}
                 href={item.href}
+                prefetch={false}
                 aria-current={active ? "page" : undefined}
                 className={`rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
                   active ? "bg-lagoon-100 text-ocean-900" : "text-neutral-600 hover:bg-neutral-100 hover:text-ocean-900"
@@ -136,6 +137,7 @@ export function SiteHeader() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  prefetch={false}
                   aria-current={active ? "page" : undefined}
                   className={`rounded-lg px-3 py-2.5 text-base font-medium transition-colors ${
                     active ? "bg-lagoon-100 text-ocean-900" : "text-neutral-700 hover:bg-neutral-100"

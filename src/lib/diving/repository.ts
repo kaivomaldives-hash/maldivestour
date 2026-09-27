@@ -11,7 +11,7 @@ import { getCategoriesByGroup, getCategoryBySlug, getNodeIdsByCategory } from "@
 import type { CategorySummary } from "@/lib/categories/types";
 import { getHeroMediaByNodeIds } from "@/lib/media/repository";
 import type { MediaAsset } from "@/lib/media/types";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/public";
 import {
   getLocationBySlugAndType,
   getLocationIdsForNode,

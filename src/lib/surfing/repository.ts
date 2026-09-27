@@ -9,7 +9,7 @@ import {
 import type { ActivityDetail, ActivitySummary, PaginatedResult as ActivityPaginatedResult } from "@/lib/activities/types";
 import { getCategoriesByGroup, getCategoryBySlug, getNodeIdsByCategory } from "@/lib/categories/repository";
 import type { CategorySummary } from "@/lib/categories/types";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/public";
 import {
   getLocationBySlugAndType,
   getLocationIdsForNode,

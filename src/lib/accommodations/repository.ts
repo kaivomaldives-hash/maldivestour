@@ -6,7 +6,7 @@ import { getHeroMediaByNodeIds, getMediaAssetsByIds, getMediaForNode } from "@/l
 import type { MediaAsset } from "@/lib/media/types";
 import { getProviderSummariesByIds } from "@/lib/providers/repository";
 import type { ProviderSummary } from "@/lib/providers/types";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/public";
 import type {
   AccommodationDetail,
   AccommodationFilters,

@@ -11,7 +11,7 @@ import type { LocationSummary } from "@/lib/locations/types";
 import { getHeroMediaByNodeIds, resolveStorageImageSrcs } from "@/lib/media/repository";
 import type { MediaAsset } from "@/lib/media/types";
 import { getPackageSummariesByIds } from "@/lib/packages/repository";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/public";
 import { getTransferRoutesByIds } from "@/lib/transfers/repository";
 import type { ArticleDetail, ArticleSummary, GetArticlesOptions, PaginatedResult, RelatedEntityLink } from "@/lib/articles/types";
 

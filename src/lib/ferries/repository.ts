@@ -2,7 +2,7 @@ import "server-only";
 
 import { getLocationSummariesByIds } from "@/lib/locations/repository";
 import { getMediaAssetsByIds } from "@/lib/media/repository";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/public";
 import type { FerryRoute, FerryStop } from "@/lib/ferries/types";
 
 type FerryRouteRow = {

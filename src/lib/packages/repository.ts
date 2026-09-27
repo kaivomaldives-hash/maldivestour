@@ -8,7 +8,7 @@ import { getLocationSummariesByIds } from "@/lib/locations/repository";
 import type { LocationSummary } from "@/lib/locations/types";
 import { getProviderSummariesByIds } from "@/lib/providers/repository";
 import type { ProviderSummary } from "@/lib/providers/types";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/public";
 import { getTransferRoutesByIds, getTransferServicesByIds } from "@/lib/transfers/repository";
 import type {
   GetPackagesOptions,

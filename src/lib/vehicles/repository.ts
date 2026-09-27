@@ -1,7 +1,7 @@
 import "server-only";
 
 import { getHeroMediaByNodeIds } from "@/lib/media/repository";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/public";
 import type { VehicleSummary, VehicleType } from "@/lib/vehicles/types";
 
 const NODE_VEHICLE_SELECT =

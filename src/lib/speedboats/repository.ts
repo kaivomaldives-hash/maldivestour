@@ -1,7 +1,7 @@
 import "server-only";
 
 import { getHeroMediaByNodeIds, getMediaForNode } from "@/lib/media/repository";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/public";
 import type { SpeedboatDetail, SpeedboatSummary } from "@/lib/speedboats/types";
 
 /**

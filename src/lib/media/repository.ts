@@ -2,7 +2,7 @@ import "server-only";
 
 import { publicStorageUrl } from "@/lib/media/types";
 import type { MediaAsset, MediaRole, NodeMediaItem } from "@/lib/media/types";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/public";
 
 /**
  * Server-side media data-access layer (Task 14). `media_assets` +

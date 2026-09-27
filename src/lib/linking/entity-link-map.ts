@@ -1,7 +1,7 @@
 import "server-only";
 
 import { ACCOMMODATION_TYPE_SEGMENT } from "@/lib/accommodations/types";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/public";
 
 export interface EntityLinkTarget {
   /** The exact real-world name/phrase this entity is known by — matched

@@ -27,7 +27,7 @@ import { getHeroMediaByNodeIds, getMediaForNode } from "@/lib/media/repository";
 import { getPackageViewsByLocation } from "@/lib/packages/view-repository";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 import { getSurfBreaksByLocation } from "@/lib/surfing/repository";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/public";
 import { getTransferRoutesByLocation } from "@/lib/transfers/repository";
 
 const NEARBY_ISLANDS_LIMIT = 6;

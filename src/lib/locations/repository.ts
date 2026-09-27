@@ -2,7 +2,7 @@ import "server-only";
 
 import { getHeroMediaByNodeIds } from "@/lib/media/repository";
 import type { MediaAsset } from "@/lib/media/types";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/public";
 import type {
   AtollContentProfile,
   AtollDetail,

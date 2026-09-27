@@ -6,7 +6,7 @@ import { getLocationSummariesByIds } from "@/lib/locations/repository";
 import { getHeroMediaByNodeIds } from "@/lib/media/repository";
 import type { MediaAsset } from "@/lib/media/types";
 import { getProviderSummariesByIds } from "@/lib/providers/repository";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/public";
 import type {
   GetTransferRoutesOptions,
   PaginatedResult,

@@ -1,6 +1,6 @@
 import "server-only";
 
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/public";
 import type { CategoryGroup, CategorySummary } from "@/lib/categories/types";
 
 /**

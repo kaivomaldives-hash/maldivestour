@@ -56,13 +56,14 @@ export function MediaImage({
         sizes={sizes}
         className={["object-cover", className].filter(Boolean).join(" ")}
         priority={priority}
+        unoptimized
       />
     );
   }
 
   return (
     <div className={["relative overflow-hidden", aspectClassName, className].filter(Boolean).join(" ")}>
-      <Image src={url} alt={asset.altText || alt} fill sizes={sizes} className="object-cover" priority={priority} />
+      <Image src={url} alt={asset.altText || alt} fill sizes={sizes} className="object-cover" priority={priority} unoptimized />
     </div>
   );
 }

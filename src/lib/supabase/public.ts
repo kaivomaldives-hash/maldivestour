@@ -1,4 +1,4 @@
-import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import { createClient as createSupabaseClient, type SupabaseClient } from "@supabase/supabase-js";
 
 import type { Database } from "@/types/database";
 
@@ -19,17 +19,29 @@ import type { Database } from "@/types/database";
  * Only use this for read paths that don't depend on the visitor's own
  * session (no `supabase.auth.*`, no user-scoped RLS). Anything that needs
  * the signed-in user — admin pages, booking/review writes, auth checks —
- * must keep using `@/lib/supabase/server`.
+ * must keep using `@/lib/supabase/server`, which is correctly per-request
+ * there (it captures that request's cookies) and must stay that way.
+ *
+ * This client carries no per-request state at all, so — unlike
+ * server.ts's — it's safe to build once per server process and reuse
+ * across every request, instead of constructing a fresh
+ * PostgREST/GoTrue/Realtime wrapper on every one of the many repository
+ * calls a single page render makes.
  */
+let cachedClient: SupabaseClient<Database> | undefined;
+
 export function createClient() {
-  return createSupabaseClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      auth: {
-        persistSession: false,
-        autoRefreshToken: false,
+  if (!cachedClient) {
+    cachedClient = createSupabaseClient<Database>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false,
+        },
       },
-    },
-  );
+    );
+  }
+  return cachedClient;
 }

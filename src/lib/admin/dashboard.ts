@@ -36,7 +36,15 @@ export interface DashboardStats {
   commentsTotal: number;
   commentsFlagged: number;
   redirects: number;
+  listingsPublished: number;
+  listingsDraft: number;
 }
+
+/** The node types that count as an actual public "listing" for the
+ * published/draft overview cards — deliberately excludes location,
+ * category, and provider (structural/taxonomy/directory entities, not
+ * content someone publishes or drafts in the everyday sense). */
+const LISTING_NODE_TYPES = ["accommodation", "activity", "transfer_route", "package", "article"];
 
 type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
 
@@ -51,6 +59,19 @@ async function countRows(supabase: SupabaseServerClient, table: string, filters:
   const { count, error } = await query;
   if (error) {
     console.error(`[admin dashboard] count(${table}${Object.keys(filters).length ? `, ${JSON.stringify(filters)}` : ""}) failed:`, error.message);
+    return 0;
+  }
+  return count ?? 0;
+}
+
+async function countListingsByStatus(supabase: SupabaseServerClient, status: string): Promise<number> {
+  const { count, error } = await supabase
+    .from("nodes")
+    .select("id", { count: "exact", head: true })
+    .in("node_type", LISTING_NODE_TYPES)
+    .eq("status", status);
+  if (error) {
+    console.error(`[admin dashboard] count(nodes, listings, status=${status}) failed:`, error.message);
     return 0;
   }
   return count ?? 0;
@@ -78,6 +99,8 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     commentsTotal,
     commentsFlagged,
     redirects,
+    listingsPublished,
+    listingsDraft,
   ] = await Promise.all([
     Promise.all(BOOKING_STATUSES.map((status) => countRows(supabase, "bookings", { status }))),
     countRows(supabase, "accommodations"),
@@ -97,6 +120,8 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     countRows(supabase, "article_comments"),
     countRows(supabase, "article_comments", { status: "flagged" }),
     countRows(supabase, "url_redirects"),
+    countListingsByStatus(supabase, "published"),
+    countListingsByStatus(supabase, "draft"),
   ]);
 
   const bookingsByStatus = Object.fromEntries(BOOKING_STATUSES.map((status, i) => [status, bookingCounts[i]])) as Record<
@@ -124,5 +149,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     commentsTotal,
     commentsFlagged,
     redirects,
+    listingsPublished,
+    listingsDraft,
   };
 }

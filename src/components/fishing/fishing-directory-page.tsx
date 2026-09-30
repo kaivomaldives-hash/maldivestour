@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { ActivityCard } from "@/components/activity/activity-card";
 import { ArticleCard } from "@/components/articles/article-card";
+import { Price } from "@/components/currency/price";
 import { fishingDurationBucketToMinutes, FishingFilterBar, isFishingDurationBucket } from "@/components/fishing/fishing-filter-bar";
 import { FishingGallerySection } from "@/components/fishing/fishing-gallery-section";
 import { FishingVideo, fishingVideoJsonLd } from "@/components/fishing/fishing-video";
@@ -16,6 +17,7 @@ import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { Pagination } from "@/components/ui/pagination";
 import { activityHref } from "@/lib/activities/types";
+import { isSupportedCurrency } from "@/lib/currency/types";
 import { getArticleBySlug } from "@/lib/articles/repository";
 import {
   getFishingActivities,
@@ -496,7 +498,9 @@ export async function FishingDirectoryPage({
                 200&nbsp;HP engines (max 5 passengers) — departing from Maamendhoo, Gaafu Alifu Atoll.
               </p>
               <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {realCharters.map((charter) => (
+                {realCharters.map((charter) => {
+                  const charterCurrency = charter.currency ?? "USD";
+                  return (
                   <li key={charter.id} className={CARD_CLASS}>
                     {charter.heroImage && (
                       <div className={CARD_IMAGE_BLEED_CLASS}>
@@ -514,7 +518,12 @@ export async function FishingDirectoryPage({
                     </div>
                     {charter.priceFrom !== null && (
                       <p className="mt-2 text-lg font-semibold text-ocean-900">
-                        From {charter.currency ?? "USD"} {charter.priceFrom}
+                        From{" "}
+                        {isSupportedCurrency(charterCurrency) ? (
+                          <Price baseAmount={charter.priceFrom} baseCurrency={charterCurrency} />
+                        ) : (
+                          `${charterCurrency} ${charter.priceFrom}`
+                        )}
                         <span className="ml-2 text-sm font-normal text-neutral-500">per boat</span>
                       </p>
                     )}
@@ -525,7 +534,8 @@ export async function FishingDirectoryPage({
                       View Charter
                     </Link>
                   </li>
-                ))}
+                  );
+                })}
               </ul>
             </>
           )}

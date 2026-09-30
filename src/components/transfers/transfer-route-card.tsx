@@ -1,7 +1,9 @@
 import Link from "next/link";
 
+import { Price } from "@/components/currency/price";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { MediaImage } from "@/components/ui/media-image";
+import { isSupportedCurrency } from "@/lib/currency/types";
 import type { TransferRouteSummary } from "@/lib/transfers/types";
 
 function formatDuration(minutes: number | null): string | null {
@@ -13,6 +15,7 @@ function formatDuration(minutes: number | null): string | null {
 
 export function TransferRouteCard({ route }: { route: TransferRouteSummary }) {
   const duration = formatDuration(route.typicalDurationMinutes);
+  const priceCurrency = route.currency ?? "USD";
 
   return (
     <li className={CARD_CLASS}>
@@ -29,7 +32,12 @@ export function TransferRouteCard({ route }: { route: TransferRouteSummary }) {
         {route.distanceKm !== null && <span>{route.distanceKm} km</span>}
         {route.priceFrom !== null && (
           <span>
-            From {route.currency ?? "USD"} {route.priceFrom}
+            From{" "}
+            {isSupportedCurrency(priceCurrency) ? (
+              <Price baseAmount={route.priceFrom} baseCurrency={priceCurrency} />
+            ) : (
+              `${priceCurrency} ${route.priceFrom}`
+            )}
           </span>
         )}
       </div>

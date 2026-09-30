@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { LanguageSwitcher } from "@/components/i18n/language-switcher";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import {
   FacebookIcon,
@@ -10,6 +11,7 @@ import {
   XIcon,
   YouTubeIcon,
 } from "@/components/ui/icons";
+import type { Locale } from "@/lib/i18n/locales";
 
 const TRAVEL_LINKS = [
   { label: "Maldives", href: "/maldives/" },
@@ -45,7 +47,7 @@ const SOCIAL_LINKS = [
   { label: "Instagram", href: "https://www.instagram.com/themaldivesholiday/", Icon: InstagramIcon },
 ];
 
-export function SiteFooter() {
+export function SiteFooter({ availableLocales }: { availableLocales: Locale[] }) {
   const year = new Date().getFullYear();
 
   return (
@@ -104,8 +106,9 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-lagoon-100/60 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-lagoon-100/60 sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} Maldives Tour Guide (MTG). All information is provided for travel planning purposes.</p>
+          <LanguageSwitcher publishedLocales={availableLocales} variant="dark" />
         </div>
       </div>
     </footer>

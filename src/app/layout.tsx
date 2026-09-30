@@ -91,7 +91,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {/* pb-20 clears the fixed mobile bottom nav (h-16 + safe-area inset)
               on small screens; lg:pb-0 removes it once that nav is hidden. */}
           <div className="flex flex-1 flex-col pb-20 lg:pb-0">{children}</div>
-          <SiteFooter />
+          <SiteFooter availableLocales={availableLocales} />
           <MobileBottomNav />
         </CurrencyProvider>
         <Analytics />

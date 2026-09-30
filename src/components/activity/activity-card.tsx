@@ -1,8 +1,10 @@
 import Link from "next/link";
 
+import { Price } from "@/components/currency/price";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { MediaImage } from "@/components/ui/media-image";
 import { activityHref, type ActivitySummary } from "@/lib/activities/types";
+import { isSupportedCurrency } from "@/lib/currency/types";
 
 const CATEGORY_LABEL: Record<string, string> = {
   general: "General",
@@ -25,6 +27,7 @@ function formatDuration(minutes: number | null): string | null {
 
 export function ActivityCard({ activity }: { activity: ActivitySummary }) {
   const duration = formatDuration(activity.durationMinutes);
+  const priceCurrency = activity.currency ?? "USD";
 
   return (
     <li className={CARD_CLASS}>
@@ -43,7 +46,12 @@ export function ActivityCard({ activity }: { activity: ActivitySummary }) {
         {activity.difficulty && <span className="capitalize">{activity.difficulty.replace("_", " ")}</span>}
         {activity.priceFrom && (
           <span>
-            From {activity.currency ?? "USD"} {activity.priceFrom}
+            From{" "}
+            {isSupportedCurrency(priceCurrency) ? (
+              <Price baseAmount={activity.priceFrom} baseCurrency={priceCurrency} />
+            ) : (
+              `${priceCurrency} ${activity.priceFrom}`
+            )}
           </span>
         )}
       </div>

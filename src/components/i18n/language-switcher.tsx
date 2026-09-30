@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
+import { GlobeIcon } from "@/components/ui/icons";
 import { LOCALE_NAMES, SUPPORTED_LOCALES, type Locale } from "@/lib/i18n/locales";
 
 /**
@@ -25,7 +26,15 @@ import { LOCALE_NAMES, SUPPORTED_LOCALES, type Locale } from "@/lib/i18n/locales
  * target locale isn't published at all, the current page doesn't
  * change (there's nothing better to offer yet).
  */
-export function LanguageSwitcher({ publishedLocales }: { publishedLocales: Locale[] }) {
+export function LanguageSwitcher({
+  publishedLocales,
+  variant = "light",
+}: {
+  publishedLocales: Locale[];
+  /** "light" (default) is the header/mobile-nav styling, for a white
+   * background. "dark" is for the footer's dark bg-ocean-950 panel. */
+  variant?: "light" | "dark";
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -48,6 +57,11 @@ export function LanguageSwitcher({ publishedLocales }: { publishedLocales: Local
     return publishedLocales.includes(locale) ? `${prefix}/maldives/` : pathname;
   }
 
+  const triggerClass =
+    variant === "dark"
+      ? "min-touch-target inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-lagoon-100/80 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lagoon-300"
+      : "min-touch-target inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-ocean-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maldives-600";
+
   return (
     <div className="relative">
       <button
@@ -56,8 +70,9 @@ export function LanguageSwitcher({ publishedLocales }: { publishedLocales: Local
         aria-expanded={open}
         aria-label="Language"
         onClick={() => setOpen((v) => !v)}
-        className="min-touch-target inline-flex items-center gap-1 rounded-full px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-ocean-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maldives-600"
+        className={triggerClass}
       >
+        <GlobeIcon className="h-4 w-4" />
         {LOCALE_NAMES[currentLocale].nativeName}
       </button>
       {open && (

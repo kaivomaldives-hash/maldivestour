@@ -10,6 +10,7 @@ import { accommodationVideoJsonLd, VideoSection } from "@/components/accommodati
 import { ArticleCard } from "@/components/articles/article-card";
 import { AttractionCard } from "@/components/attractions/attraction-card";
 import { NodeInquiryForm } from "@/components/bookings/node-inquiry-form";
+import { LocationMap } from "@/components/locations/location-map";
 import { PackageCard } from "@/components/packages/package-card";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
@@ -186,6 +187,8 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
           </div>
         )}
       </dl>
+
+      <LocationMap title={accommodation.title} lat={primaryLocation?.lat ?? null} lng={primaryLocation?.lng ?? null} />
 
       <RoomsSection rooms={accommodation.rooms} accommodationTitle={accommodation.title} />
 

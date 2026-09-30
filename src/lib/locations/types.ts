@@ -20,7 +20,11 @@ export type LocationType =
   | "surf_break"
   | "fishing_spot";
 
-/** Shared fields every location listing/detail view needs. */
+/** Shared fields every location listing/detail view needs. `lat`/`lng`
+ * live here (not just on LocationDetail) so a summary-typed relation --
+ * e.g. an accommodation or activity's `primaryLocation` -- can still
+ * feed a <LocationMap> without a second lookup; the underlying query
+ * already selects these columns for every location row regardless. */
 export interface LocationSummary {
   id: string;
   slug: string;
@@ -29,6 +33,8 @@ export interface LocationSummary {
   locationType: LocationType;
   parentId: string | null;
   isInhabited: boolean | null;
+  lat: number | null;
+  lng: number | null;
   /** Real legacy/uploaded photo, when one has been attached (see
    * scripts/attach-island-images.mjs) — never a placeholder. Most
    * locations don't have one; null is the normal case, not an error. */
@@ -39,8 +45,6 @@ export interface LocationSummary {
 export interface LocationDetail extends LocationSummary {
   metaTitle: string | null;
   metaDescription: string | null;
-  lat: number | null;
-  lng: number | null;
   administrativeCode: string | null;
   path: string;
 }

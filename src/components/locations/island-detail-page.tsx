@@ -8,6 +8,7 @@ import { ArticleCard } from "@/components/articles/article-card";
 import { AttractionCard } from "@/components/attractions/attraction-card";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
 import { IslandCard } from "@/components/locations/island-card";
+import { LocationMap } from "@/components/locations/location-map";
 import { PackageCard } from "@/components/packages/package-card";
 import { SurfBreakCard } from "@/components/surfing/surf-break-card";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
@@ -187,6 +188,8 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
           </div>
         )}
       </dl>
+
+      <LocationMap title={island.title} lat={island.lat} lng={island.lng} />
 
       {content && content.quickFacts.length > 0 && (
         <section className="mt-8 rounded-2xl border border-neutral-200 bg-sand-50 p-6">

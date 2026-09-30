@@ -7,6 +7,7 @@ import { ActivityCard } from "@/components/activity/activity-card";
 import { ArticleCard } from "@/components/articles/article-card";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
 import { IslandCard } from "@/components/locations/island-card";
+import { LocationMap } from "@/components/locations/location-map";
 import { PackageCard } from "@/components/packages/package-card";
 import { SurfBreakCard } from "@/components/surfing/surf-break-card";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
@@ -151,6 +152,8 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
           <dd className="font-medium">{islands.length}</dd>
         </div>
       </dl>
+
+      <LocationMap title={atoll.title} lat={atoll.lat} lng={atoll.lng} />
 
       {aboutHtml && (
         <section className="mt-10">

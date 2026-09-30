@@ -103,6 +103,21 @@ export async function getProvidersAdmin(options: { search?: string; page?: numbe
   return { items, total: count ?? items.length, page, pageSize: PAGE_SIZE };
 }
 
+export interface ProviderOption {
+  id: string;
+  title: string;
+}
+
+/** Unpaginated id+title list for a <select> in other content types'
+ * forms (accommodations/activities "operated by") — providers are a
+ * small, bounded list, unlike the content types themselves. */
+export async function getProviderOptions(): Promise<ProviderOption[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("nodes").select("id, title").eq("node_type", "provider").order("title", { ascending: true }).returns<ProviderOption[]>();
+  if (error || !data) return [];
+  return data;
+}
+
 export async function getProviderByIdAdmin(id: string): Promise<AdminProviderItem | null> {
   const supabase = await createClient();
   const { data, error } = await supabase.from("nodes").select(NODE_PROVIDER_SELECT).eq("node_type", "provider").eq("id", id).maybeSingle<NodeProviderRow>();

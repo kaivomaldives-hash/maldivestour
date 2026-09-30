@@ -120,3 +120,44 @@ export async function deleteOrphanedNode(nodeId: string): Promise<void> {
   const supabase = await createClient();
   await supabase.from("nodes").delete().eq("id", nodeId);
 }
+
+export interface NodeDeleteCheck {
+  canDelete: boolean;
+  bookingCount: number;
+  reviewCount: number;
+}
+
+/** Pre-flight check for a real (published-or-not) content delete, not a
+ * rollback. `bookings.product_node_id` has no `on delete cascade` (a
+ * deliberate default-RESTRICT choice — see 20250101001000_booking.sql),
+ * so Postgres itself already refuses to delete a node with existing
+ * bookings; this surfaces that fact *before* the attempt so the UI can
+ * show a clear reason instead of a raw constraint-violation error.
+ * `reviews.node_id` DOES cascade, so a delete with reviews attached is
+ * allowed but destructive — surfaced as a warning, not a block. */
+export async function checkNodeDeletable(nodeId: string): Promise<NodeDeleteCheck> {
+  await requireStaff();
+  const supabase = await createClient();
+  const [{ count: bookingCount }, { count: reviewCount }] = await Promise.all([
+    supabase.from("bookings").select("id", { count: "exact", head: true }).eq("product_node_id", nodeId),
+    supabase.from("reviews").select("id", { count: "exact", head: true }).eq("node_id", nodeId),
+  ]);
+  return { canDelete: (bookingCount ?? 0) === 0, bookingCount: bookingCount ?? 0, reviewCount: reviewCount ?? 0 };
+}
+
+/** Deletes a content node outright (not a rollback) — cascades to its
+ * 1:1 type table, node_media, node_locations, node_categories, and
+ * reviews (all `on delete cascade`). Never used for bookable entities
+ * that still have bookings: checkNodeDeletable() should gate the UI
+ * before this is ever called, and Postgres's own FK constraint is the
+ * final backstop if it's called anyway. */
+export async function deleteNode(nodeId: string): Promise<AdminActionResult> {
+  await requireStaff();
+  const supabase = await createClient();
+  const { error } = await supabase.from("nodes").delete().eq("id", nodeId);
+  if (error) {
+    if (error.code === "23503") return { ok: false, error: "This can't be deleted because other records still reference it (e.g. existing bookings)." };
+    return { ok: false, error: error.message };
+  }
+  return { ok: true };
+}

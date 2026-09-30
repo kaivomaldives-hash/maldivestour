@@ -9,7 +9,15 @@ import type { LocationOption } from "@/lib/admin/node-relations-repository";
  * (island/atoll/etc.). The parent form owns `value` and saves it via
  * setPrimaryLocation() alongside its own submit, same two-step pattern
  * node-actions.ts already uses for create (core row, then type row). */
-export function LocationPicker({ value, onChange }: { value: LocationOption | null; onChange: (location: LocationOption | null) => void }) {
+export function LocationPicker({
+  value,
+  onChange,
+  label = "Primary location",
+}: {
+  value: LocationOption | null;
+  onChange: (location: LocationOption | null) => void;
+  label?: string;
+}) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<LocationOption[]>([]);
   const [open, setOpen] = useState(false);
@@ -29,7 +37,7 @@ export function LocationPicker({ value, onChange }: { value: LocationOption | nu
 
   return (
     <div>
-      <span className="mb-1 block text-sm font-medium text-neutral-700">Primary location</span>
+      <span className="mb-1 block text-sm font-medium text-neutral-700">{label}</span>
       {value ? (
         <div className="flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm">
           <span className="flex-1">

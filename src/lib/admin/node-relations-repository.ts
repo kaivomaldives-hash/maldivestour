@@ -44,6 +44,32 @@ export async function getPrimaryLocationForNode(nodeId: string): Promise<Locatio
   return { id: rel.location_id, title: node.title, locationType: loc.location_type };
 }
 
+/** Batch lookup for specific location ids — used by the transfer route
+ * form, which needs two independent locations (origin/destination) rather
+ * than the single "primary location" every other content type has. Same
+ * two-separate-queries shape as getPrimaryLocationForNode above. */
+export async function getLocationOptionsByIds(ids: string[]): Promise<Map<string, LocationOption>> {
+  await requireStaff();
+  const map = new Map<string, LocationOption>();
+  const uniqueIds = Array.from(new Set(ids));
+  if (uniqueIds.length === 0) return map;
+
+  const supabase = await createClient();
+  const [{ data: locs }, { data: nodeRows }] = await Promise.all([
+    supabase.from("locations").select("id, location_type").in("id", uniqueIds).returns<Array<{ id: string; location_type: string }>>(),
+    supabase.from("nodes").select("id, title").in("id", uniqueIds).returns<Array<{ id: string; title: string }>>(),
+  ]);
+  const typeById = new Map((locs ?? []).map((l) => [l.id, l.location_type]));
+  const titleById = new Map((nodeRows ?? []).map((n) => [n.id, n.title]));
+
+  for (const id of uniqueIds) {
+    const locationType = typeById.get(id);
+    const title = titleById.get(id);
+    if (locationType && title) map.set(id, { id, title, locationType });
+  }
+  return map;
+}
+
 export interface CategoryOption {
   id: string;
   title: string;

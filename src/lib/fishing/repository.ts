@@ -59,15 +59,34 @@ export async function searchFishingActivities(query: string, options: { limit?: 
 
 /** Every "activity-type" taxonomy tag actually applied to at least one
  * fishing activity — the fishing-type filter chips are driven entirely by
- * what the seeded data supports, never a hardcoded list. */
+ * what the seeded data supports, never a hardcoded list.
+ *
+ * Bug fixed here: this previously checked whether a category was attached
+ * to ANY node at all, not specifically a fishing one. "activity-type" is
+ * a taxonomy group shared with diving/surfing/watersports, so a diving-only
+ * tag (e.g. "scuba-diving") that happened to be used on a diving activity
+ * was showing up as a fishing filter chip too, since node_categories was
+ * queried with no activity_category scoping. Now scopes the "used" check
+ * to fishing activities' node ids specifically. */
 async function getFishingTypesInUseUncached(): Promise<CategorySummary[]> {
   const allTypes = await getCategoriesByGroup("activity-type");
   if (allTypes.length === 0) return [];
 
   const supabase = await createClient();
+
+  const { data: fishingNodes } = await supabase
+    .from("activities")
+    .select("id")
+    .eq("activity_category", "fishing")
+    .returns<Array<{ id: string }>>();
+
+  const fishingNodeIds = (fishingNodes ?? []).map((row) => row.id);
+  if (fishingNodeIds.length === 0) return [];
+
   const { data } = await supabase
     .from("node_categories")
     .select("category_id")
+    .in("node_id", fishingNodeIds)
     .in(
       "category_id",
       allTypes.map((t) => t.id),

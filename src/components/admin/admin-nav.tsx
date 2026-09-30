@@ -23,20 +23,24 @@ function isActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function AdminNav({ isAdmin }: { isAdmin: boolean }) {
+/** Vertical nav for the sidebar layout — `onNavigate` lets the mobile
+ * drawer (AdminSidebar) close itself on link tap without this component
+ * needing to know anything about that drawer's open/closed state. */
+export function AdminNav({ isAdmin, onNavigate }: { isAdmin: boolean; onNavigate?: () => void }) {
   const pathname = usePathname();
   const items = isAdmin ? [...NAV_ITEMS, { label: "Users", href: "/admin/users" }] : NAV_ITEMS;
 
   return (
-    <nav aria-label="Admin" className="flex flex-wrap gap-1">
+    <nav aria-label="Admin" className="flex flex-col gap-0.5">
       {items.map((item) => {
         const active = isActive(pathname, item.href);
         return (
           <Link
             key={item.href}
             href={item.href}
+            onClick={onNavigate}
             aria-current={active ? "page" : undefined}
-            className={`rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
+            className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
               active ? "bg-lagoon-100 text-ocean-900" : "text-neutral-600 hover:bg-neutral-100 hover:text-ocean-900"
             }`}
           >

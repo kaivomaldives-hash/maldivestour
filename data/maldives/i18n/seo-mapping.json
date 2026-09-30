@@ -1,0 +1,64 @@
+{
+  "_meta": {
+    "note": "Keyword-to-page mapping, preserving the same intent hierarchy across every locale (Task 19 §37). Each page targets one distinct search intent — no two pages in the same locale target the same primary keyword."
+  },
+  "pages": [
+    {
+      "pageKey": "homepage",
+      "englishUrl": "/",
+      "intent": "Maldives (broad destination/brand)",
+      "keywordRef": "maldives"
+    },
+    {
+      "pageKey": "maldives-hub",
+      "englishUrl": "/maldives/",
+      "intent": "Maldives travel/destinations overview",
+      "keywordRef": "travel"
+    },
+    {
+      "pageKey": "activities-hub",
+      "englishUrl": "/maldives/activities/",
+      "intent": "Maldives activities/things to do",
+      "keywordRef": "activities"
+    },
+    {
+      "pageKey": "fishing-hub",
+      "englishUrl": "/maldives/fishing/",
+      "intent": "Maldives fishing charters/trips",
+      "keywordRef": "fishing"
+    },
+    {
+      "pageKey": "diving-hub",
+      "englishUrl": "/maldives/diving/",
+      "intent": "Maldives diving/dive sites",
+      "keywordRef": "diving"
+    },
+    {
+      "pageKey": "surfing-hub",
+      "englishUrl": "/maldives/surfing/",
+      "intent": "Maldives surfing/surf breaks",
+      "keywordRef": "surfing"
+    },
+    {
+      "pageKey": "packages-hub",
+      "englishUrl": "/maldives/packages/",
+      "intent": "Maldives holiday packages",
+      "keywordRef": "packages"
+    },
+    {
+      "pageKey": "stays-hub",
+      "englishUrl": "/maldives/stays/",
+      "intent": "Maldives hotels/resorts/guesthouses",
+      "keywordRef": "resorts"
+    },
+    {
+      "pageKey": "travel-guide-hub",
+      "englishUrl": "/maldives/travel-guide/",
+      "intent": "Maldives travel guide/planning content",
+      "keywordRef": "travelGuide"
+    }
+  ],
+  "entityTypesSupported": [
+    "activity", "accommodation", "location", "article", "category", "package", "transfer_route"
+  ]
+}

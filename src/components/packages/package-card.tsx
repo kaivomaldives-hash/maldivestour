@@ -1,8 +1,10 @@
 import Link from "next/link";
 
+import { Price } from "@/components/currency/price";
 import { Badge } from "@/components/ui/badge";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { MediaImage } from "@/components/ui/media-image";
+import { isSupportedCurrency } from "@/lib/currency/types";
 import { PACKAGE_CATEGORY_TITLE } from "@/lib/packages/view-types";
 import type { PackageView } from "@/lib/packages/view-types";
 
@@ -15,6 +17,7 @@ const PRICE_TYPE_LABEL: Record<string, string> = {
 export function PackageCard({ pkg }: { pkg: PackageView }) {
   const primaryDestination = pkg.destinations[0] ?? null;
   const primaryCategory = pkg.categories[0] ?? null;
+  const priceCurrency = pkg.currency ?? "USD";
 
   return (
     <li className={CARD_CLASS}>
@@ -65,7 +68,12 @@ export function PackageCard({ pkg }: { pkg: PackageView }) {
         {pkg.price !== null ? (
           <>
             <span className="font-medium text-ocean-900">
-              From {pkg.currency ?? "USD"} {pkg.price.toLocaleString()}
+              From{" "}
+              {isSupportedCurrency(priceCurrency) ? (
+                <Price baseAmount={pkg.price} baseCurrency={priceCurrency} />
+              ) : (
+                `${priceCurrency} ${pkg.price.toLocaleString()}`
+              )}
             </span>{" "}
             {pkg.priceType && <span className="text-neutral-500">{PRICE_TYPE_LABEL[pkg.priceType]}</span>}
           </>

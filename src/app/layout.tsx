@@ -3,9 +3,12 @@ import type { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import { CurrencyProvider } from "@/components/currency/currency-context";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { getExchangeRates } from "@/lib/currency/rates";
+import { getPublishedLocalesForPage } from "@/lib/i18n/repository";
 import { getSiteUrl, organizationJsonLd, websiteJsonLd } from "@/lib/seo/site";
 
 const geistSans = Geist({
@@ -28,7 +31,16 @@ export const metadata: Metadata = {
     "A real, source-verified travel guide to the Maldives — atolls, islands, resorts, hotels, guesthouses, activities, diving, fishing, surfing, transfers and packages.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Neither of these reads cookies()/headers() -- both are plain cached
+  // reads (Supabase via the stateless public client + cachedRead, rates
+  // via a plain fetch() with next:{revalidate}) -- so including them
+  // here does NOT force this layout, or every page it wraps, into
+  // dynamic rendering. See CurrencyProvider's own comment for why the
+  // currency *cookie* specifically is deliberately read client-side
+  // instead.
+  const [availableLocales, exchangeRates] = await Promise.all([getPublishedLocalesForPage("homepage"), getExchangeRates()]);
+
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-white text-ocean-900">
@@ -73,12 +85,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `,
           }}
         />
-        <SiteHeader />
-        {/* pb-20 clears the fixed mobile bottom nav (h-16 + safe-area inset)
-            on small screens; lg:pb-0 removes it once that nav is hidden. */}
-        <div className="flex flex-1 flex-col pb-20 lg:pb-0">{children}</div>
-        <SiteFooter />
-        <MobileBottomNav />
+        <CurrencyProvider rates={exchangeRates}>
+          <SiteHeader availableLocales={availableLocales} />
+          {/* pb-20 clears the fixed mobile bottom nav (h-16 + safe-area inset)
+              on small screens; lg:pb-0 removes it once that nav is hidden. */}
+          <div className="flex flex-1 flex-col pb-20 lg:pb-0">{children}</div>
+          <SiteFooter />
+          <MobileBottomNav />
+        </CurrencyProvider>
       </body>
     </html>
   );

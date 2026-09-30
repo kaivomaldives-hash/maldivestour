@@ -1,8 +1,10 @@
 import Link from "next/link";
 
+import { Price } from "@/components/currency/price";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { MediaImage } from "@/components/ui/media-image";
 import { ACCOMMODATION_TYPE_SEGMENT, type AccommodationSummary } from "@/lib/accommodations/types";
+import { isSupportedCurrency } from "@/lib/currency/types";
 
 const PRICE_TIER_LABEL: Record<string, string> = {
   budget: "Budget",
@@ -13,6 +15,7 @@ const PRICE_TIER_LABEL: Record<string, string> = {
 
 export function AccommodationCard({ accommodation }: { accommodation: AccommodationSummary }) {
   const href = `/maldives/${ACCOMMODATION_TYPE_SEGMENT[accommodation.accommodationType]}/${accommodation.slug}/`;
+  const priceFromCurrency = accommodation.priceFromCurrency ?? "USD";
 
   return (
     <li className={CARD_CLASS}>
@@ -35,13 +38,20 @@ export function AccommodationCard({ accommodation }: { accommodation: Accommodat
           place the task spec allows a price at all. The property's own
           detail page never shows one (see accommodation-detail-page.tsx's
           Request-an-Offer CTA) since a single legacy snapshot price isn't
-          a live rate. */}
+          a live rate. <Price> only changes the *display* currency (Task 19
+          §21-24) -- this remains a "from" indicator, never a bookable rate. */}
       {accommodation.priceFrom !== null && (
         <p className="mt-2 text-sm text-neutral-600">
           From{" "}
           <span className="font-semibold text-ocean-900">
-            {accommodation.priceFromCurrency === "USD" ? "$" : `${accommodation.priceFromCurrency} `}
-            {accommodation.priceFrom.toLocaleString()}
+            {isSupportedCurrency(priceFromCurrency) ? (
+              <Price baseAmount={accommodation.priceFrom} baseCurrency={priceFromCurrency} />
+            ) : (
+              <>
+                {priceFromCurrency === "USD" ? "$" : `${priceFromCurrency} `}
+                {accommodation.priceFrom.toLocaleString()}
+              </>
+            )}
           </span>{" "}
           / night
         </p>

@@ -1,0 +1,72 @@
+{
+  "defaultLocale": "en",
+  "locales": [
+    {
+      "code": "en",
+      "name": "English",
+      "nativeName": "English",
+      "urlPrefix": null,
+      "status": "default",
+      "note": "Canonical, unprefixed. Every existing /maldives/... route. Never redirected to /en/."
+    },
+    {
+      "code": "de",
+      "name": "German",
+      "nativeName": "Deutsch",
+      "urlPrefix": "/de",
+      "status": "initial-rollout",
+      "note": "First language with genuinely published content (homepage + Maldives hub). Largest non-English European source market for Maldives tourism."
+    },
+    {
+      "code": "fr",
+      "name": "French",
+      "nativeName": "Français",
+      "urlPrefix": "/fr",
+      "status": "architecture-only",
+      "note": "Schema, routing, and hreflang slots ready. No published translations yet."
+    },
+    {
+      "code": "es",
+      "name": "Spanish",
+      "nativeName": "Español",
+      "urlPrefix": "/es",
+      "status": "architecture-only"
+    },
+    {
+      "code": "it",
+      "name": "Italian",
+      "nativeName": "Italiano",
+      "urlPrefix": "/it",
+      "status": "architecture-only"
+    },
+    {
+      "code": "ru",
+      "name": "Russian",
+      "nativeName": "Русский",
+      "urlPrefix": "/ru",
+      "status": "architecture-only",
+      "note": "A legacy /ru/ directory exists in release/public_html/ but is an unrelated 'Opto Maldives' classifieds sub-site (lang=\"en\" throughout), not a translated tourism site -- confirmed not reusable."
+    },
+    {
+      "code": "zh",
+      "name": "Chinese",
+      "nativeName": "中文",
+      "urlPrefix": "/zh",
+      "status": "architecture-only"
+    },
+    {
+      "code": "ja",
+      "name": "Japanese",
+      "nativeName": "日本語",
+      "urlPrefix": "/ja",
+      "status": "architecture-only"
+    },
+    {
+      "code": "ko",
+      "name": "Korean",
+      "nativeName": "한국어",
+      "urlPrefix": "/ko",
+      "status": "architecture-only"
+    }
+  ]
+}

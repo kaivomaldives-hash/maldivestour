@@ -1,3 +1,5 @@
+import { DEFAULT_LOCALE, SUPPORTED_LOCALES, localizedPath, type Locale } from "@/lib/i18n/locales";
+
 const DEFAULT_SITE_URL = "https://maldivestour.guide";
 
 export function getSiteUrl(): string {
@@ -9,6 +11,38 @@ export function canonicalUrl(path: string): string {
   const normalized = `/${path.replace(/^\/+/, "").replace(/\/+$/, "")}/`;
   return `${getSiteUrl()}${normalized === "//" ? "/" : normalized}`;
 }
+
+/** Locale-aware canonical: English is identical to canonicalUrl() (no
+ * prefix, unchanged behavior for every existing caller); other locales
+ * get their `/xx/...` prefix. Every localized page canonicalizes to
+ * *itself*, never to the English URL (Task 19 §15) — this is the only
+ * function that should ever be used to build a canonical for a page
+ * under src/app/[locale]/. */
+export function localizedCanonicalUrl(locale: Locale, englishPath: string): string {
+  return canonicalUrl(localizedPath(locale, englishPath));
+}
+
+/** hreflang alternates for a page, built ONLY from locales that actually
+ * have a published translation (never a fabricated URL for an
+ * unpublished/draft locale — Task 19 §14). Always reciprocal by
+ * construction: every locale in `publishedLocales` gets an entry
+ * pointing at every other locale's real URL, English included, plus an
+ * x-default pointing at English. `englishPath` is the canonical
+ * (unprefixed) path this whole page family shares, e.g. "/maldives/". */
+export function hreflangAlternates(englishPath: string, publishedLocales: Locale[]): Record<string, string> {
+  const locales: Locale[] = [DEFAULT_LOCALE, ...publishedLocales.filter((l) => l !== DEFAULT_LOCALE)];
+  const alternates: Record<string, string> = {};
+  for (const locale of locales) {
+    alternates[locale] = localizedCanonicalUrl(locale, englishPath);
+  }
+  alternates["x-default"] = localizedCanonicalUrl(DEFAULT_LOCALE, englishPath);
+  return alternates;
+}
+
+/** All supported locale codes — re-exported here so page-level
+ * generateStaticParams/generateMetadata call sites don't need a second
+ * import from src/lib/i18n/locales just for the list. */
+export { SUPPORTED_LOCALES };
 
 /** BreadcrumbList structured data from the same {label, href} pairs a
  * page already passes to <PageHero breadcrumbs=.../> — real, visible

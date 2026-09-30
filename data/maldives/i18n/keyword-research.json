@@ -1,0 +1,30 @@
+{
+  "_meta": {
+    "note": "Only 'de' has real, web-researched entries — see SOURCES.md for search dates and URLs. Every other locale is a placeholder with researched=false and must not be treated as verified terminology. No search volumes are included anywhere in this file; none were found from a verifiable public source, and per this task's own instructions none are invented.",
+    "researchedLocales": ["de"]
+  },
+  "de": {
+    "researched": true,
+    "maldives": { "primary": "Malediven", "secondary": ["Malediven Urlaub", "Malediven Reisen"] },
+    "travel": { "primary": "Malediven Reisen", "secondary": ["Malediven Reise", "Reiseziel Malediven"] },
+    "vacation": { "primary": "Malediven Urlaub", "secondary": ["Urlaub Malediven", "Malediven Ferien"] },
+    "hotels": { "primary": "Malediven Hotels", "secondary": ["Hotel Malediven"] },
+    "resorts": { "primary": "Malediven Resort", "secondary": ["Malediven Resorts", "Insel-Resort Malediven"] },
+    "islands": { "primary": "Malediven Inseln", "secondary": ["Inseln Malediven", "Atolle Malediven"] },
+    "activities": { "primary": "Aktivitäten Malediven", "secondary": ["Malediven Erlebnisse", "Ausflüge Malediven"] },
+    "fishing": { "primary": "Angeln Malediven", "secondary": ["Hochseeangeln Malediven", "Hochseefischen Malediven", "Schleppangeln Malediven"] },
+    "diving": { "primary": "Tauchen Malediven", "secondary": ["Malediven Tauchreisen", "Tauchsafari Malediven", "Tauchurlaub Malediven"] },
+    "surfing": { "primary": "Surfen Malediven", "secondary": ["Malediven Surfspots", "Surfcamp Malediven"] },
+    "packages": { "primary": "Malediven Pauschalreise", "secondary": ["Malediven Reisepakete", "Malediven Angebote"] },
+    "honeymoon": { "primary": "Flitterwochen Malediven", "secondary": ["Malediven Flitterwochen", "Honeymoon Malediven"] },
+    "transfers": { "primary": "Malediven Transfer", "secondary": ["Speedboot Transfer Malediven", "Wasserflugzeug Malediven"] },
+    "travelGuide": { "primary": "Malediven Reiseführer", "secondary": ["Malediven Reisetipps", "Malediven Ratgeber"] }
+  },
+  "fr": { "researched": false, "note": "Not yet researched — placeholder only. Do not publish French content using unresearched terms." },
+  "es": { "researched": false, "note": "Not yet researched — placeholder only." },
+  "it": { "researched": false, "note": "Not yet researched — placeholder only." },
+  "ru": { "researched": false, "note": "Not yet researched — placeholder only." },
+  "zh": { "researched": false, "note": "Not yet researched — placeholder only." },
+  "ja": { "researched": false, "note": "Not yet researched — placeholder only." },
+  "ko": { "researched": false, "note": "Not yet researched — placeholder only." }
+}

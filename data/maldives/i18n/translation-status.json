@@ -1,0 +1,37 @@
+{
+  "_meta": {
+    "note": "This is the ROLLOUT PLAN — which page/locale combinations are prioritized and in what order. The live, authoritative publish status is the `translation_status` column on the `translations`/`page_translations` tables in Supabase, not this file. Query the database for current real status; this file only documents intent/priority.",
+    "statusValues": ["draft", "machine_draft", "review_required", "published"]
+  },
+  "rolloutPriority": [
+    "homepage",
+    "maldives-hub",
+    "fishing-hub",
+    "diving-hub",
+    "activities-hub",
+    "packages-hub",
+    "stays-hub",
+    "travel-guide-hub",
+    "surfing-hub"
+  ],
+  "asOf2026-09-30": {
+    "de": {
+      "homepage": "published",
+      "maldives-hub": "published",
+      "fishing-hub": "not_started",
+      "diving-hub": "not_started",
+      "activities-hub": "not_started",
+      "packages-hub": "not_started",
+      "stays-hub": "not_started",
+      "travel-guide-hub": "not_started",
+      "surfing-hub": "not_started"
+    },
+    "fr": { "note": "Architecture ready. Zero pages translated." },
+    "es": { "note": "Architecture ready. Zero pages translated." },
+    "it": { "note": "Architecture ready. Zero pages translated." },
+    "ru": { "note": "Architecture ready. Zero pages translated." },
+    "zh": { "note": "Architecture ready. Zero pages translated." },
+    "ja": { "note": "Architecture ready. Zero pages translated." },
+    "ko": { "note": "Architecture ready. Zero pages translated." }
+  }
+}

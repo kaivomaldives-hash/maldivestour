@@ -8,10 +8,11 @@ import { getArticles } from "@/lib/articles/repository";
 import { getAttractions } from "@/lib/attractions/repository";
 import { articleHref } from "@/lib/articles/types";
 import { getDiveSites } from "@/lib/diving/repository";
+import { getPublishedLocalesForPage } from "@/lib/i18n/repository";
 import { getAtolls, getIslands } from "@/lib/locations/repository";
 import { getPackages } from "@/lib/packages/repository";
 import { getProviders } from "@/lib/providers/repository";
-import { getSiteUrl } from "@/lib/seo/site";
+import { getSiteUrl, hreflangAlternates, localizedCanonicalUrl } from "@/lib/seo/site";
 import { getSpeedboats } from "@/lib/speedboats/repository";
 import { getSurfBreaks } from "@/lib/surfing/repository";
 import { getTransferRoutes } from "@/lib/transfers/repository";
@@ -82,7 +83,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl();
   const url = (path: string) => `${siteUrl}${path}`;
 
-  const [atolls, islands, accommodations, activities, attractions, diveSites, surfBreaks, packages, transferRoutes, articles, providers, speedboats] = await Promise.all([
+  const [
+    atolls,
+    islands,
+    accommodations,
+    activities,
+    attractions,
+    diveSites,
+    surfBreaks,
+    packages,
+    transferRoutes,
+    articles,
+    providers,
+    speedboats,
+    homepageLocales,
+    maldivesHubLocales,
+  ] = await Promise.all([
     getAtolls(),
     fetchAllPages((page) => getIslands({ page, pageSize: PAGE_SIZE })),
     fetchAllPages((page) => getAccommodations({ page, pageSize: PAGE_SIZE })),
@@ -95,9 +111,40 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     fetchAllPages((page) => getArticles({ page, pageSize: PAGE_SIZE })),
     fetchAllPages((page) => getProviders({ page, pageSize: PAGE_SIZE })),
     getSpeedboats(),
+    // Task 19: only these two page_keys have any published translation
+    // today (the [locale] route tree 404s everything else), so this is
+    // the entire locale-aware surface for now -- not a placeholder for
+    // pages that don't exist yet.
+    getPublishedLocalesForPage("homepage"),
+    getPublishedLocalesForPage("maldives-hub"),
   ]);
 
-  const entries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => ({ url: url(path), changeFrequency: "weekly", priority: path === "/" || path === "/maldives/" ? 1 : 0.6 }));
+  const entries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => {
+    const isHomepage = path === "/";
+    const isMaldivesHub = path === "/maldives/";
+    const publishedLocales = isHomepage ? homepageLocales : isMaldivesHub ? maldivesHubLocales : [];
+    return {
+      url: url(path),
+      changeFrequency: "weekly",
+      priority: isHomepage || isMaldivesHub ? 1 : 0.6,
+      ...(publishedLocales.length > 0 ? { alternates: { languages: hreflangAlternates(path, publishedLocales) } } : {}),
+    };
+  });
+
+  // Reciprocal locale entries -- each published /{locale}/... page gets
+  // its own sitemap row with the same hreflang set pointed back at it
+  // (Task 19 §41/§48: alternates must be reciprocal, never one-directional).
+  for (const locale of homepageLocales) {
+    entries.push({ url: localizedCanonicalUrl(locale, "/"), changeFrequency: "weekly", priority: 0.9, alternates: { languages: hreflangAlternates("/", homepageLocales) } });
+  }
+  for (const locale of maldivesHubLocales) {
+    entries.push({
+      url: localizedCanonicalUrl(locale, "/maldives/"),
+      changeFrequency: "weekly",
+      priority: 0.9,
+      alternates: { languages: hreflangAlternates("/maldives/", maldivesHubLocales) },
+    });
+  }
 
   for (const a of atolls) entries.push({ url: url(`/maldives/atolls/${a.slug}/`), changeFrequency: "monthly", priority: 0.7 });
   for (const i of islands) entries.push({ url: url(`/maldives/islands/${i.slug}/`), changeFrequency: "monthly", priority: 0.6 });

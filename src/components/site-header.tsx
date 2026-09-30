@@ -6,8 +6,11 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import { SearchBox } from "@/components/search/search-box";
+import { CurrencySelector } from "@/components/currency/currency-selector";
+import { LanguageSwitcher } from "@/components/i18n/language-switcher";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { CloseIcon, MenuIcon, SearchIcon } from "@/components/ui/icons";
+import type { Locale } from "@/lib/i18n/locales";
 
 const PRIMARY_NAV = [
   { label: "Maldives", href: "/maldives/" },
@@ -33,7 +36,7 @@ function isActive(pathname: string, href: string): boolean {
 
 type MobilePanel = "none" | "nav" | "search";
 
-export function SiteHeader() {
+export function SiteHeader({ availableLocales }: { availableLocales: Locale[] }) {
   const pathname = usePathname();
   const [mobilePanel, setMobilePanel] = useState<MobilePanel>("none");
 
@@ -84,8 +87,12 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="hidden shrink-0 items-center gap-3 lg:flex">
+        <div className="hidden shrink-0 items-center gap-2 lg:flex">
           {SEARCH_ENABLED && <SearchBox variant="header" placeholder="Search MTG…" />}
+          {/* Language and currency are logically separate controls (Task 19
+              §51) even though they sit side by side here. */}
+          <LanguageSwitcher publishedLocales={availableLocales} />
+          <CurrencySelector />
           <a
             href={WHATSAPP_URL}
             target="_blank"
@@ -147,6 +154,10 @@ export function SiteHeader() {
                 </Link>
               );
             })}
+            <div className="mt-2 flex items-center gap-2 border-t border-neutral-200 pt-3">
+              <LanguageSwitcher publishedLocales={availableLocales} />
+              <CurrencySelector />
+            </div>
             <a
               href={WHATSAPP_URL}
               target="_blank"

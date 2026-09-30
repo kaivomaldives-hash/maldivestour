@@ -78,6 +78,10 @@ export default async function AdminBookingDetailPage({ params }: { params: Promi
               <Field label="Estimated price" value={booking.estimatedPrice != null ? `${booking.currency} ${booking.estimatedPrice}` : null} />
               <Field label="Quoted price" value={booking.quotedPrice != null ? `${booking.currency} ${booking.quotedPrice}` : null} />
               <Field label="Notification status" value={booking.notificationStatus} />
+              <Field
+                label="Confirmation email"
+                value={booking.confirmationEmailSentAt ? `Sent ${new Date(booking.confirmationEmailSentAt).toLocaleString()}` : "Not sent yet"}
+              />
               <Field label="Submitted" value={new Date(booking.createdAt).toLocaleString()} />
               <Field label="Last updated" value={new Date(booking.updatedAt).toLocaleString()} />
             </dl>

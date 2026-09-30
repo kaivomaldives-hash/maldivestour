@@ -71,6 +71,13 @@ export interface AdminBookingDetail extends AdminBookingListItem {
   currency: string;
   internalNotes: string | null;
   notificationStatus: string;
+  /** Set once, by sendBookingConfirmedEmail() (src/lib/bookings/
+   * notifications.ts), the first time this booking is moved to
+   * 'confirmed' — null until then, regardless of how many times the
+   * status has changed. Distinct from notificationStatus, which tracks
+   * the earlier "we received your request" email sent at booking-creation
+   * time, not this one. */
+  confirmationEmailSentAt: string | null;
   updatedAt: string;
 }
 
@@ -103,6 +110,7 @@ interface BookingRow {
   status: BookingStatus;
   source: string | null;
   notification_status: string;
+  confirmation_email_sent_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -223,6 +231,7 @@ export async function getBookingByIdAdmin(id: string): Promise<AdminBookingDetai
     currency: row.currency,
     internalNotes: row.internal_notes,
     notificationStatus: row.notification_status,
+    confirmationEmailSentAt: row.confirmation_email_sent_at,
     updatedAt: row.updated_at,
   };
 }

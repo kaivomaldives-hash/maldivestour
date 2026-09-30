@@ -239,3 +239,79 @@ export async function sendBookingNotifications(input: BookingNotificationInput):
     console.error("[bookings] sendBookingNotifications threw unexpectedly:", err instanceof Error ? err.message : String(err));
   }
 }
+
+export interface BookingConfirmedEmailInput {
+  bookingId: string;
+  bookingReference: string;
+  customerName: string;
+  customerEmail: string;
+  productTitle: string;
+  originTitle: string | null;
+  destinationTitle: string | null;
+  travelDate: string | null;
+  travelTime: string | null;
+}
+
+/**
+ * Fires once, when an admin moves a booking into 'confirmed' status (see
+ * updateBookingStatus() in src/lib/admin/bookings-actions.ts, the only
+ * caller) — a different email from sendBookingNotifications()'s
+ * "we received your request" message sent at booking-creation time.
+ * Idempotency is enforced by the caller checking
+ * `bookings.confirmation_email_sent_at is null` before invoking this, and
+ * this function only sets that column on a confirmed-successful send —
+ * never on a failed attempt — so a transient Resend failure can still be
+ * retried by a later status re-save rather than being permanently
+ * skipped. Uses the service-role admin client for the same reason
+ * sendBookingNotifications() above does: `booking_notifications` has no
+ * staff RLS insert policy (service_role only, by design), and this path
+ * is already gated by requireStaff() in the calling server action.
+ */
+export async function sendBookingConfirmedEmail(input: BookingConfirmedEmailInput): Promise<void> {
+  try {
+    const admin = createAdminClient();
+
+    const dateLine = input.travelDate ? `${input.travelDate}${input.travelTime ? ` at ${input.travelTime}` : ""}` : "To be confirmed with our team";
+
+    const html = `
+      <p>Hi ${escapeHtml(input.customerName)},</p>
+      <p>Good news — your booking is now <strong>confirmed</strong>.</p>
+      <p><strong>Reference:</strong> ${escapeHtml(input.bookingReference)}<br/>
+      <strong>Booking:</strong> ${escapeHtml(input.productTitle)}<br/>
+      ${input.originTitle ? `<strong>Pickup location:</strong> ${escapeHtml(input.originTitle)}<br/>` : ""}
+      ${input.destinationTitle ? `<strong>Drop-off location:</strong> ${escapeHtml(input.destinationTitle)}<br/>` : ""}
+      <strong>Date/time:</strong> ${dateLine}<br/>
+      <strong>Status:</strong> Confirmed</p>
+      <p>Questions in the meantime? WhatsApp us on +${WHATSAPP_NUMBER} or reply to this email.</p>
+      <p>— ${SITE_NAME}</p>
+    `;
+
+    const result = await sendResendEmail(input.customerEmail, `Booking confirmed — ${input.bookingReference}`, html);
+    const nowIso = new Date().toISOString();
+
+    const { error: insertError } = await admin.from("booking_notifications").insert({
+      booking_id: input.bookingId,
+      notification_type: "customer_confirmation",
+      recipient_email: input.customerEmail,
+      status: result.ok ? "sent" : "failed",
+      provider_message_id: result.providerMessageId ?? null,
+      error_message: result.ok ? null : (result.error ?? null),
+      sent_at: result.ok ? nowIso : null,
+    } as unknown as never);
+    if (insertError) {
+      console.error("[bookings] failed to record confirmation booking_notifications row:", insertError.message);
+    }
+
+    if (result.ok) {
+      const { error: updateError } = await admin
+        .from("bookings")
+        .update({ confirmation_email_sent_at: nowIso } as unknown as never)
+        .eq("id", input.bookingId);
+      if (updateError) {
+        console.error("[bookings] failed to set bookings.confirmation_email_sent_at:", updateError.message);
+      }
+    }
+  } catch (err) {
+    console.error("[bookings] sendBookingConfirmedEmail threw unexpectedly:", err instanceof Error ? err.message : String(err));
+  }
+}

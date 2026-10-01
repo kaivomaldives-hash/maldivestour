@@ -60,6 +60,10 @@ export function AccommodationForm({ initial, providerOptions }: { initial?: Acco
   const [slugTouched, setSlugTouched] = useState(Boolean(initial));
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  // Set the instant a fresh create succeeds, so Images can appear in place
+  // without waiting on navigation to the edit page (Task 23).
+  const [createdId, setCreatedId] = useState<string | null>(null);
+  const nodeId = initial?.id ?? createdId;
 
   const wasPublished = initial?.core.status === "published";
   const slugChanged = initial ? core.slug !== initial.core.slug : false;
@@ -67,19 +71,20 @@ export function AccommodationForm({ initial, providerOptions }: { initial?: Acco
   function save() {
     setError(null);
     startTransition(async () => {
-      const result = initial ? await updateAccommodation(initial.id, core, fields) : await createAccommodation(core, fields);
+      const result = nodeId ? await updateAccommodation(nodeId, core, fields) : await createAccommodation(core, fields);
       if (!result.ok) {
         setError(result.error ?? "Something went wrong.");
         return;
       }
-      const id = initial?.id ?? (result as { id?: string }).id;
+      const id = nodeId ?? (result as { id?: string }).id;
       if (id) {
         await setPrimaryLocation(id, location?.id ?? null, `/admin/accommodations/${id}`);
       }
-      if (initial) {
-        router.push("/admin/accommodations");
+      if (id && !nodeId) {
+        setCreatedId(id);
+        router.replace(`/admin/accommodations/${id}`);
       } else {
-        router.push(id ? `/admin/accommodations/${id}` : "/admin/accommodations");
+        router.push("/admin/accommodations");
       }
       router.refresh();
     });
@@ -319,7 +324,11 @@ export function AccommodationForm({ initial, providerOptions }: { initial?: Acco
         </label>
       </section>
 
-      {initial && <NodeMediaManager nodeId={initial.id} items={initial.media} revalidatePath={`/admin/accommodations/${initial.id}`} />}
+      {nodeId ? (
+        <NodeMediaManager nodeId={nodeId} items={initial?.media ?? []} revalidatePath={`/admin/accommodations/${nodeId}`} />
+      ) : (
+        <p className="text-sm text-neutral-500">Save the accommodation first — you can add images right after.</p>
+      )}
 
       {error && (
         <p role="alert" className="text-sm text-red-600">
@@ -329,9 +338,9 @@ export function AccommodationForm({ initial, providerOptions }: { initial?: Acco
 
       <div className="flex items-center gap-3">
         <Button onClick={save} disabled={isPending}>
-          {isPending ? "Saving…" : initial ? "Save changes" : "Create accommodation"}
+          {isPending ? "Saving…" : nodeId ? "Save changes" : "Create accommodation"}
         </Button>
-        {initial && <DeleteNodeButton nodeId={initial.id} redirectTo="/admin/accommodations" />}
+        {nodeId && <DeleteNodeButton nodeId={nodeId} redirectTo="/admin/accommodations" />}
       </div>
     </div>
   );

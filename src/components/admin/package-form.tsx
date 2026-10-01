@@ -66,6 +66,10 @@ export function PackageForm({
   const [slugTouched, setSlugTouched] = useState(Boolean(initial));
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  // Set the instant a fresh create succeeds, so Images/Itinerary can appear
+  // in place without waiting on navigation to the edit page (Task 23).
+  const [createdId, setCreatedId] = useState<string | null>(null);
+  const nodeId = initial?.id ?? createdId;
 
   const wasPublished = initial?.core.status === "published";
   const slugChanged = initial ? core.slug !== initial.core.slug : false;
@@ -73,12 +77,12 @@ export function PackageForm({
   function save() {
     setError(null);
     startTransition(async () => {
-      const result = initial ? await updatePackage(initial.id, core, fields) : await createPackage(core, fields);
+      const result = nodeId ? await updatePackage(nodeId, core, fields) : await createPackage(core, fields);
       if (!result.ok) {
         setError(result.error ?? "Something went wrong.");
         return;
       }
-      const id = initial?.id ?? (result as { id?: string }).id;
+      const id = nodeId ?? (result as { id?: string }).id;
       if (id) {
         const revalidateAt = `/admin/packages/${id}`;
         await setPrimaryLocation(id, location?.id ?? null, revalidateAt);
@@ -94,13 +98,13 @@ export function PackageForm({
           setNodeCategories(id, themeIds, revalidateAt),
         ]);
       }
-      if (initial) {
-        router.push("/admin/packages");
-        router.refresh();
+      if (id && !nodeId) {
+        setCreatedId(id);
+        router.replace(`/admin/packages/${id}`);
       } else {
-        router.push(id ? `/admin/packages/${id}` : "/admin/packages");
-        router.refresh();
+        router.push("/admin/packages");
       }
+      router.refresh();
     });
   }
 
@@ -265,7 +269,11 @@ export function PackageForm({
         </label>
       </section>
 
-      {initial && <NodeMediaManager nodeId={initial.id} items={initial.media} revalidatePath={`/admin/packages/${initial.id}`} />}
+      {nodeId ? (
+        <NodeMediaManager nodeId={nodeId} items={initial?.media ?? []} revalidatePath={`/admin/packages/${nodeId}`} />
+      ) : (
+        <p className="text-sm text-neutral-500">Save the package first — you can add images right after.</p>
+      )}
 
       {error && (
         <p role="alert" className="text-sm text-red-600">
@@ -275,12 +283,12 @@ export function PackageForm({
 
       <div className="flex items-center gap-3">
         <Button onClick={save} disabled={isPending}>
-          {isPending ? "Saving…" : initial ? "Save changes" : "Create package"}
+          {isPending ? "Saving…" : nodeId ? "Save changes" : "Create package"}
         </Button>
-        {initial && <DeleteNodeButton nodeId={initial.id} redirectTo="/admin/packages" />}
+        {nodeId && <DeleteNodeButton nodeId={nodeId} redirectTo="/admin/packages" />}
       </div>
 
-      {initial && <PackageItineraryEditor packageId={initial.id} stages={initial.itineraryStages} />}
+      {nodeId && <PackageItineraryEditor packageId={nodeId} stages={initial?.itineraryStages ?? []} />}
     </div>
   );
 }

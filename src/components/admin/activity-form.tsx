@@ -68,6 +68,10 @@ export function ActivityForm({
   const [slugTouched, setSlugTouched] = useState(Boolean(initial));
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  // Set the instant a fresh create succeeds, so Images can appear in place
+  // without waiting on navigation to the edit page (Task 23).
+  const [createdId, setCreatedId] = useState<string | null>(null);
+  const nodeId = initial?.id ?? createdId;
 
   const wasPublished = initial?.core.status === "published";
   const slugChanged = initial ? core.slug !== initial.core.slug : false;
@@ -75,21 +79,22 @@ export function ActivityForm({
   function save() {
     setError(null);
     startTransition(async () => {
-      const result = initial ? await updateActivity(initial.id, core, fields) : await createActivity(core, fields);
+      const result = nodeId ? await updateActivity(nodeId, core, fields) : await createActivity(core, fields);
       if (!result.ok) {
         setError(result.error ?? "Something went wrong.");
         return;
       }
-      const id = initial?.id ?? (result as { id?: string }).id;
+      const id = nodeId ?? (result as { id?: string }).id;
       if (id) {
         const revalidateAt = `/admin/activities/${id}`;
         await setPrimaryLocation(id, location?.id ?? null, revalidateAt);
         await setNodeCategories(id, activityTypeIds, revalidateAt);
       }
-      if (initial) {
-        router.push("/admin/activities");
+      if (id && !nodeId) {
+        setCreatedId(id);
+        router.replace(`/admin/activities/${id}`);
       } else {
-        router.push(id ? `/admin/activities/${id}` : "/admin/activities");
+        router.push("/admin/activities");
       }
       router.refresh();
     });
@@ -306,7 +311,11 @@ export function ActivityForm({
         </label>
       </section>
 
-      {initial && <NodeMediaManager nodeId={initial.id} items={initial.media} revalidatePath={`/admin/activities/${initial.id}`} />}
+      {nodeId ? (
+        <NodeMediaManager nodeId={nodeId} items={initial?.media ?? []} revalidatePath={`/admin/activities/${nodeId}`} />
+      ) : (
+        <p className="text-sm text-neutral-500">Save the activity first — you can add images right after.</p>
+      )}
 
       {error && (
         <p role="alert" className="text-sm text-red-600">
@@ -316,9 +325,9 @@ export function ActivityForm({
 
       <div className="flex items-center gap-3">
         <Button onClick={save} disabled={isPending}>
-          {isPending ? "Saving…" : initial ? "Save changes" : "Create activity"}
+          {isPending ? "Saving…" : nodeId ? "Save changes" : "Create activity"}
         </Button>
-        {initial && <DeleteNodeButton nodeId={initial.id} redirectTo="/admin/activities" />}
+        {nodeId && <DeleteNodeButton nodeId={nodeId} redirectTo="/admin/activities" />}
       </div>
     </div>
   );

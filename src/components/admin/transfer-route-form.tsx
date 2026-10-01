@@ -65,6 +65,10 @@ export function TransferRouteForm({
   const [slugTouched, setSlugTouched] = useState(Boolean(initial));
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  // Set the instant a fresh create succeeds, so Images/Services can appear
+  // in place without waiting on navigation to the edit page (Task 23).
+  const [createdId, setCreatedId] = useState<string | null>(null);
+  const nodeId = initial?.id ?? createdId;
 
   const wasPublished = initial?.core.status === "published";
   const slugChanged = initial ? core.slug !== initial.core.slug : false;
@@ -77,22 +81,22 @@ export function TransferRouteForm({
     }
     const mergedFields: TransferRouteFieldsAdmin = { ...fields, originLocationId: origin.id, destinationLocationId: destination.id };
     startTransition(async () => {
-      const result = initial ? await updateTransferRoute(initial.id, core, mergedFields) : await createTransferRoute(core, mergedFields);
+      const result = nodeId ? await updateTransferRoute(nodeId, core, mergedFields) : await createTransferRoute(core, mergedFields);
       if (!result.ok) {
         setError(result.error ?? "Something went wrong.");
         return;
       }
-      const id = initial?.id ?? (result as { id?: string }).id;
+      const id = nodeId ?? (result as { id?: string }).id;
       if (id) {
         await setNodeCategories(id, categoryIds, `/admin/transfers/${id}`);
       }
-      if (initial) {
-        router.push("/admin/transfers");
-        router.refresh();
+      if (id && !nodeId) {
+        setCreatedId(id);
+        router.replace(`/admin/transfers/${id}`);
       } else {
-        router.push(id ? `/admin/transfers/${id}` : "/admin/transfers");
-        router.refresh();
+        router.push("/admin/transfers");
       }
+      router.refresh();
     });
   }
 
@@ -221,7 +225,11 @@ export function TransferRouteForm({
         </label>
       </section>
 
-      {initial && <NodeMediaManager nodeId={initial.id} items={initial.media} revalidatePath={`/admin/transfers/${initial.id}`} />}
+      {nodeId ? (
+        <NodeMediaManager nodeId={nodeId} items={initial?.media ?? []} revalidatePath={`/admin/transfers/${nodeId}`} />
+      ) : (
+        <p className="text-sm text-neutral-500">Save the route first — you can add images right after.</p>
+      )}
 
       {error && (
         <p role="alert" className="text-sm text-red-600">
@@ -231,12 +239,12 @@ export function TransferRouteForm({
 
       <div className="flex items-center gap-3">
         <Button onClick={save} disabled={isPending}>
-          {isPending ? "Saving…" : initial ? "Save changes" : "Create route"}
+          {isPending ? "Saving…" : nodeId ? "Save changes" : "Create route"}
         </Button>
-        {initial && <DeleteNodeButton nodeId={initial.id} redirectTo="/admin/transfers" />}
+        {nodeId && <DeleteNodeButton nodeId={nodeId} redirectTo="/admin/transfers" />}
       </div>
 
-      {initial && <TransferServicesManager routeId={initial.id} services={initial.services} providerOptions={providerOptions} />}
+      {nodeId && <TransferServicesManager routeId={nodeId} services={initial?.services ?? []} providerOptions={providerOptions} />}
     </div>
   );
 }

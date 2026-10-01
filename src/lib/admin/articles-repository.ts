@@ -15,9 +15,10 @@ import { createClient } from "@/lib/supabase/server";
 
 const PAGE_SIZE = 30;
 
-const NODE_ARTICLE_SELECT = "id, slug, title, summary, status, meta_title, meta_description, articles!inner(body, reading_time_minutes)";
+const NODE_ARTICLE_SELECT =
+  "id, slug, title, summary, status, meta_title, meta_description, articles!inner(body, reading_time_minutes, video_youtube_id)";
 
-type ArticleFieldsRow = { body: string; reading_time_minutes: number | null };
+type ArticleFieldsRow = { body: string; reading_time_minutes: number | null; video_youtube_id: string | null };
 
 type NodeArticleRow = {
   id: string;
@@ -33,6 +34,7 @@ type NodeArticleRow = {
 export interface ArticleFieldsAdmin {
   body: string;
   readingTimeMinutes: number | null;
+  videoYoutubeId: string | null;
 }
 
 export interface AdminArticleItem {
@@ -57,7 +59,7 @@ function bareOf(row: NodeArticleRow): AdminArticleItem | null {
     status: row.status,
     metaTitle: row.meta_title,
     metaDescription: row.meta_description,
-    fields: { body: a.body, readingTimeMinutes: a.reading_time_minutes },
+    fields: { body: a.body, readingTimeMinutes: a.reading_time_minutes, videoYoutubeId: a.video_youtube_id },
   };
 }
 

@@ -26,6 +26,7 @@ type MediaAssetRow = {
   media_type: "image" | "youtube";
   storage_path: string | null;
   youtube_id: string | null;
+  title: string | null;
   alt_text: string | null;
   credit: string | null;
   width: number | null;
@@ -38,6 +39,7 @@ function mediaAssetOf(row: MediaAssetRow): MediaAsset {
     mediaType: row.media_type,
     storagePath: row.storage_path,
     youtubeId: row.youtube_id,
+    title: row.title,
     altText: row.alt_text,
     credit: row.credit,
     width: row.width,
@@ -55,7 +57,7 @@ export async function getMediaAssetsByIds(ids: string[]): Promise<Map<string, Me
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("media_assets")
-    .select("id, media_type, storage_path, youtube_id, alt_text, credit, width, height")
+    .select("id, media_type, storage_path, youtube_id, title, alt_text, credit, width, height")
     .in("id", ids)
     .returns<MediaAssetRow[]>();
 

@@ -18,6 +18,7 @@ export function NodeMediaManager({ nodeId, items, revalidatePath }: { nodeId: st
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [role, setRole] = useState<MediaRole>("gallery");
+  const [title, setTitle] = useState("");
   const [altText, setAltText] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -32,6 +33,7 @@ export function NodeMediaManager({ nodeId, items, revalidatePath }: { nodeId: st
     const formData = new FormData();
     formData.set("file", file);
     formData.set("role", role);
+    formData.set("title", title);
     formData.set("altText", altText);
     startTransition(async () => {
       const result = await uploadAndAttachMedia(nodeId, formData, revalidatePath);
@@ -40,6 +42,7 @@ export function NodeMediaManager({ nodeId, items, revalidatePath }: { nodeId: st
         return;
       }
       if (fileInputRef.current) fileInputRef.current.value = "";
+      setTitle("");
       setAltText("");
       router.refresh();
     });
@@ -76,16 +79,24 @@ export function NodeMediaManager({ nodeId, items, revalidatePath }: { nodeId: st
             ) : (
               <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {groupItems.map((item) => (
-                  <li key={item.asset.id} className="relative overflow-hidden rounded-xl border border-neutral-200">
-                    <MediaImage asset={item.asset} alt={item.asset.altText ?? ""} aspectClassName="aspect-square" />
-                    <button
-                      type="button"
-                      onClick={() => remove(item.asset.id, item.role)}
-                      disabled={isPending}
-                      className="absolute right-1 top-1 rounded-full bg-black/60 px-2 py-1 text-xs font-medium text-white transition-colors hover:bg-black/80 disabled:opacity-50"
-                    >
-                      Remove
-                    </button>
+                  <li key={item.asset.id} className="overflow-hidden rounded-xl border border-neutral-200">
+                    <div className="relative">
+                      <MediaImage asset={item.asset} alt={item.asset.altText ?? ""} aspectClassName="aspect-square" />
+                      <button
+                        type="button"
+                        onClick={() => remove(item.asset.id, item.role)}
+                        disabled={isPending}
+                        className="absolute right-1 top-1 rounded-full bg-black/60 px-2 py-1 text-xs font-medium text-white transition-colors hover:bg-black/80 disabled:opacity-50"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                    {(item.asset.title || item.asset.altText) && (
+                      <div className="px-2 py-1.5 text-xs text-neutral-500">
+                        {item.asset.title && <p className="truncate font-medium text-neutral-700">{item.asset.title}</p>}
+                        {item.asset.altText && <p className="truncate">Alt: {item.asset.altText}</p>}
+                      </div>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -107,10 +118,20 @@ export function NodeMediaManager({ nodeId, items, revalidatePath }: { nodeId: st
           </select>
         </label>
         <label className="text-sm">
+          <span className="mb-1 block font-medium text-neutral-700">Title</span>
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="e.g. Sunset over the lagoon"
+            className="rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+          />
+        </label>
+        <label className="text-sm">
           <span className="mb-1 block font-medium text-neutral-700">Alt text</span>
           <input
             value={altText}
             onChange={(e) => setAltText(e.target.value)}
+            placeholder="Describes the image for screen readers"
             className="rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
           />
         </label>

@@ -28,7 +28,13 @@ export interface TransferRouteFormInitial {
 }
 
 const EMPTY_CORE: NodeCoreInput = { title: "", slug: "", summary: null, status: "draft", metaTitle: null, metaDescription: null };
-const EMPTY_FIELDS: TransferRouteFieldsAdmin = { originLocationId: "", destinationLocationId: "", distanceKm: null, typicalDurationMinutes: null };
+const EMPTY_FIELDS: TransferRouteFieldsAdmin = {
+  originLocationId: "",
+  destinationLocationId: "",
+  distanceKm: null,
+  typicalDurationMinutes: null,
+  videoYoutubeId: null,
+};
 
 function slugify(value: string): string {
   return value
@@ -162,6 +168,15 @@ export function TransferRouteForm({ initial, providerOptions }: { initial?: Tran
               min={0}
               value={fields.typicalDurationMinutes ?? ""}
               onChange={(e) => setFields((f) => ({ ...f, typicalDurationMinutes: e.target.value ? Number(e.target.value) : null }))}
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="block text-sm sm:col-span-2">
+            <span className="mb-1 block font-medium text-neutral-700">YouTube video ID</span>
+            <input
+              value={fields.videoYoutubeId ?? ""}
+              onChange={(e) => setFields((f) => ({ ...f, videoYoutubeId: e.target.value || null }))}
+              placeholder="e.g. CZGxcfCXJz0"
               className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm"
             />
           </label>

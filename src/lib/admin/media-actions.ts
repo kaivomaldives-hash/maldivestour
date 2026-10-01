@@ -31,6 +31,7 @@ export async function uploadAndAttachMedia(nodeId: string, formData: FormData, r
 
   const file = formData.get("file");
   const role = formData.get("role");
+  const titleRaw = formData.get("title");
   const altTextRaw = formData.get("altText");
 
   if (!(file instanceof File) || file.size === 0) return { ok: false, error: "Choose an image to upload." };
@@ -39,6 +40,7 @@ export async function uploadAndAttachMedia(nodeId: string, formData: FormData, r
   if (!ext) return { ok: false, error: "Unsupported image type — use JPEG, PNG, WebP, or AVIF." };
   const roleValue = typeof role === "string" && (ALLOWED_ROLES as string[]).includes(role) ? (role as MediaRole) : null;
   if (!roleValue) return { ok: false, error: "Invalid image role." };
+  const title = typeof titleRaw === "string" && titleRaw.trim() ? titleRaw.trim() : null;
   const altText = typeof altTextRaw === "string" && altTextRaw.trim() ? altTextRaw.trim() : null;
 
   const supabase = await createClient();
@@ -49,7 +51,7 @@ export async function uploadAndAttachMedia(nodeId: string, formData: FormData, r
 
   const { data: assetRow, error: assetError } = await supabase
     .from("media_assets")
-    .insert({ media_type: "image", storage_path: storagePath, alt_text: altText } as unknown as never)
+    .insert({ media_type: "image", storage_path: storagePath, title, alt_text: altText } as unknown as never)
     .select("id")
     .single<{ id: string }>();
   if (assetError || !assetRow) {

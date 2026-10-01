@@ -11,6 +11,7 @@ function articleRow(fields: ArticleFieldsAdmin) {
   return {
     body: fields.body,
     reading_time_minutes: fields.readingTimeMinutes,
+    video_youtube_id: fields.videoYoutubeId?.trim() || null,
   };
 }
 

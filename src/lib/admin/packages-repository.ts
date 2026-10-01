@@ -23,13 +23,14 @@ import { createClient } from "@/lib/supabase/server";
 const PAGE_SIZE = 30;
 
 const NODE_PACKAGE_SELECT =
-  "id, slug, title, summary, status, meta_title, meta_description, packages!inner(duration_nights, price_from, currency, operated_by_provider_id)";
+  "id, slug, title, summary, status, meta_title, meta_description, packages!inner(duration_nights, price_from, currency, operated_by_provider_id, video_youtube_id)";
 
 type PackageFieldsRow = {
   duration_nights: number | null;
   price_from: number | null;
   currency: string | null;
   operated_by_provider_id: string | null;
+  video_youtube_id: string | null;
 };
 
 type NodePackageRow = {
@@ -48,6 +49,7 @@ export interface PackageFieldsAdmin {
   priceFrom: number | null;
   currency: string | null;
   operatedByProviderId: string | null;
+  videoYoutubeId: string | null;
 }
 
 export interface AdminPackageItem {
@@ -77,6 +79,7 @@ function bareOf(row: NodePackageRow): AdminPackageItem | null {
       priceFrom: p.price_from,
       currency: p.currency,
       operatedByProviderId: p.operated_by_provider_id,
+      videoYoutubeId: p.video_youtube_id,
     },
   };
 }

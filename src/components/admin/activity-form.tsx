@@ -38,6 +38,7 @@ const EMPTY_FIELDS: ActivityFieldsAdmin = {
   priceFrom: null,
   currency: "USD",
   maxParticipants: null,
+  videoYoutubeId: null,
 };
 
 function slugify(value: string): string {
@@ -72,7 +73,11 @@ export function ActivityForm({ initial, providerOptions }: { initial?: ActivityF
       if (id) {
         await setPrimaryLocation(id, location?.id ?? null, `/admin/activities/${id}`);
       }
-      router.push("/admin/activities");
+      if (initial) {
+        router.push("/admin/activities");
+      } else {
+        router.push(id ? `/admin/activities/${id}` : "/admin/activities");
+      }
       router.refresh();
     });
   }
@@ -227,8 +232,8 @@ export function ActivityForm({ initial, providerOptions }: { initial?: ActivityF
       </section>
 
       <section className="space-y-4 rounded-2xl border border-neutral-200 bg-white p-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Pricing</h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Pricing & video</h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <label className="block text-sm">
             <span className="mb-1 block font-medium text-neutral-700">Price from</span>
             <input
@@ -247,6 +252,15 @@ export function ActivityForm({ initial, providerOptions }: { initial?: ActivityF
               onChange={(e) => setFields((f) => ({ ...f, currency: e.target.value.toUpperCase() }))}
               maxLength={3}
               className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm uppercase"
+            />
+          </label>
+          <label className="block text-sm">
+            <span className="mb-1 block font-medium text-neutral-700">YouTube video ID</span>
+            <input
+              value={fields.videoYoutubeId ?? ""}
+              onChange={(e) => setFields((f) => ({ ...f, videoYoutubeId: e.target.value || null }))}
+              placeholder="e.g. CZGxcfCXJz0"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm"
             />
           </label>
         </div>

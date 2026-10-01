@@ -23,7 +23,7 @@ export interface PackageFormInitial {
 }
 
 const EMPTY_CORE: NodeCoreInput = { title: "", slug: "", summary: null, status: "draft", metaTitle: null, metaDescription: null };
-const EMPTY_FIELDS: PackageFieldsAdmin = { durationNights: null, priceFrom: null, currency: "USD", operatedByProviderId: null };
+const EMPTY_FIELDS: PackageFieldsAdmin = { durationNights: null, priceFrom: null, currency: "USD", operatedByProviderId: null, videoYoutubeId: null };
 
 function slugify(value: string): string {
   return value
@@ -177,6 +177,16 @@ export function PackageForm({ initial, providerOptions }: { initial?: PackageFor
               onChange={(e) => setFields((f) => ({ ...f, currency: e.target.value.toUpperCase() }))}
               maxLength={3}
               className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm uppercase"
+            />
+          </label>
+
+          <label className="block text-sm">
+            <span className="mb-1 block font-medium text-neutral-700">YouTube video ID</span>
+            <input
+              value={fields.videoYoutubeId ?? ""}
+              onChange={(e) => setFields((f) => ({ ...f, videoYoutubeId: e.target.value || null }))}
+              placeholder="e.g. CZGxcfCXJz0"
+              className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm"
             />
           </label>
         </div>

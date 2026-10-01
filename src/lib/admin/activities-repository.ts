@@ -14,7 +14,7 @@ import { createClient } from "@/lib/supabase/server";
 const PAGE_SIZE = 30;
 
 const NODE_ACTIVITY_SELECT =
-  "id, slug, title, summary, status, meta_title, meta_description, activities!inner(activity_category, operated_by_provider_id, duration_minutes, min_age, difficulty, price_from, currency, max_participants)";
+  "id, slug, title, summary, status, meta_title, meta_description, activities!inner(activity_category, operated_by_provider_id, duration_minutes, min_age, difficulty, price_from, currency, max_participants, video_youtube_id)";
 
 interface ActivityRow {
   activity_category: ActivityCategory;
@@ -25,6 +25,7 @@ interface ActivityRow {
   price_from: number | null;
   currency: string | null;
   max_participants: number | null;
+  video_youtube_id: string | null;
 }
 
 interface NodeActivityRow {
@@ -47,6 +48,7 @@ export interface ActivityFieldsAdmin {
   priceFrom: number | null;
   currency: string;
   maxParticipants: number | null;
+  videoYoutubeId: string | null;
 }
 
 export interface AdminActivityItem {
@@ -80,6 +82,7 @@ function toAdminActivity(row: NodeActivityRow): AdminActivityItem | null {
       priceFrom: a.price_from,
       currency: a.currency ?? "USD",
       maxParticipants: a.max_participants,
+      videoYoutubeId: a.video_youtube_id,
     },
   };
 }

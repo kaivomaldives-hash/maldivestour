@@ -15,7 +15,7 @@ import type { MediaAsset } from "@/lib/media/types";
  */
 
 export function asset(id: string, storagePath: string, altText: string): MediaAsset {
-  return { id, mediaType: "image", storagePath, youtubeId: null, altText, credit: null, width: null, height: null };
+  return { id, mediaType: "image", storagePath, youtubeId: null, title: null, altText, credit: null, width: null, height: null };
 }
 
 export const PACKAGE_CATEGORY_FALLBACK_IMAGES = {

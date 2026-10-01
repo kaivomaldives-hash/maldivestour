@@ -17,6 +17,10 @@ export interface MediaAsset {
    * youtubeId instead. */
   storagePath: string | null;
   youtubeId: string | null;
+  /** Short display label — e.g. "Sunset over the lagoon" — distinct from
+   * altText (screen-reader wording for the <img>) and credit
+   * (attribution). Purely a caption; optional everywhere it's used. */
+  title: string | null;
   altText: string | null;
   credit: string | null;
   width: number | null;

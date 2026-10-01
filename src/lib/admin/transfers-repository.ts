@@ -19,13 +19,14 @@ import type { SharedOrPrivate, TransferServiceStatus, TransferType } from "@/lib
 const PAGE_SIZE = 30;
 
 const NODE_TRANSFER_ROUTE_SELECT =
-  "id, slug, title, summary, status, meta_title, meta_description, transfer_routes!inner(origin_location_id, destination_location_id, distance_km, typical_duration_minutes)";
+  "id, slug, title, summary, status, meta_title, meta_description, transfer_routes!inner(origin_location_id, destination_location_id, distance_km, typical_duration_minutes, video_youtube_id)";
 
 type TransferRouteFieldsRow = {
   origin_location_id: string;
   destination_location_id: string;
   distance_km: number | null;
   typical_duration_minutes: number | null;
+  video_youtube_id: string | null;
 };
 
 type NodeTransferRouteRow = {
@@ -44,6 +45,7 @@ export interface TransferRouteFieldsAdmin {
   destinationLocationId: string;
   distanceKm: number | null;
   typicalDurationMinutes: number | null;
+  videoYoutubeId: string | null;
 }
 
 interface BareTransferRoute {
@@ -78,6 +80,7 @@ function bareRouteOf(row: NodeTransferRouteRow): BareTransferRoute | null {
       destinationLocationId: r.destination_location_id,
       distanceKm: r.distance_km,
       typicalDurationMinutes: r.typical_duration_minutes,
+      videoYoutubeId: r.video_youtube_id,
     },
   };
 }

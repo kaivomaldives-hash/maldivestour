@@ -18,6 +18,7 @@ function activityRow(fields: ActivityFieldsAdmin) {
     price_from: fields.priceFrom,
     currency: fields.currency?.trim() || "USD",
     max_participants: fields.maxParticipants,
+    video_youtube_id: fields.videoYoutubeId?.trim() || null,
   };
 }
 

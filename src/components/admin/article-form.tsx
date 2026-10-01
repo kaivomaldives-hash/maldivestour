@@ -24,7 +24,7 @@ export interface ArticleFormInitial {
 }
 
 const EMPTY_CORE: NodeCoreInput = { title: "", slug: "", summary: null, status: "draft", metaTitle: null, metaDescription: null };
-const EMPTY_FIELDS: ArticleFieldsAdmin = { body: "", readingTimeMinutes: null };
+const EMPTY_FIELDS: ArticleFieldsAdmin = { body: "", readingTimeMinutes: null, videoYoutubeId: null };
 
 function slugify(value: string): string {
   return value
@@ -58,7 +58,11 @@ export function ArticleForm({ initial, categoryOptions }: { initial?: ArticleFor
       if (id && categoryId) {
         await setNodeCategories(id, [categoryId], `/admin/articles/${id}`);
       }
-      router.push("/admin/articles");
+      if (initial) {
+        router.push("/admin/articles");
+      } else {
+        router.push(id ? `/admin/articles/${id}` : "/admin/articles");
+      }
       router.refresh();
     });
   }
@@ -154,6 +158,15 @@ export function ArticleForm({ initial, categoryOptions }: { initial?: ArticleFor
             value={fields.readingTimeMinutes ?? ""}
             onChange={(e) => setFields((f) => ({ ...f, readingTimeMinutes: e.target.value ? Number(e.target.value) : null }))}
             className="w-32 rounded-xl border border-neutral-300 px-3 py-2 text-sm"
+          />
+        </label>
+        <label className="block text-sm">
+          <span className="mb-1 block font-medium text-neutral-700">YouTube video ID</span>
+          <input
+            value={fields.videoYoutubeId ?? ""}
+            onChange={(e) => setFields((f) => ({ ...f, videoYoutubeId: e.target.value || null }))}
+            placeholder="e.g. CZGxcfCXJz0"
+            className="w-full max-w-xs rounded-xl border border-neutral-300 px-3 py-2 text-sm"
           />
         </label>
       </section>

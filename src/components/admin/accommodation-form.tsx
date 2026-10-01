@@ -76,7 +76,11 @@ export function AccommodationForm({ initial, providerOptions }: { initial?: Acco
       if (id) {
         await setPrimaryLocation(id, location?.id ?? null, `/admin/accommodations/${id}`);
       }
-      router.push("/admin/accommodations");
+      if (initial) {
+        router.push("/admin/accommodations");
+      } else {
+        router.push(id ? `/admin/accommodations/${id}` : "/admin/accommodations");
+      }
       router.refresh();
     });
   }

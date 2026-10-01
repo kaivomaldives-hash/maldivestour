@@ -14,6 +14,7 @@ function routeRow(fields: TransferRouteFieldsAdmin) {
     destination_location_id: fields.destinationLocationId,
     distance_km: fields.distanceKm,
     typical_duration_minutes: fields.typicalDurationMinutes,
+    video_youtube_id: fields.videoYoutubeId?.trim() || null,
   };
 }
 

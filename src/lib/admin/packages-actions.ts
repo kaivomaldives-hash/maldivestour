@@ -14,6 +14,7 @@ function packageRow(fields: PackageFieldsAdmin) {
     price_from: fields.priceFrom,
     currency: fields.currency?.trim() || null,
     operated_by_provider_id: fields.operatedByProviderId,
+    video_youtube_id: fields.videoYoutubeId?.trim() || null,
   };
 }
 

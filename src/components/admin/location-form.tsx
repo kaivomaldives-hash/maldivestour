@@ -5,7 +5,8 @@ import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import { updateLocation, type LocationFieldsInput } from "@/lib/admin/locations-actions";
-import { NODE_STATUSES, type NodeCoreInput, type NodeStatus } from "@/lib/admin/node-actions";
+import type { NodeCoreInput, NodeStatus } from "@/lib/admin/node-actions";
+import { NODE_STATUSES } from "@/lib/admin/node-status";
 
 export interface LocationFormInitial {
   id: string;

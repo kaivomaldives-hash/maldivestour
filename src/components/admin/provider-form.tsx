@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
-import { NODE_STATUSES, type NodeCoreInput, type NodeStatus } from "@/lib/admin/node-actions";
+import type { NodeCoreInput, NodeStatus } from "@/lib/admin/node-actions";
+import { NODE_STATUSES } from "@/lib/admin/node-status";
 import { createProvider, updateProvider, type ProviderFieldsInput } from "@/lib/admin/providers-actions";
 
 export interface ProviderFormInitial {

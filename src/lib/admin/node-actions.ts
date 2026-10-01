@@ -1,8 +1,17 @@
 "use server";
 
 import { requireStaff } from "@/lib/admin/auth";
+import type { NodeStatus } from "@/lib/admin/node-status";
 import { validateSlug } from "@/lib/admin/slug";
 import { createClient } from "@/lib/supabase/server";
+
+// Re-exported as a type only (erased at compile time, so this is exempt
+// from the "use server" files-only-export-async-functions rule that bit
+// NODE_STATUSES — see node-status.ts's own comment). Kept here so every
+// existing `import { type NodeStatus } from "@/lib/admin/node-actions"`
+// call site didn't need to change, only the ones importing the runtime
+// NODE_STATUSES constant.
+export type { NodeStatus };
 
 /**
  * Generic write helper for the fields every node-backed entity shares
@@ -22,9 +31,6 @@ export interface AdminActionResult {
   ok: boolean;
   error?: string;
 }
-
-export type NodeStatus = "draft" | "published" | "archived";
-export const NODE_STATUSES: readonly NodeStatus[] = ["draft", "published", "archived"];
 
 export interface NodeCoreInput {
   title: string;

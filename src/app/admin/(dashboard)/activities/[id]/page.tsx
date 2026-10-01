@@ -5,19 +5,24 @@ import { ActivityForm } from "@/components/admin/activity-form";
 import { requireStaff } from "@/lib/admin/auth";
 import { getActivityByIdAdmin } from "@/lib/admin/activities-repository";
 import { getNodeMediaAdmin } from "@/lib/admin/media-repository";
-import { getPrimaryLocationForNode } from "@/lib/admin/node-relations-repository";
+import { getCategoryIdsForNode, getCategoryOptionsByGroup, getPrimaryLocationForNode } from "@/lib/admin/node-relations-repository";
 import { getProviderOptions } from "@/lib/admin/providers-repository";
 
 export default async function EditActivityPage({ params }: { params: Promise<{ id: string }> }) {
   await requireStaff();
   const { id } = await params;
-  const [activity, primaryLocation, media, providerOptions] = await Promise.all([
+  const [activity, primaryLocation, media, providerOptions, activityTypeOptions, categoryIds] = await Promise.all([
     getActivityByIdAdmin(id),
     getPrimaryLocationForNode(id),
     getNodeMediaAdmin(id),
     getProviderOptions(),
+    getCategoryOptionsByGroup("activity-type"),
+    getCategoryIdsForNode(id),
   ]);
   if (!activity) notFound();
+
+  const categoryIdSet = new Set(categoryIds);
+  const activityTypeIds = activityTypeOptions.filter((c) => categoryIdSet.has(c.id)).map((c) => c.id);
 
   return (
     <div>
@@ -28,6 +33,7 @@ export default async function EditActivityPage({ params }: { params: Promise<{ i
       <div className="mt-6">
         <ActivityForm
           providerOptions={providerOptions}
+          activityTypeOptions={activityTypeOptions}
           initial={{
             id: activity.id,
             core: {
@@ -41,6 +47,7 @@ export default async function EditActivityPage({ params }: { params: Promise<{ i
             fields: activity.fields,
             primaryLocation,
             media,
+            activityTypeIds,
           }}
         />
       </div>

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
+import { CategoryPicker } from "@/components/admin/category-picker";
 import { DeleteNodeButton } from "@/components/admin/delete-node-button";
 import { LocationPicker } from "@/components/admin/location-picker";
 import { NodeMediaManager } from "@/components/admin/node-media-manager";
@@ -10,7 +11,8 @@ import { TransferServicesManager } from "@/components/admin/transfer-services-ma
 import { Button } from "@/components/ui/button";
 import type { NodeCoreInput, NodeStatus } from "@/lib/admin/node-actions";
 import { NODE_STATUSES } from "@/lib/admin/node-status";
-import type { LocationOption } from "@/lib/admin/node-relations-repository";
+import { setNodeCategories } from "@/lib/admin/node-relations-actions";
+import type { CategoryOption, LocationOption } from "@/lib/admin/node-relations-repository";
 import type { AdminTransferServiceItem } from "@/lib/admin/transfers-repository";
 import { createTransferRoute, updateTransferRoute } from "@/lib/admin/transfers-actions";
 import type { TransferRouteFieldsAdmin } from "@/lib/admin/transfers-repository";
@@ -25,6 +27,7 @@ export interface TransferRouteFormInitial {
   destinationLocation: LocationOption | null;
   media: NodeMediaItem[];
   services: AdminTransferServiceItem[];
+  categoryIds: string[];
 }
 
 const EMPTY_CORE: NodeCoreInput = { title: "", slug: "", summary: null, status: "draft", metaTitle: null, metaDescription: null };
@@ -44,12 +47,21 @@ function slugify(value: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-export function TransferRouteForm({ initial, providerOptions }: { initial?: TransferRouteFormInitial; providerOptions: ProviderOption[] }) {
+export function TransferRouteForm({
+  initial,
+  providerOptions,
+  categoryOptions,
+}: {
+  initial?: TransferRouteFormInitial;
+  providerOptions: ProviderOption[];
+  categoryOptions: CategoryOption[];
+}) {
   const router = useRouter();
   const [core, setCore] = useState<NodeCoreInput>(initial?.core ?? EMPTY_CORE);
   const [fields, setFields] = useState<TransferRouteFieldsAdmin>(initial?.fields ?? EMPTY_FIELDS);
   const [origin, setOrigin] = useState<LocationOption | null>(initial?.originLocation ?? null);
   const [destination, setDestination] = useState<LocationOption | null>(initial?.destinationLocation ?? null);
+  const [categoryIds, setCategoryIds] = useState<string[]>(initial?.categoryIds ?? []);
   const [slugTouched, setSlugTouched] = useState(Boolean(initial));
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -70,11 +82,14 @@ export function TransferRouteForm({ initial, providerOptions }: { initial?: Tran
         setError(result.error ?? "Something went wrong.");
         return;
       }
+      const id = initial?.id ?? (result as { id?: string }).id;
+      if (id) {
+        await setNodeCategories(id, categoryIds, `/admin/transfers/${id}`);
+      }
       if (initial) {
         router.push("/admin/transfers");
         router.refresh();
       } else {
-        const id = (result as { id?: string }).id;
         router.push(id ? `/admin/transfers/${id}` : "/admin/transfers");
         router.refresh();
       }
@@ -181,6 +196,8 @@ export function TransferRouteForm({ initial, providerOptions }: { initial?: Tran
             />
           </label>
         </div>
+
+        <CategoryPicker label="Category (drives the airport/resort/hotel/island directory filters)" options={categoryOptions} selectedIds={categoryIds} onChange={setCategoryIds} />
       </section>
 
       <section className="space-y-4 rounded-2xl border border-neutral-200 bg-white p-4">

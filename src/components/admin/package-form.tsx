@@ -3,12 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
+import { CategoryPicker } from "@/components/admin/category-picker";
 import { DeleteNodeButton } from "@/components/admin/delete-node-button";
+import { LocationPicker } from "@/components/admin/location-picker";
 import { NodeMediaManager } from "@/components/admin/node-media-manager";
 import { PackageItineraryEditor } from "@/components/admin/package-itinerary-editor";
 import { Button } from "@/components/ui/button";
 import type { NodeCoreInput, NodeStatus } from "@/lib/admin/node-actions";
 import { NODE_STATUSES } from "@/lib/admin/node-status";
+import { setNodeCategories, setPrimaryLocation } from "@/lib/admin/node-relations-actions";
+import type { CategoryOption, LocationOption } from "@/lib/admin/node-relations-repository";
 import type { AdminItineraryStage, PackageFieldsAdmin } from "@/lib/admin/packages-repository";
 import { createPackage, updatePackage } from "@/lib/admin/packages-actions";
 import type { NodeMediaItem } from "@/lib/media/types";
@@ -20,6 +24,16 @@ export interface PackageFormInitial {
   fields: PackageFieldsAdmin;
   media: NodeMediaItem[];
   itineraryStages: AdminItineraryStage[];
+  primaryLocation: LocationOption | null;
+  travelerTypeIds: string[];
+  styleIds: string[];
+  themeIds: string[];
+}
+
+export interface PackageCategoryOptions {
+  travelerType: CategoryOption[];
+  style: CategoryOption[];
+  theme: CategoryOption[];
 }
 
 const EMPTY_CORE: NodeCoreInput = { title: "", slug: "", summary: null, status: "draft", metaTitle: null, metaDescription: null };
@@ -33,10 +47,22 @@ function slugify(value: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-export function PackageForm({ initial, providerOptions }: { initial?: PackageFormInitial; providerOptions: ProviderOption[] }) {
+export function PackageForm({
+  initial,
+  providerOptions,
+  categoryOptions,
+}: {
+  initial?: PackageFormInitial;
+  providerOptions: ProviderOption[];
+  categoryOptions: PackageCategoryOptions;
+}) {
   const router = useRouter();
   const [core, setCore] = useState<NodeCoreInput>(initial?.core ?? EMPTY_CORE);
   const [fields, setFields] = useState<PackageFieldsAdmin>(initial?.fields ?? EMPTY_FIELDS);
+  const [location, setLocation] = useState<LocationOption | null>(initial?.primaryLocation ?? null);
+  const [travelerTypeIds, setTravelerTypeIds] = useState<string[]>(initial?.travelerTypeIds ?? []);
+  const [styleIds, setStyleIds] = useState<string[]>(initial?.styleIds ?? []);
+  const [themeIds, setThemeIds] = useState<string[]>(initial?.themeIds ?? []);
   const [slugTouched, setSlugTouched] = useState(Boolean(initial));
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -52,11 +78,26 @@ export function PackageForm({ initial, providerOptions }: { initial?: PackageFor
         setError(result.error ?? "Something went wrong.");
         return;
       }
+      const id = initial?.id ?? (result as { id?: string }).id;
+      if (id) {
+        const revalidateAt = `/admin/packages/${id}`;
+        await setPrimaryLocation(id, location?.id ?? null, revalidateAt);
+        // setNodeCategories() is a no-op on an empty array (it can't tell
+        // which group to clear with nothing to resolve it from — see its
+        // own comment), so a group the admin has cleared to zero tags
+        // simply keeps whatever it last had. Acceptable here: clearing a
+        // package's last traveler-type/style/theme tag entirely is rare,
+        // and this matches every other per-group picker in this codebase.
+        await Promise.all([
+          setNodeCategories(id, travelerTypeIds, revalidateAt),
+          setNodeCategories(id, styleIds, revalidateAt),
+          setNodeCategories(id, themeIds, revalidateAt),
+        ]);
+      }
       if (initial) {
         router.push("/admin/packages");
         router.refresh();
       } else {
-        const id = (result as { id?: string }).id;
         router.push(id ? `/admin/packages/${id}` : "/admin/packages");
         router.refresh();
       }
@@ -125,10 +166,21 @@ export function PackageForm({ initial, providerOptions }: { initial?: PackageFor
       </section>
 
       <section className="space-y-4 rounded-2xl border border-neutral-200 bg-white p-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Pricing & operator</h2>
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Destination & categories</h2>
         <p className="text-xs text-neutral-500">
-          Destinations shown on the public package card are derived from the itinerary below (which real islands/atolls it touches), not set here.
+          These drive the public filters (location, category chips) on the package directory — a package with none of these set won&rsquo;t show up when
+          a visitor filters by atoll or category. The itinerary below can add further destinations automatically; this primary location is the one used
+          for the atoll filter.
         </p>
+
+        <LocationPicker value={location} onChange={setLocation} />
+        <CategoryPicker label="Traveler type" options={categoryOptions.travelerType} selectedIds={travelerTypeIds} onChange={setTravelerTypeIds} />
+        <CategoryPicker label="Style" options={categoryOptions.style} selectedIds={styleIds} onChange={setStyleIds} />
+        <CategoryPicker label="Theme" options={categoryOptions.theme} selectedIds={themeIds} onChange={setThemeIds} />
+      </section>
+
+      <section className="space-y-4 rounded-2xl border border-neutral-200 bg-white p-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Pricing & operator</h2>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <label className="block text-sm">

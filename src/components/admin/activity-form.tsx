@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
+import { CategoryPicker } from "@/components/admin/category-picker";
 import { DeleteNodeButton } from "@/components/admin/delete-node-button";
 import { LocationPicker } from "@/components/admin/location-picker";
 import { NodeMediaManager } from "@/components/admin/node-media-manager";
@@ -11,8 +12,8 @@ import type { ActivityFieldsAdmin } from "@/lib/admin/activities-repository";
 import { createActivity, updateActivity } from "@/lib/admin/activities-actions";
 import type { NodeCoreInput, NodeStatus } from "@/lib/admin/node-actions";
 import { NODE_STATUSES } from "@/lib/admin/node-status";
-import { setPrimaryLocation } from "@/lib/admin/node-relations-actions";
-import type { LocationOption } from "@/lib/admin/node-relations-repository";
+import { setNodeCategories, setPrimaryLocation } from "@/lib/admin/node-relations-actions";
+import type { CategoryOption, LocationOption } from "@/lib/admin/node-relations-repository";
 import type { ActivityCategory, ActivityDifficulty } from "@/lib/activities/types";
 import type { NodeMediaItem } from "@/lib/media/types";
 import type { ProviderOption } from "@/lib/admin/providers-repository";
@@ -26,6 +27,7 @@ export interface ActivityFormInitial {
   fields: ActivityFieldsAdmin;
   primaryLocation: LocationOption | null;
   media: NodeMediaItem[];
+  activityTypeIds: string[];
 }
 
 const EMPTY_CORE: NodeCoreInput = { title: "", slug: "", summary: null, status: "draft", metaTitle: null, metaDescription: null };
@@ -49,11 +51,20 @@ function slugify(value: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-export function ActivityForm({ initial, providerOptions }: { initial?: ActivityFormInitial; providerOptions: ProviderOption[] }) {
+export function ActivityForm({
+  initial,
+  providerOptions,
+  activityTypeOptions,
+}: {
+  initial?: ActivityFormInitial;
+  providerOptions: ProviderOption[];
+  activityTypeOptions: CategoryOption[];
+}) {
   const router = useRouter();
   const [core, setCore] = useState<NodeCoreInput>(initial?.core ?? EMPTY_CORE);
   const [fields, setFields] = useState<ActivityFieldsAdmin>(initial?.fields ?? EMPTY_FIELDS);
   const [location, setLocation] = useState<LocationOption | null>(initial?.primaryLocation ?? null);
+  const [activityTypeIds, setActivityTypeIds] = useState<string[]>(initial?.activityTypeIds ?? []);
   const [slugTouched, setSlugTouched] = useState(Boolean(initial));
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -71,7 +82,9 @@ export function ActivityForm({ initial, providerOptions }: { initial?: ActivityF
       }
       const id = initial?.id ?? (result as { id?: string }).id;
       if (id) {
-        await setPrimaryLocation(id, location?.id ?? null, `/admin/activities/${id}`);
+        const revalidateAt = `/admin/activities/${id}`;
+        await setPrimaryLocation(id, location?.id ?? null, revalidateAt);
+        await setNodeCategories(id, activityTypeIds, revalidateAt);
       }
       if (initial) {
         router.push("/admin/activities");
@@ -229,6 +242,12 @@ export function ActivityForm({ initial, providerOptions }: { initial?: ActivityF
         </div>
 
         <LocationPicker value={location} onChange={setLocation} />
+        <CategoryPicker
+          label="Type (drives the diving/fishing sub-type filters)"
+          options={activityTypeOptions}
+          selectedIds={activityTypeIds}
+          onChange={setActivityTypeIds}
+        />
       </section>
 
       <section className="space-y-4 rounded-2xl border border-neutral-200 bg-white p-4">

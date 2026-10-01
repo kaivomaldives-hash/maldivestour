@@ -6,6 +6,8 @@ import { getActivitySummariesByIds } from "@/lib/activities/repository";
 import { activityHref } from "@/lib/activities/types";
 import { getCategoriesByGroup } from "@/lib/categories/repository";
 import type { CategorySummary } from "@/lib/categories/types";
+import { getEntityTranslationBySlug, getEntityTranslationsByIds } from "@/lib/i18n/repository";
+import type { Locale } from "@/lib/i18n/locales";
 import { getLocationSummariesByIds } from "@/lib/locations/repository";
 import type { LocationSummary } from "@/lib/locations/types";
 import { getHeroMediaByNodeIds, resolveStorageImageSrcs } from "@/lib/media/repository";
@@ -208,6 +210,125 @@ export async function getArticleBySlug(slug: string): Promise<ArticleDetail | nu
     relatedEntities: relatedContent.relatedEntities,
     relatedArticles: relatedContent.relatedArticles,
   };
+}
+
+/**
+ * Localized equivalent of getArticleBySlug, for the `/[locale]/maldives/
+ * travel-guide/[article]` route. `slug` here is the *translated* slug
+ * (translations.slug), not the canonical English one — resolved straight
+ * to its entity id via getEntityTranslationBySlug, same as every other
+ * translated-entity lookup in this codebase.
+ *
+ * Every field that genuinely is the article's own content (title, slug,
+ * summary, meta, body) comes from the translation row. Everything that
+ * isn't language-dependent (hero image, category, published date, reading
+ * time, related locations/entities) is reused as-is from the canonical
+ * English row — translating a category taxonomy or an accommodation's
+ * title is separate, larger follow-up work, not silently faked here.
+ * relatedArticles only ever includes other articles that *also* have a
+ * published translation in this locale (so every link on a translated
+ * page stays in that language) — never a mix of translated and English
+ * titles on the same page.
+ */
+export async function getTranslatedArticleBySlug(locale: Locale, slug: string): Promise<ArticleDetail | null> {
+  if (locale === "en") return getArticleBySlug(slug);
+
+  const translation = await getEntityTranslationBySlug(locale, slug);
+  if (!translation || translation.entityType !== "article" || !translation.bodyHtml) return null;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("nodes")
+    .select(NODE_ARTICLE_SELECT)
+    .eq("node_type", "article")
+    .eq("status", "published")
+    .eq("id", translation.entityId)
+    .maybeSingle<NodeArticleRow>();
+
+  if (error || !data) return null;
+  const bare = bareArticleOf(data);
+  if (!bare) return null;
+
+  const [[summary], relatedLocations, relatedContent] = await Promise.all([
+    toSummaries([bare]),
+    getRelatedLocationsForArticle(bare.id),
+    getRelatedContentForArticle(bare.id),
+  ]);
+
+  const relatedTranslations = await getEntityTranslationsByIds(
+    relatedContent.relatedArticles.map((a) => a.id),
+    locale,
+  );
+  const relatedArticles = relatedContent.relatedArticles
+    .map((a) => {
+      const t = relatedTranslations.get(a.id);
+      return t ? { ...a, title: t.title, slug: t.slug, summary: t.shortDescription } : null;
+    })
+    .filter((a): a is ArticleSummary => a !== null);
+
+  return {
+    ...summary,
+    title: translation.title,
+    slug: translation.slug,
+    summary: translation.shortDescription,
+    metaTitle: translation.metaTitle,
+    metaDescription: translation.metaDescription,
+    bodyHtml: resolveStorageImageSrcs(translation.bodyHtml),
+    relatedLocations,
+    relatedEntities: relatedContent.relatedEntities,
+    relatedArticles,
+  };
+}
+
+/** Every article that has a published translation in this locale, for the
+ * localized Travel Guide hub listing. Non-translatable display fields
+ * (hero image, category, reading time, published date) are reused as-is
+ * from each article's canonical English row. */
+export async function getTranslatedArticles(locale: Locale): Promise<ArticleSummary[]> {
+  if (locale === "en") {
+    const result = await getArticles({ pageSize: 100 });
+    return result.items;
+  }
+
+  const supabase = await createClient();
+  const { data: allTranslationRows, error: translationError } = await supabase
+    .from("translations")
+    .select("entity_id, slug, title, short_description, body_html")
+    .eq("entity_type", "article")
+    .eq("locale", locale)
+    .returns<Array<{ entity_id: string; slug: string; title: string; short_description: string | null; body_html: string | null }>>();
+
+  if (translationError || !allTranslationRows) return [];
+  // Guards against a translation row saved with just a title/summary and
+  // no body yet (not meant to be reachable as a real article page) —
+  // mirrors the same guard in getTranslatedArticleBySlug.
+  const translationRows = allTranslationRows.filter((row) => row.body_html);
+  if (translationRows.length === 0) return [];
+
+  const { data, error } = await supabase
+    .from("nodes")
+    .select(NODE_ARTICLE_SELECT)
+    .eq("node_type", "article")
+    .eq("status", "published")
+    .in(
+      "id",
+      translationRows.map((row) => row.entity_id),
+    )
+    .order("published_at", { ascending: false })
+    .returns<NodeArticleRow[]>();
+
+  if (error || !data) return [];
+
+  const bares = data.map(bareArticleOf).filter((b): b is BareArticle => b !== null);
+  const summaries = await toSummaries(bares);
+  const translationByEntityId = new Map(translationRows.map((row) => [row.entity_id, row]));
+
+  return summaries
+    .map((s) => {
+      const t = translationByEntityId.get(s.id);
+      return t ? { ...s, title: t.title, slug: t.slug, summary: t.short_description } : null;
+    })
+    .filter((s): s is ArticleSummary => s !== null);
 }
 
 async function getRelatedLocationsForArticle(articleId: string): Promise<LocationSummary[]> {

@@ -106,6 +106,21 @@ export interface UiStrings {
     statsAtolls: string;
     statsIslands: string;
   };
+  travelGuideHub: {
+    heroEyebrow: string;
+    title: string;
+    description: string;
+    emptyStateTitle: string;
+    comingSoonNote: string;
+  };
+  articleDetail: {
+    minRead: string;
+    relatedPlaces: string;
+    relatedBookable: string;
+    topic: string;
+    relatedArticles: string;
+    backToGuide: string;
+  };
 }
 
 const EN: UiStrings = {
@@ -200,6 +215,21 @@ const EN: UiStrings = {
     exploreMoreTitle: "Explore More Maldives",
     statsAtolls: "administrative atolls",
     statsIslands: "inhabited islands",
+  },
+  travelGuideHub: {
+    heroEyebrow: "Travel Guide",
+    title: "Maldives Travel Guide",
+    description: "Real, in-depth guides to the islands, atolls, diving, weather, and culture of the Maldives.",
+    emptyStateTitle: "No guides in this language yet",
+    comingSoonNote: "More guides are being translated — browse the full English Travel Guide meanwhile.",
+  },
+  articleDetail: {
+    minRead: "min read",
+    relatedPlaces: "Related places",
+    relatedBookable: "You might also book",
+    topic: "Topic",
+    relatedArticles: "Related Travel Guide articles",
+    backToGuide: "← Back to Travel Guide",
   },
 };
 
@@ -296,6 +326,21 @@ const DE: UiStrings = {
     exploreMoreTitle: "Mehr von den Malediven entdecken",
     statsAtolls: "Verwaltungsatolle",
     statsIslands: "bewohnte Inseln",
+  },
+  travelGuideHub: {
+    heroEyebrow: "Reiseführer",
+    title: "Malediven Reiseführer",
+    description: "Echte, ausführliche Guides zu den Inseln, Atollen, dem Tauchen, dem Wetter und der Kultur der Malediven.",
+    emptyStateTitle: "Noch keine Guides in dieser Sprache",
+    comingSoonNote: "Weitere Guides werden derzeit übersetzt — stöbern Sie in der Zwischenzeit im vollständigen englischen Reiseführer.",
+  },
+  articleDetail: {
+    minRead: "Min. Lesezeit",
+    relatedPlaces: "Passende Orte",
+    relatedBookable: "Das könnte Sie auch interessieren",
+    topic: "Thema",
+    relatedArticles: "Weitere Reiseführer-Artikel",
+    backToGuide: "← Zurück zum Reiseführer",
   },
 };
 

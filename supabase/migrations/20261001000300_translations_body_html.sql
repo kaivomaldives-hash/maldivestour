@@ -1,0 +1,12 @@
+-- Adds the one column `translations` was missing to carry a translated
+-- article: `title`/`short_description`/`description`/`meta_*` already
+-- exist, but nothing held a translated equivalent of `articles.body` (the
+-- long-form HTML that's the actual substance of a Travel Guide article).
+-- `description` is a short paragraph-length field by every existing
+-- convention in this table — reusing it for a 3,000+ word HTML body would
+-- silently misuse it. `body_html` is nullable and only ever populated for
+-- entity_type = 'article' rows; every other entity type (accommodation,
+-- activity, location, ...) has no long-form body in its own canonical
+-- table either, so this mirrors the shape of what's actually being
+-- translated rather than adding a column nothing else needs.
+alter table translations add column if not exists body_html text;

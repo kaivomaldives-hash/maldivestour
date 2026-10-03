@@ -155,8 +155,11 @@ export function SiteHeader({ availableLocales }: { availableLocales: Locale[] })
               );
             })}
             <div className="mt-2 flex items-center gap-2 border-t border-neutral-200 pt-3">
-              <LanguageSwitcher publishedLocales={availableLocales} />
-              <CurrencySelector />
+              {/* align="left": in this panel the trigger sits near the left
+                  edge of a narrow viewport, unlike the desktop header where
+                  it sits near the right -- see the prop's own comment. */}
+              <LanguageSwitcher publishedLocales={availableLocales} align="left" />
+              <CurrencySelector align="left" />
             </div>
             <a
               href={WHATSAPP_URL}

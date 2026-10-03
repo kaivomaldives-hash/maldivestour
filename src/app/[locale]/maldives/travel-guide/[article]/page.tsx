@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { RegisterArticleLocaleLinks } from "@/components/i18n/article-locale-links-context";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getTranslatedArticleBySlug } from "@/lib/articles/repository";
 import { DEFAULT_LOCALE, isLocale, localizedPath, type Locale } from "@/lib/i18n/locales";
-import { getEntitySlugsByLocale } from "@/lib/i18n/repository";
+import { getArticleLocalePaths } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
 import { publicStorageUrl } from "@/lib/media/types";
 import { canonicalUrl, getSiteUrl } from "@/lib/seo/site";
@@ -20,10 +21,10 @@ import { createClient } from "@/lib/supabase/public";
  * translations row of its own by design) plus every published
  * translations row. */
 async function articleHreflangAlternates(entityId: string, englishSlug: string): Promise<Record<string, string>> {
-  const translatedSlugs = await getEntitySlugsByLocale(entityId);
-  const alternates: Record<string, string> = { [DEFAULT_LOCALE]: canonicalUrl(`/maldives/travel-guide/${englishSlug}/`) };
-  for (const { locale, slug } of translatedSlugs) {
-    alternates[locale] = canonicalUrl(localizedPath(locale, `/maldives/travel-guide/${slug}/`));
+  const paths = await getArticleLocalePaths(entityId, englishSlug);
+  const alternates: Record<string, string> = {};
+  for (const [locale, path] of Object.entries(paths)) {
+    alternates[locale] = canonicalUrl(path);
   }
   alternates["x-default"] = alternates[DEFAULT_LOCALE];
   return alternates;
@@ -106,9 +107,12 @@ export default async function LocaleArticleDetailPage({ params }: { params: Prom
   const { locale, article } = await loadOrNotFound(rawLocale, slug);
   const ui = getUiStrings(locale);
   const d = ui.articleDetail;
+  const englishSlug = (await getEnglishSlug(article.id)) ?? article.slug;
+  const localePaths = await getArticleLocalePaths(article.id, englishSlug);
 
   return (
     <main>
+      <RegisterArticleLocaleLinks paths={localePaths} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd(locale, article)) }} />
 
       <PageHero

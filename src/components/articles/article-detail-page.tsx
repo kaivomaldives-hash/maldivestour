@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { RegisterArticleLocaleLinks } from "@/components/i18n/article-locale-links-context";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getArticleBySlug } from "@/lib/articles/repository";
 import { articleHref } from "@/lib/articles/types";
+import { getArticleLocalePaths } from "@/lib/i18n/repository";
 import { applyContextualLinks } from "@/lib/linking/contextual-links";
 import { buildEntityLinkMap } from "@/lib/linking/entity-link-map";
 import { publicStorageUrl } from "@/lib/media/types";
@@ -66,9 +68,11 @@ export async function ArticleDetailPage({ slug }: { slug: string }) {
 
   const entityMap = await buildEntityLinkMap();
   const bodyHtml = applyContextualLinks(article.bodyHtml, entityMap, { excludeHref: articleHref(article) });
+  const localePaths = await getArticleLocalePaths(article.id, article.slug);
 
   return (
     <main>
+      <RegisterArticleLocaleLinks paths={localePaths} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd(article)) }} />
 
       <PageHero

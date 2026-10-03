@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useCurrency } from "@/components/currency/currency-context";
 import { CURRENCY_LABELS, SUPPORTED_CURRENCIES } from "@/lib/currency/types";
 
-export function CurrencySelector() {
+export function CurrencySelector({ align = "right" }: { align?: "left" | "right" } = {}) {
   const { currency, setCurrency } = useCurrency();
   const [open, setOpen] = useState(false);
 
@@ -22,7 +22,11 @@ export function CurrencySelector() {
         {currency}
       </button>
       {open && (
-        <ul role="listbox" aria-label="Choose currency" className="absolute right-0 z-50 mt-1 max-h-72 min-w-[13rem] overflow-y-auto rounded-lg border border-neutral-200 bg-white py-1 shadow-lg">
+        <ul
+          role="listbox"
+          aria-label="Choose currency"
+          className={`absolute z-50 mt-1 max-h-72 min-w-[13rem] overflow-y-auto rounded-lg border border-neutral-200 bg-white py-1 shadow-lg ${align === "left" ? "left-0" : "right-0"}`}
+        >
           {SUPPORTED_CURRENCIES.map((c) => (
             <li key={c} role="option" aria-selected={c === currency}>
               <button

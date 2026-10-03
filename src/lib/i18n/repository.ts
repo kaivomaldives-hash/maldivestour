@@ -2,7 +2,7 @@ import "server-only";
 
 import { cachedRead } from "@/lib/cache/cached-read";
 import { createClient } from "@/lib/supabase/public";
-import type { Locale } from "@/lib/i18n/locales";
+import { localizedPath, type Locale } from "@/lib/i18n/locales";
 
 export type PageKey =
   | "homepage"
@@ -238,3 +238,18 @@ async function getEntitySlugsByLocaleUncached(entityId: string): Promise<Array<{
 }
 
 export const getEntitySlugsByLocale = cachedRead(getEntitySlugsByLocaleUncached, ["i18n:entity-slugs-by-locale"], 900);
+
+/** Router-relative path to this article in every locale it's published
+ * under, keyed by locale (always includes "en"). Used by the language
+ * switcher to jump straight to the equivalent translated article instead
+ * of falling back to the Travel Guide hub -- articles have their own
+ * per-locale slug (unlike the fixed page_key pages), so the switcher
+ * can't derive this from the current pathname alone. */
+export async function getArticleLocalePaths(entityId: string, englishSlug: string): Promise<Partial<Record<Locale, string>>> {
+  const translatedSlugs = await getEntitySlugsByLocale(entityId);
+  const paths: Partial<Record<Locale, string>> = { en: `/maldives/travel-guide/${englishSlug}/` };
+  for (const { locale, slug } of translatedSlugs) {
+    paths[locale] = localizedPath(locale, `/maldives/travel-guide/${slug}/`);
+  }
+  return paths;
+}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
+import { useArticleLocaleLinks } from "@/components/i18n/article-locale-links-context";
 import { GlobeIcon } from "@/components/ui/icons";
 import { LOCALE_NAMES, SUPPORTED_LOCALES, type Locale } from "@/lib/i18n/locales";
 
@@ -19,8 +20,13 @@ import { LOCALE_NAMES, SUPPORTED_LOCALES, type Locale } from "@/lib/i18n/locales
  *
  * Target-page resolution (Task 19 §16): if the visitor is on the
  * homepage or the Maldives hub, the switcher sends them to that same
- * page in the target locale (when published). For every other page —
- * individual activity/accommodation/article pages don't have per-entity
+ * page in the target locale (when published). On a Travel Guide article
+ * page, a RegisterArticleLocaleLinks call (rendered by that page) has
+ * registered the article's real per-locale paths via
+ * ArticleLocaleLinksProvider -- the switcher uses those when present,
+ * since an article's translated slug differs per locale and can't be
+ * derived from the current pathname. For every other page — other
+ * entity types (activity/accommodation/etc.) don't have per-entity
  * translations published yet — it falls back to that locale's Maldives
  * hub rather than fabricating a URL or silently doing nothing. If the
  * target locale isn't published at all, the current page doesn't
@@ -29,14 +35,24 @@ import { LOCALE_NAMES, SUPPORTED_LOCALES, type Locale } from "@/lib/i18n/locales
 export function LanguageSwitcher({
   publishedLocales,
   variant = "light",
+  align = "right",
 }: {
   publishedLocales: Locale[];
   /** "light" (default) is the header/mobile-nav styling, for a white
    * background. "dark" is for the footer's dark bg-ocean-950 panel. */
   variant?: "light" | "dark";
+  /** Which edge of the trigger button the dropdown panel opens from.
+   * Default "right" fits every call site where this control sits near
+   * the right side of its row (desktop header, footer). Pass "left" at
+   * a call site where the trigger instead sits near the left edge of a
+   * narrow container (the header's mobile nav panel) -- a right-anchored
+   * panel there is wider than the button and extends further left than
+   * the viewport, getting clipped. */
+  align?: "left" | "right";
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const { paths: articleLocalePaths } = useArticleLocaleLinks();
 
   const availableLocales: Locale[] = ["en", ...SUPPORTED_LOCALES.filter((l) => l !== "en" && publishedLocales.includes(l))];
   if (availableLocales.length <= 1) return null;
@@ -51,6 +67,16 @@ export function LanguageSwitcher({
     const prefix = locale === "en" ? "" : `/${locale}`;
     if (isHomepage) return locale === "en" ? "/" : publishedLocales.includes(locale) ? `${prefix}/` : pathname;
     if (isMaldivesHub) return locale === "en" ? "/maldives/" : publishedLocales.includes(locale) ? `${prefix}/maldives/` : pathname;
+    if (articleLocalePaths) {
+      // On a Travel Guide article page: use the article's real translated
+      // path when this locale has one, else fall back to that locale's
+      // Travel Guide hub (more relevant here than the whole Maldives hub)
+      // rather than a URL that 404s.
+      const articlePath = articleLocalePaths[locale];
+      if (articlePath) return articlePath;
+      if (locale === "en") return "/maldives/travel-guide/";
+      return publishedLocales.includes(locale) ? `${prefix}/maldives/travel-guide/` : pathname;
+    }
     // Any other page: no per-entity translation lookup wired in yet --
     // fall back to that locale's Maldives hub if it's published.
     if (locale === "en") return "/maldives/";
@@ -76,7 +102,11 @@ export function LanguageSwitcher({
         {LOCALE_NAMES[currentLocale].nativeName}
       </button>
       {open && (
-        <ul role="listbox" aria-label="Choose language" className="absolute right-0 z-50 mt-1 min-w-[10rem] rounded-lg border border-neutral-200 bg-white py-1 shadow-lg">
+        <ul
+          role="listbox"
+          aria-label="Choose language"
+          className={`absolute z-50 mt-1 min-w-[10rem] rounded-lg border border-neutral-200 bg-white py-1 shadow-lg ${align === "left" ? "left-0" : "right-0"}`}
+        >
           {availableLocales.map((locale) => (
             <li key={locale} role="option" aria-selected={locale === currentLocale}>
               <Link

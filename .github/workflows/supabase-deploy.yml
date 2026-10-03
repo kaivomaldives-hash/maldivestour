@@ -1,0 +1,37 @@
+name: Deploy Supabase migrations
+
+# Applies every migration in supabase/migrations/ that the production
+# project hasn't recorded yet (tracked by the Supabase CLI itself via the
+# supabase_migrations.schema_migrations table -- already-applied files are
+# skipped automatically, so this is safe to run on every push). This is
+# the actual push -> production pipeline; before this workflow existed,
+# nothing in the repo applied migrations anywhere -- pushing to main only
+# updated GitHub.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "supabase/migrations/**"
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Link project
+        run: supabase link --project-ref "$SUPABASE_PROJECT_ID"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
+
+      - name: Push pending migrations
+        run: supabase db push
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}

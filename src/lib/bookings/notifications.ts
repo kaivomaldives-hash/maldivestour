@@ -1,5 +1,6 @@
 import "server-only";
 
+import { escapeHtml, getAdminNotificationEmail, sendResendEmail, type DeliveryResult } from "@/lib/notifications/email";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
@@ -44,46 +45,6 @@ export interface BookingNotificationInput {
 
 const SITE_NAME = "Maldives Tour Guide (MTG)";
 const WHATSAPP_NUMBER = "9607794332";
-// Fallback only — the real recipient is platform_settings.
-// booking_notification_email (seeded in
-// supabase/migrations/20250101001500_seed_taxonomy.sql), editable without a
-// deploy. This constant only covers the unlikely case that row is missing.
-const DEFAULT_ADMIN_EMAIL = "contact@maldivestour.guide";
-
-function escapeHtml(value: string): string {
-  const map: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
-  return value.replace(/[&<>"']/g, (c) => map[c]);
-}
-
-async function getAdminNotificationEmail(admin: ReturnType<typeof createAdminClient>): Promise<string> {
-  const { data } = await admin.from("platform_settings").select("value").eq("key", "booking_notification_email").maybeSingle();
-  return (data as { value: string } | null)?.value ?? DEFAULT_ADMIN_EMAIL;
-}
-
-interface DeliveryResult {
-  ok: boolean;
-  providerMessageId?: string;
-  error?: string;
-}
-
-async function sendResendEmail(to: string, subject: string, html: string): Promise<DeliveryResult> {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) return { ok: false, error: "RESEND_API_KEY is not configured" };
-
-  const from = process.env.RESEND_FROM_EMAIL || "MTG Bookings <bookings@maldivestour.guide>";
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ from, to, subject, html }),
-    });
-    const body = (await res.json().catch(() => null)) as { id?: string; message?: string } | null;
-    if (!res.ok) return { ok: false, error: body?.message ?? `Resend responded ${res.status}` };
-    return { ok: true, providerMessageId: body?.id };
-  } catch (err) {
-    return { ok: false, error: err instanceof Error ? err.message : "Unknown error calling Resend" };
-  }
-}
 
 async function sendTelegramMessage(text: string): Promise<DeliveryResult> {
   const token = process.env.TELEGRAM_BOT_TOKEN;

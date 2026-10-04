@@ -105,6 +105,12 @@ export function SiteFooter({ availableLocales }: { availableLocales: Locale[] })
               ))}
             </ul>
             <FooterSubscribeForm />
+            <Link
+              href="/become-a-partner/"
+              className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/20"
+            >
+              Become a Partner
+            </Link>
           </div>
         </div>
 

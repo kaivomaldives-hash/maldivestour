@@ -36,6 +36,7 @@ export interface DashboardStats {
   reviewsTotal: number;
   commentsTotal: number;
   commentsFlagged: number;
+  partnerRequestsNew: number;
   redirects: number;
   listingsPublished: number;
   listingsDraft: number;
@@ -100,6 +101,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     reviewsTotal,
     commentsTotal,
     commentsFlagged,
+    partnerRequestsNew,
     redirects,
     listingsPublished,
     listingsDraft,
@@ -122,6 +124,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     countRows(supabase, "reviews"),
     countRows(supabase, "article_comments"),
     countRows(supabase, "article_comments", { status: "flagged" }),
+    countRows(supabase, "partner_requests", { status: "new" }),
     countRows(supabase, "url_redirects"),
     countListingsByStatus(supabase, "published"),
     countListingsByStatus(supabase, "draft"),
@@ -152,6 +155,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     reviewsTotal,
     commentsTotal,
     commentsFlagged,
+    partnerRequestsNew,
     redirects,
     listingsPublished,
     listingsDraft,

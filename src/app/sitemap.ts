@@ -23,7 +23,15 @@ import { getTransferRoutes } from "@/lib/transfers/repository";
  * duplicate. Every URL here is built from the exact same repository
  * functions the pages themselves use, so this can never list a page that
  * doesn't actually exist.
+ *
+ * Without an explicit `revalidate`, Next.js treats this metadata route as
+ * static and bakes it once at build time — new DB rows (new activities,
+ * packages, articles, etc.) would then only reach the sitemap on the next
+ * deploy. Matching the same hourly window the rest of the site's dynamic
+ * pages use (e.g. src/app/maldives/stays/page.tsx) keeps it current
+ * without needing a redeploy every time new content is published.
  */
+export const revalidate = 3600;
 
 const PAGE_SIZE = 100; // matches every repository's own pageSize cap
 

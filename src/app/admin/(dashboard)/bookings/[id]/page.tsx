@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { BookingStatusForm } from "@/components/admin/booking-status-form";
 import { requireStaff } from "@/lib/admin/auth";
 import { getBookingByIdAdmin } from "@/lib/admin/bookings-repository";
+import { DEFAULT_TRANSFER_BOAT } from "@/lib/admin/transfer-boat-defaults";
 
 function Field({ label, value }: { label: string; value: string | number | null | undefined }) {
   if (value === null || value === undefined || value === "") return null;
@@ -104,20 +105,20 @@ export default async function AdminBookingDetailPage({ params }: { params: Promi
             currency={booking.currency}
             paymentNote={booking.paymentNote}
             outboundBoat={{
-              boatName: booking.transferOutboundBoatName ?? "",
-              boatSize: booking.transferOutboundBoatSize ?? "",
-              boatContact: booking.transferOutboundBoatContact ?? "",
-              captainName: booking.transferOutboundCaptainName ?? "",
-              captainLicense: booking.transferOutboundCaptainLicense ?? "",
-              registrationNumber: booking.transferOutboundRegistrationNumber ?? "",
+              boatName: booking.transferOutboundBoatName ?? DEFAULT_TRANSFER_BOAT.boatName,
+              boatSize: booking.transferOutboundBoatSize ?? DEFAULT_TRANSFER_BOAT.boatSize,
+              boatContact: booking.transferOutboundBoatContact ?? DEFAULT_TRANSFER_BOAT.boatContact,
+              captainName: booking.transferOutboundCaptainName ?? DEFAULT_TRANSFER_BOAT.captainName,
+              captainLicense: booking.transferOutboundCaptainLicense ?? DEFAULT_TRANSFER_BOAT.captainLicense,
+              registrationNumber: booking.transferOutboundRegistrationNumber ?? DEFAULT_TRANSFER_BOAT.registrationNumber,
             }}
             returnBoat={{
-              boatName: booking.transferReturnBoatName ?? "",
-              boatSize: booking.transferReturnBoatSize ?? "",
-              boatContact: booking.transferReturnBoatContact ?? "",
-              captainName: booking.transferReturnCaptainName ?? "",
-              captainLicense: booking.transferReturnCaptainLicense ?? "",
-              registrationNumber: booking.transferReturnRegistrationNumber ?? "",
+              boatName: booking.transferReturnBoatName ?? DEFAULT_TRANSFER_BOAT.boatName,
+              boatSize: booking.transferReturnBoatSize ?? DEFAULT_TRANSFER_BOAT.boatSize,
+              boatContact: booking.transferReturnBoatContact ?? DEFAULT_TRANSFER_BOAT.boatContact,
+              captainName: booking.transferReturnCaptainName ?? DEFAULT_TRANSFER_BOAT.captainName,
+              captainLicense: booking.transferReturnCaptainLicense ?? DEFAULT_TRANSFER_BOAT.captainLicense,
+              registrationNumber: booking.transferReturnRegistrationNumber ?? DEFAULT_TRANSFER_BOAT.registrationNumber,
             }}
           />
         </div>

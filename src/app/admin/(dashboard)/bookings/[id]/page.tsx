@@ -45,6 +45,10 @@ export default async function AdminBookingDetailPage({ params }: { params: Promi
               <Field label="Phone" value={booking.customerPhone} />
               <Field label="WhatsApp" value={booking.customerWhatsapp} />
               <Field label="Nationality" value={booking.nationality} />
+              <Field
+                label="Terms accepted"
+                value={booking.termsAcceptedAt ? `Yes, ${new Date(booking.termsAcceptedAt).toLocaleString()}` : "Not recorded"}
+              />
             </dl>
           </section>
 

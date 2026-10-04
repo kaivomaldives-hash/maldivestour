@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
-import { combinePhone, NationalityField, PhoneField } from "@/components/bookings/customer-fields";
+import { combinePhone, NationalityField, PhoneField, TermsCheckbox } from "@/components/bookings/customer-fields";
 import { createTransferBookingInquiry } from "@/lib/bookings/actions";
 
 const WHATSAPP_NUMBER = "9607794332";
@@ -124,6 +124,7 @@ export function RequestBookingForm({
             customerPhone: combinePhone(data, "customerPhone"),
             customerWhatsapp: combinePhone(data, "customerWhatsapp"),
             nationality: String(data.get("nationality") ?? ""),
+            termsAccepted: data.get("termsAccepted") === "on",
             travelDate,
             travelTime: String(data.get("travelTime") ?? "") || null,
             returnDate: tripType === "round_trip" ? String(data.get("returnDate") ?? "") || null : null,
@@ -210,6 +211,8 @@ export function RequestBookingForm({
           className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
         />
       </label>
+
+      <TermsCheckbox source="transfer" />
 
       {error && (
         <p role="alert" className="text-sm text-red-600">

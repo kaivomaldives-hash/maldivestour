@@ -49,6 +49,8 @@ async function fetchAllPages<T>(fetchPage: (page: number) => Promise<{ items: T[
 
 const STATIC_PATHS = [
   "/",
+  "/terms-and-conditions/",
+  "/terms-and-conditions/transfers/",
   "/maldives/",
   "/maldives/activities/",
   "/maldives/attractions/",

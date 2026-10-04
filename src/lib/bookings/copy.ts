@@ -32,3 +32,11 @@ export function bookingCta(source: BookingSource): BookingCta {
 
 /** Fishing packages get more specific copy than a generic package. */
 export const FISHING_PACKAGE_CTA: BookingCta = { toggleLabel: "Request Fishing Package", submitLabel: "Request Fishing Package" };
+
+/** Every booking form must link to the site owner's real Terms and
+ * Conditions (/terms-and-conditions/) before a guest can submit — transfer
+ * bookings get the transfer-specific terms (boat/departure/no-show
+ * policy), everything else gets the general terms. */
+export function termsUrl(source: BookingSource): string {
+  return source === "transfer" ? "/terms-and-conditions/transfers/" : "/terms-and-conditions/";
+}

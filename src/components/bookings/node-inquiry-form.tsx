@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
-import { combinePhone, NationalityField, PhoneField } from "@/components/bookings/customer-fields";
+import { combinePhone, NationalityField, PhoneField, TermsCheckbox } from "@/components/bookings/customer-fields";
 import { createNodeInquiry } from "@/lib/bookings/actions";
 import type { BookingSource } from "@/lib/bookings/copy";
 
@@ -123,6 +123,7 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
             customerPhone: combinePhone(data, "customerPhone"),
             customerWhatsapp: combinePhone(data, "customerWhatsapp"),
             nationality: String(data.get("nationality") ?? ""),
+            termsAccepted: data.get("termsAccepted") === "on",
             preferredDate,
             preferredTime: String(data.get("preferredTime") ?? "") || null,
             adults,
@@ -186,6 +187,8 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
           className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
         />
       </label>
+
+      <TermsCheckbox source={source} />
 
       {error && (
         <p role="alert" className="text-sm text-red-600">

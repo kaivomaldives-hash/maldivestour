@@ -80,6 +80,7 @@ export interface AdminBookingDetail extends AdminBookingListItem {
    * time, not this one. */
   confirmationEmailSentAt: string | null;
   updatedAt: string;
+  termsAcceptedAt: string | null;
   transferOutboundBoatName: string | null;
   transferOutboundBoatSize: string | null;
   transferOutboundBoatContact: string | null;
@@ -126,6 +127,7 @@ interface BookingRow {
   source: string | null;
   notification_status: string;
   confirmation_email_sent_at: string | null;
+  terms_accepted_at: string | null;
   created_at: string;
   updated_at: string;
   transfer_outbound_boat_name: string | null;
@@ -261,6 +263,7 @@ export async function getBookingByIdAdmin(id: string): Promise<AdminBookingDetai
     internalNotes: row.internal_notes,
     notificationStatus: row.notification_status,
     confirmationEmailSentAt: row.confirmation_email_sent_at,
+    termsAcceptedAt: row.terms_accepted_at,
     updatedAt: row.updated_at,
     transferOutboundBoatName: row.transfer_outbound_boat_name,
     transferOutboundBoatSize: row.transfer_outbound_boat_size,

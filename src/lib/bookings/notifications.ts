@@ -316,7 +316,7 @@ const TRANSFER_WEATHER_NOTE_HTML = `
   May through October is the rainy season, and inclement weather is frequent during this time — weather can change suddenly and forecasts aren't always accurate.
   Before traveling, please check the weather on the Maldives Meteorological Service's website and follow them for updates. We will not operate a scheduled transfer if the center issues a weather alert for that period.
   </p>
-  <p style="font-size:13px;color:#555">Please read our transfer terms and conditions.</p>
+  <p style="font-size:13px;color:#555">Please read our <a href="https://maldivestour.guide/terms-and-conditions/transfers/">transfer terms and conditions</a>.</p>
 `;
 
 function buildTransferConfirmationHtml(input: BookingConfirmedEmailInput): string {

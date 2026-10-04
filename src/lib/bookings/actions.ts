@@ -47,6 +47,7 @@ export interface TransferBookingInquiryInput {
   customerPhone: string;
   customerWhatsapp: string;
   nationality: string;
+  termsAccepted: boolean;
   travelDate: string; // YYYY-MM-DD
   travelTime: string | null; // HH:MM
   returnDate: string | null;
@@ -81,6 +82,7 @@ export async function createTransferBookingInquiry(
   if (!name) return { ok: false, error: "Please enter your name." };
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, error: "Please enter a valid email address." };
   if (!nationality) return { ok: false, error: "Please select your nationality." };
+  if (!input.termsAccepted) return { ok: false, error: "Please agree to the Terms and Conditions to continue." };
   if (!input.travelDate) return { ok: false, error: "Please choose a travel date." };
   if (input.tripType === "round_trip" && !input.returnDate) {
     return { ok: false, error: "Please choose a return date for a round trip." };
@@ -103,6 +105,7 @@ export async function createTransferBookingInquiry(
     p_customer_phone: input.customerPhone.trim() || null,
     p_customer_whatsapp: input.customerWhatsapp.trim() || null,
     p_nationality: nationality,
+    p_terms_accepted: input.termsAccepted,
     p_origin_location_id: input.originLocationId,
     p_destination_location_id: input.destinationLocationId,
     p_travel_date: input.travelDate,
@@ -163,6 +166,7 @@ export interface NodeInquiryInput {
   customerPhone: string;
   customerWhatsapp: string;
   nationality: string;
+  termsAccepted: boolean;
   preferredDate: string | null; // YYYY-MM-DD
   preferredTime: string | null; // HH:MM
   adults: number;
@@ -188,6 +192,7 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
   if (!name) return { ok: false, error: "Please enter your name." };
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, error: "Please enter a valid email address." };
   if (!nationality) return { ok: false, error: "Please select your nationality." };
+  if (!input.termsAccepted) return { ok: false, error: "Please agree to the Terms and Conditions to continue." };
 
   const numberOfDays = input.numberOfDays && input.numberOfDays > 0 ? Math.floor(input.numberOfDays) : null;
   const specialRequests = [
@@ -207,6 +212,7 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
     p_customer_phone: input.customerPhone.trim() || null,
     p_customer_whatsapp: input.customerWhatsapp.trim() || null,
     p_nationality: nationality,
+    p_terms_accepted: input.termsAccepted,
     p_origin_location_id: null,
     p_destination_location_id: null,
     p_travel_date: input.preferredDate || null,

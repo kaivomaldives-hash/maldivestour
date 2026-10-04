@@ -109,7 +109,12 @@ export function SiteFooter({ availableLocales }: { availableLocales: Locale[] })
         </div>
 
         <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-lagoon-100/60 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {year} Maldives Tour Guide (MTG). All information is provided for travel planning purposes.</p>
+          <p>
+            © {year} Maldives Tour Guide (MTG). All information is provided for travel planning purposes. ·{" "}
+            <Link href="/terms-and-conditions/" className="underline hover:text-white">
+              Terms and Conditions
+            </Link>
+          </p>
           <LanguageSwitcher publishedLocales={availableLocales} variant="dark" />
         </div>
       </div>

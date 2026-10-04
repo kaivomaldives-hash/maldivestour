@@ -1,4 +1,7 @@
+import Link from "next/link";
+
 import { COUNTRIES, DEFAULT_DIAL_CODE } from "@/lib/bookings/countries";
+import { termsUrl, type BookingSource } from "@/lib/bookings/copy";
 
 const INPUT_CLASS =
   "min-touch-target w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1";
@@ -49,6 +52,26 @@ export function combinePhone(data: FormData, name: string): string {
   const code = String(data.get(`${name}Code`) ?? DEFAULT_DIAL_CODE);
   const number = String(data.get(`${name}Number`) ?? "").trim().replace(/[^\d]/g, "");
   return number ? `${code}${number}` : "";
+}
+
+/** Required on every booking form — gates submission on explicit agreement
+ * to the site owner's real Terms and Conditions (enforced again server-side
+ * by create_booking_inquiry()'s p_terms_accepted, never just this
+ * checkbox). Transfer bookings link the transfer-specific terms; every
+ * other source links the general terms. */
+export function TermsCheckbox({ source, name = "termsAccepted" }: { source: BookingSource; name?: string }) {
+  return (
+    <label className="flex items-start gap-2 text-sm text-neutral-700">
+      <input type="checkbox" name={name} required className="mt-0.5 h-4 w-4 shrink-0 rounded border-neutral-300 text-maldives-600 focus:ring-maldives-500" />
+      <span>
+        I have read and agree to the{" "}
+        <Link href={termsUrl(source)} target="_blank" rel="noopener noreferrer" className="text-maldives-600 underline">
+          Terms and Conditions
+        </Link>
+        <span aria-hidden="true"> *</span>
+      </span>
+    </label>
+  );
 }
 
 export function NationalityField({ name = "nationality" }: { name?: string }) {

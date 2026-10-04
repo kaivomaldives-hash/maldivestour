@@ -215,8 +215,11 @@ export async function ActivityDirectoryPage({
           <section className="prose-sm max-w-none text-sm text-neutral-700">
             <p>
               Beyond diving, fishing and surfing (each with their own dedicated page), the Maldives offers a real range of things to
-              do — sandbank picnics, dolphin cruises, snorkeling trips, island hopping tours, spa treatments and guided cultural visits to
-              Malé. Every activity below is a real, individually sourced experience from a resort or independent operator, not a generic
+              do — sandbank picnics, dolphin cruises, snorkeling trips, island hopping tours, spa treatments and guided{" "}
+              <Link href="/maldives/male-city-tour/" className="text-maldives-600 hover:underline">
+                city tours of Malé
+              </Link>
+              . Every activity below is a real, individually sourced experience from a resort or independent operator, not a generic
               stock listing.
             </p>
             <p>

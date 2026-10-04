@@ -104,6 +104,7 @@ const MANIFEST_SOURCES = {
   "transfer-homepage-images": "data/maldives/migration/transfer-homepage-images-manifest.json",
   "transfer-category-images": "data/maldives/migration/transfer-category-images-manifest.json",
   "activity-uploads": "data/maldives/migration/activity-uploads-manifest.json",
+  "city-tour-uploads": "data/maldives/migration/city-tour-uploads-manifest.json",
 };
 
 function mergeManifests(only) {

@@ -23,6 +23,28 @@ export interface AdminActionResult {
   error?: string;
 }
 
+export interface TransferBoatDetailsInput {
+  boatName: string | null;
+  boatSize: string | null;
+  boatContact: string | null;
+  captainName: string | null;
+  captainLicense: string | null;
+  registrationNumber: string | null;
+}
+
+export interface UpdateBookingStatusInput {
+  status: string;
+  /** Staff-editable at the same time as the status, so a discount applied
+   * right before confirming is guaranteed to be the price the confirmation
+   * email actually quotes (see the single `.update()` call below — price
+   * and status are written together, not as two separate racing actions). */
+  quotedPrice?: number | null;
+  currency?: string;
+  paymentNote?: string | null;
+  outboundBoat?: TransferBoatDetailsInput;
+  returnBoat?: TransferBoatDetailsInput;
+}
+
 /**
  * A transition INTO 'confirmed' (from any other status) fires the customer
  * confirmation email exactly once, gated by `confirmation_email_sent_at`
@@ -34,10 +56,16 @@ export interface AdminActionResult {
  * "every transition into confirmed" would double-fire on that last case,
  * so this checks `confirmation_email_sent_at is null` too, not just the
  * status change itself.
+ *
+ * Price and the transfer boat/captain details are written in this SAME
+ * update call, before the confirmed-email is built from a fresh read —
+ * never as a separate parallel action — specifically so a discount or a
+ * boat assignment entered in the same save as "Confirmed" is guaranteed to
+ * already be committed by the time the email is composed.
  */
-export async function updateBookingStatus(id: string, status: string): Promise<AdminActionResult> {
+export async function updateBookingStatus(id: string, input: UpdateBookingStatusInput): Promise<AdminActionResult> {
   await requireStaff();
-  if (!(BOOKING_STATUSES as readonly string[]).includes(status)) return { ok: false, error: "Invalid status." };
+  if (!(BOOKING_STATUSES as readonly string[]).includes(input.status)) return { ok: false, error: "Invalid status." };
 
   const supabase = await createClient();
 
@@ -47,9 +75,30 @@ export async function updateBookingStatus(id: string, status: string): Promise<A
     .eq("id", id)
     .maybeSingle<{ status: BookingStatus; confirmation_email_sent_at: string | null }>();
 
+  const updatePayload: Record<string, unknown> = { status: input.status };
+  if (input.quotedPrice !== undefined) updatePayload.quoted_price = input.quotedPrice;
+  if (input.currency !== undefined) updatePayload.currency = input.currency;
+  if (input.paymentNote !== undefined) updatePayload.payment_note = input.paymentNote?.trim() || null;
+  if (input.outboundBoat) {
+    updatePayload.transfer_outbound_boat_name = input.outboundBoat.boatName?.trim() || null;
+    updatePayload.transfer_outbound_boat_size = input.outboundBoat.boatSize?.trim() || null;
+    updatePayload.transfer_outbound_boat_contact = input.outboundBoat.boatContact?.trim() || null;
+    updatePayload.transfer_outbound_captain_name = input.outboundBoat.captainName?.trim() || null;
+    updatePayload.transfer_outbound_captain_license = input.outboundBoat.captainLicense?.trim() || null;
+    updatePayload.transfer_outbound_registration_number = input.outboundBoat.registrationNumber?.trim() || null;
+  }
+  if (input.returnBoat) {
+    updatePayload.transfer_return_boat_name = input.returnBoat.boatName?.trim() || null;
+    updatePayload.transfer_return_boat_size = input.returnBoat.boatSize?.trim() || null;
+    updatePayload.transfer_return_boat_contact = input.returnBoat.boatContact?.trim() || null;
+    updatePayload.transfer_return_captain_name = input.returnBoat.captainName?.trim() || null;
+    updatePayload.transfer_return_captain_license = input.returnBoat.captainLicense?.trim() || null;
+    updatePayload.transfer_return_registration_number = input.returnBoat.registrationNumber?.trim() || null;
+  }
+
   const { error } = await supabase
     .from("bookings")
-    .update({ status } as unknown as never)
+    .update(updatePayload as unknown as never)
     .eq("id", id);
   if (error) return { ok: false, error: error.message };
 
@@ -57,7 +106,7 @@ export async function updateBookingStatus(id: string, status: string): Promise<A
   revalidatePath("/admin/bookings");
   revalidatePath("/admin");
 
-  const shouldSendConfirmation = status === "confirmed" && before?.status !== "confirmed" && !before?.confirmation_email_sent_at;
+  const shouldSendConfirmation = input.status === "confirmed" && before?.status !== "confirmed" && !before?.confirmation_email_sent_at;
   if (shouldSendConfirmation) {
     const booking = await getBookingByIdAdmin(id);
     if (booking) {
@@ -71,6 +120,32 @@ export async function updateBookingStatus(id: string, status: string): Promise<A
         destinationTitle: booking.destinationTitle,
         travelDate: booking.travelDate,
         travelTime: booking.travelTime,
+        source: booking.source,
+        returnDate: booking.returnDate,
+        returnTime: booking.returnTime,
+        quotedPrice: booking.quotedPrice,
+        currency: booking.currency,
+        paymentNote: booking.paymentNote,
+        outboundBoat: booking.transferOutboundBoatName
+          ? {
+              boatName: booking.transferOutboundBoatName,
+              boatSize: booking.transferOutboundBoatSize,
+              boatContact: booking.transferOutboundBoatContact,
+              captainName: booking.transferOutboundCaptainName,
+              captainLicense: booking.transferOutboundCaptainLicense,
+              registrationNumber: booking.transferOutboundRegistrationNumber,
+            }
+          : null,
+        returnBoat: booking.transferReturnBoatName
+          ? {
+              boatName: booking.transferReturnBoatName,
+              boatSize: booking.transferReturnBoatSize,
+              boatContact: booking.transferReturnBoatContact,
+              captainName: booking.transferReturnCaptainName,
+              captainLicense: booking.transferReturnCaptainLicense,
+              registrationNumber: booking.transferReturnRegistrationNumber,
+            }
+          : null,
       });
     }
   }

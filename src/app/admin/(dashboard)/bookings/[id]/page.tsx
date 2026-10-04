@@ -90,7 +90,32 @@ export default async function AdminBookingDetailPage({ params }: { params: Promi
         </div>
 
         <div>
-          <BookingStatusForm bookingId={booking.id} currentStatus={booking.status} currentNotes={booking.internalNotes ?? ""} />
+          <BookingStatusForm
+            bookingId={booking.id}
+            currentStatus={booking.status}
+            currentNotes={booking.internalNotes ?? ""}
+            source={booking.source}
+            hasReturnLeg={Boolean(booking.returnDate)}
+            quotedPrice={booking.quotedPrice}
+            currency={booking.currency}
+            paymentNote={booking.paymentNote}
+            outboundBoat={{
+              boatName: booking.transferOutboundBoatName ?? "",
+              boatSize: booking.transferOutboundBoatSize ?? "",
+              boatContact: booking.transferOutboundBoatContact ?? "",
+              captainName: booking.transferOutboundCaptainName ?? "",
+              captainLicense: booking.transferOutboundCaptainLicense ?? "",
+              registrationNumber: booking.transferOutboundRegistrationNumber ?? "",
+            }}
+            returnBoat={{
+              boatName: booking.transferReturnBoatName ?? "",
+              boatSize: booking.transferReturnBoatSize ?? "",
+              boatContact: booking.transferReturnBoatContact ?? "",
+              captainName: booking.transferReturnCaptainName ?? "",
+              captainLicense: booking.transferReturnCaptainLicense ?? "",
+              registrationNumber: booking.transferReturnRegistrationNumber ?? "",
+            }}
+          />
         </div>
       </div>
     </div>

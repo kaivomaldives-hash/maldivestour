@@ -243,6 +243,15 @@ export async function sendBookingNotifications(input: BookingNotificationInput):
   }
 }
 
+export interface TransferBoatDetails {
+  boatName: string | null;
+  boatSize: string | null;
+  boatContact: string | null;
+  captainName: string | null;
+  captainLicense: string | null;
+  registrationNumber: string | null;
+}
+
 export interface BookingConfirmedEmailInput {
   bookingId: string;
   bookingReference: string;
@@ -253,6 +262,108 @@ export interface BookingConfirmedEmailInput {
   destinationTitle: string | null;
   travelDate: string | null;
   travelTime: string | null;
+  /**
+   * Transfer bookings get a detailed boat/captain/meeting-point email
+   * instead of the generic one below -- see buildTransferConfirmationHtml().
+   * Used only when source === 'transfer' and the admin has filled in at
+   * least the outbound boat name (src/lib/admin/bookings-actions.ts decides
+   * this before calling in). Every field here is staff-entered per booking
+   * (src/app/admin/(dashboard)/bookings/[id]/page.tsx) -- nothing is pulled
+   * from a boats/captains registry because this project doesn't have one.
+   */
+  source?: string | null;
+  returnDate?: string | null;
+  returnTime?: string | null;
+  quotedPrice?: number | null;
+  currency?: string | null;
+  paymentNote?: string | null;
+  outboundBoat?: TransferBoatDetails | null;
+  returnBoat?: TransferBoatDetails | null;
+}
+
+/** DD/MM/YY, matching the site owner's own transfer-confirmation template. */
+function formatTransferDate(isoDate: string): string {
+  const [y, m, d] = isoDate.split("-");
+  return `${d}/${m}/${y.slice(2)}`;
+}
+
+function boatDetailLines(boat: TransferBoatDetails): string {
+  const rows: Array<[string, string | null]> = [
+    ["Boat Name", boat.boatName],
+    ["Boat Size", boat.boatSize],
+    ["Boat contact number", boat.boatContact],
+    ["Captain Name", boat.captainName],
+    ["License Number", boat.captainLicense],
+    ["Registration Number", boat.registrationNumber],
+  ];
+  return rows
+    .filter(([, value]) => value)
+    .map(([label, value]) => `<strong>${label}:</strong> ${escapeHtml(value as string)}<br/>`)
+    .join("\n      ");
+}
+
+const TRANSFER_MEETING_POINTS_HTML = `
+  <h3 style="margin-bottom:4px">How to find us?</h3>
+  <p><strong>Meeting point 1:</strong> Our guide will wait for you at the arrival gate with our signboard (Maldives Tour Guide) as on the logo. It will be a crowded area and there will be lots of signboards so if you cannot locate our guide then kindly move to meeting point 2.<br/>
+  <strong>Meeting point 2:</strong> the Airport Help desk situated on the left of the arrival exit. Here you can make a free call to us from the desk (+${WHATSAPP_NUMBER}).<br/>
+  <strong>Meeting point 3:</strong> Airport Counter C8.<br/>
+  You can also find the Hotel staff with their signboard — they will help you contact us, or ask your hotel staff to contact us directly.</p>
+`;
+
+const TRANSFER_WEATHER_NOTE_HTML = `
+  <p style="font-size:13px;color:#555">
+  <strong>Note:</strong> We do not accept card payments on the boat. Speedboat transfers are weather-dependent trips, especially on our 24-foot boats.
+  May through October is the rainy season, and inclement weather is frequent during this time — weather can change suddenly and forecasts aren't always accurate.
+  Before traveling, please check the weather on the Maldives Meteorological Service's website and follow them for updates. We will not operate a scheduled transfer if the center issues a weather alert for that period.
+  </p>
+  <p style="font-size:13px;color:#555">Please read our transfer terms and conditions.</p>
+`;
+
+function buildTransferConfirmationHtml(input: BookingConfirmedEmailInput): string {
+  const firstName = input.customerName.trim().split(/\s+/)[0] || input.customerName;
+  const routeTitle =
+    input.originTitle && input.destinationTitle ? `${input.originTitle} to ${input.destinationTitle}` : input.productTitle;
+
+  const outboundSection = `
+    <p><strong>${escapeHtml(routeTitle)}</strong><br/>
+    <strong>Date and Time:</strong> ${input.travelDate ? escapeHtml(formatTransferDate(input.travelDate)) : "To be confirmed"}${input.travelTime ? ` at ${escapeHtml(input.travelTime)}` : ""}<br/>
+    ${input.outboundBoat ? boatDetailLines(input.outboundBoat) : ""}</p>
+  `;
+
+  const returnSection =
+    input.returnDate && input.returnBoat
+      ? `
+    <p><strong>Departure</strong><br/>
+    <strong>Date and Time:</strong> ${escapeHtml(formatTransferDate(input.returnDate))}${input.returnTime ? ` at ${escapeHtml(input.returnTime)}` : ""}<br/>
+    ${boatDetailLines(input.returnBoat)}</p>
+  `
+      : "";
+
+  const paymentHtml = input.paymentNote
+    ? `<p>${escapeHtml(input.paymentNote).replace(/\n/g, "<br/>")}</p>`
+    : input.quotedPrice != null
+      ? `<p>Your total for this transfer is ${escapeHtml(input.currency ?? "USD")} ${input.quotedPrice}.</p>`
+      : "";
+
+  return `
+    <p>Dear ${escapeHtml(firstName)},</p>
+    <p>Your booking is confirmed as below.</p>
+    ${outboundSection}
+    ${returnSection}
+    ${TRANSFER_MEETING_POINTS_HTML}
+    <h3 style="margin-bottom:4px">Payment</h3>
+    ${paymentHtml}
+    ${TRANSFER_WEATHER_NOTE_HTML}
+    <p>If you wish to change the timings or you have any questions, please do not hesitate to contact us — we wish you a safe journey.</p>
+    <p>For reservations or to change the time, please contact the reservation team by email: contact@maldivestour.guide or WhatsApp: +${WHATSAPP_NUMBER}.</p>
+    <p>Thank you, and we wish you a safe journey.<br/>Reservation Team</p>
+    <p style="font-size:13px;color:#555">
+    +${WHATSAPP_NUMBER}<br/>
+    contact@maldivestour.guide<br/>
+    <a href="https://maldivestour.guide/">https://maldivestour.guide/</a><br/>
+    Andhaleebuge, GA. Maamendhoo, Maldives
+    </p>
+  `;
 }
 
 /**
@@ -274,9 +385,13 @@ export async function sendBookingConfirmedEmail(input: BookingConfirmedEmailInpu
   try {
     const admin = createAdminClient();
 
+    const isTransferConfirmation = input.source === "transfer" && Boolean(input.outboundBoat?.boatName);
+
     const dateLine = input.travelDate ? `${input.travelDate}${input.travelTime ? ` at ${input.travelTime}` : ""}` : "To be confirmed with our team";
 
-    const html = `
+    const html = isTransferConfirmation
+      ? buildTransferConfirmationHtml(input)
+      : `
       <p>Hi ${escapeHtml(input.customerName)},</p>
       <p>Good news — your booking is now <strong>confirmed</strong>.</p>
       <p><strong>Reference:</strong> ${escapeHtml(input.bookingReference)}<br/>

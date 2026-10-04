@@ -80,6 +80,19 @@ export interface AdminBookingDetail extends AdminBookingListItem {
    * time, not this one. */
   confirmationEmailSentAt: string | null;
   updatedAt: string;
+  transferOutboundBoatName: string | null;
+  transferOutboundBoatSize: string | null;
+  transferOutboundBoatContact: string | null;
+  transferOutboundCaptainName: string | null;
+  transferOutboundCaptainLicense: string | null;
+  transferOutboundRegistrationNumber: string | null;
+  transferReturnBoatName: string | null;
+  transferReturnBoatSize: string | null;
+  transferReturnBoatContact: string | null;
+  transferReturnCaptainName: string | null;
+  transferReturnCaptainLicense: string | null;
+  transferReturnRegistrationNumber: string | null;
+  paymentNote: string | null;
 }
 
 interface BookingRow {
@@ -115,6 +128,19 @@ interface BookingRow {
   confirmation_email_sent_at: string | null;
   created_at: string;
   updated_at: string;
+  transfer_outbound_boat_name: string | null;
+  transfer_outbound_boat_size: string | null;
+  transfer_outbound_boat_contact: string | null;
+  transfer_outbound_captain_name: string | null;
+  transfer_outbound_captain_license: string | null;
+  transfer_outbound_registration_number: string | null;
+  transfer_return_boat_name: string | null;
+  transfer_return_boat_size: string | null;
+  transfer_return_boat_contact: string | null;
+  transfer_return_captain_name: string | null;
+  transfer_return_captain_license: string | null;
+  transfer_return_registration_number: string | null;
+  payment_note: string | null;
 }
 
 type AdminSupabaseClient = Awaited<ReturnType<typeof createClient>>;
@@ -236,5 +262,18 @@ export async function getBookingByIdAdmin(id: string): Promise<AdminBookingDetai
     notificationStatus: row.notification_status,
     confirmationEmailSentAt: row.confirmation_email_sent_at,
     updatedAt: row.updated_at,
+    transferOutboundBoatName: row.transfer_outbound_boat_name,
+    transferOutboundBoatSize: row.transfer_outbound_boat_size,
+    transferOutboundBoatContact: row.transfer_outbound_boat_contact,
+    transferOutboundCaptainName: row.transfer_outbound_captain_name,
+    transferOutboundCaptainLicense: row.transfer_outbound_captain_license,
+    transferOutboundRegistrationNumber: row.transfer_outbound_registration_number,
+    transferReturnBoatName: row.transfer_return_boat_name,
+    transferReturnBoatSize: row.transfer_return_boat_size,
+    transferReturnBoatContact: row.transfer_return_boat_contact,
+    transferReturnCaptainName: row.transfer_return_captain_name,
+    transferReturnCaptainLicense: row.transfer_return_captain_license,
+    transferReturnRegistrationNumber: row.transfer_return_registration_number,
+    paymentNote: row.payment_note,
   };
 }

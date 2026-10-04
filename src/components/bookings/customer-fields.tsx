@@ -21,14 +21,22 @@ export function PhoneField({ label, name, required }: { label: string; name: str
         {required && <span aria-hidden="true"> *</span>}
       </span>
       <div className="flex gap-2">
-        <select name={`${name}Code`} defaultValue={DEFAULT_DIAL_CODE} aria-label={`${label} country code`} className={`${INPUT_CLASS} w-28 shrink-0`}>
+        {/* A fixed width (not w-full) — combining both on one element is
+            unreliable in Tailwind, since the generated stylesheet's class
+            order (not the order written here) decides which wins. */}
+        <select
+          name={`${name}Code`}
+          defaultValue={DEFAULT_DIAL_CODE}
+          aria-label={`${label} country code`}
+          className="min-touch-target w-28 shrink-0 rounded-xl border border-neutral-300 px-2 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
+        >
           {COUNTRIES.map((c) => (
             <option key={c.iso2} value={c.dialCode}>
               {c.name} ({c.dialCode})
             </option>
           ))}
         </select>
-        <input name={`${name}Number`} type="tel" required={required} autoComplete="tel-national" className={INPUT_CLASS} />
+        <input name={`${name}Number`} type="tel" required={required} autoComplete="tel-national" className={`${INPUT_CLASS} min-w-0 flex-1`} />
       </div>
     </div>
   );

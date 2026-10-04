@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { FooterSubscribeForm } from "@/components/footer-subscribe-form";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import {
@@ -103,6 +104,7 @@ export function SiteFooter({ availableLocales }: { availableLocales: Locale[] })
                 </li>
               ))}
             </ul>
+            <FooterSubscribeForm />
           </div>
         </div>
 

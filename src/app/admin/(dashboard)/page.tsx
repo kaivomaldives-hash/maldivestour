@@ -55,6 +55,7 @@ export default async function AdminDashboardPage() {
         <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <StatTile label="Pending bookings" value={stats.bookingsByStatus.pending} href="/admin/bookings?status=pending" />
           <StatTile label="Confirmed bookings" value={stats.bookingsByStatus.confirmed} href="/admin/bookings?status=confirmed" />
+          <StatTile label="Customers" value={stats.customers} href="/admin/customers" />
           <StatTile label="Reviews awaiting approval" value={stats.reviewsPending} href="/admin/reviews?status=pending" />
           <StatTile label="Published listings" value={stats.listingsPublished} />
           <StatTile label="Draft listings" value={stats.listingsDraft} />

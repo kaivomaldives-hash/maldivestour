@@ -19,6 +19,7 @@ export type { BookingStatus };
 export interface DashboardStats {
   bookingsByStatus: Record<BookingStatus, number>;
   bookingsTotal: number;
+  customers: number;
   accommodations: number;
   activitiesTotal: number;
   activitiesFishing: number;
@@ -82,6 +83,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
 
   const [
     bookingCounts,
+    customers,
     accommodations,
     activitiesTotal,
     activitiesFishing,
@@ -103,6 +105,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     listingsDraft,
   ] = await Promise.all([
     Promise.all(BOOKING_STATUSES.map((status) => countRows(supabase, "bookings", { status }))),
+    countRows(supabase, "customers"),
     countRows(supabase, "accommodations"),
     countRows(supabase, "activities"),
     countRows(supabase, "activities", { activity_category: "fishing" }),
@@ -132,6 +135,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
   return {
     bookingsByStatus,
     bookingsTotal: bookingCounts.reduce((sum, n) => sum + n, 0),
+    customers,
     accommodations,
     activitiesTotal,
     activitiesFishing,

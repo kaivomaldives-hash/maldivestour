@@ -57,6 +57,7 @@ export interface AdminBookingListResult {
 export interface AdminBookingDetail extends AdminBookingListItem {
   customerPhone: string | null;
   customerWhatsapp: string | null;
+  nationality: string;
   originTitle: string | null;
   destinationTitle: string | null;
   travelTime: string | null;
@@ -91,6 +92,7 @@ interface BookingRow {
   customer_email: string;
   customer_phone: string | null;
   customer_whatsapp: string | null;
+  nationality: string;
   origin_location_id: string | null;
   destination_location_id: string | null;
   travel_date: string | null;
@@ -217,6 +219,7 @@ export async function getBookingByIdAdmin(id: string): Promise<AdminBookingDetai
     ...toListItem(row, titles),
     customerPhone: row.customer_phone,
     customerWhatsapp: row.customer_whatsapp,
+    nationality: row.nationality,
     originTitle: row.origin_location_id ? (locationTitles.get(row.origin_location_id) ?? null) : null,
     destinationTitle: row.destination_location_id ? (locationTitles.get(row.destination_location_id) ?? null) : null,
     travelTime: row.travel_time,

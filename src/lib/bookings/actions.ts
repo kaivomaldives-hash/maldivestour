@@ -46,6 +46,7 @@ export interface TransferBookingInquiryInput {
   customerEmail: string;
   customerPhone: string;
   customerWhatsapp: string;
+  nationality: string;
   travelDate: string; // YYYY-MM-DD
   travelTime: string | null; // HH:MM
   returnDate: string | null;
@@ -75,9 +76,11 @@ export async function createTransferBookingInquiry(
 
   const name = input.customerName.trim();
   const email = input.customerEmail.trim();
+  const nationality = input.nationality.trim();
 
   if (!name) return { ok: false, error: "Please enter your name." };
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, error: "Please enter a valid email address." };
+  if (!nationality) return { ok: false, error: "Please select your nationality." };
   if (!input.travelDate) return { ok: false, error: "Please choose a travel date." };
   if (input.tripType === "round_trip" && !input.returnDate) {
     return { ok: false, error: "Please choose a return date for a round trip." };
@@ -99,6 +102,7 @@ export async function createTransferBookingInquiry(
     p_customer_email: email,
     p_customer_phone: input.customerPhone.trim() || null,
     p_customer_whatsapp: input.customerWhatsapp.trim() || null,
+    p_nationality: nationality,
     p_origin_location_id: input.originLocationId,
     p_destination_location_id: input.destinationLocationId,
     p_travel_date: input.travelDate,
@@ -131,6 +135,7 @@ export async function createTransferBookingInquiry(
     customerName: name,
     customerEmail: email,
     customerPhone: input.customerPhone.trim() || null,
+    nationality,
     requestedDate: input.travelDate,
     adults: input.adults,
     children: input.children,
@@ -157,6 +162,7 @@ export interface NodeInquiryInput {
   customerEmail: string;
   customerPhone: string;
   customerWhatsapp: string;
+  nationality: string;
   preferredDate: string | null; // YYYY-MM-DD
   preferredTime: string | null; // HH:MM
   adults: number;
@@ -177,9 +183,11 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
 
   const name = input.customerName.trim();
   const email = input.customerEmail.trim();
+  const nationality = input.nationality.trim();
 
   if (!name) return { ok: false, error: "Please enter your name." };
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, error: "Please enter a valid email address." };
+  if (!nationality) return { ok: false, error: "Please select your nationality." };
 
   const numberOfDays = input.numberOfDays && input.numberOfDays > 0 ? Math.floor(input.numberOfDays) : null;
   const specialRequests = [
@@ -198,6 +206,7 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
     p_customer_email: email,
     p_customer_phone: input.customerPhone.trim() || null,
     p_customer_whatsapp: input.customerWhatsapp.trim() || null,
+    p_nationality: nationality,
     p_origin_location_id: null,
     p_destination_location_id: null,
     p_travel_date: input.preferredDate || null,
@@ -230,6 +239,7 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
     customerName: name,
     customerEmail: email,
     customerPhone: input.customerPhone.trim() || null,
+    nationality,
     requestedDate: input.preferredDate,
     adults: input.adults,
     children: input.children,

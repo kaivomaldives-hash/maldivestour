@@ -33,6 +33,7 @@ export interface BookingNotificationInput {
   customerName: string;
   customerEmail: string;
   customerPhone: string | null;
+  nationality: string;
   requestedDate: string | null;
   adults: number;
   children: number;
@@ -144,7 +145,8 @@ export async function sendBookingNotifications(input: BookingNotificationInput):
       ${priceLine ? `<p>${priceLine}</p>` : ""}
       <p><strong>Customer:</strong> ${escapeHtml(input.customerName)} — ${escapeHtml(input.customerEmail)}${
         input.customerPhone ? ` — ${escapeHtml(input.customerPhone)}` : ""
-      }</p>
+      }<br/>
+      <strong>Nationality:</strong> ${escapeHtml(input.nationality)}</p>
       ${input.specialRequests ? `<p><strong>Special requests:</strong> ${escapeHtml(input.specialRequests)}</p>` : ""}
       <p style="color:#888;font-size:12px">Booking ID: ${input.bookingId}</p>
     `;
@@ -159,6 +161,7 @@ export async function sendBookingNotifications(input: BookingNotificationInput):
       `Customer: ${escapeHtml(input.customerName)} (${escapeHtml(input.customerEmail)}${
         input.customerPhone ? `, ${escapeHtml(input.customerPhone)}` : ""
       })`,
+      `Nationality: ${escapeHtml(input.nationality)}`,
       input.specialRequests ? `Notes: ${escapeHtml(input.specialRequests)}` : "",
     ]
       .filter(Boolean)

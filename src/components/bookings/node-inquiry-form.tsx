@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
+import { combinePhone, NationalityField, PhoneField } from "@/components/bookings/customer-fields";
 import { createNodeInquiry } from "@/lib/bookings/actions";
 import type { BookingSource } from "@/lib/bookings/copy";
 
@@ -119,8 +120,9 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
             source,
             customerName,
             customerEmail: String(data.get("customerEmail") ?? ""),
-            customerPhone: String(data.get("customerPhone") ?? ""),
-            customerWhatsapp: String(data.get("customerWhatsapp") ?? ""),
+            customerPhone: combinePhone(data, "customerPhone"),
+            customerWhatsapp: combinePhone(data, "customerWhatsapp"),
+            nationality: String(data.get("nationality") ?? ""),
             preferredDate,
             preferredTime: String(data.get("preferredTime") ?? "") || null,
             adults,
@@ -154,8 +156,9 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Full name" name="customerName" type="text" required autoComplete="name" />
         <Field label="Email" name="customerEmail" type="email" required autoComplete="email" />
-        <Field label="Phone" name="customerPhone" type="tel" autoComplete="tel" />
-        <Field label="WhatsApp number" name="customerWhatsapp" type="tel" />
+        <PhoneField label="Phone" name="customerPhone" />
+        <PhoneField label="WhatsApp number" name="customerWhatsapp" />
+        <NationalityField />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

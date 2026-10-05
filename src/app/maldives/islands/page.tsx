@@ -21,21 +21,14 @@ export function generateMetadata({
 }: {
   searchParams: Promise<SearchParams>;
 }): Promise<Metadata> {
-  return searchParams.then(({ q, page: pageParam }) => {
+  return searchParams.then(({ q }) => {
     const title = "Maldives Islands | MTG";
     const description = "Every inhabited island in the Maldives, by atoll.";
-    const page = Math.max(1, Number(pageParam) || 1);
-    // Each page self-canonicalizes rather than collapsing into page 1 —
-    // with PAGE_SIZE 48 against ~200 inhabited islands, page 1's canonical
-    // previously swallowed every later page's distinct islands, telling
-    // search engines to ignore them entirely instead of indexing each page
-    // (an on-page SEO audit flagged this as a real issue).
-    const canonical = page > 1 ? `${canonicalUrl("/maldives/islands")}?page=${page}` : canonicalUrl("/maldives/islands");
     return {
       title,
       description,
-      alternates: { canonical },
-      openGraph: { title, description, url: canonical },
+      alternates: { canonical: canonicalUrl("/maldives/islands") },
+      openGraph: { title, description, url: canonicalUrl("/maldives/islands") },
       // A search query narrows results to an arbitrary, non-canonical view —
       // keep it out of the index; the plain directory (and its pagination)
       // stays indexable.

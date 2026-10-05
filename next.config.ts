@@ -1,6 +1,21 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Every canonical URL (src/lib/seo/site.ts's canonicalUrl()), every
+  // internal <Link href>, and every url_redirects.target_path sitewide
+  // already uses a trailing slash — but Next's own unconfigured default
+  // is the opposite (redirects trailing-slash URLs to the non-slash
+  // version, e.g. "/foo/" -> "/foo"). Every page on the site was
+  // therefore silently fighting its own canonical/link convention with a
+  // same-site 308 on every single request — confirmed live (curl
+  // "/become-a-partner/" returned "308 -> /become-a-partner" before this
+  // flag). Root cause of an on-page SEO audit flagging ~34 "non-indexable
+  // canonical" pages, ~21 internal links that redirect, and it doubled up
+  // every one of the 559 legacy url_redirects rows into a 2-hop redirect
+  // (legacy path -> trailing-slash target -> Next strips the slash).
+  // Setting this to true makes Next's own behavior match the convention
+  // already used everywhere instead of undoing it.
+  trailingSlash: true,
   // Task 17 §31: no security headers existed before this. Deliberately NOT
   // adding a Content-Security-Policy here — the site embeds Tawk.to,
   // YouTube, and Supabase Storage images, and this sandbox has no network

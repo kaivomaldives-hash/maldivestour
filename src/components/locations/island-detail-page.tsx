@@ -256,6 +256,20 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
       {fishingActivities.length > 0 && (
         <section className="mt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Fishing on {island.title}</h2>
+          {/* Maamendhoo is Emperor's real home base (see
+              src/components/fishing/emperor-page.tsx) — point visitors at
+              its dedicated page rather than only the individual charter
+              cards below, without duplicating any of that page's content
+              here. */}
+          {island.slug === "maamendhoo-gaafu-alifu" && (
+            <p className="mt-2 text-sm text-neutral-700">
+              Home base of{" "}
+              <Link href="/maldives/fishing/emperor/" className="text-maldives-600 hover:underline">
+                Emperor, our private fishing charter
+              </Link>
+              .
+            </p>
+          )}
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {fishingActivities.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />

@@ -68,6 +68,7 @@ export function breadcrumbJsonLd(items: Array<{ label: string; href?: string }>,
 // footer component to avoid a client-component -> lib import; both lists
 // must be kept in sync if a profile is ever added/removed.
 const SOCIAL_PROFILE_URLS = [
+  "https://www.linkedin.com/company/maldivestourguide/",
   "https://www.youtube.com/@Maldives-Holiday",
   "https://web.facebook.com/maldivestourguide",
   "https://x.com/maldivestourg",

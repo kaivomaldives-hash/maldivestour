@@ -1,17 +1,10 @@
 import Link from "next/link";
 
+import { FooterSocialLinks } from "@/components/footer-social-links";
 import { FooterSubscribeForm } from "@/components/footer-subscribe-form";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
 import { CONTAINER_CLASS } from "@/components/ui/container";
-import {
-  FacebookIcon,
-  InstagramIcon,
-  PinterestIcon,
-  TikTokIcon,
-  WhatsAppIcon,
-  XIcon,
-  YouTubeIcon,
-} from "@/components/ui/icons";
+import { WhatsAppIcon } from "@/components/ui/icons";
 import type { Locale } from "@/lib/i18n/locales";
 
 const TRAVEL_LINKS = [
@@ -36,17 +29,6 @@ const TRAVEL_LINKS = [
 ];
 
 const WHATSAPP_URL = "https://wa.me/9607794332";
-
-// Real, verified MTG profiles only — see Task 12 brief. Do not add any
-// account not explicitly supplied.
-const SOCIAL_LINKS = [
-  { label: "YouTube", href: "https://www.youtube.com/@Maldives-Holiday", Icon: YouTubeIcon },
-  { label: "Facebook", href: "https://web.facebook.com/maldivestourguide", Icon: FacebookIcon },
-  { label: "X", href: "https://x.com/maldivestourg", Icon: XIcon },
-  { label: "Pinterest", href: "https://www.pinterest.com/themaldivesholidays/", Icon: PinterestIcon },
-  { label: "TikTok", href: "https://www.tiktok.com/@maldivestourguides?lang=en", Icon: TikTokIcon },
-  { label: "Instagram", href: "https://www.instagram.com/themaldivesholiday/", Icon: InstagramIcon },
-];
 
 export function SiteFooter({ availableLocales }: { availableLocales: Locale[] }) {
   const year = new Date().getFullYear();
@@ -88,22 +70,7 @@ export function SiteFooter({ availableLocales }: { availableLocales: Locale[] })
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-lagoon-300">Follow MTG</p>
-            <ul className="mt-4 flex flex-wrap gap-2">
-              {SOCIAL_LINKS.map(({ label, href, Icon }) => (
-                <li key={label}>
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`MTG on ${label} (opens in a new tab)`}
-                    className="min-touch-target inline-flex items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-                  >
-                    <Icon className="h-5 w-5" />
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <FooterSocialLinks />
             <FooterSubscribeForm />
             <Link
               href="/become-a-partner/"

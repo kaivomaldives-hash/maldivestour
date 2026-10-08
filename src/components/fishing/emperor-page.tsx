@@ -223,8 +223,7 @@ export async function EmperorPage() {
             {[
               { label: "Popping (GT)", href: "/maldives/fishing/popping/" },
               { label: "Jigging (GT, dogtooth tuna)", href: "/maldives/fishing/jigging/" },
-              { label: "Trolling (yellowfin tuna, wahoo)", href: "/maldives/fishing/tuna-fishing/" },
-              { label: "Big game / sport fishing", href: null },
+              { label: "Trolling / Big Game Fishing (tuna, wahoo)", href: "/maldives/fishing/big-game-fishing/" },
               { label: "Reef fishing", href: null },
             ].map((technique) =>
               technique.href ? (

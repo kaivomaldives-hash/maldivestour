@@ -44,6 +44,10 @@ const HUB_PHRASES: EntityLinkTarget[] = [
   { phrase: "Popping", href: "/maldives/fishing/popping/" },
   { phrase: "Jigging", href: "/maldives/fishing/jigging/" },
   { phrase: "Fly Fishing", href: "/maldives/fishing/fly-fishing/" },
+  { phrase: "Wahoo", href: "/maldives/fishing/wahoo-fishing/" },
+  { phrase: "Dogtooth Tuna", href: "/maldives/fishing/dogtooth-tuna/" },
+  { phrase: "Mahi-Mahi", href: "/maldives/fishing/mahi-mahi-fishing/" },
+  { phrase: "Big Game Fishing", href: "/maldives/fishing/big-game-fishing/" },
 ];
 
 interface NodeTitleRow {

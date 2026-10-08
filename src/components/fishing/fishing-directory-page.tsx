@@ -32,6 +32,7 @@ import { FISHING_HERO_IMAGE } from "@/lib/packages/category-images";
 import { filterPackageViews, getAllPackageViews } from "@/lib/packages/view-repository";
 import { getProviderBySlug } from "@/lib/providers/repository";
 import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd } from "@/lib/seo/site";
+import { TECHNIQUE_PAGES } from "@/lib/fishing/technique-content";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 const PAGE_SIZE = 24;
@@ -587,7 +588,13 @@ export async function FishingDirectoryPage({
               <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
                 {typesWithActivities.map(({ type, content, activities }) => (
                   <div key={type.id}>
-                    <h4 className="font-medium text-ocean-900">{content.title}</h4>
+                    {TECHNIQUE_PAGES[type.slug] ? (
+                      <Link href={`/maldives/fishing/${type.slug}/`} className="font-medium text-ocean-900 hover:text-maldives-600 hover:underline">
+                        {content.title}
+                      </Link>
+                    ) : (
+                      <h4 className="font-medium text-ocean-900">{content.title}</h4>
+                    )}
                     <p className="mt-1 text-sm text-neutral-700">{content.body}</p>
                     {activities.length > 0 && (
                       <ul className="mt-2 flex flex-wrap gap-2">

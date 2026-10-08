@@ -87,6 +87,47 @@ export const TECHNIQUE_PAGES: Record<string, TechniquePageContent> = {
       },
     ],
   },
+  "big-game-fishing": {
+    pageSlug: "big-game-fishing",
+    metaTitle: "Big Game Fishing Maldives | Big Game Fishing Charters",
+    metaDescription:
+      "Big game fishing in the Maldives — trolling at speed for tuna, wahoo and marlin, with real charters from our own operation and independent operators.",
+    h1: "Big Game Fishing in the Maldives",
+    heroDescription: "Trolling lures at speed for large pelagic species further offshore — usually a half-day or full-day trip.",
+    howItWorks: [
+      'Big game fishing means trolling lures at speed for large pelagic species — tuna, wahoo, sailfish and marlin — usually a half-day or full-day trip further offshore, closer to the open ocean beyond the atoll rim.',
+      "Several resort-run and independent trips on record are tagged big game fishing, alongside our own Emperor charters, which run the same technique for yellowfin tuna and wahoo from Gaafu Atoll.",
+    ],
+    targetSpecies: [
+      { label: "Yellowfin Tuna", href: "/maldives/fishing/tuna-fishing/" },
+      { label: "Wahoo", href: "/maldives/fishing/wahoo-fishing/" },
+      { label: "Mahi-Mahi", href: "/maldives/fishing/mahi-mahi-fishing/" },
+      { label: "Marlin", href: null },
+      { label: "Sailfish", href: null },
+    ],
+    // Emperor's own charters, plus the 3 real third-party activities
+    // already tagged with the "big-game-fishing" category (see
+    // supabase/migrations/20250105000100_seed_fishing.sql) — not
+    // Emperor-only, since real independent/resort operators run this too.
+    charterSlugs: [
+      "private-full-day-fishing-charter",
+      "private-half-day-fishing-charter",
+      "marlin-big-game-fishing-charter",
+      "big-game-fishing-trip",
+      "big-game-fishing-trip-lankanfushi",
+    ],
+    faqs: [
+      {
+        question: "What fish can I catch big game fishing in the Maldives?",
+        answer: "Tuna, wahoo, sailfish and marlin are the usual targets, further offshore beyond the atoll rim — see Target Species above.",
+      },
+      {
+        question: "Is big game fishing only available with Emperor?",
+        answer:
+          "No — several real resort-run and independent operators also run big game fishing trips, alongside our own Emperor charters. See Available Charters below for what's currently on record.",
+      },
+    ],
+  },
   "fly-fishing": {
     pageSlug: "fly-fishing",
     metaTitle: "Fly Fishing Maldives | Maldives Fly Fishing Charters",

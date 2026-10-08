@@ -76,7 +76,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
       "Yellowfin tuna are powerful, fast-swimming predators and a primary target for sport fishermen in the Maldives, found around the edges of atolls and in open water, often hunting in schools.",
       "Trolling further offshore from a charter like Emperor is the usual way to target yellowfin tuna, alongside wahoo and other pelagic species on the same run.",
     ],
-    techniques: [{ label: "Trolling / Big Game Fishing", href: "/maldives/fishing/#fishing-charters" }],
+    techniques: [{ label: "Trolling / Big Game Fishing", href: "/maldives/fishing/big-game-fishing/" }],
     charterSlugs: ["private-full-day-fishing-charter", "private-half-day-fishing-charter"],
     faqs: [
       {
@@ -91,6 +91,81 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
       {
         question: "Can I catch tuna on the same trip as GT?",
         answer: "It depends on the day's plan — our team can discuss targeting both on a full-day charter when you enquire.",
+      },
+    ],
+  },
+  "wahoo-fishing": {
+    speciesSlug: "wahoo",
+    pageSlug: "wahoo-fishing",
+    metaTitle: "Wahoo Fishing Maldives | Wahoo Fishing Charters",
+    metaDescription:
+      "Wahoo fishing in the Maldives — trolling at speed near atoll edges aboard Emperor, our private Gaafu Atoll charter. Real charter, real rates, no invented catch claims.",
+    h1: "Wahoo Fishing in the Maldives",
+    whyMaldives: [
+      "Wahoo are among the fastest fish in the ocean, prized by anglers for their fighting ability as much as their speed. In the Maldives they're often found near the edges of atolls, where trolling at speed is the most effective way to target them.",
+      "Wahoo are a regular feature of the same trolling runs that target yellowfin tuna, so a trip booked for one often produces a shot at the other.",
+    ],
+    techniques: [{ label: "Trolling / Big Game Fishing", href: "/maldives/fishing/big-game-fishing/" }],
+    charterSlugs: ["private-full-day-fishing-charter", "private-half-day-fishing-charter"],
+    faqs: [
+      {
+        question: "What's the best season for wahoo fishing?",
+        answer:
+          "Our own species records show December to March as a commonly reported window for wahoo, but conditions vary by atoll and year — see our Maldives fishing seasons guide for general, non-prescriptive guidance.",
+      },
+      {
+        question: "What technique is used for wahoo?",
+        answer: "Trolling lures at speed near atoll edges is the usual technique — see Big Game Fishing on the main fishing hub.",
+      },
+    ],
+  },
+  "dogtooth-tuna": {
+    speciesSlug: "dogtooth-tuna",
+    pageSlug: "dogtooth-tuna",
+    metaTitle: "Dogtooth Tuna Fishing Maldives | Jigging Charters",
+    metaDescription:
+      "Dogtooth tuna fishing in the Maldives — jigging over deep reef slopes and drop-offs aboard Emperor, our private Gaafu Atoll charter. Real charter, real rates.",
+    h1: "Dogtooth Tuna Fishing in the Maldives",
+    whyMaldives: [
+      "Dogtooth tuna inhabit the deeper reef slopes and drop-offs around Maldivian atolls — exactly the kind of structure found along Gaafu Atoll's outer reef, where Emperor's jigging trips run.",
+      "These solitary hunters are known for their incredible fighting ability and tendency to dive deep when hooked, making them a prized catch for experienced anglers using jigging techniques.",
+    ],
+    techniques: [{ label: "Jigging", href: "/maldives/fishing/jigging/" }],
+    charterSlugs: ["private-full-day-fishing-charter", "private-half-day-fishing-charter"],
+    faqs: [
+      {
+        question: "What's the best season for dogtooth tuna?",
+        answer:
+          "Our own species records show November to April as a commonly reported window for dogtooth tuna, but conditions vary by atoll and year — see our Maldives fishing seasons guide for general, non-prescriptive guidance.",
+      },
+      {
+        question: "What technique is used for dogtooth tuna?",
+        answer: "Jigging over deep reef slopes and drop-offs is the usual technique — see our Jigging page for how it works.",
+      },
+    ],
+  },
+  "mahi-mahi-fishing": {
+    speciesSlug: "mahi-mahi",
+    pageSlug: "mahi-mahi-fishing",
+    metaTitle: "Mahi Mahi Fishing Maldives | Mahi Mahi Fishing Charters",
+    metaDescription:
+      "Mahi-mahi fishing in the Maldives — trolling near floating debris aboard Emperor, our private Gaafu Atoll charter. Real charter, real rates, no invented catch claims.",
+    h1: "Mahi-Mahi Fishing in the Maldives",
+    whyMaldives: [
+      "Mahi-mahi (dolphinfish) are fast-growing, acrobatic fighters often found near floating debris or FADs (Fish Aggregating Devices) in open water — a common incidental and targeted catch on trolling runs further offshore.",
+      "Their vibrant colors and aerial jumps when hooked make them one of the more memorable catches on a big game trip, alongside tuna and wahoo.",
+    ],
+    techniques: [{ label: "Trolling / Big Game Fishing", href: "/maldives/fishing/big-game-fishing/" }],
+    charterSlugs: ["private-full-day-fishing-charter", "private-half-day-fishing-charter"],
+    faqs: [
+      {
+        question: "What's the best season for mahi-mahi?",
+        answer:
+          "Our own species records show December to April as a commonly reported window for mahi-mahi, but conditions vary by atoll and year — see our Maldives fishing seasons guide for general, non-prescriptive guidance.",
+      },
+      {
+        question: "What technique is used for mahi-mahi?",
+        answer: "Trolling near floating debris or open water is the usual technique — see Big Game Fishing on the main fishing hub.",
       },
     ],
   },

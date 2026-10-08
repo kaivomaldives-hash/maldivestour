@@ -219,16 +219,27 @@ export async function EmperorPage() {
           </p>
           <ul className="mt-4 flex flex-wrap gap-2 text-sm">
             {[
-              "Popping (GT)",
-              "Jigging (GT, dogtooth tuna)",
-              "Trolling (yellowfin tuna, wahoo)",
-              "Big game / sport fishing",
-              "Reef fishing",
-            ].map((technique) => (
-              <li key={technique} className="rounded-full border border-neutral-300 px-3 py-1.5 text-neutral-700">
-                {technique}
-              </li>
-            ))}
+              { label: "Popping (GT)", href: "/maldives/fishing/popping/" },
+              { label: "Jigging (GT, dogtooth tuna)", href: "/maldives/fishing/jigging/" },
+              { label: "Trolling (yellowfin tuna, wahoo)", href: "/maldives/fishing/tuna-fishing/" },
+              { label: "Big game / sport fishing", href: null },
+              { label: "Reef fishing", href: null },
+            ].map((technique) =>
+              technique.href ? (
+                <li key={technique.label}>
+                  <Link
+                    href={technique.href}
+                    className="rounded-full border border-neutral-300 px-3 py-1.5 text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
+                  >
+                    {technique.label}
+                  </Link>
+                </li>
+              ) : (
+                <li key={technique.label} className="rounded-full border border-neutral-300 px-3 py-1.5 text-neutral-700">
+                  {technique.label}
+                </li>
+              ),
+            )}
           </ul>
         </section>
 

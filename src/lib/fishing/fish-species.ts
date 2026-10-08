@@ -345,3 +345,7 @@ export function fishSpeciesByCategory(): Array<{ category: FishSpeciesCategory; 
     species: FISH_SPECIES.filter((s) => s.category === category.slug),
   }));
 }
+
+export function getFishSpeciesBySlug(slug: string): FishSpecies | null {
+  return FISH_SPECIES.find((s) => s.slug === slug) ?? null;
+}

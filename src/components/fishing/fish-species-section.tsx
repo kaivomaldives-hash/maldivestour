@@ -1,6 +1,15 @@
+import Link from "next/link";
+
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { MediaImage } from "@/components/ui/media-image";
 import { fishSpeciesByCategory } from "@/lib/fishing/fish-species";
+import { SPECIES_PAGES } from "@/lib/fishing/species-content";
+
+// Reverse lookup: fish-species.ts slug -> its dedicated landing page slug,
+// for the 2 species that have one so far (gt-fishing, tuna-fishing).
+const SPECIES_PAGE_BY_SPECIES_SLUG = Object.fromEntries(
+  Object.values(SPECIES_PAGES).map((content) => [content.speciesSlug, content.pageSlug]),
+);
 
 /**
  * Real fish species content recovered from the legacy site's own
@@ -29,7 +38,16 @@ export function FishSpeciesSection() {
                   <div className={CARD_IMAGE_BLEED_CLASS}>
                     <MediaImage asset={fish.image} alt={fish.name} aspectClassName="aspect-[4/3]" />
                   </div>
-                  <h4 className="text-base font-medium text-ocean-900">{fish.name}</h4>
+                  {SPECIES_PAGE_BY_SPECIES_SLUG[fish.slug] ? (
+                    <Link
+                      href={`/maldives/fishing/${SPECIES_PAGE_BY_SPECIES_SLUG[fish.slug]}/`}
+                      className="text-base font-medium text-ocean-900 hover:text-maldives-600 hover:underline"
+                    >
+                      {fish.name}
+                    </Link>
+                  ) : (
+                    <h4 className="text-base font-medium text-ocean-900">{fish.name}</h4>
+                  )}
                   <p className="text-xs italic text-neutral-500">{fish.scientificName}</p>
                   <dl className="mt-2 space-y-0.5 text-xs text-neutral-600">
                     <div className="flex gap-1">

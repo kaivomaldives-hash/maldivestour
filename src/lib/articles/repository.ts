@@ -4,6 +4,7 @@ import { getAccommodationSummariesByIds } from "@/lib/accommodations/repository"
 import { ACCOMMODATION_TYPE_SEGMENT } from "@/lib/accommodations/types";
 import { getActivitySummariesByIds } from "@/lib/activities/repository";
 import { activityHref } from "@/lib/activities/types";
+import { cachedRead } from "@/lib/cache/cached-read";
 import { getCategoriesByGroup } from "@/lib/categories/repository";
 import type { CategorySummary } from "@/lib/categories/types";
 import { getEntityTranslationBySlug, getEntityTranslationsByIds } from "@/lib/i18n/repository";
@@ -131,7 +132,7 @@ async function toSummaries(bares: BareArticle[]): Promise<ArticleSummary[]> {
   return bares.map((b) => toSummary(b, categoriesById.get(b.id) ?? null, heroById.get(b.id) ?? null));
 }
 
-export async function getArticles(options: GetArticlesOptions = {}): Promise<PaginatedResult<ArticleSummary>> {
+async function getArticlesUncached(options: GetArticlesOptions = {}): Promise<PaginatedResult<ArticleSummary>> {
   const page = Math.max(1, options.page ?? 1);
   const pageSize = Math.min(100, Math.max(1, options.pageSize ?? 24));
   const from = (page - 1) * pageSize;
@@ -174,6 +175,8 @@ export async function getArticles(options: GetArticlesOptions = {}): Promise<Pag
   return { items, total: count ?? items.length, page, pageSize };
 }
 
+export const getArticles = cachedRead(getArticlesUncached, ["articles:list"], 300);
+
 /** Most recently published articles, for the homepage Travel Guide section
  * (Task 14 §29/30). */
 export async function getRecentArticles(limit = 3): Promise<ArticleSummary[]> {
@@ -181,7 +184,7 @@ export async function getRecentArticles(limit = 3): Promise<ArticleSummary[]> {
   return result.items;
 }
 
-export async function getArticleBySlug(slug: string): Promise<ArticleDetail | null> {
+async function getArticleBySlugUncached(slug: string): Promise<ArticleDetail | null> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("nodes")
@@ -212,6 +215,8 @@ export async function getArticleBySlug(slug: string): Promise<ArticleDetail | nu
   };
 }
 
+export const getArticleBySlug = cachedRead(getArticleBySlugUncached, ["articles:by-slug"], 300);
+
 /**
  * Localized equivalent of getArticleBySlug, for the `/[locale]/maldives/
  * travel-guide/[article]` route. `slug` here is the *translated* slug
@@ -230,7 +235,7 @@ export async function getArticleBySlug(slug: string): Promise<ArticleDetail | nu
  * page stays in that language) — never a mix of translated and English
  * titles on the same page.
  */
-export async function getTranslatedArticleBySlug(locale: Locale, slug: string): Promise<ArticleDetail | null> {
+async function getTranslatedArticleBySlugUncached(locale: Locale, slug: string): Promise<ArticleDetail | null> {
   if (locale === "en") return getArticleBySlug(slug);
 
   const translation = await getEntityTranslationBySlug(locale, slug);
@@ -280,11 +285,13 @@ export async function getTranslatedArticleBySlug(locale: Locale, slug: string): 
   };
 }
 
+export const getTranslatedArticleBySlug = cachedRead(getTranslatedArticleBySlugUncached, ["articles:translated-by-slug"], 300);
+
 /** Every article that has a published translation in this locale, for the
  * localized Travel Guide hub listing. Non-translatable display fields
  * (hero image, category, reading time, published date) are reused as-is
  * from each article's canonical English row. */
-export async function getTranslatedArticles(locale: Locale): Promise<ArticleSummary[]> {
+async function getTranslatedArticlesUncached(locale: Locale): Promise<ArticleSummary[]> {
   if (locale === "en") {
     const result = await getArticles({ pageSize: 100 });
     return result.items;
@@ -330,6 +337,8 @@ export async function getTranslatedArticles(locale: Locale): Promise<ArticleSumm
     })
     .filter((s): s is ArticleSummary => s !== null);
 }
+
+export const getTranslatedArticles = cachedRead(getTranslatedArticlesUncached, ["articles:translated-list"], 300);
 
 async function getRelatedLocationsForArticle(articleId: string): Promise<LocationSummary[]> {
   const supabase = await createClient();
@@ -459,7 +468,7 @@ async function getRelatedContentForArticle(
  * Maldives" can also surface an article that discusses Baros, without the
  * query needing to literally appear in that article's own title — reusing
  * the same relationship data, never a second search index. */
-export async function getArticlesRelatedToNodes(nodeIds: string[]): Promise<ArticleSummary[]> {
+async function getArticlesRelatedToNodesUncached(nodeIds: string[]): Promise<ArticleSummary[]> {
   if (nodeIds.length === 0) return [];
   const supabase = await createClient();
 
@@ -491,11 +500,13 @@ export async function getArticlesRelatedToNodes(nodeIds: string[]): Promise<Arti
   return toSummaries(bares);
 }
 
+export const getArticlesRelatedToNodes = cachedRead(getArticlesRelatedToNodesUncached, ["articles:related-to-nodes"], 300);
+
 /** Every article-category actually tagged on at least one published
  * article — the same "only show a filter that can return something" rule
  * used for diving/fishing/surfing types (Tasks 7-9) and packages
  * (Task 11). */
-export async function getArticleCategoriesInUse(): Promise<CategorySummary[]> {
+async function getArticleCategoriesInUseUncached(): Promise<CategorySummary[]> {
   const all = await getCategoriesByGroup("article-category");
   if (all.length === 0) return [];
 
@@ -523,6 +534,8 @@ export async function getArticleCategoriesInUse(): Promise<CategorySummary[]> {
   const inUseCategoryIds = new Set(tagRows.filter((row) => articleIds.has(row.node_id)).map((row) => row.category_id));
   return all.filter((c) => inUseCategoryIds.has(c.id));
 }
+
+export const getArticleCategoriesInUse = cachedRead(getArticleCategoriesInUseUncached, ["articles:categories-in-use"], 900);
 
 export interface SearchArticlesOptions {
   limit?: number;

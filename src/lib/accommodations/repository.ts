@@ -269,8 +269,10 @@ export async function getNearbyAccommodations(
   location: { islandId?: string | null; atollId?: string | null },
   limit = 6,
 ): Promise<NearbyAccommodations> {
-  const islandFull = location.islandId ? await getAccommodationsByLocation(location.islandId) : [];
-  const atollFull = location.atollId ? await getAccommodationsByAtoll(location.atollId) : [];
+  const [islandFull, atollFull] = await Promise.all([
+    location.islandId ? getAccommodationsByLocation(location.islandId) : Promise.resolve([]),
+    location.atollId ? getAccommodationsByAtoll(location.atollId) : Promise.resolve([]),
+  ]);
 
   const islandIds = new Set(islandFull.map((a) => a.id));
   const atollOnly = atollFull.filter((a) => !islandIds.has(a.id));

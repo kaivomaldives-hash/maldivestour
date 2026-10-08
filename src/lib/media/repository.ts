@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cachedRead } from "@/lib/cache/cached-read";
 import { publicStorageUrl } from "@/lib/media/types";
 import type { MediaAsset, MediaRole, NodeMediaItem } from "@/lib/media/types";
 import { createClient } from "@/lib/supabase/public";
@@ -50,7 +51,7 @@ function mediaAssetOf(row: MediaAssetRow): MediaAsset {
 /** Direct media_assets lookup by id — for the rare case (ferry_routes'
  * hero_media_id) where a non-node table references media_assets straight,
  * without going through node_media. */
-export async function getMediaAssetsByIds(ids: string[]): Promise<Map<string, MediaAsset>> {
+async function getMediaAssetsByIdsUncached(ids: string[]): Promise<Map<string, MediaAsset>> {
   const map = new Map<string, MediaAsset>();
   if (ids.length === 0) return map;
 
@@ -66,10 +67,12 @@ export async function getMediaAssetsByIds(ids: string[]): Promise<Map<string, Me
   return map;
 }
 
+export const getMediaAssetsByIds = cachedRead(getMediaAssetsByIdsUncached, ["media:assets-by-ids"], 300);
+
 /** Batch-resolve the single hero image for each of `nodeIds` — the
  * lowest-sort_order 'hero' row per node. For card grids/listing pages;
  * use getMediaForNode for a single detail page's full gallery. */
-export async function getHeroMediaByNodeIds(nodeIds: string[]): Promise<Map<string, MediaAsset>> {
+async function getHeroMediaByNodeIdsUncached(nodeIds: string[]): Promise<Map<string, MediaAsset>> {
   const result = new Map<string, MediaAsset>();
   if (nodeIds.length === 0) return result;
 
@@ -99,9 +102,11 @@ export async function getHeroMediaByNodeIds(nodeIds: string[]): Promise<Map<stri
   return result;
 }
 
+export const getHeroMediaByNodeIds = cachedRead(getHeroMediaByNodeIdsUncached, ["media:hero-by-node-ids"], 300);
+
 /** Every media item attached to one node, in role then sort_order order —
  * for a detail page's full gallery/hero/map images. */
-export async function getMediaForNode(nodeId: string): Promise<NodeMediaItem[]> {
+async function getMediaForNodeUncached(nodeId: string): Promise<NodeMediaItem[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("node_media")
@@ -121,6 +126,8 @@ export async function getMediaForNode(nodeId: string): Promise<NodeMediaItem[]> 
     })
     .filter((item): item is NodeMediaItem => item !== null);
 }
+
+export const getMediaForNode = cachedRead(getMediaForNodeUncached, ["media:for-node"], 300);
 
 /**
  * Rewrites every `<figure><img src="...">...</figure>` in an article body

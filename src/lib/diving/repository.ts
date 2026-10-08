@@ -111,7 +111,7 @@ export async function getDivingActivitiesByType(
 }
 
 /** The diving-type tag(s) attached to one activity, for detail-page display. */
-export async function getDivingTypesForActivity(nodeId: string): Promise<CategorySummary[]> {
+async function getDivingTypesForActivityUncached(nodeId: string): Promise<CategorySummary[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("node_categories")
@@ -126,10 +126,12 @@ export async function getDivingTypesForActivity(nodeId: string): Promise<Categor
   return allTypes.filter((t) => categoryIds.includes(t.id));
 }
 
+export const getDivingTypesForActivity = cachedRead(getDivingTypesForActivityUncached, ["diving:types-for-activity"], 300);
+
 /** The specific dive site(s) a diving activity visits, ONLY where the
  * source data names one (node_locations secondary tag) — most diving
  * activities won't have one, and that's expected. */
-export async function getDiveSitesForActivity(activityId: string): Promise<DiveSiteSummary[]> {
+async function getDiveSitesForActivityUncached(activityId: string): Promise<DiveSiteSummary[]> {
   const locationIds = await getLocationIdsForNode(activityId);
   if (locationIds.length === 0) return [];
 
@@ -144,6 +146,8 @@ export async function getDiveSitesForActivity(activityId: string): Promise<DiveS
   ]);
   return siteSummaries.map((s) => toDiveSiteSummary(s, attrsById.get(s.id), heroById.get(s.id) ?? null, atollById.get(s.id) ?? null));
 }
+
+export const getDiveSitesForActivity = cachedRead(getDiveSitesForActivityUncached, ["diving:dive-sites-for-activity"], 300);
 
 // ─────────────────────────────────────────────────────────────────
 // Dive sites (composes the Task 4 location repository — new generic
@@ -183,7 +187,7 @@ async function getAtollsByParentId(items: LocationSummary[]): Promise<Map<string
   return result;
 }
 
-export async function getDiveSites(options: GetDiveSitesOptions = {}): Promise<PaginatedResult<DiveSiteSummary>> {
+async function getDiveSitesUncached(options: GetDiveSitesOptions = {}): Promise<PaginatedResult<DiveSiteSummary>> {
   const page = options.page ?? 1;
   const pageSize = options.pageSize ?? 48;
 
@@ -213,6 +217,8 @@ export async function getDiveSites(options: GetDiveSitesOptions = {}): Promise<P
   return { items: sites, total, page, pageSize };
 }
 
+export const getDiveSites = cachedRead(getDiveSitesUncached, ["diving:dive-sites"], 300);
+
 export async function getDiveSitesByAtoll(atollId: string): Promise<DiveSiteSummary[]> {
   const result = await getDiveSites({ atollId, pageSize: 100 });
   return result.items;
@@ -237,7 +243,7 @@ export async function getDiveSitesByLocation(locationId: string): Promise<DiveSi
   return siteSummaries.map((s) => toDiveSiteSummary(s, attrsById.get(s.id), heroById.get(s.id) ?? null, atollById.get(s.id) ?? null));
 }
 
-export async function getDiveSiteBySlug(slug: string): Promise<DiveSiteDetail | null> {
+async function getDiveSiteBySlugUncached(slug: string): Promise<DiveSiteDetail | null> {
   const location = await getLocationBySlugAndType(slug, "dive_site");
   if (!location) return null;
 
@@ -262,6 +268,8 @@ export async function getDiveSiteBySlug(slug: string): Promise<DiveSiteDetail | 
   };
 }
 
+export const getDiveSiteBySlug = cachedRead(getDiveSiteBySlugUncached, ["diving:dive-site-by-slug"], 300);
+
 /** Diving activities that visit a given dive site (node_locations tag in
  * either direction — see getDiveSitesForActivity for the activity side). */
 export async function getDivingActivitiesAtSite(siteId: string): Promise<ActivitySummary[]> {
@@ -273,7 +281,7 @@ export async function getDivingActivitiesAtSite(siteId: string): Promise<Activit
  * page (never a hand-set "last verified" date, since nothing here tracks a
  * separate verification event). Returns null rather than guessing if
  * either query fails or nothing is diving-related yet. */
-export async function getDivingContentUpdatedAt(): Promise<string | null> {
+async function getDivingContentUpdatedAtUncached(): Promise<string | null> {
   const supabase = await createClient();
   const [activityRes, siteRes] = await Promise.all([
     supabase
@@ -298,5 +306,7 @@ export async function getDivingContentUpdatedAt(): Promise<string | null> {
   if (dates.length === 0) return null;
   return dates.sort().at(-1) ?? null;
 }
+
+export const getDivingContentUpdatedAt = cachedRead(getDivingContentUpdatedAtUncached, ["diving:content-updated-at"], 300);
 
 export type { DiveSiteType };

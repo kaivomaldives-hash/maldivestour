@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import Link from "next/link";
 
 import { PackageCard } from "@/components/packages/package-card";
@@ -101,6 +102,30 @@ function faqJsonLd() {
   };
 }
 
+/** Everything here is identical for every visitor regardless of which
+ * filters are in the URL — same reasoning, and same fix, as the fishing
+ * hub's getFishingSupportingContent: this directory route has no
+ * revalidate/ISR cache (it reads searchParams), so without this wrapper
+ * every single request re-resolves every real+demo package view plus the
+ * category/atoll/duration counts and the featured-package shuffle, even
+ * when no filter is applied. Wrapping the filter-independent data in
+ * unstable_cache turns that into one shared cache entry, refreshed at most
+ * once an hour. */
+const getPackageDirectorySupportingContent = unstable_cache(
+  async () => {
+    const [allViews, categoryCounts, atolls, durationCounts, featured] = await Promise.all([
+      getAllPackageViews(),
+      getPackageCategoryCounts(),
+      getPackageAtollsInUse(),
+      getPackageDurationBandCounts(),
+      getFeaturedPackageViews(6),
+    ]);
+    return { allViews, categoryCounts, atolls, durationCounts, featured };
+  },
+  ["packages-directory-supporting-content"],
+  { revalidate: 3600 },
+);
+
 export async function PackageDirectoryPage({ searchParams }: { searchParams: Promise<PackageDirectorySearchParams> }) {
   const sp = await searchParams;
   const page = Math.max(1, Number(sp.page) || 1);
@@ -109,13 +134,7 @@ export async function PackageDirectoryPage({ searchParams }: { searchParams: Pro
   const activeCategory = sp.category && isPackageCategorySlug(sp.category) ? sp.category : undefined;
   const activeDuration = PACKAGE_DURATION_BANDS.some((b) => b.slug === sp.duration) ? (sp.duration as PackageDurationBandSlug) : undefined;
 
-  const [allViews, categoryCounts, atolls, durationCounts, featured] = await Promise.all([
-    getAllPackageViews(),
-    getPackageCategoryCounts(),
-    getPackageAtollsInUse(),
-    getPackageDurationBandCounts(),
-    getFeaturedPackageViews(6),
-  ]);
+  const { allViews, categoryCounts, atolls, durationCounts, featured } = await getPackageDirectorySupportingContent();
 
   const filtered = filterPackageViews(allViews, {
     q: query || undefined,

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import Link from "next/link";
 
 import { ActivityCard } from "@/components/activity/activity-card";
@@ -72,6 +73,39 @@ function hasAnyFilter(sp: DivingDirectorySearchParams): boolean {
   return Boolean(sp.q || sp.type || sp.atoll || sp.island || sp.difficulty || sp.maxPrice);
 }
 
+/** Everything here is identical for every visitor regardless of which
+ * filters are in the URL — same reasoning, and same fix, as the fishing
+ * hub's getFishingSupportingContent: this directory route has no
+ * revalidate/ISR cache (it reads searchParams), so without this wrapper
+ * every single request pays for atolls + diving-types-in-use + the dive
+ * sites preview + every package view + the guide article + the
+ * content-freshness lookup, even when no filter is applied. Wrapping the
+ * filter-independent subset in unstable_cache turns that into one shared
+ * cache entry, refreshed at most once an hour — exactly the fishing hub's
+ * pattern, applied here since diving never got the equivalent fix. */
+const getDivingDirectorySupportingContent = unstable_cache(
+  async () => {
+    const [atolls, divingTypes, diveSites, allPackages, divingArticle, contentUpdatedAt] = await Promise.all([
+      getAtolls(),
+      getDivingTypesInUse(),
+      getDiveSites({ pageSize: 12 }),
+      getAllPackageViews(),
+      getArticleBySlug("best-maldives-diving-spots-ultimate-guide"),
+      getDivingContentUpdatedAt(),
+    ]);
+    return {
+      atolls,
+      divingTypes,
+      diveSites,
+      divingPackages: filterPackageViews(allPackages, { category: "diving" }),
+      divingArticle,
+      contentUpdatedAt,
+    };
+  },
+  ["diving-directory-supporting-content"],
+  { revalidate: 3600 },
+);
+
 export async function divingDirectoryMetadata(searchParams: Promise<DivingDirectorySearchParams>): Promise<Metadata> {
   const sp = await searchParams;
   // Real, live-counted total — never a hand-set number that can go stale,
@@ -104,17 +138,12 @@ export async function DivingDirectoryPage({
   const query = sp.q?.trim() ?? "";
   const isSearching = query.length > 0;
 
-  const [atoll, island, atolls, divingTypes, diveSites, allPackages, divingArticle, contentUpdatedAt] = await Promise.all([
+  const [atoll, island, supporting] = await Promise.all([
     sp.atoll ? getAtollBySlug(sp.atoll) : Promise.resolve(null),
     sp.island ? getIslandBySlug(sp.island) : Promise.resolve(null),
-    getAtolls(),
-    getDivingTypesInUse(),
-    getDiveSites({ pageSize: 12 }),
-    getAllPackageViews(),
-    getArticleBySlug("best-maldives-diving-spots-ultimate-guide"),
-    getDivingContentUpdatedAt(),
+    getDivingDirectorySupportingContent(),
   ]);
-  const divingPackages = filterPackageViews(allPackages, { category: "diving" });
+  const { atolls, divingTypes, diveSites, divingPackages, divingArticle, contentUpdatedAt } = supporting;
 
   const activeType = sp.type ? divingTypes.find((t) => t.slug === sp.type) : undefined;
   const difficulty = DIFFICULTIES.includes(sp.difficulty as ActivityDifficulty) ? (sp.difficulty as ActivityDifficulty) : undefined;

@@ -133,10 +133,50 @@ export async function getDemoPackageViewBySlug(slug: string): Promise<PackageVie
   return all.find((p) => p.slug === slug) ?? null;
 }
 
+interface DemoPackageNodeRefs {
+  input: DemoPackageInput;
+  accommodationId: string | null;
+  activityIds: string[];
+}
+
+let cachedNodeRefs: Promise<DemoPackageNodeRefs[]> | null = null;
+
+/** Just enough of each demo package to answer "does this reference node X"
+ * — the same accommodation/activity slug lookups resolveOneDemoPackage
+ * already does (and which are themselves cachedRead-wrapped, so this adds
+ * no new Supabase round trips), but without resolving atoll, gallery
+ * images, FAQs or itinerary links for every package on every call. */
+function getDemoPackageNodeRefs(): Promise<DemoPackageNodeRefs[]> {
+  if (!cachedNodeRefs) {
+    cachedNodeRefs = Promise.all(
+      DEMO_PACKAGES.map(async (input): Promise<DemoPackageNodeRefs> => {
+        const [accommodation, ...activities] = await Promise.all([
+          input.accommodationSlug ? getAccommodationBySlug(input.accommodationSlug) : Promise.resolve(null),
+          ...(input.activitySlugs ?? []).map((slug) => getActivityBySlug(slug)),
+        ]);
+        return {
+          input,
+          accommodationId: accommodation?.id ?? null,
+          activityIds: activities.filter((a): a is NonNullable<typeof a> => a !== null).map((a) => a.id),
+        };
+      }),
+    );
+  }
+  return cachedNodeRefs;
+}
+
 /** Demo packages whose real accommodation OR any real activity matches
  * `nodeId` — powers the reverse "Featured in packages" links on
- * accommodation/activity detail pages alongside real DB packages. */
+ * accommodation/activity detail pages alongside real DB packages. Only
+ * fully resolves (gallery images, FAQs, itinerary links, atoll) the
+ * packages that actually match, instead of every demo package in the
+ * catalog, since most callers only care about the handful (often zero)
+ * that reference this one node. Same returned data/order as resolving
+ * everything and filtering, since `resolveOneDemoPackage` is unchanged and
+ * `.filter()`/`.map()` both preserve DEMO_PACKAGES' relative order. */
 export async function getDemoPackagesReferencingNode(nodeId: string): Promise<PackageView[]> {
-  const all = await getDemoPackageViews();
-  return all.filter((p) => p.accommodations.some((a) => a.accommodation.id === nodeId) || p.activities.some((a) => a.activity.id === nodeId));
+  const refs = await getDemoPackageNodeRefs();
+  const matching = refs.filter((r) => r.accommodationId === nodeId || r.activityIds.includes(nodeId));
+  if (matching.length === 0) return [];
+  return Promise.all(matching.map((r) => resolveOneDemoPackage(r.input)));
 }

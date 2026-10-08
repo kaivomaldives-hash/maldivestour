@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/public";
 
 /**
  * Legacy-URL redirect resolution (Task 16). The new app namespaces every
@@ -61,14 +61,10 @@ function isSafeInternalPath(value: string): boolean {
  * problem must never break the page a visitor is trying to reach.
  */
 export async function resolveLegacyRedirect(pathname: string): Promise<ResolvedRedirect | null> {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anonKey) return null;
-
   const sourcePath = normalizeLegacyPath(pathname);
 
   try {
-    const supabase = createClient(url, anonKey);
+    const supabase = await createClient();
     const { data, error } = await supabase
       .from("url_redirects")
       .select("target_type, target_path, status_code")

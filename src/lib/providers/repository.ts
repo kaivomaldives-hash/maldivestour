@@ -123,7 +123,7 @@ async function getProvidersUncached(options: GetProvidersOptions = {}): Promise<
 
 export const getProviders = cachedRead(getProvidersUncached, ["providers"]);
 
-export async function getProviderBySlug(slug: string): Promise<ProviderDetail | null> {
+async function getProviderBySlugUncached(slug: string): Promise<ProviderDetail | null> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("nodes")
@@ -137,8 +137,10 @@ export async function getProviderBySlug(slug: string): Promise<ProviderDetail | 
   return providerDetailOf(data);
 }
 
+export const getProviderBySlug = cachedRead(getProviderBySlugUncached, ["providers:by-slug"], 300);
+
 /** Batch lookup, used by the accommodation repository to avoid N+1 queries. */
-export async function getProviderSummariesByIds(ids: string[]): Promise<Map<string, ProviderSummary>> {
+async function getProviderSummariesByIdsUncached(ids: string[]): Promise<Map<string, ProviderSummary>> {
   const map = new Map<string, ProviderSummary>();
   if (ids.length === 0) return map;
 
@@ -159,6 +161,12 @@ export async function getProviderSummariesByIds(ids: string[]): Promise<Map<stri
   }
   return map;
 }
+
+export const getProviderSummariesByIds = cachedRead(
+  getProviderSummariesByIdsUncached,
+  ["providers:summaries-by-ids"],
+  300,
+);
 
 export interface SearchProvidersOptions {
   limit?: number;

@@ -1,6 +1,7 @@
 import "server-only";
 
 import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
+import { cachedRead } from "@/lib/cache/cached-read";
 import { getCategoryBySlug, getNodeIdsByCategory } from "@/lib/categories/repository";
 import { getLocationSummariesByIds } from "@/lib/locations/repository";
 import { getHeroMediaByNodeIds } from "@/lib/media/repository";
@@ -327,7 +328,7 @@ async function attachOriginDestination(bares: BareRoute[]): Promise<TransferRout
   });
 }
 
-export async function getTransferRoutes(options: GetTransferRoutesOptions = {}): Promise<PaginatedResult<TransferRouteSummary>> {
+async function getTransferRoutesUncached(options: GetTransferRoutesOptions = {}): Promise<PaginatedResult<TransferRouteSummary>> {
   const page = Math.max(1, options.page ?? 1);
   const pageSize = Math.min(100, Math.max(1, options.pageSize ?? 24));
   const from = (page - 1) * pageSize;
@@ -344,18 +345,27 @@ export async function getTransferRoutes(options: GetTransferRoutesOptions = {}):
   if (options.originLocationId) query = query.eq("transfer_routes.origin_location_id", options.originLocationId);
   if (options.destinationLocationId) query = query.eq("transfer_routes.destination_location_id", options.destinationLocationId);
 
+  // `locationId` (either endpoint), `atollId`, and `category` can't be
+  // expressed as a single PostgREST filter against this query (the first
+  // two span two different columns; `category` needs a separate
+  // node_categories lookup), so they're applied in application code after
+  // the base fetch, and pagination must then happen in application code
+  // too — slicing before that filtering would silently drop/duplicate rows
+  // across pages. When none of those three options are set, there's
+  // nothing left to filter in JS, so `.range()` is pushed down to the
+  // query instead of fetching every published route just to paginate
+  // client-side afterward.
+  const needsPostFetchFiltering = Boolean(options.locationId || options.atollId || options.category);
+  if (!needsPostFetchFiltering) {
+    query = query.range(from, to);
+  }
+
   const { data, error, count } = await query.order("title", { ascending: true }).returns<NodeTransferRouteRow[]>();
 
   if (error || !data) return { items: [], total: 0, page, pageSize };
 
   let bares = data.map(bareRouteOf).filter((b): b is BareRoute => b !== null);
 
-  // `locationId` (either endpoint) and `atollId` can't be expressed as a
-  // single PostgREST filter against two different columns, so they're
-  // applied in application code after the base fetch — the route table is
-  // small enough (one row per real directional pair) for this to be fine,
-  // matching the same pragmatic approach used for atoll-scoped activity
-  // filters elsewhere in this codebase.
   if (options.locationId || options.atollId) {
     const locationIds = Array.from(new Set(bares.flatMap((b) => [b.originLocationId, b.destinationLocationId])));
     const locationsById = await getLocationSummariesByIds(locationIds);
@@ -385,8 +395,13 @@ export async function getTransferRoutes(options: GetTransferRoutesOptions = {}):
     bares = bares.filter((b) => taggedNodeIds.has(b.id));
   }
 
-  const total = options.locationId || options.atollId || options.category ? bares.length : (count ?? bares.length);
-  const pageItems = bares.slice(from, to + 1);
+  const total = needsPostFetchFiltering ? bares.length : (count ?? bares.length);
+  // When `.range()` was pushed down above, `bares` is already exactly this
+  // page's rows — slicing again here would be a no-op at best and would
+  // silently drop rows at worst if `bares` were ever shorter than a full
+  // page. Only the post-fetch-filtered branches (which fetched every row)
+  // still need the in-memory slice.
+  const pageItems = needsPostFetchFiltering ? bares.slice(from, to + 1) : bares;
   let items = await attachOriginDestination(pageItems);
 
   if (options.transferType || options.sharedOrPrivate) {
@@ -409,7 +424,9 @@ export async function getTransferRoutes(options: GetTransferRoutesOptions = {}):
   return { items, total, page, pageSize };
 }
 
-export async function getTransferRouteBySlug(slug: string): Promise<TransferRouteDetail | null> {
+export const getTransferRoutes = cachedRead(getTransferRoutesUncached, ["transfers:routes-list"], 300);
+
+async function getTransferRouteBySlugUncached(slug: string): Promise<TransferRouteDetail | null> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("nodes")
@@ -438,6 +455,8 @@ export async function getTransferRouteBySlug(slug: string): Promise<TransferRout
     isBookableForPrivateInquiry: Boolean(bookableRow.data),
   };
 }
+
+export const getTransferRouteBySlug = cachedRead(getTransferRouteBySlugUncached, ["transfers:route-by-slug"], 300);
 
 export async function getTransferRoutesByOrigin(originLocationId: string): Promise<TransferRouteSummary[]> {
   const result = await getTransferRoutes({ originLocationId, pageSize: 100 });
@@ -491,7 +510,7 @@ export async function searchTransferRoutes(query: string, options: SearchTransfe
 
 /** Transfer services belonging to one provider, across all of that
  * provider's routes — used by the provider detail page. */
-export async function getTransferServicesByProvider(providerId: string): Promise<Array<TransferService & { route: TransferRouteSummary }>> {
+async function getTransferServicesByProviderUncached(providerId: string): Promise<Array<TransferService & { route: TransferRouteSummary }>> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("transfer_services")
@@ -543,10 +562,16 @@ export async function getTransferServicesByProvider(providerId: string): Promise
   return results;
 }
 
+export const getTransferServicesByProvider = cachedRead(
+  getTransferServicesByProviderUncached,
+  ["transfers:services-by-provider"],
+  300,
+);
+
 /** Batch lookup by transfer_routes node id — exported for the package
  * repository (Task 11), which needs route context (origin/destination) for
  * an itinerary item that only stores a transfer_service_id. */
-export async function getTransferRoutesByIds(routeIds: string[]): Promise<Map<string, TransferRouteSummary>> {
+async function getTransferRoutesByIdsUncached(routeIds: string[]): Promise<Map<string, TransferRouteSummary>> {
   const map = new Map<string, TransferRouteSummary>();
   if (routeIds.length === 0) return map;
 
@@ -566,6 +591,8 @@ export async function getTransferRoutesByIds(routeIds: string[]): Promise<Map<st
   return map;
 }
 
+export const getTransferRoutesByIds = cachedRead(getTransferRoutesByIdsUncached, ["transfers:routes-by-ids"], 300);
+
 export async function getTransferServicesByRoute(routeId: string): Promise<TransferService[]> {
   const map = await getServicesByRouteIds([routeId]);
   return map.get(routeId) ?? [];
@@ -575,7 +602,7 @@ export async function getTransferServicesByRoute(routeId: string): Promise<Trans
  * are not nodes) — used by the package repository to resolve itinerary
  * items that reference a specific service without an N+1 query per item
  * (Task 11). */
-export async function getTransferServicesByIds(ids: string[]): Promise<Map<string, TransferService>> {
+async function getTransferServicesByIdsUncached(ids: string[]): Promise<Map<string, TransferService>> {
   const map = new Map<string, TransferService>();
   if (ids.length === 0) return map;
 
@@ -622,4 +649,6 @@ export async function getTransferServicesByIds(ids: string[]): Promise<Map<strin
   }
   return map;
 }
+
+export const getTransferServicesByIds = cachedRead(getTransferServicesByIdsUncached, ["transfers:services-by-ids"], 300);
 

@@ -1,6 +1,7 @@
 import "server-only";
 
 import type { AttractionDetail, AttractionSummary, AttractionType, GetAttractionsOptions, PaginatedResult } from "@/lib/attractions/types";
+import { cachedRead } from "@/lib/cache/cached-read";
 import {
   getLocationBySlugAndType,
   getLocationSummariesByIds,
@@ -39,7 +40,7 @@ function toAttractionSummary(
   };
 }
 
-export async function getAttractions(options: GetAttractionsOptions = {}): Promise<PaginatedResult<AttractionSummary>> {
+async function getAttractionsUncached(options: GetAttractionsOptions = {}): Promise<PaginatedResult<AttractionSummary>> {
   const page = options.page ?? 1;
   const pageSize = options.pageSize ?? 48;
 
@@ -78,6 +79,8 @@ export async function getAttractions(options: GetAttractionsOptions = {}): Promi
 
   return { items: attractions, total, page, pageSize };
 }
+
+export const getAttractions = cachedRead(getAttractionsUncached, ["attractions:list"], 300);
 
 /** Every attraction's direct parent location is the island it's physically
  * on — or, for a handful not tied to one inhabited island (Hanifaru Bay,
@@ -141,8 +144,10 @@ export async function getNearbyAttractions(
   location: { islandId?: string | null; atollId?: string | null },
   limit = 6,
 ): Promise<NearbyAttractions> {
-  const islandAttractionsFull = location.islandId ? await getAttractionsByIsland(location.islandId) : [];
-  const atollAttractionsFull = location.atollId ? await getAttractionsByAtoll(location.atollId) : [];
+  const [islandAttractionsFull, atollAttractionsFull] = await Promise.all([
+    location.islandId ? getAttractionsByIsland(location.islandId) : Promise.resolve([]),
+    location.atollId ? getAttractionsByAtoll(location.atollId) : Promise.resolve([]),
+  ]);
 
   const islandIds = new Set(islandAttractionsFull.map((a) => a.id));
   const atollOnly = atollAttractionsFull.filter((a) => !islandIds.has(a.id));
@@ -153,7 +158,7 @@ export async function getNearbyAttractions(
   };
 }
 
-export async function getAttractionBySlug(slug: string): Promise<AttractionDetail | null> {
+async function getAttractionBySlugUncached(slug: string): Promise<AttractionDetail | null> {
   const location = await getLocationBySlugAndType(slug, "poi");
   if (!location) return null;
 
@@ -176,5 +181,7 @@ export async function getAttractionBySlug(slug: string): Promise<AttractionDetai
     sourceArticleSlug: typeof attrs.source_article_slug === "string" ? attrs.source_article_slug : null,
   };
 }
+
+export const getAttractionBySlug = cachedRead(getAttractionBySlugUncached, ["attractions:by-slug"], 300);
 
 export type { AttractionType };

@@ -120,6 +120,22 @@ export async function SpeciesLandingPage({ content }: { content: SpeciesPageCont
           </div>
         </section>
 
+        {/* Season — a real pointer to the existing month-by-month guide
+            article rather than repeating or guessing at seasonal claims
+            here (that article's own content is deliberately
+            non-prescriptive — see its own copy). */}
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">{species.dietOrSeasonLabel === "Best Season" ? "Season" : "When to Go"}</h2>
+          <p className="mt-2 text-sm text-neutral-700">
+            {species.name} activity is commonly reported around <strong>{species.dietOrSeason}</strong>, though this varies by atoll, tide
+            and year — see our{" "}
+            <Link href="/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/" className="text-maldives-600 hover:underline">
+              Maldives fishing seasons month-by-month guide
+            </Link>{" "}
+            for the full picture.
+          </p>
+        </section>
+
         {/* Techniques */}
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Fishing Techniques</h2>

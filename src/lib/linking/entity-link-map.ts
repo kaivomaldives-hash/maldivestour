@@ -32,6 +32,18 @@ const HUB_PHRASES: EntityLinkTarget[] = [
   { phrase: "Maldives Travel Guide", href: "/maldives/travel-guide/" },
   { phrase: "Maldives Atolls", href: "/maldives/atolls/" },
   { phrase: "Maldives Islands", href: "/maldives/islands/" },
+  // Fishing species/technique landing pages (Phase 4/5 of the Maldives
+  // Fishing growth plan) — these already appear verbatim in real article
+  // prose (e.g. the fishing seasons guide's "trolling, jigging, popping
+  // and handline fishing" / "Giant Trevally" / "Yellowfin Tuna"), so this
+  // creates the cross-link without editing any article content.
+  { phrase: "Giant Trevally", href: "/maldives/fishing/gt-fishing/" },
+  { phrase: "GT Fishing", href: "/maldives/fishing/gt-fishing/" },
+  { phrase: "Yellowfin Tuna", href: "/maldives/fishing/tuna-fishing/" },
+  { phrase: "Tuna Fishing", href: "/maldives/fishing/tuna-fishing/" },
+  { phrase: "Popping", href: "/maldives/fishing/popping/" },
+  { phrase: "Jigging", href: "/maldives/fishing/jigging/" },
+  { phrase: "Fly Fishing", href: "/maldives/fishing/fly-fishing/" },
 ];
 
 interface NodeTitleRow {

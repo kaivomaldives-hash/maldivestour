@@ -145,11 +145,7 @@ export async function EmperorPage() {
             <p>
               Emperor is a 32-foot private fishing boat with twin 200 HP outboard engines, carrying up to 5 anglers. The boat and crew are
               home-based at Maamendhoo, Gaafu Alifu Atoll — real, remote fishing ground with less pressure than the resort-cluster atolls
-              most visitors think of first — operated by{" "}
-              <Link href="/maldives/providers/maldives-fishing-and-holiday/" className="text-maldives-600 hover:underline">
-                Maldives Fishing and Holiday Pvt Ltd
-              </Link>
-              .
+              most visitors think of first.
             </p>
             <p>
               <strong>You choose the location. We help arrange the fishing.</strong> Tell us where you&rsquo;re staying, your travel dates,
@@ -315,7 +311,6 @@ export async function EmperorPage() {
             {[
               { href: "/maldives/fishing/", label: "Maldives Fishing" },
               { href: "/maldives/packages/fishing/", label: "Fishing Packages" },
-              { href: "/maldives/providers/maldives-fishing-and-holiday/", label: "Maldives Fishing and Holiday Pvt Ltd" },
               { href: "/maldives/islands/maamendhoo-gaafu-alifu/", label: "Maamendhoo, Gaafu Alifu" },
             ].map((link) => (
               <Link

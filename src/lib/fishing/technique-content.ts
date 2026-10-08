@@ -102,8 +102,8 @@ export const TECHNIQUE_PAGES: Record<string, TechniquePageContent> = {
       { label: "Yellowfin Tuna", href: "/maldives/fishing/tuna-fishing/" },
       { label: "Wahoo", href: "/maldives/fishing/wahoo-fishing/" },
       { label: "Mahi-Mahi", href: "/maldives/fishing/mahi-mahi-fishing/" },
-      { label: "Marlin", href: null },
-      { label: "Sailfish", href: null },
+      { label: "Marlin", href: "/maldives/fishing/marlin-fishing/" },
+      { label: "Sailfish", href: "/maldives/fishing/sailfish-fishing/" },
     ],
     // Emperor's own charters, plus the 3 real third-party activities
     // already tagged with the "big-game-fishing" category (see

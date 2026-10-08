@@ -474,11 +474,7 @@ export async function FishingDirectoryPage({
               size means genuinely deep channels between the outer reef and the open ocean.
             </p>
             <p>
-              Our own{" "}
-              <Link href="/maldives/providers/maldives-fishing-and-holiday/" className="text-maldives-600 hover:underline">
-                fishing operation
-              </Link>{" "}
-              is home-based at{" "}
+              Our own fishing operation is home-based at{" "}
               <Link href="/maldives/islands/maamendhoo-gaafu-alifu/" className="text-maldives-600 hover:underline">
                 Maamendhoo, Gaafu Alifu Atoll
               </Link>{" "}

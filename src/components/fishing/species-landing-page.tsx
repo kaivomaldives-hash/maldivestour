@@ -36,14 +36,17 @@ export function speciesPageMetadata(content: SpeciesPageContent): Metadata {
 }
 
 export async function SpeciesLandingPage({ content }: { content: SpeciesPageContent }) {
-  const species = getFishSpeciesBySlug(content.speciesSlug);
-  if (!species) notFound();
+  const species = content.speciesSlug ? getFishSpeciesBySlug(content.speciesSlug) : null;
+  if (content.speciesSlug && !species) notFound();
+
+  const heroImage = species?.image ?? content.fallbackImage ?? null;
+  const heroDescription = species?.description ?? content.fallbackDescription ?? "";
 
   const charters = (await Promise.all(content.charterSlugs.map((slug) => getFishingActivityBySlug(slug)))).filter(
     (c): c is NonNullable<typeof c> => c !== null,
   );
 
-  const waMessage = `Hi, I'd like to plan a fishing trip targeting ${species.name} in the Maldives.\nMy location:\nDate:\nNumber of anglers:\nHalf day or full day:`;
+  const waMessage = `Hi, I'd like to plan a fishing trip targeting ${content.displayName} in the Maldives.\nMy location:\nDate:\nNumber of anglers:\nHalf day or full day:`;
 
   return (
     <main>
@@ -68,8 +71,8 @@ export async function SpeciesLandingPage({ content }: { content: SpeciesPageCont
         ]}
         eyebrow="Target species"
         title={content.h1}
-        description={species.description}
-        image={species.image}
+        description={heroDescription}
+        image={heroImage}
         action={
           <a
             href={whatsappUrl(waMessage)}
@@ -85,34 +88,38 @@ export async function SpeciesLandingPage({ content }: { content: SpeciesPageCont
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
         {/* Species facts — the real, legacy-sourced bio data, same fields
-            FishSpeciesSection already renders on the hub. */}
-        <section className="grid grid-cols-1 gap-6 sm:grid-cols-[1fr_2fr]">
-          <div className="overflow-hidden rounded-2xl">
-            <MediaImage asset={species.image} alt={species.name} aspectClassName="aspect-[4/3]" />
-          </div>
-          <div>
-            <p className="text-sm italic text-neutral-500">{species.scientificName}</p>
-            <dl className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
-              <div>
-                <dt className="text-neutral-500">Size</dt>
-                <dd className="font-medium text-ocean-900">{species.size}</dd>
-              </div>
-              <div>
-                <dt className="text-neutral-500">Habitat</dt>
-                <dd className="font-medium text-ocean-900">{species.habitat}</dd>
-              </div>
-              <div>
-                <dt className="text-neutral-500">{species.dietOrSeasonLabel}</dt>
-                <dd className="font-medium text-ocean-900">{species.dietOrSeason}</dd>
-              </div>
-            </dl>
-            <p className="mt-4 text-sm text-neutral-700">{species.description}</p>
-          </div>
-        </section>
+            FishSpeciesSection already renders on the hub. Skipped entirely
+            when no such entry exists (e.g. marlin, sailfish) rather than
+            inventing size/habitat/season figures. */}
+        {species && (
+          <section className="grid grid-cols-1 gap-6 sm:grid-cols-[1fr_2fr]">
+            <div className="overflow-hidden rounded-2xl">
+              <MediaImage asset={species.image} alt={species.name} aspectClassName="aspect-[4/3]" />
+            </div>
+            <div>
+              <p className="text-sm italic text-neutral-500">{species.scientificName}</p>
+              <dl className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
+                <div>
+                  <dt className="text-neutral-500">Size</dt>
+                  <dd className="font-medium text-ocean-900">{species.size}</dd>
+                </div>
+                <div>
+                  <dt className="text-neutral-500">Habitat</dt>
+                  <dd className="font-medium text-ocean-900">{species.habitat}</dd>
+                </div>
+                <div>
+                  <dt className="text-neutral-500">{species.dietOrSeasonLabel}</dt>
+                  <dd className="font-medium text-ocean-900">{species.dietOrSeason}</dd>
+                </div>
+              </dl>
+              <p className="mt-4 text-sm text-neutral-700">{species.description}</p>
+            </div>
+          </section>
+        )}
 
         {/* Why the Maldives */}
-        <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Why the Maldives for {species.name}</h2>
+        <section className={species ? "mt-12 border-t border-neutral-200 pt-10" : ""}>
+          <h2 className="text-xl font-semibold text-ocean-900">Why the Maldives for {content.displayName}</h2>
           <div className="mt-3 space-y-3 text-sm text-neutral-700">
             {content.whyMaldives.map((p) => (
               <p key={p}>{p}</p>
@@ -122,19 +129,21 @@ export async function SpeciesLandingPage({ content }: { content: SpeciesPageCont
 
         {/* Season — a real pointer to the existing month-by-month guide
             article rather than repeating or guessing at seasonal claims
-            here (that article's own content is deliberately
-            non-prescriptive — see its own copy). */}
-        <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">{species.dietOrSeasonLabel === "Best Season" ? "Season" : "When to Go"}</h2>
-          <p className="mt-2 text-sm text-neutral-700">
-            {species.name} activity is commonly reported around <strong>{species.dietOrSeason}</strong>, though this varies by atoll, tide
-            and year — see our{" "}
-            <Link href="/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/" className="text-maldives-600 hover:underline">
-              Maldives fishing seasons month-by-month guide
-            </Link>{" "}
-            for the full picture.
-          </p>
-        </section>
+            here. Only shown when real season data exists (species truthy)
+            — marlin/sailfish have none, so no claim is made either way. */}
+        {species && (
+          <section className="mt-12 border-t border-neutral-200 pt-10">
+            <h2 className="text-xl font-semibold text-ocean-900">{species.dietOrSeasonLabel === "Best Season" ? "Season" : "When to Go"}</h2>
+            <p className="mt-2 text-sm text-neutral-700">
+              {content.displayName} activity is commonly reported around <strong>{species.dietOrSeason}</strong>, though this varies by
+              atoll, tide and year — see our{" "}
+              <Link href="/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/" className="text-maldives-600 hover:underline">
+                Maldives fishing seasons month-by-month guide
+              </Link>{" "}
+              for the full picture.
+            </p>
+          </section>
+        )}
 
         {/* Techniques */}
         <section className="mt-12 border-t border-neutral-200 pt-10">

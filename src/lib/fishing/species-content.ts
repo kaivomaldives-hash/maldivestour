@@ -1,3 +1,6 @@
+import { asset } from "@/lib/packages/category-images";
+import type { MediaAsset } from "@/lib/media/types";
+
 /**
  * Per-page content for the species SEO landing pages (/maldives/fishing/
  * gt-fishing/, /maldives/fishing/tuna-fishing/) — Phase 4 of the Maldives
@@ -7,15 +10,25 @@
  * suits the species, which real techniques/charters target it, and which
  * atolls are already documented as good ground for it.
  *
- * Deliberately only 2 entries (GT, Tuna) for now, not all 8 species the
- * plan lists — building the rest needs either more real per-species
- * source material or a scoped decision on which to do next, same caveat
- * given when the Emperor page shipped.
+ * Marlin and Sailfish have no real bio entry in fish-species.ts (no legacy
+ * size/habitat/season data exists for them anywhere in this codebase), so
+ * those two entries use fallbackImage/fallbackDescription instead of
+ * speciesSlug — see SpeciesPageContent below.
  */
 
 export interface SpeciesPageContent {
-  /** fish-species.ts slug this page wraps (e.g. "giant-trevally"). */
-  speciesSlug: string;
+  /** The species' common name, used in prose/headings independent of
+   * whether a fish-species.ts bio entry exists (e.g. "Marlin"). */
+  displayName: string;
+  /** fish-species.ts slug this page wraps (e.g. "giant-trevally") — left
+   * undefined for a species with no real bio entry there (no legacy size/
+   * habitat/season data exists for it anywhere in this codebase). When
+   * undefined, the page skips the stats table and season section rather
+   * than inventing those facts, using fallbackImage/fallbackDescription
+   * for the hero instead. */
+  speciesSlug?: string;
+  fallbackImage?: MediaAsset;
+  fallbackDescription?: string;
   /** This page's own URL slug under /maldives/fishing/ (e.g. "gt-fishing"). */
   pageSlug: string;
   metaTitle: string;
@@ -33,6 +46,7 @@ export interface SpeciesPageContent {
 
 export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
   "gt-fishing": {
+    displayName: "Giant Trevally (GT)",
     speciesSlug: "giant-trevally",
     pageSlug: "gt-fishing",
     metaTitle: "GT Fishing Maldives | Giant Trevally Fishing Charters",
@@ -66,6 +80,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
     ],
   },
   "tuna-fishing": {
+    displayName: "Yellowfin Tuna",
     speciesSlug: "yellowfin-tuna",
     pageSlug: "tuna-fishing",
     metaTitle: "Tuna Fishing Maldives | Yellowfin Tuna Fishing Charters",
@@ -95,6 +110,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
     ],
   },
   "wahoo-fishing": {
+    displayName: "Wahoo",
     speciesSlug: "wahoo",
     pageSlug: "wahoo-fishing",
     metaTitle: "Wahoo Fishing Maldives | Wahoo Fishing Charters",
@@ -120,6 +136,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
     ],
   },
   "dogtooth-tuna": {
+    displayName: "Dogtooth Tuna",
     speciesSlug: "dogtooth-tuna",
     pageSlug: "dogtooth-tuna",
     metaTitle: "Dogtooth Tuna Fishing Maldives | Jigging Charters",
@@ -145,6 +162,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
     ],
   },
   "mahi-mahi-fishing": {
+    displayName: "Mahi-Mahi",
     speciesSlug: "mahi-mahi",
     pageSlug: "mahi-mahi-fishing",
     metaTitle: "Mahi Mahi Fishing Maldives | Mahi Mahi Fishing Charters",
@@ -166,6 +184,78 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
       {
         question: "What technique is used for mahi-mahi?",
         answer: "Trolling near floating debris or open water is the usual technique — see Big Game Fishing on the main fishing hub.",
+      },
+    ],
+  },
+  "marlin-fishing": {
+    displayName: "Marlin",
+    // No real bio entry exists in fish-species.ts for marlin (no legacy
+    // size/habitat/season data anywhere in this codebase) — using a real
+    // gallery photo + factual prose instead of inventing those stats.
+    fallbackImage: asset(
+      "dbd93db3-e064-94a9-5883-96ea6c3aebf1",
+      "uploads/assets/uploads/fishing/images/gallery/blue-marlin.avif",
+      "Blue marlin caught fishing in the Maldives",
+    ),
+    fallbackDescription:
+      "Marlin are among the largest big-game species targeted in Maldivian waters, caught trolling further offshore beyond the atoll rim alongside tuna, wahoo and sailfish.",
+    pageSlug: "marlin-fishing",
+    metaTitle: "Marlin Fishing Maldives | Marlin Fishing Charters",
+    metaDescription:
+      "Marlin fishing in the Maldives — trolling further offshore on a full-day charter. Real charters, real rates, no invented catch claims.",
+    h1: "Marlin Fishing in the Maldives",
+    whyMaldives: [
+      "Marlin are caught trolling further offshore, beyond the atoll rim, on the same big game runs that target tuna and wahoo — a longer-range trip, which is why it's best suited to a full-day charter rather than a half-day.",
+      "A real marlin-tagged charter, Marlin & Big Game Fishing Charter, already operates from Hulhumalé with Knight At Sea — see Available Charters below alongside our own Emperor full-day charter.",
+    ],
+    techniques: [{ label: "Trolling / Big Game Fishing", href: "/maldives/fishing/big-game-fishing/" }],
+    // Full-day only, per the site owner's instruction — marlin is a
+    // longer-range target better suited to the full-day charter than the
+    // half-day one. Plus the real third-party marlin charter on record.
+    charterSlugs: ["private-full-day-fishing-charter", "marlin-big-game-fishing-charter"],
+    faqs: [
+      {
+        question: "Is there a dedicated marlin charter?",
+        answer:
+          "Marlin & Big Game Fishing Charter, operated by Knight At Sea out of Hulhumalé, is a real charter already on record tagged for big game/marlin fishing. Our own Emperor full-day charter also runs trolling trips that can target marlin further offshore.",
+      },
+      {
+        question: "What technique is used for marlin?",
+        answer: "Trolling lures at speed further offshore is the usual technique — see Big Game Fishing on the main fishing hub.",
+      },
+    ],
+  },
+  "sailfish-fishing": {
+    displayName: "Sailfish",
+    // Same gap as marlin — no real bio entry exists for sailfish either.
+    fallbackImage: asset(
+      "d647a2a4-2099-8667-168f-88c292b6de0d",
+      "uploads/assets/uploads/fishing/images/gallery/sailfish-maldives.webp",
+      "Sailfish caught fishing in the Maldives",
+    ),
+    fallbackDescription:
+      "Sailfish are one of the fastest fish in the ocean and a prized big-game target, caught trolling further offshore alongside tuna, wahoo and marlin.",
+    pageSlug: "sailfish-fishing",
+    metaTitle: "Sailfish Fishing Maldives | Sailfish Fishing Charters",
+    metaDescription:
+      "Sailfish fishing in the Maldives — trolling further offshore on a full-day charter. Real charters, real rates, no invented catch claims.",
+    h1: "Sailfish Fishing in the Maldives",
+    whyMaldives: [
+      "Sailfish are caught trolling further offshore on the same big game runs that target tuna, wahoo and marlin — a longer-range trip, best suited to a full-day charter.",
+      "No dedicated sailfish-only charter is on record yet, but our own Emperor full-day charter and the other real big game operators on this site run the same trolling technique that can produce one.",
+    ],
+    techniques: [{ label: "Trolling / Big Game Fishing", href: "/maldives/fishing/big-game-fishing/" }],
+    // Full-day only, per the site owner's instruction.
+    charterSlugs: ["private-full-day-fishing-charter"],
+    faqs: [
+      {
+        question: "Is there a dedicated sailfish charter?",
+        answer:
+          "Not yet on record — sailfish are caught on the same big game trolling trips that target tuna, wahoo and marlin. See Big Game Fishing for the real charters currently available.",
+      },
+      {
+        question: "What technique is used for sailfish?",
+        answer: "Trolling lures at speed further offshore is the usual technique — see Big Game Fishing on the main fishing hub.",
       },
     ],
   },

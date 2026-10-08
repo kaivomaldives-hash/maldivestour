@@ -13,6 +13,7 @@ import { PackageCard } from "@/components/packages/package-card";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
+import { WhatsAppIcon } from "@/components/ui/icons";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { Pagination } from "@/components/ui/pagination";
@@ -31,6 +32,7 @@ import { FISHING_HERO_IMAGE } from "@/lib/packages/category-images";
 import { filterPackageViews, getAllPackageViews } from "@/lib/packages/view-repository";
 import { getProviderBySlug } from "@/lib/providers/repository";
 import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd } from "@/lib/seo/site";
+import { whatsappUrl } from "@/lib/whatsapp";
 
 const PAGE_SIZE = 24;
 
@@ -295,6 +297,15 @@ export async function FishingDirectoryPage({
             <a href="#fishing-packages" className="rounded-full border border-white/60 px-5 py-2.5 text-sm font-medium text-white hover:bg-white/10">
               Explore Fishing Packages
             </a>
+            <a
+              href={whatsappUrl("Hi, I would like to plan a fishing trip in the Maldives.\nMy location:\nDate:\nNumber of anglers:\nTarget species:\nFishing type:\nPreferred duration:")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-white/60 px-5 py-2.5 text-sm font-medium text-white hover:bg-white/10"
+            >
+              <WhatsAppIcon className="h-4 w-4" />
+              WhatsApp a Fishing Expert
+            </a>
           </div>
         }
       />
@@ -390,6 +401,27 @@ export async function FishingDirectoryPage({
           </div>
         </section>
 
+        {/* Emperor — Private Fishing Charter Across the Maldives. A short
+            teaser linking to the dedicated /maldives/fishing/emperor/ page,
+            per the Maldives Fishing growth plan's Phase 2/3 structure
+            ("main page links to Emperor"). Full boat detail, techniques,
+            "Where Can You Fish" and the real charter rates all live on that
+            dedicated page — this stays a teaser, not a duplicate. */}
+        <section id="emperor-charter" className="mt-12 scroll-mt-20 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Emperor — Private Fishing Charter Across the Maldives</h2>
+          <p className="mt-2 text-sm text-neutral-700">
+            Our own private charter boat — 32 ft, twin 200 HP engines, up to 5 anglers. Home-based in Gaafu Atoll, with charters also
+            arranged from other locations across the Maldives depending on your dates and the boat&rsquo;s positioning. You choose the
+            location, we help arrange the fishing.
+          </p>
+          <Link
+            href="/maldives/fishing/emperor/"
+            className="mt-4 inline-flex items-center justify-center rounded-full bg-maldives-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-ocean-800"
+          >
+            Meet Emperor
+          </Link>
+        </section>
+
         {/* Best Places for Fishing — atoll overview, deliberately not ranked
             (different atolls suit different styles/species, not a "best"
             vs "worst" list). */}
@@ -445,14 +477,18 @@ export async function FishingDirectoryPage({
               <Link href="/maldives/providers/maldives-fishing-and-holiday/" className="text-maldives-600 hover:underline">
                 fishing operation
               </Link>{" "}
-              runs out of{" "}
+              is home-based at{" "}
               <Link href="/maldives/islands/maamendhoo-gaafu-alifu/" className="text-maldives-600 hover:underline">
                 Maamendhoo, Gaafu Alifu Atoll
               </Link>{" "}
-              — real, currently-verified charters and multi-night packages, not a generic listing. Trips from here
-              cover popping and jigging over the outer reef and channel edges (giant trevally and dogtooth tuna are
-              the usual targets), trolling further out for yellowfin tuna, and reef fishing closer to the island for
-              a calmer session.
+              — real, currently-verified charters and multi-night packages, not a generic listing. Trips here cover
+              popping and jigging over the outer reef and channel edges (giant trevally and dogtooth tuna are the
+              usual targets), trolling further out for yellowfin tuna, and reef fishing closer to the island for a
+              calmer session. The same boat can also be arranged from other locations across the Maldives — see{" "}
+              <Link href="/maldives/fishing/emperor/" className="text-maldives-600 hover:underline">
+                Emperor&rsquo;s own page
+              </Link>{" "}
+              for details.
             </p>
           </div>
 
@@ -494,8 +530,12 @@ export async function FishingDirectoryPage({
           {realCharters.length > 0 && (
             <>
               <p className="mt-2 text-sm text-neutral-700">
-                Our own private charter, aboard &ldquo;Emperor&rdquo;, a 32-foot fishing boat with twin
-                200&nbsp;HP engines (max 5 passengers) — departing from Maamendhoo, Gaafu Alifu Atoll.
+                Our own private charter, aboard{" "}
+                <Link href="/maldives/fishing/emperor/" className="text-maldives-600 hover:underline">
+                  &ldquo;Emperor&rdquo;
+                </Link>
+                , a 32-foot fishing boat with twin 200&nbsp;HP engines (max 5 passengers) — home-based in Gaafu Alifu Atoll, also
+                arranged from other locations across the Maldives on request.
               </p>
               <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {realCharters.map((charter) => {
@@ -674,6 +714,7 @@ export async function FishingDirectoryPage({
           <nav aria-label="Explore Maldives fishing sections" className="mt-4 flex flex-wrap gap-2">
             {[
               { href: "#all-fishing-activities", label: "All Fishing Activities" },
+              { href: "#emperor-charter", label: "Emperor Private Fishing Charter" },
               { href: "#fishing-charters", label: "Maldives Fishing Charters" },
               { href: "#fishing-packages", label: "Maldives Fishing Packages" },
               { href: "#gaafu-fishing", label: "Fishing in Gaafu Atoll" },

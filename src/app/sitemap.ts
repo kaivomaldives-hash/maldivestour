@@ -59,6 +59,7 @@ const STATIC_PATHS = [
   "/maldives/dive-sites/",
   "/maldives/diving/",
   "/maldives/fishing/",
+  "/maldives/fishing/emperor/",
   "/maldives/guesthouses/",
   "/maldives/hotels/",
   "/maldives/islands/",

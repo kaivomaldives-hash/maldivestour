@@ -19,7 +19,10 @@ export interface BookingCta {
 const BOOKING_CTA: Record<BookingSource, BookingCta> = {
   accommodation: { toggleLabel: "Request Accommodation", submitLabel: "Request Accommodation" },
   activity: { toggleLabel: "Request Booking", submitLabel: "Request Booking" },
-  fishing: { toggleLabel: "Request Fishing Charter", submitLabel: "Request Fishing Charter" },
+  // Phase 9 of the Maldives Fishing growth plan: lead with what the angler
+  // wants to catch rather than a generic "request" verb — the same enquiry
+  // pipeline (createNodeInquiry, source="fishing") handles it either way.
+  fishing: { toggleLabel: "Tell Us What You Want to Catch", submitLabel: "Find My Fishing Trip" },
   diving: { toggleLabel: "Request Diving Experience", submitLabel: "Request Diving Experience" },
   surfing: { toggleLabel: "Request Surfing Experience", submitLabel: "Request Surfing Experience" },
   transfer: { toggleLabel: "Request Transfer", submitLabel: "Request Transfer" },

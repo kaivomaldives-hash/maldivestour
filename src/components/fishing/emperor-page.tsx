@@ -42,12 +42,12 @@ const FAQS = [
   {
     question: "Does Emperor only fish out of Maamendhoo?",
     answer:
-      "Maamendhoo, Gaafu Alifu Atoll is Emperor's home base, where the boat and crew are normally based. Charters can also be arranged from other locations across the Maldives, depending on your dates, the boat's positioning and sea conditions — tell us where you're staying and we'll confirm what's possible.",
+      "Maamendhoo, Gaafu Alifu Atoll is Emperor's home base, where the boat and crew are normally based. Charters can also be arranged from other locations across the Maldives at the same rate, depending on your dates, the boat's positioning and sea conditions — tell us where you're staying and we'll confirm what's possible.",
   },
   {
     question: "What does an Emperor charter cost?",
     answer:
-      "Our base rate is USD 1,380 for a full day or USD 980 for a half day, per boat (up to 5 anglers) — see the rates below. If your departure location needs extra transfer, fuel or positioning arrangements, we'll confirm any additional cost with you before you book.",
+      "USD 1,380 for a full day or USD 980 for a half day, per boat (up to 5 anglers) — the same rate wherever we arrange your charter across the Maldives, see the rates below.",
   },
   {
     question: "What's included?",
@@ -116,7 +116,7 @@ export async function EmperorPage() {
         ]}
         eyebrow="Private fishing charter"
         title="Emperor — Private Fishing Charter Across the Maldives"
-        description="32 ft · Twin 200 HP engines · Up to 5 anglers. Home-based in Gaafu Atoll — you choose the location, we help arrange the fishing."
+        description="32 ft · Twin 200 HP engines · Up to 5 anglers. Home-based in Gaafu Atoll — same rate wherever we arrange your charter across the Maldives."
         image={FISHING_HERO_IMAGE}
         action={
           <div className="flex flex-wrap gap-3">
@@ -154,9 +154,9 @@ export async function EmperorPage() {
             <p>
               <strong>You choose the location. We help arrange the fishing.</strong> Tell us where you&rsquo;re staying, your travel dates,
               number of anglers and what you&rsquo;d like to catch, and our team will confirm the most suitable departure arrangement —
-              whether that&rsquo;s Emperor&rsquo;s own Gaafu Atoll grounds or another region. Availability outside Gaafu Atoll depends on
-              the boat&rsquo;s positioning, weather, sea conditions and crew schedule, so we confirm it with you before booking rather than
-              promising a fixed price or date up front.
+              whether that&rsquo;s Emperor&rsquo;s own Gaafu Atoll grounds or another region. The rate is the same wherever we arrange
+              your charter — the only thing that varies by location is availability, which depends on the boat&rsquo;s positioning,
+              weather, sea conditions and crew schedule, so we confirm your date with you before booking.
             </p>
           </div>
 
@@ -168,7 +168,7 @@ export async function EmperorPage() {
               "Professional captain and crew",
               "Basic fishing gear included",
               "Half-day and full-day charters",
-              "Home-based in Gaafu Atoll, arranged elsewhere on request",
+              "Same rate wherever we arrange your charter across the Maldives",
             ].map((item) => (
               <li key={item} className="flex gap-2">
                 <span aria-hidden="true">🎣</span>
@@ -178,15 +178,17 @@ export async function EmperorPage() {
           </ul>
         </section>
 
-        {/* Where Can You Fish — deliberately framed as "ask us", per the
-            site owner's own instruction not to promise fixed availability
-            or an identical rate at every location without confirming each
-            one's operational cost. */}
+        {/* Where Can You Fish — the site owner confirmed the charter rate
+            is genuinely the same wherever we arrange it, so that's now
+            stated as fact (no hedging on price). Availability itself is
+            still framed as "ask us", since that genuinely does depend on
+            the boat's positioning/schedule, not on the rate. */}
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Where Can You Fish?</h2>
           <p className="mt-2 text-sm text-neutral-700">
-            Emperor&rsquo;s home waters are Gaafu Atoll, in the far south of the Maldives. Charters can also be arranged from other regions —
-            your departure location depends on where you&rsquo;re staying and the boat&rsquo;s positioning at the time.
+            Emperor&rsquo;s home waters are Gaafu Atoll, in the far south of the Maldives. Charters can also be arranged from other regions
+            at the same rate — your exact departure location and date depend on where you&rsquo;re staying and the boat&rsquo;s positioning
+            at the time.
           </p>
           <ul className="mt-4 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
             {REGIONS.map((region) => (
@@ -248,8 +250,7 @@ export async function EmperorPage() {
         <section id="emperor-charters" className="mt-12 scroll-mt-20 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Emperor Charter Rates</h2>
           <p className="mt-2 text-sm text-neutral-700">
-            Base rate, per boat, from Gaafu Atoll. A charter arranged from another region may carry an additional transfer or positioning
-            cost — we&rsquo;ll confirm this with you before you book.
+            One rate, per boat, wherever we arrange your charter across the Maldives — no extra transfer or positioning surcharge.
           </p>
           <ul className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
             {charters.map((charter) => {

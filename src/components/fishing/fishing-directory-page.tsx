@@ -535,7 +535,7 @@ export async function FishingDirectoryPage({
                   &ldquo;Emperor&rdquo;
                 </Link>
                 , a 32-foot fishing boat with twin 200&nbsp;HP engines (max 5 passengers) — home-based in Gaafu Alifu Atoll, also
-                arranged from other locations across the Maldives on request.
+                arranged from other locations across the Maldives at the same rate on request.
               </p>
               <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {realCharters.map((charter) => {

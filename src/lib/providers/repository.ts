@@ -57,9 +57,19 @@ const REDACTED_PROVIDER_NAMES: Record<string, string> = {
   "maldives-fishing-and-holiday": "Local Fishing Operator",
 };
 
+// Same provider, same reason: the owner doesn't want visitors able to
+// reach this operator's own website from its public provider page either
+// (a live outbound link there would let a customer book direct and bypass
+// MTG, defeating the point of hiding the name above). Reusing the same key
+// set as REDACTED_PROVIDER_NAMES — any provider redacted here is fully
+// redacted, name and website both. This only affects the public read path
+// (this file); admin's own provider editor (lib/admin/providers-repository.ts)
+// reads the real row directly and is untouched, since staff still need the
+// real website to manage the listing.
 function providerDetailOf(row: NodeProviderRow): ProviderDetail | null {
   const p = Array.isArray(row.providers) ? row.providers[0] : row.providers;
   if (!p) return null;
+  const isRedacted = row.slug in REDACTED_PROVIDER_NAMES;
 
   return {
     id: row.id,
@@ -70,7 +80,7 @@ function providerDetailOf(row: NodeProviderRow): ProviderDetail | null {
     legalName: p.legal_name,
     contactEmail: p.contact_email,
     contactPhone: p.contact_phone,
-    websiteUrl: p.website_url,
+    websiteUrl: isRedacted ? null : p.website_url,
     licenseNumber: p.license_number,
     metaTitle: row.meta_title,
     metaDescription: row.meta_description,

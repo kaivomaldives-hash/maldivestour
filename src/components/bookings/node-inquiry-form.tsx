@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import { combinePhone, NationalityField, PhoneField, TermsCheckbox } from "@/components/bookings/customer-fields";
-import { createNodeInquiry } from "@/lib/bookings/actions";
+import { createNodeInquiry, searchDestinationOptions, type DestinationOption } from "@/lib/bookings/actions";
 import type { BookingSource } from "@/lib/bookings/copy";
 
 const WHATSAPP_NUMBER = "9607794332";
@@ -23,6 +23,12 @@ export interface NodeInquiryFormProps {
    * single-slot activity. Off by default so every other vertical's form
    * is unchanged. */
   showNumberOfDays?: boolean;
+  /** Adds a required destination picker (atoll/island/resort) — only for
+   * a product tagged to more than one destination (e.g. Emperor's
+   * charters, see src/lib/activities/types.ts's `locations`), where the
+   * product's own location is genuinely ambiguous without asking.
+   * Off by default, so every single-location product's form is unchanged. */
+  requireDestination?: boolean;
 }
 
 /**
@@ -32,9 +38,10 @@ export interface NodeInquiryFormProps {
  * just without the transfer-specific origin/destination/trip-type fields
  * that don't apply here.
  */
-export function NodeInquiryForm({ productNodeId, productTitle, source, submitLabel, showNumberOfDays }: NodeInquiryFormProps) {
+export function NodeInquiryForm({ productNodeId, productTitle, source, submitLabel, showNumberOfDays, requireDestination }: NodeInquiryFormProps) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [destination, setDestination] = useState<DestinationOption | null>(null);
   const [submitted, setSubmitted] = useState<{
     reference: string;
     customerName: string;
@@ -107,6 +114,11 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
         const form = event.currentTarget;
         const data = new FormData(form);
 
+        if (requireDestination && !destination) {
+          setError("Please choose a destination.");
+          return;
+        }
+
         startTransition(async () => {
           const customerName = String(data.get("customerName") ?? "");
           const preferredDate = String(data.get("preferredDate") ?? "") || null;
@@ -129,6 +141,8 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
             adults,
             children,
             numberOfDays,
+            destinationLocationId: destination?.destinationLocationId ?? null,
+            destinationLabel: destination?.label ?? null,
             specialRequests: String(data.get("specialRequests") ?? "") || null,
             honeypot: String(data.get("website") ?? ""),
           });
@@ -167,6 +181,8 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
         <Field label="Preferred time (optional)" name="preferredTime" type="time" />
       </div>
 
+      {requireDestination && <DestinationField value={destination} onChange={setDestination} />}
+
       <div className="grid grid-cols-2 gap-4">
         <Field label="Adults" name="adults" type="number" min={1} defaultValue={2} />
         <Field label="Children" name="children" type="number" min={0} defaultValue={0} />
@@ -202,6 +218,91 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
         </Button>
       </div>
     </form>
+  );
+}
+
+/** Search-as-you-type destination picker — atolls/islands and
+ * accommodations (resorts, hotels, guesthouses) merged into one list via
+ * searchDestinationOptions(), since the product itself (e.g. Emperor) is
+ * tagged to several atolls and the customer needs to say exactly where
+ * they want to be picked up. Only rendered when requireDestination is
+ * true, so every single-location product's form is unaffected. */
+function DestinationField({
+  value,
+  onChange,
+}: {
+  value: DestinationOption | null;
+  onChange: (option: DestinationOption | null) => void;
+}) {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<DestinationOption[]>([]);
+  const [open, setOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  function search(next: string) {
+    setQuery(next);
+    if (next.trim().length < 2) {
+      setResults([]);
+      return;
+    }
+    startTransition(async () => {
+      const found = await searchDestinationOptions(next);
+      setResults(found);
+    });
+  }
+
+  return (
+    <label className="block text-sm">
+      <span className="mb-1 block font-medium text-neutral-700">
+        Destination
+        <span aria-hidden="true"> *</span>
+      </span>
+      {value ? (
+        <div className="flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm">
+          <span className="flex-1">
+            {value.title} <span className="text-neutral-400">({value.subtitle})</span>
+          </span>
+          <button type="button" onClick={() => onChange(null)} className="text-xs font-medium text-neutral-500 hover:text-red-600">
+            Clear
+          </button>
+        </div>
+      ) : (
+        <div className="relative">
+          <input
+            value={query}
+            onChange={(e) => search(e.target.value)}
+            onFocus={() => setOpen(true)}
+            onBlur={() => setTimeout(() => setOpen(false), 150)}
+            placeholder="Search atoll, island or resort…"
+            required
+            className="min-touch-target w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
+          />
+          {open && (isPending || results.length > 0) && (
+            <ul className="absolute z-10 mt-1 max-h-56 w-full overflow-y-auto rounded-xl border border-neutral-200 bg-white py-1 shadow-lg">
+              {isPending && <li className="px-3 py-2 text-sm text-neutral-400">Searching…</li>}
+              {!isPending &&
+                results.map((option) => (
+                  <li key={option.key}>
+                    <button
+                      type="button"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => {
+                        onChange(option);
+                        setQuery("");
+                        setResults([]);
+                        setOpen(false);
+                      }}
+                      className="block w-full px-3 py-2 text-left text-sm hover:bg-neutral-50"
+                    >
+                      {option.title} <span className="text-neutral-400">({option.subtitle})</span>
+                    </button>
+                  </li>
+                ))}
+            </ul>
+          )}
+        </div>
+      )}
+    </label>
   );
 }
 

@@ -27,6 +27,13 @@ export interface ActivitySummary {
   priceFrom: number | null;
   currency: string | null;
   primaryLocation: LocationSummary | null;
+  /** Every location this activity is tagged to (node_locations, primary
+   * first) — an activity like a charter that genuinely operates across
+   * several atolls carries one row per atoll here, unlike
+   * `primaryLocation`, which only ever resolves the single 'primary' row.
+   * Length 0 or 1 for the overwhelming majority of activities, which have
+   * just one tagged location. */
+  locations: LocationSummary[];
   heroImage: MediaAsset | null;
 }
 

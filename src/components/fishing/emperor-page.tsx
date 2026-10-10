@@ -22,21 +22,10 @@ import { whatsappUrl } from "@/lib/whatsapp";
 // for why no separate "GT Popping Charter" SKU exists.
 const CHARTER_SLUGS = ["private-full-day-fishing-charter", "private-half-day-fishing-charter"];
 
-// Real regions already covered on the /maldives/fishing/ hub's "Best
-// Places for Fishing" section — reused here rather than inventing a new
-// list, so this page never claims coverage the rest of the site doesn't
-// already stand behind.
-const REGIONS = [
-  { href: "/maldives/atolls/kaafu/", label: "Malé & Hulhumalé (North & South Malé Atoll)" },
-  { href: "/maldives/atolls/alif-alif/", label: "Ari Atoll (North)" },
-  { href: "/maldives/atolls/alif-dhaalu/", label: "Ari Atoll (South)" },
-  { href: "/maldives/atolls/baa/", label: "Baa Atoll" },
-  { href: "/maldives/atolls/vaavu/", label: "Vaavu Atoll" },
-  { href: "/maldives/atolls/laamu/", label: "Laamu Atoll" },
-  { href: "/maldives/atolls/gaafu-alifu/", label: "Gaafu Alifu Atoll — our home base" },
-  { href: "/maldives/atolls/gaafu-dhaalu/", label: "Gaafu Dhaalu Atoll" },
-  { href: "/maldives/atolls/seenu/", label: "Addu Atoll" },
-];
+function atollHref(location: { slug: string; locationType: string }): string {
+  if (location.locationType === "island") return `/maldives/islands/${location.slug}/`;
+  return `/maldives/atolls/${location.slug}/`;
+}
 
 const FAQS = [
   {
@@ -89,6 +78,12 @@ export async function EmperorPage() {
   const charters = (await Promise.all(CHARTER_SLUGS.map((slug) => getFishingActivityBySlug(slug)))).filter(
     (c): c is NonNullable<typeof c> => c !== null,
   );
+  // Both charter products carry the same tagged destinations (see
+  // supabase/migrations/20261001006600_emperor_multi_atoll_locations.sql),
+  // primary first — real node_locations data, not the hardcoded prose list
+  // this page used to render.
+  const regions = charters[0]?.locations ?? [];
+  const requireDestination = regions.length > 1;
 
   const waMessage =
     "Hi, I'd like to book the Emperor private fishing charter.\nMy location:\nDate:\nNumber of anglers:\nTarget species:\nHalf day or full day:";
@@ -187,10 +182,11 @@ export async function EmperorPage() {
             at the time.
           </p>
           <ul className="mt-4 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
-            {REGIONS.map((region) => (
-              <li key={region.href}>
-                <Link href={region.href} className="text-maldives-600 hover:underline">
-                  {region.label}
+            {regions.map((region, index) => (
+              <li key={region.id}>
+                <Link href={atollHref(region)} className="text-maldives-600 hover:underline">
+                  {region.title}
+                  {index === 0 ? " — our home base" : ""}
                 </Link>
               </li>
             ))}
@@ -275,6 +271,7 @@ export async function EmperorPage() {
                         toggleLabel={bookingCta("fishing").toggleLabel}
                         submitLabel={bookingCta("fishing").submitLabel}
                         showNumberOfDays
+                        requireDestination={requireDestination}
                       />
                     </div>
                   )}

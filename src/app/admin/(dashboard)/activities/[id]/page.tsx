@@ -5,15 +5,15 @@ import { ActivityForm } from "@/components/admin/activity-form";
 import { requireStaff } from "@/lib/admin/auth";
 import { getActivityByIdAdmin } from "@/lib/admin/activities-repository";
 import { getNodeMediaAdmin } from "@/lib/admin/media-repository";
-import { getCategoryIdsForNode, getCategoryOptionsByGroup, getPrimaryLocationForNode } from "@/lib/admin/node-relations-repository";
+import { getAllLocationsForNode, getCategoryIdsForNode, getCategoryOptionsByGroup } from "@/lib/admin/node-relations-repository";
 import { getProviderOptions } from "@/lib/admin/providers-repository";
 
 export default async function EditActivityPage({ params }: { params: Promise<{ id: string }> }) {
   await requireStaff();
   const { id } = await params;
-  const [activity, primaryLocation, media, providerOptions, activityTypeOptions, categoryIds] = await Promise.all([
+  const [activity, locations, media, providerOptions, activityTypeOptions, categoryIds] = await Promise.all([
     getActivityByIdAdmin(id),
-    getPrimaryLocationForNode(id),
+    getAllLocationsForNode(id),
     getNodeMediaAdmin(id),
     getProviderOptions(),
     getCategoryOptionsByGroup("activity-type"),
@@ -45,7 +45,7 @@ export default async function EditActivityPage({ params }: { params: Promise<{ i
               metaDescription: activity.metaDescription,
             },
             fields: activity.fields,
-            primaryLocation,
+            locations,
             media,
             activityTypeIds,
           }}

@@ -41,7 +41,11 @@ export function ActivityCard({ activity }: { activity: ActivitySummary }) {
       </Link>
       <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-sm text-neutral-600">
         <span>{CATEGORY_LABEL[activity.activityCategory] ?? activity.activityCategory}</span>
-        {activity.primaryLocation && <span>{activity.primaryLocation.title}</span>}
+        {activity.locations.length > 1 ? (
+          <span>{activity.locations.length} locations</span>
+        ) : (
+          activity.primaryLocation && <span>{activity.primaryLocation.title}</span>
+        )}
         {duration && <span>{duration}</span>}
         {activity.difficulty && <span className="capitalize">{activity.difficulty.replace("_", " ")}</span>}
         {activity.priceFrom && (

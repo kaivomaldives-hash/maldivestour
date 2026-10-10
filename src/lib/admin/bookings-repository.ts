@@ -60,6 +60,13 @@ export interface AdminBookingDetail extends AdminBookingListItem {
   nationality: string;
   originTitle: string | null;
   destinationTitle: string | null;
+  /** The customer's own picked destination, exactly as shown to them
+   * (see DestinationOption.label in src/lib/bookings/actions.ts) — only
+   * ever set for a node inquiry whose product has more than one tagged
+   * destination. Preferred over destinationTitle for display when present,
+   * since it can be resort-specific where destinationTitle only ever
+   * resolves to that resort's atoll/island. */
+  destinationLabel: string | null;
   travelTime: string | null;
   returnDate: string | null;
   returnTime: string | null;
@@ -109,6 +116,7 @@ interface BookingRow {
   nationality: string;
   origin_location_id: string | null;
   destination_location_id: string | null;
+  destination_label: string | null;
   travel_date: string | null;
   travel_time: string | null;
   return_date: string | null;
@@ -250,6 +258,7 @@ export async function getBookingByIdAdmin(id: string): Promise<AdminBookingDetai
     nationality: row.nationality,
     originTitle: row.origin_location_id ? (locationTitles.get(row.origin_location_id) ?? null) : null,
     destinationTitle: row.destination_location_id ? (locationTitles.get(row.destination_location_id) ?? null) : null,
+    destinationLabel: row.destination_label,
     travelTime: row.travel_time,
     returnDate: row.return_date,
     returnTime: row.return_time,

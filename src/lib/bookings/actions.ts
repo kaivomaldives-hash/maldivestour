@@ -1,7 +1,9 @@
 "use server";
 
+import { searchAccommodations } from "@/lib/accommodations/repository";
 import type { BookingSource } from "@/lib/bookings/copy";
 import { sendBookingNotifications } from "@/lib/bookings/notifications";
+import { searchLocations } from "@/lib/locations/repository";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -150,6 +152,62 @@ export async function createTransferBookingInquiry(
   return { ok: true, bookingReference: data.booking_reference };
 }
 
+export interface DestinationOption {
+  /** Unique React key — "location:<id>" or "accommodation:<id>", since
+   * the two id spaces aren't disjoint. */
+  key: string;
+  title: string;
+  subtitle: string;
+  /** What gets stored in bookings.destination_location_id — for a
+   * location result, its own id; for an accommodation (resort/hotel/
+   * guesthouse) result, that property's own primary location, since
+   * destination_location_id is a FK to `locations`, which accommodation
+   * nodes are never a row of (see src/lib/accommodations/types.ts —
+   * accommodations point AT a location, they aren't one). Null only if an
+   * accommodation result has no primary location on record. */
+  destinationLocationId: string | null;
+  /** What gets stored in bookings.destination_label — the exact thing the
+   * customer picked, preserving resort-level specificity that
+   * destinationLocationId alone would lose (it would only ever resolve
+   * back to the resort's island/atoll, not the resort itself). */
+  label: string;
+}
+
+/** Unified destination search for the booking form's customer-facing
+ * picker — locations (atoll/island) and accommodations (resorts, hotels,
+ * guesthouses) are two structurally separate tables (see
+ * src/lib/activities/repository.ts's attachAllLocations comment on the
+ * same split), so this fans out to both existing search functions and
+ * merges the results rather than inventing a third, unified table. Public
+ * (no requireStaff) — called directly from the public booking form. */
+export async function searchDestinationOptions(query: string): Promise<DestinationOption[]> {
+  const trimmed = query.trim();
+  if (trimmed.length < 2) return [];
+
+  const [locations, accommodations] = await Promise.all([
+    searchLocations(trimmed, { limit: 8 }),
+    searchAccommodations(trimmed, { limit: 8 }),
+  ]);
+
+  const locationOptions: DestinationOption[] = locations.map((loc) => ({
+    key: `location:${loc.id}`,
+    title: loc.title,
+    subtitle: loc.locationType.replace(/_/g, " "),
+    destinationLocationId: loc.id,
+    label: loc.title,
+  }));
+
+  const accommodationOptions: DestinationOption[] = accommodations.map((a) => ({
+    key: `accommodation:${a.id}`,
+    title: a.title,
+    subtitle: a.primaryLocation ? `${a.accommodationType}, ${a.primaryLocation.title}` : a.accommodationType,
+    destinationLocationId: a.primaryLocation?.id ?? null,
+    label: a.primaryLocation ? `${a.title}, ${a.primaryLocation.title}` : a.title,
+  }));
+
+  return [...locationOptions, ...accommodationOptions].slice(0, 15);
+}
+
 /**
  * Task 20: the same RPC, for a node-backed inquiry with no fixed
  * origin/destination/trip-type (private speedboat charter, car transfer)
@@ -171,6 +229,12 @@ export interface NodeInquiryInput {
   preferredTime: string | null; // HH:MM
   adults: number;
   children: number;
+  /** Set only when the product itself is tagged to more than one
+   * destination (e.g. Emperor's charters) — the customer's own pick from
+   * searchDestinationOptions(), required in that case by the form, never
+   * required for the ~95% of products with one obvious location. */
+  destinationLocationId?: string | null;
+  destinationLabel?: string | null;
   /** For products priced per day (fishing charters) where a guest wants
    * more than one day. No dedicated bookings column exists for this yet,
    * so it's folded into specialRequests/notes and — when more than a
@@ -214,7 +278,7 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
     p_nationality: nationality,
     p_terms_accepted: input.termsAccepted,
     p_origin_location_id: null,
-    p_destination_location_id: null,
+    p_destination_location_id: input.destinationLocationId ?? null,
     p_travel_date: input.preferredDate || null,
     p_travel_time: input.preferredTime || null,
     p_return_date: null,
@@ -228,6 +292,7 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
     p_estimated_price: null,
     p_currency: "USD",
     p_source: input.source,
+    p_destination_label: input.destinationLabel?.trim() || null,
   };
   const { data, error } = await supabase
     .rpc("create_booking_inquiry" as unknown as never, rpcArgs as unknown as undefined)
@@ -252,6 +317,7 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
     specialRequests: input.specialRequests?.trim() || null,
     estimatedPrice: null,
     currency: "USD",
+    destinationLabel: input.destinationLabel?.trim() || null,
   });
 
   return { ok: true, bookingReference: data.booking_reference };

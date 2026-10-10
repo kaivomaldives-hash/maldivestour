@@ -59,7 +59,7 @@ export default async function AdminBookingDetailPage({ params }: { params: Promi
               <Field label="Source" value={booking.source} />
               <Field label="Product type" value={booking.productType} />
               <Field label="Origin" value={booking.originTitle} />
-              <Field label="Destination" value={booking.destinationTitle} />
+              <Field label="Destination" value={booking.destinationLabel ?? booking.destinationTitle} />
               <Field label="Travel date" value={booking.travelDate} />
               <Field label="Travel time" value={booking.travelTime} />
               <Field label="Return date" value={booking.returnDate} />

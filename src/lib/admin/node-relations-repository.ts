@@ -44,6 +44,40 @@ export async function getPrimaryLocationForNode(nodeId: string): Promise<Locatio
   return { id: rel.location_id, title: node.title, locationType: loc.location_type };
 }
 
+/** Every location this node is tagged to (any relation), primary first —
+ * the multi-select admin form's prefill, counterpart to
+ * getPrimaryLocationForNode above. Same two-separate-queries shape, just
+ * batched over however many node_locations rows this node has instead of
+ * assuming at most one. */
+export async function getAllLocationsForNode(nodeId: string): Promise<LocationOption[]> {
+  await requireStaff();
+  const supabase = await createClient();
+
+  const { data: rels } = await supabase
+    .from("node_locations")
+    .select("location_id, relation")
+    .eq("node_id", nodeId)
+    .returns<Array<{ location_id: string; relation: string }>>();
+  if (!rels || rels.length === 0) return [];
+
+  const locationIds = rels.map((r) => r.location_id);
+  const [{ data: locs }, { data: nodeRows }] = await Promise.all([
+    supabase.from("locations").select("id, location_type").in("id", locationIds).returns<Array<{ id: string; location_type: string }>>(),
+    supabase.from("nodes").select("id, title").in("id", locationIds).returns<Array<{ id: string; title: string }>>(),
+  ]);
+  const typeById = new Map((locs ?? []).map((l) => [l.id, l.location_type]));
+  const titleById = new Map((nodeRows ?? []).map((n) => [n.id, n.title]));
+
+  const sorted = [...rels].sort((a, b) => (a.relation === "primary" ? -1 : b.relation === "primary" ? 1 : 0));
+  return sorted
+    .map((r) => {
+      const locationType = typeById.get(r.location_id);
+      const title = titleById.get(r.location_id);
+      return locationType && title ? { id: r.location_id, title, locationType } : null;
+    })
+    .filter((o): o is LocationOption => o !== null);
+}
+
 /** Batch lookup for specific location ids — used by the transfer route
  * form, which needs two independent locations (origin/destination) rather
  * than the single "primary location" every other content type has. Same

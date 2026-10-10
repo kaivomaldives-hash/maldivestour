@@ -37,6 +37,35 @@ export async function setPrimaryLocation(nodeId: string, locationId: string | nu
   return { ok: true };
 }
 
+/** Replaces the full set of locations a node is tagged to — unlike
+ * setPrimaryLocation (at most one row), this is the multi-destination
+ * picker's save: the first id in `locationIds` becomes the 'primary' row
+ * (every other reader in this codebase — SEO, breadcrumbs, the card's
+ * single-location fallback — still resolves exactly one primary location,
+ * unchanged), every remaining id becomes a 'secondary' row. Delete-then-
+ * insert, same pattern as setPrimaryLocation/setNodeCategories. Passing an
+ * empty array clears every location this node had. */
+export async function setNodeLocations(nodeId: string, locationIds: string[], revalidateAt: string): Promise<AdminActionResult> {
+  await requireStaff();
+  const supabase = await createClient();
+
+  const { error: clearError } = await supabase.from("node_locations").delete().eq("node_id", nodeId);
+  if (clearError) return { ok: false, error: clearError.message };
+
+  if (locationIds.length > 0) {
+    const rows = locationIds.map((locationId, index) => ({
+      node_id: nodeId,
+      location_id: locationId,
+      relation: index === 0 ? "primary" : "secondary",
+    }));
+    const { error: insertError } = await supabase.from("node_locations").insert(rows as unknown as never[]);
+    if (insertError) return { ok: false, error: insertError.message };
+  }
+
+  revalidatePath(revalidateAt);
+  return { ok: true };
+}
+
 /** Replaces the full set of category tags for a node within one taxonomy
  * group at a time (delete-then-insert, same pattern as setPrimaryLocation
  * — a node can belong to categories from several different groups

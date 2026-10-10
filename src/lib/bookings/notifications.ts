@@ -41,6 +41,11 @@ export interface BookingNotificationInput {
   specialRequests: string | null;
   estimatedPrice: number | null;
   currency: string;
+  /** Set only for a node inquiry whose product is tagged to more than one
+   * destination (e.g. Emperor's charters) — the customer's own picked
+   * destination, exactly as shown to them (see DestinationOption.label in
+   * src/lib/bookings/actions.ts). */
+  destinationLabel?: string | null;
 }
 
 const SITE_NAME = "Maldives Tour Guide (MTG)";
@@ -104,6 +109,7 @@ export async function sendBookingNotifications(input: BookingNotificationInput):
       ${dateLine}<br/>
       <strong>Guests:</strong> ${guestLine}</p>
       ${priceLine ? `<p>${priceLine}</p>` : ""}
+      ${input.destinationLabel ? `<p><strong>Destination:</strong> ${escapeHtml(input.destinationLabel)}</p>` : ""}
       <p><strong>Customer:</strong> ${escapeHtml(input.customerName)} — ${escapeHtml(input.customerEmail)}${
         input.customerPhone ? ` — ${escapeHtml(input.customerPhone)}` : ""
       }<br/>
@@ -119,6 +125,7 @@ export async function sendBookingNotifications(input: BookingNotificationInput):
       dateLine,
       `Guests: ${guestLine}`,
       priceLine ?? "",
+      input.destinationLabel ? `Destination: ${escapeHtml(input.destinationLabel)}` : "",
       `Customer: ${escapeHtml(input.customerName)} (${escapeHtml(input.customerEmail)}${
         input.customerPhone ? `, ${escapeHtml(input.customerPhone)}` : ""
       })`,

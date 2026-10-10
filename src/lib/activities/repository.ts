@@ -101,7 +101,12 @@ function bareActivityOf(row: NodeActivityRow): BareActivity | null {
   };
 }
 
-function toSummary(bare: BareActivity, primaryLocation: LocationSummary | null, heroImage: MediaAsset | null): ActivitySummary {
+function toSummary(
+  bare: BareActivity,
+  primaryLocation: LocationSummary | null,
+  locations: LocationSummary[],
+  heroImage: MediaAsset | null,
+): ActivitySummary {
   return {
     id: bare.id,
     slug: bare.slug,
@@ -113,6 +118,7 @@ function toSummary(bare: BareActivity, primaryLocation: LocationSummary | null, 
     priceFrom: bare.priceFrom,
     currency: bare.currency,
     primaryLocation,
+    locations,
     heroImage,
   };
 }
@@ -137,6 +143,39 @@ async function attachPrimaryLocations(nodeIds: string[]): Promise<Map<string, Lo
   for (const row of data) {
     const loc = locationsById.get(row.location_id);
     if (loc) result.set(row.node_id, loc);
+  }
+  return result;
+}
+
+/** Every location this node is tagged to (any relation), primary first —
+ * the multi-destination counterpart to attachPrimaryLocations above, for
+ * an activity (e.g. a charter) that genuinely operates across more than
+ * one atoll/island. One extra batched query, same N+1-avoidance shape. */
+async function attachAllLocations(nodeIds: string[]): Promise<Map<string, LocationSummary[]>> {
+  const result = new Map<string, LocationSummary[]>();
+  if (nodeIds.length === 0) return result;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("node_locations")
+    .select("node_id, location_id, relation")
+    .in("node_id", nodeIds)
+    .returns<Array<{ node_id: string; location_id: string; relation: string }>>();
+
+  if (error || !data) return result;
+
+  const locationsById = await getLocationSummariesByIds(data.map((row) => row.location_id));
+  const rowsByNode = new Map<string, Array<{ location_id: string; relation: string }>>();
+  for (const row of data) {
+    const list = rowsByNode.get(row.node_id) ?? [];
+    list.push(row);
+    rowsByNode.set(row.node_id, list);
+  }
+
+  for (const [nodeId, rows] of rowsByNode) {
+    const sorted = [...rows].sort((a, b) => (a.relation === "primary" ? -1 : b.relation === "primary" ? 1 : 0));
+    const locations = sorted.map((r) => locationsById.get(r.location_id)).filter((l): l is LocationSummary => Boolean(l));
+    result.set(nodeId, locations);
   }
   return result;
 }
@@ -208,12 +247,15 @@ async function getActivitiesUncached(options: GetActivitiesOptions = {}): Promis
   if (error || !data) return { items: [], total: 0, page, pageSize };
 
   const bares = data.map(bareActivityOf).filter((b): b is BareActivity => b !== null);
-  const [locationsByNodeId, heroByNodeId] = await Promise.all([
+  const [locationsByNodeId, allLocationsByNodeId, heroByNodeId] = await Promise.all([
     attachPrimaryLocations(bares.map((b) => b.id)),
+    attachAllLocations(bares.map((b) => b.id)),
     getHeroMediaByNodeIds(bares.map((b) => b.id)),
   ]);
 
-  const items = bares.map((b) => toSummary(b, locationsByNodeId.get(b.id) ?? null, heroByNodeId.get(b.id) ?? null));
+  const items = bares.map((b) =>
+    toSummary(b, locationsByNodeId.get(b.id) ?? null, allLocationsByNodeId.get(b.id) ?? [], heroByNodeId.get(b.id) ?? null),
+  );
   return { items, total: count ?? items.length, page, pageSize };
 }
 
@@ -299,8 +341,9 @@ async function getActivityBySlugUncached(slug: string): Promise<ActivityDetail |
   const bare = bareActivityOf(data);
   if (!bare) return null;
 
-  const [primaryLocation, media, providersById, bookableRow] = await Promise.all([
+  const [primaryLocation, locations, media, providersById, bookableRow] = await Promise.all([
     attachPrimaryLocations([bare.id]).then((m) => m.get(bare.id) ?? null),
+    attachAllLocations([bare.id]).then((m) => m.get(bare.id) ?? []),
     getMediaForNode(bare.id),
     bare.providerId ? getProviderSummariesByIds([bare.providerId]) : Promise.resolve(new Map<string, ProviderSummary>()),
     supabase.from("bookable_products").select("id").eq("id", bare.id).maybeSingle(),
@@ -311,7 +354,7 @@ async function getActivityBySlugUncached(slug: string): Promise<ActivityDetail |
   const atoll = primaryLocation?.parentId ? await getLocationSummaryById(primaryLocation.parentId) : null;
 
   return {
-    ...toSummary(bare, primaryLocation, heroImage),
+    ...toSummary(bare, primaryLocation, locations, heroImage),
     minAge: bare.minAge,
     maxParticipants: bare.maxParticipants,
     metaTitle: bare.metaTitle,
@@ -343,12 +386,16 @@ async function getActivitySummariesByIdsUncached(ids: string[]): Promise<Map<str
   if (error || !data) return map;
 
   const bares = data.map(bareActivityOf).filter((b): b is BareActivity => b !== null);
-  const [locationsByNodeId, heroByNodeId] = await Promise.all([
+  const [locationsByNodeId, allLocationsByNodeId, heroByNodeId] = await Promise.all([
     attachPrimaryLocations(bares.map((b) => b.id)),
+    attachAllLocations(bares.map((b) => b.id)),
     getHeroMediaByNodeIds(bares.map((b) => b.id)),
   ]);
   for (const bare of bares) {
-    map.set(bare.id, toSummary(bare, locationsByNodeId.get(bare.id) ?? null, heroByNodeId.get(bare.id) ?? null));
+    map.set(
+      bare.id,
+      toSummary(bare, locationsByNodeId.get(bare.id) ?? null, allLocationsByNodeId.get(bare.id) ?? [], heroByNodeId.get(bare.id) ?? null),
+    );
   }
   return map;
 }
@@ -377,9 +424,12 @@ export async function searchActivities(query: string, options: SearchActivitiesO
   if (error || !data) return [];
 
   const bares = data.map(bareActivityOf).filter((b): b is BareActivity => b !== null);
-  const [locationsByNodeId, heroByNodeId] = await Promise.all([
+  const [locationsByNodeId, allLocationsByNodeId, heroByNodeId] = await Promise.all([
     attachPrimaryLocations(bares.map((b) => b.id)),
+    attachAllLocations(bares.map((b) => b.id)),
     getHeroMediaByNodeIds(bares.map((b) => b.id)),
   ]);
-  return bares.map((b) => toSummary(b, locationsByNodeId.get(b.id) ?? null, heroByNodeId.get(b.id) ?? null));
+  return bares.map((b) =>
+    toSummary(b, locationsByNodeId.get(b.id) ?? null, allLocationsByNodeId.get(b.id) ?? [], heroByNodeId.get(b.id) ?? null),
+  );
 }

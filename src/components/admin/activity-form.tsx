@@ -5,14 +5,14 @@ import { useState, useTransition } from "react";
 
 import { CategoryPicker } from "@/components/admin/category-picker";
 import { DeleteNodeButton } from "@/components/admin/delete-node-button";
-import { LocationPicker } from "@/components/admin/location-picker";
+import { MultiLocationPicker } from "@/components/admin/multi-location-picker";
 import { NodeMediaManager } from "@/components/admin/node-media-manager";
 import { Button } from "@/components/ui/button";
 import type { ActivityFieldsAdmin } from "@/lib/admin/activities-repository";
 import { createActivity, updateActivity } from "@/lib/admin/activities-actions";
 import type { NodeCoreInput, NodeStatus } from "@/lib/admin/node-actions";
 import { NODE_STATUSES } from "@/lib/admin/node-status";
-import { setNodeCategories, setPrimaryLocation } from "@/lib/admin/node-relations-actions";
+import { setNodeCategories, setNodeLocations } from "@/lib/admin/node-relations-actions";
 import type { CategoryOption, LocationOption } from "@/lib/admin/node-relations-repository";
 import type { ActivityCategory, ActivityDifficulty } from "@/lib/activities/types";
 import type { NodeMediaItem } from "@/lib/media/types";
@@ -25,7 +25,7 @@ export interface ActivityFormInitial {
   id: string;
   core: NodeCoreInput;
   fields: ActivityFieldsAdmin;
-  primaryLocation: LocationOption | null;
+  locations: LocationOption[];
   media: NodeMediaItem[];
   activityTypeIds: string[];
 }
@@ -63,7 +63,7 @@ export function ActivityForm({
   const router = useRouter();
   const [core, setCore] = useState<NodeCoreInput>(initial?.core ?? EMPTY_CORE);
   const [fields, setFields] = useState<ActivityFieldsAdmin>(initial?.fields ?? EMPTY_FIELDS);
-  const [location, setLocation] = useState<LocationOption | null>(initial?.primaryLocation ?? null);
+  const [locations, setLocations] = useState<LocationOption[]>(initial?.locations ?? []);
   const [activityTypeIds, setActivityTypeIds] = useState<string[]>(initial?.activityTypeIds ?? []);
   const [slugTouched, setSlugTouched] = useState(Boolean(initial));
   const [error, setError] = useState<string | null>(null);
@@ -87,7 +87,7 @@ export function ActivityForm({
       const id = nodeId ?? (result as { id?: string }).id;
       if (id) {
         const revalidateAt = `/admin/activities/${id}`;
-        await setPrimaryLocation(id, location?.id ?? null, revalidateAt);
+        await setNodeLocations(id, locations.map((l) => l.id), revalidateAt);
         await setNodeCategories(id, activityTypeIds, revalidateAt);
       }
       if (id && !nodeId) {
@@ -246,7 +246,7 @@ export function ActivityForm({
           </label>
         </div>
 
-        <LocationPicker value={location} onChange={setLocation} />
+        <MultiLocationPicker value={locations} onChange={setLocations} />
         <CategoryPicker
           label="Type (drives the diving/fishing sub-type filters)"
           options={activityTypeOptions}

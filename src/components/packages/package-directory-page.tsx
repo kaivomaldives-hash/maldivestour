@@ -19,7 +19,7 @@ import {
   getPackageDurationBandCounts,
   sortPackageViews,
 } from "@/lib/packages/view-repository";
-import type { PackageDurationBandSlug, PackageSortOption } from "@/lib/packages/view-types";
+import type { PackageCategorySlug, PackageDurationBandSlug, PackageSortOption } from "@/lib/packages/view-types";
 import { PACKAGE_CATEGORIES, PACKAGE_DURATION_BANDS } from "@/lib/packages/view-types";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 
@@ -110,7 +110,13 @@ function faqJsonLd() {
  * category/atoll/duration counts and the featured-package shuffle, even
  * when no filter is applied. Wrapping the filter-independent data in
  * unstable_cache turns that into one shared cache entry, refreshed at most
- * once an hour. */
+ * once an hour.
+ *
+ * categoryCounts/durationCounts are serialized as entry arrays, not Maps:
+ * unlike the cachedRead() helper (src/lib/cache/cached-read.ts), raw
+ * unstable_cache has no special handling for Map instances, so a Map
+ * returned here comes back from a cached read as a plain object with no
+ * `.get()` — reconstructed into a real Map by the caller below. */
 const getPackageDirectorySupportingContent = unstable_cache(
   async () => {
     const [allViews, categoryCounts, atolls, durationCounts, featured] = await Promise.all([
@@ -120,7 +126,13 @@ const getPackageDirectorySupportingContent = unstable_cache(
       getPackageDurationBandCounts(),
       getFeaturedPackageViews(6),
     ]);
-    return { allViews, categoryCounts, atolls, durationCounts, featured };
+    return {
+      allViews,
+      categoryCounts: Array.from(categoryCounts.entries()),
+      atolls,
+      durationCounts: Array.from(durationCounts.entries()),
+      featured,
+    };
   },
   ["packages-directory-supporting-content"],
   { revalidate: 3600 },
@@ -134,7 +146,10 @@ export async function PackageDirectoryPage({ searchParams }: { searchParams: Pro
   const activeCategory = sp.category && isPackageCategorySlug(sp.category) ? sp.category : undefined;
   const activeDuration = PACKAGE_DURATION_BANDS.some((b) => b.slug === sp.duration) ? (sp.duration as PackageDurationBandSlug) : undefined;
 
-  const { allViews, categoryCounts, atolls, durationCounts, featured } = await getPackageDirectorySupportingContent();
+  const supportingContent = await getPackageDirectorySupportingContent();
+  const { allViews, atolls, featured } = supportingContent;
+  const categoryCounts = new Map<PackageCategorySlug, number>(supportingContent.categoryCounts);
+  const durationCounts = new Map<PackageDurationBandSlug, number>(supportingContent.durationCounts);
 
   const filtered = filterPackageViews(allViews, {
     q: query || undefined,

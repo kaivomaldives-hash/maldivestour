@@ -41,16 +41,33 @@ export function generateMetadata(): Metadata {
   };
 }
 
+// Slugs to float to the front of the homepage's mixed "Places to Stay"
+// section — e.g. a newly onboarded partner property that should be
+// visible immediately, pending a general admin-managed "featured" flag.
+// Mirrors PINNED_SLUGS in accommodation-directory-page.tsx.
+const HOMEPAGE_PINNED_STAY_SLUGS = ["yuvi-blue-maldives-himmafushi"];
+
 export default async function Home() {
-  const [atolls, accommodations, activities, attractions, transferRoutes, packages, articles] = await Promise.all([
+  const [atolls, resorts, guesthouses, activities, attractions, transferRoutes, packages, articles] = await Promise.all([
     getAtolls(),
-    getAccommodations({ type: "resort", pageSize: 6 }),
+    getAccommodations({ type: "resort", pageSize: 4 }),
+    getAccommodations({ type: "guesthouse", pageSize: 2 }),
     getActivities({ pageSize: 6 }),
     getAttractions({ pageSize: 6 }),
     getTransferRoutes({ pageSize: 4 }),
     getFeaturedPackageViews(6),
     getRecentArticles(3),
   ]);
+
+  // Mixed resorts + guesthouses, with any pinned slug (above) floated to
+  // the front — "Resorts, hotels and guesthouses" below should actually
+  // show more than just resorts.
+  const stays = [...resorts.items, ...guesthouses.items].sort((a, b) => {
+    const aPinned = HOMEPAGE_PINNED_STAY_SLUGS.includes(a.slug);
+    const bPinned = HOMEPAGE_PINNED_STAY_SLUGS.includes(b.slug);
+    if (aPinned === bPinned) return 0;
+    return aPinned ? -1 : 1;
+  });
 
   const islandCount = atolls.reduce((sum, atoll) => sum + atoll.islandCount, 0);
   const featuredAtolls = atolls.slice(0, 6);
@@ -80,6 +97,9 @@ export default async function Home() {
             <Button href="/maldives/packages/" variant="secondary" size="md" className="border-white/30 bg-white/10 text-white hover:bg-white/20">
               See travel packages
             </Button>
+            <Button href="/maldives/customize/" variant="secondary" size="md" className="border-white/30 bg-white/10 text-white hover:bg-white/20">
+              Customize your holiday
+            </Button>
           </div>
           <dl className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-lagoon-100">
             <div>
@@ -97,7 +117,7 @@ export default async function Home() {
             <div>
               <dt className="sr-only">Places to stay</dt>
               <dd>
-                <span className="text-lg font-semibold text-white">{accommodations.total}+</span> resorts listed
+                <span className="text-lg font-semibold text-white">{resorts.total}+</span> resorts listed
               </dd>
             </div>
           </dl>
@@ -140,17 +160,17 @@ export default async function Home() {
       )}
 
       {/* Places to Stay */}
-      {accommodations.items.length > 0 && (
+      {stays.length > 0 && (
         <section className="bg-sand-50 py-14 sm:py-20">
           <Container>
             <SectionHeader
               eyebrow="Places to stay"
               title="Resorts, hotels and guesthouses"
               description="Real, individually verified accommodation across the Maldives."
-              action={{ label: "Browse all resorts", href: "/maldives/resorts/" }}
+              action={{ label: "Browse all stays", href: "/maldives/stays/" }}
             />
             <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {accommodations.items.map((accommodation) => (
+              {stays.map((accommodation) => (
                 <AccommodationCard key={accommodation.id} accommodation={accommodation} />
               ))}
             </ul>

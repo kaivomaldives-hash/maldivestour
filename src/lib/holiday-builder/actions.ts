@@ -1,12 +1,13 @@
 "use server";
 
-import { getActivities } from "@/lib/activities/repository";
+import { getActivities, getNearbyActivities } from "@/lib/activities/repository";
+import type { ActivitySummary } from "@/lib/activities/types";
 import { calculateHolidayPrice, segmentsNightsMatch } from "@/lib/holiday-builder/pricing-calculator";
 import { sendHolidayRequestNotification } from "@/lib/holiday-builder/notifications";
 import { getActivePricingConfig } from "@/lib/holiday-builder/pricing-repository";
 import { ACTIVITY_CATEGORIES_FOR_BUILDER } from "@/lib/holiday-builder/types";
 import type { HolidayActivityOption, HolidaySelection, PriceBreakdown } from "@/lib/holiday-builder/types";
-import { searchLocations } from "@/lib/locations/repository";
+import { getLocationSummaryById, searchLocations } from "@/lib/locations/repository";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -32,17 +33,31 @@ export async function searchHolidayDestinations(query: string) {
 
 /** Real bookable activities (diving/fishing/surfing/watersports/excursion
  * only — see ACTIVITY_CATEGORIES_FOR_BUILDER), optionally narrowed to a
- * destination. Reuses the existing activities repository directly; no
- * duplicate activity records are created for this feature. */
+ * destination. With no destination, every activity is in play. With one,
+ * this reuses the same island-then-atoll tiered resolver as
+ * getNearbyActivities() (accommodation/attraction pages) rather than a
+ * strict single-location match — a destination like Himmafushi should
+ * surface its own activities plus the rest of Kaafu Atoll's, matching
+ * how "nearby" is defined everywhere else on the site. Reuses the
+ * existing activities repository directly; no duplicate activity
+ * records are created for this feature. */
 export async function getHolidayBuilderActivities(destinationLocationId: string | null): Promise<HolidayActivityOption[]> {
-  const result = await getActivities({
-    locationId: destinationLocationId ?? undefined,
-    pageSize: 100,
-  });
-
   const allowed = new Set<string>(ACTIVITY_CATEGORIES_FOR_BUILDER);
 
-  return result.items
+  let items: ActivitySummary[];
+  if (destinationLocationId) {
+    const destination = await getLocationSummaryById(destinationLocationId);
+    const isAtoll = destination?.locationType === "atoll";
+    const nearby = await getNearbyActivities(
+      { islandId: isAtoll ? null : destinationLocationId, atollId: isAtoll ? destinationLocationId : destination?.parentId ?? null },
+      50,
+    );
+    items = [...nearby.islandActivities, ...nearby.atollActivities];
+  } else {
+    items = (await getActivities({ pageSize: 100 })).items;
+  }
+
+  return items
     .filter((a) => allowed.has(a.activityCategory))
     .map((a) => ({
       nodeId: a.id,

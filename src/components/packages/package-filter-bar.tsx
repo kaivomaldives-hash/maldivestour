@@ -82,7 +82,7 @@ export function PackageFilterBar({
             Search
           </button>
         </form>
-        <Button href="/maldives/customize/" variant="secondary" size="md">
+        <Button href="/maldives/customize/" variant="primary" size="md">
           Customize Your Holiday
         </Button>
       </div>

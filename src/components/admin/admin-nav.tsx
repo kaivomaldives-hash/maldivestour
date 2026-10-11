@@ -13,6 +13,8 @@ const NAV_ITEMS = [
   { label: "Activities", href: "/admin/activities" },
   { label: "Transfers", href: "/admin/transfers" },
   { label: "Packages", href: "/admin/packages" },
+  { label: "Holiday Requests", href: "/admin/holiday-requests" },
+  { label: "Holiday Pricing", href: "/admin/holiday-pricing" },
   { label: "Articles", href: "/admin/articles" },
   { label: "Providers", href: "/admin/providers" },
   { label: "Vendors", href: "/admin/vendors" },

@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { PackageSortSelect } from "@/components/packages/package-sort-select";
+import { Button } from "@/components/ui/button";
 import type { LocationSummary } from "@/lib/locations/types";
 import type { PackageCategorySlug, PackageDurationBandSlug, PackageSortOption } from "@/lib/packages/view-types";
 import { PACKAGE_CATEGORIES, PACKAGE_DURATION_BANDS } from "@/lib/packages/view-types";
@@ -64,22 +65,27 @@ export function PackageFilterBar({
 
   return (
     <div>
-      <form method="get" action={basePath} className="flex flex-wrap gap-2">
-        <label htmlFor="package-search" className="sr-only">
-          Search packages
-        </label>
-        <input
-          id="package-search"
-          type="search"
-          name="q"
-          defaultValue={query}
-          placeholder="Search by name, island, atoll, or activity…"
-          className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
-        />
-        <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
-          Search
-        </button>
-      </form>
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start">
+        <form method="get" action={basePath} className="flex flex-wrap gap-2">
+          <label htmlFor="package-search" className="sr-only">
+            Search packages
+          </label>
+          <input
+            id="package-search"
+            type="search"
+            name="q"
+            defaultValue={query}
+            placeholder="Search by name, island, atoll, or activity…"
+            className="w-full max-w-sm rounded-full border border-neutral-300 px-4 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
+          />
+          <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
+            Search
+          </button>
+        </form>
+        <Button href="/maldives/customize/" variant="secondary" size="md">
+          Customize Your Holiday
+        </Button>
+      </div>
 
       <details className="mt-4 group" open>
         <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 rounded-full border border-neutral-300 px-4 py-2 text-sm font-medium text-neutral-700 [&::-webkit-details-marker]:hidden">

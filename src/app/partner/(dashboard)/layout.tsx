@@ -45,7 +45,7 @@ export default async function PartnerDashboardLayout({ children }: { children: R
   return (
     <div className="min-h-screen bg-sand-50">
       <header className="border-b border-neutral-200 bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4 sm:px-6">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <div>
             <Link href="/partner" className="font-semibold text-ocean-900">
               {account.businessName}
@@ -54,6 +54,17 @@ export default async function PartnerDashboardLayout({ children }: { children: R
               {STATUS_LABEL[account.onboardingStatus]}
             </span>
           </div>
+          <nav aria-label="Partner" className="flex items-center gap-4 text-sm font-medium">
+            <Link href="/partner" className="text-neutral-600 hover:text-ocean-900">
+              Profile
+            </Link>
+            <Link href="/partner/listings" className="text-neutral-600 hover:text-ocean-900">
+              My Listings
+            </Link>
+            <Link href="/partner/bookings" className="text-neutral-600 hover:text-ocean-900">
+              Bookings
+            </Link>
+          </nav>
           <div className="flex items-center gap-4">
             <Link href="/" target="_blank" className="text-sm text-neutral-600 hover:text-ocean-900">
               View site

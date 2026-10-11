@@ -1,6 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Partner verification document uploads (business license/ID/bank
+  // proof/property photos, src/lib/partner/document-actions.ts) go
+  // through a Server Action as multipart/form-data — the 1MB default
+  // easily clips a phone-camera photo or scanned PDF.
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
+  },
   // Task 17 §31: no security headers existed before this. Deliberately NOT
   // adding a Content-Security-Policy here — the site embeds Tawk.to,
   // YouTube, and Supabase Storage images, and this sandbox has no network

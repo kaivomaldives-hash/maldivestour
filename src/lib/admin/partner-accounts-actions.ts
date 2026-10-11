@@ -1,0 +1,81 @@
+"use server";
+
+import { requireStaff } from "@/lib/admin/auth";
+import type { AdminActionResult } from "@/lib/admin/node-actions";
+import type { PartnerDocumentStatus } from "@/lib/partner/types";
+import { createClient } from "@/lib/supabase/server";
+
+/** Approves a partner's submitted profile: flips onboarding_status to
+ * 'approved', records who/when, and — since the provider/node row created
+ * at signup (create_partner_account RPC) starts as a 'draft' node with no
+ * is_verified flag — also publishes the provider node and marks it
+ * verified, so the public provider page and any future listing this
+ * partner creates both reflect a vetted operator. Three sequential
+ * updates, not one transaction: same "no cross-table transaction through
+ * PostgREST" convention as createNode()/updateNodeCore()
+ * (src/lib/admin/node-actions.ts). */
+export async function approvePartnerAccount(partnerId: string, providerId: string | null): Promise<AdminActionResult> {
+  const { userId } = await requireStaff();
+  const supabase = await createClient();
+
+  const { error: accountError } = await supabase
+    .from("partner_accounts")
+    .update({ onboarding_status: "approved", reviewed_by: userId, reviewed_at: new Date().toISOString(), rejection_reason: null } as unknown as never)
+    .eq("id", partnerId);
+  if (accountError) return { ok: false, error: accountError.message };
+
+  if (providerId) {
+    await supabase.from("providers").update({ is_verified: true } as unknown as never).eq("id", providerId);
+    await supabase.from("nodes").update({ status: "published", published_at: new Date().toISOString() } as unknown as never).eq("id", providerId);
+  }
+
+  return { ok: true };
+}
+
+export async function rejectPartnerAccount(partnerId: string, reason: string): Promise<AdminActionResult> {
+  const { userId } = await requireStaff();
+  if (!reason.trim()) return { ok: false, error: "A reason is required so the partner knows what to fix." };
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("partner_accounts")
+    .update({ onboarding_status: "rejected", reviewed_by: userId, reviewed_at: new Date().toISOString(), rejection_reason: reason.trim() } as unknown as never)
+    .eq("id", partnerId);
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
+export async function suspendPartnerAccount(partnerId: string, reason: string): Promise<AdminActionResult> {
+  const { userId } = await requireStaff();
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("partner_accounts")
+    .update({ onboarding_status: "suspended", reviewed_by: userId, reviewed_at: new Date().toISOString(), rejection_reason: reason.trim() || null } as unknown as never)
+    .eq("id", partnerId);
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
+export async function updatePartnerDocumentStatus(documentId: string, status: PartnerDocumentStatus, adminNote: string | null): Promise<AdminActionResult> {
+  await requireStaff();
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("partner_documents")
+    .update({ status, admin_note: adminNote?.trim() || null } as unknown as never)
+    .eq("id", documentId);
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
+/** Short-lived signed URL for a private verification document — staff's
+ * own authenticated client, governed by the `partner_documents_bucket_
+ * staff_select` Storage policy, same reasoning as every other repository
+ * in this codebase for reserving the service-role client for what RLS
+ * genuinely can't express (src/lib/supabase/admin.ts's own doc comment). */
+export async function getPartnerDocumentSignedUrl(storagePath: string): Promise<{ url: string | null; error?: string }> {
+  await requireStaff();
+  const supabase = await createClient();
+  const { data, error } = await supabase.storage.from("partner-documents").createSignedUrl(storagePath, 60);
+  if (error || !data) return { url: null, error: error?.message };
+  return { url: data.signedUrl };
+}

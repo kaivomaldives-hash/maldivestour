@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { ReactNode } from "react";
 
 import { IslandCard } from "@/components/locations/island-card";
 import { MapPinIcon } from "@/components/ui/icons";
@@ -10,6 +11,8 @@ import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { SectionHeader } from "@/components/ui/section-header";
 import { getAtolls, getCountry, getIslandBySlug } from "@/lib/locations/repository";
+import { getMediaAssetsByIds } from "@/lib/media/repository";
+import type { MediaAsset } from "@/lib/media/types";
 import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd } from "@/lib/seo/site";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -32,13 +35,56 @@ export async function generateMetadata(): Promise<Metadata> {
 // island node, so this list can never surface a broken card.
 const FEATURED_ISLAND_SLUGS = ["thulusdhoo", "maafushi", "dhigurah", "ukulhas", "fuvahmulah", "gan"];
 
+// Real legacy-site images already migrated into media_assets (see
+// supabase/migrations/20250115000100_full_legacy_image_library.sql) —
+// reused here rather than uploaded again, for the country-level
+// People/Community/History/Economy context section below.
+const COUNTRY_CONTEXT_MEDIA_IDS = {
+  people: "60630ddc-d244-a2ea-bd3c-469a719f1d6d",
+  community: "f326cf2a-f6ab-5dcb-9e77-88a167c319e4",
+  history: "640bfe55-191e-8218-073b-cd325ef238d1",
+  economy: "534b411e-fd78-091f-10b9-009abcc1a99a",
+} as const;
+
+function ContextSection({
+  eyebrow,
+  title,
+  image,
+  imageAlt,
+  reverse,
+  children,
+}: {
+  eyebrow: string;
+  title: string;
+  image: MediaAsset | null | undefined;
+  imageAlt: string;
+  reverse?: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <div className={`flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10 ${reverse ? "sm:flex-row-reverse" : ""}`}>
+      {image && (
+        <div className="w-full shrink-0 overflow-hidden rounded-2xl sm:w-64">
+          <MediaImage asset={image} alt={imageAlt} aspectClassName="aspect-[4/3]" />
+        </div>
+      )}
+      <div className="flex-1 space-y-3">
+        <p className="text-xs font-semibold uppercase tracking-wide text-maldives-600">{eyebrow}</p>
+        <h3 className="text-lg font-semibold text-ocean-900">{title}</h3>
+        <div className="space-y-3 text-sm text-neutral-700">{children}</div>
+      </div>
+    </div>
+  );
+}
+
 export default async function MaldivesPage() {
   const country = await getCountry();
   if (!country) notFound();
 
-  const [atolls, featuredIslandResults] = await Promise.all([
+  const [atolls, featuredIslandResults, countryContextMedia] = await Promise.all([
     getAtolls(),
     Promise.all(FEATURED_ISLAND_SLUGS.map((slug) => getIslandBySlug(slug))),
+    getMediaAssetsByIds(Object.values(COUNTRY_CONTEXT_MEDIA_IDS)),
   ]);
   const totalIslands = atolls.reduce((sum, atoll) => sum + atoll.islandCount, 0);
   const featuredIslands = featuredIslandResults.filter((i): i is NonNullable<typeof i> => i !== null);
@@ -158,6 +204,76 @@ export default async function MaldivesPage() {
             </Link>{" "}
             for places to stay on them.
           </p>
+        </section>
+
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <SectionHeader
+            eyebrow="Beyond the Beaches"
+            title="People, Culture, History & Economy"
+            description="The Maldives is more than reefs and resorts — a quick look at who Maldivians are, how they live, and how the country got here."
+          />
+          <div className="mt-8 space-y-10">
+            <ContextSection eyebrow="People" title="The Maldivian People" image={countryContextMedia.get(COUNTRY_CONTEXT_MEDIA_IDS.people)} imageAlt="Maldivian people">
+              <p>
+                Around 520,000 people call the Maldives home, descended from South Indian, Sri Lankan, Arab and East
+                African sailors and settlers who mixed over more than a thousand years of Indian Ocean trade. They
+                speak Dhivehi, a language written right-to-left in the distinctive Thaana script, and the country is
+                constitutionally 100% Sunni Muslim — Islam shapes everyday life, from the five daily calls to prayer
+                to the Friday holiday. Close to a third of the population lives in the capital, Malé, one of the
+                most densely built cities in the world; the rest are spread thinly across the country&rsquo;s{" "}
+                {atolls.length} atolls and {totalIslands} inhabited islands.
+              </p>
+            </ContextSection>
+
+            <ContextSection
+              eyebrow="Community"
+              title="Life on a Local Island"
+              image={countryContextMedia.get(COUNTRY_CONTEXT_MEDIA_IDS.community)}
+              imageAlt="Community life on a Maldivian local island"
+              reverse
+            >
+              <p>
+                Away from the resorts, a Maldivian island is a tight-knit community built around its mosque, a
+                harbour where the day&rsquo;s catch comes in, a school, and a scatter of small shops and cafés.
+                Many islands hold only a few hundred residents, so family and neighbourhood ties run deep, and
+                everyone genuinely knows everyone. Dress and behaviour are more conservative than on a resort
+                island — swimwear is kept to designated &ldquo;bikini beaches&rdquo; — and in return visitors get
+                an honest look at Maldivian food, music and daily routine that a private resort island, by design,
+                can&rsquo;t offer.
+              </p>
+            </ContextSection>
+
+            <ContextSection eyebrow="History" title="A Short History" image={countryContextMedia.get(COUNTRY_CONTEXT_MEDIA_IDS.history)} imageAlt="Maldives history">
+              <p>
+                The islands were first settled by Buddhist seafarers over two thousand years ago, before the
+                Maldives converted to Islam in 1153 CE under Sultan Dharumavantha Rasgefaanu — a single, unbroken
+                sultanate followed for almost 800 years afterward. Portuguese and Dutch traders passed through the
+                region from the 16th century, and the Maldives became a British protectorate in 1887, retaining its
+                own sultan and internal rule throughout. Full independence came on 26 July 1965, the sultanate was
+                replaced by a republic in 1968, and the country held its first multi-party democratic presidential
+                election in 2008 — a history now marked each year by Independence Day and Republic Day
+                celebrations across the islands.
+              </p>
+            </ContextSection>
+
+            <ContextSection
+              eyebrow="Economy"
+              title="How the Maldives Makes a Living"
+              image={countryContextMedia.get(COUNTRY_CONTEXT_MEDIA_IDS.economy)}
+              imageAlt="Maldives fish market and economy"
+              reverse
+            >
+              <p>
+                Fishing — especially pole-and-line skipjack tuna, still certified as one of the most sustainable
+                methods in the world — was the backbone of the Maldivian economy for centuries, and tuna remains a
+                major export today. Since the first resort opened in 1972, tourism has overtaken it to become the
+                country&rsquo;s largest industry, contributing roughly a quarter of GDP and the majority of foreign
+                exchange earnings, directly funding the roads, ferries, airports, schools and hospitals used across
+                the islands. Boat building, shipping and, increasingly, agriculture round out an economy still
+                largely tied to the ocean around it.
+              </p>
+            </ContextSection>
+          </div>
         </section>
 
         <section className="mt-12 border-t border-neutral-200 pt-10">

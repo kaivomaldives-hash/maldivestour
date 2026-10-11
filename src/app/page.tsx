@@ -51,7 +51,11 @@ export default async function Home() {
   const [atolls, resorts, guesthouses, activities, attractions, transferRoutes, packages, articles] = await Promise.all([
     getAtolls(),
     getAccommodations({ type: "resort", pageSize: 4 }),
-    getAccommodations({ type: "guesthouse", pageSize: 2 }),
+    // Fetched well beyond the 2 actually displayed: the pinned slug below
+    // needs to be pulled in from wherever it falls in the default
+    // alphabetical order ("Yuvi Blue..." sorts near the end), not just
+    // re-sorted within whatever page-size-2 window happened to come back.
+    getAccommodations({ type: "guesthouse", pageSize: 24 }),
     getActivities({ pageSize: 6 }),
     getAttractions({ pageSize: 6 }),
     getTransferRoutes({ pageSize: 4 }),
@@ -60,14 +64,16 @@ export default async function Home() {
   ]);
 
   // Mixed resorts + guesthouses, with any pinned slug (above) floated to
-  // the front — "Resorts, hotels and guesthouses" below should actually
+  // the front of the guesthouses before taking only the first 2 for
+  // display — "Resorts, hotels and guesthouses" below should actually
   // show more than just resorts.
-  const stays = [...resorts.items, ...guesthouses.items].sort((a, b) => {
+  const sortedGuesthouses = [...guesthouses.items].sort((a, b) => {
     const aPinned = HOMEPAGE_PINNED_STAY_SLUGS.includes(a.slug);
     const bPinned = HOMEPAGE_PINNED_STAY_SLUGS.includes(b.slug);
     if (aPinned === bPinned) return 0;
     return aPinned ? -1 : 1;
   });
+  const stays = [...resorts.items, ...sortedGuesthouses.slice(0, 2)];
 
   const islandCount = atolls.reduce((sum, atoll) => sum + atoll.islandCount, 0);
   const featuredAtolls = atolls.slice(0, 6);

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/admin" },
   { label: "Bookings", href: "/admin/bookings" },
+  { label: "Offer Requests", href: "/admin/holiday-requests" },
   { label: "Customers", href: "/admin/customers" },
   { label: "Reviews", href: "/admin/reviews" },
   { label: "Comments", href: "/admin/comments" },
@@ -13,7 +14,6 @@ const NAV_ITEMS = [
   { label: "Activities", href: "/admin/activities" },
   { label: "Transfers", href: "/admin/transfers" },
   { label: "Packages", href: "/admin/packages" },
-  { label: "Holiday Requests", href: "/admin/holiday-requests" },
   { label: "Holiday Pricing", href: "/admin/holiday-pricing" },
   { label: "Articles", href: "/admin/articles" },
   { label: "Providers", href: "/admin/providers" },

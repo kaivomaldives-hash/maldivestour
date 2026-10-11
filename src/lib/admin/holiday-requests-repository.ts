@@ -37,6 +37,7 @@ export interface AdminHolidayRequestDetail extends AdminHolidayRequestListItem {
   itinerary: HolidaySelection;
   priceBreakdown: PriceBreakdown;
   internalNotes: string | null;
+  confirmationEmailSentAt: string | null;
   updatedAt: string;
 }
 
@@ -58,6 +59,7 @@ interface HolidayRequestRow {
   estimated_total: number;
   status: HolidayRequestStatus;
   internal_notes: string | null;
+  confirmation_email_sent_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -119,6 +121,7 @@ export async function getHolidayRequestByIdAdmin(id: string): Promise<AdminHolid
     itinerary: row.itinerary,
     priceBreakdown: row.price_breakdown,
     internalNotes: row.internal_notes,
+    confirmationEmailSentAt: row.confirmation_email_sent_at,
     updatedAt: row.updated_at,
   };
 }

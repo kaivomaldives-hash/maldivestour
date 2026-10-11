@@ -493,7 +493,7 @@ export function HolidayBuilderWizard({ pricing }: { pricing: PricingConfigRow[] 
                 {destination ? "No matching activities found for this destination yet." : "Loading activities…"}
               </p>
             ) : (
-              <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              <ul className="grid max-h-96 grid-cols-1 gap-2 overflow-y-auto pr-1 sm:grid-cols-2">
                 {activities.map((a) => (
                   <li key={a.nodeId} className="flex items-center justify-between rounded-xl border border-neutral-200 p-3 text-sm">
                     <div>
@@ -511,9 +511,9 @@ export function HolidayBuilderWizard({ pricing }: { pricing: PricingConfigRow[] 
             )}
 
             {dayActivities.length > 0 && (
-              <div className="rounded-xl border border-neutral-200 p-3">
+              <div className="rounded-xl border border-maldives-200 bg-lagoon-50 p-3">
                 <p className="mb-2 text-sm font-semibold text-ocean-900">Your added activities</p>
-                <ul className="space-y-1.5 text-sm">
+                <ul className="max-h-48 space-y-1.5 overflow-y-auto pr-1 text-sm">
                   {dayActivities
                     .map((d, i) => ({ ...d, i }))
                     .sort((a, b) => a.day - b.day)

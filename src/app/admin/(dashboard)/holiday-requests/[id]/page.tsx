@@ -27,7 +27,7 @@ export default async function AdminHolidayRequestDetailPage({ params }: { params
   return (
     <div className="max-w-4xl">
       <Link href="/admin/holiday-requests" className="text-sm text-maldives-600 hover:underline">
-        ← All holiday requests
+        ← All offer requests
       </Link>
 
       <h1 className="mt-2 font-mono text-2xl font-semibold text-ocean-900">{request.reference}</h1>

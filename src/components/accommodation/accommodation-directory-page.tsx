@@ -23,6 +23,15 @@ const TYPE_LABEL: Record<AccommodationType, string> = {
 
 const PAGE_SIZE = 24;
 
+/** Slugs to float to the front of the unfiltered first page of a given
+ * accommodation type's directory — e.g. a newly onboarded partner
+ * property that should be visible immediately, pending a general
+ * admin-managed "featured" flag. Only applies when nothing else is
+ * already filtering/sorting the view (no search, no atoll/island, page 1). */
+const PINNED_SLUGS: Partial<Record<AccommodationType, string[]>> = {
+  guesthouse: ["yuvi-blue-maldives-himmafushi"],
+};
+
 export interface AccommodationDirectorySearchParams {
   q?: string;
   page?: string;
@@ -98,6 +107,20 @@ export async function AccommodationDirectoryPage({
         allInclusive: allInclusive ? true : undefined,
         overwaterVillas: overwater ? true : undefined,
       });
+
+  if (!isSearching && page === 1 && !atoll && !island) {
+    const pinned = PINNED_SLUGS[type];
+    if (pinned && pinned.length > 0) {
+      results.items = [...results.items].sort((a, b) => {
+        const aIndex = pinned.indexOf(a.slug);
+        const bIndex = pinned.indexOf(b.slug);
+        if (aIndex === -1 && bIndex === -1) return 0;
+        if (aIndex === -1) return 1;
+        if (bIndex === -1) return -1;
+        return aIndex - bIndex;
+      });
+    }
+  }
 
   const totalPages = isSearching ? 1 : Math.max(1, Math.ceil(results.total / PAGE_SIZE));
 

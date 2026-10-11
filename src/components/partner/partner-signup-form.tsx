@@ -65,7 +65,18 @@ export function PartnerSignupForm() {
 
         startTransition(async () => {
           const supabase = createClient();
-          const { data: signUpData, error: signUpError } = await supabase.auth.signUp({ email, password });
+          const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              // Persists on the auth user regardless of whether email
+              // confirmation is required, so /auth/confirm can create the
+              // partner_accounts row later if this signup doesn't get a
+              // session immediately (see that route's own comment).
+              data: { partnerKind: kind, propertyType, businessName, contactPhone },
+              emailRedirectTo: `${window.location.origin}/auth/confirm?next=/partner`,
+            },
+          });
           if (signUpError) {
             setError(signUpError.message);
             return;

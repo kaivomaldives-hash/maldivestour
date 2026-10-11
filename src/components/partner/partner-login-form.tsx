@@ -28,7 +28,12 @@ export function PartnerLoginForm() {
           const supabase = createClient();
           const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
           if (signInError) {
-            setError("Incorrect email or password.");
+            // Unlike the staff login (invite-only, so hiding the exact
+            // reason avoids account-enumeration concerns), partner
+            // signup is self-service — surfacing the real reason (most
+            // commonly "Email not confirmed") is what actually helps
+            // here, not a generic message that hides a fixable problem.
+            setError(signInError.message);
             return;
           }
           router.replace("/partner");

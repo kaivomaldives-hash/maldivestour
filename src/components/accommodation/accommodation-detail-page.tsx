@@ -12,6 +12,7 @@ import { AttractionCard } from "@/components/attractions/attraction-card";
 import { NodeInquiryForm } from "@/components/bookings/node-inquiry-form";
 import { LocationMap } from "@/components/locations/location-map";
 import { PackageCard } from "@/components/packages/package-card";
+import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
@@ -22,6 +23,7 @@ import { getArticlesRelatedToNodes } from "@/lib/articles/repository";
 import { getNearbyAttractions } from "@/lib/attractions/repository";
 import { bookingCta } from "@/lib/bookings/copy";
 import { getPackageViewsByAccommodation } from "@/lib/packages/view-repository";
+import { getReviewsForNode } from "@/lib/reviews/repository";
 import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
 import { getTransferRoutesByLocation } from "@/lib/transfers/repository";
 
@@ -77,12 +79,13 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
   const segment = ACCOMMODATION_TYPE_SEGMENT[type];
   const { primaryLocation, atoll } = accommodation;
   const locationFilter = { islandId: primaryLocation?.id ?? null, atollId: atoll?.id ?? null };
-  const [packages, nearbyActivities, nearbyAttractions, transferRoutes, relatedGuides] = await Promise.all([
+  const [packages, nearbyActivities, nearbyAttractions, transferRoutes, relatedGuides, reviews] = await Promise.all([
     getPackageViewsByAccommodation(accommodation.id),
     getNearbyActivities(locationFilter),
     getNearbyAttractions(locationFilter),
     primaryLocation ? getTransferRoutesByLocation(primaryLocation.id) : Promise.resolve([]),
     getArticlesRelatedToNodes([accommodation.id, primaryLocation?.id, atoll?.id].filter((id): id is string => Boolean(id))),
+    getReviewsForNode(accommodation.id),
   ]);
 
   const videoJsonLd = accommodationVideoJsonLd(accommodation.videoYoutubeId, accommodation.title, accommodation.summary);
@@ -113,8 +116,46 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+      {/* Fixed order below per the site owner's spec, same for every
+          hotel/guesthouse/resort: video (admin-added only) → gallery →
+          rooms → map → nearby activities (add-ons) → transfer options →
+          reviews. Everything else keeps its previous relative order,
+          after this block. */}
+      <VideoSection youtubeId={accommodation.videoYoutubeId} accommodationTitle={accommodation.title} />
+
+      <GallerySection images={accommodation.galleryImages} accommodationTitle={accommodation.title} />
+
+      <RoomsSection rooms={accommodation.rooms} accommodationTitle={accommodation.title} />
+
+      <LocationMap title={accommodation.title} lat={primaryLocation?.lat ?? null} lng={primaryLocation?.lng ?? null} />
+
+      <NearbyActivitiesSection
+        nearby={nearbyActivities}
+        heading={`Things to Do Near ${accommodation.title}`}
+        islandTitle={primaryLocation?.title ?? null}
+        atollTitle={atoll?.title ?? null}
+        viewAllHref="/maldives/activities/"
+      />
+
+      {transferRoutes.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Getting Here</h2>
+          <p className="mt-1 text-sm text-neutral-600">Real, source-verified transfer routes to and from {primaryLocation?.title ?? accommodation.title}.</p>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {transferRoutes.slice(0, 6).map((route) => (
+              <TransferRouteCard key={route.id} route={route} />
+            ))}
+          </ul>
+          <Link href="/maldives/transfers/" className="mt-4 inline-block text-sm font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
+            View all transfers →
+          </Link>
+        </section>
+      )}
+
+      <ReviewsSection nodeId={accommodation.id} reviews={reviews} subjectLabel={TYPE_LABEL[type].toLowerCase()} />
+
       {accommodation.overviewParagraphs.length > 0 && (
-        <section className="max-w-3xl space-y-4 text-neutral-700">
+        <section className="mt-10 max-w-3xl space-y-4 text-neutral-700">
           {accommodation.overviewParagraphs.map((paragraph, i) => (
             <p key={i}>{paragraph}</p>
           ))}
@@ -176,31 +217,9 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
             </dd>
           </div>
         )}
-        {accommodation.provider && (
-          <div>
-            <dt className="text-neutral-500">Operated by</dt>
-            <dd className="font-medium">
-              <Link href={`/maldives/providers/${accommodation.provider.slug}/`} className="hover:underline">
-                {accommodation.provider.title}
-              </Link>
-            </dd>
-          </div>
-        )}
       </dl>
 
-      <LocationMap title={accommodation.title} lat={primaryLocation?.lat ?? null} lng={primaryLocation?.lng ?? null} />
-
-      <RoomsSection rooms={accommodation.rooms} accommodationTitle={accommodation.title} />
-
       <TypicalAmenitiesSection accommodationType={accommodation.accommodationType} />
-
-      <NearbyActivitiesSection
-        nearby={nearbyActivities}
-        heading={`Things to Do Near ${accommodation.title}`}
-        islandTitle={primaryLocation?.title ?? null}
-        atollTitle={atoll?.title ?? null}
-        viewAllHref="/maldives/activities/"
-      />
 
       {(nearbyAttractions.islandAttractions.length > 0 || nearbyAttractions.atollAttractions.length > 0) && (
         <section className="mt-10">
@@ -240,21 +259,6 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
         </section>
       )}
 
-      {transferRoutes.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Getting Here</h2>
-          <p className="mt-1 text-sm text-neutral-600">Real, source-verified transfer routes to and from {primaryLocation?.title ?? accommodation.title}.</p>
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {transferRoutes.slice(0, 6).map((route) => (
-              <TransferRouteCard key={route.id} route={route} />
-            ))}
-          </ul>
-          <Link href="/maldives/transfers/" className="mt-4 inline-block text-sm font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
-            View all transfers →
-          </Link>
-        </section>
-      )}
-
       {relatedGuides.length > 0 && (
         <section className="mt-10">
           <h2 className="text-xl font-semibold text-ocean-900">{accommodation.title} Travel Guides</h2>
@@ -265,10 +269,6 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
           </ul>
         </section>
       )}
-
-      <GallerySection images={accommodation.galleryImages} accommodationTitle={accommodation.title} />
-
-      <VideoSection youtubeId={accommodation.videoYoutubeId} accommodationTitle={accommodation.title} />
 
       {accommodation.isBookable && (
         <section className="mt-10 rounded-2xl border border-neutral-200 p-6">

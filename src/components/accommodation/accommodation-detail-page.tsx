@@ -117,17 +117,25 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
       {/* Fixed order below per the site owner's spec, same for every
-          hotel/guesthouse/resort: video (admin-added only) → gallery →
-          rooms → map → nearby activities (add-ons) → transfer options →
-          reviews. Everything else keeps its previous relative order,
-          after this block. */}
+          hotel/guesthouse/resort: overview → video (admin-added only) →
+          gallery → map → rooms → nearby activities (add-ons) → transfer
+          options → reviews. Everything else keeps its previous relative
+          order, after this block. */}
+      {accommodation.overviewParagraphs.length > 0 && (
+        <section className="max-w-3xl space-y-4 text-neutral-700">
+          {accommodation.overviewParagraphs.map((paragraph, i) => (
+            <p key={i}>{paragraph}</p>
+          ))}
+        </section>
+      )}
+
       <VideoSection youtubeId={accommodation.videoYoutubeId} accommodationTitle={accommodation.title} />
 
       <GallerySection images={accommodation.galleryImages} accommodationTitle={accommodation.title} />
 
-      <RoomsSection rooms={accommodation.rooms} accommodationTitle={accommodation.title} />
-
       <LocationMap title={accommodation.title} lat={primaryLocation?.lat ?? null} lng={primaryLocation?.lng ?? null} />
+
+      <RoomsSection rooms={accommodation.rooms} accommodationTitle={accommodation.title} />
 
       <NearbyActivitiesSection
         nearby={nearbyActivities}
@@ -154,11 +162,22 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
 
       <ReviewsSection nodeId={accommodation.id} reviews={reviews} subjectLabel={TYPE_LABEL[type].toLowerCase()} />
 
-      {accommodation.overviewParagraphs.length > 0 && (
-        <section className="mt-10 max-w-3xl space-y-4 text-neutral-700">
-          {accommodation.overviewParagraphs.map((paragraph, i) => (
-            <p key={i}>{paragraph}</p>
-          ))}
+      {accommodation.isBookable && (
+        <section className="mt-10 rounded-2xl border border-neutral-200 p-6">
+          <h2 className="text-xl font-semibold text-ocean-900">Request an Offer</h2>
+          <p className="mt-1 text-sm text-neutral-600">
+            Prices change with season and availability — tell us your dates and we&rsquo;ll send current rates for {accommodation.title}.
+          </p>
+          <div className="mt-4">
+            <NodeInquiryForm
+              productNodeId={accommodation.id}
+              productTitle={accommodation.title}
+              source="accommodation"
+              submitLabel={bookingCta("accommodation").submitLabel}
+              showAccommodationFields
+              roomOptions={accommodation.rooms.map((room) => room.name)}
+            />
+          </div>
         </section>
       )}
 
@@ -270,22 +289,6 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
         </section>
       )}
 
-      {accommodation.isBookable && (
-        <section className="mt-10 rounded-2xl border border-neutral-200 p-6">
-          <h2 className="text-xl font-semibold text-ocean-900">Request an Offer</h2>
-          <p className="mt-1 text-sm text-neutral-600">
-            Prices change with season and availability — tell us your dates and we&rsquo;ll send current rates for {accommodation.title}.
-          </p>
-          <div className="mt-4">
-            <NodeInquiryForm
-              productNodeId={accommodation.id}
-              productTitle={accommodation.title}
-              source="accommodation"
-              submitLabel={bookingCta("accommodation").submitLabel}
-            />
-          </div>
-        </section>
-      )}
       </div>
     </main>
   );

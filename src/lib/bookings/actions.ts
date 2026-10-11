@@ -241,6 +241,14 @@ export interface NodeInquiryInput {
    * single day — recorded via the existing trip_type='multi_day' value
    * (never used by node inquiries before this). */
   numberOfDays?: number | null;
+  /** Accommodation-only fields (nights/rooms/meal plan/room type) — same
+   * "no dedicated column yet" treatment as numberOfDays above: folded
+   * into specialRequests as readable text rather than a schema change,
+   * since this is a request for staff to review, not a priced line item. */
+  nights?: number | null;
+  rooms?: number | null;
+  mealPlan?: string | null;
+  roomType?: string | null;
   specialRequests: string | null;
   /** Hidden honeypot field — must always be empty for a real submission. */
   honeypot?: string;
@@ -259,8 +267,16 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
   if (!input.termsAccepted) return { ok: false, error: "Please agree to the Terms and Conditions to continue." };
 
   const numberOfDays = input.numberOfDays && input.numberOfDays > 0 ? Math.floor(input.numberOfDays) : null;
+  const nights = input.nights && input.nights > 0 ? Math.floor(input.nights) : null;
+  const rooms = input.rooms && input.rooms > 0 ? Math.floor(input.rooms) : null;
+  const mealPlan = input.mealPlan?.trim() || null;
+  const roomType = input.roomType?.trim() || null;
   const specialRequests = [
     numberOfDays !== null ? `Number of days: ${numberOfDays}.` : null,
+    nights !== null ? `Nights: ${nights}.` : null,
+    rooms !== null ? `Rooms: ${rooms}.` : null,
+    roomType ? `Room type: ${roomType}.` : null,
+    mealPlan ? `Meal plan: ${mealPlan}.` : null,
     input.specialRequests?.trim() || null,
   ]
     .filter(Boolean)
@@ -314,7 +330,7 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
     requestedDate: input.preferredDate,
     adults: input.adults,
     children: input.children,
-    specialRequests: input.specialRequests?.trim() || null,
+    specialRequests,
     estimatedPrice: null,
     currency: "USD",
     destinationLabel: input.destinationLabel?.trim() || null,

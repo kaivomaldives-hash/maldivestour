@@ -29,6 +29,13 @@ export interface NodeInquiryFormProps {
    * product's own location is genuinely ambiguous without asking.
    * Off by default, so every single-location product's form is unchanged. */
   requireDestination?: boolean;
+  /** Adds Nights / Rooms / Meal plan fields — for accommodation inquiries
+   * only. Off by default so every other vertical's form is unchanged. */
+  showAccommodationFields?: boolean;
+  /** The property's own real room names (e.g. accommodation.rooms),
+   * rendered as a select so the guest can ask for a specific room type —
+   * omitted (no select shown) when the property has no rooms on record. */
+  roomOptions?: string[];
 }
 
 /**
@@ -38,7 +45,16 @@ export interface NodeInquiryFormProps {
  * just without the transfer-specific origin/destination/trip-type fields
  * that don't apply here.
  */
-export function NodeInquiryForm({ productNodeId, productTitle, source, submitLabel, showNumberOfDays, requireDestination }: NodeInquiryFormProps) {
+export function NodeInquiryForm({
+  productNodeId,
+  productTitle,
+  source,
+  submitLabel,
+  showNumberOfDays,
+  requireDestination,
+  showAccommodationFields,
+  roomOptions,
+}: NodeInquiryFormProps) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [destination, setDestination] = useState<DestinationOption | null>(null);
@@ -49,6 +65,10 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
     adults: number;
     children: number;
     numberOfDays: number | null;
+    nights: number | null;
+    rooms: number | null;
+    mealPlan: string | null;
+    roomType: string | null;
   } | null>(null);
 
   if (submitted) {
@@ -76,6 +96,30 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
             <div>
               <dt className="inline font-medium text-neutral-900">Number of days: </dt>
               <dd className="inline">{submitted.numberOfDays}</dd>
+            </div>
+          )}
+          {submitted.nights !== null && (
+            <div>
+              <dt className="inline font-medium text-neutral-900">Nights: </dt>
+              <dd className="inline">{submitted.nights}</dd>
+            </div>
+          )}
+          {submitted.rooms !== null && (
+            <div>
+              <dt className="inline font-medium text-neutral-900">Rooms: </dt>
+              <dd className="inline">{submitted.rooms}</dd>
+            </div>
+          )}
+          {submitted.roomType && (
+            <div>
+              <dt className="inline font-medium text-neutral-900">Room type: </dt>
+              <dd className="inline">{submitted.roomType}</dd>
+            </div>
+          )}
+          {submitted.mealPlan && (
+            <div>
+              <dt className="inline font-medium text-neutral-900">Meal plan: </dt>
+              <dd className="inline">{submitted.mealPlan}</dd>
             </div>
           )}
           <div>
@@ -125,6 +169,10 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
           const adults = Number(data.get("adults") ?? 1) || 1;
           const children = Number(data.get("children") ?? 0) || 0;
           const numberOfDays = showNumberOfDays ? Number(data.get("numberOfDays") ?? 1) || 1 : null;
+          const nights = showAccommodationFields ? Number(data.get("nights") ?? 1) || 1 : null;
+          const rooms = showAccommodationFields ? Number(data.get("rooms") ?? 1) || 1 : null;
+          const mealPlan = showAccommodationFields ? String(data.get("mealPlan") ?? "") || null : null;
+          const roomType = roomOptions && roomOptions.length > 0 ? String(data.get("roomType") ?? "") || null : null;
 
           const result = await createNodeInquiry({
             productNodeId,
@@ -141,6 +189,10 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
             adults,
             children,
             numberOfDays,
+            nights,
+            rooms,
+            mealPlan,
+            roomType,
             destinationLocationId: destination?.destinationLocationId ?? null,
             destinationLabel: destination?.label ?? null,
             specialRequests: String(data.get("specialRequests") ?? "") || null,
@@ -152,7 +204,7 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
             return;
           }
           if (result.bookingReference) {
-            setSubmitted({ reference: result.bookingReference, customerName, preferredDate, adults, children, numberOfDays });
+            setSubmitted({ reference: result.bookingReference, customerName, preferredDate, adults, children, numberOfDays, nights, rooms, mealPlan, roomType });
           }
         });
       }}
@@ -192,6 +244,46 @@ export function NodeInquiryForm({ productNodeId, productTitle, source, submitLab
         <div className="grid grid-cols-2 gap-4">
           <Field label="Number of days" name="numberOfDays" type="number" min={1} defaultValue={1} />
         </div>
+      )}
+
+      {showAccommodationFields && (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <Field label="Nights" name="nights" type="number" min={1} defaultValue={1} />
+          <Field label="Rooms" name="rooms" type="number" min={1} defaultValue={1} />
+          <label className="block text-sm">
+            <span className="mb-1 block font-medium text-neutral-700">Meal plan</span>
+            <select
+              name="mealPlan"
+              defaultValue=""
+              className="min-touch-target w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
+            >
+              <option value="">No preference</option>
+              <option value="Room Only">Room Only</option>
+              <option value="Bed & Breakfast">Bed & Breakfast</option>
+              <option value="Half Board">Half Board</option>
+              <option value="Full Board">Full Board</option>
+              <option value="All-Inclusive">All-Inclusive</option>
+            </select>
+          </label>
+        </div>
+      )}
+
+      {roomOptions && roomOptions.length > 0 && (
+        <label className="block text-sm">
+          <span className="mb-1 block font-medium text-neutral-700">Room type</span>
+          <select
+            name="roomType"
+            defaultValue=""
+            className="min-touch-target w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
+          >
+            <option value="">No preference</option>
+            {roomOptions.map((room) => (
+              <option key={room} value={room}>
+                {room}
+              </option>
+            ))}
+          </select>
+        </label>
       )}
 
       <label className="block text-sm">

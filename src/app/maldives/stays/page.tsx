@@ -37,15 +37,32 @@ const TYPES = [
   },
 ];
 
+// Mirrors PINNED_SLUGS in accommodation-directory-page.tsx and
+// HOMEPAGE_PINNED_STAY_SLUGS in src/app/page.tsx — same reasoning: a
+// property that should be visible immediately, pending a general
+// admin-managed "featured" flag.
+const PINNED_GUESTHOUSE_SLUGS = ["yuvi-blue-maldives-himmafushi"];
+
 export default async function StaysPage() {
   const [resorts, hotels, guesthouses] = await Promise.all([
     getAccommodations({ type: "resort", pageSize: 3 }),
     getAccommodations({ type: "hotel", pageSize: 3 }),
-    getAccommodations({ type: "guesthouse", pageSize: 3 }),
+    // Fetched well beyond the 3 actually displayed, same reason as the
+    // homepage: the pinned slug needs pulling in from wherever it falls
+    // in the default alphabetical order, not just re-sorted within
+    // whatever page-size-3 window happened to come back.
+    getAccommodations({ type: "guesthouse", pageSize: 24 }),
   ]);
 
+  const sortedGuesthouses = [...guesthouses.items].sort((a, b) => {
+    const aPinned = PINNED_GUESTHOUSE_SLUGS.includes(a.slug);
+    const bPinned = PINNED_GUESTHOUSE_SLUGS.includes(b.slug);
+    if (aPinned === bPinned) return 0;
+    return aPinned ? -1 : 1;
+  });
+
   const totals = { resort: resorts.total, hotel: hotels.total, guesthouse: guesthouses.total };
-  const samples = { resort: resorts.items, hotel: hotels.items, guesthouse: guesthouses.items };
+  const samples = { resort: resorts.items, hotel: hotels.items, guesthouse: sortedGuesthouses.slice(0, 3) };
 
   return (
     <main>

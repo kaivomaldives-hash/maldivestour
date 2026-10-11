@@ -19,7 +19,7 @@ function Stars({ rating }: { rating: number }) {
  * submission flow. Never renders aggregate-rating structured data — that
  * only makes sense once genuine review volume exists (Task 20 explicitly
  * disallows it from demo/early data). */
-export function ReviewsSection({ nodeId, reviews }: { nodeId: string; reviews: Review[] }) {
+export function ReviewsSection({ nodeId, reviews, subjectLabel = "transfer" }: { nodeId: string; reviews: Review[]; subjectLabel?: string }) {
   const [showForm, setShowForm] = useState(false);
 
   return (
@@ -27,7 +27,7 @@ export function ReviewsSection({ nodeId, reviews }: { nodeId: string; reviews: R
       <h2 className="text-xl font-semibold text-ocean-900">Customer Reviews</h2>
 
       {reviews.length === 0 ? (
-        <p className="mt-2 text-sm text-neutral-600">No reviews yet. Be the first to review this transfer.</p>
+        <p className="mt-2 text-sm text-neutral-600">No reviews yet. Be the first to review this {subjectLabel}.</p>
       ) : (
         <ul className="mt-4 space-y-4">
           {reviews.map((review) => (

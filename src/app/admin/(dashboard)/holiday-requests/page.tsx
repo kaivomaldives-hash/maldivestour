@@ -23,8 +23,8 @@ export default async function AdminHolidayRequestsPage({ searchParams }: { searc
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-ocean-900">Custom Holiday Requests ({results.total})</h1>
-      <p className="mt-1 text-sm text-neutral-600">Submitted through the &ldquo;Customize Your Holiday&rdquo; planner on the Packages page.</p>
+      <h1 className="text-2xl font-semibold text-ocean-900">Offer Requests ({results.total})</h1>
+      <p className="mt-1 text-sm text-neutral-600">Custom holiday requests submitted through the &ldquo;Customize Your Holiday&rdquo; planner on the Packages page.</p>
 
       <nav className="mt-4 flex flex-wrap gap-2 text-sm">
         <Link href="/admin/holiday-requests" className={`rounded-full px-3.5 py-2 font-medium ${!status ? "bg-lagoon-100 text-ocean-900" : "text-neutral-600 hover:bg-neutral-100"}`}>

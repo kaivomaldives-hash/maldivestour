@@ -1,3 +1,4 @@
+import { PREFIXED_LOCALES } from "@/lib/i18n/locales";
 import { createClient } from "@/lib/supabase/public";
 
 /**
@@ -10,8 +11,28 @@ import { createClient } from "@/lib/supabase/public";
  * the url_redirects lookup off the hot path for the site's actual traffic
  * (Task 16 §35 — "avoid expensive database calls for every request where
  * possible").
- */
-const NEW_APP_PATHS = ["/maldives", "/api"];
+ *
+ * This list has not kept up with every top-level route added since Task 16
+ * (confirmed against src/app's current top-level directories): the admin
+ * CMS, the standalone marketing/info pages, and — most costly, since this
+ * runs on every single page view, not just bot traffic — every locale-
+ * prefixed page (`/de`, `/de/maldives/...`, etc. for all 8 non-English
+ * locales) was falling through to "looks like legacy" and paying for a
+ * url_redirects read on every real visit, on top of every bot probe of
+ * `/admin/*` doing the same. Locale prefixes only ever wrap `/<locale>`
+ * (the locale homepage) and `/<locale>/maldives` (see src/app/[locale]'s
+ * own tree — it has no other subtree), so those are the only two shapes
+ * needed per locale. */
+const NEW_APP_PATHS = [
+  "/maldives",
+  "/api",
+  "/admin",
+  "/become-a-partner",
+  "/maldives-ferry-schedule",
+  "/maldives-speedboats-charter",
+  "/terms-and-conditions",
+  ...PREFIXED_LOCALES.flatMap((locale) => [`/${locale}`, `/${locale}/maldives`]),
+];
 const NEVER_REDIRECT_EXACT = new Set(["/", "/favicon.ico", "/robots.txt", "/sitemap.xml"]);
 
 export function looksLikeLegacyPath(pathname: string): boolean {

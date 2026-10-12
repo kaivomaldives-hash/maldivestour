@@ -33,9 +33,13 @@ export interface StaffContext {
   isAdmin: boolean;
 }
 
-/** Redirects to /admin/login if unauthenticated, or to / if authenticated
- * but not staff (never to a login loop — the account is real, it just
- * isn't staff, so bouncing to the public site is the honest outcome). */
+/** Redirects to /admin/login if unauthenticated, or back to /admin/login
+ * with `?reason=not_staff` if authenticated but not staff — not a login
+ * loop, since that page shows a clear "you're signed in as X, which isn't
+ * staff" banner with a sign-out action in that case, rather than the
+ * silent bounce-to-homepage this used to do (indistinguishable from any
+ * other redirect, and genuinely confusing when admin and partner
+ * portals share the exact same Supabase Auth session in one browser). */
 export async function requireStaff(): Promise<StaffContext> {
   const supabase = await createClient();
 
@@ -48,7 +52,7 @@ export async function requireStaff(): Promise<StaffContext> {
   // never>` — see its own header comment), so this RPC call is narrowly
   // cast the same way src/lib/bookings/actions.ts already does.
   const { data: isStaffResult } = await supabase.rpc("is_staff" as unknown as never);
-  if (!isStaffResult) redirect("/");
+  if (!isStaffResult) redirect("/admin/login?reason=not_staff");
 
   const { data: isAdminResult } = await supabase.rpc("is_admin" as unknown as never);
 

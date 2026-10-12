@@ -1,7 +1,6 @@
 import "server-only";
 
 import { BOOKING_STATUSES, type BookingStatus } from "@/lib/admin/booking-status";
-import { cachedRead } from "@/lib/cache/cached-read";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -167,8 +166,27 @@ async function getDashboardStatsUncached(): Promise<DashboardStats> {
 // card/filter above) -- every staff visit to /admin was re-running the
 // whole burst uncached, which showed up as a cluster of Postgres
 // statement-timeout and 500 errors during a 2026-10-12 load incident.
-// The counts are identical for every staff member (no per-user
-// filtering), so a short shared cache turns repeat/concurrent admin
-// visits within the window into zero extra queries instead of another
-// 27-query burst each time.
-export const getDashboardStats = cachedRead(getDashboardStatsUncached, ["admin:dashboard-stats"], 60);
+//
+// This can NOT be wrapped in the usual cachedRead()/unstable_cache
+// helper every other repository module uses: createClient() (above)
+// reads next/headers cookies() to run as the signed-in staff user (it
+// has to -- these counts are gated by is_staff()-checked RLS), and this
+// fork's Next.js hard-errors ("used `cookies()` inside a function
+// cached with `unstable_cache()`", error code E846) the moment a
+// cookies()-reading call executes inside an unstable_cache callback.
+// That's exactly what broke /admin after this was first wrapped in
+// cachedRead. A plain in-process memo sidesteps Next's cache machinery
+// entirely, at the cost of not being shared across serverless
+// instances/cold starts -- an acceptable trade for a low-traffic admin
+// page.
+let statsCache: { value: DashboardStats; expiresAt: number } | null = null;
+const STATS_CACHE_TTL_MS = 60_000;
+
+export async function getDashboardStats(): Promise<DashboardStats> {
+  if (statsCache && statsCache.expiresAt > Date.now()) {
+    return statsCache.value;
+  }
+  const value = await getDashboardStatsUncached();
+  statsCache = { value, expiresAt: Date.now() + STATS_CACHE_TTL_MS };
+  return value;
+}

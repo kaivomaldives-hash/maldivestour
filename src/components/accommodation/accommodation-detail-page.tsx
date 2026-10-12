@@ -117,71 +117,11 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
       {/* Fixed order below per the site owner's spec, same for every
-          hotel/guesthouse/resort: overview → video (admin-added only) →
-          gallery → map → rooms → nearby activities (add-ons) → transfer
-          options → reviews. Everything else keeps its previous relative
-          order, after this block. */}
-      {accommodation.overviewParagraphs.length > 0 && (
-        <section className="max-w-3xl space-y-4 text-neutral-700">
-          {accommodation.overviewParagraphs.map((paragraph, i) => (
-            <p key={i}>{paragraph}</p>
-          ))}
-        </section>
-      )}
-
-      <VideoSection youtubeId={accommodation.videoYoutubeId} accommodationTitle={accommodation.title} />
-
-      <GallerySection images={accommodation.galleryImages} accommodationTitle={accommodation.title} />
-
-      <LocationMap title={accommodation.title} lat={primaryLocation?.lat ?? null} lng={primaryLocation?.lng ?? null} />
-
-      <RoomsSection rooms={accommodation.rooms} accommodationTitle={accommodation.title} />
-
-      <NearbyActivitiesSection
-        nearby={nearbyActivities}
-        heading={`Things to Do Near ${accommodation.title}`}
-        islandTitle={primaryLocation?.title ?? null}
-        atollTitle={atoll?.title ?? null}
-        viewAllHref="/maldives/activities/"
-      />
-
-      {transferRoutes.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Getting Here</h2>
-          <p className="mt-1 text-sm text-neutral-600">Real, source-verified transfer routes to and from {primaryLocation?.title ?? accommodation.title}.</p>
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {transferRoutes.slice(0, 6).map((route) => (
-              <TransferRouteCard key={route.id} route={route} />
-            ))}
-          </ul>
-          <Link href="/maldives/transfers/" className="mt-4 inline-block text-sm font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
-            View all transfers →
-          </Link>
-        </section>
-      )}
-
-      <ReviewsSection nodeId={accommodation.id} reviews={reviews} subjectLabel={TYPE_LABEL[type].toLowerCase()} />
-
-      {accommodation.isBookable && (
-        <section className="mt-10 rounded-2xl border border-neutral-200 p-6">
-          <h2 className="text-xl font-semibold text-ocean-900">Request an Offer</h2>
-          <p className="mt-1 text-sm text-neutral-600">
-            Prices change with season and availability — tell us your dates and we&rsquo;ll send current rates for {accommodation.title}.
-          </p>
-          <div className="mt-4">
-            <NodeInquiryForm
-              productNodeId={accommodation.id}
-              productTitle={accommodation.title}
-              source="accommodation"
-              submitLabel={bookingCta("accommodation").submitLabel}
-              showAccommodationFields
-              roomOptions={accommodation.rooms.map((room) => room.name)}
-            />
-          </div>
-        </section>
-      )}
-
-      <dl className="mt-8 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
+          hotel/guesthouse/resort: quick facts → overview → video
+          (admin-added only) → gallery → map → rooms → nearby activities
+          (add-ons) → transfer options → reviews. Everything else keeps
+          its previous relative order, after this block. */}
+      <dl className="grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
         <div>
           <dt className="text-neutral-500">Type</dt>
           <dd className="font-medium">{TYPE_LABEL[type]}</dd>
@@ -237,6 +177,66 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
           </div>
         )}
       </dl>
+
+      {accommodation.overviewParagraphs.length > 0 && (
+        <section className="mt-8 max-w-3xl space-y-4 text-neutral-700">
+          {accommodation.overviewParagraphs.map((paragraph, i) => (
+            <p key={i}>{paragraph}</p>
+          ))}
+        </section>
+      )}
+
+      <VideoSection youtubeId={accommodation.videoYoutubeId} accommodationTitle={accommodation.title} />
+
+      <GallerySection images={accommodation.galleryImages} accommodationTitle={accommodation.title} />
+
+      <LocationMap title={accommodation.title} lat={primaryLocation?.lat ?? null} lng={primaryLocation?.lng ?? null} />
+
+      <RoomsSection rooms={accommodation.rooms} accommodationTitle={accommodation.title} />
+
+      <NearbyActivitiesSection
+        nearby={nearbyActivities}
+        heading={`Things to Do in ${accommodation.title}`}
+        islandTitle={primaryLocation?.title ?? null}
+        atollTitle={atoll?.title ?? null}
+        viewAllHref="/maldives/activities/"
+      />
+
+      {transferRoutes.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Getting Here</h2>
+          <p className="mt-1 text-sm text-neutral-600">Real, source-verified transfer routes to and from {primaryLocation?.title ?? accommodation.title}.</p>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {transferRoutes.slice(0, 6).map((route) => (
+              <TransferRouteCard key={route.id} route={route} />
+            ))}
+          </ul>
+          <Link href="/maldives/transfers/" className="mt-4 inline-block text-sm font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
+            View all transfers →
+          </Link>
+        </section>
+      )}
+
+      <ReviewsSection nodeId={accommodation.id} reviews={reviews} subjectLabel={TYPE_LABEL[type].toLowerCase()} />
+
+      {accommodation.isBookable && (
+        <section className="mt-10 rounded-2xl border border-neutral-200 p-6">
+          <h2 className="text-xl font-semibold text-ocean-900">Request an Offer</h2>
+          <p className="mt-1 text-sm text-neutral-600">
+            Prices change with season and availability — tell us your dates and we&rsquo;ll send current rates for {accommodation.title}.
+          </p>
+          <div className="mt-4">
+            <NodeInquiryForm
+              productNodeId={accommodation.id}
+              productTitle={accommodation.title}
+              source="accommodation"
+              submitLabel={bookingCta("accommodation").submitLabel}
+              showAccommodationFields
+              roomOptions={accommodation.rooms.map((room) => room.name)}
+            />
+          </div>
+        </section>
+      )}
 
       <TypicalAmenitiesSection accommodationType={accommodation.accommodationType} />
 

@@ -1,32 +1,14 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
-import { PartnerAccountMenu } from "@/components/partner/partner-account-menu";
+import { PartnerSidebar } from "@/components/partner/partner-sidebar";
 import { requirePartner } from "@/lib/partner/auth";
 import { getMyPartnerAccount } from "@/lib/partner/repository";
-import type { OnboardingStatus } from "@/lib/partner/types";
 
 export const metadata: Metadata = {
   title: "Partner Dashboard | MTG",
   robots: { index: false, follow: false },
-};
-
-const STATUS_LABEL: Record<OnboardingStatus, string> = {
-  profile: "Profile incomplete",
-  submitted: "Submitted — awaiting review",
-  approved: "Approved",
-  rejected: "Changes requested",
-  suspended: "Suspended",
-};
-
-const STATUS_CLASS: Record<OnboardingStatus, string> = {
-  profile: "bg-neutral-100 text-neutral-700",
-  submitted: "bg-amber-100 text-amber-800",
-  approved: "bg-maldives-100 text-maldives-800",
-  rejected: "bg-red-100 text-red-700",
-  suspended: "bg-red-100 text-red-700",
 };
 
 /**
@@ -36,36 +18,23 @@ const STATUS_CLASS: Record<OnboardingStatus, string> = {
  * sit OUTSIDE this route group so they aren't themselves gated by the
  * check that would otherwise redirect a signed-out visitor back to one of
  * them in a loop.
+ *
+ * Sidebar layout: same fixed-on-lg+/slide-in-drawer shape as the admin
+ * dashboard's AdminSidebar -- this used to be a row of links under the
+ * main site header instead. Sign-out/profile now live in the site-wide
+ * HeaderAccountMenu in SiteHeader, not duplicated here.
  */
 export default async function PartnerDashboardLayout({ children }: { children: ReactNode }) {
-  const { email } = await requirePartner();
+  await requirePartner();
   const account = await getMyPartnerAccount();
   if (!account) notFound();
 
   return (
-    <div className="min-h-screen bg-sand-50">
-      <header className="border-b border-neutral-200 bg-white">
-        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
-          <div>
-            <Link href="/partner" className="font-semibold text-ocean-900">
-              {account.businessName}
-            </Link>
-            <span className={`ml-3 inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_CLASS[account.onboardingStatus]}`}>
-              {STATUS_LABEL[account.onboardingStatus]}
-            </span>
-          </div>
-          <nav aria-label="Partner" className="flex items-center gap-4 text-sm font-medium">
-            <Link href="/partner/listings" className="text-neutral-600 hover:text-ocean-900">
-              My Listings
-            </Link>
-            <Link href="/partner/bookings" className="text-neutral-600 hover:text-ocean-900">
-              Bookings
-            </Link>
-          </nav>
-          <PartnerAccountMenu email={email} />
-        </div>
-      </header>
-      <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6">{children}</main>
+    <div className="min-h-screen bg-sand-50 lg:flex">
+      <PartnerSidebar businessName={account.businessName} onboardingStatus={account.onboardingStatus} />
+      <main className="min-w-0 flex-1 px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-5xl">{children}</div>
+      </main>
     </div>
   );
 }

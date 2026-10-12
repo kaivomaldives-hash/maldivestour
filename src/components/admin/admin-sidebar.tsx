@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 
+import { AdminAccountMenu } from "@/components/admin/admin-account-menu";
 import { AdminNav } from "@/components/admin/admin-nav";
-import { SignOutButton } from "@/components/admin/sign-out-button";
 
 /**
  * Fixed left sidebar on lg+ screens; on smaller screens it's a slide-in
@@ -68,12 +68,11 @@ export function AdminSidebar({ isAdmin, email }: { isAdmin: boolean; email: stri
         </div>
 
         <div className="shrink-0 border-t border-neutral-200 px-4 py-4">
-          {email && <p className="truncate text-xs text-neutral-500">{email}</p>}
-          <div className="mt-2 flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <Link href="/" target="_blank" className="text-sm text-neutral-600 hover:text-ocean-900">
               View site
             </Link>
-            <SignOutButton />
+            <AdminAccountMenu email={email} />
           </div>
         </div>
       </aside>

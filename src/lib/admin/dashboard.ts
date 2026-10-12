@@ -1,6 +1,7 @@
 import "server-only";
 
 import { BOOKING_STATUSES, type BookingStatus } from "@/lib/admin/booking-status";
+import { cachedRead } from "@/lib/cache/cached-read";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -79,7 +80,7 @@ async function countListingsByStatus(supabase: SupabaseServerClient, status: str
   return count ?? 0;
 }
 
-export async function getDashboardStats(): Promise<DashboardStats> {
+async function getDashboardStatsUncached(): Promise<DashboardStats> {
   const supabase = await createClient();
 
   const [
@@ -161,3 +162,13 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     listingsDraft,
   };
 }
+
+// This one page load fires ~27 separate count queries at once (one per
+// card/filter above) -- every staff visit to /admin was re-running the
+// whole burst uncached, which showed up as a cluster of Postgres
+// statement-timeout and 500 errors during a 2026-10-12 load incident.
+// The counts are identical for every staff member (no per-user
+// filtering), so a short shared cache turns repeat/concurrent admin
+// visits within the window into zero extra queries instead of another
+// 27-query burst each time.
+export const getDashboardStats = cachedRead(getDashboardStatsUncached, ["admin:dashboard-stats"], 60);

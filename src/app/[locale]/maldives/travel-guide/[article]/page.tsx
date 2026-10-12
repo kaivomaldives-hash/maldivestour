@@ -30,7 +30,9 @@ async function articleHreflangAlternates(entityId: string, englishSlug: string):
   return alternates;
 }
 
-export const revalidate = 3600;
+// Staggered (not a round 3600) so ISR regenerations don't cluster with
+// every other route's -- see src/app/page.tsx for why.
+export const revalidate = 3720;
 
 interface Params {
   locale: string;

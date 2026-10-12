@@ -26,7 +26,9 @@ import { getFeaturedPackageViews } from "@/lib/packages/view-repository";
 import { hreflangAlternates, localizedCanonicalUrl } from "@/lib/seo/site";
 import { getTransferRoutes } from "@/lib/transfers/repository";
 
-export const revalidate = 3600;
+// Staggered (not a round 3600) so ISR regenerations don't cluster with
+// every other route's -- see src/app/page.tsx for why.
+export const revalidate = 3780;
 
 const WHATSAPP_URL = "https://wa.me/9607794332";
 

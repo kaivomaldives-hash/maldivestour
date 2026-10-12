@@ -10,7 +10,9 @@ import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
 import { localizedCanonicalUrl } from "@/lib/seo/site";
 
-export const revalidate = 3600;
+// Staggered (not a round 3600) so ISR regenerations don't cluster with
+// every other route's -- see src/app/page.tsx for why.
+export const revalidate = 3900;
 
 /**
  * Localized Travel Guide hub — lists only articles that actually have a

@@ -49,6 +49,28 @@ async function listAllAuthEmails(): Promise<Map<string, string>> {
   return emailById;
 }
 
+export interface MyProfile {
+  displayName: string | null;
+  bio: string | null;
+  homeCountry: string | null;
+  role: UserRole;
+}
+
+/** The signed-in staff member's own profile fields, for the self-service
+ * /admin/profile editor -- distinct from getUsersAdmin() above, which is
+ * admin-only and reads everyone's. Any staff member (editor or admin) can
+ * read and edit their own profile. */
+export async function getMyProfile(userId: string): Promise<MyProfile | null> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("profiles")
+    .select("display_name, bio, home_country, role")
+    .eq("id", userId)
+    .maybeSingle<{ display_name: string | null; bio: string | null; home_country: string | null; role: UserRole }>();
+  if (!data) return null;
+  return { displayName: data.display_name, bio: data.bio, homeCountry: data.home_country, role: data.role };
+}
+
 export async function getUsersAdmin(): Promise<AdminUserItem[]> {
   const supabase = await createClient();
   const { data: profiles } = await supabase

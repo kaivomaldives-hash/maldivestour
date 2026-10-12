@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
-import { PartnerSignOutButton } from "@/components/partner/partner-sign-out-button";
+import { PartnerAccountMenu } from "@/components/partner/partner-account-menu";
 import { requirePartner } from "@/lib/partner/auth";
 import { getMyPartnerAccount } from "@/lib/partner/repository";
 import type { OnboardingStatus } from "@/lib/partner/types";
@@ -38,7 +38,7 @@ const STATUS_CLASS: Record<OnboardingStatus, string> = {
  * them in a loop.
  */
 export default async function PartnerDashboardLayout({ children }: { children: ReactNode }) {
-  await requirePartner();
+  const { email } = await requirePartner();
   const account = await getMyPartnerAccount();
   if (!account) notFound();
 
@@ -55,9 +55,6 @@ export default async function PartnerDashboardLayout({ children }: { children: R
             </span>
           </div>
           <nav aria-label="Partner" className="flex items-center gap-4 text-sm font-medium">
-            <Link href="/partner" className="text-neutral-600 hover:text-ocean-900">
-              Profile
-            </Link>
             <Link href="/partner/listings" className="text-neutral-600 hover:text-ocean-900">
               My Listings
             </Link>
@@ -65,12 +62,7 @@ export default async function PartnerDashboardLayout({ children }: { children: R
               Bookings
             </Link>
           </nav>
-          <div className="flex items-center gap-4">
-            <Link href="/" target="_blank" className="text-sm text-neutral-600 hover:text-ocean-900">
-              View site
-            </Link>
-            <PartnerSignOutButton />
-          </div>
+          <PartnerAccountMenu email={email} />
         </div>
       </header>
       <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6">{children}</main>

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
-import { requireAdmin } from "@/lib/admin/auth";
+import { requireAdmin, requireStaff } from "@/lib/admin/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
@@ -62,6 +62,48 @@ export async function inviteStaffUser(email: string, role: string): Promise<Admi
 
   const { error: roleError } = await admin.from("profiles").update({ role } as unknown as never).eq("id", data.user.id);
   if (roleError) return { ok: false, error: `Invited, but failed to set role: ${roleError.message}` };
+
+  revalidatePath("/admin/users");
+  return { ok: true };
+}
+
+/** Self-service -- any signed-in staff member (not just admins) can edit
+ * their own display_name/bio/home_country. Never touches role or any
+ * other staff member's row: requireStaff() establishes who's calling and
+ * the update is always scoped to that id, never a client-supplied one. */
+export async function updateMyProfile(fields: { displayName: string | null; bio: string | null; homeCountry: string | null }): Promise<AdminActionResult> {
+  const { userId } = await requireStaff();
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      display_name: fields.displayName,
+      bio: fields.bio,
+      home_country: fields.homeCountry,
+    } as unknown as never)
+    .eq("id", userId);
+  if (error) return { ok: false, error: error.message };
+
+  revalidatePath("/admin/profile");
+  return { ok: true };
+}
+
+/**
+ * Permanently removes a staff account -- both the auth.users row (via the
+ * service-role client, the only way to delete an auth user at all) and,
+ * through profiles' `on delete cascade` FK to auth.users, its profiles
+ * row along with it. Irreversible: there's no equivalent "undo" the way
+ * updateUserRole() has (just set the role back), so the UI confirms
+ * before calling this (see DeleteUserButton).
+ */
+export async function deleteUser(userId: string): Promise<AdminActionResult> {
+  const { userId: callerId } = await requireAdmin();
+  if (userId === callerId) return { ok: false, error: "You can't delete your own account from here." };
+
+  const admin = createAdminClient();
+  const { error } = await admin.auth.admin.deleteUser(userId);
+  if (error) return { ok: false, error: error.message };
 
   revalidatePath("/admin/users");
   return { ok: true };

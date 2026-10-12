@@ -1,3 +1,4 @@
+import { DeleteUserButton } from "@/components/admin/delete-user-button";
 import { InviteUserForm } from "@/components/admin/invite-user-form";
 import { UserRoleSelect } from "@/components/admin/user-role-select";
 import { Badge } from "@/components/ui/badge";
@@ -39,6 +40,7 @@ export default async function AdminUsersPage() {
               <th className="px-4 py-3">Name</th>
               <th className="px-4 py-3">Joined</th>
               <th className="px-4 py-3">Role</th>
+              <th className="px-4 py-3">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-neutral-100">
@@ -52,6 +54,9 @@ export default async function AdminUsersPage() {
                     <Badge tone={ROLE_TONE[u.role]}>{u.role}</Badge>
                     <UserRoleSelect userId={u.id} role={u.role} isSelf={u.id === userId} />
                   </div>
+                </td>
+                <td className="px-4 py-3">
+                  <DeleteUserButton userId={u.id} email={u.email} isSelf={u.id === userId} />
                 </td>
               </tr>
             ))}

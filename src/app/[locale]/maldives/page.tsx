@@ -15,7 +15,9 @@ import { getUiStrings } from "@/lib/i18n/ui-strings";
 import { getAtolls, getIslandBySlug } from "@/lib/locations/repository";
 import { hreflangAlternates, localizedCanonicalUrl } from "@/lib/seo/site";
 
-export const revalidate = 3600;
+// Staggered (not a round 3600) so ISR regenerations don't cluster with
+// every other route's -- see src/app/page.tsx for why.
+export const revalidate = 3660;
 
 /**
  * Mirrors the real English Maldives hub's section structure

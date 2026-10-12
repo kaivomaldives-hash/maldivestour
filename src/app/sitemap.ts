@@ -30,8 +30,16 @@ import { getTransferRoutes } from "@/lib/transfers/repository";
  * deploy. Matching the same hourly window the rest of the site's dynamic
  * pages use (e.g. src/app/maldives/stays/page.tsx) keeps it current
  * without needing a redeploy every time new content is published.
+ *
+ * Deliberately not a round 3600: this route alone touches the entire
+ * catalog (every accommodation, activity, package, transfer route,
+ * island, etc. via fetchAllPages below), so if its regeneration ever
+ * landed in the same instant as the many per-entity detail routes'
+ * regenerations (all also on round hourly windows), that's a lot of
+ * simultaneous load on Supabase at once. Staggered along with every
+ * other revalidate in src/app -- see src/app/page.tsx for why.
  */
-export const revalidate = 3600;
+export const revalidate = 3840;
 
 const PAGE_SIZE = 100; // matches every repository's own pageSize cap
 

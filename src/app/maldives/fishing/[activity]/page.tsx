@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 
 import { FishingDetailPage, fishingDetailMetadata } from "@/components/fishing/fishing-detail-page";
 
-export const revalidate = 3600;
+// Staggered (not a round 3600) so ISR regenerations don't cluster with
+// every other route's -- see src/app/page.tsx for why.
+export const revalidate = 4260;
 
 interface Params {
   activity: string;

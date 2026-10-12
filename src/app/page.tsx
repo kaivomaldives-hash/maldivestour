@@ -23,7 +23,10 @@ import { getFeaturedPackageViews } from "@/lib/packages/view-repository";
 import { canonicalUrl } from "@/lib/seo/site";
 import { getTransferRoutes } from "@/lib/transfers/repository";
 
-export const revalidate = 3600;
+// Deliberately not a round 3600 -- staggered across routes so their ISR
+// regenerations don't all fall due in the same instant and burst Supabase
+// with simultaneous queries (see the Oct 2026 outage this was added for).
+export const revalidate = 4860;
 
 const WHATSAPP_URL = "https://wa.me/9607794332";
 

@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 
 import { PackageDetailPage, packageDetailMetadata } from "@/components/packages/package-detail-page";
 
-export const revalidate = 3600;
+// Staggered (not a round 3600) so ISR regenerations don't cluster with
+// every other route's -- see src/app/page.tsx for why.
+export const revalidate = 4560;
 
 interface Params {
   package: string;

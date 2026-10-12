@@ -27,7 +27,7 @@ export function NearbyActivitiesSection({ nearby, heading, islandTitle, atollTit
   return (
     <section className="mt-10">
       <h2 className="text-xl font-semibold text-ocean-900">{heading}</h2>
-      <p className="mt-1 text-sm text-neutral-600">Real activities and experiences available in this area — not bookable through this listing directly.</p>
+      <p className="mt-1 text-sm text-neutral-600">Real activities and experiences available in this area.</p>
 
       {islandActivities.length > 0 && (
         <div className="mt-4">

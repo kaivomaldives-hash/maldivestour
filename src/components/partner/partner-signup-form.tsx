@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
@@ -30,7 +31,52 @@ export function PartnerSignupForm() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [needsEmailConfirmation, setNeedsEmailConfirmation] = useState(false);
+  // Supabase silently no-ops signUp() for an email that already has an
+  // account (even an unconfirmed one) — no error, no new email sent,
+  // `session` null — to avoid leaking which emails are registered. That
+  // looks identical to a fresh "check your email" success unless we
+  // check `user.identities` (empty array only in this exact case) and
+  // say so plainly, with a way to actually get a new email sent.
+  const [existingAccountEmail, setExistingAccountEmail] = useState<string | null>(null);
+  const [resendState, setResendState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [partnerKind, setPartnerKind] = useState<PartnerKind | "">("");
+  const [isResending, startResend] = useTransition();
+
+  if (existingAccountEmail) {
+    return (
+      <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-center">
+        <p className="text-lg font-semibold text-ocean-900">That email is already registered</p>
+        <p className="mt-2 text-sm text-neutral-700">
+          An account for <strong>{existingAccountEmail}</strong> already exists. If you haven&rsquo;t confirmed it yet, check your
+          inbox (and spam folder) for the original email, or resend it below. Already confirmed?{" "}
+          <Link href="/partner/login" className="font-medium text-maldives-600 hover:underline">
+            Sign in instead
+          </Link>
+          .
+        </p>
+        <button
+          type="button"
+          disabled={isResending || resendState === "sent"}
+          onClick={() => {
+            startResend(async () => {
+              setResendState("sending");
+              const supabase = createClient();
+              const { error: resendError } = await supabase.auth.resend({
+                type: "signup",
+                email: existingAccountEmail,
+                options: { emailRedirectTo: `${window.location.origin}/auth/confirm?next=/partner` },
+              });
+              setResendState(resendError ? "error" : "sent");
+            });
+          }}
+          className="mt-4 inline-flex items-center justify-center rounded-full bg-maldives-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-maldives-700 disabled:opacity-50"
+        >
+          {resendState === "sending" ? "Sending…" : resendState === "sent" ? "Confirmation email sent" : "Resend confirmation email"}
+        </button>
+        {resendState === "error" && <p className="mt-2 text-sm text-red-600">Couldn&rsquo;t resend right now. Please try again shortly.</p>}
+      </div>
+    );
+  }
 
   if (needsEmailConfirmation) {
     return (
@@ -82,6 +128,10 @@ export function PartnerSignupForm() {
             return;
           }
           if (!signUpData.session) {
+            if ((signUpData.user?.identities?.length ?? 0) === 0) {
+              setExistingAccountEmail(email);
+              return;
+            }
             setNeedsEmailConfirmation(true);
             return;
           }

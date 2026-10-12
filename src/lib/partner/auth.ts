@@ -57,13 +57,23 @@ export async function requirePartner(): Promise<PartnerContext> {
   if (!isPartnerResult) {
     const metadata = user.user_metadata as PartnerSignupMetadata | null;
     if (metadata?.partnerKind && metadata?.businessName) {
-      await supabase.rpc("create_partner_account" as unknown as never, {
+      // supabase-js never throws on a Postgres exception raised inside an
+      // RPC -- it resolves with { error } -- so this was previously
+      // silently ignored: a validation failure here (or any other RPC
+      // error) looked identical to "nothing to self-heal", and the user
+      // landed back on /become-a-partner with no indication why. Logging
+      // it server-side at least makes the real reason visible in the
+      // deployment's function logs instead of a dead end.
+      const { error: healError } = await supabase.rpc("create_partner_account" as unknown as never, {
         p_partner_kind: metadata.partnerKind,
         p_property_type: metadata.propertyType ?? null,
         p_business_name: metadata.businessName,
         p_contact_email: user.email,
         p_contact_phone: metadata.contactPhone ?? null,
       } as unknown as never);
+      if (healError) {
+        console.error(`[requirePartner] self-heal create_partner_account failed for user ${user.id}:`, healError.message);
+      }
       ({ data: isPartnerResult } = await supabase.rpc("is_partner" as unknown as never));
     }
   }

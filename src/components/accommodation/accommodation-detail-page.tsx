@@ -24,7 +24,7 @@ import { getNearbyAttractions } from "@/lib/attractions/repository";
 import { bookingCta } from "@/lib/bookings/copy";
 import { getPackageViewsByAccommodation } from "@/lib/packages/view-repository";
 import { getReviewsForNode } from "@/lib/reviews/repository";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { getTransferRoutesByLocation } from "@/lib/transfers/repository";
 
 const TYPE_LABEL: Record<AccommodationType, string> = {
@@ -102,10 +102,10 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
           matching structured data. */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd(breadcrumbs, `/maldives/${segment}/${accommodation.slug}`)) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(breadcrumbJsonLd(breadcrumbs, `/maldives/${segment}/${accommodation.slug}`)) }}
       />
       {videoJsonLd && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(videoJsonLd) }} />
       )}
       <PageHero
         breadcrumbs={breadcrumbs}

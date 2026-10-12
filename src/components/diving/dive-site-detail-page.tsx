@@ -6,7 +6,7 @@ import { ActivityCard } from "@/components/activity/activity-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getDiveSiteBySlug, getDivingActivitiesAtSite } from "@/lib/diving/repository";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 
 const SITE_TYPE_LABEL: Record<string, string> = {
   reef: "Reef",
@@ -45,7 +45,7 @@ export async function DiveSiteDetailPage({ slug }: { slug: string }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             breadcrumbJsonLd(
               [{ label: "Maldives", href: "/maldives/" }, { label: "Dive Sites", href: "/maldives/dive-sites/" }, { label: site.title }],
               `/maldives/dive-sites/${site.slug}`,

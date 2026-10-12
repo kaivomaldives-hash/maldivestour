@@ -19,7 +19,7 @@ import {
 } from "@/lib/packages/view-repository";
 import type { PackageCategorySlug, PackageDurationBandSlug, PackageSortOption } from "@/lib/packages/view-types";
 import { PACKAGE_CATEGORY_TITLE, PACKAGE_DURATION_BANDS } from "@/lib/packages/view-types";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 
 const PAGE_SIZE = 24;
 const SORT_OPTIONS: PackageSortOption[] = ["recommended", "price-asc", "price-desc", "shortest", "longest", "rating", "newest"];
@@ -128,12 +128,12 @@ export async function PackageCategoryPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Packages", href: "/maldives/packages/" }, { label: PACKAGE_CATEGORY_TITLE[category] }], `/maldives/packages/${category}`),
           ),
         }}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(content.faqs)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(faqJsonLd(content.faqs)) }} />
 
       <PageHero
         breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Packages", href: "/maldives/packages/" }, { label: PACKAGE_CATEGORY_TITLE[category] }]}

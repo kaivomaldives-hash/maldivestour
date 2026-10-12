@@ -26,7 +26,7 @@ import { getChildLocations, getIslandBySlug, getIslandContent } from "@/lib/loca
 import { getNearbyIslands } from "@/lib/locations/nearby-islands";
 import { getHeroMediaByNodeIds, getMediaForNode } from "@/lib/media/repository";
 import { getPackageViewsByLocation } from "@/lib/packages/view-repository";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { getSurfBreaksByLocation } from "@/lib/surfing/repository";
 import { createClient } from "@/lib/supabase/public";
 import { getTransferRoutesByLocation } from "@/lib/transfers/repository";
@@ -137,7 +137,7 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             breadcrumbJsonLd(
               [
                 { label: "Maldives", href: "/maldives/" },
@@ -150,7 +150,7 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
           ),
         }}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(touristDestinationJsonLd(island, atoll)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(touristDestinationJsonLd(island, atoll)) }} />
 
       <PageHero
         breadcrumbs={[

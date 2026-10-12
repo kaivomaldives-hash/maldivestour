@@ -14,7 +14,7 @@ import { MFH_PRICE_TABLES } from "@/lib/packages/mfh-price-tables";
 import { getRelatedPackageViews, getPackageViewBySlug } from "@/lib/packages/view-repository";
 import { PACKAGE_CATEGORY_TITLE } from "@/lib/packages/view-types";
 import type { PackageView } from "@/lib/packages/view-types";
-import { breadcrumbJsonLd, canonicalUrl, getSiteUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, getSiteUrl, safeJsonLdStringify } from "@/lib/seo/site";
 
 const WHATSAPP_NUMBER = "9607794332";
 
@@ -112,9 +112,9 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
   return (
     <main>
       {packageJsonLd(pkg).map((entry, i) => (
-        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(entry) }} />
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(entry) }} />
       ))}
-      {pkg.faqs.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(pkg)) }} />}
+      {pkg.faqs.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(faqJsonLd(pkg)) }} />}
 
       <PageHero
         breadcrumbs={[

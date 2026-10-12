@@ -15,7 +15,7 @@ import { PageHero } from "@/components/ui/page-hero";
 import { getLocationBySlug, getLocationSummaryById } from "@/lib/locations/repository";
 import { getPackageViewsByTransferRoute } from "@/lib/packages/view-repository";
 import { getReviewsForNode } from "@/lib/reviews/repository";
-import { breadcrumbJsonLd, canonicalUrl, getSiteUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, getSiteUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import {
   getTransferRouteBySlug,
   getTransferRoutesByAtoll,
@@ -301,13 +301,13 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
 
   return (
     <main>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(routeJsonLd(route)) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(routeVideoJsonLd()) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faqs)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(routeJsonLd(route)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(routeVideoJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(faqJsonLd(faqs)) }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             breadcrumbJsonLd(
               [{ label: "Maldives", href: "/maldives/" }, { label: "Transfers", href: "/maldives/transfers/" }, { label: route.title }],
               `/maldives/transfers/${route.slug}`,

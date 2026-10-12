@@ -11,7 +11,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getExchangeRates } from "@/lib/currency/rates";
 import { getPublishedLocalesForPage } from "@/lib/i18n/repository";
-import { getSiteUrl, organizationJsonLd, websiteJsonLd } from "@/lib/seo/site";
+import { getSiteUrl, organizationJsonLd, safeJsonLdStringify, websiteJsonLd } from "@/lib/seo/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,8 +49,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {/* Task 17 audit: no sitewide Organization/WebSite entity existed
             anywhere — rendered once here, not per-page, since it describes
             the site as a whole. */}
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(organizationJsonLd()) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(websiteJsonLd()) }} />
         {/* Task 17: Tawk.to live chat. customStyle.visibility must be set
             before the widget script loads (Tawk reads it once, on init) —
             offset it up 76px so the bubble clears <MobileBottomNav>'s

@@ -10,7 +10,7 @@ import { DEFAULT_LOCALE, isLocale, localizedPath, type Locale } from "@/lib/i18n
 import { getArticleLocalePaths } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
 import { publicStorageUrl } from "@/lib/media/types";
-import { canonicalUrl, getSiteUrl } from "@/lib/seo/site";
+import { canonicalUrl, getSiteUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { createClient } from "@/lib/supabase/public";
 
 /** An entity's hreflang alternates can't reuse hreflangAlternates() from
@@ -115,7 +115,7 @@ export default async function LocaleArticleDetailPage({ params }: { params: Prom
   return (
     <main>
       <RegisterArticleLocaleLinks paths={localePaths} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd(locale, article)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(articleJsonLd(locale, article)) }} />
 
       <PageHero
         breadcrumbs={[

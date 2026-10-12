@@ -6,7 +6,7 @@ import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
 import type { MediaAsset } from "@/lib/media/types";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { getTransferRoutes } from "@/lib/transfers/repository";
 import type { TransferType } from "@/lib/transfers/types";
 
@@ -88,7 +88,7 @@ export async function TransferCategoryLandingPage({ config }: { config: Transfer
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             breadcrumbJsonLd(
               [{ label: "Maldives", href: "/maldives/" }, { label: "Transfers", href: "/maldives/transfers/" }, { label: config.h1 }],
               `/maldives/${config.slug}`,
@@ -96,7 +96,7 @@ export async function TransferCategoryLandingPage({ config }: { config: Transfer
           ),
         }}
       />
-      {faq && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }} />}
+      {faq && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(faq) }} />}
 
       <PageHero
         breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Transfers", href: "/maldives/transfers/" }, { label: config.h1 }]}

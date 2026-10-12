@@ -5,7 +5,7 @@ import { SpeedboatCard } from "@/components/speedboats/speedboat-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { getSpeedboats } from "@/lib/speedboats/repository";
 import { TRANSFER_CATEGORY_IMAGES } from "@/lib/transfers/category-images";
 
@@ -54,12 +54,12 @@ export async function SpeedboatDirectoryPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Private Speedboat Charter" }], "/maldives-speedboats-charter"),
           ),
         }}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(faqJsonLd()) }} />
 
       <PageHero
         breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Private Speedboat Charter" }]}

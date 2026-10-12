@@ -39,6 +39,21 @@ export function hreflangAlternates(englishPath: string, publishedLocales: Locale
   return alternates;
 }
 
+/**
+ * Stringifies a JSON-LD payload for injection via `dangerouslySetInnerHTML`
+ * into a `<script type="application/ld+json">` tag. Plain `JSON.stringify`
+ * never escapes `<`, so a literal `</script>` inside any string value
+ * (title, summary, review text, anything sourced from the database rather
+ * than hardcoded here) would close the script tag early and let whatever
+ * follows run as HTML/script -- the same class of bug as reflecting
+ * unescaped user input into a `<script>` block anywhere else. Escaping `<`
+ * as `<` is a no-op for every legitimate value (valid JSON, same
+ * parsed result) and closes that path off entirely.
+ */
+export function safeJsonLdStringify(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
+}
+
 /** All supported locale codes — re-exported here so page-level
  * generateStaticParams/generateMetadata call sites don't need a second
  * import from src/lib/i18n/locales just for the list. */

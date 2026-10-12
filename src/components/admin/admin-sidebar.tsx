@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import { AdminAccountMenu } from "@/components/admin/admin-account-menu";
 import { AdminNav } from "@/components/admin/admin-nav";
 
 /**
@@ -14,7 +13,7 @@ import { AdminNav } from "@/components/admin/admin-nav";
  * a plain Server Component, this is the only piece that needs to be
  * interactive.
  */
-export function AdminSidebar({ isAdmin, email }: { isAdmin: boolean; email: string | null }) {
+export function AdminSidebar({ isAdmin }: { isAdmin: boolean }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -68,12 +67,12 @@ export function AdminSidebar({ isAdmin, email }: { isAdmin: boolean; email: stri
         </div>
 
         <div className="shrink-0 border-t border-neutral-200 px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" target="_blank" className="text-sm text-neutral-600 hover:text-ocean-900">
-              View site
-            </Link>
-            <AdminAccountMenu email={email} />
-          </div>
+          {/* Sign-out/profile now live in the site-wide HeaderAccountMenu
+              (src/components/header-account-menu.tsx) in the main
+              SiteHeader above this sidebar, not duplicated here. */}
+          <Link href="/" target="_blank" className="text-sm text-neutral-600 hover:text-ocean-900">
+            View site
+          </Link>
         </div>
       </aside>
     </>

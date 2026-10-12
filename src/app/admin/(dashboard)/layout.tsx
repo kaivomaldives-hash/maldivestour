@@ -22,11 +22,11 @@ export const metadata: Metadata = {
  * top bar — see that component for why it owns its own open/closed state.
  */
 export default async function AdminDashboardLayout({ children }: { children: ReactNode }) {
-  const { email, isAdmin } = await requireStaff();
+  const { isAdmin } = await requireStaff();
 
   return (
     <div className="min-h-screen bg-sand-50 lg:flex">
-      <AdminSidebar isAdmin={isAdmin} email={email} />
+      <AdminSidebar isAdmin={isAdmin} />
       <main className="min-w-0 flex-1 px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-6xl">{children}</div>
       </main>

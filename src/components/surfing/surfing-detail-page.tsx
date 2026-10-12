@@ -13,7 +13,7 @@ import { getNearbyAccommodations } from "@/lib/accommodations/repository";
 import { activityServiceJsonLd } from "@/lib/activities/types";
 import { bookingCta } from "@/lib/bookings/copy";
 import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import {
   getSurfingActivitiesByLocation,
   getSurfingActivityBySlug,
@@ -65,7 +65,7 @@ export async function SurfingDetailPage({ slug }: { slug: string }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             breadcrumbJsonLd(
               [{ label: "Maldives", href: "/maldives/" }, { label: "Surfing", href: "/maldives/surfing/" }, { label: activity.title }],
               `/maldives/surfing/${activity.slug}`,
@@ -73,7 +73,7 @@ export async function SurfingDetailPage({ slug }: { slug: string }) {
           ),
         }}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(activityServiceJsonLd(activity)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(activityServiceJsonLd(activity)) }} />
 
       <PageHero
         breadcrumbs={[

@@ -8,7 +8,7 @@ import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { getFerryRoutes } from "@/lib/ferries/repository";
 import type { FerryRoute } from "@/lib/ferries/types";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { TRANSFER_CATEGORY_IMAGES } from "@/lib/transfers/category-images";
 
 const FAQS = [
@@ -120,10 +120,10 @@ export async function FerryScheduleDirectoryPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Ferry Schedule" }], "/maldives-ferry-schedule")),
+          __html: safeJsonLdStringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Ferry Schedule" }], "/maldives-ferry-schedule")),
         }}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(faqJsonLd()) }} />
 
       <PageHero
         breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Ferry Schedule" }]}

@@ -12,7 +12,7 @@ import { getAttractionBySlug } from "@/lib/attractions/repository";
 import { ATTRACTION_TYPE_LABEL } from "@/lib/attractions/types";
 import { getArticleBySlug } from "@/lib/articles/repository";
 import { articleHref } from "@/lib/articles/types";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 
 export async function attractionDetailMetadata(slug: string): Promise<Metadata> {
   const attraction = await getAttractionBySlug(slug);
@@ -71,9 +71,9 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
     <main>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Attractions", href: "/maldives/attractions/" }, { label: attraction.title }], "/maldives/attractions")) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Attractions", href: "/maldives/attractions/" }, { label: attraction.title }], "/maldives/attractions")) }}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(touristAttractionJsonLd(attraction)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(touristAttractionJsonLd(attraction)) }} />
 
       <PageHero
         breadcrumbs={[

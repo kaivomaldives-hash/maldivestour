@@ -13,7 +13,7 @@ import { bookingCta } from "@/lib/bookings/copy";
 import { getFishingActivityBySlug } from "@/lib/fishing/repository";
 import type { TechniquePageContent } from "@/lib/fishing/technique-content";
 import { FISHING_HERO_IMAGE } from "@/lib/packages/category-images";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 function faqJsonLd(faqs: TechniquePageContent["faqs"]) {
@@ -46,7 +46,7 @@ export async function TechniqueLandingPage({ content }: { content: TechniquePage
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             breadcrumbJsonLd(
               [{ label: "Maldives", href: "/maldives/" }, { label: "Fishing", href: "/maldives/fishing/" }, { label: content.h1 }],
               `/maldives/fishing/${content.pageSlug}`,
@@ -54,7 +54,7 @@ export async function TechniqueLandingPage({ content }: { content: TechniquePage
           ),
         }}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(content.faqs)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(faqJsonLd(content.faqs)) }} />
 
       <PageHero
         breadcrumbs={[

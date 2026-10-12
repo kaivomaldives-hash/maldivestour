@@ -14,7 +14,7 @@ import { getNearbyAccommodations } from "@/lib/accommodations/repository";
 import { getActivityBySlug } from "@/lib/activities/repository";
 import { activityServiceJsonLd, hasDedicatedRoute } from "@/lib/activities/types";
 import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 
 const CATEGORY_LABEL: Record<string, string> = {
   general: "General",
@@ -81,7 +81,7 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             breadcrumbJsonLd(
               [{ label: "Maldives", href: "/maldives/" }, { label: "Activities", href: "/maldives/activities/" }, { label: activity.title }],
               `/maldives/activities/${activity.slug}`,
@@ -89,7 +89,7 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
           ),
         }}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(activityServiceJsonLd(activity)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(activityServiceJsonLd(activity)) }} />
 
       <PageHero
         breadcrumbs={[

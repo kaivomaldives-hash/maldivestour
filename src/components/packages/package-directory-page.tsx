@@ -21,7 +21,7 @@ import {
 } from "@/lib/packages/view-repository";
 import type { PackageCategorySlug, PackageDurationBandSlug, PackageSortOption } from "@/lib/packages/view-types";
 import { PACKAGE_CATEGORIES, PACKAGE_DURATION_BANDS } from "@/lib/packages/view-types";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 
 const PAGE_SIZE = 24;
 
@@ -177,8 +177,8 @@ export async function PackageDirectoryPage({ searchParams }: { searchParams: Pro
 
   return (
     <main>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Packages" }], "/maldives/packages")) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Packages" }], "/maldives/packages")) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(faqJsonLd()) }} />
 
       <PageHero
         breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Packages" }]}

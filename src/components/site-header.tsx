@@ -7,6 +7,7 @@ import { useState } from "react";
 
 import { SearchBox } from "@/components/search/search-box";
 import { CurrencySelector } from "@/components/currency/currency-selector";
+import { HeaderAccountMenu } from "@/components/header-account-menu";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { CloseIcon, MenuIcon, SearchIcon } from "@/components/ui/icons";
@@ -101,9 +102,11 @@ export function SiteHeader({ availableLocales }: { availableLocales: Locale[] })
           >
             Get in touch
           </a>
+          <HeaderAccountMenu />
         </div>
 
         <div className="flex items-center gap-1 lg:hidden">
+          <HeaderAccountMenu />
           {SEARCH_ENABLED && (
             <button
               type="button"

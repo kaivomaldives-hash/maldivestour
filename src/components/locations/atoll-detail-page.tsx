@@ -23,7 +23,7 @@ import { getAtollBySlug, getAtollContent, getIslandsByAtoll } from "@/lib/locati
 import { LocationGallerySection } from "@/components/locations/location-gallery-section";
 import { getHeroMediaByNodeIds, getMediaForNode } from "@/lib/media/repository";
 import { getPackageViewsByAtoll } from "@/lib/packages/view-repository";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { getSurfBreaksByAtoll } from "@/lib/surfing/repository";
 import { getTransferRoutesByAtoll } from "@/lib/transfers/repository";
 
@@ -117,7 +117,7 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             breadcrumbJsonLd(
               [{ label: "Maldives", href: "/maldives/" }, { label: "Atolls", href: "/maldives/atolls/" }, { label: atoll.title }],
               `/maldives/atolls/${atoll.slug}`,
@@ -125,7 +125,7 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
           ),
         }}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(touristDestinationJsonLd(atoll)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(touristDestinationJsonLd(atoll)) }} />
 
       <PageHero
         breadcrumbs={[

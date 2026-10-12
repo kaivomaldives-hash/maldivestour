@@ -15,7 +15,7 @@ import { activityHref, hasDedicatedRoute, type ActivityCategory, type ActivityDi
 import { getAttractions } from "@/lib/attractions/repository";
 import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
 import { asset } from "@/lib/packages/category-images";
-import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 // A real legacy island-hopping photo (already verified against
 // data/maldives/migration/full-legacy-image-library-manifest.json and used
@@ -185,13 +185,13 @@ export async function ActivityDirectoryPage({
 
   return (
     <main>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Activities" }], "/maldives/activities")) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(activitiesVideoJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Activities" }], "/maldives/activities")) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(faqJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(activitiesVideoJsonLd()) }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             itemListJsonLd(
               results.items.map((a) => ({ title: a.title, href: activityHref(a), summary: a.summary })),
               "Service",

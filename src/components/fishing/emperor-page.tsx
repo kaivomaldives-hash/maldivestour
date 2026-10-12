@@ -12,7 +12,7 @@ import { isSupportedCurrency } from "@/lib/currency/types";
 import { bookingCta } from "@/lib/bookings/copy";
 import { getFishingActivityBySlug } from "@/lib/fishing/repository";
 import { FISHING_HERO_IMAGE } from "@/lib/packages/category-images";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 // The 2 real, currently-verified charter SKUs — same source as the
@@ -93,7 +93,7 @@ export async function EmperorPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             breadcrumbJsonLd(
               [{ label: "Maldives", href: "/maldives/" }, { label: "Fishing", href: "/maldives/fishing/" }, { label: "Emperor" }],
               "/maldives/fishing/emperor",
@@ -101,7 +101,7 @@ export async function EmperorPage() {
           ),
         }}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(faqJsonLd()) }} />
 
       <PageHero
         breadcrumbs={[

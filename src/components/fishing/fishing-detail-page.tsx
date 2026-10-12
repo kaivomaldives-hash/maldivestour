@@ -13,7 +13,7 @@ import { activityServiceJsonLd } from "@/lib/activities/types";
 import { bookingCta } from "@/lib/bookings/copy";
 import { getFishingActivitiesByLocation, getFishingActivityBySlug, getFishingTypesForActivity } from "@/lib/fishing/repository";
 import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 
 function formatDuration(minutes: number | null): string | null {
   if (!minutes) return null;
@@ -58,7 +58,7 @@ export async function FishingDetailPage({ slug }: { slug: string }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             breadcrumbJsonLd(
               [{ label: "Maldives", href: "/maldives/" }, { label: "Fishing", href: "/maldives/fishing/" }, { label: activity.title }],
               `/maldives/fishing/${activity.slug}`,
@@ -66,7 +66,7 @@ export async function FishingDetailPage({ slug }: { slug: string }) {
           ),
         }}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(activityServiceJsonLd(activity)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(activityServiceJsonLd(activity)) }} />
 
       <PageHero
         breadcrumbs={[

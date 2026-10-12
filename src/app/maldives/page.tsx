@@ -13,7 +13,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { getAtolls, getCountry, getIslandBySlug } from "@/lib/locations/repository";
 import { getMediaAssetsByIds } from "@/lib/media/repository";
 import type { MediaAsset } from "@/lib/media/types";
-import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const country = await getCountry();
@@ -93,12 +93,12 @@ export default async function MaldivesPage() {
     <main>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ label: "Maldives" }], "/maldives")) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(breadcrumbJsonLd([{ label: "Maldives" }], "/maldives")) }}
       />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(itemListJsonLd(atolls.map((a) => ({ title: a.title, href: `/maldives/atolls/${a.slug}/`, summary: a.summary })), "Place")),
+          __html: safeJsonLdStringify(itemListJsonLd(atolls.map((a) => ({ title: a.title, href: `/maldives/atolls/${a.slug}/`, summary: a.summary })), "Place")),
         }}
       />
 

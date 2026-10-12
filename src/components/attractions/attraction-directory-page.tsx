@@ -17,7 +17,7 @@ import {
 } from "@/lib/attractions/types";
 import { attractionHref } from "@/lib/attractions/types";
 import { getAtollBySlug } from "@/lib/locations/repository";
-import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 const ATTRACTION_TYPES = Object.keys(ATTRACTION_TYPE_LABEL) as AttractionType[];
 const SUPER_GROUP_ORDER: AttractionSuperGroup[] = ["cultural", "natural", "marine"];
@@ -87,11 +87,11 @@ export async function AttractionDirectoryPage({
 
   return (
     <main>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Attractions" }], "/maldives/attractions")) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Attractions" }], "/maldives/attractions")) }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             itemListJsonLd(
               results.items.map((a) => ({ title: a.title, href: attractionHref(a), summary: a.summary })),
               "TouristAttraction",

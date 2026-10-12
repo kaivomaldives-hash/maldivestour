@@ -6,7 +6,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
 import { MALE_CITY_TOUR_HALF_DAY_SLUGS, MALE_CITY_TOUR_SHORT_SLUGS, getMaleCityTourActivities } from "@/lib/activities/city-tour";
 import type { MediaAsset } from "@/lib/media/types";
-import { breadcrumbJsonLd, canonicalUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 
 const PAGE_PATH = "/maldives/male-city-tour";
 
@@ -51,7 +51,7 @@ export async function MaleCityTourPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Male City Tour" }], PAGE_PATH),
           ),
         }}

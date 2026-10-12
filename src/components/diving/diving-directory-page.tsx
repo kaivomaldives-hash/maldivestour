@@ -26,7 +26,7 @@ import {
 import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
 import { DIVING_HERO_IMAGE } from "@/lib/packages/category-images";
 import { filterPackageViews, getAllPackageViews } from "@/lib/packages/view-repository";
-import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 const DIFFICULTIES: ActivityDifficulty[] = ["beginner", "intermediate", "advanced", "all_levels"];
 
@@ -169,13 +169,13 @@ export async function DivingDirectoryPage({
 
   return (
     <main>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Diving" }], "/maldives/diving")) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(divingVideoJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Diving" }], "/maldives/diving")) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(faqJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(divingVideoJsonLd()) }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             itemListJsonLd(
               results.items.map((a) => ({ title: a.title, href: activityHref(a), summary: a.summary })),
               "Service",

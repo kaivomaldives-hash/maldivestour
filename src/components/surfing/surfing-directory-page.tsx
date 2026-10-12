@@ -16,7 +16,7 @@ import {
 } from "@/lib/surfing/repository";
 import { activityHref } from "@/lib/activities/types";
 import { getAtollBySlug, getIslandBySlug } from "@/lib/locations/repository";
-import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 const PAGE_SIZE = 24;
 
@@ -83,11 +83,11 @@ export async function SurfingDirectoryPage({
 
   return (
     <main>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Surfing" }], "/maldives/surfing")) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Surfing" }], "/maldives/surfing")) }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             itemListJsonLd(
               results.items.map((a) => ({ title: a.title, href: activityHref(a), summary: a.summary })),
               "Service",

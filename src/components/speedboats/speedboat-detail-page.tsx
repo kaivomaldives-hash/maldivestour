@@ -9,7 +9,7 @@ import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { getReviewsForNode } from "@/lib/reviews/repository";
-import { breadcrumbJsonLd, canonicalUrl, getSiteUrl } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, getSiteUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { getSpeedboatBySlug, getSpeedboats } from "@/lib/speedboats/repository";
 import type { SpeedboatDetail } from "@/lib/speedboats/types";
 
@@ -48,11 +48,11 @@ export async function SpeedboatDetailPage({ slug }: { slug: string }) {
 
   return (
     <main>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speedboatJsonLd(boat)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(speedboatJsonLd(boat)) }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
+          __html: safeJsonLdStringify(
             breadcrumbJsonLd(
               [{ label: "Maldives", href: "/maldives/" }, { label: "Private Speedboat Charter", href: "/maldives-speedboats-charter/" }, { label: boat.title }],
               `/maldives-speedboats-charter/${boat.slug}`,

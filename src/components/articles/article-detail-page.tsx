@@ -11,7 +11,7 @@ import { getArticleLocalePaths } from "@/lib/i18n/repository";
 import { applyContextualLinks } from "@/lib/linking/contextual-links";
 import { buildEntityLinkMap } from "@/lib/linking/entity-link-map";
 import { publicStorageUrl } from "@/lib/media/types";
-import { canonicalUrl, getSiteUrl } from "@/lib/seo/site";
+import { canonicalUrl, getSiteUrl, safeJsonLdStringify } from "@/lib/seo/site";
 
 export async function articleDetailMetadata(slug: string): Promise<Metadata> {
   const article = await getArticleBySlug(slug);
@@ -73,7 +73,7 @@ export async function ArticleDetailPage({ slug }: { slug: string }) {
   return (
     <main>
       <RegisterArticleLocaleLinks paths={localePaths} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd(article)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(articleJsonLd(article)) }} />
 
       <PageHero
         breadcrumbs={[

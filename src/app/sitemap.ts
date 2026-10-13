@@ -60,6 +60,8 @@ const STATIC_PATHS = [
   "/terms-and-conditions/",
   "/terms-and-conditions/transfers/",
   "/become-a-partner/",
+  "/become-a-travel-agent/",
+  "/become-an-affiliate/",
   "/maldives/",
   "/maldives/activities/",
   "/maldives/attractions/",

@@ -20,6 +20,8 @@ const NAV_ITEMS = [
   { label: "Vendors", href: "/admin/vendors" },
   { label: "Partner Applications", href: "/admin/partners" },
   { label: "Partner Listings", href: "/admin/partner-listings" },
+  { label: "Travel Agents", href: "/admin/agents" },
+  { label: "Affiliates", href: "/admin/affiliates" },
   { label: "Locations", href: "/admin/locations" },
   { label: "Redirects", href: "/admin/redirects" },
 ];

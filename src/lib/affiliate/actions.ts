@@ -14,6 +14,7 @@ export interface CreateAffiliateAccountInput {
   whatsapp: string | null;
   country: string | null;
   paypalEmail: string | null;
+  agreedToTerms: boolean;
 }
 
 /** Called by AffiliateSignupForm right after `supabase.auth.signUp()`
@@ -21,6 +22,8 @@ export interface CreateAffiliateAccountInput {
  * RPC — all validation (including referral_code generation) lives
  * there. */
 export async function createAffiliateAccount(input: CreateAffiliateAccountInput): Promise<ActionResult> {
+  if (!input.agreedToTerms) return { ok: false, error: "Please agree to the Terms and Conditions to continue." };
+
   const supabase = await createClient();
   const { error } = await supabase.rpc(
     "create_affiliate_account" as unknown as never,
@@ -31,6 +34,7 @@ export async function createAffiliateAccount(input: CreateAffiliateAccountInput)
       p_whatsapp: input.whatsapp,
       p_country: input.country,
       p_paypal_email: input.paypalEmail,
+      p_agreed_to_terms: true,
     } as unknown as never,
   );
   if (error) return { ok: false, error: error.message };

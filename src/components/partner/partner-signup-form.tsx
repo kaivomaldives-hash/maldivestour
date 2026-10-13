@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
+import { AgreeToTermsCheckbox } from "@/components/legal/agree-to-terms-checkbox";
 import { Button } from "@/components/ui/button";
 import { createPartnerAccount } from "@/lib/partner/actions";
 import { PARTNER_KINDS, PROPERTY_TYPES, type PartnerKind, type PropertyType } from "@/lib/partner/types";
@@ -103,9 +104,14 @@ export function PartnerSignupForm() {
         const email = String(data.get("email") ?? "").trim();
         const password = String(data.get("password") ?? "");
         const contactPhone = String(data.get("contactPhone") ?? "").trim() || null;
+        const agreedToTerms = data.get("agreedToTerms") === "on";
 
         if (kind === "property" && !propertyType) {
           setError("Please choose a property type.");
+          return;
+        }
+        if (!agreedToTerms) {
+          setError("Please agree to the Terms and Conditions to continue.");
           return;
         }
 
@@ -142,6 +148,7 @@ export function PartnerSignupForm() {
             businessName,
             contactEmail: email,
             contactPhone,
+            agreedToTerms,
           });
           if (!result.ok) {
             setError(result.error ?? "Something went wrong. Please try again.");
@@ -218,6 +225,8 @@ export function PartnerSignupForm() {
         </span>
         <input name="password" type="password" required minLength={8} autoComplete="new-password" className={INPUT_CLASS} />
       </label>
+
+      <AgreeToTermsCheckbox />
 
       {error && (
         <p role="alert" className="text-sm text-red-600">

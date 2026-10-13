@@ -14,6 +14,7 @@ export interface CreatePartnerAccountInput {
   businessName: string;
   contactEmail: string;
   contactPhone: string | null;
+  agreedToTerms: boolean;
 }
 
 /**
@@ -27,6 +28,8 @@ export interface CreatePartnerAccountInput {
  * in sync.
  */
 export async function createPartnerAccount(input: CreatePartnerAccountInput): Promise<ActionResult> {
+  if (!input.agreedToTerms) return { ok: false, error: "Please agree to the Terms and Conditions to continue." };
+
   const supabase = await createClient();
   const { error } = await supabase.rpc(
     "create_partner_account" as unknown as never,
@@ -36,6 +39,7 @@ export async function createPartnerAccount(input: CreatePartnerAccountInput): Pr
       p_business_name: input.businessName,
       p_contact_email: input.contactEmail,
       p_contact_phone: input.contactPhone,
+      p_agreed_to_terms: true,
     } as unknown as never,
   );
   if (error) return { ok: false, error: error.message };

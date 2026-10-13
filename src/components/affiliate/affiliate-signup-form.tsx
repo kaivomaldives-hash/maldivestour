@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
+import { AgreeToTermsCheckbox } from "@/components/legal/agree-to-terms-checkbox";
 import { Button } from "@/components/ui/button";
 import { createAffiliateAccount } from "@/lib/affiliate/actions";
 import { createClient } from "@/lib/supabase/client";
@@ -85,6 +86,12 @@ export function AffiliateSignupForm() {
         const contactPhone = String(data.get("contactPhone") ?? "").trim() || null;
         const country = String(data.get("country") ?? "").trim() || null;
         const paypalEmail = String(data.get("paypalEmail") ?? "").trim() || null;
+        const agreedToTerms = data.get("agreedToTerms") === "on";
+
+        if (!agreedToTerms) {
+          setError("Please agree to the Terms and Conditions to continue.");
+          return;
+        }
 
         startTransition(async () => {
           const supabase = createClient();
@@ -116,6 +123,7 @@ export function AffiliateSignupForm() {
             whatsapp: null,
             country,
             paypalEmail,
+            agreedToTerms,
           });
           if (!result.ok) {
             setError(result.error ?? "Something went wrong. Please try again.");
@@ -163,6 +171,8 @@ export function AffiliateSignupForm() {
         </span>
         <input name="password" type="password" required minLength={8} autoComplete="new-password" className={INPUT_CLASS} />
       </label>
+
+      <AgreeToTermsCheckbox />
 
       {error && (
         <p role="alert" className="text-sm text-red-600">

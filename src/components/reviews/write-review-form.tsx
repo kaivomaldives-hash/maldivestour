@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 
+import { AgreeToTermsCheckbox } from "@/components/legal/agree-to-terms-checkbox";
 import { Button } from "@/components/ui/button";
 import { submitReview } from "@/lib/reviews/actions";
 
@@ -39,6 +40,7 @@ export function WriteReviewForm({ nodeId }: { nodeId: string }) {
             body: String(data.get("body") ?? ""),
             guestName: String(data.get("guestName") ?? ""),
             guestEmail: String(data.get("guestEmail") ?? ""),
+            agreedToTerms: data.get("agreedToTerms") === "on",
           });
           if (!result.ok) {
             setError(result.error ?? "Something went wrong. Please try again.");
@@ -89,6 +91,8 @@ export function WriteReviewForm({ nodeId }: { nodeId: string }) {
           <input name="guestEmail" type="email" required className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1" />
         </label>
       </div>
+
+      <AgreeToTermsCheckbox />
 
       {error && (
         <p role="alert" className="text-sm text-red-600">

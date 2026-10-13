@@ -25,6 +25,7 @@ export interface PartnerRequestInput {
   phone: string;
   companyName: string;
   message: string;
+  agreedToTerms: boolean;
   /** Hidden honeypot field — must always be empty for a real submission. */
   honeypot?: string;
 }
@@ -44,6 +45,7 @@ export async function submitPartnerRequest(input: PartnerRequestInput): Promise<
   if (!PARTNER_TYPES.some((t) => t.value === partnerType)) return { ok: false, error: "Please select a partner type." };
   if (!name) return { ok: false, error: "Please enter your name." };
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, error: "Please enter a valid email address." };
+  if (!input.agreedToTerms) return { ok: false, error: "Please agree to the Terms and Conditions to continue." };
 
   const supabase = await createClient();
   // src/types/database.ts is a placeholder — same unknown-cast convention
@@ -56,6 +58,7 @@ export async function submitPartnerRequest(input: PartnerRequestInput): Promise<
     p_phone: input.phone.trim() || null,
     p_company_name: input.companyName.trim() || null,
     p_message: input.message.trim() || null,
+    p_agreed_to_terms: true,
   } as unknown as undefined);
 
   if (error) {

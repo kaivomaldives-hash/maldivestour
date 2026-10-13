@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 
+import { AgreeToTermsCheckbox } from "@/components/legal/agree-to-terms-checkbox";
 import { Button } from "@/components/ui/button";
 import { submitPartnerRequest } from "@/lib/partners/actions";
 import { PARTNER_TYPES } from "@/lib/partners/types";
@@ -42,6 +43,7 @@ export function PartnerRequestForm() {
             phone: String(data.get("phone") ?? ""),
             companyName: String(data.get("companyName") ?? ""),
             message: String(data.get("message") ?? ""),
+            agreedToTerms: data.get("agreedToTerms") === "on",
             honeypot: String(data.get("website") ?? ""),
           });
 
@@ -104,6 +106,8 @@ export function PartnerRequestForm() {
         <span className="mb-1 block font-medium text-neutral-700">Tell us about your business (optional)</span>
         <textarea name="message" rows={4} placeholder="What you offer, where you operate, anything useful to know" className={INPUT_CLASS} />
       </label>
+
+      <AgreeToTermsCheckbox />
 
       {error && (
         <p role="alert" className="text-sm text-red-600">

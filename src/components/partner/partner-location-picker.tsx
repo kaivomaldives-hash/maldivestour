@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useId, useState, useTransition } from "react";
 
 import { searchLocationOptionsForPartner, type PartnerLocationOption } from "@/lib/partner/location-search-actions";
 
@@ -15,6 +15,7 @@ export function PartnerLocationPicker({
   onChange: (location: PartnerLocationOption | null) => void;
   label?: string;
 }) {
+  const id = useId();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<PartnerLocationOption[]>([]);
   const [open, setOpen] = useState(false);
@@ -34,7 +35,9 @@ export function PartnerLocationPicker({
 
   return (
     <div>
-      <span className="mb-1 block text-sm font-medium text-neutral-700">{label}</span>
+      <label htmlFor={id} className="mb-1 block text-sm font-medium text-neutral-700">
+        {label}
+      </label>
       {value ? (
         <div className="flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm">
           <span className="flex-1">
@@ -47,6 +50,7 @@ export function PartnerLocationPicker({
       ) : (
         <div className="relative">
           <input
+            id={id}
             value={query}
             onChange={(e) => search(e.target.value)}
             onFocus={() => setOpen(true)}

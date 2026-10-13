@@ -4,6 +4,7 @@ import Link from "next/link";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
+import { FaqSection } from "@/components/ui/faq-section";
 import { PageHero } from "@/components/ui/page-hero";
 import type { MediaAsset } from "@/lib/media/types";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
@@ -117,19 +118,7 @@ export async function TransferCategoryLandingPage({ config }: { config: Transfer
           </ul>
         )}
 
-        {config.faqs.length > 0 && (
-          <section className="mt-14 border-t border-neutral-200 pt-10">
-            <h2 className="text-xl font-semibold text-ocean-900">Common questions</h2>
-            <dl className="mt-4 space-y-6">
-              {config.faqs.map((faq) => (
-                <div key={faq.question}>
-                  <dt className="font-medium text-ocean-900">{faq.question}</dt>
-                  <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
-                </div>
-              ))}
-            </dl>
-          </section>
-        )}
+        <FaqSection faqs={config.faqs} title="Common questions" className="mt-14 border-t border-neutral-200 pt-10" />
 
         <div className="mt-10 border-t border-neutral-200 pt-6">
           <p className="text-sm font-medium text-neutral-500">Browse other transfer types</p>

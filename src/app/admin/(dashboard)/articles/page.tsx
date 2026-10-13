@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { AdminSearchField } from "@/components/admin/admin-search-field";
+import { AdminTableHead } from "@/components/admin/admin-table-head";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -27,13 +29,8 @@ export default async function AdminArticlesPage({ searchParams }: { searchParams
         </Button>
       </div>
 
-      <form method="get" className="mt-4 flex gap-3">
-        <input
-          name="q"
-          defaultValue={sp.q ?? ""}
-          placeholder="Search by title"
-          className="w-72 rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
-        />
+      <form method="get" className="mt-4 flex items-end gap-3">
+        <AdminSearchField label="Search" name="q" defaultValue={sp.q} placeholder="Search by title" className="w-72" />
         <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
           Search
         </button>
@@ -51,13 +48,7 @@ export default async function AdminArticlesPage({ searchParams }: { searchParams
       ) : (
         <div className="mt-6 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
           <table className="w-full min-w-[700px] text-left text-sm">
-            <thead className="border-b border-neutral-200 bg-neutral-50 text-xs font-semibold uppercase tracking-wide text-neutral-500">
-              <tr>
-                <th className="px-4 py-3">Title</th>
-                <th className="px-4 py-3">Reading time</th>
-                <th className="px-4 py-3">Status</th>
-              </tr>
-            </thead>
+            <AdminTableHead columns={["Title", "Reading time", "Status"]} />
             <tbody className="divide-y divide-neutral-100">
               {results.items.map((a) => (
                 <tr key={a.id} className="hover:bg-neutral-50">

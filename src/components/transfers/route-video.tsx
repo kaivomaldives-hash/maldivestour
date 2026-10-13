@@ -1,5 +1,4 @@
-const YOUTUBE_VIDEO_ID = "1Wjic-JZ11g";
-const YOUTUBE_VIDEO_TITLE = "The Best Ways to Travel Around the Maldives — Seaplane Transfers and Speedboats Explained";
+import { YOUTUBE_VIDEO_ID, YOUTUBE_VIDEO_TITLE } from "@/components/transfers/route-video-jsonld";
 
 /**
  * Task 20 §32: the one real video the task specifies, embedded properly
@@ -28,15 +27,4 @@ export function RouteVideo() {
       </div>
     </section>
   );
-}
-
-export function routeVideoJsonLd() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "VideoObject",
-    name: YOUTUBE_VIDEO_TITLE,
-    description: "A general explainer on Maldives transfers — speedboats and seaplanes — from Maldives Tour Guide.",
-    embedUrl: `https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}`,
-    thumbnailUrl: [`https://i.ytimg.com/vi/${YOUTUBE_VIDEO_ID}/hqdefault.jpg`],
-  };
 }

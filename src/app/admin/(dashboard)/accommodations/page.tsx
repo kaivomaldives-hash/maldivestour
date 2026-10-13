@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { AdminSearchField } from "@/components/admin/admin-search-field";
+import { AdminTableHead } from "@/components/admin/admin-table-head";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -44,13 +46,8 @@ export default async function AdminAccommodationsPage({
         </Button>
       </div>
 
-      <form method="get" className="mt-4 flex flex-wrap gap-3">
-        <input
-          name="q"
-          defaultValue={sp.q ?? ""}
-          placeholder="Search by name"
-          className="w-64 rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
-        />
+      <form method="get" className="mt-4 flex flex-wrap items-end gap-3">
+        <AdminSearchField label="Search" name="q" defaultValue={sp.q} placeholder="Search by name" className="w-64" />
         <select name="type" defaultValue={sp.type ?? ""} className="rounded-xl border border-neutral-300 px-3 py-2 text-sm">
           {TYPE_FILTERS.map((f) => (
             <option key={f.value} value={f.value}>
@@ -75,14 +72,7 @@ export default async function AdminAccommodationsPage({
       ) : (
         <div className="mt-6 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
           <table className="w-full min-w-[700px] text-left text-sm">
-            <thead className="border-b border-neutral-200 bg-neutral-50 text-xs font-semibold uppercase tracking-wide text-neutral-500">
-              <tr>
-                <th className="px-4 py-3">Name</th>
-                <th className="px-4 py-3">Type</th>
-                <th className="px-4 py-3">Price tier</th>
-                <th className="px-4 py-3">Status</th>
-              </tr>
-            </thead>
+            <AdminTableHead columns={["Name", "Type", "Price tier", "Status"]} />
             <tbody className="divide-y divide-neutral-100">
               {results.items.map((a) => (
                 <tr key={a.id} className="hover:bg-neutral-50">

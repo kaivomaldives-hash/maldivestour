@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ActivityCard } from "@/components/activity/activity-card";
 import { SurfBreakCard } from "@/components/surfing/surf-break-card";
+import type { SurfingDirectorySearchParams } from "@/components/surfing/surfing-directory-metadata";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
@@ -16,36 +16,9 @@ import {
 } from "@/lib/surfing/repository";
 import { activityHref } from "@/lib/activities/types";
 import { getAtollBySlug, getIslandBySlug } from "@/lib/locations/repository";
-import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
+import { breadcrumbJsonLd, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 const PAGE_SIZE = 24;
-
-export interface SurfingDirectorySearchParams {
-  q?: string;
-  page?: string;
-  type?: string;
-  atoll?: string;
-  island?: string;
-}
-
-function hasAnyFilter(sp: SurfingDirectorySearchParams): boolean {
-  return Boolean(sp.q || sp.type || sp.atoll || sp.island);
-}
-
-export async function surfingDirectoryMetadata(searchParams: Promise<SurfingDirectorySearchParams>): Promise<Metadata> {
-  const sp = await searchParams;
-  const title = "Surfing in the Maldives | MTG";
-  const description = "Real, source-verified surf lessons, camps, and surf breaks in the Maldives.";
-  const url = canonicalUrl("/maldives/surfing");
-
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
-    robots: hasAnyFilter(sp) ? { index: false, follow: true } : undefined,
-  };
-}
 
 export async function SurfingDirectoryPage({
   searchParams,

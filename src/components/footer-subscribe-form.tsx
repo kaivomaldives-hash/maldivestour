@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useId, useState, useTransition } from "react";
 
 import { subscribeToUpdates } from "@/lib/customers/actions";
 
@@ -13,6 +13,8 @@ import { subscribeToUpdates } from "@/lib/customers/actions";
  * table a booking populates.
  */
 export function FooterSubscribeForm() {
+  const nameId = useId();
+  const emailId = useId();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
@@ -56,23 +58,35 @@ export function FooterSubscribeForm() {
         </label>
       </div>
 
-      <div className="mt-2 flex flex-col gap-2 sm:flex-row">
-        <input
-          name="name"
-          type="text"
-          required
-          placeholder="Your name"
-          autoComplete="name"
-          className="min-touch-target w-full rounded-full bg-white/10 px-4 py-2 text-sm text-white placeholder:text-lagoon-100/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-lagoon-300 sm:w-36"
-        />
-        <input
-          name="email"
-          type="email"
-          required
-          placeholder="Your email"
-          autoComplete="email"
-          className="min-touch-target w-full rounded-full bg-white/10 px-4 py-2 text-sm text-white placeholder:text-lagoon-100/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-lagoon-300 sm:w-44"
-        />
+      <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-end">
+        <div className="flex flex-col gap-1 sm:w-36">
+          <label htmlFor={nameId} className="text-[11px] uppercase tracking-wide text-lagoon-100/60">
+            Name
+          </label>
+          <input
+            id={nameId}
+            name="name"
+            type="text"
+            required
+            placeholder="Your name"
+            autoComplete="name"
+            className="min-touch-target w-full rounded-full bg-white/10 px-4 py-2 text-sm text-white placeholder:text-lagoon-100/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-lagoon-300"
+          />
+        </div>
+        <div className="flex flex-col gap-1 sm:w-44">
+          <label htmlFor={emailId} className="text-[11px] uppercase tracking-wide text-lagoon-100/60">
+            Email
+          </label>
+          <input
+            id={emailId}
+            name="email"
+            type="email"
+            required
+            placeholder="Your email"
+            autoComplete="email"
+            className="min-touch-target w-full rounded-full bg-white/10 px-4 py-2 text-sm text-white placeholder:text-lagoon-100/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-lagoon-300"
+          />
+        </div>
         <button
           type="submit"
           disabled={isPending}

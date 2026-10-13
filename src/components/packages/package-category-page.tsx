@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 
 import { PackageCard } from "@/components/packages/package-card";
+import type { PackageCategoryPageSearchParams } from "@/components/packages/package-category-metadata";
 import { PackageFilterBar } from "@/components/packages/package-filter-bar";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
+import { FaqSection } from "@/components/ui/faq-section";
 import { PageHero } from "@/components/ui/page-hero";
 import { Pagination } from "@/components/ui/pagination";
 import { PACKAGE_CATEGORY_CONTENT } from "@/lib/packages/category-content";
@@ -19,7 +20,7 @@ import {
 } from "@/lib/packages/view-repository";
 import type { PackageCategorySlug, PackageDurationBandSlug, PackageSortOption } from "@/lib/packages/view-types";
 import { PACKAGE_CATEGORY_TITLE, PACKAGE_DURATION_BANDS } from "@/lib/packages/view-types";
-import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
+import { breadcrumbJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 const PAGE_SIZE = 24;
 const SORT_OPTIONS: PackageSortOption[] = ["recommended", "price-asc", "price-desc", "shortest", "longest", "rating", "newest"];
@@ -40,35 +41,6 @@ const CATEGORY_IMAGE_KEY: Record<PackageCategorySlug, PackageCategoryFallbackKey
   surfing: "surfing",
   liveaboard: "liveaboard",
 };
-
-export interface PackageCategoryPageSearchParams {
-  q?: string;
-  page?: string;
-  atoll?: string;
-  duration?: string;
-  minPrice?: string;
-  maxPrice?: string;
-  minRating?: string;
-  sort?: string;
-}
-
-function hasAnyFilter(sp: PackageCategoryPageSearchParams): boolean {
-  return Boolean(sp.q || sp.atoll || sp.duration || sp.minPrice || sp.maxPrice || sp.minRating);
-}
-
-export async function packageCategoryMetadata(category: PackageCategorySlug, searchParams: Promise<PackageCategoryPageSearchParams>): Promise<Metadata> {
-  const sp = await searchParams;
-  const content = PACKAGE_CATEGORY_CONTENT[category];
-  const url = canonicalUrl(`/maldives/packages/${category}`);
-
-  return {
-    title: content.metaTitle,
-    description: content.metaDescription,
-    alternates: { canonical: url },
-    openGraph: { title: content.metaTitle, description: content.metaDescription, url },
-    robots: hasAnyFilter(sp) ? { index: false, follow: true } : undefined,
-  };
-}
 
 function faqJsonLd(faqs: Array<{ question: string; answer: string }>) {
   return {
@@ -175,17 +147,7 @@ export async function PackageCategoryPage({
 
         <Pagination page={page} totalPages={totalPages} basePath={basePath} baseQuery={baseQuery} />
 
-        <section className="mt-14 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Frequently Asked Questions</h2>
-          <dl className="mt-4 space-y-6">
-            {content.faqs.map((faq) => (
-              <div key={faq.question}>
-                <dt className="font-medium text-ocean-900">{faq.question}</dt>
-                <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <FaqSection faqs={content.faqs} className="mt-14 border-t border-neutral-200 pt-10" />
 
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Related Maldives Links</h2>

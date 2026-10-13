@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -12,20 +11,6 @@ import { getReviewsForNode } from "@/lib/reviews/repository";
 import { breadcrumbJsonLd, canonicalUrl, getSiteUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { getSpeedboatBySlug, getSpeedboats } from "@/lib/speedboats/repository";
 import type { SpeedboatDetail } from "@/lib/speedboats/types";
-
-export async function speedboatDetailMetadata(slug: string): Promise<Metadata> {
-  const boat = await getSpeedboatBySlug(slug);
-  if (!boat) return {};
-  const title = boat.metaTitle ?? `${boat.title} Private Speedboat Charter | Maldives Tour Guide`;
-  const description = boat.metaDescription ?? boat.summary ?? `Charter the ${boat.title} in the Maldives.`;
-  const url = canonicalUrl(`/maldives-speedboats-charter/${boat.slug}`);
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
-  };
-}
 
 function speedboatJsonLd(boat: SpeedboatDetail) {
   return {

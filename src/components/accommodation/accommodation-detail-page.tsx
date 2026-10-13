@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { loadAndVerify, TYPE_LABEL } from "@/components/accommodation/accommodation-detail-metadata";
 import { NearbyActivitiesSection } from "@/components/activity/nearby-activities-section";
 import { GallerySection } from "@/components/accommodation/gallery-section";
 import { RoomsSection } from "@/components/accommodation/rooms-section";
 import { TypicalAmenitiesSection } from "@/components/accommodation/typical-amenities-section";
-import { accommodationVideoJsonLd, VideoSection } from "@/components/accommodation/video-section";
+import { accommodationVideoJsonLd } from "@/components/accommodation/accommodation-video-jsonld";
+import { VideoSection } from "@/components/accommodation/video-section";
 import { ArticleCard } from "@/components/articles/article-card";
 import { AttractionCard } from "@/components/attractions/attraction-card";
 import { NodeInquiryForm } from "@/components/bookings/node-inquiry-form";
@@ -16,7 +17,6 @@ import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
-import { getAccommodationBySlug } from "@/lib/accommodations/repository";
 import { ACCOMMODATION_TYPE_SEGMENT, type AccommodationType } from "@/lib/accommodations/types";
 import { getNearbyActivities } from "@/lib/activities/repository";
 import { getArticlesRelatedToNodes } from "@/lib/articles/repository";
@@ -24,17 +24,8 @@ import { getNearbyAttractions } from "@/lib/attractions/repository";
 import { bookingCta } from "@/lib/bookings/copy";
 import { getPackageViewsByAccommodation } from "@/lib/packages/view-repository";
 import { getReviewsForNode } from "@/lib/reviews/repository";
-import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
+import { breadcrumbJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 import { getTransferRoutesByLocation } from "@/lib/transfers/repository";
-
-const TYPE_LABEL: Record<AccommodationType, string> = {
-  hotel: "Hotel",
-  resort: "Resort",
-  guesthouse: "Guesthouse",
-  villa: "Villa",
-  liveaboard: "Liveaboard",
-  other: "Accommodation",
-};
 
 const PRICE_TIER_LABEL: Record<string, string> = {
   budget: "Budget",
@@ -42,35 +33,6 @@ const PRICE_TIER_LABEL: Record<string, string> = {
   luxury: "Luxury",
   ultra_luxury: "Ultra-luxury",
 };
-
-/**
- * Shared by every accommodation type's [slug] route. `type` must match the
- * requested URL segment — a hotel is only reachable at /maldives/hotels/,
- * never at /maldives/resorts/, even though slugs are globally unique
- * across accommodation types. This is what keeps the canonical URL for a
- * given accommodation to exactly one path.
- */
-async function loadAndVerify(type: AccommodationType, slug: string) {
-  const accommodation = await getAccommodationBySlug(slug);
-  if (!accommodation || accommodation.accommodationType !== type) return null;
-  return accommodation;
-}
-
-export async function accommodationDetailMetadata(type: AccommodationType, slug: string): Promise<Metadata> {
-  const accommodation = await loadAndVerify(type, slug);
-  if (!accommodation) return {};
-
-  const title = accommodation.metaTitle ?? `${accommodation.title} | Maldives ${TYPE_LABEL[type]}s | MTG`;
-  const description = accommodation.metaDescription ?? accommodation.summary ?? undefined;
-  const url = canonicalUrl(`/maldives/${ACCOMMODATION_TYPE_SEGMENT[type]}/${accommodation.slug}`);
-
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
-  };
-}
 
 export async function AccommodationDetailPage({ type, slug }: { type: AccommodationType; slug: string }) {
   const accommodation = await loadAndVerify(type, slug);

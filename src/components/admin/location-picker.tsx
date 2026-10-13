@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useId, useState, useTransition } from "react";
 
 import { searchLocationOptions } from "@/lib/admin/node-relations-actions";
 import type { LocationOption } from "@/lib/admin/node-relations-repository";
@@ -18,6 +18,7 @@ export function LocationPicker({
   onChange: (location: LocationOption | null) => void;
   label?: string;
 }) {
+  const id = useId();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<LocationOption[]>([]);
   const [open, setOpen] = useState(false);
@@ -37,7 +38,9 @@ export function LocationPicker({
 
   return (
     <div>
-      <span className="mb-1 block text-sm font-medium text-neutral-700">{label}</span>
+      <label htmlFor={id} className="mb-1 block text-sm font-medium text-neutral-700">
+        {label}
+      </label>
       {value ? (
         <div className="flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm">
           <span className="flex-1">
@@ -50,6 +53,7 @@ export function LocationPicker({
       ) : (
         <div className="relative">
           <input
+            id={id}
             value={query}
             onChange={(e) => search(e.target.value)}
             onFocus={() => setOpen(true)}

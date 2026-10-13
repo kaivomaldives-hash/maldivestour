@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 
-import {
-  AccommodationDetailPage,
-  accommodationDetailMetadata,
-} from "@/components/accommodation/accommodation-detail-page";
+import { accommodationDetailMetadata } from "@/components/accommodation/accommodation-detail-metadata";
+import { AccommodationDetailPage } from "@/components/accommodation/accommodation-detail-page";
 
 // Staggered (not a round 3600) so ISR regenerations don't cluster with
 // every other route's -- see src/app/page.tsx for why.

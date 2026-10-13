@@ -1,3 +1,4 @@
+import { AdminTableHead } from "@/components/admin/admin-table-head";
 import { DeleteUserButton } from "@/components/admin/delete-user-button";
 import { InviteUserForm } from "@/components/admin/invite-user-form";
 import { UserRoleSelect } from "@/components/admin/user-role-select";
@@ -34,15 +35,7 @@ export default async function AdminUsersPage() {
 
       <div className="mt-6 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
         <table className="w-full min-w-[600px] text-left text-sm">
-          <thead className="border-b border-neutral-200 bg-neutral-50 text-xs font-semibold uppercase tracking-wide text-neutral-500">
-            <tr>
-              <th className="px-4 py-3">Email</th>
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Joined</th>
-              <th className="px-4 py-3">Role</th>
-              <th className="px-4 py-3">Actions</th>
-            </tr>
-          </thead>
+          <AdminTableHead columns={["Email", "Name", "Joined", "Role", "Actions"]} />
           <tbody className="divide-y divide-neutral-100">
             {users.map((u) => (
               <tr key={u.id} className="hover:bg-neutral-50">

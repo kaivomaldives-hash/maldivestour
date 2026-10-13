@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
+import type { DiveSiteDirectorySearchParams } from "@/components/diving/dive-site-directory-metadata";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
@@ -9,7 +9,6 @@ import { Pagination } from "@/components/ui/pagination";
 import { getDiveSites } from "@/lib/diving/repository";
 import type { DiveSiteType } from "@/lib/diving/types";
 import { getAtollBySlug } from "@/lib/locations/repository";
-import { canonicalUrl } from "@/lib/seo/site";
 
 const SITE_TYPE_LABEL: Record<DiveSiteType, string> = {
   reef: "Reef",
@@ -23,31 +22,6 @@ const SITE_TYPE_LABEL: Record<DiveSiteType, string> = {
 
 const SITE_TYPES = Object.keys(SITE_TYPE_LABEL) as DiveSiteType[];
 const PAGE_SIZE = 48;
-
-export interface DiveSiteDirectorySearchParams {
-  page?: string;
-  type?: string;
-  atoll?: string;
-}
-
-function hasAnyFilter(sp: DiveSiteDirectorySearchParams): boolean {
-  return Boolean(sp.type || sp.atoll);
-}
-
-export async function diveSiteDirectoryMetadata(searchParams: Promise<DiveSiteDirectorySearchParams>): Promise<Metadata> {
-  const sp = await searchParams;
-  const title = "Maldives Dive Sites | MTG";
-  const description = "Real, documented Maldives dive sites — reefs, thilas, channels, and wrecks — by atoll and type.";
-  const url = canonicalUrl("/maldives/dive-sites");
-
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
-    robots: hasAnyFilter(sp) ? { index: false, follow: true } : undefined,
-  };
-}
 
 export async function DiveSiteDirectoryPage({
   searchParams,

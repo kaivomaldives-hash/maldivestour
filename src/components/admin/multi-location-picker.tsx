@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useId, useState, useTransition } from "react";
 
 import { searchLocationOptions } from "@/lib/admin/node-relations-actions";
 import type { LocationOption } from "@/lib/admin/node-relations-repository";
@@ -24,6 +24,7 @@ export function MultiLocationPicker({
   onChange: (locations: LocationOption[]) => void;
   label?: string;
 }) {
+  const id = useId();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<LocationOption[]>([]);
   const [open, setOpen] = useState(false);
@@ -60,7 +61,9 @@ export function MultiLocationPicker({
 
   return (
     <div>
-      <span className="mb-1 block text-sm font-medium text-neutral-700">{label}</span>
+      <label htmlFor={id} className="mb-1 block text-sm font-medium text-neutral-700">
+        {label}
+      </label>
       <p className="mb-2 text-xs text-neutral-500">
         Add every atoll/island this activity genuinely operates in or from — the first one is used as its main location everywhere a single
         location is shown (SEO, breadcrumbs); add more than one only when it&apos;s genuinely true.
@@ -92,6 +95,7 @@ export function MultiLocationPicker({
 
       <div className="relative">
         <input
+          id={id}
           value={query}
           onChange={(e) => search(e.target.value)}
           onFocus={() => setOpen(true)}

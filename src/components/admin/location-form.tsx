@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
+import { AdminSeoSection } from "@/components/admin/admin-seo-section";
 import { Button } from "@/components/ui/button";
 import { updateLocation, type LocationFieldsInput } from "@/lib/admin/locations-actions";
 import type { NodeCoreInput, NodeStatus } from "@/lib/admin/node-actions";
@@ -153,26 +154,7 @@ export function LocationForm({ initial }: { initial: LocationFormInitial }) {
         </label>
       </section>
 
-      <section className="space-y-4 rounded-2xl border border-neutral-200 bg-white p-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">SEO</h2>
-        <label className="block text-sm">
-          <span className="mb-1 block font-medium text-neutral-700">Meta title</span>
-          <input
-            value={core.metaTitle ?? ""}
-            onChange={(e) => setCore((c) => ({ ...c, metaTitle: e.target.value }))}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
-          />
-        </label>
-        <label className="block text-sm">
-          <span className="mb-1 block font-medium text-neutral-700">Meta description</span>
-          <textarea
-            value={core.metaDescription ?? ""}
-            onChange={(e) => setCore((c) => ({ ...c, metaDescription: e.target.value }))}
-            rows={2}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1"
-          />
-        </label>
-      </section>
+      <AdminSeoSection core={core} setCore={setCore} />
 
       {error && (
         <p role="alert" className="text-sm text-red-600">

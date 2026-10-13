@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useId, useState, useTransition } from "react";
 
 import { PartnerLocationPicker } from "@/components/partner/partner-location-picker";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,10 @@ export function PartnerAccommodationForm({
   initial: AccommodationListingPayload | null;
   initialLocation: PartnerLocationOption | null;
 }) {
+  const roomNameHeaderId = useId();
+  const roomPriceHeaderId = useId();
+  const roomBedTypeHeaderId = useId();
+  const roomMaxOccupancyHeaderId = useId();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -151,16 +155,30 @@ export function PartnerAccommodationForm({
             + Add room type
           </button>
         </div>
+        {/* One visible header row, shared by every room row below via
+            aria-labelledby, instead of repeating a label per field per
+            row — same accessible-name guarantee, without a wall of
+            identical captions for every room added. */}
+        <div className="mt-2 hidden grid-cols-5 gap-2 px-3 text-xs font-medium text-neutral-500 sm:grid">
+          <span id={roomNameHeaderId} className="col-span-2">
+            Room name
+          </span>
+          <span id={roomPriceHeaderId}>Price/night</span>
+          <span id={roomBedTypeHeaderId}>Bed type</span>
+          <span id={roomMaxOccupancyHeaderId}>Max guests</span>
+        </div>
         <div className="mt-2 space-y-3">
           {rooms.map((room, i) => (
             <div key={i} className="grid grid-cols-1 gap-2 rounded-xl border border-neutral-200 p-3 sm:grid-cols-5">
               <input
+                aria-labelledby={roomNameHeaderId}
                 value={room.name}
                 onChange={(e) => setRooms((prev) => prev.map((r, j) => (j === i ? { ...r, name: e.target.value } : r)))}
                 placeholder="Room name"
                 className={`${INPUT_CLASS} sm:col-span-2`}
               />
               <input
+                aria-labelledby={roomPriceHeaderId}
                 value={room.priceFrom ?? ""}
                 onChange={(e) => setRooms((prev) => prev.map((r, j) => (j === i ? { ...r, priceFrom: Number(e.target.value) || null } : r)))}
                 type="number"
@@ -168,6 +186,7 @@ export function PartnerAccommodationForm({
                 className={INPUT_CLASS}
               />
               <input
+                aria-labelledby={roomBedTypeHeaderId}
                 value={room.bedType ?? ""}
                 onChange={(e) => setRooms((prev) => prev.map((r, j) => (j === i ? { ...r, bedType: e.target.value } : r)))}
                 placeholder="Bed type"
@@ -175,6 +194,7 @@ export function PartnerAccommodationForm({
               />
               <div className="flex items-center gap-2">
                 <input
+                  aria-labelledby={roomMaxOccupancyHeaderId}
                   value={room.maxOccupancy ?? ""}
                   onChange={(e) => setRooms((prev) => prev.map((r, j) => (j === i ? { ...r, maxOccupancy: Number(e.target.value) || null } : r)))}
                   type="number"

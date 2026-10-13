@@ -1,14 +1,11 @@
-import type { Metadata } from "next";
-
 import { ActivityCard } from "@/components/activity/activity-card";
+import { PAGE_PATH } from "@/components/activity/male-city-tour-metadata";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
 import { MALE_CITY_TOUR_HALF_DAY_SLUGS, MALE_CITY_TOUR_SHORT_SLUGS, getMaleCityTourActivities } from "@/lib/activities/city-tour";
 import type { MediaAsset } from "@/lib/media/types";
-import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
-
-const PAGE_PATH = "/maldives/male-city-tour";
+import { breadcrumbJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 // Hub page hero — a real owner-uploaded photo (see
 // scripts/attach-city-tour-uploads.mjs), not tied to any one activity node,
@@ -24,20 +21,6 @@ const HUB_HERO: MediaAsset = {
   width: null,
   height: null,
 };
-
-export async function maleCityTourMetadata(): Promise<Metadata> {
-  const title = "Male City Tour — Walking, Bike, Car & Bus Tours | Maldives Tour Guide";
-  const description =
-    "Book a guided Male City Tour: walking, bike, car, mini bus, or large bus, with airport pickup and drop-off. See Stingray Point, the fish market, Friday Mosque, and more.";
-  const url = canonicalUrl(PAGE_PATH);
-
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
-  };
-}
 
 export async function MaleCityTourPage() {
   const activities = await getMaleCityTourActivities();

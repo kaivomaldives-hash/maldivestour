@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { AdminTableHead } from "@/components/admin/admin-table-head";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Pagination } from "@/components/ui/pagination";
@@ -70,14 +71,7 @@ export default async function AdminLocationsPage({ searchParams }: { searchParam
       ) : (
         <div className="mt-6 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
           <table className="w-full min-w-[700px] text-left text-sm">
-            <thead className="border-b border-neutral-200 bg-neutral-50 text-xs font-semibold uppercase tracking-wide text-neutral-500">
-              <tr>
-                <th className="px-4 py-3">Title</th>
-                <th className="px-4 py-3">Type</th>
-                <th className="px-4 py-3">Parent</th>
-                <th className="px-4 py-3">Status</th>
-              </tr>
-            </thead>
+            <AdminTableHead columns={["Title", "Type", "Parent", "Status"]} />
             <tbody className="divide-y divide-neutral-100">
               {results.items.map((l) => (
                 <tr key={l.id} className="hover:bg-neutral-50">

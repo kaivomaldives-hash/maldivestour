@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { transferTermsMetadata, TransferTermsPage } from "@/components/legal/transfer-terms-page";
+import { transferTermsMetadata } from "@/components/legal/transfer-terms-metadata";
+import { TransferTermsPage } from "@/components/legal/transfer-terms-page";
 
 export const revalidate = 86400;
 

@@ -3,14 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
+import { AdminBasicsSection } from "@/components/admin/admin-basics-section";
+import { AdminPricingVideoSection } from "@/components/admin/admin-pricing-video-section";
+import { AdminSeoSection } from "@/components/admin/admin-seo-section";
 import { DeleteNodeButton } from "@/components/admin/delete-node-button";
 import { LocationPicker } from "@/components/admin/location-picker";
 import { NodeMediaManager } from "@/components/admin/node-media-manager";
 import { Button } from "@/components/ui/button";
 import type { AccommodationFieldsAdmin } from "@/lib/admin/accommodations-repository";
 import { createAccommodation, updateAccommodation } from "@/lib/admin/accommodations-actions";
-import type { NodeCoreInput, NodeStatus } from "@/lib/admin/node-actions";
-import { NODE_STATUSES } from "@/lib/admin/node-status";
+import type { NodeCoreInput } from "@/lib/admin/node-actions";
 import { setPrimaryLocation } from "@/lib/admin/node-relations-actions";
 import type { LocationOption } from "@/lib/admin/node-relations-repository";
 import type { AccommodationType, PriceTier } from "@/lib/accommodations/types";
@@ -43,14 +45,6 @@ const EMPTY_FIELDS: AccommodationFieldsAdmin = {
   priceFrom: null,
   videoYoutubeId: null,
 };
-
-function slugify(value: string): string {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
 
 export function AccommodationForm({ initial, providerOptions }: { initial?: AccommodationFormInitial; providerOptions: ProviderOption[] }) {
   const router = useRouter();
@@ -92,64 +86,14 @@ export function AccommodationForm({ initial, providerOptions }: { initial?: Acco
 
   return (
     <div className="max-w-2xl space-y-6">
-      <section className="space-y-4 rounded-2xl border border-neutral-200 bg-white p-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Basics</h2>
-
-        <label className="block text-sm">
-          <span className="mb-1 block font-medium text-neutral-700">Title *</span>
-          <input
-            value={core.title}
-            onChange={(e) => {
-              const title = e.target.value;
-              setCore((c) => ({ ...c, title, slug: slugTouched ? c.slug : slugify(title) }));
-            }}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
-          />
-        </label>
-
-        <label className="block text-sm">
-          <span className="mb-1 block font-medium text-neutral-700">Slug *</span>
-          <input
-            value={core.slug}
-            onChange={(e) => {
-              setSlugTouched(true);
-              setCore((c) => ({ ...c, slug: e.target.value }));
-            }}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 font-mono text-sm focus:border-maldives-500 focus:outline-none"
-          />
-          {wasPublished && slugChanged && (
-            <p className="mt-1 text-xs text-amber-600">
-              This is published — changing the slug will break its current URL for anyone who already linked to it. No redirect is created
-              automatically; add one in Redirects if needed.
-            </p>
-          )}
-        </label>
-
-        <label className="block text-sm">
-          <span className="mb-1 block font-medium text-neutral-700">Summary</span>
-          <textarea
-            value={core.summary ?? ""}
-            onChange={(e) => setCore((c) => ({ ...c, summary: e.target.value }))}
-            rows={3}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
-          />
-        </label>
-
-        <label className="block text-sm">
-          <span className="mb-1 block font-medium text-neutral-700">Status</span>
-          <select
-            value={core.status}
-            onChange={(e) => setCore((c) => ({ ...c, status: e.target.value as NodeStatus }))}
-            className="rounded-xl border border-neutral-300 px-3 py-2 text-sm"
-          >
-            {NODE_STATUSES.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
-        </label>
-      </section>
+      <AdminBasicsSection
+        core={core}
+        setCore={setCore}
+        slugTouched={slugTouched}
+        setSlugTouched={setSlugTouched}
+        wasPublished={wasPublished}
+        slugChanged={slugChanged}
+      />
 
       <section className="space-y-4 rounded-2xl border border-neutral-200 bg-white p-4">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Type & details</h2>
@@ -264,65 +208,18 @@ export function AccommodationForm({ initial, providerOptions }: { initial?: Acco
         <LocationPicker value={location} onChange={setLocation} />
       </section>
 
-      <section className="space-y-4 rounded-2xl border border-neutral-200 bg-white p-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Pricing & video</h2>
-        <p className="text-xs text-neutral-500">
-          &ldquo;From&rdquo; price shown on listing cards only — never a guaranteed live rate on the property&rsquo;s own page. Individual room/villa
-          rates aren&rsquo;t editable here yet; that&rsquo;s a separate follow-up.
-        </p>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <label className="block text-sm">
-            <span className="mb-1 block font-medium text-neutral-700">Price from</span>
-            <input
-              type="number"
-              min={0}
-              step="0.01"
-              value={fields.priceFrom ?? ""}
-              onChange={(e) => setFields((f) => ({ ...f, priceFrom: e.target.value ? Number(e.target.value) : null }))}
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="block text-sm">
-            <span className="mb-1 block font-medium text-neutral-700">Currency</span>
-            <input
-              value={fields.currency}
-              onChange={(e) => setFields((f) => ({ ...f, currency: e.target.value.toUpperCase() }))}
-              maxLength={3}
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm uppercase"
-            />
-          </label>
-          <label className="block text-sm">
-            <span className="mb-1 block font-medium text-neutral-700">YouTube video ID</span>
-            <input
-              value={fields.videoYoutubeId ?? ""}
-              onChange={(e) => setFields((f) => ({ ...f, videoYoutubeId: e.target.value || null }))}
-              placeholder="e.g. CZGxcfCXJz0"
-              className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm"
-            />
-          </label>
-        </div>
-      </section>
+      <AdminPricingVideoSection
+        fields={fields}
+        setFields={setFields}
+        note={
+          <p className="text-xs text-neutral-500">
+            &ldquo;From&rdquo; price shown on listing cards only — never a guaranteed live rate on the property&rsquo;s own page. Individual room/villa
+            rates aren&rsquo;t editable here yet; that&rsquo;s a separate follow-up.
+          </p>
+        }
+      />
 
-      <section className="space-y-4 rounded-2xl border border-neutral-200 bg-white p-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">SEO</h2>
-        <label className="block text-sm">
-          <span className="mb-1 block font-medium text-neutral-700">Meta title</span>
-          <input
-            value={core.metaTitle ?? ""}
-            onChange={(e) => setCore((c) => ({ ...c, metaTitle: e.target.value }))}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm"
-          />
-        </label>
-        <label className="block text-sm">
-          <span className="mb-1 block font-medium text-neutral-700">Meta description</span>
-          <textarea
-            value={core.metaDescription ?? ""}
-            onChange={(e) => setCore((c) => ({ ...c, metaDescription: e.target.value }))}
-            rows={2}
-            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm"
-          />
-        </label>
-      </section>
+      <AdminSeoSection core={core} setCore={setCore} />
 
       {nodeId ? (
         <NodeMediaManager nodeId={nodeId} items={initial?.media ?? []} revalidatePath={`/admin/accommodations/${nodeId}`} />

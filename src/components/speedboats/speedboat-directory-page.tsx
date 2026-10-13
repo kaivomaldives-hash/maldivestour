@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 
 import { SpeedboatCard } from "@/components/speedboats/speedboat-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
+import { FaqSection } from "@/components/ui/faq-section";
 import { PageHero } from "@/components/ui/page-hero";
-import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
+import { breadcrumbJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 import { getSpeedboats } from "@/lib/speedboats/repository";
 import { TRANSFER_CATEGORY_IMAGES } from "@/lib/transfers/category-images";
 
@@ -25,18 +25,6 @@ const FAQS = [
       "A scheduled transfer runs a fixed route at a fixed (or shared) price. A private charter is your own boat, on your own schedule — see our scheduled routes on the main Transfers page if that's what you need instead.",
   },
 ];
-
-export function speedboatDirectoryMetadata(): Metadata {
-  const title = "Maldives Private Speedboat Charter | Boat Hire & Private Transfers";
-  const description = "Charter a private speedboat in the Maldives — real boats, real capacity and specs, hourly, destination-based, or custom hire. No fixed public price; request a quote.";
-  const url = canonicalUrl("/maldives-speedboats-charter");
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
-  };
-}
 
 function faqJsonLd() {
   return {
@@ -80,17 +68,7 @@ export async function SpeedboatDirectoryPage() {
           </ul>
         )}
 
-        <section className="mt-14 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Common questions</h2>
-          <dl className="mt-4 space-y-6">
-            {FAQS.map((faq) => (
-              <div key={faq.question}>
-                <dt className="font-medium text-ocean-900">{faq.question}</dt>
-                <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <FaqSection faqs={FAQS} title="Common questions" className="mt-14 border-t border-neutral-200 pt-10" />
 
         <div className="mt-10 border-t border-neutral-200 pt-6">
           <Link href="/maldives/transfers/" className="text-sm font-medium text-maldives-600 hover:underline">

@@ -1,10 +1,8 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 
 import { LegalProse } from "@/components/legal/legal-prose";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
-import { canonicalUrl } from "@/lib/seo/site";
 
 /**
  * Site owner's real Terms and Conditions for Transfers (speedboat/airport/
@@ -14,13 +12,6 @@ import { canonicalUrl } from "@/lib/seo/site";
  * app. See TermsOfServicePage for the general terms covering everything
  * else (accommodation, activities, packages).
  */
-export function transferTermsMetadata(): Metadata {
-  const title = "Terms and Conditions for Transfers | MTG";
-  const description = "Maldives Tour Guide's terms and conditions for speedboat, airport, resort and island transfer bookings.";
-  const url = canonicalUrl("/terms-and-conditions/transfers");
-  return { title, description, alternates: { canonical: url }, openGraph: { title, description, url } };
-}
-
 export function TransferTermsPage() {
   return (
     <main>

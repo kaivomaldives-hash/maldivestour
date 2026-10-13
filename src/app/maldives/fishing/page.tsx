@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 
 import {
-  FishingDirectoryPage,
   fishingDirectoryMetadata,
   type FishingDirectorySearchParams,
-} from "@/components/fishing/fishing-directory-page";
+} from "@/components/fishing/fishing-directory-metadata";
+import { FishingDirectoryPage } from "@/components/fishing/fishing-directory-page";
 
 export function generateMetadata({
   searchParams,

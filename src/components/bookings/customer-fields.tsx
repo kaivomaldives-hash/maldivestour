@@ -45,15 +45,6 @@ export function PhoneField({ label, name, required }: { label: string; name: str
   );
 }
 
-/** Combines a PhoneField's two FormData entries into one country-code-
- * prefixed string, or "" if no number was entered (so an optional phone
- * field stays genuinely optional rather than becoming "+960" alone). */
-export function combinePhone(data: FormData, name: string): string {
-  const code = String(data.get(`${name}Code`) ?? DEFAULT_DIAL_CODE);
-  const number = String(data.get(`${name}Number`) ?? "").trim().replace(/[^\d]/g, "");
-  return number ? `${code}${number}` : "";
-}
-
 /** Required on every booking form — gates submission on explicit agreement
  * to the site owner's real Terms and Conditions (enforced again server-side
  * by create_booking_inquiry()'s p_terms_accepted, never just this

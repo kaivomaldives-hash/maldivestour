@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { SearchResultsPage, searchPageMetadata, type SearchPageSearchParams } from "@/components/search/search-page";
+import { searchPageMetadata, type SearchPageSearchParams } from "@/components/search/search-page-metadata";
+import { SearchResultsPage } from "@/components/search/search-page";
 
 export function generateMetadata({
   searchParams,

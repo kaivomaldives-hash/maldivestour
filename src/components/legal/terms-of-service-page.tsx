@@ -1,10 +1,8 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 
 import { LegalProse } from "@/components/legal/legal-prose";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
-import { canonicalUrl } from "@/lib/seo/site";
 
 /**
  * Site owner's real Terms and Conditions for accommodations, activities
@@ -15,13 +13,6 @@ import { canonicalUrl } from "@/lib/seo/site";
  * with the one typo'd email ("conatct@") corrected to the address used
  * everywhere else in the app.
  */
-export function termsOfServiceMetadata(): Metadata {
-  const title = "Terms and Conditions | MTG";
-  const description = "Maldives Tour Guide's terms and conditions for accommodation, activity and package bookings.";
-  const url = canonicalUrl("/terms-and-conditions");
-  return { title, description, alternates: { canonical: url }, openGraph: { title, description, url } };
-}
-
 export function TermsOfServicePage() {
   return (
     <main>

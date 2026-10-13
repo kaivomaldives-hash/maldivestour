@@ -3,7 +3,9 @@ import Link from "next/link";
 
 import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { Price } from "@/components/currency/price";
+import { ChipLinkList } from "@/components/fishing/chip-link-list";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
+import { FaqSection } from "@/components/ui/faq-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { WhatsAppIcon } from "@/components/ui/icons";
 import { MediaImage } from "@/components/ui/media-image";
@@ -93,21 +95,7 @@ export async function TechniqueLandingPage({ content }: { content: TechniquePage
         {/* Target species */}
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Target Species</h2>
-          <ul className="mt-4 flex flex-wrap gap-2 text-sm">
-            {content.targetSpecies.map((s) =>
-              s.href ? (
-                <li key={s.label}>
-                  <Link href={s.href} className="rounded-full border border-neutral-300 px-3 py-1.5 text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
-                    {s.label}
-                  </Link>
-                </li>
-              ) : (
-                <li key={s.label} className="rounded-full border border-neutral-300 px-3 py-1.5 text-neutral-700">
-                  {s.label}
-                </li>
-              ),
-            )}
-          </ul>
+          <ChipLinkList items={content.targetSpecies} />
         </section>
 
         {/* Real charters */}
@@ -170,17 +158,7 @@ export async function TechniqueLandingPage({ content }: { content: TechniquePage
         )}
 
         {/* FAQs */}
-        <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Frequently Asked Questions</h2>
-          <dl className="mt-4 space-y-6">
-            {content.faqs.map((faq) => (
-              <div key={faq.question}>
-                <dt className="font-medium text-ocean-900">{faq.question}</dt>
-                <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <FaqSection faqs={content.faqs} />
 
         {/* Related */}
         <section className="mt-12 border-t border-neutral-200 pt-10">

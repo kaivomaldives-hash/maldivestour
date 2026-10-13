@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
 
 import { PackageCard } from "@/components/packages/package-card";
+import { hasAnyFilter, type PackageDirectorySearchParams } from "@/components/packages/package-directory-metadata";
 import { PackageFilterBar } from "@/components/packages/package-filter-bar";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
+import { FaqSection } from "@/components/ui/faq-section";
 import { PageHero } from "@/components/ui/page-hero";
 import { Pagination } from "@/components/ui/pagination";
 import { PACKAGE_CATEGORY_FALLBACK_IMAGES } from "@/lib/packages/category-images";
@@ -21,7 +22,7 @@ import {
 } from "@/lib/packages/view-repository";
 import type { PackageCategorySlug, PackageDurationBandSlug, PackageSortOption } from "@/lib/packages/view-types";
 import { PACKAGE_CATEGORIES, PACKAGE_DURATION_BANDS } from "@/lib/packages/view-types";
-import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
+import { breadcrumbJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 const PAGE_SIZE = 24;
 
@@ -61,38 +62,6 @@ const FAQS = [
     answer: "Yes — see Private Speedboat Charter for our own fleet, available alongside any package.",
   },
 ];
-
-export interface PackageDirectorySearchParams {
-  q?: string;
-  page?: string;
-  category?: string;
-  atoll?: string;
-  duration?: string;
-  minPrice?: string;
-  maxPrice?: string;
-  minRating?: string;
-  sort?: string;
-}
-
-function hasAnyFilter(sp: PackageDirectorySearchParams): boolean {
-  return Boolean(sp.q || sp.category || sp.atoll || sp.duration || sp.minPrice || sp.maxPrice || sp.minRating);
-}
-
-export async function packageDirectoryMetadata(searchParams: Promise<PackageDirectorySearchParams>): Promise<Metadata> {
-  const sp = await searchParams;
-  const title = "Maldives Packages | Holiday, Vacation & Travel Packages";
-  const description =
-    "Real Maldives holiday, honeymoon, family, diving, fishing, surfing, luxury and budget packages — search by destination, filter by duration, price and category, and enquire directly.";
-  const url = canonicalUrl("/maldives/packages");
-
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
-    robots: hasAnyFilter(sp) ? { index: false, follow: true } : undefined,
-  };
-}
 
 function faqJsonLd() {
   return {
@@ -310,17 +279,7 @@ export async function PackageDirectoryPage({ searchParams }: { searchParams: Pro
           </>
         )}
 
-        <section className="mt-14 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Frequently Asked Questions</h2>
-          <dl className="mt-4 space-y-6">
-            {FAQS.map((faq) => (
-              <div key={faq.question}>
-                <dt className="font-medium text-ocean-900">{faq.question}</dt>
-                <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <FaqSection faqs={FAQS} className="mt-14 border-t border-neutral-200 pt-10" />
       </div>
     </main>
   );

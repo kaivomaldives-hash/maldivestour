@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { AdminTableHead } from "@/components/admin/admin-table-head";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Pagination } from "@/components/ui/pagination";
@@ -106,17 +107,7 @@ export default async function AdminBookingsPage({ searchParams }: { searchParams
       ) : (
         <div className="mt-6 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
           <table className="w-full min-w-[900px] text-left text-sm">
-            <thead className="border-b border-neutral-200 bg-neutral-50 text-xs font-semibold uppercase tracking-wide text-neutral-500">
-              <tr>
-                <th className="px-4 py-3">Reference</th>
-                <th className="px-4 py-3">Product</th>
-                <th className="px-4 py-3">Customer</th>
-                <th className="px-4 py-3">Travel date</th>
-                <th className="px-4 py-3">Guests</th>
-                <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3">Submitted</th>
-              </tr>
-            </thead>
+            <AdminTableHead columns={["Reference", "Product", "Customer", "Travel date", "Guests", "Status", "Submitted"]} />
             <tbody className="divide-y divide-neutral-100">
               {results.items.map((b) => (
                 <tr key={b.id} className="hover:bg-neutral-50">

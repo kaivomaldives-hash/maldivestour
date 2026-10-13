@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { ReactNode } from "react";
 
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { ActivityCard } from "@/components/activity/activity-card";
@@ -27,6 +27,34 @@ import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/s
 import { getSurfBreaksByAtoll } from "@/lib/surfing/repository";
 import { getTransferRoutesByAtoll } from "@/lib/transfers/repository";
 
+/** Every "<Thing> in {atoll.title}" section below (resorts, fishing, diving,
+ * dive sites, surfing, surf breaks, other activities, transfers, packages,
+ * related guides) is this same card-grid shape — hidden entirely when its
+ * list is empty. `description` covers the few sections that add a line of
+ * copy (or a conditional link) above the grid. */
+function AtollCardSection<T>({
+  title,
+  items,
+  renderItem,
+  description,
+  sectionClassName = "mt-10",
+}: {
+  title: string;
+  items: T[];
+  renderItem: (item: T) => ReactNode;
+  description?: ReactNode;
+  sectionClassName?: string;
+}) {
+  if (items.length === 0) return null;
+  return (
+    <section className={sectionClassName}>
+      <h2 className="text-xl font-semibold text-ocean-900">{title}</h2>
+      {description}
+      <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">{items.map(renderItem)}</ul>
+    </section>
+  );
+}
+
 function touristDestinationJsonLd(atoll: NonNullable<Awaited<ReturnType<typeof getAtollBySlug>>>) {
   return {
     "@context": "https://schema.org",
@@ -35,22 +63,6 @@ function touristDestinationJsonLd(atoll: NonNullable<Awaited<ReturnType<typeof g
     description: atoll.summary ?? undefined,
     address: { "@type": "PostalAddress", addressCountry: "MV" },
     url: canonicalUrl(`/maldives/atolls/${atoll.slug}`),
-  };
-}
-
-export async function atollDetailMetadata(slug: string): Promise<Metadata> {
-  const atoll = await getAtollBySlug(slug);
-  if (!atoll) return {};
-
-  const title = atoll.metaTitle ?? `${atoll.title} | Maldives Atolls | MTG`;
-  const description = atoll.metaDescription ?? atoll.summary ?? undefined;
-  const url = canonicalUrl(`/maldives/atolls/${atoll.slug}`);
-
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
   };
 }
 
@@ -180,37 +192,28 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
         )}
       </section>
 
-      {resortAccommodations.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Resorts in {atoll.title}</h2>
-          <p className="mt-1 text-sm text-neutral-600">Private island resorts, each its own destination.</p>
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {resortAccommodations.map((accommodation) => (
-              <AccommodationCard key={accommodation.id} accommodation={accommodation} />
-            ))}
-          </ul>
-        </section>
-      )}
+      <AtollCardSection
+        title={`Resorts in ${atoll.title}`}
+        items={resortAccommodations}
+        description={<p className="mt-1 text-sm text-neutral-600">Private island resorts, each its own destination.</p>}
+        renderItem={(accommodation) => <AccommodationCard key={accommodation.id} accommodation={accommodation} />}
+      />
 
-      {localStayAccommodations.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Guesthouses & Hotels in {atoll.title}</h2>
-          <p className="mt-1 text-sm text-neutral-600">Stays on real local islands, inside their communities.</p>
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {localStayAccommodations.map((accommodation) => (
-              <AccommodationCard key={accommodation.id} accommodation={accommodation} />
-            ))}
-          </ul>
-        </section>
-      )}
+      <AtollCardSection
+        title={`Guesthouses & Hotels in ${atoll.title}`}
+        items={localStayAccommodations}
+        description={<p className="mt-1 text-sm text-neutral-600">Stays on real local islands, inside their communities.</p>}
+        renderItem={(accommodation) => <AccommodationCard key={accommodation.id} accommodation={accommodation} />}
+      />
 
-      {fishingActivities.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Fishing in {atoll.title}</h2>
-          {/* Gaafu Alifu is Emperor's real home base (see
-              src/components/fishing/emperor-page.tsx) — same reinforcing
-              link as the Maamendhoo island page, no duplicated content. */}
-          {atoll.slug === "gaafu-alifu" && (
+      <AtollCardSection
+        title={`Fishing in ${atoll.title}`}
+        items={fishingActivities}
+        description={
+          // Gaafu Alifu is Emperor's real home base (see
+          // src/components/fishing/emperor-page.tsx) — same reinforcing
+          // link as the Maamendhoo island page, no duplicated content.
+          atoll.slug === "gaafu-alifu" ? (
             <p className="mt-2 text-sm text-neutral-700">
               Home base of{" "}
               <Link href="/maldives/fishing/emperor/" className="text-maldives-600 hover:underline">
@@ -218,102 +221,31 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
               </Link>
               .
             </p>
-          )}
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {fishingActivities.map((activity) => (
-              <ActivityCard key={activity.id} activity={activity} />
-            ))}
-          </ul>
-        </section>
-      )}
+          ) : undefined
+        }
+        renderItem={(activity) => <ActivityCard key={activity.id} activity={activity} />}
+      />
 
-      {divingActivities.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Diving in {atoll.title}</h2>
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {divingActivities.map((activity) => (
-              <ActivityCard key={activity.id} activity={activity} />
-            ))}
-          </ul>
-        </section>
-      )}
+      <AtollCardSection title={`Diving in ${atoll.title}`} items={divingActivities} renderItem={(activity) => <ActivityCard key={activity.id} activity={activity} />} />
 
-      {diveSites.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Dive sites in {atoll.title}</h2>
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {diveSites.map((site) => (
-              <DiveSiteCard key={site.id} site={site} />
-            ))}
-          </ul>
-        </section>
-      )}
+      <AtollCardSection title={`Dive sites in ${atoll.title}`} items={diveSites} renderItem={(site) => <DiveSiteCard key={site.id} site={site} />} />
 
-      {surfingActivities.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Surfing in {atoll.title}</h2>
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {surfingActivities.map((activity) => (
-              <ActivityCard key={activity.id} activity={activity} />
-            ))}
-          </ul>
-        </section>
-      )}
+      <AtollCardSection title={`Surfing in ${atoll.title}`} items={surfingActivities} renderItem={(activity) => <ActivityCard key={activity.id} activity={activity} />} />
 
-      {surfBreaks.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Surf breaks in {atoll.title}</h2>
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {surfBreaks.map((surfBreak) => (
-              <SurfBreakCard key={surfBreak.id} surfBreak={surfBreak} />
-            ))}
-          </ul>
-        </section>
-      )}
+      <AtollCardSection title={`Surf breaks in ${atoll.title}`} items={surfBreaks} renderItem={(surfBreak) => <SurfBreakCard key={surfBreak.id} surfBreak={surfBreak} />} />
 
-      {otherActivities.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Activities in {atoll.title}</h2>
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {otherActivities.map((activity) => (
-              <ActivityCard key={activity.id} activity={activity} />
-            ))}
-          </ul>
-        </section>
-      )}
+      <AtollCardSection title={`Activities in ${atoll.title}`} items={otherActivities} renderItem={(activity) => <ActivityCard key={activity.id} activity={activity} />} />
 
-      {transferRoutes.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Transfers in {atoll.title}</h2>
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {transferRoutes.map((route) => (
-              <TransferRouteCard key={route.id} route={route} />
-            ))}
-          </ul>
-        </section>
-      )}
+      <AtollCardSection title={`Transfers in ${atoll.title}`} items={transferRoutes} renderItem={(route) => <TransferRouteCard key={route.id} route={route} />} />
 
-      {packages.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Packages featuring {atoll.title}</h2>
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {packages.map((pkg) => (
-              <PackageCard key={pkg.id} pkg={pkg} />
-            ))}
-          </ul>
-        </section>
-      )}
+      <AtollCardSection title={`Packages featuring ${atoll.title}`} items={packages} renderItem={(pkg) => <PackageCard key={pkg.id} pkg={pkg} />} />
 
-      {relatedGuides.length > 0 && (
-        <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">{atoll.title} Travel Guides</h2>
-          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {relatedGuides.map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
-          </ul>
-        </section>
-      )}
+      <AtollCardSection
+        title={`${atoll.title} Travel Guides`}
+        items={relatedGuides}
+        sectionClassName="mt-12 border-t border-neutral-200 pt-10"
+        renderItem={(article) => <ArticleCard key={article.id} article={article} />}
+      />
 
       <p className="mt-10 text-sm text-neutral-600">
         <Link href="/maldives/atolls/" className="font-medium text-maldives-600 hover:underline">

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 
 import {
-  AttractionDirectoryPage,
   attractionDirectoryMetadata,
   type AttractionDirectorySearchParams,
-} from "@/components/attractions/attraction-directory-page";
+} from "@/components/attractions/attraction-directory-metadata";
+import { AttractionDirectoryPage } from "@/components/attractions/attraction-directory-page";
 
 export function generateMetadata({
   searchParams,

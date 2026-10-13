@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -6,7 +5,6 @@ import { ActivityCard } from "@/components/activity/activity-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getSurfBreakBySlug, getSurfingActivitiesAtBreak } from "@/lib/surfing/repository";
-import { canonicalUrl } from "@/lib/seo/site";
 
 const BREAK_TYPE_LABEL: Record<string, string> = {
   reef_break: "Reef break",
@@ -14,22 +12,6 @@ const BREAK_TYPE_LABEL: Record<string, string> = {
   beach_break: "Beach break",
   channel: "Channel",
 };
-
-export async function surfBreakDetailMetadata(slug: string): Promise<Metadata> {
-  const surfBreak = await getSurfBreakBySlug(slug);
-  if (!surfBreak) return {};
-
-  const title = `${surfBreak.title} | Maldives Surf Breaks | MTG`;
-  const description = surfBreak.summary ?? `${surfBreak.title}, a Maldives surf break.`;
-  const url = canonicalUrl(`/maldives/surf-breaks/${surfBreak.slug}`);
-
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
-  };
-}
 
 export async function SurfBreakDetailPage({ slug }: { slug: string }) {
   const surfBreak = await getSurfBreakBySlug(slug);

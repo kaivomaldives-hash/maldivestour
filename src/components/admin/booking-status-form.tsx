@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useId, useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import { BOOKING_STATUSES } from "@/lib/admin/booking-status";
@@ -161,6 +161,8 @@ export function BookingStatusForm({
   );
 }
 
+const FIELD_LABEL_CLASS = "mb-1 block text-xs font-medium text-neutral-500";
+
 function BoatFields({
   legend,
   value,
@@ -170,6 +172,8 @@ function BoatFields({
   value: TransferBoatDetailsInput;
   onChange: (next: TransferBoatDetailsInput) => void;
 }) {
+  const id = useId();
+
   function set(field: keyof TransferBoatDetailsInput, v: string) {
     onChange({ ...value, [field]: v });
   }
@@ -178,27 +182,78 @@ function BoatFields({
     <fieldset className="space-y-2 rounded-xl border border-neutral-200 p-3">
       <legend className="px-1 text-xs font-semibold uppercase tracking-wide text-neutral-500">{legend}</legend>
       <div className="grid grid-cols-2 gap-2">
-        <input value={value.boatName ?? ""} onChange={(e) => set("boatName", e.target.value)} placeholder="Boat name" className={INPUT_CLASS} />
-        <input value={value.boatSize ?? ""} onChange={(e) => set("boatSize", e.target.value)} placeholder="Boat size (e.g. 25 feet)" className={INPUT_CLASS} />
-        <input
-          value={value.boatContact ?? ""}
-          onChange={(e) => set("boatContact", e.target.value)}
-          placeholder="Boat contact number"
-          className={`${INPUT_CLASS} col-span-2`}
-        />
-        <input value={value.captainName ?? ""} onChange={(e) => set("captainName", e.target.value)} placeholder="Captain name" className={INPUT_CLASS} />
-        <input
-          value={value.captainLicense ?? ""}
-          onChange={(e) => set("captainLicense", e.target.value)}
-          placeholder="License number"
-          className={INPUT_CLASS}
-        />
-        <input
-          value={value.registrationNumber ?? ""}
-          onChange={(e) => set("registrationNumber", e.target.value)}
-          placeholder="Registration number"
-          className={`${INPUT_CLASS} col-span-2`}
-        />
+        <div>
+          <label htmlFor={`${id}-boat-name`} className={FIELD_LABEL_CLASS}>
+            Boat name
+          </label>
+          <input
+            id={`${id}-boat-name`}
+            value={value.boatName ?? ""}
+            onChange={(e) => set("boatName", e.target.value)}
+            placeholder="Boat name"
+            className={INPUT_CLASS}
+          />
+        </div>
+        <div>
+          <label htmlFor={`${id}-boat-size`} className={FIELD_LABEL_CLASS}>
+            Boat size
+          </label>
+          <input
+            id={`${id}-boat-size`}
+            value={value.boatSize ?? ""}
+            onChange={(e) => set("boatSize", e.target.value)}
+            placeholder="e.g. 25 feet"
+            className={INPUT_CLASS}
+          />
+        </div>
+        <div className="col-span-2">
+          <label htmlFor={`${id}-boat-contact`} className={FIELD_LABEL_CLASS}>
+            Boat contact number
+          </label>
+          <input
+            id={`${id}-boat-contact`}
+            value={value.boatContact ?? ""}
+            onChange={(e) => set("boatContact", e.target.value)}
+            placeholder="Boat contact number"
+            className={INPUT_CLASS}
+          />
+        </div>
+        <div>
+          <label htmlFor={`${id}-captain-name`} className={FIELD_LABEL_CLASS}>
+            Captain name
+          </label>
+          <input
+            id={`${id}-captain-name`}
+            value={value.captainName ?? ""}
+            onChange={(e) => set("captainName", e.target.value)}
+            placeholder="Captain name"
+            className={INPUT_CLASS}
+          />
+        </div>
+        <div>
+          <label htmlFor={`${id}-captain-license`} className={FIELD_LABEL_CLASS}>
+            License number
+          </label>
+          <input
+            id={`${id}-captain-license`}
+            value={value.captainLicense ?? ""}
+            onChange={(e) => set("captainLicense", e.target.value)}
+            placeholder="License number"
+            className={INPUT_CLASS}
+          />
+        </div>
+        <div className="col-span-2">
+          <label htmlFor={`${id}-registration-number`} className={FIELD_LABEL_CLASS}>
+            Registration number
+          </label>
+          <input
+            id={`${id}-registration-number`}
+            value={value.registrationNumber ?? ""}
+            onChange={(e) => set("registrationNumber", e.target.value)}
+            placeholder="Registration number"
+            className={INPUT_CLASS}
+          />
+        </div>
       </div>
     </fieldset>
   );

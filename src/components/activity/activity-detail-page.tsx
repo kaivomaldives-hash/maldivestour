@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ActivityQuickFacts } from "@/components/activity/activity-quick-facts";
 import { PackageCard } from "@/components/packages/package-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
@@ -15,18 +15,6 @@ import { getActivityBySlug } from "@/lib/activities/repository";
 import { activityServiceJsonLd, hasDedicatedRoute } from "@/lib/activities/types";
 import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
-
-const CATEGORY_LABEL: Record<string, string> = {
-  general: "General",
-  fishing: "Fishing",
-  diving: "Diving",
-  surfing: "Surfing",
-  watersports: "Watersports",
-  excursion: "Excursion",
-  island_hopping: "Island Hopping",
-  spa: "Spa",
-  culture: "Culture",
-};
 
 function formatDuration(minutes: number | null): string | null {
   if (!minutes) return null;
@@ -111,81 +99,7 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
           ))}
         </div>
       )}
-      <dl className="mt-6 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
-        <div>
-          <dt className="text-neutral-500">Category</dt>
-          <dd className="font-medium">{CATEGORY_LABEL[activity.activityCategory] ?? activity.activityCategory}</dd>
-        </div>
-        {duration && (
-          <div>
-            <dt className="text-neutral-500">Duration</dt>
-            <dd className="font-medium">{duration}</dd>
-          </div>
-        )}
-        {activity.difficulty && (
-          <div>
-            <dt className="text-neutral-500">Difficulty</dt>
-            <dd className="font-medium capitalize">{activity.difficulty.replace("_", " ")}</dd>
-          </div>
-        )}
-        {activity.minAge !== null && (
-          <div>
-            <dt className="text-neutral-500">Minimum age</dt>
-            <dd className="font-medium">{activity.minAge}</dd>
-          </div>
-        )}
-        {activity.maxParticipants !== null && (
-          <div>
-            <dt className="text-neutral-500">Max participants</dt>
-            <dd className="font-medium">{activity.maxParticipants}</dd>
-          </div>
-        )}
-        {activity.priceFrom !== null && (
-          <div>
-            <dt className="text-neutral-500">Price from</dt>
-            <dd className="font-medium">
-              {activity.currency ?? "USD"} {activity.priceFrom}
-            </dd>
-          </div>
-        )}
-        {primaryLocation && (
-          <div>
-            <dt className="text-neutral-500">Location</dt>
-            <dd className="font-medium">
-              <Link
-                href={
-                  primaryLocation.locationType === "island"
-                    ? `/maldives/islands/${primaryLocation.slug}/`
-                    : `/maldives/atolls/${primaryLocation.slug}/`
-                }
-                className="hover:underline"
-              >
-                {primaryLocation.title}
-              </Link>
-            </dd>
-          </div>
-        )}
-        {atoll && (
-          <div>
-            <dt className="text-neutral-500">Atoll</dt>
-            <dd className="font-medium">
-              <Link href={`/maldives/atolls/${atoll.slug}/`} className="hover:underline">
-                {atoll.title}
-              </Link>
-            </dd>
-          </div>
-        )}
-        {activity.provider && (
-          <div>
-            <dt className="text-neutral-500">Operated by</dt>
-            <dd className="font-medium">
-              <Link href={`/maldives/providers/${activity.provider.slug}/`} className="hover:underline">
-                {activity.provider.title}
-              </Link>
-            </dd>
-          </div>
-        )}
-      </dl>
+      <ActivityQuickFacts activity={activity} duration={duration} showCategory difficultyLabel="Difficulty" />
 
       <LocationMap title={activity.title} lat={primaryLocation?.lat ?? null} lng={primaryLocation?.lng ?? null} />
 

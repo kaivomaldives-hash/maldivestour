@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
 
-import { ActivitiesVideo, activitiesVideoJsonLd } from "@/components/activity/activities-video";
+import { ActivitiesVideo } from "@/components/activity/activities-video";
+import { activitiesVideoJsonLd } from "@/components/activity/activities-video-jsonld";
 import { ActivityCard } from "@/components/activity/activity-card";
 import { ActivityFilterBar } from "@/components/activity/activity-filter-bar";
 import { AttractionCard } from "@/components/attractions/attraction-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
+import { FaqSection } from "@/components/ui/faq-section";
 import { Pagination } from "@/components/ui/pagination";
 import { PageHero } from "@/components/ui/page-hero";
 import { getActivities, searchActivities } from "@/lib/activities/repository";
@@ -381,17 +383,7 @@ export async function ActivityDirectoryPage({
           </nav>
         </section>
 
-        <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Frequently Asked Questions</h2>
-          <dl className="mt-4 space-y-6">
-            {FAQS.map((faq) => (
-              <div key={faq.question}>
-                <dt className="font-medium text-ocean-900">{faq.question}</dt>
-                <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <FaqSection faqs={FAQS} />
       </div>
     </main>
   );

@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -13,22 +12,6 @@ import { ATTRACTION_TYPE_LABEL } from "@/lib/attractions/types";
 import { getArticleBySlug } from "@/lib/articles/repository";
 import { articleHref } from "@/lib/articles/types";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
-
-export async function attractionDetailMetadata(slug: string): Promise<Metadata> {
-  const attraction = await getAttractionBySlug(slug);
-  if (!attraction) return {};
-
-  const title = `${attraction.title} | Maldives Attractions | MTG`;
-  const description = attraction.summary ?? `${attraction.title}, a Maldives attraction.`;
-  const url = canonicalUrl(`/maldives/attractions/${attraction.slug}`);
-
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
-  };
-}
 
 function touristAttractionJsonLd(attraction: NonNullable<Awaited<ReturnType<typeof getAttractionBySlug>>>) {
   return {

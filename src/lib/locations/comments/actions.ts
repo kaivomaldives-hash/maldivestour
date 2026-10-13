@@ -14,6 +14,7 @@ export interface SubmitLocationCommentInput {
   body: string;
   guestName: string;
   guestEmail: string;
+  agreedToTerms: boolean;
 }
 
 export interface SubmitLocationCommentResult {
@@ -29,6 +30,7 @@ export async function submitLocationComment(input: SubmitLocationCommentInput): 
   if (!name) return { ok: false, error: "Please enter your name." };
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, error: "Please enter a valid email address." };
   if (!body) return { ok: false, error: "Please write a comment." };
+  if (!input.agreedToTerms) return { ok: false, error: "Please confirm you are responsible for this content before submitting." };
 
   const supabase = await createClient();
   const rpcArgs = {
@@ -36,6 +38,7 @@ export async function submitLocationComment(input: SubmitLocationCommentInput): 
     p_body: body,
     p_guest_name: name,
     p_guest_email: email,
+    p_agreed_to_terms: true,
   };
 
   // src/types/database.ts is still the Task 3 placeholder (see the

@@ -72,6 +72,15 @@ export function LocationMediaUploadForm({ locationId }: { locationId: string }) 
         </label>
       </div>
 
+      <label className="flex items-start gap-2 text-xs text-neutral-600">
+        <input name="agreedToTerms" type="checkbox" required className="mt-0.5" />
+        <span>
+          I confirm these photos are my own, or that I have the right to share them, and that I am solely responsible for
+          what I submit. Maldives Tour Guide is not responsible for any copyright or other claims arising from content I
+          submit.
+        </span>
+      </label>
+
       {error && (
         <p role="alert" className="text-sm text-red-600">
           {error}

@@ -25,10 +25,12 @@ const ALLOWED_CONTENT_TYPES: Record<string, string> = {
 export async function createLocationMediaSubmission(locationId: string, formData: FormData): Promise<SubmitLocationMediaResult> {
   const submitterName = String(formData.get("submitterName") ?? "").trim();
   const submitterEmail = String(formData.get("submitterEmail") ?? "").trim();
+  const agreedToTerms = formData.get("agreedToTerms") === "on";
   const files = formData.getAll("files").filter((f): f is File => f instanceof File && f.size > 0);
 
   if (!submitterName) return { ok: false, error: "Please enter your name." };
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(submitterEmail)) return { ok: false, error: "Please enter a valid email address." };
+  if (!agreedToTerms) return { ok: false, error: "Please confirm you are responsible for these photos before submitting." };
   if (files.length === 0) return { ok: false, error: "Please choose at least one photo to upload." };
   if (files.length > MAX_SUBMISSION_IMAGES) return { ok: false, error: `You can upload at most ${MAX_SUBMISSION_IMAGES} photos per submission.` };
   for (const file of files) {
@@ -42,7 +44,7 @@ export async function createLocationMediaSubmission(locationId: string, formData
   // identical, already-documented cast in src/lib/reviews/actions.ts).
   const { data: submissionId, error: createError } = await supabase.rpc(
     "create_location_media_submission" as unknown as never,
-    { p_location_id: locationId, p_submitter_name: submitterName, p_submitter_email: submitterEmail } as unknown as undefined,
+    { p_location_id: locationId, p_submitter_name: submitterName, p_submitter_email: submitterEmail, p_agreed_to_terms: true } as unknown as undefined,
   );
   if (createError || !submissionId) {
     if (createError?.message.includes("limit of 2 submissions per day")) {

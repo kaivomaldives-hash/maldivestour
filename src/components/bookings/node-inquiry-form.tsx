@@ -3,7 +3,8 @@
 import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
-import { combinePhone, NationalityField, PhoneField, TermsCheckbox } from "@/components/bookings/customer-fields";
+import { combinePhone } from "@/components/bookings/combine-phone";
+import { NationalityField, PhoneField, TermsCheckbox } from "@/components/bookings/customer-fields";
 import { createNodeInquiry, searchDestinationOptions, type DestinationOption } from "@/lib/bookings/actions";
 import type { BookingSource } from "@/lib/bookings/copy";
 

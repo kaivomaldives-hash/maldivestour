@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { AtollDetailPage, atollDetailMetadata } from "@/components/locations/atoll-detail-page";
+import { atollDetailMetadata } from "@/components/locations/atoll-detail-metadata";
+import { AtollDetailPage } from "@/components/locations/atoll-detail-page";
 
 // Staggered (not a round 3600) so ISR regenerations don't cluster with
 // every other route's -- see src/app/page.tsx for why.

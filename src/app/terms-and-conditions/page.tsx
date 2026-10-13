@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { termsOfServiceMetadata, TermsOfServicePage } from "@/components/legal/terms-of-service-page";
+import { termsOfServiceMetadata } from "@/components/legal/terms-of-service-metadata";
+import { TermsOfServicePage } from "@/components/legal/terms-of-service-page";
 
 export const revalidate = 86400;
 

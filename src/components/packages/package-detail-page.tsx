@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -6,6 +5,7 @@ import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { PackageCard } from "@/components/packages/package-card";
 import { Badge } from "@/components/ui/badge";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
+import { FaqSection } from "@/components/ui/faq-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
@@ -23,26 +23,6 @@ const PRICE_TYPE_LABEL: Record<string, string> = {
   "per-couple": "per couple",
   "per-package": "per package",
 };
-
-export async function packageDetailMetadata(slug: string): Promise<Metadata> {
-  const pkg = await getPackageViewBySlug(slug);
-  if (!pkg) return {};
-
-  const title = `${pkg.title} | ${pkg.nights ?? "?"} Nights / ${pkg.days ?? "?"} Days`;
-  const description = pkg.shortDescription ?? undefined;
-  const url = canonicalUrl(`/maldives/packages/${pkg.slug}`);
-
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
-    // Demo packages are real, useful content but not a real commercial
-    // offer yet — never let search engines index them as if they were
-    // (Task 21 §59/§60). Real packages stay fully indexable.
-    robots: pkg.isDemo ? { index: false, follow: true } : undefined,
-  };
-}
 
 /** Product/Offer only for REAL, bookable packages — a demo package is
  * never described to search engines as a real commercial offer (Task 21
@@ -424,19 +404,7 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
         )}
 
         {/* FAQs */}
-        {pkg.faqs.length > 0 && (
-          <section className="mt-12 border-t border-neutral-200 pt-10">
-            <h2 className="text-xl font-semibold text-ocean-900">Frequently Asked Questions</h2>
-            <dl className="mt-4 space-y-6">
-              {pkg.faqs.map((faq) => (
-                <div key={faq.question}>
-                  <dt className="font-medium text-ocean-900">{faq.question}</dt>
-                  <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
-                </div>
-              ))}
-            </dl>
-          </section>
-        )}
+        <FaqSection faqs={pkg.faqs} />
 
         {/* Related packages */}
         {related.length > 0 && (

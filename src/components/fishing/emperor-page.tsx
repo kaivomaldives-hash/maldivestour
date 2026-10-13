@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 
 import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { Price } from "@/components/currency/price";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
+import { FaqSection } from "@/components/ui/faq-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { WhatsAppIcon } from "@/components/ui/icons";
 import { MediaImage } from "@/components/ui/media-image";
@@ -12,7 +12,7 @@ import { isSupportedCurrency } from "@/lib/currency/types";
 import { bookingCta } from "@/lib/bookings/copy";
 import { getFishingActivityBySlug } from "@/lib/fishing/repository";
 import { FISHING_HERO_IMAGE } from "@/lib/packages/category-images";
-import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
+import { breadcrumbJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 // The 2 real, currently-verified charter SKUs — same source as the
@@ -58,19 +58,6 @@ function faqJsonLd() {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     mainEntity: FAQS.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })),
-  };
-}
-
-export function emperorPageMetadata(): Metadata {
-  const title = "Emperor Private Fishing Charter Maldives | Maldives Fishing";
-  const description =
-    "Fish the Maldives aboard Emperor, a private 32-foot fishing charter with twin 200 HP engines for up to 5 anglers. GT, tuna, wahoo and more — home-based in Gaafu Atoll, arranged from other locations across the Maldives on request.";
-  const url = canonicalUrl("/maldives/fishing/emperor");
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
   };
 }
 
@@ -289,17 +276,7 @@ export async function EmperorPage() {
         </section>
 
         {/* FAQs */}
-        <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Frequently Asked Questions</h2>
-          <dl className="mt-4 space-y-6">
-            {FAQS.map((faq) => (
-              <div key={faq.question}>
-                <dt className="font-medium text-ocean-900">{faq.question}</dt>
-                <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <FaqSection faqs={FAQS} />
 
         {/* Related */}
         <section className="mt-12 border-t border-neutral-200 pt-10">

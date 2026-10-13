@@ -279,7 +279,9 @@ export function HolidayBuilderWizard({ pricing }: { pricing: PricingConfigRow[] 
             </div>
 
             <div>
-              <span className={LABEL_CLASS}>Destination (optional)</span>
+              <label className={LABEL_CLASS} htmlFor="hb-destination">
+                Destination (optional)
+              </label>
               <div className="flex flex-wrap gap-2 text-sm">
                 <button
                   type="button"
@@ -298,6 +300,7 @@ export function HolidayBuilderWizard({ pricing }: { pricing: PricingConfigRow[] 
               </div>
               <div className="relative mt-2">
                 <input
+                  id="hb-destination"
                   value={destination ? destination.title : destinationQuery}
                   onChange={(e) => {
                     setDestination(null);

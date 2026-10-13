@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useId, useState, useTransition } from "react";
 
 import { searchItineraryNodeOptions, searchTransferServiceOptions, type ItineraryNodeOption, type TransferServiceOption } from "@/lib/admin/packages-actions";
 
@@ -11,12 +11,15 @@ import { searchItineraryNodeOptions, searchTransferServiceOptions, type Itinerar
 export function EntityPicker({
   value,
   onChange,
+  label = "Linked item",
   placeholder = "Search accommodations, activities, packages…",
 }: {
   value: ItineraryNodeOption | null;
   onChange: (option: ItineraryNodeOption | null) => void;
+  label?: string;
   placeholder?: string;
 }) {
+  const id = useId();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<ItineraryNodeOption[]>([]);
   const [open, setOpen] = useState(false);
@@ -35,20 +38,27 @@ export function EntityPicker({
 
   if (value) {
     return (
-      <div className="flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm">
-        <span className="flex-1">
-          {value.title} <span className="text-neutral-400">({value.nodeType})</span>
-        </span>
-        <button type="button" onClick={() => onChange(null)} className="text-xs font-medium text-neutral-500 hover:text-red-600">
-          Clear
-        </button>
+      <div>
+        <span className="mb-1 block text-sm font-medium text-neutral-700">{label}</span>
+        <div className="flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm">
+          <span className="flex-1">
+            {value.title} <span className="text-neutral-400">({value.nodeType})</span>
+          </span>
+          <button type="button" onClick={() => onChange(null)} className="text-xs font-medium text-neutral-500 hover:text-red-600">
+            Clear
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="relative">
+      <label htmlFor={id} className="mb-1 block text-sm font-medium text-neutral-700">
+        {label}
+      </label>
       <input
+        id={id}
         value={query}
         onChange={(e) => search(e.target.value)}
         onFocus={() => setOpen(true)}
@@ -86,7 +96,16 @@ export function EntityPicker({
 /** Same pattern, backed by searchTransferServiceOptions() for the
  * component_type='transfer_service' case — transfer_services has no title
  * of its own, so the picker shows a resolved label instead. */
-export function TransferServicePicker({ value, onChange }: { value: TransferServiceOption | null; onChange: (option: TransferServiceOption | null) => void }) {
+export function TransferServicePicker({
+  value,
+  onChange,
+  label = "Linked transfer service",
+}: {
+  value: TransferServiceOption | null;
+  onChange: (option: TransferServiceOption | null) => void;
+  label?: string;
+}) {
+  const id = useId();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<TransferServiceOption[]>([]);
   const [open, setOpen] = useState(false);
@@ -105,18 +124,25 @@ export function TransferServicePicker({ value, onChange }: { value: TransferServ
 
   if (value) {
     return (
-      <div className="flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm">
-        <span className="flex-1">{value.label}</span>
-        <button type="button" onClick={() => onChange(null)} className="text-xs font-medium text-neutral-500 hover:text-red-600">
-          Clear
-        </button>
+      <div>
+        <span className="mb-1 block text-sm font-medium text-neutral-700">{label}</span>
+        <div className="flex items-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm">
+          <span className="flex-1">{value.label}</span>
+          <button type="button" onClick={() => onChange(null)} className="text-xs font-medium text-neutral-500 hover:text-red-600">
+            Clear
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="relative">
+      <label htmlFor={id} className="mb-1 block text-sm font-medium text-neutral-700">
+        {label}
+      </label>
       <input
+        id={id}
         value={query}
         onChange={(e) => search(e.target.value)}
         onFocus={() => setOpen(true)}

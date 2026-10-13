@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -13,6 +12,7 @@ import { PackageCard } from "@/components/packages/package-card";
 import { SurfBreakCard } from "@/components/surfing/surf-break-card";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
+import { FaqSection } from "@/components/ui/faq-section";
 import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { getActivitiesByLocation } from "@/lib/activities/repository";
@@ -56,22 +56,6 @@ function touristDestinationJsonLd(
     description: island.summary ?? undefined,
     address: atoll ? { "@type": "PostalAddress", addressRegion: atoll.title, addressCountry: "MV" } : { "@type": "PostalAddress", addressCountry: "MV" },
     url: canonicalUrl(`/maldives/islands/${island.slug}`),
-  };
-}
-
-export async function islandDetailMetadata(slug: string): Promise<Metadata> {
-  const island = await getIslandBySlug(slug);
-  if (!island) return {};
-
-  const title = island.metaTitle ?? `${island.title}, Maldives | Things to Do, Stays & Travel Guide | MTG`;
-  const description = island.metaDescription ?? island.summary ?? undefined;
-  const url = canonicalUrl(`/maldives/islands/${island.slug}`);
-
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
   };
 }
 
@@ -355,19 +339,7 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
         </section>
       )}
 
-      {content && content.faqs.length > 0 && (
-        <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Frequently Asked Questions</h2>
-          <dl className="mt-4 space-y-6">
-            {content.faqs.map((faq) => (
-              <div key={faq.question}>
-                <dt className="font-medium text-ocean-900">{faq.question}</dt>
-                <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      )}
+      {content && <FaqSection faqs={content.faqs} />}
 
       {nearbyIslands.length > 0 && (
         <section className="mt-12 border-t border-neutral-200 pt-10">

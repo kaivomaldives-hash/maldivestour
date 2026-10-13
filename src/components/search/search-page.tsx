@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 
 import { SearchBox } from "@/components/search/search-box";
@@ -25,15 +24,9 @@ import {
   type SearchFilterType,
   type SearchGroupKey,
 } from "@/lib/search/types";
-import { canonicalUrl } from "@/lib/seo/site";
+import type { SearchPageSearchParams } from "@/components/search/search-page-metadata";
 
 const PAGE_SIZE = 12;
-
-export interface SearchPageSearchParams {
-  q?: string;
-  type?: string;
-  page?: string;
-}
 
 const SEARCH_FILTER_TYPE_SET: ReadonlySet<string> = new Set(SEARCH_FILTER_TYPES);
 
@@ -58,30 +51,6 @@ function chipClass(active: boolean): string {
   return `rounded-full border px-3 py-1 text-sm ${
     active ? "border-maldives-600 bg-maldives-600 text-white" : "border-neutral-300 text-neutral-700"
   }`;
-}
-
-export async function searchPageMetadata(searchParams: Promise<SearchPageSearchParams>): Promise<Metadata> {
-  const sp = await searchParams;
-  const q = sp.q?.trim() ?? "";
-  const canonical = canonicalUrl("/maldives/search");
-
-  const title = q ? `Search results for "${q}" | MTG` : "Search | Maldives Tour Guide";
-  const description = q
-    ? `Search results for "${q}" across Maldives atolls, islands, resorts, hotels, guesthouses, activities, transfers, and packages.`
-    : "Search MTG for real Maldives atolls, islands, resorts, hotels, guesthouses, activities, diving, fishing, surfing, transfers, and packages.";
-
-  return {
-    title,
-    description,
-    // Task 13 §5/§28: the canonical URL always stays the clean search
-    // page — query/filter/page params never become their own indexable
-    // landing pages.
-    alternates: { canonical },
-    openGraph: { title, description, url: canonical },
-    // Any actual query is a dynamic, per-visitor discovery view — keep it
-    // out of the index while still letting crawlers follow its links.
-    robots: q ? { index: false, follow: true } : undefined,
-  };
 }
 
 const BROWSE_CATEGORIES = [

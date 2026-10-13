@@ -3,7 +3,8 @@
 import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
-import { combinePhone, NationalityField, PhoneField, TermsCheckbox } from "@/components/bookings/customer-fields";
+import { combinePhone } from "@/components/bookings/combine-phone";
+import { NationalityField, PhoneField, TermsCheckbox } from "@/components/bookings/customer-fields";
 import { createTransferBookingInquiry } from "@/lib/bookings/actions";
 
 const WHATSAPP_NUMBER = "9607794332";

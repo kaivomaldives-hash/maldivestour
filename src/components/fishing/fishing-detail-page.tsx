@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { WhereToStaySection } from "@/components/accommodation/where-to-stay-section";
+import { ActivityQuickFacts } from "@/components/activity/activity-quick-facts";
 import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { PackageCard } from "@/components/packages/package-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
@@ -13,29 +13,13 @@ import { activityServiceJsonLd } from "@/lib/activities/types";
 import { bookingCta } from "@/lib/bookings/copy";
 import { getFishingActivitiesByLocation, getFishingActivityBySlug, getFishingTypesForActivity } from "@/lib/fishing/repository";
 import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
-import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
+import { breadcrumbJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 function formatDuration(minutes: number | null): string | null {
   if (!minutes) return null;
   if (minutes < 60) return `${minutes} minutes`;
   const hours = minutes / 60;
   return Number.isInteger(hours) ? `${hours} hour${hours === 1 ? "" : "s"}` : `${hours.toFixed(1)} hours`;
-}
-
-export async function fishingDetailMetadata(slug: string): Promise<Metadata> {
-  const activity = await getFishingActivityBySlug(slug);
-  if (!activity) return {};
-
-  const title = activity.metaTitle ?? `${activity.title} | Maldives Fishing | MTG`;
-  const description = activity.metaDescription ?? activity.summary ?? undefined;
-  const url = canonicalUrl(`/maldives/fishing/${activity.slug}`);
-
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
-  };
 }
 
 export async function FishingDetailPage({ slug }: { slug: string }) {
@@ -102,65 +86,7 @@ export async function FishingDetailPage({ slug }: { slug: string }) {
         </div>
       )}
 
-      <dl className="mt-6 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
-        {duration && (
-          <div>
-            <dt className="text-neutral-500">Duration</dt>
-            <dd className="font-medium">{duration}</dd>
-          </div>
-        )}
-        {activity.maxParticipants !== null && (
-          <div>
-            <dt className="text-neutral-500">Max participants</dt>
-            <dd className="font-medium">{activity.maxParticipants}</dd>
-          </div>
-        )}
-        {activity.priceFrom !== null && (
-          <div>
-            <dt className="text-neutral-500">Price from</dt>
-            <dd className="font-medium">
-              {activity.currency ?? "USD"} {activity.priceFrom}
-            </dd>
-          </div>
-        )}
-        {primaryLocation && (
-          <div>
-            <dt className="text-neutral-500">Location</dt>
-            <dd className="font-medium">
-              <Link
-                href={
-                  primaryLocation.locationType === "island"
-                    ? `/maldives/islands/${primaryLocation.slug}/`
-                    : `/maldives/atolls/${primaryLocation.slug}/`
-                }
-                className="hover:underline"
-              >
-                {primaryLocation.title}
-              </Link>
-            </dd>
-          </div>
-        )}
-        {atoll && (
-          <div>
-            <dt className="text-neutral-500">Atoll</dt>
-            <dd className="font-medium">
-              <Link href={`/maldives/atolls/${atoll.slug}/`} className="hover:underline">
-                {atoll.title}
-              </Link>
-            </dd>
-          </div>
-        )}
-        {activity.provider && (
-          <div>
-            <dt className="text-neutral-500">Operated by</dt>
-            <dd className="font-medium">
-              <Link href={`/maldives/providers/${activity.provider.slug}/`} className="hover:underline">
-                {activity.provider.title}
-              </Link>
-            </dd>
-          </div>
-        )}
-      </dl>
+      <ActivityQuickFacts activity={activity} duration={duration} showDifficulty={false} showMinAge={false} />
 
       {activity.isBookable && (
         <section className="mt-6 rounded-2xl border border-neutral-200 p-6">

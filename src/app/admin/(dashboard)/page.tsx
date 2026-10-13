@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { AdminTableHead } from "@/components/admin/admin-table-head";
 import { Badge } from "@/components/ui/badge";
 import { getBookingsAdmin } from "@/lib/admin/bookings-repository";
 import { getDashboardStats } from "@/lib/admin/dashboard";
@@ -73,15 +74,7 @@ export default async function AdminDashboardPage() {
         {recent.length > 0 && (
           <div className="mt-4 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
             <table className="w-full min-w-[640px] text-left text-sm">
-              <thead className="border-b border-neutral-200 bg-neutral-50 text-xs font-semibold uppercase tracking-wide text-neutral-500">
-                <tr>
-                  <th className="px-4 py-3">Reference</th>
-                  <th className="px-4 py-3">Product</th>
-                  <th className="px-4 py-3">Customer</th>
-                  <th className="px-4 py-3">Status</th>
-                  <th className="px-4 py-3">Submitted</th>
-                </tr>
-              </thead>
+              <AdminTableHead columns={["Reference", "Product", "Customer", "Status", "Submitted"]} />
               <tbody className="divide-y divide-neutral-100">
                 {recent.map((b) => (
                   <tr key={b.id} className="hover:bg-neutral-50">

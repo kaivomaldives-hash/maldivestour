@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 
 import {
-  SurfBreakDirectoryPage,
   surfBreakDirectoryMetadata,
   type SurfBreakDirectorySearchParams,
-} from "@/components/surfing/surf-break-directory-page";
+} from "@/components/surfing/surf-break-directory-metadata";
+import { SurfBreakDirectoryPage } from "@/components/surfing/surf-break-directory-page";
 
 export function generateMetadata({
   searchParams,

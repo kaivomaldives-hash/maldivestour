@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -6,7 +5,7 @@ import { ActivityCard } from "@/components/activity/activity-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getDiveSiteBySlug, getDivingActivitiesAtSite } from "@/lib/diving/repository";
-import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
+import { breadcrumbJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 const SITE_TYPE_LABEL: Record<string, string> = {
   reef: "Reef",
@@ -17,22 +16,6 @@ const SITE_TYPE_LABEL: Record<string, string> = {
   wall: "Wall",
   cave: "Cave",
 };
-
-export async function diveSiteDetailMetadata(slug: string): Promise<Metadata> {
-  const site = await getDiveSiteBySlug(slug);
-  if (!site) return {};
-
-  const title = `${site.title} | Maldives Dive Sites | MTG`;
-  const description = site.summary ?? `${site.title}, a Maldives dive site.`;
-  const url = canonicalUrl(`/maldives/dive-sites/${site.slug}`);
-
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
-  };
-}
 
 export async function DiveSiteDetailPage({ slug }: { slug: string }) {
   const site = await getDiveSiteBySlug(slug);

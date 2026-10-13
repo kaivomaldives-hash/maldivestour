@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 
 import { SurfBreakCard } from "@/components/surfing/surf-break-card";
+import type { SurfBreakDirectorySearchParams } from "@/components/surfing/surf-break-directory-metadata";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
@@ -9,7 +9,6 @@ import { Pagination } from "@/components/ui/pagination";
 import { getSurfBreaks } from "@/lib/surfing/repository";
 import type { SurfBreakType } from "@/lib/surfing/types";
 import { getAtollBySlug } from "@/lib/locations/repository";
-import { canonicalUrl } from "@/lib/seo/site";
 
 const BREAK_TYPE_LABEL: Record<SurfBreakType, string> = {
   reef_break: "Reef break",
@@ -20,31 +19,6 @@ const BREAK_TYPE_LABEL: Record<SurfBreakType, string> = {
 
 const BREAK_TYPES = Object.keys(BREAK_TYPE_LABEL) as SurfBreakType[];
 const PAGE_SIZE = 48;
-
-export interface SurfBreakDirectorySearchParams {
-  page?: string;
-  type?: string;
-  atoll?: string;
-}
-
-function hasAnyFilter(sp: SurfBreakDirectorySearchParams): boolean {
-  return Boolean(sp.type || sp.atoll);
-}
-
-export async function surfBreakDirectoryMetadata(searchParams: Promise<SurfBreakDirectorySearchParams>): Promise<Metadata> {
-  const sp = await searchParams;
-  const title = "Maldives Surf Breaks | MTG";
-  const description = "Real, documented Maldives surf breaks — reef, point, and beach breaks, and channels — by atoll and type.";
-  const url = canonicalUrl("/maldives/surf-breaks");
-
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
-    robots: hasAnyFilter(sp) ? { index: false, follow: true } : undefined,
-  };
-}
 
 export async function SurfBreakDirectoryPage({
   searchParams,

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
+import { FaqSection } from "@/components/ui/faq-section";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { getFerryRoutes } from "@/lib/ferries/repository";
@@ -149,17 +150,7 @@ export async function FerryScheduleDirectoryPage() {
           ))
         )}
 
-        <section className="mt-14 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Common questions</h2>
-          <dl className="mt-4 space-y-6">
-            {FAQS.map((faq) => (
-              <div key={faq.question}>
-                <dt className="font-medium text-ocean-900">{faq.question}</dt>
-                <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <FaqSection faqs={FAQS} title="Common questions" className="mt-14 border-t border-neutral-200 pt-10" />
 
         <div className="mt-10 border-t border-neutral-200 pt-6">
           <Link href="/maldives/transfers/" className="text-sm font-medium text-maldives-600 hover:underline">

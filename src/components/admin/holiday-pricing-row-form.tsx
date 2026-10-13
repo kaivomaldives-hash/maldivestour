@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useId, useState, useTransition } from "react";
 
 import { updateHolidayPricingConfig } from "@/lib/admin/holiday-pricing-actions";
 import type { AdminPricingConfigRow } from "@/lib/admin/holiday-pricing-repository";
@@ -9,6 +9,7 @@ const INPUT_CLASS =
   "w-full rounded-lg border border-neutral-300 px-2.5 py-1.5 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1";
 
 export function HolidayPricingRowForm({ row }: { row: AdminPricingConfigRow }) {
+  const sourceUrlId = useId();
   const [priceUsd, setPriceUsd] = useState(String(row.priceUsd));
   const [sourceNote, setSourceNote] = useState(row.sourceNote);
   const [sourceUrl, setSourceUrl] = useState(row.sourceUrl ?? "");
@@ -61,8 +62,10 @@ export function HolidayPricingRowForm({ row }: { row: AdminPricingConfigRow }) {
         </div>
       </div>
       <div className="mt-2">
-        <span className="mb-1 block text-xs font-medium text-neutral-500">Source URL (optional)</span>
-        <input type="url" value={sourceUrl} onChange={(e) => setSourceUrl(e.target.value)} placeholder="https://" className={INPUT_CLASS} />
+        <label htmlFor={sourceUrlId} className="mb-1 block text-xs font-medium text-neutral-500">
+          Source URL (optional)
+        </label>
+        <input id={sourceUrlId} type="url" value={sourceUrl} onChange={(e) => setSourceUrl(e.target.value)} placeholder="https://" className={INPUT_CLASS} />
       </div>
 
       {error && (

@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
 
@@ -6,10 +5,13 @@ import { ActivityCard } from "@/components/activity/activity-card";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
 import { DiveSitesMap } from "@/components/diving/dive-sites-map-loader";
 import { DivingFilterBar } from "@/components/diving/diving-filter-bar";
-import { DivingVideo, divingVideoJsonLd } from "@/components/diving/diving-video";
+import type { DivingDirectorySearchParams } from "@/components/diving/diving-directory-metadata";
+import { DivingVideo } from "@/components/diving/diving-video";
+import { divingVideoJsonLd } from "@/components/diving/diving-video-jsonld";
 import { PackageCard } from "@/components/packages/package-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
+import { FaqSection } from "@/components/ui/faq-section";
 import { PageHero } from "@/components/ui/page-hero";
 import { Pagination } from "@/components/ui/pagination";
 import { activityHref, type ActivityDifficulty } from "@/lib/activities/types";
@@ -26,7 +28,7 @@ import {
 import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
 import { DIVING_HERO_IMAGE } from "@/lib/packages/category-images";
 import { filterPackageViews, getAllPackageViews } from "@/lib/packages/view-repository";
-import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
+import { breadcrumbJsonLd, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 const DIFFICULTIES: ActivityDifficulty[] = ["beginner", "intermediate", "advanced", "all_levels"];
 
@@ -57,20 +59,6 @@ function faqJsonLd() {
     "@type": "FAQPage",
     mainEntity: FAQS.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })),
   };
-}
-
-export interface DivingDirectorySearchParams {
-  q?: string;
-  page?: string;
-  type?: string;
-  atoll?: string;
-  island?: string;
-  difficulty?: string;
-  maxPrice?: string;
-}
-
-function hasAnyFilter(sp: DivingDirectorySearchParams): boolean {
-  return Boolean(sp.q || sp.type || sp.atoll || sp.island || sp.difficulty || sp.maxPrice);
 }
 
 /** Everything here is identical for every visitor regardless of which
@@ -105,28 +93,6 @@ const getDivingDirectorySupportingContent = unstable_cache(
   ["diving-directory-supporting-content"],
   { revalidate: 3600 },
 );
-
-export async function divingDirectoryMetadata(searchParams: Promise<DivingDirectorySearchParams>): Promise<Metadata> {
-  const sp = await searchParams;
-  // Real, live-counted total — never a hand-set number that can go stale,
-  // since this route has no revalidate/ISR cache and re-runs every request.
-  const { total: diveSiteTotal } = await getDiveSites({ pageSize: 1 });
-  const year = new Date().getFullYear();
-  const title =
-    diveSiteTotal > 0
-      ? `Maldives Diving ${year} | ${diveSiteTotal} Dive Sites, Trips & Packages`
-      : "Maldives Diving | Dive Trips, Packages & Dive Sites";
-  const description = "Real, source-verified Maldives diving activities, dive centers, dive sites and diving packages — search by type, location and provider.";
-  const url = canonicalUrl("/maldives/diving");
-
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url },
-    robots: hasAnyFilter(sp) ? { index: false, follow: true } : undefined,
-  };
-}
 
 export async function DivingDirectoryPage({
   searchParams,
@@ -359,17 +325,7 @@ export async function DivingDirectoryPage({
           </nav>
         </section>
 
-        <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Frequently Asked Questions</h2>
-          <dl className="mt-4 space-y-6">
-            {FAQS.map((faq) => (
-              <div key={faq.question}>
-                <dt className="font-medium text-ocean-900">{faq.question}</dt>
-                <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <FaqSection faqs={FAQS} />
 
         <p className="mt-10 text-xs text-neutral-500">
           Diving activities and dive sites on this page are sourced from official operator and resort information.

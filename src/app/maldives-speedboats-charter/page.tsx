@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { speedboatDirectoryMetadata, SpeedboatDirectoryPage } from "@/components/speedboats/speedboat-directory-page";
+import { speedboatDirectoryMetadata } from "@/components/speedboats/speedboat-directory-metadata";
+import { SpeedboatDirectoryPage } from "@/components/speedboats/speedboat-directory-page";
 
 export function generateMetadata(): Metadata {
   return speedboatDirectoryMetadata();

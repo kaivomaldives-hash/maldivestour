@@ -7,9 +7,11 @@ import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { PackageCard } from "@/components/packages/package-card";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { RouteMap } from "@/components/transfers/route-map";
-import { RouteVideo, routeVideoJsonLd } from "@/components/transfers/route-video";
+import { RouteVideo } from "@/components/transfers/route-video";
+import { routeVideoJsonLd } from "@/components/transfers/route-video-jsonld";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CARD_CLASS } from "@/components/ui/card";
+import { FaqSection } from "@/components/ui/faq-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getLocationBySlug, getLocationSummaryById } from "@/lib/locations/repository";
@@ -440,17 +442,7 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
 
       <ReviewsSection nodeId={route.id} reviews={reviews} />
 
-      <section className="mt-10">
-        <h2 className="text-xl font-semibold text-ocean-900">Frequently Asked Questions</h2>
-        <dl className="mt-4 space-y-4">
-          {faqs.map((faq) => (
-            <div key={faq.question}>
-              <dt className="font-medium text-ocean-900">{faq.question}</dt>
-              <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
+      <FaqSection faqs={faqs} className="mt-10" dlClassName="mt-4 space-y-4" />
 
       {relatedRoutes.length > 0 && (
         <section className="mt-10 border-t border-neutral-200 pt-10">

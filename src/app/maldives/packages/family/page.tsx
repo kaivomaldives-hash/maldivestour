@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 
 import {
-  PackageCategoryPage,
   packageCategoryMetadata,
   type PackageCategoryPageSearchParams,
-} from "@/components/packages/package-category-page";
+} from "@/components/packages/package-category-metadata";
+import { PackageCategoryPage } from "@/components/packages/package-category-page";
 
 export function generateMetadata({
   searchParams,

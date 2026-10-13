@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { SurfingDetailPage, surfingDetailMetadata } from "@/components/surfing/surfing-detail-page";
+import { surfingDetailMetadata } from "@/components/surfing/surfing-detail-metadata";
+import { SurfingDetailPage } from "@/components/surfing/surfing-detail-page";
 
 // Staggered (not a round 3600) so ISR regenerations don't cluster with
 // every other route's -- see src/app/page.tsx for why.

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { ArticleDetailPage, articleDetailMetadata } from "@/components/articles/article-detail-page";
+import { articleDetailMetadata } from "@/components/articles/article-detail-metadata";
+import { ArticleDetailPage } from "@/components/articles/article-detail-page";
 
 // Staggered (not a round 3600) so ISR regenerations don't cluster with
 // every other route's -- see src/app/page.tsx for why.

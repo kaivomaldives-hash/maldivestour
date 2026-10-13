@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { PackageDetailPage, packageDetailMetadata } from "@/components/packages/package-detail-page";
+import { packageDetailMetadata } from "@/components/packages/package-detail-metadata";
+import { PackageDetailPage } from "@/components/packages/package-detail-page";
 
 // Staggered (not a round 3600) so ISR regenerations don't cluster with
 // every other route's -- see src/app/page.tsx for why.

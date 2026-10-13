@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ComingSoonSection } from "@/components/transfers/coming-soon-section";
-import { RouteVideo, routeVideoJsonLd } from "@/components/transfers/route-video";
+import { RouteVideo } from "@/components/transfers/route-video";
+import { routeVideoJsonLd } from "@/components/transfers/route-video-jsonld";
 import { TransferFinder } from "@/components/transfers/transfer-finder";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CarTransfersSection } from "@/components/vehicles/car-transfers-section";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
+import { FaqSection } from "@/components/ui/faq-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
@@ -292,17 +294,7 @@ export async function TransferDirectoryPage() {
         </section>
 
         {/* 13. FAQs */}
-        <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Frequently Asked Questions</h2>
-          <dl className="mt-4 space-y-6">
-            {FAQS.map((faq) => (
-              <div key={faq.question}>
-                <dt className="font-medium text-ocean-900">{faq.question}</dt>
-                <dd className="mt-1 text-sm text-neutral-700">{faq.answer}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <FaqSection faqs={FAQS} />
 
         {/* 14. Related Maldives travel links */}
         <section className="mt-12 border-t border-neutral-200 pt-10">

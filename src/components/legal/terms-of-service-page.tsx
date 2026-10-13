@@ -27,7 +27,8 @@ export function TermsOfServicePage() {
           <p>
             These terms apply to accommodation, activity and package bookings made through Maldives Tour Guide. Booking a
             speedboat or other transfer? See our{" "}
-            <Link href="/terms-and-conditions/transfers/">Terms and Conditions for Transfers</Link> instead.
+            <Link href="/terms-and-conditions/transfers/">Terms and Conditions for Transfers</Link> instead. For how we
+            handle your personal information, see our <Link href="/privacy-policy/">Privacy Policy</Link>.
           </p>
 
           <h2>Booking</h2>

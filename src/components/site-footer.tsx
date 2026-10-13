@@ -86,6 +86,10 @@ export function SiteFooter({ availableLocales }: { availableLocales: Locale[] })
             © {year} Maldives Tour Guide (MTG). All information is provided for travel planning purposes. ·{" "}
             <Link href="/terms-and-conditions/" className="underline hover:text-white">
               Terms and Conditions
+            </Link>{" "}
+            ·{" "}
+            <Link href="/privacy-policy/" className="underline hover:text-white">
+              Privacy Policy
             </Link>
           </p>
           <LanguageSwitcher publishedLocales={availableLocales} variant="dark" />

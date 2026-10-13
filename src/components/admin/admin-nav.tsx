@@ -10,6 +10,8 @@ const NAV_ITEMS = [
   { label: "Customers", href: "/admin/customers" },
   { label: "Reviews", href: "/admin/reviews" },
   { label: "Comments", href: "/admin/comments" },
+  { label: "Location Comments", href: "/admin/location-comments" },
+  { label: "Location Media", href: "/admin/location-media" },
   { label: "Accommodations", href: "/admin/accommodations" },
   { label: "Activities", href: "/admin/activities" },
   { label: "Transfers", href: "/admin/transfers" },

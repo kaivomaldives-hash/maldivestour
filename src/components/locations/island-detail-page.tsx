@@ -19,9 +19,12 @@ import { getActivitiesByLocation } from "@/lib/activities/repository";
 import { getArticlesRelatedToNodes } from "@/lib/articles/repository";
 import { getAttractionsByIsland } from "@/lib/attractions/repository";
 import { getDiveSitesByLocation } from "@/lib/diving/repository";
+import { LocationCommentsSection } from "@/components/locations/location-comments-section";
+import { LocationMediaUploadForm } from "@/components/locations/location-media-upload-form";
 import { applyContextualLinks, escapeHtml } from "@/lib/linking/contextual-links";
 import { buildEntityLinkMap } from "@/lib/linking/entity-link-map";
 import { LocationGallerySection } from "@/components/locations/location-gallery-section";
+import { getPublishedLocationComments } from "@/lib/locations/comments/repository";
 import { getChildLocations, getIslandBySlug, getIslandContent } from "@/lib/locations/repository";
 import { getNearbyIslands } from "@/lib/locations/nearby-islands";
 import { getHeroMediaByNodeIds, getMediaForNode } from "@/lib/media/repository";
@@ -79,11 +82,12 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
     ]);
   const heroImage = heroById.get(island.id) ?? null;
 
-  const [nearbyIslands, relatedGuides, entityMap, mediaItems] = await Promise.all([
+  const [nearbyIslands, relatedGuides, entityMap, mediaItems, comments] = await Promise.all([
     getNearbyIslands({ id: island.id, parentId: island.parentId }, content?.nearbyIslandSlugs ?? [], NEARBY_ISLANDS_LIMIT),
     getArticlesRelatedToNodes([island.id, island.parentId].filter((id): id is string => Boolean(id))),
     buildEntityLinkMap(),
     getMediaForNode(island.id),
+    getPublishedLocationComments(island.id),
   ]);
   const galleryImages = mediaItems.filter((m) => m.role === "gallery").map((m) => m.asset);
 
@@ -362,6 +366,16 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
           </ul>
         </section>
       )}
+
+      <section className="mt-12 border-t border-neutral-200 pt-10">
+        <h2 className="text-xl font-semibold text-ocean-900">Share Your Photos</h2>
+        <p className="mt-2 text-sm text-neutral-600">Been to {island.title}? Share a few photos — approved submissions are added to the gallery above.</p>
+        <div className="mt-4">
+          <LocationMediaUploadForm locationId={island.id} />
+        </div>
+      </section>
+
+      <LocationCommentsSection locationId={island.id} comments={comments} />
 
       {atoll && (
         <p className="mt-10 text-sm text-neutral-600">

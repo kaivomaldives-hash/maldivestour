@@ -205,6 +205,14 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
 
       <LocationGallerySection title={island.title} images={galleryImages} />
 
+      <section className="mt-10">
+        <h2 className="text-xl font-semibold text-ocean-900">Share Your Photos</h2>
+        <p className="mt-2 text-sm text-neutral-600">Been to {island.title}? Share a few photos — approved submissions are added to the gallery above.</p>
+        <div className="mt-4">
+          <LocationMediaUploadForm locationId={island.id} />
+        </div>
+      </section>
+
       {children.length > 0 && (
         <section className="mt-10">
           <h2 className="text-xl font-semibold text-ocean-900">On this island</h2>
@@ -366,14 +374,6 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
           </ul>
         </section>
       )}
-
-      <section className="mt-12 border-t border-neutral-200 pt-10">
-        <h2 className="text-xl font-semibold text-ocean-900">Share Your Photos</h2>
-        <p className="mt-2 text-sm text-neutral-600">Been to {island.title}? Share a few photos — approved submissions are added to the gallery above.</p>
-        <div className="mt-4">
-          <LocationMediaUploadForm locationId={island.id} />
-        </div>
-      </section>
 
       <LocationCommentsSection locationId={island.id} comments={comments} />
 

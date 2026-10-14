@@ -120,6 +120,14 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
           </section>
         )}
 
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Share Your Photos</h2>
+          <p className="mt-2 text-sm text-neutral-600">Visited {attraction.title}? Share a few photos — approved submissions are added here.</p>
+          <div className="mt-4">
+            <LocationMediaUploadForm locationId={attraction.id} />
+          </div>
+        </section>
+
         {sourceArticle && (
           <p className="mt-6 text-sm text-neutral-600">
             Read more in{" "}
@@ -170,14 +178,6 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
               </Link>
             ))}
           </nav>
-        </section>
-
-        <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Share Your Photos</h2>
-          <p className="mt-2 text-sm text-neutral-600">Visited {attraction.title}? Share a few photos — approved submissions are added here.</p>
-          <div className="mt-4">
-            <LocationMediaUploadForm locationId={attraction.id} />
-          </div>
         </section>
 
         <LocationCommentsSection locationId={attraction.id} comments={comments} />

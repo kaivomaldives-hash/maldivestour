@@ -33,4 +33,12 @@ async function getPublishedLocationCommentsUncached(locationId: string): Promise
   }));
 }
 
-export const getPublishedLocationComments = cachedRead(getPublishedLocationCommentsUncached, ["location-comments-for-location"]);
+// Tagged "location-comments" too, so updateLocationCommentStatus() can
+// bust this on approve/reject instead of waiting out the TTL — same
+// reasoning as getMediaForNode() (src/lib/media/repository.ts).
+export const getPublishedLocationComments = cachedRead(
+  getPublishedLocationCommentsUncached,
+  ["location-comments-for-location"],
+  300,
+  ["location-comments-for-location", "location-comments"],
+);

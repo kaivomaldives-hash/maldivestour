@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { ActivityCard } from "@/components/activity/activity-card";
 import { LocationCommentsSection } from "@/components/locations/location-comments-section";
+import { LocationGallerySection } from "@/components/locations/location-gallery-section";
 import { LocationMediaUploadForm } from "@/components/locations/location-media-upload-form";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
@@ -14,6 +15,7 @@ import { ATTRACTION_TYPE_LABEL } from "@/lib/attractions/types";
 import { getArticleBySlug } from "@/lib/articles/repository";
 import { articleHref } from "@/lib/articles/types";
 import { getPublishedLocationComments } from "@/lib/locations/comments/repository";
+import { getMediaForNode } from "@/lib/media/repository";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 
 function touristAttractionJsonLd(attraction: NonNullable<Awaited<ReturnType<typeof getAttractionBySlug>>>) {
@@ -39,7 +41,7 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
   // tied to an open-water/atoll-wide site (Hanifaru Bay) or an unseeded
   // resort island (Ozen Maadhoo), an atoll parent instead — fall back to
   // atoll-level activities/accommodations rather than showing nothing.
-  const [activities, accommodations, sourceArticle, comments] = await Promise.all([
+  const [activities, accommodations, sourceArticle, comments, mediaItems] = await Promise.all([
     attraction.island
       ? getActivitiesByLocation(attraction.island.id)
       : attraction.atoll
@@ -52,7 +54,9 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
         : Promise.resolve([]),
     attraction.sourceArticleSlug ? getArticleBySlug(attraction.sourceArticleSlug) : Promise.resolve(null),
     getPublishedLocationComments(attraction.id),
+    getMediaForNode(attraction.id),
   ]);
+  const galleryImages = mediaItems.filter((m) => m.role === "gallery").map((m) => m.asset);
 
   return (
     <main>
@@ -120,9 +124,11 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
           </section>
         )}
 
+        <LocationGallerySection title={attraction.title} images={galleryImages} />
+
         <section className="mt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Share Your Photos</h2>
-          <p className="mt-2 text-sm text-neutral-600">Visited {attraction.title}? Share a few photos — approved submissions are added here.</p>
+          <p className="mt-2 text-sm text-neutral-600">Visited {attraction.title}? Share a few photos — approved submissions are added to the gallery above.</p>
           <div className="mt-4">
             <LocationMediaUploadForm locationId={attraction.id} />
           </div>

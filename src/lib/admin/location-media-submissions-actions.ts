@@ -1,9 +1,10 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 
 import { requireStaff } from "@/lib/admin/auth";
 import type { AdminActionResult } from "@/lib/admin/node-actions";
+import { publicDestinationPath } from "@/lib/locations/public-destination-path";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -103,6 +104,22 @@ export async function approveLocationMediaSubmission(submissionId: string): Prom
 
   revalidatePath("/admin/location-media");
   revalidatePath("/admin");
+
+  // getMediaForNode() (src/lib/media/repository.ts) is a cachedRead() --
+  // the revalidatePath() calls above (scoped to /admin/*) never reach it,
+  // so without this the newly-approved photos silently don't show up on
+  // the public destination page for up to 5 minutes. Same gap and same
+  // fix shape as updateLocation()'s lat/lng caching bug
+  // (src/lib/admin/locations-actions.ts).
+  updateTag("node-media");
+  const { data: node } = await supabase
+    .from("nodes")
+    .select("slug, locations!locations_id_fkey!inner(location_type)")
+    .eq("id", submission.location_id)
+    .maybeSingle<{ slug: string; locations: { location_type: string } }>();
+  const publicPath = node ? publicDestinationPath(node.locations?.location_type, node.slug) : null;
+  if (publicPath) revalidatePath(publicPath);
+
   return { ok: true };
 }
 

@@ -3,11 +3,13 @@ import { notFound } from "next/navigation";
 
 import { ActivityCard } from "@/components/activity/activity-card";
 import { LocationCommentsSection } from "@/components/locations/location-comments-section";
+import { LocationGallerySection } from "@/components/locations/location-gallery-section";
 import { LocationMediaUploadForm } from "@/components/locations/location-media-upload-form";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getDiveSiteBySlug, getDivingActivitiesAtSite } from "@/lib/diving/repository";
 import { getPublishedLocationComments } from "@/lib/locations/comments/repository";
+import { getMediaForNode } from "@/lib/media/repository";
 import { breadcrumbJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 const SITE_TYPE_LABEL: Record<string, string> = {
@@ -24,7 +26,12 @@ export async function DiveSiteDetailPage({ slug }: { slug: string }) {
   const site = await getDiveSiteBySlug(slug);
   if (!site) notFound();
 
-  const [activities, comments] = await Promise.all([getDivingActivitiesAtSite(site.id), getPublishedLocationComments(site.id)]);
+  const [activities, comments, mediaItems] = await Promise.all([
+    getDivingActivitiesAtSite(site.id),
+    getPublishedLocationComments(site.id),
+    getMediaForNode(site.id),
+  ]);
+  const galleryImages = mediaItems.filter((m) => m.role === "gallery").map((m) => m.asset);
 
   return (
     <main>
@@ -119,9 +126,11 @@ export async function DiveSiteDetailPage({ slug }: { slug: string }) {
         </dl>
       )}
 
+      <LocationGallerySection title={site.title} images={galleryImages} />
+
       <section className="mt-10">
         <h2 className="text-xl font-semibold text-ocean-900">Share Your Photos</h2>
-        <p className="mt-2 text-sm text-neutral-600">Dived {site.title}? Share a few photos — approved submissions are added here.</p>
+        <p className="mt-2 text-sm text-neutral-600">Dived {site.title}? Share a few photos — approved submissions are added to the gallery above.</p>
         <div className="mt-4">
           <LocationMediaUploadForm locationId={site.id} />
         </div>

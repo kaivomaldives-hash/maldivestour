@@ -4,17 +4,8 @@ import { revalidatePath, updateTag } from "next/cache";
 
 import { requireStaff } from "@/lib/admin/auth";
 import { updateNodeCore, type NodeCoreInput } from "@/lib/admin/node-actions";
+import { publicDestinationPath } from "@/lib/locations/public-destination-path";
 import { createClient } from "@/lib/supabase/server";
-
-// Public routes with their own dedicated detail page built from a
-// `locations` row — used below to bust that exact page's ISR cache after
-// an edit. Every other location_type (locality, airport, poi, etc.) is
-// only ever rendered embedded inside one of these pages (or a directory
-// listing), which updateTag("locations") below already covers.
-const PUBLIC_LOCATION_PATH: Partial<Record<string, (slug: string) => string>> = {
-  island: (slug) => `/maldives/islands/${slug}`,
-  atoll: (slug) => `/maldives/atolls/${slug}`,
-};
 
 export interface AdminActionResult {
   ok: boolean;
@@ -69,8 +60,8 @@ export async function updateLocation(id: string, core: NodeCoreInput, fields: Lo
   // updateTag() (not revalidateTag()) gives immediate expiration from a
   // Server Action — see https://nextjs.org/docs/app/api-reference/functions/updateTag.
   updateTag("locations");
-  const buildPublicPath = data?.location_type ? PUBLIC_LOCATION_PATH[data.location_type] : undefined;
-  if (buildPublicPath) revalidatePath(buildPublicPath(core.slug));
+  const publicPath = publicDestinationPath(data?.location_type, core.slug);
+  if (publicPath) revalidatePath(publicPath);
 
   return { ok: true };
 }

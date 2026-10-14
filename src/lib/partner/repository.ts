@@ -24,7 +24,7 @@ import type {
 interface PartnerAccountRow {
   id: string;
   provider_id: string | null;
-  partner_kind: PartnerKind;
+  partner_kinds: PartnerKind[];
   property_type: PropertyType | null;
   business_name: string;
   contact_email: string;
@@ -44,7 +44,7 @@ function accountOf(row: PartnerAccountRow): PartnerAccount {
   return {
     id: row.id,
     providerId: row.provider_id,
-    partnerKind: row.partner_kind,
+    partnerKinds: row.partner_kinds,
     propertyType: row.property_type,
     businessName: row.business_name,
     contactEmail: row.contact_email,

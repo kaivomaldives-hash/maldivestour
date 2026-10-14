@@ -106,7 +106,7 @@ export function AgentSignupForm() {
             email,
             password,
             options: {
-              data: { agentApplication: true, businessName, contactPhone, country, paypalEmail },
+              data: { agentApplication: true, businessName, contactPhone, country, paypalEmail, agreedToTerms },
               emailRedirectTo: `${window.location.origin}/auth/confirm?next=/agent`,
             },
           });

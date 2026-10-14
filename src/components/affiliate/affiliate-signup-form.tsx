@@ -99,7 +99,7 @@ export function AffiliateSignupForm() {
             email,
             password,
             options: {
-              data: { affiliateApplication: true, businessName, contactPhone, country, paypalEmail },
+              data: { affiliateApplication: true, businessName, contactPhone, country, paypalEmail, agreedToTerms },
               emailRedirectTo: `${window.location.origin}/auth/confirm?next=/affiliate`,
             },
           });

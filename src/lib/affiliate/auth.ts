@@ -24,6 +24,7 @@ interface AffiliateSignupMetadata {
   whatsapp?: string | null;
   country?: string | null;
   paypalEmail?: string | null;
+  agreedToTerms?: boolean;
 }
 
 /** Redirects to /affiliate/login if unauthenticated, or to
@@ -49,6 +50,7 @@ export async function requireAffiliate(): Promise<AffiliateContext> {
         p_whatsapp: metadata.whatsapp ?? null,
         p_country: metadata.country ?? null,
         p_paypal_email: metadata.paypalEmail ?? null,
+        p_agreed_to_terms: metadata.agreedToTerms === true,
       } as unknown as never);
       if (healError) {
         console.error(`[requireAffiliate] self-heal create_affiliate_account failed for user ${user.id}:`, healError.message);

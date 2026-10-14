@@ -25,6 +25,7 @@ interface AgentSignupMetadata {
   whatsapp?: string | null;
   country?: string | null;
   paypalEmail?: string | null;
+  agreedToTerms?: boolean;
 }
 
 /** Redirects to /agent/login if unauthenticated, or to /agent/signup if
@@ -56,6 +57,7 @@ export async function requireAgent(): Promise<AgentContext> {
         p_whatsapp: metadata.whatsapp ?? null,
         p_country: metadata.country ?? null,
         p_paypal_email: metadata.paypalEmail ?? null,
+        p_agreed_to_terms: metadata.agreedToTerms === true,
       } as unknown as never);
       if (healError) {
         console.error(`[requireAgent] self-heal create_agent_account failed for user ${user.id}:`, healError.message);

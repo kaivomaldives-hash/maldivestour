@@ -6,15 +6,23 @@ import { PartnerActivityForm } from "@/components/partner/partner-activity-form"
 import { PartnerPackageForm } from "@/components/partner/partner-package-form";
 import { PartnerTransferForm } from "@/components/partner/partner-transfer-form";
 import { getLocationSummaryById } from "@/lib/locations/repository";
-import { getAccommodationForEdit, getActivityForEdit, getPackageForEdit, getTransferRouteForEdit } from "@/lib/partner/listings/repository";
-import { getMyPartnerAccount } from "@/lib/partner/repository";
+import {
+  getAccommodationForEdit,
+  getActivityForEdit,
+  getListingNodeTypeForEdit,
+  getPackageForEdit,
+  getTransferRouteForEdit,
+} from "@/lib/partner/listings/repository";
 
 export default async function EditListingPage({ params }: { params: Promise<{ nodeId: string }> }) {
   const { nodeId } = await params;
-  const account = await getMyPartnerAccount();
-  if (!account) notFound();
+  // Resolved from the node's own node_type (and ownership verified
+  // there), not the partner's account kind(s) — a partner holding
+  // multiple kinds no longer maps 1:1 to a single listing type.
+  const nodeType = await getListingNodeTypeForEdit(nodeId);
+  if (!nodeType) notFound();
 
-  if (account.partnerKind === "property") {
+  if (nodeType === "accommodation") {
     const initial = await getAccommodationForEdit(nodeId);
     if (!initial) notFound();
     const initialLocation = initial.locationId ? await getLocationSummaryById(initial.locationId) : null;
@@ -29,7 +37,7 @@ export default async function EditListingPage({ params }: { params: Promise<{ no
     );
   }
 
-  if (account.partnerKind === "activity") {
+  if (nodeType === "activity") {
     const initial = await getActivityForEdit(nodeId);
     if (!initial) notFound();
     const initialLocation = initial.locationId ? await getLocationSummaryById(initial.locationId) : null;
@@ -44,7 +52,7 @@ export default async function EditListingPage({ params }: { params: Promise<{ no
     );
   }
 
-  if (account.partnerKind === "package") {
+  if (nodeType === "package") {
     const initial = await getPackageForEdit(nodeId);
     if (!initial) notFound();
     return (

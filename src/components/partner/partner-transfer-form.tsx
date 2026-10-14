@@ -73,7 +73,7 @@ export function PartnerTransferForm({
         }
 
         startTransition(async () => {
-          const result = await submitListing({ submissionKind: nodeId ? "update" : "create", nodeId, payload });
+          const result = await submitListing({ nodeType: "transfer_route", submissionKind: nodeId ? "update" : "create", nodeId, payload });
           if (!result.ok) {
             setError(result.error ?? "Something went wrong. Please try again.");
             return;

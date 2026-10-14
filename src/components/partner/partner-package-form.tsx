@@ -37,7 +37,7 @@ export function PartnerPackageForm({ nodeId, initial }: { nodeId: string | null;
         };
 
         startTransition(async () => {
-          const result = await submitListing({ submissionKind: nodeId ? "update" : "create", nodeId, payload });
+          const result = await submitListing({ nodeType: "package", submissionKind: nodeId ? "update" : "create", nodeId, payload });
           if (!result.ok) {
             setError(result.error ?? "Something went wrong. Please try again.");
             return;

@@ -84,6 +84,23 @@ export async function getMyListingSubmissions(): Promise<ListingSubmissionSummar
   }));
 }
 
+/** Resolves which editor a given listing needs by its own real node_type
+ * (not by inferring from the partner's account kind(s), which is no
+ * longer 1:1 once a partner holds multiple kinds) — also verifies
+ * ownership, since this is the first read on the edit page. */
+export async function getListingNodeTypeForEdit(nodeId: string): Promise<ListingNodeType | null> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+
+  const { data: node } = await supabase.from("nodes").select("node_type, created_by").eq("id", nodeId).maybeSingle<{ node_type: string; created_by: string | null }>();
+  if (!node || node.created_by !== user.id) return null;
+  if (!["accommodation", "activity", "package", "transfer_route"].includes(node.node_type)) return null;
+  return node.node_type as ListingNodeType;
+}
+
 async function getPrimaryLocationId(nodeId: string): Promise<string | null> {
   const supabase = await createClient();
   const { data } = await supabase

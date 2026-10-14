@@ -31,7 +31,7 @@ export default async function AdminPartnerDetailPage({ params }: { params: Promi
 
       <h1 className="mt-2 text-2xl font-semibold text-ocean-900">{partner.businessName}</h1>
       <p className="mt-1 text-neutral-700">
-        {PARTNER_KINDS.find((k) => k.value === partner.partnerKind)?.label ?? partner.partnerKind}
+        {partner.partnerKinds.map((k) => PARTNER_KINDS.find((pk) => pk.value === k)?.label ?? k).join(", ")}
         {partner.propertyType ? ` — ${PROPERTY_TYPES.find((t) => t.value === partner.propertyType)?.label ?? partner.propertyType}` : ""}
       </p>
 

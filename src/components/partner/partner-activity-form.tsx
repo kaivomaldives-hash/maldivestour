@@ -48,7 +48,7 @@ export function PartnerActivityForm({
         };
 
         startTransition(async () => {
-          const result = await submitListing({ submissionKind: nodeId ? "update" : "create", nodeId, payload });
+          const result = await submitListing({ nodeType: "activity", submissionKind: nodeId ? "update" : "create", nodeId, payload });
           if (!result.ok) {
             setError(result.error ?? "Something went wrong. Please try again.");
             return;

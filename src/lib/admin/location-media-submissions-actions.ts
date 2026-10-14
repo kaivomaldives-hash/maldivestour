@@ -26,7 +26,9 @@ const CONTENT_TYPE_EXT: Record<string, string> = {
 export async function getLocationMediaSubmissionImageSignedUrl(storagePath: string): Promise<{ url: string | null; error?: string }> {
   await requireStaff();
   const supabase = await createClient();
-  const { data, error } = await supabase.storage.from("location-submissions").createSignedUrl(storagePath, 60);
+  // 120s — see the identical comment in src/lib/admin/partner-accounts-
+  // actions.ts's getPartnerDocumentSignedUrl() on why 60s was too tight.
+  const { data, error } = await supabase.storage.from("location-submissions").createSignedUrl(storagePath, 120);
   if (error || !data) return { url: null, error: error?.message };
   return { url: data.signedUrl };
 }

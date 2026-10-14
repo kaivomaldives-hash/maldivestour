@@ -99,13 +99,23 @@ export function LocationMediaSubmissionReviewList({ submissions }: { submissions
                   disabled={isPending}
                   onClick={() => {
                     setViewError(null);
+                    // Open synchronously, before the await — see the
+                    // identical comment in partner-document-review-list.tsx
+                    // on why window.open() after an await gets blocked or
+                    // races the signed URL's expiry.
+                    const tab = window.open("", "_blank", "noopener,noreferrer");
                     startTransition(async () => {
                       const result = await getLocationMediaSubmissionImageSignedUrl(image.storagePath);
                       if (!result.url) {
+                        tab?.close();
                         setViewError(result.error ?? "Could not open this photo.");
                         return;
                       }
-                      window.open(result.url, "_blank", "noopener,noreferrer");
+                      if (!tab) {
+                        setViewError("Your browser blocked the popup — please allow popups for this site and try again.");
+                        return;
+                      }
+                      tab.location.href = result.url;
                     });
                   }}
                   className="rounded-lg border border-neutral-300 px-2.5 py-1 text-xs font-medium text-maldives-600 hover:underline disabled:opacity-50"

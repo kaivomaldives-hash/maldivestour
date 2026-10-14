@@ -75,7 +75,13 @@ export async function updatePartnerDocumentStatus(documentId: string, status: Pa
 export async function getPartnerDocumentSignedUrl(storagePath: string): Promise<{ url: string | null; error?: string }> {
   await requireStaff();
   const supabase = await createClient();
-  const { data, error } = await supabase.storage.from("partner-documents").createSignedUrl(storagePath, 60);
+  // 120s, not 60s: the signed URL is only requested once the admin clicks
+  // "View document" (not pre-generated), and a too-short TTL meant it
+  // could expire between the click and the browser actually finishing the
+  // navigation — especially once window.open() is made synchronous (see
+  // partner-document-review-list.tsx) and a popup-blocked prompt adds
+  // extra delay before the tab actually loads.
+  const { data, error } = await supabase.storage.from("partner-documents").createSignedUrl(storagePath, 120);
   if (error || !data) return { url: null, error: error?.message };
   return { url: data.signedUrl };
 }

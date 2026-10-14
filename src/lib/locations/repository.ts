@@ -128,7 +128,7 @@ async function getCountryUncached(): Promise<LocationDetail | null> {
   return locationDetailOf(data, heroImage);
 }
 
-export const getCountry = cachedRead(getCountryUncached, ["locations:country"], 900);
+export const getCountry = cachedRead(getCountryUncached, ["locations:country"], 900, ["locations:country", "locations"]);
 
 /** Every published atoll, with its inhabited-island count, ordered by name. */
 async function getAtollsUncached(): Promise<AtollSummary[]> {
@@ -157,7 +157,7 @@ async function getAtollsUncached(): Promise<AtollSummary[]> {
     .filter((a): a is AtollSummary => a !== null);
 }
 
-export const getAtolls = cachedRead(getAtollsUncached, ["locations:atolls"], 900);
+export const getAtolls = cachedRead(getAtollsUncached, ["locations:atolls"], 900, ["locations:atolls", "locations"]);
 
 /**
  * Inhabited-island counts per atoll in a single grouped query, so the
@@ -207,7 +207,7 @@ async function getAtollBySlugUncached(slug: string): Promise<AtollDetail | null>
   return { ...detail, locationType: "atoll" };
 }
 
-export const getAtollBySlug = cachedRead(getAtollBySlugUncached, ["locations:atoll-by-slug"], 900);
+export const getAtollBySlug = cachedRead(getAtollBySlugUncached, ["locations:atoll-by-slug"], 900, ["locations:atoll-by-slug", "locations"]);
 
 export interface GetIslandsOptions {
   page?: number;
@@ -248,7 +248,7 @@ async function getIslandsUncached(options: GetIslandsOptions = {}): Promise<Pagi
   return { items, total: count ?? items.length, page, pageSize };
 }
 
-export const getIslands = cachedRead(getIslandsUncached, ["locations:islands"], 900);
+export const getIslands = cachedRead(getIslandsUncached, ["locations:islands"], 900, ["locations:islands", "locations"]);
 
 /** All islands belonging to one atoll (by atoll node id) — a single query,
  * not one per island. Split out from getIslandsByAtoll() below so a caller
@@ -278,7 +278,7 @@ async function getIslandsByAtollIdUncached(atollId: string): Promise<IslandSumma
     .filter((i): i is IslandSummary => i !== null);
 }
 
-export const getIslandsByAtollId = cachedRead(getIslandsByAtollIdUncached, ["locations:islands-by-atoll-id"], 900);
+export const getIslandsByAtollId = cachedRead(getIslandsByAtollIdUncached, ["locations:islands-by-atoll-id"], 900, ["locations:islands-by-atoll-id", "locations"]);
 
 /** All islands belonging to one atoll (by atoll slug) — a single query, not
  * one per island. */
@@ -306,7 +306,7 @@ async function getIslandBySlugUncached(slug: string): Promise<IslandDetail | nul
   return { ...detail, locationType: "island" };
 }
 
-export const getIslandBySlug = cachedRead(getIslandBySlugUncached, ["locations:island-by-slug"], 900);
+export const getIslandBySlug = cachedRead(getIslandBySlugUncached, ["locations:island-by-slug"], 900, ["locations:island-by-slug", "locations"]);
 
 /** Any locations parented under `locationId` (localities, sites, etc.). */
 async function getChildLocationsUncached(locationId: string): Promise<LocationSummary[]> {
@@ -326,7 +326,7 @@ async function getChildLocationsUncached(locationId: string): Promise<LocationSu
   return data.map((row) => locationSummaryOf(row, heroByNodeId.get(row.id) ?? null)).filter((l): l is LocationSummary => l !== null);
 }
 
-export const getChildLocations = cachedRead(getChildLocationsUncached, ["locations:children"], 900);
+export const getChildLocations = cachedRead(getChildLocationsUncached, ["locations:children"], 900, ["locations:children", "locations"]);
 
 export interface SearchLocationsOptions {
   locationType?: LocationType;
@@ -392,7 +392,7 @@ async function getLocationSummariesByIdsUncached(ids: string[]): Promise<Map<str
   return map;
 }
 
-export const getLocationSummariesByIds = cachedRead(getLocationSummariesByIdsUncached, ["locations:by-ids"], 900);
+export const getLocationSummariesByIds = cachedRead(getLocationSummariesByIdsUncached, ["locations:by-ids"], 900, ["locations:by-ids", "locations"]);
 
 export async function getLocationSummaryById(id: string): Promise<LocationSummary | null> {
   const map = await getLocationSummariesByIds([id]);
@@ -430,6 +430,7 @@ export const getLocationSummariesBySlugs = cachedRead(
   getLocationSummariesBySlugsUncached,
   ["locations:summaries-by-slugs"],
   900,
+  ["locations:summaries-by-slugs", "locations"],
 );
 
 /**
@@ -473,7 +474,7 @@ async function getLocationsByTypeUncached(
   return { items, total: count ?? items.length, page, pageSize };
 }
 
-export const getLocationsByType = cachedRead(getLocationsByTypeUncached, ["locations:by-type"], 900);
+export const getLocationsByType = cachedRead(getLocationsByTypeUncached, ["locations:by-type"], 900, ["locations:by-type", "locations"]);
 
 async function getLocationsByTypeAndAtollUncached(locationType: LocationType, atollId: string): Promise<LocationSummary[]> {
   const supabase = await createClient();
@@ -492,7 +493,7 @@ async function getLocationsByTypeAndAtollUncached(locationType: LocationType, at
   return data.map((row) => locationSummaryOf(row, heroByNodeId.get(row.id) ?? null)).filter((l): l is LocationSummary => l !== null);
 }
 
-export const getLocationsByTypeAndAtoll = cachedRead(getLocationsByTypeAndAtollUncached, ["locations:by-type-and-atoll"], 900);
+export const getLocationsByTypeAndAtoll = cachedRead(getLocationsByTypeAndAtollUncached, ["locations:by-type-and-atoll"], 900, ["locations:by-type-and-atoll", "locations"]);
 
 async function getLocationBySlugAndTypeUncached(slug: string, locationType: LocationType): Promise<LocationDetail | null> {
   const supabase = await createClient();
@@ -510,7 +511,7 @@ async function getLocationBySlugAndTypeUncached(slug: string, locationType: Loca
   return locationDetailOf(data, heroImage);
 }
 
-export const getLocationBySlugAndType = cachedRead(getLocationBySlugAndTypeUncached, ["locations:by-slug-and-type"], 900);
+export const getLocationBySlugAndType = cachedRead(getLocationBySlugAndTypeUncached, ["locations:by-slug-and-type"], 900, ["locations:by-slug-and-type", "locations"]);
 
 /** Same as getLocationBySlugAndType but without a location_type filter —
  * for callers (Task 10 transfers) where the endpoint can legitimately be
@@ -531,7 +532,7 @@ async function getLocationBySlugUncached(slug: string): Promise<LocationDetail |
   return locationDetailOf(data, heroImage);
 }
 
-export const getLocationBySlug = cachedRead(getLocationBySlugUncached, ["locations:by-slug"], 900);
+export const getLocationBySlug = cachedRead(getLocationBySlugUncached, ["locations:by-slug"], 900, ["locations:by-slug", "locations"]);
 
 /** `nodes.attributes` for one node — the JSONB home for genuinely flexible,
  * category-specific descriptive facts (dive site depth/current/marine-life
@@ -559,7 +560,7 @@ async function getNodeAttributesByIdsUncached(nodeIds: string[]): Promise<Map<st
   return map;
 }
 
-export const getNodeAttributesByIds = cachedRead(getNodeAttributesByIdsUncached, ["locations:node-attributes"], 900);
+export const getNodeAttributesByIds = cachedRead(getNodeAttributesByIdsUncached, ["locations:node-attributes"], 900, ["locations:node-attributes", "locations"]);
 
 /** An island's own destination-guide content, if it has one — reads the
  * `island_*` keys import-legacy-island-content.mjs writes into
@@ -608,7 +609,7 @@ async function getNodeIdsAtLocationUncached(locationId: string): Promise<string[
   return Array.from(new Set((data ?? []).map((row) => row.node_id)));
 }
 
-export const getNodeIdsAtLocation = cachedRead(getNodeIdsAtLocationUncached, ["locations:node-ids-at-location"], 900);
+export const getNodeIdsAtLocation = cachedRead(getNodeIdsAtLocationUncached, ["locations:node-ids-at-location"], 900, ["locations:node-ids-at-location", "locations"]);
 
 /** Every location tagged *to* `nodeId` via node_locations (any relation) —
  * the reverse of getNodeIdsAtLocation. Used to find, e.g., the specific
@@ -623,4 +624,4 @@ async function getLocationIdsForNodeUncached(nodeId: string): Promise<string[]> 
   return Array.from(new Set((data ?? []).map((row) => row.location_id)));
 }
 
-export const getLocationIdsForNode = cachedRead(getLocationIdsForNodeUncached, ["locations:location-ids-for-node"], 900);
+export const getLocationIdsForNode = cachedRead(getLocationIdsForNodeUncached, ["locations:location-ids-for-node"], 900, ["locations:location-ids-for-node", "locations"]);

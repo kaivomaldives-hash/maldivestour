@@ -413,7 +413,10 @@ async function getAccommodationBySlugUncached(slug: string): Promise<Accommodati
   };
 }
 
-export const getAccommodationBySlug = cachedRead(getAccommodationBySlugUncached, ["accommodations:by-slug"], 300);
+// Also tagged "locations": this embeds primaryLocation (lat/lng) resolved
+// from the locations repository, so an admin coordinate edit there needs
+// to bust this cache too, not just the locations-side ones.
+export const getAccommodationBySlug = cachedRead(getAccommodationBySlugUncached, ["accommodations:by-slug"], 300, ["accommodations:by-slug", "locations"]);
 
 /** Batch lookup by node id — used by the package repository to resolve
  * itinerary items without an N+1 query per item (Task 11). */

@@ -9,11 +9,21 @@ import { unstable_cache } from "next/cache";
  * Map values need special handling because Next's cache serialization does
  * not preserve JavaScript Map instances. We serialize Maps as entry arrays
  * and reconstruct them when the cached value is read.
+ *
+ * `tags` (defaults to `keyParts`) are passed through to `unstable_cache` so
+ * an admin write (a Server Action) can bust this specific entry on demand
+ * via `updateTag()` instead of only waiting out `revalidateSeconds` — see
+ * `updateLocation()` (src/lib/admin/locations-actions.ts) for why this
+ * matters: without a shared tag, an admin edit's `revalidatePath()` calls
+ * (scoped to /admin/* routes) never reach this cache, so a public page
+ * built from a cachedRead() call keeps serving the pre-edit value for the
+ * full TTL regardless of what the admin action revalidates.
  */
 export function cachedRead<Args extends unknown[], Result>(
   fn: (...args: Args) => Promise<Result>,
   keyParts: string[],
   revalidateSeconds = 300,
+  tags: string[] = keyParts,
 ): (...args: Args) => Promise<Result> {
   const cached = unstable_cache(
     async (...args: Args) => {
@@ -29,7 +39,7 @@ export function cachedRead<Args extends unknown[], Result>(
       return result;
     },
     keyParts,
-    { revalidate: revalidateSeconds },
+    { revalidate: revalidateSeconds, tags },
   );
 
   return async (...args: Args): Promise<Result> => {

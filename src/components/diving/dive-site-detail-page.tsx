@@ -2,9 +2,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ActivityCard } from "@/components/activity/activity-card";
+import { LocationCommentsSection } from "@/components/locations/location-comments-section";
+import { LocationMediaUploadForm } from "@/components/locations/location-media-upload-form";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getDiveSiteBySlug, getDivingActivitiesAtSite } from "@/lib/diving/repository";
+import { getPublishedLocationComments } from "@/lib/locations/comments/repository";
 import { breadcrumbJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 const SITE_TYPE_LABEL: Record<string, string> = {
@@ -21,7 +24,7 @@ export async function DiveSiteDetailPage({ slug }: { slug: string }) {
   const site = await getDiveSiteBySlug(slug);
   if (!site) notFound();
 
-  const activities = await getDivingActivitiesAtSite(site.id);
+  const [activities, comments] = await Promise.all([getDivingActivitiesAtSite(site.id), getPublishedLocationComments(site.id)]);
 
   return (
     <main>
@@ -126,6 +129,16 @@ export async function DiveSiteDetailPage({ slug }: { slug: string }) {
           </ul>
         </section>
       )}
+
+      <section className="mt-12 border-t border-neutral-200 pt-10">
+        <h2 className="text-xl font-semibold text-ocean-900">Share Your Photos</h2>
+        <p className="mt-2 text-sm text-neutral-600">Dived {site.title}? Share a few photos — approved submissions are added here.</p>
+        <div className="mt-4">
+          <LocationMediaUploadForm locationId={site.id} />
+        </div>
+      </section>
+
+      <LocationCommentsSection locationId={site.id} comments={comments} />
 
       <p className="mt-10 text-sm text-neutral-600">
         Planning a trip?{" "}

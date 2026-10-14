@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -99,6 +100,7 @@ export function HolidayBuilderWizard({ pricing }: { pricing: PricingConfigRow[] 
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerWhatsapp, setCustomerWhatsapp] = useState("");
   const [additionalRequests, setAdditionalRequests] = useState("");
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [honeypot, setHoneypot] = useState("");
 
   const [breakdown, setBreakdown] = useState<PriceBreakdown | null>(null);
@@ -182,6 +184,10 @@ export function HolidayBuilderWizard({ pricing }: { pricing: PricingConfigRow[] 
 
   function handleSubmit() {
     setSubmitError(null);
+    if (!agreedToTerms) {
+      setSubmitError("Please agree to the Terms and Conditions to continue.");
+      return;
+    }
     startTransition(async () => {
       const result = await submitHolidayRequest({
         selection,
@@ -189,6 +195,7 @@ export function HolidayBuilderWizard({ pricing }: { pricing: PricingConfigRow[] 
         customerEmail,
         customerWhatsapp,
         additionalRequests,
+        agreedToTerms,
         honeypot,
       });
       if (!result.ok) {
@@ -622,13 +629,29 @@ export function HolidayBuilderWizard({ pricing }: { pricing: PricingConfigRow[] 
               className="hidden"
             />
 
+            <label className="flex items-start gap-2 text-sm text-neutral-700">
+              <input
+                type="checkbox"
+                checked={agreedToTerms}
+                onChange={(e) => setAgreedToTerms(e.target.checked)}
+                className="mt-0.5 h-4 w-4 shrink-0 rounded border-neutral-300 text-maldives-600 focus:ring-maldives-500"
+              />
+              <span>
+                I have read and agree to the{" "}
+                <Link href="/terms-and-conditions/" target="_blank" rel="noopener noreferrer" className="text-maldives-600 underline">
+                  Terms and Conditions
+                </Link>
+                <span aria-hidden="true"> *</span>
+              </span>
+            </label>
+
             {submitError && (
               <p role="alert" className="text-sm text-red-600">
                 {submitError}
               </p>
             )}
 
-            <Button onClick={handleSubmit} disabled={isPending || !segmentNightsOk}>
+            <Button onClick={handleSubmit} disabled={isPending || !segmentNightsOk || !agreedToTerms}>
               {isPending ? "Submitting…" : "Submit Holiday Request"}
             </Button>
           </div>

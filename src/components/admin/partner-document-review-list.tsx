@@ -49,13 +49,29 @@ export function PartnerDocumentReviewList({ documents }: { documents: DocumentIt
               disabled={isPending}
               onClick={() => {
                 setViewError(null);
+                // Open the tab synchronously, in direct response to the
+                // click — a window.open() called only after the awaited
+                // signed-url fetch below is no longer treated as
+                // user-initiated by most browsers (Safari in particular),
+                // so it's silently blocked or, if a "popup blocked" prompt
+                // delays it, the tab can end up loading the signed URL
+                // well after its (previously 60s) expiry, showing a
+                // Supabase sign-in/expired-token page instead of the
+                // document — exactly the "different link opens, can't
+                // view the document" symptom this was reported as.
+                const tab = window.open("", "_blank", "noopener,noreferrer");
                 startTransition(async () => {
                   const result = await getPartnerDocumentSignedUrl(doc.storagePath);
                   if (!result.url) {
+                    tab?.close();
                     setViewError(result.error ?? "Could not open this document.");
                     return;
                   }
-                  window.open(result.url, "_blank", "noopener,noreferrer");
+                  if (!tab) {
+                    setViewError("Your browser blocked the popup — please allow popups for this site and try again.");
+                    return;
+                  }
+                  tab.location.href = result.url;
                 });
               }}
               className="text-sm font-medium text-maldives-600 hover:underline disabled:opacity-50"

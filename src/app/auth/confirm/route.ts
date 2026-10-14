@@ -34,21 +34,23 @@ export async function GET(request: Request) {
 
     if (!error && data.user) {
       const metadata = data.user.user_metadata as {
-        partnerKind?: string;
+        partnerKinds?: string[];
         propertyType?: string | null;
         businessName?: string;
         contactPhone?: string | null;
+        agreedToTerms?: boolean;
       } | null;
 
-      if (metadata?.partnerKind && metadata?.businessName) {
+      if (metadata?.partnerKinds?.length && metadata?.businessName) {
         const { data: alreadyPartner } = await supabase.rpc("is_partner" as unknown as never);
         if (!alreadyPartner) {
           await supabase.rpc("create_partner_account" as unknown as never, {
-            p_partner_kind: metadata.partnerKind,
+            p_partner_kinds: metadata.partnerKinds,
             p_property_type: metadata.propertyType ?? null,
             p_business_name: metadata.businessName,
             p_contact_email: data.user.email,
             p_contact_phone: metadata.contactPhone ?? null,
+            p_agreed_to_terms: metadata.agreedToTerms === true,
           } as unknown as never);
         }
       }

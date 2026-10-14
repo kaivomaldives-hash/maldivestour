@@ -31,7 +31,7 @@ export const PARTNER_DOCUMENT_TYPES: { value: PartnerDocumentType; label: string
 export interface PartnerAccount {
   id: string;
   providerId: string | null;
-  partnerKind: PartnerKind;
+  partnerKinds: PartnerKind[];
   propertyType: PropertyType | null;
   businessName: string;
   contactEmail: string;

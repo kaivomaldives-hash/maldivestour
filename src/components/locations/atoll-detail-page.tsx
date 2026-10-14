@@ -21,6 +21,9 @@ import { applyContextualLinks, escapeHtml } from "@/lib/linking/contextual-links
 import { buildEntityLinkMap } from "@/lib/linking/entity-link-map";
 import { getAtollBySlug, getAtollContent, getIslandsByAtoll } from "@/lib/locations/repository";
 import { LocationGallerySection } from "@/components/locations/location-gallery-section";
+import { LocationCommentsSection } from "@/components/locations/location-comments-section";
+import { LocationMediaUploadForm } from "@/components/locations/location-media-upload-form";
+import { getPublishedLocationComments } from "@/lib/locations/comments/repository";
 import { getHeroMediaByNodeIds, getMediaForNode } from "@/lib/media/repository";
 import { getPackageViewsByAtoll } from "@/lib/packages/view-repository";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
@@ -70,7 +73,7 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
   const atoll = await getAtollBySlug(slug);
   if (!atoll) notFound();
 
-  const [heroById, allIslands, content, accommodations, activities, diveSites, surfBreaks, transferRoutes, packages, relatedGuides, entityMap, mediaItems] =
+  const [heroById, allIslands, content, accommodations, activities, diveSites, surfBreaks, transferRoutes, packages, relatedGuides, entityMap, mediaItems, comments] =
     await Promise.all([
       getHeroMediaByNodeIds([atoll.id]),
       getIslandsByAtoll(slug),
@@ -84,6 +87,7 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
       getArticlesRelatedToNodes([atoll.id]),
       buildEntityLinkMap(),
       getMediaForNode(atoll.id),
+      getPublishedLocationComments(atoll.id),
     ]);
   const galleryImages = mediaItems.filter((m) => m.role === "gallery").map((m) => m.asset);
 
@@ -246,6 +250,16 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
         sectionClassName="mt-12 border-t border-neutral-200 pt-10"
         renderItem={(article) => <ArticleCard key={article.id} article={article} />}
       />
+
+      <section className="mt-12 border-t border-neutral-200 pt-10">
+        <h2 className="text-xl font-semibold text-ocean-900">Share Your Photos</h2>
+        <p className="mt-2 text-sm text-neutral-600">Been to {atoll.title}? Share a few photos — approved submissions are added to the gallery above.</p>
+        <div className="mt-4">
+          <LocationMediaUploadForm locationId={atoll.id} />
+        </div>
+      </section>
+
+      <LocationCommentsSection locationId={atoll.id} comments={comments} />
 
       <p className="mt-10 text-sm text-neutral-600">
         <Link href="/maldives/atolls/" className="font-medium text-maldives-600 hover:underline">

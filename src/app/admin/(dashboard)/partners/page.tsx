@@ -61,7 +61,7 @@ export default async function AdminPartnersPage({ searchParams }: { searchParams
                     <div className="flex items-center gap-2">
                       <Badge tone={STATUS_TONE[p.onboardingStatus]}>{p.onboardingStatus}</Badge>
                       <span className="text-sm font-medium text-ocean-900">
-                        {PARTNER_KINDS.find((k) => k.value === p.partnerKind)?.label ?? p.partnerKind}
+                        {p.partnerKinds.map((k) => PARTNER_KINDS.find((pk) => pk.value === k)?.label ?? k).join(", ")}
                         {p.propertyType ? ` — ${PROPERTY_TYPES.find((t) => t.value === p.propertyType)?.label ?? p.propertyType}` : ""}
                       </span>
                     </div>

@@ -9,11 +9,12 @@ export interface ActionResult {
 }
 
 export interface CreatePartnerAccountInput {
-  partnerKind: PartnerKind;
+  partnerKinds: PartnerKind[];
   propertyType: PropertyType | null;
   businessName: string;
   contactEmail: string;
   contactPhone: string | null;
+  agreedToTerms: boolean;
 }
 
 /**
@@ -27,15 +28,19 @@ export interface CreatePartnerAccountInput {
  * in sync.
  */
 export async function createPartnerAccount(input: CreatePartnerAccountInput): Promise<ActionResult> {
+  if (!input.agreedToTerms) return { ok: false, error: "Please agree to the Terms and Conditions to continue." };
+  if (input.partnerKinds.length === 0) return { ok: false, error: "Please choose at least one partner type." };
+
   const supabase = await createClient();
   const { error } = await supabase.rpc(
     "create_partner_account" as unknown as never,
     {
-      p_partner_kind: input.partnerKind,
+      p_partner_kinds: input.partnerKinds,
       p_property_type: input.propertyType,
       p_business_name: input.businessName,
       p_contact_email: input.contactEmail,
       p_contact_phone: input.contactPhone,
+      p_agreed_to_terms: true,
     } as unknown as never,
   );
   if (error) return { ok: false, error: error.message };

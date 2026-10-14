@@ -17,6 +17,7 @@ export interface SubmitReviewInput {
   body: string;
   guestName: string;
   guestEmail: string;
+  agreedToTerms: boolean;
 }
 
 export interface SubmitReviewResult {
@@ -34,6 +35,7 @@ export async function submitReview(input: SubmitReviewInput): Promise<SubmitRevi
   if (!name) return { ok: false, error: "Please enter your name." };
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, error: "Please enter a valid email address." };
   if (!input.body.trim()) return { ok: false, error: "Please write a short review." };
+  if (!input.agreedToTerms) return { ok: false, error: "Please agree to the Terms and Conditions to continue." };
 
   const supabase = await createClient();
   const rpcArgs = {
@@ -43,6 +45,7 @@ export async function submitReview(input: SubmitReviewInput): Promise<SubmitRevi
     p_body: input.body.trim(),
     p_guest_name: name,
     p_guest_email: email,
+    p_agreed_to_terms: true,
   };
 
   // src/types/database.ts is still the Task 3 placeholder (see the

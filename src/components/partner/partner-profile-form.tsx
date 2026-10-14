@@ -16,7 +16,7 @@ export function PartnerProfileForm({ account }: { account: PartnerAccount }) {
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
 
-  const kindLabel = PARTNER_KINDS.find((k) => k.value === account.partnerKind)?.label ?? account.partnerKind;
+  const kindLabel = account.partnerKinds.map((k) => PARTNER_KINDS.find((pk) => pk.value === k)?.label ?? k).join(", ");
   const propertyTypeLabel = account.propertyType ? PROPERTY_TYPES.find((t) => t.value === account.propertyType)?.label : null;
 
   return (

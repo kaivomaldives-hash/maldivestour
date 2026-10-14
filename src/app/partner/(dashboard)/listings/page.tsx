@@ -31,8 +31,9 @@ export default async function PartnerListingsPage() {
   const account = await getMyPartnerAccount();
   if (!account) notFound();
 
-  const nodeType = NODE_TYPE_BY_PARTNER_KIND[account.partnerKind];
-  const [listings, submissions] = await Promise.all([getMyListings(nodeType), getMyListingSubmissions()]);
+  const nodeTypes = account.partnerKinds.map((kind) => NODE_TYPE_BY_PARTNER_KIND[kind]);
+  const [listingsByType, submissions] = await Promise.all([Promise.all(nodeTypes.map((nodeType) => getMyListings(nodeType))), getMyListingSubmissions()]);
+  const listings = listingsByType.flat();
   const pendingOrRejected = submissions.filter((s) => s.status !== "approved");
   const canCreate = account.onboardingStatus === "approved";
 
@@ -41,7 +42,7 @@ export default async function PartnerListingsPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold text-ocean-900">My Listings</h1>
-          <p className="mt-1 text-sm text-neutral-600">{NODE_TYPE_LABEL[nodeType]} listings — new ones and changes need admin approval before they go live.</p>
+          <p className="mt-1 text-sm text-neutral-600">{nodeTypes.map((t) => NODE_TYPE_LABEL[t]).join(", ")} listings — new ones and changes need admin approval before they go live.</p>
         </div>
         {canCreate ? (
           <Button href="/partner/listings/new">+ New Listing</Button>
@@ -79,7 +80,12 @@ export default async function PartnerListingsPage() {
             {listings.map((item) => (
               <li key={item.nodeId} className="flex items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white p-3">
                 <div>
-                  <p className="text-sm font-medium text-neutral-900">{item.title}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium text-neutral-900">{item.title}</p>
+                    {nodeTypes.length > 1 && (
+                      <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-600">{NODE_TYPE_LABEL[item.nodeType]}</span>
+                    )}
+                  </div>
                   {item.summary && <p className="mt-0.5 line-clamp-1 text-sm text-neutral-500">{item.summary}</p>}
                 </div>
                 <Link href={`/partner/listings/${item.nodeId}/edit`} className="shrink-0 text-sm font-medium text-maldives-600 hover:underline">

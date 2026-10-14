@@ -10,6 +10,8 @@ const NAV_ITEMS = [
   { label: "Customers", href: "/admin/customers" },
   { label: "Reviews", href: "/admin/reviews" },
   { label: "Comments", href: "/admin/comments" },
+  { label: "Location Comments", href: "/admin/location-comments" },
+  { label: "Location Media", href: "/admin/location-media" },
   { label: "Accommodations", href: "/admin/accommodations" },
   { label: "Activities", href: "/admin/activities" },
   { label: "Transfers", href: "/admin/transfers" },
@@ -20,6 +22,8 @@ const NAV_ITEMS = [
   { label: "Vendors", href: "/admin/vendors" },
   { label: "Partner Applications", href: "/admin/partners" },
   { label: "Partner Listings", href: "/admin/partner-listings" },
+  { label: "Travel Agents", href: "/admin/agents" },
+  { label: "Affiliates", href: "/admin/affiliates" },
   { label: "Locations", href: "/admin/locations" },
   { label: "Redirects", href: "/admin/redirects" },
 ];

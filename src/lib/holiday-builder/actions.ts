@@ -103,6 +103,7 @@ export interface SubmitHolidayRequestInput {
   customerEmail: string;
   customerWhatsapp: string;
   additionalRequests: string;
+  agreedToTerms: boolean;
   honeypot?: string;
 }
 
@@ -122,6 +123,7 @@ export async function submitHolidayRequest(input: SubmitHolidayRequestInput): Pr
   if (!name) return { ok: false, error: "Please enter your name." };
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, error: "Please enter a valid email address." };
   if (!whatsapp) return { ok: false, error: "Please enter your WhatsApp number." };
+  if (!input.agreedToTerms) return { ok: false, error: "Please agree to the Terms and Conditions to continue." };
   if (!segmentsNightsMatch(input.selection)) return { ok: false, error: "Stay segment nights must add up to the total number of nights." };
 
   // Authoritative server-side recompute — the ONLY price ever persisted,
@@ -147,6 +149,7 @@ export async function submitHolidayRequest(input: SubmitHolidayRequestInput): Pr
       p_price_breakdown: breakdown,
       p_currency: "USD",
       p_estimated_total: breakdown.grandTotal,
+      p_agreed_to_terms: true,
     } as unknown as undefined)
     .single<{ id: string; reference: string }>();
 

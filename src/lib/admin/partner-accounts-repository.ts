@@ -16,7 +16,7 @@ const PAGE_SIZE = 25;
 export interface AdminPartnerAccountListItem {
   id: string;
   businessName: string;
-  partnerKind: PartnerKind;
+  partnerKinds: PartnerKind[];
   propertyType: PropertyType | null;
   contactEmail: string;
   onboardingStatus: OnboardingStatus;
@@ -27,7 +27,7 @@ export interface AdminPartnerAccountListItem {
 interface PartnerAccountListRow {
   id: string;
   business_name: string;
-  partner_kind: PartnerKind;
+  partner_kinds: PartnerKind[];
   property_type: PropertyType | null;
   contact_email: string;
   onboarding_status: OnboardingStatus;
@@ -50,7 +50,7 @@ export async function getPartnerAccountsAdmin(filters: { status?: OnboardingStat
   const supabase = await createClient();
   let query = supabase
     .from("partner_accounts")
-    .select("id, business_name, partner_kind, property_type, contact_email, onboarding_status, submitted_at, created_at", { count: "exact" })
+    .select("id, business_name, partner_kinds, property_type, contact_email, onboarding_status, submitted_at, created_at", { count: "exact" })
     .order("submitted_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
   if (filters.status) query = query.eq("onboarding_status", filters.status);
@@ -62,7 +62,7 @@ export async function getPartnerAccountsAdmin(filters: { status?: OnboardingStat
     items: data.map((row) => ({
       id: row.id,
       businessName: row.business_name,
-      partnerKind: row.partner_kind,
+      partnerKinds: row.partner_kinds,
       propertyType: row.property_type,
       contactEmail: row.contact_email,
       onboardingStatus: row.onboarding_status,
@@ -78,7 +78,7 @@ export async function getPartnerAccountsAdmin(filters: { status?: OnboardingStat
 export interface AdminPartnerAccountDetail {
   id: string;
   providerId: string | null;
-  partnerKind: PartnerKind;
+  partnerKinds: PartnerKind[];
   propertyType: PropertyType | null;
   businessName: string;
   contactEmail: string;
@@ -114,7 +114,7 @@ export interface AdminPartnerAccountDetail {
 interface PartnerAccountDetailRow {
   id: string;
   provider_id: string | null;
-  partner_kind: PartnerKind;
+  partner_kinds: PartnerKind[];
   property_type: PropertyType | null;
   business_name: string;
   contact_email: string;
@@ -174,7 +174,7 @@ export async function getPartnerAccountByIdAdmin(id: string): Promise<AdminPartn
   return {
     id: row.id,
     providerId: row.provider_id,
-    partnerKind: row.partner_kind,
+    partnerKinds: row.partner_kinds,
     propertyType: row.property_type,
     businessName: row.business_name,
     contactEmail: row.contact_email,

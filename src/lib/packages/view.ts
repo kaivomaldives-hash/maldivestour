@@ -204,7 +204,7 @@ export function realPackageToView(pkg: PackageDetail): PackageView {
   const transfer = firstTransferLink(pkg.stages);
   const heroImage = PACKAGE_HERO_OVERRIDES[pkg.slug] ?? deriveHeroImage(pkg.stages);
   const categories = deriveCategories([...pkg.travelerTypes, ...pkg.styles, ...pkg.themes]);
-  const priceType: PackagePriceType | null = pkg.priceFrom !== null ? "per-person" : null;
+  const priceType: PackagePriceType | null = pkg.priceFrom !== null ? pkg.priceType ?? "per-person" : null;
 
   const bestFor = pkg.travelerTypes.map((t) => t.title);
 

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
+import { AgreeToTermsCheckbox } from "@/components/legal/agree-to-terms-checkbox";
 import { Button } from "@/components/ui/button";
 import { createPartnerAccount } from "@/lib/partner/actions";
 import { PARTNER_KINDS, PROPERTY_TYPES, type PartnerKind, type PropertyType } from "@/lib/partner/types";
@@ -39,7 +40,7 @@ export function PartnerSignupForm() {
   // say so plainly, with a way to actually get a new email sent.
   const [existingAccountEmail, setExistingAccountEmail] = useState<string | null>(null);
   const [resendState, setResendState] = useState<"idle" | "sending" | "sent" | "error">("idle");
-  const [partnerKind, setPartnerKind] = useState<PartnerKind | "">("");
+  const [partnerKinds, setPartnerKinds] = useState<PartnerKind[]>([]);
   const [isResending, startResend] = useTransition();
 
   if (existingAccountEmail) {
@@ -97,15 +98,23 @@ export function PartnerSignupForm() {
         event.preventDefault();
         setError(null);
         const data = new FormData(event.currentTarget);
-        const kind = String(data.get("partnerKind") ?? "") as PartnerKind;
-        const propertyType = kind === "property" ? (String(data.get("propertyType") ?? "") as PropertyType) : null;
+        const propertyType = partnerKinds.includes("property") ? (String(data.get("propertyType") ?? "") as PropertyType) : null;
         const businessName = String(data.get("businessName") ?? "").trim();
         const email = String(data.get("email") ?? "").trim();
         const password = String(data.get("password") ?? "");
         const contactPhone = String(data.get("contactPhone") ?? "").trim() || null;
+        const agreedToTerms = data.get("agreedToTerms") === "on";
 
-        if (kind === "property" && !propertyType) {
+        if (partnerKinds.length === 0) {
+          setError("Please choose at least one partner type.");
+          return;
+        }
+        if (partnerKinds.includes("property") && !propertyType) {
           setError("Please choose a property type.");
+          return;
+        }
+        if (!agreedToTerms) {
+          setError("Please agree to the Terms and Conditions to continue.");
           return;
         }
 
@@ -119,7 +128,7 @@ export function PartnerSignupForm() {
               // confirmation is required, so /auth/confirm can create the
               // partner_accounts row later if this signup doesn't get a
               // session immediately (see that route's own comment).
-              data: { partnerKind: kind, propertyType, businessName, contactPhone },
+              data: { partnerKinds, propertyType, businessName, contactPhone, agreedToTerms },
               emailRedirectTo: `${window.location.origin}/auth/confirm?next=/partner`,
             },
           });
@@ -137,11 +146,12 @@ export function PartnerSignupForm() {
           }
 
           const result = await createPartnerAccount({
-            partnerKind: kind,
+            partnerKinds,
             propertyType,
             businessName,
             contactEmail: email,
             contactPhone,
+            agreedToTerms,
           });
           if (!result.ok) {
             setError(result.error ?? "Something went wrong. Please try again.");
@@ -152,29 +162,31 @@ export function PartnerSignupForm() {
         });
       }}
     >
-      <label className="block text-sm">
-        <span className="mb-1 block font-medium text-neutral-700">
+      <fieldset className="text-sm">
+        <legend className="mb-1 font-medium text-neutral-700">
           Partner type <span aria-hidden="true">*</span>
-        </span>
-        <select
-          name="partnerKind"
-          required
-          value={partnerKind}
-          onChange={(event) => setPartnerKind(event.target.value as PartnerKind)}
-          className={INPUT_CLASS}
-        >
-          <option value="" disabled>
-            Select a partner type
-          </option>
+        </legend>
+        <p className="mb-2 text-xs text-neutral-500">Select every type of listing you plan to offer — you can create listings under any type you choose here.</p>
+        <div className="space-y-2">
           {PARTNER_KINDS.map((k) => (
-            <option key={k.value} value={k.value}>
-              {k.label}
-            </option>
+            <label key={k.value} className="flex items-start gap-2">
+              <input
+                type="checkbox"
+                name="partnerKinds"
+                value={k.value}
+                checked={partnerKinds.includes(k.value)}
+                onChange={(event) => {
+                  setPartnerKinds((prev) => (event.target.checked ? [...prev, k.value] : prev.filter((v) => v !== k.value)));
+                }}
+                className="mt-0.5 h-4 w-4 rounded border-neutral-300 text-maldives-600 focus-visible:ring-2 focus-visible:ring-maldives-500"
+              />
+              <span>{k.label}</span>
+            </label>
           ))}
-        </select>
-      </label>
+        </div>
+      </fieldset>
 
-      {partnerKind === "property" && (
+      {partnerKinds.includes("property") && (
         <label className="block text-sm">
           <span className="mb-1 block font-medium text-neutral-700">
             Property type <span aria-hidden="true">*</span>
@@ -218,6 +230,8 @@ export function PartnerSignupForm() {
         </span>
         <input name="password" type="password" required minLength={8} autoComplete="new-password" className={INPUT_CLASS} />
       </label>
+
+      <AgreeToTermsCheckbox />
 
       {error && (
         <p role="alert" className="text-sm text-red-600">

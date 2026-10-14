@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { ActivityCard } from "@/components/activity/activity-card";
+import { LocationCommentsSection } from "@/components/locations/location-comments-section";
+import { LocationMediaUploadForm } from "@/components/locations/location-media-upload-form";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodationsByAtoll, getAccommodationsByLocation } from "@/lib/accommodations/repository";
@@ -11,6 +13,7 @@ import { getAttractionBySlug } from "@/lib/attractions/repository";
 import { ATTRACTION_TYPE_LABEL } from "@/lib/attractions/types";
 import { getArticleBySlug } from "@/lib/articles/repository";
 import { articleHref } from "@/lib/articles/types";
+import { getPublishedLocationComments } from "@/lib/locations/comments/repository";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 
 function touristAttractionJsonLd(attraction: NonNullable<Awaited<ReturnType<typeof getAttractionBySlug>>>) {
@@ -36,7 +39,7 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
   // tied to an open-water/atoll-wide site (Hanifaru Bay) or an unseeded
   // resort island (Ozen Maadhoo), an atoll parent instead — fall back to
   // atoll-level activities/accommodations rather than showing nothing.
-  const [activities, accommodations, sourceArticle] = await Promise.all([
+  const [activities, accommodations, sourceArticle, comments] = await Promise.all([
     attraction.island
       ? getActivitiesByLocation(attraction.island.id)
       : attraction.atoll
@@ -48,6 +51,7 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
         ? getAccommodationsByAtoll(attraction.atoll.id)
         : Promise.resolve([]),
     attraction.sourceArticleSlug ? getArticleBySlug(attraction.sourceArticleSlug) : Promise.resolve(null),
+    getPublishedLocationComments(attraction.id),
   ]);
 
   return (
@@ -167,6 +171,16 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
             ))}
           </nav>
         </section>
+
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Share Your Photos</h2>
+          <p className="mt-2 text-sm text-neutral-600">Visited {attraction.title}? Share a few photos — approved submissions are added here.</p>
+          <div className="mt-4">
+            <LocationMediaUploadForm locationId={attraction.id} />
+          </div>
+        </section>
+
+        <LocationCommentsSection locationId={attraction.id} comments={comments} />
 
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Explore More Maldives</h2>

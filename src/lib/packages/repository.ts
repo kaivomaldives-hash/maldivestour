@@ -7,6 +7,7 @@ import { getCategoriesByGroup, getCategoryBySlug, getNodeIdsByCategory } from "@
 import type { CategoryGroup, CategorySummary } from "@/lib/categories/types";
 import { getLocationSummariesByIds } from "@/lib/locations/repository";
 import type { LocationSummary } from "@/lib/locations/types";
+import type { PackagePriceType } from "@/lib/packages/view-types";
 import { getProviderSummariesByIds } from "@/lib/providers/repository";
 import type { ProviderSummary } from "@/lib/providers/types";
 import { createClient } from "@/lib/supabase/public";
@@ -43,11 +44,12 @@ import type {
  */
 
 const NODE_PACKAGE_SELECT =
-  "id, slug, title, summary, meta_title, meta_description, packages!inner(duration_nights, price_from, currency, operated_by_provider_id)";
+  "id, slug, title, summary, meta_title, meta_description, packages!inner(duration_nights, price_from, price_type, currency, operated_by_provider_id)";
 
 type PackageFields = {
   duration_nights: number | null;
   price_from: number | null;
+  price_type: string | null;
   currency: string | null;
   operated_by_provider_id: string | null;
 };
@@ -73,6 +75,7 @@ interface BarePackage {
   metaDescription: string | null;
   durationNights: number | null;
   priceFrom: number | null;
+  priceType: PackagePriceType | null;
   currency: string | null;
   providerId: string | null;
 }
@@ -90,6 +93,7 @@ function barePackageOf(row: NodePackageRow): BarePackage | null {
     metaDescription: row.meta_description,
     durationNights: p.duration_nights,
     priceFrom: p.price_from,
+    priceType: (p.price_type as PackagePriceType | null) ?? null,
     currency: p.currency,
     providerId: p.operated_by_provider_id,
   };
@@ -103,6 +107,7 @@ function toSummary(bare: BarePackage, provider: ProviderSummary | null, destinat
     summary: bare.summary,
     durationNights: bare.durationNights,
     priceFrom: bare.priceFrom,
+    priceType: bare.priceType,
     currency: bare.currency,
     provider,
     destinations,

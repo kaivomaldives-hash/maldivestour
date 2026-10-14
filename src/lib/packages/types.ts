@@ -2,6 +2,7 @@ import type { AccommodationSummary } from "@/lib/accommodations/types";
 import type { ActivitySummary } from "@/lib/activities/types";
 import type { CategorySummary } from "@/lib/categories/types";
 import type { LocationSummary } from "@/lib/locations/types";
+import type { PackagePriceType } from "@/lib/packages/view-types";
 import type { ProviderSummary } from "@/lib/providers/types";
 import type { TransferRouteSummary, TransferService } from "@/lib/transfers/types";
 
@@ -57,6 +58,11 @@ export interface PackageSummary {
   summary: string | null;
   durationNights: number | null;
   priceFrom: number | null;
+  /** Whether priceFrom is a per-person, per-couple, or per-package total —
+   * stored on the `packages` row itself (price_type), since a bundled
+   * package's "Agency Package Total" net rate is sometimes already the
+   * price for 2 guests sharing a room, not a per-person figure. */
+  priceType: PackagePriceType | null;
   currency: string | null;
   provider: ProviderSummary | null;
   /** Every location this package touches, derived from its own

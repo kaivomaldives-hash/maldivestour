@@ -55,7 +55,19 @@ export default function Page() {
       />
 
       <div className={`${CONTAINER_CLASS} max-w-3xl py-10 sm:py-14`}>
-        <section className="rounded-2xl border border-maldives-200 bg-maldives-50 p-6 text-center sm:p-8">
+        <div className="aspect-video w-full overflow-hidden rounded-2xl bg-neutral-100">
+          <iframe
+            className="h-full w-full"
+            src="https://www.youtube.com/embed/YX0SqudsTTc"
+            title="Become a Partner with Maldives Tour Guide"
+            loading="lazy"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        </div>
+
+        <section className="mt-14 rounded-2xl border border-maldives-200 bg-maldives-50 p-6 text-center sm:p-8">
           <p className="text-lg font-semibold text-ocean-900">Ready to list your business?</p>
           <p className="mx-auto mt-2 max-w-xl text-sm text-neutral-700">
             Create your partner account now — you&rsquo;ll be in your own dashboard right away to finish setting up your profile.

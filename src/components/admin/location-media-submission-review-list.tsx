@@ -10,6 +10,7 @@ import {
 } from "@/lib/admin/location-media-submissions-actions";
 import type { AdminLocationMediaSubmissionItem, LocationMediaSubmissionStatus } from "@/lib/admin/location-media-submissions-repository";
 import { Badge } from "@/components/ui/badge";
+import { SignedUrlViewModal } from "@/components/admin/signed-url-view-modal";
 
 const STATUS_TONE: Record<LocationMediaSubmissionStatus, "neutral" | "maldives" | "aqua" | "outline"> = {
   pending: "outline",
@@ -22,6 +23,7 @@ export function LocationMediaSubmissionReviewList({ submissions }: { submissions
   const [isPending, startTransition] = useTransition();
   const [viewError, setViewError] = useState<string | null>(null);
   const [actionError, setActionError] = useState<Record<string, string>>({});
+  const [viewingUrl, setViewingUrl] = useState<string | null>(null);
 
   if (submissions.length === 0) {
     return <p className="text-sm text-neutral-500">No submissions match this filter.</p>;
@@ -99,23 +101,13 @@ export function LocationMediaSubmissionReviewList({ submissions }: { submissions
                   disabled={isPending}
                   onClick={() => {
                     setViewError(null);
-                    // Open synchronously, before the await — see the
-                    // identical comment in partner-document-review-list.tsx
-                    // on why window.open() after an await gets blocked or
-                    // races the signed URL's expiry.
-                    const tab = window.open("", "_blank", "noopener,noreferrer");
                     startTransition(async () => {
                       const result = await getLocationMediaSubmissionImageSignedUrl(image.storagePath);
                       if (!result.url) {
-                        tab?.close();
                         setViewError(result.error ?? "Could not open this photo.");
                         return;
                       }
-                      if (!tab) {
-                        setViewError("Your browser blocked the popup — please allow popups for this site and try again.");
-                        return;
-                      }
-                      tab.location.href = result.url;
+                      setViewingUrl(result.url);
                     });
                   }}
                   className="rounded-lg border border-neutral-300 px-2.5 py-1 text-xs font-medium text-maldives-600 hover:underline disabled:opacity-50"
@@ -127,6 +119,7 @@ export function LocationMediaSubmissionReviewList({ submissions }: { submissions
           </ul>
         </div>
       ))}
+      {viewingUrl && <SignedUrlViewModal url={viewingUrl} onClose={() => setViewingUrl(null)} />}
     </div>
   );
 }

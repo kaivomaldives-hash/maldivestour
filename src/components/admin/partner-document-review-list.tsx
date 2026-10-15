@@ -5,6 +5,7 @@ import { useState, useTransition } from "react";
 
 import { getPartnerDocumentSignedUrl, updatePartnerDocumentStatus } from "@/lib/admin/partner-accounts-actions";
 import { PARTNER_DOCUMENT_TYPES, type PartnerDocumentStatus, type PartnerDocumentType } from "@/lib/partner/types";
+import { SignedUrlViewModal } from "@/components/admin/signed-url-view-modal";
 
 interface DocumentItem {
   id: string;
@@ -25,6 +26,7 @@ export function PartnerDocumentReviewList({ documents }: { documents: DocumentIt
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [viewError, setViewError] = useState<string | null>(null);
+  const [viewingUrl, setViewingUrl] = useState<string | null>(null);
 
   if (documents.length === 0) {
     return <p className="text-sm text-neutral-500">No documents uploaded yet.</p>;
@@ -49,29 +51,13 @@ export function PartnerDocumentReviewList({ documents }: { documents: DocumentIt
               disabled={isPending}
               onClick={() => {
                 setViewError(null);
-                // Open the tab synchronously, in direct response to the
-                // click — a window.open() called only after the awaited
-                // signed-url fetch below is no longer treated as
-                // user-initiated by most browsers (Safari in particular),
-                // so it's silently blocked or, if a "popup blocked" prompt
-                // delays it, the tab can end up loading the signed URL
-                // well after its (previously 60s) expiry, showing a
-                // Supabase sign-in/expired-token page instead of the
-                // document — exactly the "different link opens, can't
-                // view the document" symptom this was reported as.
-                const tab = window.open("", "_blank", "noopener,noreferrer");
                 startTransition(async () => {
                   const result = await getPartnerDocumentSignedUrl(doc.storagePath);
                   if (!result.url) {
-                    tab?.close();
                     setViewError(result.error ?? "Could not open this document.");
                     return;
                   }
-                  if (!tab) {
-                    setViewError("Your browser blocked the popup — please allow popups for this site and try again.");
-                    return;
-                  }
-                  tab.location.href = result.url;
+                  setViewingUrl(result.url);
                 });
               }}
               className="text-sm font-medium text-maldives-600 hover:underline disabled:opacity-50"
@@ -114,6 +100,7 @@ export function PartnerDocumentReviewList({ documents }: { documents: DocumentIt
           {doc.adminNote && <p className="mt-1 text-xs text-neutral-500">{doc.adminNote}</p>}
         </div>
       ))}
+      {viewingUrl && <SignedUrlViewModal url={viewingUrl} onClose={() => setViewingUrl(null)} />}
     </div>
   );
 }

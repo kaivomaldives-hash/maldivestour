@@ -61,8 +61,17 @@ export function DeleteNodeButton({ nodeId, redirectTo, label = "Delete" }: { nod
             <p className="text-sm text-neutral-500">Checking for related records…</p>
           ) : !check.canDelete ? (
             <p className="text-sm text-red-600">
-              This can&rsquo;t be deleted — it has {check.bookingCount} existing booking{check.bookingCount === 1 ? "" : "s"}. Unpublish it instead
-              (set status to draft or archived) if you want to hide it.
+              This can&rsquo;t be deleted —{" "}
+              {[
+                check.bookingCount > 0 ? `${check.bookingCount} existing booking${check.bookingCount === 1 ? "" : "s"}` : null,
+                check.packageItineraryCount > 0
+                  ? `used in ${check.packageItineraryCount} package itinerary item${check.packageItineraryCount === 1 ? "" : "s"}`
+                  : null,
+              ]
+                .filter(Boolean)
+                .join(" and ")}
+              . {check.packageItineraryCount > 0 ? "Remove it from that package's itinerary first, or " : ""}Unpublish it instead (set status to
+              draft or archived) if you want to hide it.
             </p>
           ) : (
             <p className="text-sm text-neutral-600">

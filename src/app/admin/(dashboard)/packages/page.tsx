@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { AdminSearchField } from "@/components/admin/admin-search-field";
 import { AdminTableHead } from "@/components/admin/admin-table-head";
+import { DeleteNodeButton } from "@/components/admin/delete-node-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -52,7 +53,7 @@ export default async function AdminPackagesPage({ searchParams }: { searchParams
       ) : (
         <div className="mt-6 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
           <table className="w-full min-w-[700px] text-left text-sm">
-            <AdminTableHead columns={["Title", "Duration", "Price from", "Status"]} />
+            <AdminTableHead columns={["Title", "Duration", "Price from", "Status", ""]} />
             <tbody className="divide-y divide-neutral-100">
               {results.items.map((p) => (
                 <tr key={p.id} className="hover:bg-neutral-50">
@@ -65,6 +66,9 @@ export default async function AdminPackagesPage({ searchParams }: { searchParams
                   <td className="px-4 py-3 text-neutral-600">{p.fields.priceFrom ? `${p.fields.currency ?? ""} ${p.fields.priceFrom}` : "—"}</td>
                   <td className="px-4 py-3">
                     <Badge tone={STATUS_TONE[p.status]}>{p.status}</Badge>
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <DeleteNodeButton nodeId={p.id} redirectTo="/admin/packages" />
                   </td>
                 </tr>
               ))}

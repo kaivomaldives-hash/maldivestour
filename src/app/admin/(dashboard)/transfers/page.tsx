@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { AdminSearchField } from "@/components/admin/admin-search-field";
 import { AdminTableHead } from "@/components/admin/admin-table-head";
+import { DeleteNodeButton } from "@/components/admin/delete-node-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -48,7 +49,7 @@ export default async function AdminTransfersPage({ searchParams }: { searchParam
       ) : (
         <div className="mt-6 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
           <table className="w-full min-w-[700px] text-left text-sm">
-            <AdminTableHead columns={["Title", "Origin", "Destination", "Status"]} />
+            <AdminTableHead columns={["Title", "Origin", "Destination", "Status", ""]} />
             <tbody className="divide-y divide-neutral-100">
               {results.items.map((r) => (
                 <tr key={r.id} className="hover:bg-neutral-50">
@@ -61,6 +62,9 @@ export default async function AdminTransfersPage({ searchParams }: { searchParam
                   <td className="px-4 py-3 text-neutral-600">{r.destinationTitle ?? "—"}</td>
                   <td className="px-4 py-3">
                     <Badge tone={STATUS_TONE[r.status]}>{r.status}</Badge>
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <DeleteNodeButton nodeId={r.id} redirectTo="/admin/transfers" />
                   </td>
                 </tr>
               ))}

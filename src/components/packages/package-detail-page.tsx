@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { FaqSection } from "@/components/ui/faq-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
+import { LocationMap } from "@/components/locations/location-map";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { bookingCta, FISHING_PACKAGE_CTA } from "@/lib/bookings/copy";
@@ -400,6 +401,9 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
                 </>
               )}
             </p>
+            {pkg.destinations[0]?.lat !== null && pkg.destinations[0]?.lng !== null && (
+              <LocationMap title={pkg.destinations[0].title} lat={pkg.destinations[0].lat} lng={pkg.destinations[0].lng} />
+            )}
           </section>
         )}
 

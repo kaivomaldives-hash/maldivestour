@@ -139,6 +139,94 @@ export const PACKAGE_HERO_OVERRIDES: Record<string, MediaAsset> = {
     "Marlin fishing in the Maldives",
   ),
 
+  // GoTripMaldives / Yuvi Blue holiday packages — 16 real packages (Diving,
+  // Surfing, Honeymoon, Family themes x 2/4/5/6 nights) at Yuvi Blue
+  // Maldives, Himmafushi, sourced from the owner's "Gotripmaldives Customer
+  // Holiday Rates.pdf". Each gets its own distinct real photo (never the
+  // same image across two cards) via scripts/attach-gotrip-uploads.mjs,
+  // which printed this exact id/storagePath list. Not yet in Storage until
+  // `upload-legacy-media.mjs --commit --only=gotrip-uploads` is run.
+  "himmafushi-diving-holiday-2-nights": asset(
+    "e015510f-f0c7-ab66-fe70-ed4d8178cbed",
+    "uploads/assets/uploads/gotrip/packages/diving-2n-faru-reef.webp",
+    "Diving in the Maldives",
+  ),
+  "himmafushi-diving-holiday-4-nights": asset(
+    "9d6b3ce8-ed4c-0b13-44e0-ab3d912b3b3b",
+    "uploads/assets/uploads/gotrip/packages/diving-4n-maldives-diving.webp",
+    "Diving in the Maldives",
+  ),
+  "himmafushi-diving-holiday-5-nights": asset(
+    "483fb4cd-e867-5401-8ad1-65dbb5afb055",
+    "uploads/assets/uploads/gotrip/packages/diving-5n-maldives-snorkeling.jpeg",
+    "Snorkeling in the Maldives",
+  ),
+  "himmafushi-diving-holiday-6-nights": asset(
+    "7775c0f2-5b0d-7891-3389-2a3d7fe49033",
+    "uploads/assets/uploads/gotrip/packages/diving-6n-turtle-snorkeling.jpeg",
+    "Turtle snorkeling in the Maldives",
+  ),
+  "himmafushi-surfing-holiday-2-nights": asset(
+    "f5750f17-4f03-234f-f9c6-e58a1980b02b",
+    "uploads/assets/uploads/gotrip/packages/surfing-2n-sandbank-excursion.webp",
+    "Sandbank excursion, Male Atoll",
+  ),
+  "himmafushi-surfing-holiday-4-nights": asset(
+    "0fe5c3cc-e050-296a-09e2-194d66a00004",
+    "uploads/assets/uploads/gotrip/packages/surfing-4n-sand-bank-trip.webp",
+    "Sandbank trip, Male Atoll",
+  ),
+  "himmafushi-surfing-holiday-5-nights": asset(
+    "1540c3c9-f6e0-f8bb-2787-6cbb92026026",
+    "uploads/assets/uploads/gotrip/packages/surfing-5n-sandbank-maldives.webp",
+    "Sandbank in the Maldives",
+  ),
+  "himmafushi-surfing-holiday-6-nights": asset(
+    "1a0b9fce-a570-aa7f-f15d-91d1b6ba6a21",
+    "uploads/assets/uploads/gotrip/packages/surfing-6n-himmafushi-beach.jpeg",
+    "Himmafushi beach, Kaafu Atoll",
+  ),
+  "himmafushi-honeymoon-2-nights": asset(
+    "06dd0cb4-6adf-5009-6ffd-3dbd350985bc",
+    "uploads/assets/uploads/gotrip/packages/honeymoon-2n-himmafushi.jpeg",
+    "Himmafushi, Kaafu Atoll",
+  ),
+  "himmafushi-honeymoon-4-nights": asset(
+    "f82022bf-9899-1aad-2d63-b560eb933eee",
+    "uploads/assets/uploads/gotrip/packages/honeymoon-4n-himmafushi.jpeg",
+    "Himmafushi, Kaafu Atoll",
+  ),
+  "himmafushi-honeymoon-5-nights": asset(
+    "69cd62de-7f04-69ec-568a-c1b3505053c8",
+    "uploads/assets/uploads/gotrip/packages/honeymoon-5n-himmafushi.jpeg",
+    "Himmafushi, Kaafu Atoll",
+  ),
+  "himmafushi-honeymoon-6-nights": asset(
+    "3d99d1a9-aab6-09f0-bef4-8b33d3243649",
+    "uploads/assets/uploads/gotrip/packages/honeymoon-6n-himmafushi.jpeg",
+    "Himmafushi, Kaafu Atoll",
+  ),
+  "himmafushi-family-holiday-2-nights": asset(
+    "fe68c080-2a8f-4fc2-c418-79bc174c99cd",
+    "uploads/assets/uploads/gotrip/packages/family-2n-island-beach.jpeg",
+    "Island beach, Maldives",
+  ),
+  "himmafushi-family-holiday-4-nights": asset(
+    "9c374528-1c52-2923-0d98-6cf14175785a",
+    "uploads/assets/uploads/gotrip/packages/family-4n-water-sports.jpeg",
+    "Local island water sports, Maldives",
+  ),
+  "himmafushi-family-holiday-5-nights": asset(
+    "c9639b9b-f401-a49b-3b0e-3db16bddaae0",
+    "uploads/assets/uploads/gotrip/packages/family-5n-island-tour.jpeg",
+    "Local island tour, Maldives",
+  ),
+  "himmafushi-family-holiday-6-nights": asset(
+    "e5ec4fc4-0e5f-7d9f-0ed0-3f72247ab66f",
+    "uploads/assets/uploads/gotrip/packages/family-6n-island-visit.jpeg",
+    "Island visit, Maldives",
+  ),
+
   // Demo packages
   "maafushi-local-island-getaway": asset(
     "9bbead44-417f-23d5-a02d-e7741f6d21ac",
@@ -254,6 +342,12 @@ export const ACCOMMODATION_GALLERY_IMAGES: Record<string, MediaAsset[]> = {
     asset("e3128603-5cff-038a-c26a-6b07dfd3d9fe", "legacy/hotels/arena-maafushi/images/arean-beach-maafushi-island-hotel.webp", "Arena Beach Hotel, Maafushi"),
   ],
   "maldives-fishing-and-holidays-lodge": [
+    // Real photos of the actual lodge (scripts/attach-gotrip-uploads.mjs) —
+    // preferred over the generic fishing stock photos below, which were
+    // never actually uploaded to Storage.
+    asset("4d986db8-7f38-4e59-c35f-94510e3c0e7e", "uploads/assets/uploads/gotrip/lodge/mfh-lodge-exterior.jpeg", "Maldives Fishing and Holidays Lodge, Maamendhoo"),
+    asset("74bb4580-2f9d-7cbc-5714-e0097953bca3", "uploads/assets/uploads/gotrip/lodge/mfh-lodge-guest-house.jpeg", "Maldives Fishing and Holidays Lodge, Maamendhoo"),
+    asset("78a6c490-6263-2e47-c74b-59f312afd4e9", "uploads/assets/uploads/gotrip/lodge/mfh-lodge-hotel.jpeg", "Maldives Fishing and Holidays Lodge, Maamendhoo"),
     asset("bb2efb47-152b-60e9-2443-dacc2bd61f65", "uploads/assets/uploads/fishing/images/packages/sunset-raa.webp", "Sunset fishing in the Maldives"),
     asset("fdcb6dcb-87a4-1f21-4095-4e9ffc1be220", "uploads/assets/uploads/fishing/images/packages/trolling-fishing.webp", "Trolling fishing in the Maldives"),
     asset("4ff44b0e-81a3-a18f-cf0f-d781fccc47e6", "uploads/assets/uploads/fishing/images/packages/yellowfin-tuna.webp", "Yellowfin tuna caught fishing in the Maldives"),

@@ -1,6 +1,8 @@
 import "server-only";
 
 import { cachedRead } from "@/lib/cache/cached-read";
+import { getContentSortSetting } from "@/lib/content-sort/repository";
+import type { ContentSortMode } from "@/lib/content-sort/types";
 import { getLocationSummariesByIds, getLocationSummaryById } from "@/lib/locations/repository";
 import type { LocationSummary } from "@/lib/locations/types";
 import { getHeroMediaByNodeIds, getMediaForNode } from "@/lib/media/repository";
@@ -37,6 +39,30 @@ import type {
 // embedded column doesn't restrict which `nodes` rows come back.
 const NODE_ACTIVITY_SELECT =
   "id, slug, title, summary, meta_title, meta_description, activities!inner(activity_category, operated_by_provider_id, duration_minutes, min_age, difficulty, price_from, currency, max_participants)";
+
+/** Applies the admin-configured default sort order (content_sort_settings)
+ * — see the identical helper/comment in src/lib/packages/repository.ts. */
+function applySortMode<Q extends { order: (column: string, opts?: { ascending?: boolean; nullsFirst?: boolean }) => Q }>(
+  query: Q,
+  mode: ContentSortMode,
+  priceColumn: string | null,
+): Q {
+  switch (mode) {
+    case "price_asc":
+      return priceColumn ? query.order(priceColumn, { ascending: true, nullsFirst: false }) : query.order("title", { ascending: true });
+    case "price_desc":
+      return priceColumn ? query.order(priceColumn, { ascending: false, nullsFirst: false }) : query.order("title", { ascending: true });
+    case "rating_desc":
+      return query.order("rating_avg", { ascending: false, nullsFirst: false });
+    case "published_desc":
+      return query.order("published_at", { ascending: false, nullsFirst: false });
+    case "manual":
+      return query.order("sort_order", { ascending: true, nullsFirst: false }).order("title", { ascending: true });
+    case "title_asc":
+    default:
+      return query.order("title", { ascending: true });
+  }
+}
 
 type ActivityFields = {
   activity_category: ActivityCategory;
@@ -239,10 +265,10 @@ async function getActivitiesUncached(options: GetActivitiesOptions = {}): Promis
   if (nodeIdFilter) query = query.in("id", nodeIdFilter);
   if (options.nodeIds) query = query.in("id", options.nodeIds);
 
-  const { data, error, count } = await query
-    .order("title", { ascending: true })
-    .range(from, to)
-    .returns<NodeActivityRow[]>();
+  const sortMode = await getContentSortSetting("activity");
+  query = applySortMode(query, sortMode, "activities.price_from");
+
+  const { data, error, count } = await query.range(from, to).returns<NodeActivityRow[]>();
 
   if (error || !data) return { items: [], total: 0, page, pageSize };
 

@@ -24,7 +24,7 @@ import { createClient } from "@/lib/supabase/server";
 const PAGE_SIZE = 30;
 
 const NODE_PACKAGE_SELECT =
-  "id, slug, title, summary, status, meta_title, meta_description, packages!inner(duration_nights, price_from, currency, operated_by_provider_id, video_youtube_id)";
+  "id, slug, title, summary, status, meta_title, meta_description, sort_order, packages!inner(duration_nights, price_from, currency, operated_by_provider_id, video_youtube_id)";
 
 type PackageFieldsRow = {
   duration_nights: number | null;
@@ -42,6 +42,7 @@ type NodePackageRow = {
   status: NodeStatus;
   meta_title: string | null;
   meta_description: string | null;
+  sort_order: number | null;
   packages: PackageFieldsRow | PackageFieldsRow[] | null;
 };
 
@@ -61,6 +62,7 @@ export interface AdminPackageItem {
   status: NodeStatus;
   metaTitle: string | null;
   metaDescription: string | null;
+  sortOrder: number | null;
   fields: PackageFieldsAdmin;
 }
 
@@ -75,6 +77,7 @@ function bareOf(row: NodePackageRow): AdminPackageItem | null {
     status: row.status,
     metaTitle: row.meta_title,
     metaDescription: row.meta_description,
+    sortOrder: row.sort_order,
     fields: {
       durationNights: p.duration_nights,
       priceFrom: p.price_from,
@@ -101,7 +104,12 @@ export async function getPackagesAdmin(
   const to = from + PAGE_SIZE - 1;
 
   const supabase = await createClient();
-  let query = supabase.from("nodes").select(NODE_PACKAGE_SELECT, { count: "exact" }).eq("node_type", "package").order("title", { ascending: true });
+  let query = supabase
+    .from("nodes")
+    .select(NODE_PACKAGE_SELECT, { count: "exact" })
+    .eq("node_type", "package")
+    .order("sort_order", { ascending: true, nullsFirst: false })
+    .order("title", { ascending: true });
   if (options.search?.trim()) query = query.ilike("title", `%${options.search.trim()}%`);
   if (options.status) query = query.eq("status", options.status);
   if (options.providerId) query = query.eq("packages.operated_by_provider_id", options.providerId);

@@ -4,6 +4,8 @@ import { getAccommodationSummariesByIds } from "@/lib/accommodations/repository"
 import { cachedRead } from "@/lib/cache/cached-read";
 import { getActivitySummariesByIds } from "@/lib/activities/repository";
 import { getCategoriesByGroup, getCategoryBySlug, getNodeIdsByCategory } from "@/lib/categories/repository";
+import { getContentSortSetting } from "@/lib/content-sort/repository";
+import type { ContentSortMode } from "@/lib/content-sort/types";
 import type { CategoryGroup, CategorySummary } from "@/lib/categories/types";
 import { getLocationSummariesByIds } from "@/lib/locations/repository";
 import type { LocationSummary } from "@/lib/locations/types";
@@ -45,6 +47,35 @@ import type {
 
 const NODE_PACKAGE_SELECT =
   "id, slug, title, summary, meta_title, meta_description, packages!inner(duration_nights, price_from, price_type, currency, operated_by_provider_id)";
+
+/** Applies the admin-configured default sort order (content_sort_settings)
+ * to a packages list query. `priceColumn` is the dotted embed path for
+ * this table's price (e.g. "packages.price_from") or null when the
+ * content type has no single price column — see
+ * src/lib/content-sort/types.ts's PRICE_SORT_SUPPORTED. Nulls always sort
+ * last regardless of direction, so an unrated/unpriced/unpositioned item
+ * never jumps to the front of the list. */
+function applySortMode<Q extends { order: (column: string, opts?: { ascending?: boolean; nullsFirst?: boolean }) => Q }>(
+  query: Q,
+  mode: ContentSortMode,
+  priceColumn: string | null,
+): Q {
+  switch (mode) {
+    case "price_asc":
+      return priceColumn ? query.order(priceColumn, { ascending: true, nullsFirst: false }) : query.order("title", { ascending: true });
+    case "price_desc":
+      return priceColumn ? query.order(priceColumn, { ascending: false, nullsFirst: false }) : query.order("title", { ascending: true });
+    case "rating_desc":
+      return query.order("rating_avg", { ascending: false, nullsFirst: false });
+    case "published_desc":
+      return query.order("published_at", { ascending: false, nullsFirst: false });
+    case "manual":
+      return query.order("sort_order", { ascending: true, nullsFirst: false }).order("title", { ascending: true });
+    case "title_asc":
+    default:
+      return query.order("title", { ascending: true });
+  }
+}
 
 type PackageFields = {
   duration_nights: number | null;
@@ -240,10 +271,10 @@ async function getPackagesUncached(options: GetPackagesOptions = {}): Promise<Pa
 
   if (nodeIdFilter) query = query.in("id", nodeIdFilter);
 
-  const { data, error, count } = await query
-    .order("title", { ascending: true })
-    .range(from, to)
-    .returns<NodePackageRow[]>();
+  const sortMode = await getContentSortSetting("package");
+  query = applySortMode(query, sortMode, "packages.price_from");
+
+  const { data, error, count } = await query.range(from, to).returns<NodePackageRow[]>();
 
   if (error || !data) return { items: [], total: 0, page, pageSize };
 

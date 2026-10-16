@@ -2,7 +2,9 @@ import Link from "next/link";
 
 import { AdminSearchField } from "@/components/admin/admin-search-field";
 import { AdminTableHead } from "@/components/admin/admin-table-head";
+import { ContentSortForm } from "@/components/admin/content-sort-form";
 import { DeleteNodeButton } from "@/components/admin/delete-node-button";
+import { SortOrderInput } from "@/components/admin/sort-order-input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -11,6 +13,7 @@ import { getActivitiesAdmin } from "@/lib/admin/activities-repository";
 import { NODE_STATUSES, type NodeStatus } from "@/lib/admin/node-status";
 import { getProviderOptions } from "@/lib/admin/providers-repository";
 import type { ActivityCategory } from "@/lib/activities/types";
+import { getContentSortSetting } from "@/lib/content-sort/repository";
 import { getAtolls } from "@/lib/locations/repository";
 
 const STATUS_TONE: Record<string, "neutral" | "maldives" | "aqua" | "outline"> = {
@@ -41,10 +44,11 @@ export default async function AdminActivitiesPage({
   const page = Math.max(1, Number(sp.page) || 1);
   const activityCategory = (sp.category as ActivityCategory | undefined) || undefined;
   const status = NODE_STATUSES.includes(sp.status as NodeStatus) ? (sp.status as NodeStatus) : undefined;
-  const [results, providers, atolls] = await Promise.all([
+  const [results, providers, atolls, sortMode] = await Promise.all([
     getActivitiesAdmin({ search: sp.q, activityCategory, status, providerId: sp.provider || undefined, atollId: sp.atoll || undefined, page }),
     getProviderOptions(),
     getAtolls(),
+    getContentSortSetting("activity"),
   ]);
   const totalPages = Math.max(1, Math.ceil(results.total / results.pageSize));
 
@@ -63,6 +67,10 @@ export default async function AdminActivitiesPage({
         <Button href="/admin/activities/new" size="sm">
           New activity
         </Button>
+      </div>
+
+      <div className="mt-4">
+        <ContentSortForm nodeType="activity" currentMode={sortMode} />
       </div>
 
       <form method="get" className="mt-4 flex flex-wrap items-end gap-3">
@@ -115,7 +123,7 @@ export default async function AdminActivitiesPage({
       ) : (
         <div className="mt-6 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
           <table className="w-full min-w-[700px] text-left text-sm">
-            <AdminTableHead columns={["Name", "Category", "Price from", "Status", ""]} />
+            <AdminTableHead columns={["Name", "Category", "Price from", "Status", "Position", ""]} />
             <tbody className="divide-y divide-neutral-100">
               {results.items.map((a) => (
                 <tr key={a.id} className="hover:bg-neutral-50">
@@ -128,6 +136,9 @@ export default async function AdminActivitiesPage({
                   <td className="px-4 py-3 text-neutral-600">{a.fields.priceFrom !== null ? `${a.fields.currency} ${a.fields.priceFrom}` : "—"}</td>
                   <td className="px-4 py-3">
                     <Badge tone={STATUS_TONE[a.status]}>{a.status}</Badge>
+                  </td>
+                  <td className="px-4 py-3">
+                    <SortOrderInput nodeId={a.id} defaultValue={a.sortOrder} />
                   </td>
                   <td className="px-4 py-3 text-right">
                     <DeleteNodeButton nodeId={a.id} redirectTo="/admin/activities" />

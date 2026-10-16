@@ -2,7 +2,9 @@ import Link from "next/link";
 
 import { AdminSearchField } from "@/components/admin/admin-search-field";
 import { AdminTableHead } from "@/components/admin/admin-table-head";
+import { ContentSortForm } from "@/components/admin/content-sort-form";
 import { DeleteNodeButton } from "@/components/admin/delete-node-button";
+import { SortOrderInput } from "@/components/admin/sort-order-input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -10,6 +12,7 @@ import { Pagination } from "@/components/ui/pagination";
 import { NODE_STATUSES, type NodeStatus } from "@/lib/admin/node-status";
 import { getProviderOptions } from "@/lib/admin/providers-repository";
 import { getTransferRoutesAdmin } from "@/lib/admin/transfers-repository";
+import { getContentSortSetting } from "@/lib/content-sort/repository";
 import { getAtolls } from "@/lib/locations/repository";
 
 const STATUS_TONE: Record<string, "neutral" | "maldives" | "aqua" | "outline"> = {
@@ -26,10 +29,11 @@ export default async function AdminTransfersPage({
   const sp = await searchParams;
   const page = Math.max(1, Number(sp.page) || 1);
   const status = NODE_STATUSES.includes(sp.status as NodeStatus) ? (sp.status as NodeStatus) : undefined;
-  const [results, providers, atolls] = await Promise.all([
+  const [results, providers, atolls, sortMode] = await Promise.all([
     getTransferRoutesAdmin({ search: sp.q, status, providerId: sp.provider || undefined, atollId: sp.atoll || undefined, page }),
     getProviderOptions(),
     getAtolls(),
+    getContentSortSetting("transfer_route"),
   ]);
   const totalPages = Math.max(1, Math.ceil(results.total / results.pageSize));
 
@@ -52,6 +56,10 @@ export default async function AdminTransfersPage({
         The atoll filter matches a route&rsquo;s origin or destination. The provider filter matches a route with at least one service from that
         provider &mdash; a route itself has no single operator, since several providers can offer services on the same route.
       </p>
+
+      <div className="mt-4">
+        <ContentSortForm nodeType="transfer_route" currentMode={sortMode} />
+      </div>
 
       <form method="get" className="mt-4 flex flex-wrap items-end gap-3">
         <AdminSearchField label="Search" name="q" defaultValue={sp.q} placeholder="Search by title" className="w-64" />
@@ -96,7 +104,7 @@ export default async function AdminTransfersPage({
       ) : (
         <div className="mt-6 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
           <table className="w-full min-w-[700px] text-left text-sm">
-            <AdminTableHead columns={["Title", "Origin", "Destination", "Status", ""]} />
+            <AdminTableHead columns={["Title", "Origin", "Destination", "Status", "Position", ""]} />
             <tbody className="divide-y divide-neutral-100">
               {results.items.map((r) => (
                 <tr key={r.id} className="hover:bg-neutral-50">
@@ -109,6 +117,9 @@ export default async function AdminTransfersPage({
                   <td className="px-4 py-3 text-neutral-600">{r.destinationTitle ?? "—"}</td>
                   <td className="px-4 py-3">
                     <Badge tone={STATUS_TONE[r.status]}>{r.status}</Badge>
+                  </td>
+                  <td className="px-4 py-3">
+                    <SortOrderInput nodeId={r.id} defaultValue={r.sortOrder} />
                   </td>
                   <td className="px-4 py-3 text-right">
                     <DeleteNodeButton nodeId={r.id} redirectTo="/admin/transfers" />

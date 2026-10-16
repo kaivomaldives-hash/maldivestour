@@ -19,7 +19,7 @@ import type { SharedOrPrivate, TransferServiceStatus, TransferType } from "@/lib
 const PAGE_SIZE = 30;
 
 const NODE_TRANSFER_ROUTE_SELECT =
-  "id, slug, title, summary, status, meta_title, meta_description, transfer_routes!inner(origin_location_id, destination_location_id, distance_km, typical_duration_minutes, video_youtube_id)";
+  "id, slug, title, summary, status, meta_title, meta_description, sort_order, transfer_routes!inner(origin_location_id, destination_location_id, distance_km, typical_duration_minutes, video_youtube_id)";
 
 type TransferRouteFieldsRow = {
   origin_location_id: string;
@@ -37,6 +37,7 @@ type NodeTransferRouteRow = {
   status: NodeStatus;
   meta_title: string | null;
   meta_description: string | null;
+  sort_order: number | null;
   transfer_routes: TransferRouteFieldsRow | TransferRouteFieldsRow[] | null;
 };
 
@@ -56,6 +57,7 @@ interface BareTransferRoute {
   status: NodeStatus;
   metaTitle: string | null;
   metaDescription: string | null;
+  sortOrder: number | null;
   fields: TransferRouteFieldsAdmin;
 }
 
@@ -75,6 +77,7 @@ function bareRouteOf(row: NodeTransferRouteRow): BareTransferRoute | null {
     status: row.status,
     metaTitle: row.meta_title,
     metaDescription: row.meta_description,
+    sortOrder: row.sort_order,
     fields: {
       originLocationId: r.origin_location_id,
       destinationLocationId: r.destination_location_id,
@@ -151,7 +154,12 @@ export async function getTransferRoutesAdmin(
   const to = from + PAGE_SIZE - 1;
 
   const supabase = await createClient();
-  let query = supabase.from("nodes").select(NODE_TRANSFER_ROUTE_SELECT, { count: "exact" }).eq("node_type", "transfer_route").order("title", { ascending: true });
+  let query = supabase
+    .from("nodes")
+    .select(NODE_TRANSFER_ROUTE_SELECT, { count: "exact" })
+    .eq("node_type", "transfer_route")
+    .order("sort_order", { ascending: true, nullsFirst: false })
+    .order("title", { ascending: true });
   if (options.search?.trim()) query = query.ilike("title", `%${options.search.trim()}%`);
   if (options.status) query = query.eq("status", options.status);
 

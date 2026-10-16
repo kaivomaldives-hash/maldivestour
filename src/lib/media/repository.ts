@@ -127,7 +127,12 @@ async function getMediaForNodeUncached(nodeId: string): Promise<NodeMediaItem[]>
     .filter((item): item is NodeMediaItem => item !== null);
 }
 
-export const getMediaForNode = cachedRead(getMediaForNodeUncached, ["media:for-node"], 300);
+// Tagged "node-media" (in addition to its own key) so admin actions that
+// write a node's gallery (e.g. approveLocationMediaSubmission()) can bust
+// this specific cache on demand via updateTag() instead of waiting out
+// the 300s TTL — see the identical reasoning on cachedRead() itself
+// (src/lib/cache/cached-read.ts).
+export const getMediaForNode = cachedRead(getMediaForNodeUncached, ["media:for-node"], 300, ["media:for-node", "node-media"]);
 
 /**
  * Rewrites every `<figure><img src="...">...</figure>` in an article body

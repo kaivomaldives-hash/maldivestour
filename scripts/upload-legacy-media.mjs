@@ -106,6 +106,7 @@ const MANIFEST_SOURCES = {
   "activity-uploads": "data/maldives/migration/activity-uploads-manifest.json",
   "city-tour-uploads": "data/maldives/migration/city-tour-uploads-manifest.json",
   "yuviblue-uploads": "data/maldives/migration/yuviblue-uploads-manifest.json",
+  "gotrip-uploads": "data/maldives/migration/gotrip-uploads-manifest.json",
 };
 
 function mergeManifests(only) {

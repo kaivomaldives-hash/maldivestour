@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 
 import { getAccommodations } from "@/lib/accommodations/repository";
 import { ACCOMMODATION_TYPE_SEGMENT } from "@/lib/accommodations/types";
+import { getAllAccommodationSeoLandingSpecs } from "@/lib/accommodations/seo-landing-content";
+import { getAccommodationSeoLandingResults } from "@/lib/accommodations/seo-landing-repository";
 import { getActivities } from "@/lib/activities/repository";
 import { activityHref } from "@/lib/activities/types";
 import { getArticles } from "@/lib/articles/repository";
@@ -198,6 +200,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const b of speedboats) entries.push({ url: url(`/maldives-speedboats-charter/${b.slug}/`), changeFrequency: "monthly", priority: 0.5 });
   for (const a of articles) entries.push({ url: url(articleHref(a)), changeFrequency: "monthly", priority: 0.6, lastModified: a.publishedAt ?? undefined });
   for (const p of providers) entries.push({ url: url(`/maldives/providers/${p.slug}/`), changeFrequency: "monthly", priority: 0.4 });
+
+  // Curated accommodation SEO landing pages (e.g. /maldives/resorts/luxury/)
+  // — included only when their own live result count still clears the
+  // spec's minResults bar, the exact same check accommodationSeoLandingMetadata()
+  // uses for robots/index, so the sitemap and the page's own noindex can
+  // never disagree (see src/lib/accommodations/seo-landing-content.ts).
+  const landingSpecs = getAllAccommodationSeoLandingSpecs();
+  const landingResults = await Promise.all(landingSpecs.map(({ spec }) => getAccommodationSeoLandingResults(spec)));
+  landingSpecs.forEach(({ type, spec }, i) => {
+    if (!landingResults[i].meetsThreshold) return;
+    entries.push({ url: url(`/maldives/${ACCOMMODATION_TYPE_SEGMENT[type]}/${spec.slug}/`), changeFrequency: "weekly", priority: 0.7 });
+  });
 
   return entries;
 }

@@ -10,6 +10,7 @@ import { Pagination } from "@/components/ui/pagination";
 import { getAccommodations, searchAccommodations } from "@/lib/accommodations/repository";
 import { ACCOMMODATION_TYPE_SEGMENT, type AccommodationType, type PriceTier } from "@/lib/accommodations/types";
 import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
+import { ACCOMMODATION_SEO_LANDING_SPECS } from "@/lib/accommodations/seo-landing-content";
 import { canonicalUrl } from "@/lib/seo/site";
 
 const TYPE_LABEL: Record<AccommodationType, string> = {
@@ -168,6 +169,16 @@ export async function AccommodationDirectoryPage({
             label={label}
           />
         </div>
+
+        {!isSearching && page === 1 && !atoll && !island && ACCOMMODATION_SEO_LANDING_SPECS[type].length > 0 && (
+          <nav aria-label={`Browse ${label.toLowerCase()} by category`} className="mt-4 flex flex-wrap gap-2">
+            {ACCOMMODATION_SEO_LANDING_SPECS[type].map((spec) => (
+              <Link key={spec.slug} href={`/maldives/${segment}/${spec.slug}/`} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                {spec.h1}
+              </Link>
+            ))}
+          </nav>
+        )}
 
         {results.items.length === 0 ? (
           <EmptyState

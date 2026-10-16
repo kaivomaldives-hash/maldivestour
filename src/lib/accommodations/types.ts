@@ -82,6 +82,11 @@ export interface AccommodationFilters {
   atollId?: string;
   locationId?: string;
   priceTier?: PriceTier;
+  /** Matches ANY of these tiers (e.g. ["luxury", "ultra_luxury"]) — takes
+   * priority over `priceTier` when both are set. Used by the curated SEO
+   * landing pages (e.g. /maldives/resorts/luxury/), which want "luxury or
+   * above" rather than a single exact tier. */
+  priceTiers?: PriceTier[];
   starRating?: number;
   allInclusive?: boolean;
   overwaterVillas?: boolean;

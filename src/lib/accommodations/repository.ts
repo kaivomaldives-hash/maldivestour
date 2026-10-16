@@ -211,7 +211,8 @@ async function getAccommodationsUncached(
     .eq("status", "published");
 
   if (options.type) query = query.eq("accommodations.accommodation_type", options.type);
-  if (options.priceTier) query = query.eq("accommodations.price_tier", options.priceTier);
+  if (options.priceTiers && options.priceTiers.length > 0) query = query.in("accommodations.price_tier", options.priceTiers);
+  else if (options.priceTier) query = query.eq("accommodations.price_tier", options.priceTier);
   // "N stars and up" (matches the filter UI's "N★+" labeling), not an exact match.
   if (options.starRating) query = query.gte("accommodations.star_rating", options.starRating);
   if (options.allInclusive !== undefined) query = query.eq("accommodations.all_inclusive", options.allInclusive);

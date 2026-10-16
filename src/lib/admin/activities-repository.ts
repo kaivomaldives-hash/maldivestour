@@ -1,6 +1,7 @@
 import "server-only";
 
 import { requireStaff } from "@/lib/admin/auth";
+import { getAdminNodeIdsAtAtoll } from "@/lib/admin/admin-location-filter";
 import type { NodeStatus } from "@/lib/admin/node-actions";
 import type { ActivityCategory, ActivityDifficulty } from "@/lib/activities/types";
 import { createClient } from "@/lib/supabase/server";
@@ -95,7 +96,14 @@ export interface AdminActivityListResult {
 }
 
 export async function getActivitiesAdmin(
-  options: { search?: string; activityCategory?: ActivityCategory; page?: number } = {},
+  options: {
+    search?: string;
+    activityCategory?: ActivityCategory;
+    status?: NodeStatus;
+    providerId?: string;
+    atollId?: string;
+    page?: number;
+  } = {},
 ): Promise<AdminActivityListResult> {
   await requireStaff();
   const page = Math.max(1, options.page ?? 1);
@@ -106,6 +114,13 @@ export async function getActivitiesAdmin(
   let query = supabase.from("nodes").select(NODE_ACTIVITY_SELECT, { count: "exact" }).eq("node_type", "activity").order("title", { ascending: true });
   if (options.search?.trim()) query = query.ilike("title", `%${options.search.trim()}%`);
   if (options.activityCategory) query = query.eq("activities.activity_category", options.activityCategory);
+  if (options.status) query = query.eq("status", options.status);
+  if (options.providerId) query = query.eq("activities.operated_by_provider_id", options.providerId);
+  if (options.atollId) {
+    const nodeIds = await getAdminNodeIdsAtAtoll(options.atollId);
+    if (nodeIds.length === 0) return { items: [], total: 0, page, pageSize: PAGE_SIZE };
+    query = query.in("id", nodeIds);
+  }
 
   const { data, error, count } = await query.range(from, to).returns<NodeActivityRow[]>();
   if (error || !data) return { items: [], total: 0, page, pageSize: PAGE_SIZE };

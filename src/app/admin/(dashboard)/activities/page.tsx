@@ -8,7 +8,10 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Pagination } from "@/components/ui/pagination";
 import { getActivitiesAdmin } from "@/lib/admin/activities-repository";
+import { NODE_STATUSES, type NodeStatus } from "@/lib/admin/node-status";
+import { getProviderOptions } from "@/lib/admin/providers-repository";
 import type { ActivityCategory } from "@/lib/activities/types";
+import { getAtolls } from "@/lib/locations/repository";
 
 const STATUS_TONE: Record<string, "neutral" | "maldives" | "aqua" | "outline"> = {
   draft: "outline",
@@ -29,14 +32,29 @@ const CATEGORY_FILTERS: Array<{ value: ActivityCategory | ""; label: string }> =
   { value: "culture", label: "Culture" },
 ];
 
-export default async function AdminActivitiesPage({ searchParams }: { searchParams: Promise<{ q?: string; category?: string; page?: string }> }) {
+export default async function AdminActivitiesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string; category?: string; status?: string; provider?: string; atoll?: string; page?: string }>;
+}) {
   const sp = await searchParams;
   const page = Math.max(1, Number(sp.page) || 1);
   const activityCategory = (sp.category as ActivityCategory | undefined) || undefined;
-  const results = await getActivitiesAdmin({ search: sp.q, activityCategory, page });
+  const status = NODE_STATUSES.includes(sp.status as NodeStatus) ? (sp.status as NodeStatus) : undefined;
+  const [results, providers, atolls] = await Promise.all([
+    getActivitiesAdmin({ search: sp.q, activityCategory, status, providerId: sp.provider || undefined, atollId: sp.atoll || undefined, page }),
+    getProviderOptions(),
+    getAtolls(),
+  ]);
   const totalPages = Math.max(1, Math.ceil(results.total / results.pageSize));
 
-  const baseQueryParts = [sp.q ? `q=${encodeURIComponent(sp.q)}` : null, sp.category ? `category=${encodeURIComponent(sp.category)}` : null].filter(Boolean);
+  const baseQueryParts = [
+    sp.q ? `q=${encodeURIComponent(sp.q)}` : null,
+    sp.category ? `category=${encodeURIComponent(sp.category)}` : null,
+    sp.status ? `status=${encodeURIComponent(sp.status)}` : null,
+    sp.provider ? `provider=${encodeURIComponent(sp.provider)}` : null,
+    sp.atoll ? `atoll=${encodeURIComponent(sp.atoll)}` : null,
+  ].filter(Boolean);
 
   return (
     <div>
@@ -56,10 +74,34 @@ export default async function AdminActivitiesPage({ searchParams }: { searchPara
             </option>
           ))}
         </select>
+        <select name="status" defaultValue={sp.status ?? ""} className="rounded-xl border border-neutral-300 px-3 py-2 text-sm capitalize">
+          <option value="">All statuses</option>
+          {NODE_STATUSES.map((s) => (
+            <option key={s} value={s} className="capitalize">
+              {s}
+            </option>
+          ))}
+        </select>
+        <select name="provider" defaultValue={sp.provider ?? ""} className="rounded-xl border border-neutral-300 px-3 py-2 text-sm">
+          <option value="">All providers</option>
+          {providers.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.title}
+            </option>
+          ))}
+        </select>
+        <select name="atoll" defaultValue={sp.atoll ?? ""} className="rounded-xl border border-neutral-300 px-3 py-2 text-sm">
+          <option value="">All atolls</option>
+          {atolls.map((a) => (
+            <option key={a.id} value={a.id}>
+              {a.title}
+            </option>
+          ))}
+        </select>
         <button type="submit" className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800">
           Filter
         </button>
-        {(sp.q || sp.category) && (
+        {(sp.q || sp.category || sp.status || sp.provider || sp.atoll) && (
           <Link href="/admin/activities" className="self-center text-sm text-neutral-600 underline">
             Clear
           </Link>

@@ -1,6 +1,7 @@
 import "server-only";
 
 import { requireStaff } from "@/lib/admin/auth";
+import { getAdminNodeIdsAtAtoll } from "@/lib/admin/admin-location-filter";
 import type { NodeStatus } from "@/lib/admin/node-actions";
 import type { AccommodationType, PriceTier } from "@/lib/accommodations/types";
 import { createClient } from "@/lib/supabase/server";
@@ -105,7 +106,14 @@ export interface AdminAccommodationListResult {
 }
 
 export async function getAccommodationsAdmin(
-  options: { search?: string; accommodationType?: AccommodationType; page?: number } = {},
+  options: {
+    search?: string;
+    accommodationType?: AccommodationType;
+    status?: NodeStatus;
+    providerId?: string;
+    atollId?: string;
+    page?: number;
+  } = {},
 ): Promise<AdminAccommodationListResult> {
   await requireStaff();
   const page = Math.max(1, options.page ?? 1);
@@ -116,6 +124,13 @@ export async function getAccommodationsAdmin(
   let query = supabase.from("nodes").select(NODE_ACCOMMODATION_SELECT, { count: "exact" }).eq("node_type", "accommodation").order("title", { ascending: true });
   if (options.search?.trim()) query = query.ilike("title", `%${options.search.trim()}%`);
   if (options.accommodationType) query = query.eq("accommodations.accommodation_type", options.accommodationType);
+  if (options.status) query = query.eq("status", options.status);
+  if (options.providerId) query = query.eq("accommodations.operated_by_provider_id", options.providerId);
+  if (options.atollId) {
+    const nodeIds = await getAdminNodeIdsAtAtoll(options.atollId);
+    if (nodeIds.length === 0) return { items: [], total: 0, page, pageSize: PAGE_SIZE };
+    query = query.in("id", nodeIds);
+  }
 
   const { data, error, count } = await query.range(from, to).returns<NodeAccommodationRow[]>();
   if (error || !data) return { items: [], total: 0, page, pageSize: PAGE_SIZE };

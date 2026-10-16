@@ -1,6 +1,7 @@
 import "server-only";
 
 import { requireStaff } from "@/lib/admin/auth";
+import { getAdminNodeIdsAtAtoll } from "@/lib/admin/admin-location-filter";
 import type { NodeStatus } from "@/lib/admin/node-actions";
 import type { PackageItineraryComponentRole } from "@/lib/packages/types";
 import { createClient } from "@/lib/supabase/server";
@@ -91,7 +92,9 @@ export interface AdminPackageListResult {
   pageSize: number;
 }
 
-export async function getPackagesAdmin(options: { search?: string; page?: number } = {}): Promise<AdminPackageListResult> {
+export async function getPackagesAdmin(
+  options: { search?: string; status?: NodeStatus; providerId?: string; atollId?: string; page?: number } = {},
+): Promise<AdminPackageListResult> {
   await requireStaff();
   const page = Math.max(1, options.page ?? 1);
   const from = (page - 1) * PAGE_SIZE;
@@ -100,6 +103,13 @@ export async function getPackagesAdmin(options: { search?: string; page?: number
   const supabase = await createClient();
   let query = supabase.from("nodes").select(NODE_PACKAGE_SELECT, { count: "exact" }).eq("node_type", "package").order("title", { ascending: true });
   if (options.search?.trim()) query = query.ilike("title", `%${options.search.trim()}%`);
+  if (options.status) query = query.eq("status", options.status);
+  if (options.providerId) query = query.eq("packages.operated_by_provider_id", options.providerId);
+  if (options.atollId) {
+    const nodeIds = await getAdminNodeIdsAtAtoll(options.atollId);
+    if (nodeIds.length === 0) return { items: [], total: 0, page, pageSize: PAGE_SIZE };
+    query = query.in("id", nodeIds);
+  }
 
   const { data, error, count } = await query.range(from, to).returns<NodePackageRow[]>();
   if (error || !data) return { items: [], total: 0, page, pageSize: PAGE_SIZE };

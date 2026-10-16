@@ -115,7 +115,36 @@ export interface AdminTransferRouteListResult {
   pageSize: number;
 }
 
-export async function getTransferRoutesAdmin(options: { search?: string; page?: number } = {}): Promise<AdminTransferRouteListResult> {
+/** route_ids with at least one transfer_services row for this provider —
+ * transfer_routes itself has no provider column (a route can carry
+ * services from several providers), so "filter routes by provider" means
+ * "routes that have at least one service from this provider". */
+async function getRouteIdsForProvider(providerId: string): Promise<string[]> {
+  const supabase = await createClient();
+  const { data } = await supabase.from("transfer_services").select("route_id").eq("provider_id", providerId).returns<Array<{ route_id: string }>>();
+  return Array.from(new Set((data ?? []).map((row) => row.route_id)));
+}
+
+/** route_ids whose origin or destination island belongs to this atoll —
+ * transfer_routes stores origin/destination as direct location_id
+ * columns (not node_locations), so this resolves the atoll's island ids
+ * and matches either column against that set + the atoll itself. */
+async function getRouteIdsForAtoll(atollId: string): Promise<string[]> {
+  const supabase = await createClient();
+  const { data: islands } = await supabase.from("locations").select("id").eq("parent_id", atollId).returns<Array<{ id: string }>>();
+  const locationIds = [atollId, ...(islands ?? []).map((i) => i.id)];
+
+  const { data } = await supabase
+    .from("transfer_routes")
+    .select("id")
+    .or(`origin_location_id.in.(${locationIds.join(",")}),destination_location_id.in.(${locationIds.join(",")})`)
+    .returns<Array<{ id: string }>>();
+  return (data ?? []).map((row) => row.id);
+}
+
+export async function getTransferRoutesAdmin(
+  options: { search?: string; status?: NodeStatus; providerId?: string; atollId?: string; page?: number } = {},
+): Promise<AdminTransferRouteListResult> {
   await requireStaff();
   const page = Math.max(1, options.page ?? 1);
   const from = (page - 1) * PAGE_SIZE;
@@ -124,6 +153,16 @@ export async function getTransferRoutesAdmin(options: { search?: string; page?: 
   const supabase = await createClient();
   let query = supabase.from("nodes").select(NODE_TRANSFER_ROUTE_SELECT, { count: "exact" }).eq("node_type", "transfer_route").order("title", { ascending: true });
   if (options.search?.trim()) query = query.ilike("title", `%${options.search.trim()}%`);
+  if (options.status) query = query.eq("status", options.status);
+
+  const idFilters: string[][] = [];
+  if (options.providerId) idFilters.push(await getRouteIdsForProvider(options.providerId));
+  if (options.atollId) idFilters.push(await getRouteIdsForAtoll(options.atollId));
+  if (idFilters.length > 0) {
+    const intersected = idFilters.reduce((acc, cur) => acc.filter((id) => cur.includes(id)));
+    if (intersected.length === 0) return { items: [], total: 0, page, pageSize: PAGE_SIZE };
+    query = query.in("id", intersected);
+  }
 
   const { data, error, count } = await query.range(from, to).returns<NodeTransferRouteRow[]>();
   if (error || !data) return { items: [], total: 0, page, pageSize: PAGE_SIZE };

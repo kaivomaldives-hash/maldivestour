@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
+import { recordFailedAdminLogin } from "@/lib/admin/login-security";
 import { createClient } from "@/lib/supabase/client";
 
 /**
@@ -37,6 +38,10 @@ export function LoginForm() {
           const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
           if (signInError) {
             setError("Incorrect email or password.");
+            // Fire-and-forget: tracks the failure for the repeated-attempt
+            // alert (see login-security.ts) without delaying the error
+            // message the user sees.
+            void recordFailedAdminLogin(email);
             return;
           }
           router.replace("/admin");

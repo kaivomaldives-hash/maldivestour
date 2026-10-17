@@ -127,6 +127,11 @@ export async function deleteOrphanedNode(nodeId: string): Promise<void> {
   await supabase.from("nodes").delete().eq("id", nodeId);
 }
 
+export interface ReferencingPackage {
+  id: string;
+  title: string;
+}
+
 export interface NodeDeleteCheck {
   canDelete: boolean;
   bookingCount: number;
@@ -135,6 +140,11 @@ export interface NodeDeleteCheck {
    * node — e.g. an activity or accommodation used inside a package's
    * itinerary. */
   packageItineraryCount: number;
+  /** The distinct packages those itinerary rows belong to (id + title),
+   * deduplicated, so the delete dialog can name and link to them directly
+   * instead of just saying "N package itinerary items" and leaving staff
+   * to go hunting for which package(s) that means. */
+  referencingPackages: ReferencingPackage[];
 }
 
 /** Pre-flight check for a real (published-or-not) content delete, not a
@@ -154,16 +164,36 @@ export interface NodeDeleteCheck {
 export async function checkNodeDeletable(nodeId: string): Promise<NodeDeleteCheck> {
   await requireStaff();
   const supabase = await createClient();
-  const [{ count: bookingCount }, { count: reviewCount }, { count: packageItineraryCount }] = await Promise.all([
+  const [{ count: bookingCount }, { count: reviewCount }, { data: itineraryRows, count: packageItineraryCount }] = await Promise.all([
     supabase.from("bookings").select("id", { count: "exact", head: true }).eq("product_node_id", nodeId),
     supabase.from("reviews").select("id", { count: "exact", head: true }).eq("node_id", nodeId),
-    supabase.from("package_itinerary_items").select("id", { count: "exact", head: true }).eq("component_node_id", nodeId),
+    supabase
+      .from("package_itinerary_items")
+      .select("id, package_itinerary_stages!inner(package_id)", { count: "exact" })
+      .eq("component_node_id", nodeId)
+      .returns<Array<{ id: string; package_itinerary_stages: { package_id: string } | { package_id: string }[] }>>(),
   ]);
+
+  const packageIds = Array.from(
+    new Set(
+      (itineraryRows ?? []).flatMap((row) => {
+        const stage = Array.isArray(row.package_itinerary_stages) ? row.package_itinerary_stages[0] : row.package_itinerary_stages;
+        return stage ? [stage.package_id] : [];
+      }),
+    ),
+  );
+  let referencingPackages: ReferencingPackage[] = [];
+  if (packageIds.length > 0) {
+    const { data: packageNodes } = await supabase.from("nodes").select("id, title").in("id", packageIds).returns<ReferencingPackage[]>();
+    referencingPackages = packageNodes ?? [];
+  }
+
   return {
     canDelete: (bookingCount ?? 0) === 0 && (packageItineraryCount ?? 0) === 0,
     bookingCount: bookingCount ?? 0,
     reviewCount: reviewCount ?? 0,
     packageItineraryCount: packageItineraryCount ?? 0,
+    referencingPackages,
   };
 }
 

@@ -60,19 +60,32 @@ export function DeleteNodeButton({ nodeId, redirectTo, label = "Delete" }: { nod
           {check === null ? (
             <p className="text-sm text-neutral-500">Checking for related records…</p>
           ) : !check.canDelete ? (
-            <p className="text-sm text-red-600">
-              This can&rsquo;t be deleted —{" "}
-              {[
-                check.bookingCount > 0 ? `${check.bookingCount} existing booking${check.bookingCount === 1 ? "" : "s"}` : null,
-                check.packageItineraryCount > 0
-                  ? `used in ${check.packageItineraryCount} package itinerary item${check.packageItineraryCount === 1 ? "" : "s"}`
-                  : null,
-              ]
-                .filter(Boolean)
-                .join(" and ")}
-              . {check.packageItineraryCount > 0 ? "Remove it from that package's itinerary first, or " : ""}Unpublish it instead (set status to
-              draft or archived) if you want to hide it.
-            </p>
+            <div className="space-y-2 text-sm text-red-600">
+              <p>
+                This can&rsquo;t be deleted —{" "}
+                {[
+                  check.bookingCount > 0 ? `${check.bookingCount} existing booking${check.bookingCount === 1 ? "" : "s"}` : null,
+                  check.packageItineraryCount > 0
+                    ? `used in ${check.packageItineraryCount} package itinerary item${check.packageItineraryCount === 1 ? "" : "s"}`
+                    : null,
+                ]
+                  .filter(Boolean)
+                  .join(" and ")}
+                . {check.packageItineraryCount > 0 ? "Remove it from that package's itinerary first, or " : ""}Unpublish it instead (set status to
+                draft or archived) if you want to hide it.
+              </p>
+              {check.referencingPackages.length > 0 && (
+                <ul className="list-disc space-y-1 pl-5">
+                  {check.referencingPackages.map((p) => (
+                    <li key={p.id}>
+                      <a href={`/admin/packages/${p.id}`} target="_blank" rel="noreferrer" className="font-medium underline">
+                        {p.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           ) : (
             <p className="text-sm text-neutral-600">
               This permanently deletes the entry{check.reviewCount > 0 ? `, along with ${check.reviewCount} review${check.reviewCount === 1 ? "" : "s"}` : ""}

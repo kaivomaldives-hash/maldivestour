@@ -157,14 +157,30 @@ function main() {
     process.exit(1);
   }
 
-  const resolved = files.map((f) => ({
-    ...f,
+  const resolved = files.map((f) => {
     // Every manifest's relativePath is relative to RELEASE_DIR (the
     // extracted legacy site export) EXCEPT the owner's own directly
     // -uploaded photos (assets/uploads/...), which live in the repo
     // itself and are relative to ROOT instead.
-    localPath: f.relativePath.startsWith("assets/") ? path.join(ROOT, f.relativePath) : path.join(RELEASE_DIR, f.relativePath),
-  }));
+    const expectedPath = f.relativePath.startsWith("assets/") ? path.join(ROOT, f.relativePath) : path.join(RELEASE_DIR, f.relativePath);
+    let localPath = expectedPath;
+    if (!existsSync(localPath)) {
+      // WordPress export quirk affecting ~38 legacy files (confirmed by
+      // `file` magic-byte checks, e.g. images/activities/New folder/
+      // Manta-Ray-Snorkeling-in-the-Maldives): the on-disk file lost its
+      // extension while the manifest/media_assets.storage_path still
+      // expects one. Without this fallback those files are silently
+      // reported as "missing" forever and the DB rows that reference
+      // them point at Storage objects that were never uploaded (404/400
+      // on every public fetch). Fall back to the extensionless sibling
+      // so a re-run actually uploads them, keyed at the manifest's own
+      // storagePath/contentType, not the sibling's (missing) name.
+      const { ext } = path.parse(expectedPath);
+      const extensionless = ext ? expectedPath.slice(0, -ext.length) : null;
+      if (extensionless && existsSync(extensionless)) localPath = extensionless;
+    }
+    return { ...f, localPath };
+  });
   const missing = resolved.filter((f) => !existsSync(f.localPath));
   const present = resolved.filter((f) => existsSync(f.localPath));
   const totalBytes = present.reduce((sum, f) => sum + statSync(f.localPath).size, 0);

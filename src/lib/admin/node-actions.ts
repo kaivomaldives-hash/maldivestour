@@ -127,42 +127,92 @@ export async function deleteOrphanedNode(nodeId: string): Promise<void> {
   await supabase.from("nodes").delete().eq("id", nodeId);
 }
 
+export interface ReferencingPackage {
+  id: string;
+  title: string;
+}
+
 export interface NodeDeleteCheck {
   canDelete: boolean;
   bookingCount: number;
   reviewCount: number;
+  /** package_itinerary_items rows whose component_node_id points at this
+   * node — e.g. an activity or accommodation used inside a package's
+   * itinerary. */
+  packageItineraryCount: number;
+  /** The distinct packages those itinerary rows belong to (id + title),
+   * deduplicated, so the delete dialog can name and link to them directly
+   * instead of just saying "N package itinerary items" and leaving staff
+   * to go hunting for which package(s) that means. */
+  referencingPackages: ReferencingPackage[];
 }
 
 /** Pre-flight check for a real (published-or-not) content delete, not a
- * rollback. `bookings.product_node_id` has no `on delete cascade` (a
- * deliberate default-RESTRICT choice — see 20250101001000_booking.sql),
- * so Postgres itself already refuses to delete a node with existing
- * bookings; this surfaces that fact *before* the attempt so the UI can
+ * rollback. Two FK columns reference `nodes(id)` with no `on delete
+ * cascade` and no `on delete set null` (a deliberate default-RESTRICT
+ * choice): `bookings.product_node_id` (20250101001000_booking.sql) and
+ * `package_itinerary_items.component_node_id` (20250101000700_packages.sql)
+ * — e.g. an activity or accommodation used inside a package's itinerary.
+ * Postgres itself already refuses to delete a node either of those still
+ * reference; this surfaces that fact *before* the attempt so the UI can
  * show a clear reason instead of a raw constraint-violation error.
  * `reviews.node_id` DOES cascade, so a delete with reviews attached is
- * allowed but destructive — surfaced as a warning, not a block. */
+ * allowed but destructive — surfaced as a warning, not a block.
+ * `url_redirects.target_node_id` also lacks a cascade but IS nullable, so
+ * deleteNode() clears it rather than blocking on it — an old redirect
+ * shouldn't hold a real piece of content hostage. */
 export async function checkNodeDeletable(nodeId: string): Promise<NodeDeleteCheck> {
   await requireStaff();
   const supabase = await createClient();
-  const [{ count: bookingCount }, { count: reviewCount }] = await Promise.all([
+  const [{ count: bookingCount }, { count: reviewCount }, { data: itineraryRows, count: packageItineraryCount }] = await Promise.all([
     supabase.from("bookings").select("id", { count: "exact", head: true }).eq("product_node_id", nodeId),
     supabase.from("reviews").select("id", { count: "exact", head: true }).eq("node_id", nodeId),
+    supabase
+      .from("package_itinerary_items")
+      .select("id, package_itinerary_stages!inner(package_id)", { count: "exact" })
+      .eq("component_node_id", nodeId)
+      .returns<Array<{ id: string; package_itinerary_stages: { package_id: string } | { package_id: string }[] }>>(),
   ]);
-  return { canDelete: (bookingCount ?? 0) === 0, bookingCount: bookingCount ?? 0, reviewCount: reviewCount ?? 0 };
+
+  const packageIds = Array.from(
+    new Set(
+      (itineraryRows ?? []).flatMap((row) => {
+        const stage = Array.isArray(row.package_itinerary_stages) ? row.package_itinerary_stages[0] : row.package_itinerary_stages;
+        return stage ? [stage.package_id] : [];
+      }),
+    ),
+  );
+  let referencingPackages: ReferencingPackage[] = [];
+  if (packageIds.length > 0) {
+    const { data: packageNodes } = await supabase.from("nodes").select("id, title").in("id", packageIds).returns<ReferencingPackage[]>();
+    referencingPackages = packageNodes ?? [];
+  }
+
+  return {
+    canDelete: (bookingCount ?? 0) === 0 && (packageItineraryCount ?? 0) === 0,
+    bookingCount: bookingCount ?? 0,
+    reviewCount: reviewCount ?? 0,
+    packageItineraryCount: packageItineraryCount ?? 0,
+    referencingPackages,
+  };
 }
 
 /** Deletes a content node outright (not a rollback) — cascades to its
  * 1:1 type table, node_media, node_locations, node_categories, and
- * reviews (all `on delete cascade`). Never used for bookable entities
- * that still have bookings: checkNodeDeletable() should gate the UI
- * before this is ever called, and Postgres's own FK constraint is the
- * final backstop if it's called anyway. */
+ * reviews (all `on delete cascade`). First clears any `url_redirects`
+ * pointing at this node (that FK has no cascade but the column is
+ * nullable — see checkNodeDeletable()'s comment) so a stray old redirect
+ * never blocks a real delete. Never used for entities that still have
+ * bookings or a package itinerary reference: checkNodeDeletable() should
+ * gate the UI before this is ever called, and Postgres's own FK
+ * constraint is the final backstop if it's called anyway. */
 export async function deleteNode(nodeId: string): Promise<AdminActionResult> {
   await requireStaff();
   const supabase = await createClient();
+  await supabase.from("url_redirects").update({ target_node_id: null } as unknown as never).eq("target_node_id", nodeId);
   const { error } = await supabase.from("nodes").delete().eq("id", nodeId);
   if (error) {
-    if (error.code === "23503") return { ok: false, error: "This can't be deleted because other records still reference it (e.g. existing bookings)." };
+    if (error.code === "23503") return { ok: false, error: "This can't be deleted because other records still reference it (e.g. existing bookings or a package itinerary)." };
     return { ok: false, error: error.message };
   }
   return { ok: true };

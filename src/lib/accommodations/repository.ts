@@ -1,6 +1,8 @@
 import "server-only";
 
 import { cachedRead } from "@/lib/cache/cached-read";
+import { getContentSortSetting } from "@/lib/content-sort/repository";
+import type { ContentSortMode } from "@/lib/content-sort/types";
 import { getLocationSummariesByIds, getLocationSummaryById, getNodeAttributesByIds } from "@/lib/locations/repository";
 import type { LocationSummary } from "@/lib/locations/types";
 import { getHeroMediaByNodeIds, getMediaAssetsByIds, getMediaForNode } from "@/lib/media/repository";
@@ -36,6 +38,30 @@ import type {
 // embedded column doesn't restrict which `nodes` rows come back.
 const NODE_ACCOMMODATION_SELECT =
   "id, slug, title, summary, meta_title, meta_description, accommodations!inner(accommodation_type, star_rating, price_tier, room_count, all_inclusive, overwater_villas, check_in_time, check_out_time, currency, operated_by_provider_id, price_from, video_youtube_id)";
+
+/** Applies the admin-configured default sort order (content_sort_settings)
+ * — see the identical helper/comment in src/lib/packages/repository.ts. */
+function applySortMode<Q extends { order: (column: string, opts?: { ascending?: boolean; nullsFirst?: boolean }) => Q }>(
+  query: Q,
+  mode: ContentSortMode,
+  priceColumn: string | null,
+): Q {
+  switch (mode) {
+    case "price_asc":
+      return priceColumn ? query.order(priceColumn, { ascending: true, nullsFirst: false }) : query.order("title", { ascending: true });
+    case "price_desc":
+      return priceColumn ? query.order(priceColumn, { ascending: false, nullsFirst: false }) : query.order("title", { ascending: true });
+    case "rating_desc":
+      return query.order("rating_avg", { ascending: false, nullsFirst: false });
+    case "published_desc":
+      return query.order("published_at", { ascending: false, nullsFirst: false });
+    case "manual":
+      return query.order("sort_order", { ascending: true, nullsFirst: false }).order("title", { ascending: true });
+    case "title_asc":
+    default:
+      return query.order("title", { ascending: true });
+  }
+}
 
 type AccommodationFields = {
   accommodation_type: AccommodationType;
@@ -220,10 +246,10 @@ async function getAccommodationsUncached(
     query = query.eq("accommodations.overwater_villas", options.overwaterVillas);
   if (nodeIdFilter) query = query.in("id", nodeIdFilter);
 
-  const { data, error, count } = await query
-    .order("title", { ascending: true })
-    .range(from, to)
-    .returns<NodeAccommodationRow[]>();
+  const sortMode = await getContentSortSetting("accommodation");
+  query = applySortMode(query, sortMode, "accommodations.price_from");
+
+  const { data, error, count } = await query.range(from, to).returns<NodeAccommodationRow[]>();
 
   if (error || !data) return { items: [], total: 0, page, pageSize };
 

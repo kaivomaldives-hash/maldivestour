@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const country = await getCountry();
   if (!country) return {};
 
-  const title = country.metaTitle ?? `${country.title} Travel Guide | MTG`;
+  const title = country.metaTitle ?? country.title;
   const description = country.metaDescription ?? country.summary ?? undefined;
 
   return {

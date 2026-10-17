@@ -116,10 +116,33 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
 
       <WhereToStaySection nearby={nearbyStays} islandTitle={primaryLocation?.title ?? null} atollTitle={atoll?.title ?? null} />
 
+      {activity.locations.length > 1 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Available with pickup from</h2>
+          <p className="mt-1 text-sm text-neutral-600">This trip offers pickup from any of these resorts and islands.</p>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {activity.locations.map((location) => (
+              <li key={location.id}>
+                <a
+                  href={location.locationType === "atoll" ? `/maldives/atolls/${location.slug}/` : `/maldives/islands/${location.slug}/`}
+                  className="inline-block rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-300 hover:bg-maldives-50 hover:text-maldives-700"
+                >
+                  {location.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {activity.isBookable && (
         <section className="mt-10 rounded-2xl border border-neutral-200 p-6">
           <h2 className="text-xl font-semibold text-ocean-900">{bookingCta("activity").toggleLabel}</h2>
-          <p className="mt-1 text-sm text-neutral-600">Tell us your dates and group size and we&rsquo;ll follow up on availability.</p>
+          <p className="mt-1 text-sm text-neutral-600">
+            {activity.locations.length > 1
+              ? "Tell us your pickup location, dates, and group size and we’ll follow up on availability."
+              : "Tell us your dates and group size and we’ll follow up on availability."}
+          </p>
           <div className="mt-4">
             <NodeInquiryToggle
               productNodeId={activity.id}
@@ -127,6 +150,7 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
               source="activity"
               toggleLabel={bookingCta("activity").toggleLabel}
               submitLabel={bookingCta("activity").submitLabel}
+              requireDestination={activity.locations.length > 1}
             />
           </div>
         </section>

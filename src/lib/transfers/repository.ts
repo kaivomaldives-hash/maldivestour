@@ -3,6 +3,8 @@ import "server-only";
 import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { cachedRead } from "@/lib/cache/cached-read";
 import { getCategoryBySlug, getNodeIdsByCategory } from "@/lib/categories/repository";
+import { getContentSortSetting } from "@/lib/content-sort/repository";
+import type { ContentSortMode } from "@/lib/content-sort/types";
 import { getLocationSummariesByIds } from "@/lib/locations/repository";
 import { getHeroMediaByNodeIds } from "@/lib/media/repository";
 import type { MediaAsset } from "@/lib/media/types";
@@ -47,6 +49,27 @@ import type {
 
 const NODE_TRANSFER_ROUTE_SELECT =
   "id, slug, title, summary, meta_title, meta_description, transfer_routes!inner(origin_location_id, destination_location_id, distance_km, typical_duration_minutes)";
+
+/** Applies the admin-configured default sort order (content_sort_settings)
+ * — see the identical helper/comment in src/lib/packages/repository.ts.
+ * transfer_routes has no single price column of its own (see
+ * src/lib/content-sort/types.ts's PRICE_SORT_SUPPORTED), so price_asc/desc
+ * fall back to title here, same as passing priceColumn: null elsewhere. */
+function applySortMode<Q extends { order: (column: string, opts?: { ascending?: boolean; nullsFirst?: boolean }) => Q }>(query: Q, mode: ContentSortMode): Q {
+  switch (mode) {
+    case "rating_desc":
+      return query.order("rating_avg", { ascending: false, nullsFirst: false });
+    case "published_desc":
+      return query.order("published_at", { ascending: false, nullsFirst: false });
+    case "manual":
+      return query.order("sort_order", { ascending: true, nullsFirst: false }).order("title", { ascending: true });
+    case "price_asc":
+    case "price_desc":
+    case "title_asc":
+    default:
+      return query.order("title", { ascending: true });
+  }
+}
 
 type TransferRouteFields = {
   origin_location_id: string;
@@ -360,7 +383,10 @@ async function getTransferRoutesUncached(options: GetTransferRoutesOptions = {})
     query = query.range(from, to);
   }
 
-  const { data, error, count } = await query.order("title", { ascending: true }).returns<NodeTransferRouteRow[]>();
+  const sortMode = await getContentSortSetting("transfer_route");
+  query = applySortMode(query, sortMode);
+
+  const { data, error, count } = await query.returns<NodeTransferRouteRow[]>();
 
   if (error || !data) return { items: [], total: 0, page, pageSize };
 

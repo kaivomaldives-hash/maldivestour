@@ -13,7 +13,7 @@ import { FaqSection } from "@/components/ui/faq-section";
 import { Pagination } from "@/components/ui/pagination";
 import { PageHero } from "@/components/ui/page-hero";
 import { getActivities, searchActivities } from "@/lib/activities/repository";
-import { activityHref, hasDedicatedRoute, type ActivityCategory, type ActivityDifficulty } from "@/lib/activities/types";
+import { activityHref, type ActivityCategory, type ActivityDifficulty } from "@/lib/activities/types";
 import { getAttractions } from "@/lib/attractions/repository";
 import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
 import { asset } from "@/lib/packages/category-images";
@@ -45,7 +45,7 @@ const FAQS = [
   },
   {
     question: "Are fishing, diving and surfing activities listed here too?",
-    answer: "They have their own dedicated pages — see Fishing, Diving and Surfing — since each has enough real activities to warrant its own hub. Every other category (excursions, watersports, island hopping, spa, culture) is listed directly here.",
+    answer: "Yes — every activity, including fishing, diving and surfing, is listed here. Those three also have their own dedicated hub — see Fishing, Diving and Surfing — with extra detail (dive sites, fish species and more) beyond what's shown on this page.",
   },
   {
     question: "What is there to see and do in Malé?",
@@ -85,10 +85,13 @@ const CATEGORY_LABEL: Record<ActivityCategory, string> = {
   culture: "Culture",
 };
 
-// Categories with their own dedicated vertical (fishing, as of Task 7) get
-// a direct link to that vertical's landing page below, not a `?category=`
-// filter chip here — that dedicated page is their real home.
-const CATEGORIES = (Object.keys(CATEGORY_LABEL) as ActivityCategory[]).filter((c) => !hasDedicatedRoute(c));
+// Every category is listed here, including fishing/diving/surfing --
+// those three *also* get their own dedicated hub (see
+// ACTIVITY_CATEGORY_SEGMENT), but a fishing/diving/surfing activity is
+// still a real activity and belongs in the general listing too. Cards
+// for those three still link to their dedicated detail page (see
+// activityHref()), so there's no duplicate URL -- just dual listing.
+const CATEGORIES = Object.keys(CATEGORY_LABEL) as ActivityCategory[];
 const PAGE_SIZE = 24;
 
 export interface ActivityDirectorySearchParams {
@@ -160,14 +163,13 @@ export async function ActivityDirectoryPage({
 
   const results = isSearching
     ? {
-        items: (await searchActivities(query, { limit: 100 })).filter((a) => (category ? a.activityCategory === category : CATEGORIES.includes(a.activityCategory))),
+        items: (await searchActivities(query, { limit: 100 })).filter((a) => !category || a.activityCategory === category),
         total: 0,
         page: 1,
         pageSize: 100,
       }
     : await getActivities({
         category,
-        categories: category ? undefined : CATEGORIES,
         page,
         pageSize: PAGE_SIZE,
         atollId: island ? undefined : atoll?.id,
@@ -217,13 +219,25 @@ export async function ActivityDirectoryPage({
         {!(atoll || island) && !isSearching && !category && (
           <section className="prose-sm max-w-none text-sm text-neutral-700">
             <p>
-              Beyond diving, fishing and surfing (each with their own dedicated page), the Maldives offers a real range of things to
-              do — sandbank picnics, dolphin cruises, snorkeling trips, island hopping tours, spa treatments and guided{" "}
+              The Maldives offers a real range of things to do — diving, fishing and surfing trips, sandbank picnics, dolphin
+              cruises, snorkeling trips, island hopping tours, spa treatments and guided{" "}
               <Link href="/maldives/male-city-tour/" className="text-maldives-600 hover:underline">
                 city tours of Malé
               </Link>
               . Every activity below is a real, individually sourced experience from a resort or independent operator, not a generic
-              stock listing.
+              stock listing. Diving, fishing and surfing also have their own dedicated hub with extra detail — see{" "}
+              <Link href="/maldives/diving/" className="text-maldives-600 hover:underline">
+                Diving
+              </Link>
+              ,{" "}
+              <Link href="/maldives/fishing/" className="text-maldives-600 hover:underline">
+                Fishing
+              </Link>{" "}
+              and{" "}
+              <Link href="/maldives/surfing/" className="text-maldives-600 hover:underline">
+                Surfing
+              </Link>
+              .
             </p>
             <p>
               Activities are things you can book and do; for real places worth visiting or seeing — mosques, museums, beaches, natural

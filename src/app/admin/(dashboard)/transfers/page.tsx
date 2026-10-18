@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { AdminSearchField } from "@/components/admin/admin-search-field";
 import { AdminTableHead } from "@/components/admin/admin-table-head";
+import { BulkApplyRouteMediaForm } from "@/components/admin/bulk-apply-route-media-form";
 import { ContentSortForm } from "@/components/admin/content-sort-form";
 import { DeleteNodeButton } from "@/components/admin/delete-node-button";
 import { SortOrderInput } from "@/components/admin/sort-order-input";
@@ -12,6 +13,7 @@ import { Pagination } from "@/components/ui/pagination";
 import { NODE_STATUSES, type NodeStatus } from "@/lib/admin/node-status";
 import { getProviderOptions } from "@/lib/admin/providers-repository";
 import { getTransferRoutesAdmin } from "@/lib/admin/transfers-repository";
+import { getTransferRoutesWithMedia } from "@/lib/admin/transfer-media-bulk-actions";
 import { getContentSortSetting } from "@/lib/content-sort/repository";
 import { getAtolls } from "@/lib/locations/repository";
 
@@ -29,11 +31,12 @@ export default async function AdminTransfersPage({
   const sp = await searchParams;
   const page = Math.max(1, Number(sp.page) || 1);
   const status = NODE_STATUSES.includes(sp.status as NodeStatus) ? (sp.status as NodeStatus) : undefined;
-  const [results, providers, atolls, sortMode] = await Promise.all([
+  const [results, providers, atolls, sortMode, routesWithMedia] = await Promise.all([
     getTransferRoutesAdmin({ search: sp.q, status, providerId: sp.provider || undefined, atollId: sp.atoll || undefined, page }),
     getProviderOptions(),
     getAtolls(),
     getContentSortSetting("transfer_route"),
+    getTransferRoutesWithMedia(),
   ]);
   const totalPages = Math.max(1, Math.ceil(results.total / results.pageSize));
 
@@ -60,6 +63,8 @@ export default async function AdminTransfersPage({
       <div className="mt-4">
         <ContentSortForm nodeType="transfer_route" currentMode={sortMode} />
       </div>
+
+      <BulkApplyRouteMediaForm routesWithMedia={routesWithMedia} />
 
       <form method="get" className="mt-4 flex flex-wrap items-end gap-3">
         <AdminSearchField label="Search" name="q" defaultValue={sp.q} placeholder="Search by title" className="w-64" />

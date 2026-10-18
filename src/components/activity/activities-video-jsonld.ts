@@ -21,6 +21,9 @@ export const VIDEOS = [
   },
 ] as const;
 
+// See the identical note in fishing-video-jsonld.ts.
+const UPLOAD_DATE = "2026-10-13T00:00:00Z";
+
 export function activitiesVideoJsonLd() {
   return {
     "@context": "https://schema.org",
@@ -34,6 +37,7 @@ export function activitiesVideoJsonLd() {
         description: `${video.description} Recovered from Maldives Tour Guide's own legacy content.`,
         embedUrl: `https://www.youtube.com/embed/${video.id}`,
         thumbnailUrl: [`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`],
+        uploadDate: UPLOAD_DATE,
       },
     })),
   };

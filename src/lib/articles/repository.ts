@@ -35,9 +35,9 @@ import type { ArticleDetail, ArticleSummary, GetArticlesOptions, PaginatedResult
  */
 
 const NODE_ARTICLE_SELECT =
-  "id, slug, title, summary, meta_title, meta_description, published_at, articles!inner(body, reading_time_minutes)";
+  "id, slug, title, summary, meta_title, meta_description, published_at, articles!inner(body, reading_time_minutes, video_youtube_id)";
 
-type ArticleFields = { body: string; reading_time_minutes: number | null };
+type ArticleFields = { body: string; reading_time_minutes: number | null; video_youtube_id: string | null };
 
 type NodeArticleRow = {
   id: string;
@@ -62,6 +62,7 @@ interface BareArticle {
   publishedAt: string | null;
   body: string;
   readingTimeMinutes: number | null;
+  videoYoutubeId: string | null;
 }
 
 function bareArticleOf(row: NodeArticleRow): BareArticle | null {
@@ -78,6 +79,7 @@ function bareArticleOf(row: NodeArticleRow): BareArticle | null {
     publishedAt: row.published_at,
     body: a.body,
     readingTimeMinutes: a.reading_time_minutes,
+    videoYoutubeId: a.video_youtube_id,
   };
 }
 
@@ -209,6 +211,7 @@ async function getArticleBySlugUncached(slug: string): Promise<ArticleDetail | n
     metaTitle: bare.metaTitle,
     metaDescription: bare.metaDescription,
     bodyHtml: resolveStorageImageSrcs(bare.body),
+    videoYoutubeId: bare.videoYoutubeId,
     relatedLocations,
     relatedEntities: relatedContent.relatedEntities,
     relatedArticles: relatedContent.relatedArticles,
@@ -279,6 +282,7 @@ async function getTranslatedArticleBySlugUncached(locale: Locale, slug: string):
     metaTitle: translation.metaTitle,
     metaDescription: translation.metaDescription,
     bodyHtml: resolveStorageImageSrcs(translation.bodyHtml),
+    videoYoutubeId: bare.videoYoutubeId,
     relatedLocations,
     relatedEntities: relatedContent.relatedEntities,
     relatedArticles,

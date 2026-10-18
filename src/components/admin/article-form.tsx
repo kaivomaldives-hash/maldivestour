@@ -17,6 +17,7 @@ import type { NodeCoreInput } from "@/lib/admin/node-actions";
 import { setNodeCategories } from "@/lib/admin/node-relations-actions";
 import type { CategoryOption } from "@/lib/admin/node-relations-repository";
 import type { NodeMediaItem } from "@/lib/media/types";
+import { extractYoutubeId } from "@/lib/youtube";
 
 export interface ArticleFormInitial {
   id: string;
@@ -131,11 +132,11 @@ export function ArticleForm({ initial, categoryOptions }: { initial?: ArticleFor
           />
         </label>
         <label className="block text-sm">
-          <span className="mb-1 block font-medium text-neutral-700">YouTube video ID</span>
+          <span className="mb-1 block font-medium text-neutral-700">YouTube video ID or URL</span>
           <input
             value={fields.videoYoutubeId ?? ""}
-            onChange={(e) => setFields((f) => ({ ...f, videoYoutubeId: e.target.value || null }))}
-            placeholder="e.g. CZGxcfCXJz0"
+            onChange={(e) => setFields((f) => ({ ...f, videoYoutubeId: e.target.value ? extractYoutubeId(e.target.value) ?? e.target.value : null }))}
+            placeholder="e.g. CZGxcfCXJz0 or a youtube.com/watch?v= link"
             className="w-full max-w-xs rounded-xl border border-neutral-300 px-3 py-2 text-sm"
           />
         </label>

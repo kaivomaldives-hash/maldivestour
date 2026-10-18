@@ -1,5 +1,8 @@
+import { extractYoutubeId } from "@/lib/youtube";
+
 export function VideoSection({ youtubeId, accommodationTitle }: { youtubeId: string | null; accommodationTitle: string }) {
-  if (!youtubeId) return null;
+  const id = youtubeId ? extractYoutubeId(youtubeId) : null;
+  if (!id) return null;
 
   return (
     <section className="mt-10">
@@ -7,7 +10,7 @@ export function VideoSection({ youtubeId, accommodationTitle }: { youtubeId: str
       <div className="mt-4 aspect-video w-full overflow-hidden rounded-2xl bg-neutral-100">
         <iframe
           className="h-full w-full"
-          src={`https://www.youtube.com/embed/${youtubeId}`}
+          src={`https://www.youtube.com/embed/${id}`}
           title={`${accommodationTitle} — video`}
           loading="lazy"
           allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

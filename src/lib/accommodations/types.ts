@@ -53,6 +53,10 @@ export interface AccommodationDetail extends AccommodationSummary {
   currency: string | null;
   metaTitle: string | null;
   metaDescription: string | null;
+  /** nodes.published_at — used as the video's structured-data uploadDate
+   * (the real date this property went live on the site), since the video's
+   * actual YouTube upload date isn't available without a Data API key. */
+  publishedAt: string | null;
   provider: ProviderSummary | null;
   atoll: LocationSummary | null;
   isBookable: boolean;

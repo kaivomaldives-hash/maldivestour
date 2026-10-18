@@ -18,6 +18,7 @@ import type { AdminItineraryStage, PackageFieldsAdmin } from "@/lib/admin/packag
 import { createPackage, updatePackage } from "@/lib/admin/packages-actions";
 import type { NodeMediaItem } from "@/lib/media/types";
 import type { ProviderOption } from "@/lib/admin/providers-repository";
+import { extractYoutubeId } from "@/lib/youtube";
 
 export interface PackageFormInitial {
   id: string;
@@ -180,11 +181,11 @@ export function PackageForm({
           </label>
 
           <label className="block text-sm">
-            <span className="mb-1 block font-medium text-neutral-700">YouTube video ID</span>
+            <span className="mb-1 block font-medium text-neutral-700">YouTube video ID or URL</span>
             <input
               value={fields.videoYoutubeId ?? ""}
-              onChange={(e) => setFields((f) => ({ ...f, videoYoutubeId: e.target.value || null }))}
-              placeholder="e.g. CZGxcfCXJz0"
+              onChange={(e) => setFields((f) => ({ ...f, videoYoutubeId: e.target.value ? extractYoutubeId(e.target.value) ?? e.target.value : null }))}
+              placeholder="e.g. CZGxcfCXJz0 or a youtube.com/watch?v= link"
               className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm"
             />
           </label>

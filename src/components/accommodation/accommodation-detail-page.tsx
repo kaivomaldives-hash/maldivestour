@@ -50,7 +50,7 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
     getReviewsForNode(accommodation.id),
   ]);
 
-  const videoJsonLd = accommodationVideoJsonLd(accommodation.videoYoutubeId, accommodation.title, accommodation.summary);
+  const videoJsonLd = accommodationVideoJsonLd(accommodation.videoYoutubeId, accommodation.title, accommodation.summary, accommodation.publishedAt);
   const breadcrumbs = [
     { label: "Maldives", href: "/maldives/" },
     { label: `${TYPE_LABEL[type]}s`, href: `/maldives/${segment}/` },

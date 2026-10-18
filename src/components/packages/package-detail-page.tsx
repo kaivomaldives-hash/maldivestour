@@ -16,6 +16,7 @@ import { getRelatedPackageViews, getPackageViewBySlug } from "@/lib/packages/vie
 import { PACKAGE_CATEGORY_TITLE } from "@/lib/packages/view-types";
 import type { PackageView } from "@/lib/packages/view-types";
 import { breadcrumbJsonLd, canonicalUrl, getSiteUrl, safeJsonLdStringify } from "@/lib/seo/site";
+import { extractYoutubeId } from "@/lib/youtube";
 
 const WHATSAPP_NUMBER = "9607794332";
 
@@ -89,6 +90,7 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
   if (!pkg) notFound();
 
   const related = await getRelatedPackageViews(pkg, 6);
+  const youtubeId = pkg.youtubeId ? extractYoutubeId(pkg.youtubeId) : null;
 
   return (
     <main>
@@ -215,13 +217,13 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
         )}
 
         {/* Video */}
-        {pkg.youtubeId && (
+        {youtubeId && (
           <section className="mt-8">
             <h2 className="text-xl font-semibold text-ocean-900">Video</h2>
             <div className="mt-3 aspect-video w-full overflow-hidden rounded-2xl bg-neutral-100">
               <iframe
                 className="h-full w-full"
-                src={`https://www.youtube.com/embed/${pkg.youtubeId}`}
+                src={`https://www.youtube.com/embed/${youtubeId}`}
                 title={pkg.title}
                 loading="lazy"
                 allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

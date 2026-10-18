@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ArticleVideoSection } from "@/components/articles/article-video-section";
 import { RegisterArticleLocaleLinks } from "@/components/i18n/article-locale-links-context";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
@@ -131,7 +132,9 @@ export default async function LocaleArticleDetailPage({ params }: { params: Prom
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_280px]">
+        <ArticleVideoSection youtubeId={article.videoYoutubeId} articleTitle={article.title} />
+
+        <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_280px]">
           <article
             className="
               max-w-none text-neutral-800
@@ -147,7 +150,6 @@ export default async function LocaleArticleDetailPage({ params }: { params: Prom
               [&_table]:mt-4 [&_table]:w-full [&_table]:border-collapse [&_table]:text-sm
               [&_td]:border [&_td]:border-neutral-200 [&_td]:p-2
               [&_a]:text-maldives-600 [&_a]:underline
-              [&_[data-youtube-id]]:relative [&_[data-youtube-id]]:mt-6 [&_[data-youtube-id]]:aspect-video [&_[data-youtube-id]]:overflow-hidden [&_[data-youtube-id]]:rounded-2xl [&_[data-youtube-id]]:bg-neutral-100
             "
             dangerouslySetInnerHTML={{ __html: article.bodyHtml }}
           />

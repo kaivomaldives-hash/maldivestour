@@ -44,6 +44,11 @@ export interface ArticleDetail extends ArticleSummary {
    * resolveStorageImageSrcs in src/lib/media/repository.ts) — safe to
    * render directly, never a bare storage_path. */
   bodyHtml: string;
+  /** Bare YouTube video id (e.g. "CZGxcfCXJz0"), never a full URL — see
+   * media/types.ts's youtubeId convention. Null when the writer hasn't set
+   * one. Not language-dependent, so a translated page reuses the same
+   * value as the canonical English article. */
+  videoYoutubeId: string | null;
   /** Real islands/atolls the article's content is actually about, tagged
    * at migration time via token-overlap matching against the live
    * catalogue (Task 14) — never fabricated. Empty when nothing matched. */

@@ -89,13 +89,6 @@ const CATEGORY_LABEL: Record<ActivityCategory, string> = {
 // a direct link to that vertical's landing page below, not a `?category=`
 // filter chip here — that dedicated page is their real home.
 const CATEGORIES = (Object.keys(CATEGORY_LABEL) as ActivityCategory[]).filter((c) => !hasDedicatedRoute(c));
-// The inverse set — passed as excludeCategories so this page's own
-// "every category without a dedicated vertical" unfiltered view
-// doesn't also pull in fishing/diving/surfing activities (a real bug:
-// getActivities only filters by category when one is explicitly
-// passed, so leaving this unset here meant browsing with no `?
-// category=` silently included every dedicated-route activity too).
-const DEDICATED_ROUTE_CATEGORIES = (Object.keys(CATEGORY_LABEL) as ActivityCategory[]).filter(hasDedicatedRoute);
 const PAGE_SIZE = 24;
 
 export interface ActivityDirectorySearchParams {
@@ -167,16 +160,14 @@ export async function ActivityDirectoryPage({
 
   const results = isSearching
     ? {
-        items: (await searchActivities(query, { limit: 100 })).filter((a) =>
-          category ? a.activityCategory === category : !DEDICATED_ROUTE_CATEGORIES.includes(a.activityCategory),
-        ),
+        items: (await searchActivities(query, { limit: 100 })).filter((a) => (category ? a.activityCategory === category : CATEGORIES.includes(a.activityCategory))),
         total: 0,
         page: 1,
         pageSize: 100,
       }
     : await getActivities({
         category,
-        excludeCategories: DEDICATED_ROUTE_CATEGORIES,
+        categories: category ? undefined : CATEGORIES,
         page,
         pageSize: PAGE_SIZE,
         atollId: island ? undefined : atoll?.id,

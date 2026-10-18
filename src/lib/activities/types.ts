@@ -82,13 +82,18 @@ export interface PaginatedResult<T> {
 
 export interface ActivityFilters {
   category?: ActivityCategory;
-  /** Categories to exclude entirely — used by the generic /maldives/
-   * activities/ directory to keep fishing/diving/surfing off its
-   * "every other category" page when no specific category filter is
-   * active (those three have their own dedicated hub). Ignored when
-   * `category` is also set, since a single positive filter already
-   * narrows to one category. */
-  excludeCategories?: ActivityCategory[];
+  /** Restricts to exactly these categories — used by the generic
+   * /maldives/activities/ directory to keep fishing/diving/surfing off
+   * its "every other category" page when no specific `category` filter
+   * is active (those three have their own dedicated hub). A positive
+   * allow-list rather than an exclude-list deliberately: a negated
+   * filter on this embedded (!inner-joined) column returned zero rows
+   * for every category, not just the excluded ones — a PostgREST/
+   * embedded-filter quirk, confirmed against two different negation
+   * forms. `.in()` is just as non-negated as the `.eq()` single-
+   * category case already uses successfully, so it's not exposed to
+   * the same issue. Ignored when `category` is also set. */
+  categories?: ActivityCategory[];
   atollId?: string;
   locationId?: string;
   providerId?: string;

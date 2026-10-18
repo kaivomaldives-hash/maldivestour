@@ -269,9 +269,7 @@ async function getActivitiesUncached(options: GetActivitiesOptions = {}): Promis
     .eq("status", "published");
 
   if (options.category) query = query.eq("activities.activity_category", options.category);
-  else if (options.excludeCategories && options.excludeCategories.length > 0) {
-    query = query.not("activities.activity_category", "in", `(${options.excludeCategories.join(",")})`);
-  }
+  else if (options.categories) query = query.in("activities.activity_category", options.categories);
   if (options.providerId) query = query.eq("activities.operated_by_provider_id", options.providerId);
   if (options.difficulty) query = query.eq("activities.difficulty", options.difficulty);
   if (options.minDurationMinutes !== undefined) query = query.gte("activities.duration_minutes", options.minDurationMinutes);
@@ -287,6 +285,10 @@ async function getActivitiesUncached(options: GetActivitiesOptions = {}): Promis
 
   const { data, error, count } = await query.range(from, to).returns<NodeActivityRow[]>();
 
+  // Was a silent `if (error) return empty` with no logging at all --
+  // the exact reason two different category-filter approaches each
+  // quietly zeroed this page out was invisible until now. Keep this.
+  if (error) console.error("[activities] getActivitiesUncached query failed:", error.message, error.details ?? "");
   if (error || !data) return { items: [], total: 0, page, pageSize };
 
   const bares = data.map(bareActivityOf).filter((b): b is BareActivity => b !== null);

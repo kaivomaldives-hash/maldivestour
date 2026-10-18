@@ -12,13 +12,13 @@ const config: TransferCategoryConfig = {
   eyebrow: "Local islands",
   h1: "Maldives Island Transfers",
   intro:
-    "Local Maldivian islands such as Malé and Maafushi are reached from Velana International Airport by public ferry or a faster private speedboat — a budget-friendly way to experience the Maldives outside a private resort.",
+    "Local Maldivian islands such as Male and Maafushi are reached from Velana International Airport by public ferry or a faster private speedboat — a budget-friendly way to experience the Maldives outside a private resort.",
   metaTitle: "Maldives Island Transfers | Airport to Local Islands",
   metaDescription: "Real Maldives local-island transfer routes from Velana International Airport — public ferry and speedboat options and prices.",
   faqs: [
     {
       question: "How do I get from the airport to a local island?",
-      answer: "Local islands near Malé are reached by government ferry (the cheapest option) or a private speedboat operator — see the real routes and prices below for each island.",
+      answer: "Local islands near Male are reached by government ferry (the cheapest option) or a private speedboat operator — see the real routes and prices below for each island.",
     },
     {
       question: "Are local-island transfers cheaper than resort transfers?",

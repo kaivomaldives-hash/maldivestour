@@ -193,7 +193,7 @@ const EN: UiStrings = {
   },
   maldivesHub: {
     heroEyebrow: "Maldives Tour Guide",
-    introPrefix: "The Maldives is a nation of coral atolls in the Indian Ocean, made up of the capital Malé, a scattering of resort islands, and ",
+    introPrefix: "The Maldives is a nation of coral atolls in the Indian Ocean, made up of the capital Male, a scattering of resort islands, and ",
     introMiddle: " inhabited local islands spread across ",
     introSuffix:
       " administrative atolls. Most travellers stay in one of two very different ways: a private resort island — one island, one property, all-inclusive — or a local island, where guesthouses sit inside a real Maldivian community alongside its mosque, school and harbour. Both give access to the same reefs, lagoons and marine life; what differs is the kind of trip. Everything below — atolls, islands, stays, activities, transfers, packages and travel guides — links back to the same real MTG catalogue, so wherever you start, you can get to everything else.",
@@ -304,7 +304,7 @@ const DE: UiStrings = {
   maldivesHub: {
     heroEyebrow: "Malediven Reiseführer",
     introPrefix:
-      "Die Malediven sind eine Nation aus Koralleninseln im Indischen Ozean, bestehend aus der Hauptstadt Malé, einer Reihe von Resortinseln und ",
+      "Die Malediven sind eine Nation aus Koralleninseln im Indischen Ozean, bestehend aus der Hauptstadt Male, einer Reihe von Resortinseln und ",
     introMiddle: " bewohnten Inseln, verteilt auf ",
     introSuffix:
       " Verwaltungsatolle. Die meisten Reisenden wählen zwischen zwei sehr unterschiedlichen Reisearten: einer privaten Resortinsel — eine Insel, eine Unterkunft, All-inclusive — oder einer bewohnten Insel, auf der Pensionen inmitten einer echten maledivischen Gemeinschaft liegen, mit Moschee, Schule und Hafen. Beide bieten Zugang zu denselben Riffen, Lagunen und derselben Unterwasserwelt — der Unterschied liegt in der Art der Reise. Alles Folgende — Atolle, Inseln, Unterkünfte, Aktivitäten, Transfer, Reisepakete und Reiseführer — führt zurück zum selben echten MTG-Katalog, sodass Sie von jedem Startpunkt aus alles Weitere erreichen.",
@@ -414,7 +414,7 @@ const ES: UiStrings = {
   },
   maldivesHub: {
     heroEyebrow: "Guía de Viaje a Maldivas",
-    introPrefix: "Maldivas es una nación de atolones de coral en el Océano Índico, formada por la capital Malé, un conjunto de islas resort y ",
+    introPrefix: "Maldivas es una nación de atolones de coral en el Océano Índico, formada por la capital Male, un conjunto de islas resort y ",
     introMiddle: " islas habitadas repartidas en ",
     introSuffix:
       " atolones administrativos. La mayoría de los viajeros se alojan de dos formas muy distintas: una isla resort privada — una isla, una propiedad, todo incluido — o una isla local, donde las pensiones conviven dentro de una comunidad maldiva real junto a su mezquita, escuela y puerto. Ambas opciones dan acceso a los mismos arrecifes, lagunas y vida marina; lo que cambia es el tipo de viaje. Todo lo que sigue — atolones, islas, alojamientos, actividades, traslados, paquetes y guías de viaje — enlaza con el mismo catálogo real de MTG, así que sin importar por dónde empieces, puedes llegar a todo lo demás.",
@@ -524,7 +524,7 @@ const IT: UiStrings = {
   },
   maldivesHub: {
     heroEyebrow: "Guida di Viaggio alle Maldive",
-    introPrefix: "Le Maldive sono una nazione di atolli corallini nell'Oceano Indiano, formata dalla capitale Malé, un insieme di isole resort e ",
+    introPrefix: "Le Maldive sono una nazione di atolli corallini nell'Oceano Indiano, formata dalla capitale Male, un insieme di isole resort e ",
     introMiddle: " isole abitate distribuite su ",
     introSuffix:
       " atolli amministrativi. La maggior parte dei viaggiatori sceglie tra due modi molto diversi di soggiornare: un'isola resort privata — un'isola, una struttura, tutto incluso — oppure un'isola locale, dove le pensioni convivono all'interno di una vera comunità maldiviana, con la sua moschea, la scuola e il porto. Entrambe offrono accesso agli stessi reef, lagune e vita marina; a cambiare è il tipo di viaggio. Tutto quanto segue — atolli, isole, alloggi, attività, trasferimenti, pacchetti e guide di viaggio — rimanda allo stesso catalogo reale di MTG, così da qualunque punto si parta si può arrivare a tutto il resto.",

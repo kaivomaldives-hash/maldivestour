@@ -206,7 +206,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
     h1: "Marlin Fishing in the Maldives",
     whyMaldives: [
       "Marlin are caught trolling further offshore, beyond the atoll rim, on the same big game runs that target tuna and wahoo — a longer-range trip, which is why it's best suited to a full-day charter rather than a half-day.",
-      "A real marlin-tagged charter, Marlin & Big Game Fishing Charter, already operates from Hulhumalé with Knight At Sea — see Available Charters below alongside our own Emperor full-day charter.",
+      "A real marlin-tagged charter, Marlin & Big Game Fishing Charter, already operates from Hulhumale with Knight At Sea — see Available Charters below alongside our own Emperor full-day charter.",
     ],
     techniques: [{ label: "Trolling / Big Game Fishing", href: "/maldives/fishing/big-game-fishing/" }],
     // Full-day only, per the site owner's instruction — marlin is a
@@ -217,7 +217,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
       {
         question: "Is there a dedicated marlin charter?",
         answer:
-          "Marlin & Big Game Fishing Charter, operated by Knight At Sea out of Hulhumalé, is a real charter already on record tagged for big game/marlin fishing. Our own Emperor full-day charter also runs trolling trips that can target marlin further offshore.",
+          "Marlin & Big Game Fishing Charter, operated by Knight At Sea out of Hulhumale, is a real charter already on record tagged for big game/marlin fishing. Our own Emperor full-day charter also runs trolling trips that can target marlin further offshore.",
       },
       {
         question: "What technique is used for marlin?",

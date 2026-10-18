@@ -48,8 +48,8 @@ const FAQS = [
     answer: "Yes — every activity, including fishing, diving and surfing, is listed here. Those three also have their own dedicated hub — see Fishing, Diving and Surfing — with extra detail (dive sites, fish species and more) beyond what's shown on this page.",
   },
   {
-    question: "What is there to see and do in Malé?",
-    answer: "Malé has real landmarks worth visiting — the historic Hukuru Miskiy mosque, the National Museum, Sultan Park, the Islamic Centre and more — see Maldives Attractions for the full list, alongside any bookable activities based in or near Malé.",
+    question: "What is there to see and do in Male?",
+    answer: "Male has real landmarks worth visiting — the historic Hukuru Miskiy mosque, the National Museum, Sultan Park, the Islamic Centre and more — see Maldives Attractions for the full list, alongside any bookable activities based in or near Male.",
   },
   {
     question: "What water activities are available in the Maldives?",
@@ -222,7 +222,7 @@ export async function ActivityDirectoryPage({
               The Maldives offers a real range of things to do — diving, fishing and surfing trips, sandbank picnics, dolphin
               cruises, snorkeling trips, island hopping tours, spa treatments and guided{" "}
               <Link href="/maldives/male-city-tour/" className="text-maldives-600 hover:underline">
-                city tours of Malé
+                city tours of Male
               </Link>
               . Every activity below is a real, individually sourced experience from a resort or independent operator, not a generic
               stock listing. Diving, fishing and surfing also have their own dedicated hub with extra detail — see{" "}

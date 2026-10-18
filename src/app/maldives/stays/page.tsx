@@ -29,7 +29,7 @@ const TYPES = [
     type: "hotel" as const,
     label: "Hotels",
     href: "/maldives/hotels/",
-    description: "City and local-island hotels — Malé, Hulhumalé, Maafushi and more.",
+    description: "City and local-island hotels — Male, Hulhumale, Maafushi and more.",
   },
   {
     type: "guesthouse" as const,

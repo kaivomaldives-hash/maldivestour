@@ -348,7 +348,7 @@ export async function FishingDirectoryPage({
             or full day, usually priced per boat rather than per person. A <strong>fishing package</strong> bundles a charter with
             accommodation, meals and transfers into a complete multi-night holiday. Both are represented here with real, currently-verified
             pricing from our own rate sheet (valid until 31 December 2027), alongside individually
-            sourced trips from resort dive/watersports centres and independent Maafushi and Malé-area operators.
+            sourced trips from resort dive/watersports centres and independent Maafushi and Male-area operators.
           </p>
         </section>
 
@@ -407,12 +407,12 @@ export async function FishingDirectoryPage({
           </p>
           <dl className="mt-6 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
             {[
-              { atoll: "kaafu", name: "North & South Malé Atoll", body: "The most accessible fishing base — close to Velana International Airport, with the highest concentration of resort-run charters and independent Maafushi-based operators, covering everything from sunset handline trips to big game charters." },
+              { atoll: "kaafu", name: "North & South Male Atoll", body: "The most accessible fishing base — close to Velana International Airport, with the highest concentration of resort-run charters and independent Maafushi-based operators, covering everything from sunset handline trips to big game charters." },
               { atoll: "alif-alif", name: "Ari Atoll (North)", body: "A large atoll with a deep central lagoon and extensive outer reef, well known among divers for its pelagic life — the same channels that draw manta rays and whale sharks also concentrate baitfish and gamefish." },
               { atoll: "alif-dhaalu", name: "Ari Atoll (South)", body: "The southern half of the same atoll system, with its own set of channels and outer-reef drop-offs — resort-run charters here tend to run the same big game and reef techniques as North Ari." },
               { atoll: "baa", name: "Baa Atoll", body: "A UNESCO Biosphere Reserve, so fishing grounds sit alongside protected marine areas — check with your operator which channels and reefs are open before booking a trip here." },
               { atoll: "vaavu", name: "Vaavu Atoll", body: "One of the least populated atolls, with a reputation among local operators for strong channel currents and productive reef fishing, thanks to relatively light fishing pressure." },
-              { atoll: "laamu", name: "Laamu Atoll", body: "A remote southern atoll with its own outer-reef and channel systems, reached by domestic flight rather than speedboat from Malé — fishing here is generally arranged through resort operators." },
+              { atoll: "laamu", name: "Laamu Atoll", body: "A remote southern atoll with its own outer-reef and channel systems, reached by domestic flight rather than speedboat from Male — fishing here is generally arranged through resort operators." },
               { atoll: "gaafu-alifu", name: "Gaafu Alifu Atoll", body: "Part of the same far-southern atoll pair as Gaafu Dhaalu — see Fishing in Gaafu Atoll below, where our own operation is based." },
               { atoll: "gaafu-dhaalu", name: "Gaafu Dhaalu Atoll", body: "The other half of the Huvadhoo Atoll system — one of the widest, deepest natural atolls in the Maldives, with correspondingly large channels and strong currents." },
               { atoll: "seenu", name: "Addu Atoll", body: "The southernmost atoll, closer to the equator than any other inhabited part of the Maldives, with its own distinct reef and channel system reached by domestic flight." },
@@ -442,7 +442,7 @@ export async function FishingDirectoryPage({
           <div className="mt-3 space-y-3 text-sm text-neutral-700">
             <p>
               Gaafu Alifu and Gaafu Dhaalu together form Huvadhoo, one of the widest natural atolls in the world —
-              roughly 300&nbsp;km south of Malé, well outside the North/South Malé resort cluster most visitors think
+              roughly 300&nbsp;km south of Male, well outside the North/South Male resort cluster most visitors think
               of first. Fewer resorts means less fishing pressure on the reefs and channels here, and the atoll&rsquo;s
               size means genuinely deep channels between the outer reef and the open ocean.
             </p>

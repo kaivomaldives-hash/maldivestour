@@ -8,8 +8,8 @@ const MAX_QUERY_LENGTH = 100;
 
 /** Collapses whitespace, strips characters that can't meaningfully match
  * a title anyway (keeps letters/numbers/spaces and a few common
- * punctuation marks used in real titles, e.g. "Malé", "7-Night"), and
- * caps length so a pathological input can't drive an expensive query. */
+ * punctuation marks used in real titles, e.g. "7-Night"), and caps
+ * length so a pathological input can't drive an expensive query. */
 export function normalizeQuery(raw: string): string {
   return raw
     .normalize("NFC")
@@ -64,11 +64,13 @@ export function scoreTitleMatch(title: string, query: string): number {
  * title text itself. */
 export const EXPANSION_MATCH_SCORE = 15;
 
-/** Strips diacritics for comparison only (never for display) — e.g.
- * "Malé" and "male" both fold to "male". Postgres ILIKE can't do this
- * without the `unaccent` extension, which this task doesn't add, so
- * anywhere the underlying data is compared in application code (the
- * multi-token AND filter below) folds first. */
+/** Strips diacritics for comparison only (never for display) — titles are
+ * plain ASCII spellings now (Male, not Malé), but this stays as a general
+ * safety net for any other accented title a query might be typed against.
+ * Postgres ILIKE can't fold accents itself without the `unaccent`
+ * extension, which this task doesn't add, so anywhere the underlying data
+ * is compared in application code (the multi-token AND filter below)
+ * folds first. */
 export function foldDiacritics(value: string): string {
   return value.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 }
@@ -77,33 +79,15 @@ export function foldDiacritics(value: string): string {
  * case-insensitively — the fallback relevance test for multi-word queries
  * whose words don't appear contiguously in that order in the real title
  * (e.g. "airport maafushi" against "Velana International Airport to
- * Maafushi", or plain "male" against "Malé"). */
+ * Maafushi"). */
 export function tokensAllPresent(title: string, tokens: string[]): boolean {
   const folded = foldDiacritics(title);
   return tokens.every((token) => folded.includes(foldDiacritics(token)));
 }
 
-// A small, explicit table of known real place-name spellings that a
-// visitor will very commonly type without the accent (Task 13 §8: "common
-// spelling differences where safely possible" — deliberately narrow, not
-// a general fuzzy-matching system). Longer/more specific patterns are
-// listed first so e.g. "male city" is replaced whole rather than leaving
-// a dangling "city" after a bare "male" substitution.
-const KNOWN_PLACE_NAME_VARIANTS: Array<[RegExp, string]> = [
-  [/\bmale city\b/gi, "Malé City"],
-  [/\bhulhumale\b/gi, "Hulhumalé"],
-  [/\bvillimale\b/gi, "Villimalé"],
-  [/\bmale\b/gi, "Malé"],
-];
-
-/** Rewrites known unaccented place-name spellings to their real seeded
- * form so ILIKE-based search (which can't fold accents itself) still
- * finds them. Applied once, right after normalizeQuery, before the query
- * reaches any repository search function. */
-export function expandKnownPlaceNames(query: string): string {
-  let result = query;
-  for (const [pattern, replacement] of KNOWN_PLACE_NAME_VARIANTS) {
-    result = result.replace(pattern, replacement);
-  }
-  return result;
-}
+// Place names like Malé/Hulhumalé/Villimalé are now stored and titled
+// without their accent (Male/Hulhumale/Villimale), so a visitor typing
+// the plain, unaccented spelling already matches the real title directly
+// — no query rewriting needed here any more (see git history for the
+// previous KNOWN_PLACE_NAME_VARIANTS table, removed when those titles
+// were de-accented).

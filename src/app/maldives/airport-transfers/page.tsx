@@ -12,7 +12,7 @@ const config: TransferCategoryConfig = {
   eyebrow: "Velana International Airport",
   h1: "Maldives Airport Transfers",
   intro:
-    "Every stay in the Maldives starts and ends at Velana International Airport (MLE), on Hulhulé Island next to Malé. From there, real transfer routes and prices — by speedboat, ferry, seaplane, or domestic flight — to resorts, hotels, and local islands across the country.",
+    "Every stay in the Maldives starts and ends at Velana International Airport (MLE), on Hulhule Island next to Male. From there, real transfer routes and prices — by speedboat, ferry, seaplane, or domestic flight — to resorts, hotels, and local islands across the country.",
   metaTitle: "Maldives Airport Transfers | Velana Airport to Resorts & Islands",
   metaDescription:
     "Real Velana International Airport (MLE) transfer routes and prices to Maldives resorts, hotels, and local islands — speedboat, ferry, seaplane, and domestic flight.",
@@ -25,7 +25,7 @@ const config: TransferCategoryConfig = {
     {
       question: "How do I reach a local island?",
       answer:
-        "Local islands close to Malé, such as Maafushi, are reached by government ferry or a faster private speedboat service. See the Island Transfers page for real, individually priced routes.",
+        "Local islands close to Male, such as Maafushi, are reached by government ferry or a faster private speedboat service. See the Island Transfers page for real, individually priced routes.",
     },
     {
       question: "How long does the journey take?",

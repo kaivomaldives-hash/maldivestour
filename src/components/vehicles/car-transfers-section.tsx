@@ -23,7 +23,7 @@ export async function CarTransfersSection() {
     <section className="mt-10">
       <h2 className="text-xl font-semibold text-ocean-900">Car Transfers</h2>
       <p className="mt-1 text-sm text-neutral-600">
-        Land transfers by car, minibus, or bus around Malé and the local islands. Pricing will be added once confirmed; hourly and custom
+        Land transfers by car, minibus, or bus around Male and the local islands. Pricing will be added once confirmed; hourly and custom
         private hire will be available.
       </p>
 

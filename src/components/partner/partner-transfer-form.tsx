@@ -86,7 +86,7 @@ export function PartnerTransferForm({
         <span className="mb-1 block font-medium text-neutral-700">
           Route name <span aria-hidden="true">*</span>
         </span>
-        <input name="title" type="text" required defaultValue={initial?.title ?? ""} placeholder="e.g. Malé Airport to Maafushi" className={INPUT_CLASS} />
+        <input name="title" type="text" required defaultValue={initial?.title ?? ""} placeholder="e.g. Male Airport to Maafushi" className={INPUT_CLASS} />
       </label>
 
       <label className="block text-sm">

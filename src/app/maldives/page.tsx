@@ -122,7 +122,7 @@ export default async function MaldivesPage() {
       <div className={`${CONTAINER_CLASS} py-12 sm:py-16`}>
         <section className="prose-sm max-w-none text-sm text-neutral-700">
           <p>
-            The Maldives is a nation of coral atolls in the Indian Ocean, made up of the capital Malé, a scattering of
+            The Maldives is a nation of coral atolls in the Indian Ocean, made up of the capital Male, a scattering of
             resort islands, and {totalIslands} inhabited local islands spread across {atolls.length} administrative
             atolls. Most travellers stay in one of two very different ways: a private resort island — one island, one
             property, all-inclusive — or a local island, where guesthouses sit inside a real Maldivian community
@@ -219,7 +219,7 @@ export default async function MaldivesPage() {
                 African sailors and settlers who mixed over more than a thousand years of Indian Ocean trade. They
                 speak Dhivehi, a language written right-to-left in the distinctive Thaana script, and the country is
                 constitutionally 100% Sunni Muslim — Islam shapes everyday life, from the five daily calls to prayer
-                to the Friday holiday. Close to a third of the population lives in the capital, Malé, one of the
+                to the Friday holiday. Close to a third of the population lives in the capital, Male, one of the
                 most densely built cities in the world; the rest are spread thinly across the country&rsquo;s{" "}
                 {atolls.length} atolls and {totalIslands} inhabited islands.
               </p>

@@ -15,7 +15,7 @@ function hasAnyFilter(sp: AttractionDirectorySearchParams): boolean {
 export async function attractionDirectoryMetadata(searchParams: Promise<AttractionDirectorySearchParams>): Promise<Metadata> {
   const sp = await searchParams;
   const title = "Maldives Attractions | Landmarks, Museums & Places to Visit";
-  const description = "Real, individually documented Maldives attractions — mosques, museums, monuments, beaches and markets — starting with Malé's must-see landmarks.";
+  const description = "Real, individually documented Maldives attractions — mosques, museums, monuments, beaches and markets — starting with Male's must-see landmarks.";
   const url = canonicalUrl("/maldives/attractions");
 
   return {

@@ -37,7 +37,7 @@ import type {
 // in src/lib/locations/repository.ts: without `!inner`, filtering on an
 // embedded column doesn't restrict which `nodes` rows come back.
 const NODE_ACCOMMODATION_SELECT =
-  "id, slug, title, summary, meta_title, meta_description, accommodations!inner(accommodation_type, star_rating, price_tier, room_count, all_inclusive, overwater_villas, check_in_time, check_out_time, currency, operated_by_provider_id, price_from, video_youtube_id)";
+  "id, slug, title, summary, meta_title, meta_description, published_at, accommodations!inner(accommodation_type, star_rating, price_tier, room_count, all_inclusive, overwater_villas, check_in_time, check_out_time, currency, operated_by_provider_id, price_from, video_youtube_id)";
 
 /** Applies the admin-configured default sort order (content_sort_settings)
  * — see the identical helper/comment in src/lib/packages/repository.ts. */
@@ -85,6 +85,7 @@ type NodeAccommodationRow = {
   summary: string | null;
   meta_title: string | null;
   meta_description: string | null;
+  published_at: string | null;
   // Defensive-coded as possibly-an-array — see the identical note in
   // src/lib/locations/repository.ts (could not be verified end-to-end
   // against a live PostgREST instance in this sandbox).
@@ -98,6 +99,7 @@ interface BareAccommodation {
   summary: string | null;
   metaTitle: string | null;
   metaDescription: string | null;
+  publishedAt: string | null;
   accommodationType: AccommodationType;
   starRating: number | null;
   priceTier: PriceTier | null;
@@ -123,6 +125,7 @@ function bareAccommodationOf(row: NodeAccommodationRow): BareAccommodation | nul
     summary: row.summary,
     metaTitle: row.meta_title,
     metaDescription: row.meta_description,
+    publishedAt: row.published_at,
     accommodationType: a.accommodation_type,
     starRating: a.star_rating,
     priceTier: a.price_tier,
@@ -430,6 +433,7 @@ async function getAccommodationBySlugUncached(slug: string): Promise<Accommodati
     currency: bare.currency,
     metaTitle: bare.metaTitle,
     metaDescription: bare.metaDescription,
+    publishedAt: bare.publishedAt,
     provider: bare.providerId ? providersById.get(bare.providerId) ?? null : null,
     atoll,
     isBookable: Boolean(bookableRow.data),

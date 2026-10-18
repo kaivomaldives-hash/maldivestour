@@ -3,7 +3,7 @@ import "server-only";
 import { requireStaff } from "@/lib/admin/auth";
 import { getAdminNodeIdsAtAtoll } from "@/lib/admin/admin-location-filter";
 import type { NodeStatus } from "@/lib/admin/node-actions";
-import type { ActivityCategory, ActivityDifficulty } from "@/lib/activities/types";
+import type { ActivityCategory, ActivityDifficulty, ActivityItineraryStep, ActivityRate } from "@/lib/activities/types";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -15,7 +15,7 @@ import { createClient } from "@/lib/supabase/server";
 const PAGE_SIZE = 30;
 
 const NODE_ACTIVITY_SELECT =
-  "id, slug, title, summary, status, meta_title, meta_description, sort_order, activities!inner(activity_category, operated_by_provider_id, duration_minutes, min_age, difficulty, price_from, currency, max_participants, video_youtube_id)";
+  "id, slug, title, summary, status, meta_title, meta_description, sort_order, activities!inner(activity_category, operated_by_provider_id, duration_minutes, min_age, difficulty, price_from, currency, max_participants, video_youtube_id, description, itinerary, rates)";
 
 interface ActivityRow {
   activity_category: ActivityCategory;
@@ -27,6 +27,9 @@ interface ActivityRow {
   currency: string | null;
   max_participants: number | null;
   video_youtube_id: string | null;
+  description: string | null;
+  itinerary: ActivityItineraryStep[] | null;
+  rates: ActivityRate[] | null;
 }
 
 interface NodeActivityRow {
@@ -51,6 +54,9 @@ export interface ActivityFieldsAdmin {
   currency: string;
   maxParticipants: number | null;
   videoYoutubeId: string | null;
+  description: string | null;
+  itinerary: ActivityItineraryStep[];
+  rates: ActivityRate[];
 }
 
 export interface AdminActivityItem {
@@ -87,6 +93,9 @@ function toAdminActivity(row: NodeActivityRow): AdminActivityItem | null {
       currency: a.currency ?? "USD",
       maxParticipants: a.max_participants,
       videoYoutubeId: a.video_youtube_id,
+      description: a.description,
+      itinerary: a.itinerary ?? [],
+      rates: a.rates ?? [],
     },
   };
 }

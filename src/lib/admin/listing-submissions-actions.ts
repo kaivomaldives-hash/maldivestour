@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { createAccommodation, updateAccommodation } from "@/lib/admin/accommodations-actions";
 import { createActivity, updateActivity } from "@/lib/admin/activities-actions";
+import { getActivityByIdAdmin } from "@/lib/admin/activities-repository";
 import { requireStaff } from "@/lib/admin/auth";
 import { getListingSubmissionByIdAdmin } from "@/lib/admin/listing-submissions-repository";
 import type { AdminActionResult, NodeCoreInput } from "@/lib/admin/node-actions";
@@ -119,7 +120,7 @@ export async function approveListingSubmission(submissionId: string): Promise<Ad
     }
   } else if (submission.nodeType === "activity") {
     const payload = submission.payload as ActivityListingPayload;
-    const fields = {
+    const baseFields = {
       activityCategory: payload.activityCategory,
       operatedByProviderId: submission.providerId,
       durationMinutes: payload.durationMinutes,
@@ -128,13 +129,12 @@ export async function approveListingSubmission(submissionId: string): Promise<Ad
       priceFrom: payload.priceFrom,
       currency: payload.currency,
       maxParticipants: payload.maxParticipants,
-      videoYoutubeId: null,
     };
 
     if (submission.submissionKind === "create") {
       const slug = slugify(payload.title);
       const core: NodeCoreInput = { title: payload.title, slug, summary: payload.summary, status: "published", metaTitle: null, metaDescription: null };
-      const created = await createActivity(core, fields);
+      const created = await createActivity(core, { ...baseFields, videoYoutubeId: null, description: null, itinerary: [], rates: [] });
       if (!created.ok || !created.id) return { ok: false, error: created.error ?? "Failed to create listing." };
       resultNodeId = created.id;
       await setNodeCreatedBy(resultNodeId, submission.partnerId);
@@ -142,8 +142,19 @@ export async function approveListingSubmission(submissionId: string): Promise<Ad
       if (!resultNodeId) return { ok: false, error: "Missing listing to update." };
       const existing = await getCurrentNodeCore(resultNodeId);
       if (!existing) return { ok: false, error: "The live listing no longer exists." };
+      // The partner's listing payload has no way to carry video/
+      // description/itinerary/rates (staff-only fields, set from the
+      // admin editor) -- preserve whatever is already there rather than
+      // wiping it out just because this edit got approved.
+      const currentFields = (await getActivityByIdAdmin(resultNodeId))?.fields;
       const core: NodeCoreInput = { title: payload.title, slug: existing.slug, summary: payload.summary, status: existing.status, metaTitle: existing.metaTitle, metaDescription: existing.metaDescription };
-      const updated = await updateActivity(resultNodeId, core, fields);
+      const updated = await updateActivity(resultNodeId, core, {
+        ...baseFields,
+        videoYoutubeId: currentFields?.videoYoutubeId ?? null,
+        description: currentFields?.description ?? null,
+        itinerary: currentFields?.itinerary ?? [],
+        rates: currentFields?.rates ?? [],
+      });
       if (!updated.ok) return { ok: false, error: updated.error };
     }
 

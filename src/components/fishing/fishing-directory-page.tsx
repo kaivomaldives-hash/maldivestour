@@ -524,7 +524,6 @@ export async function FishingDirectoryPage({
                     <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-neutral-700">
                       {charter.maxParticipants && <span>Up to {charter.maxParticipants} passengers</span>}
                       {charter.primaryLocation && <span>{charter.primaryLocation.title}</span>}
-                      {charter.provider && <span>Operated by {charter.provider.title}</span>}
                     </div>
                     {charter.priceFrom !== null && (
                       <p className="mt-2 text-lg font-semibold text-ocean-900">

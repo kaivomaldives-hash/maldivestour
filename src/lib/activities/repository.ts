@@ -15,6 +15,8 @@ import type {
   ActivityDetail,
   ActivityDifficulty,
   ActivityFilters,
+  ActivityItineraryStep,
+  ActivityRate,
   ActivitySummary,
   PaginatedResult,
 } from "@/lib/activities/types";
@@ -38,7 +40,7 @@ import type {
 // src/lib/locations/repository.ts: without `!inner`, filtering on an
 // embedded column doesn't restrict which `nodes` rows come back.
 const NODE_ACTIVITY_SELECT =
-  "id, slug, title, summary, meta_title, meta_description, activities!inner(activity_category, operated_by_provider_id, duration_minutes, min_age, difficulty, price_from, currency, max_participants)";
+  "id, slug, title, summary, meta_title, meta_description, activities!inner(activity_category, operated_by_provider_id, duration_minutes, min_age, difficulty, price_from, currency, max_participants, description, itinerary, rates, video_youtube_id)";
 
 /** Applies the admin-configured default sort order (content_sort_settings)
  * — see the identical helper/comment in src/lib/packages/repository.ts. */
@@ -73,6 +75,10 @@ type ActivityFields = {
   price_from: number | null;
   currency: string | null;
   max_participants: number | null;
+  description: string | null;
+  itinerary: ActivityItineraryStep[] | null;
+  rates: ActivityRate[] | null;
+  video_youtube_id: string | null;
 };
 
 type NodeActivityRow = {
@@ -103,6 +109,10 @@ interface BareActivity {
   priceFrom: number | null;
   currency: string | null;
   maxParticipants: number | null;
+  description: string | null;
+  itinerary: ActivityItineraryStep[];
+  rates: ActivityRate[];
+  videoYoutubeId: string | null;
 }
 
 function bareActivityOf(row: NodeActivityRow): BareActivity | null {
@@ -124,6 +134,10 @@ function bareActivityOf(row: NodeActivityRow): BareActivity | null {
     priceFrom: a.price_from,
     currency: a.currency,
     maxParticipants: a.max_participants,
+    description: a.description,
+    itinerary: a.itinerary ?? [],
+    rates: a.rates ?? [],
+    videoYoutubeId: a.video_youtube_id,
   };
 }
 
@@ -255,6 +269,9 @@ async function getActivitiesUncached(options: GetActivitiesOptions = {}): Promis
     .eq("status", "published");
 
   if (options.category) query = query.eq("activities.activity_category", options.category);
+  else if (options.excludeCategories && options.excludeCategories.length > 0) {
+    query = query.not("activities.activity_category", "in", `(${options.excludeCategories.join(",")})`);
+  }
   if (options.providerId) query = query.eq("activities.operated_by_provider_id", options.providerId);
   if (options.difficulty) query = query.eq("activities.difficulty", options.difficulty);
   if (options.minDurationMinutes !== undefined) query = query.gte("activities.duration_minutes", options.minDurationMinutes);
@@ -389,6 +406,10 @@ async function getActivityBySlugUncached(slug: string): Promise<ActivityDetail |
     atoll,
     isBookable: Boolean(bookableRow.data),
     gallery,
+    description: bare.description,
+    itinerary: bare.itinerary,
+    rates: bare.rates,
+    videoYoutubeId: bare.videoYoutubeId,
   };
 }
 

@@ -110,7 +110,6 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
         meta={
           <div className="flex flex-wrap items-center gap-2">
             {pkg.isMtgCurated && !pkg.isDemo && <Badge tone="aqua">MTG-curated</Badge>}
-            {pkg.provider && !pkg.isDemo && <span className="text-neutral-600">Operated by {pkg.provider.title}</span>}
             {pkg.categories.map((c) => (
               <Link key={c} href={`/maldives/packages/${c}/`} className="rounded-full border border-white/40 px-2.5 py-1 text-xs text-white hover:bg-white/10">
                 {PACKAGE_CATEGORY_TITLE[c]}

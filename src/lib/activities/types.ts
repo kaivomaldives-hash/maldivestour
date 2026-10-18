@@ -37,6 +37,25 @@ export interface ActivitySummary {
   heroImage: MediaAsset | null;
 }
 
+/** One row of an activity's "Itinerary" section — a plain ordered list,
+ * not the relational stage/component model packages use, since a single
+ * excursion's agenda is just a handful of time-stamped steps. */
+export interface ActivityItineraryStep {
+  time: string | null;
+  title: string;
+  description: string | null;
+}
+
+/** One row of an activity's "Rates" section — separate from the single
+ * `priceFrom` headline figure, for e.g. adult/child/private-charter rate
+ * breakdowns. */
+export interface ActivityRate {
+  label: string;
+  price: number | null;
+  currency: string | null;
+  note: string | null;
+}
+
 export interface ActivityDetail extends ActivitySummary {
   minAge: number | null;
   maxParticipants: number | null;
@@ -46,6 +65,12 @@ export interface ActivityDetail extends ActivitySummary {
   atoll: LocationSummary | null;
   isBookable: boolean;
   gallery: MediaAsset[];
+  /** Long-form write-up, separate from `summary` (the short card/hero
+   * blurb) — null when the admin hasn't written one yet. */
+  description: string | null;
+  videoYoutubeId: string | null;
+  itinerary: ActivityItineraryStep[];
+  rates: ActivityRate[];
 }
 
 export interface PaginatedResult<T> {
@@ -57,6 +82,13 @@ export interface PaginatedResult<T> {
 
 export interface ActivityFilters {
   category?: ActivityCategory;
+  /** Categories to exclude entirely — used by the generic /maldives/
+   * activities/ directory to keep fishing/diving/surfing off its
+   * "every other category" page when no specific category filter is
+   * active (those three have their own dedicated hub). Ignored when
+   * `category` is also set, since a single positive filter already
+   * narrows to one category. */
+  excludeCategories?: ActivityCategory[];
   atollId?: string;
   locationId?: string;
   providerId?: string;

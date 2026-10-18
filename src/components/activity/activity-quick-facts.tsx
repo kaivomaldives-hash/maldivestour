@@ -100,16 +100,6 @@ export function ActivityQuickFacts({
           </dd>
         </div>
       )}
-      {activity.provider && (
-        <div>
-          <dt className="text-neutral-500">Operated by</dt>
-          <dd className="font-medium">
-            <Link href={`/maldives/providers/${activity.provider.slug}/`} className="hover:underline">
-              {activity.provider.title}
-            </Link>
-          </dd>
-        </div>
-      )}
     </dl>
   );
 }

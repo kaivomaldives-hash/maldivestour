@@ -1,11 +1,16 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { AccommodationCard } from "@/components/accommodation/accommodation-card";
+import { ActivityCard } from "@/components/activity/activity-card";
 import { RegisterArticleLocaleLinks } from "@/components/i18n/article-locale-links-context";
+import { PackageCard } from "@/components/packages/package-card";
+import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getArticleBySlug } from "@/lib/articles/repository";
 import { articleHref } from "@/lib/articles/types";
+import { resolveListingEmbeds, splitArticleBodyOnListings } from "@/lib/articles/listing-embeds";
 import { getArticleLocalePaths } from "@/lib/i18n/repository";
 import { applyContextualLinks } from "@/lib/linking/contextual-links";
 import { buildEntityLinkMap } from "@/lib/linking/entity-link-map";
@@ -43,6 +48,8 @@ export async function ArticleDetailPage({ slug }: { slug: string }) {
 
   const entityMap = await buildEntityLinkMap();
   const bodyHtml = applyContextualLinks(article.bodyHtml, entityMap, { excludeHref: articleHref(article) });
+  const bodySegments = splitArticleBodyOnListings(bodyHtml);
+  const listingEmbeds = await resolveListingEmbeds(bodySegments);
   const localePaths = await getArticleLocalePaths(article.id, article.slug);
 
   return (
@@ -82,8 +89,23 @@ export async function ArticleDetailPage({ slug }: { slug: string }) {
               [&_a]:text-maldives-600 [&_a]:underline
               [&_[data-youtube-id]]:relative [&_[data-youtube-id]]:mt-6 [&_[data-youtube-id]]:aspect-video [&_[data-youtube-id]]:overflow-hidden [&_[data-youtube-id]]:rounded-2xl [&_[data-youtube-id]]:bg-neutral-100
             "
-            dangerouslySetInnerHTML={{ __html: bodyHtml }}
-          />
+          >
+            {bodySegments.map((segment, i) => {
+              if (segment.kind === "html") {
+                return segment.html.trim() ? <div key={i} dangerouslySetInnerHTML={{ __html: segment.html }} /> : null;
+              }
+              const embed = listingEmbeds.get(`${segment.nodeType}:${segment.slug}`);
+              if (!embed) return null;
+              return (
+                <ul key={i} className="my-6 grid grid-cols-1 gap-4 sm:max-w-sm">
+                  {embed.nodeType === "accommodation" && <AccommodationCard accommodation={embed.data} />}
+                  {embed.nodeType === "activity" && <ActivityCard activity={embed.data} />}
+                  {embed.nodeType === "package" && <PackageCard pkg={embed.data} />}
+                  {embed.nodeType === "transfer_route" && <TransferRouteCard route={embed.data} />}
+                </ul>
+              );
+            })}
+          </article>
 
           <aside className="space-y-8">
             {article.relatedLocations.length > 0 && (

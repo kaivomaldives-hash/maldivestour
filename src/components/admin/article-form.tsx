@@ -1,16 +1,18 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 
 import { AdminBasicsSection } from "@/components/admin/admin-basics-section";
 import { AdminSeoSection } from "@/components/admin/admin-seo-section";
 import { CategoryPicker } from "@/components/admin/category-picker";
 import { DeleteNodeButton } from "@/components/admin/delete-node-button";
+import { ListingInsertPicker } from "@/components/admin/listing-insert-picker";
 import { NodeMediaManager } from "@/components/admin/node-media-manager";
 import { Button } from "@/components/ui/button";
 import { createArticle, updateArticle } from "@/lib/admin/articles-actions";
 import type { ArticleFieldsAdmin } from "@/lib/admin/articles-repository";
+import type { ListingEmbedOption } from "@/lib/admin/listing-embed-types";
 import type { NodeCoreInput } from "@/lib/admin/node-actions";
 import { setNodeCategories } from "@/lib/admin/node-relations-actions";
 import type { CategoryOption } from "@/lib/admin/node-relations-repository";
@@ -35,6 +37,26 @@ export function ArticleForm({ initial, categoryOptions }: { initial?: ArticleFor
   const [slugTouched, setSlugTouched] = useState(Boolean(initial));
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const bodyRef = useRef<HTMLTextAreaElement>(null);
+
+  /** Splices a <!--listing:TYPE:SLUG--> marker into the body at wherever
+   * the textarea's cursor currently is (falling back to the end if the
+   * field never had focus) — the public page resolves this marker to a
+   * real rendered listing card, see src/lib/articles/listing-embeds.ts.
+   * Can be called as many times as needed to drop listings in at
+   * several different points in one article. */
+  function insertListingMarker(option: ListingEmbedOption) {
+    const marker = `\n<!--listing:${option.nodeType}:${option.slug}-->\n`;
+    const el = bodyRef.current;
+    const pos = el ? el.selectionStart : fields.body.length;
+    const nextBody = fields.body.slice(0, pos) + marker + fields.body.slice(pos);
+    setFields((f) => ({ ...f, body: nextBody }));
+    const newPos = pos + marker.length;
+    requestAnimationFrame(() => {
+      el?.focus();
+      el?.setSelectionRange(newPos, newPos);
+    });
+  }
 
   const wasPublished = initial?.core.status === "published";
   const slugChanged = initial ? core.slug !== initial.core.slug : false;
@@ -79,10 +101,14 @@ export function ArticleForm({ initial, categoryOptions }: { initial?: ArticleFor
       </AdminBasicsSection>
 
       <section className="space-y-4 rounded-2xl border border-neutral-200 bg-white p-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Content</h2>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Content</h2>
+          <ListingInsertPicker onInsert={insertListingMarker} />
+        </div>
         <label className="block text-sm">
           <span className="mb-1 block font-medium text-neutral-700">Body (HTML) *</span>
           <textarea
+            ref={bodyRef}
             value={fields.body}
             onChange={(e) => setFields((f) => ({ ...f, body: e.target.value }))}
             rows={20}
@@ -90,7 +116,8 @@ export function ArticleForm({ initial, categoryOptions }: { initial?: ArticleFor
           />
           <p className="mt-1 text-xs text-neutral-500">
             Raw HTML, rendered as-is on the public page. Image <code>src</code> values that are storage paths (not full URLs) are resolved to public Storage
-            URLs automatically at render time.
+            URLs automatically at render time. Click into the body where you want it, then use &ldquo;+ Insert real listing&rdquo; above to drop in a real,
+            published activity/property/package/transfer as a card — insert as many as you like, anywhere in the article.
           </p>
         </label>
         <label className="block text-sm">

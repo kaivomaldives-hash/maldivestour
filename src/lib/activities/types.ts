@@ -37,6 +37,25 @@ export interface ActivitySummary {
   heroImage: MediaAsset | null;
 }
 
+/** One row of an activity's "Itinerary" section — a plain ordered list,
+ * not the relational stage/component model packages use, since a single
+ * excursion's agenda is just a handful of time-stamped steps. */
+export interface ActivityItineraryStep {
+  time: string | null;
+  title: string;
+  description: string | null;
+}
+
+/** One row of an activity's "Rates" section — separate from the single
+ * `priceFrom` headline figure, for e.g. adult/child/private-charter rate
+ * breakdowns. */
+export interface ActivityRate {
+  label: string;
+  price: number | null;
+  currency: string | null;
+  note: string | null;
+}
+
 export interface ActivityDetail extends ActivitySummary {
   minAge: number | null;
   maxParticipants: number | null;
@@ -46,6 +65,12 @@ export interface ActivityDetail extends ActivitySummary {
   atoll: LocationSummary | null;
   isBookable: boolean;
   gallery: MediaAsset[];
+  /** Long-form write-up, separate from `summary` (the short card/hero
+   * blurb) — null when the admin hasn't written one yet. */
+  description: string | null;
+  videoYoutubeId: string | null;
+  itinerary: ActivityItineraryStep[];
+  rates: ActivityRate[];
 }
 
 export interface PaginatedResult<T> {

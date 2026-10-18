@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
+import { ActivityItineraryEditor } from "@/components/admin/activity-itinerary-editor";
+import { ActivityRatesEditor } from "@/components/admin/activity-rates-editor";
 import { AdminBasicsSection } from "@/components/admin/admin-basics-section";
 import { AdminPricingVideoSection } from "@/components/admin/admin-pricing-video-section";
 import { AdminSeoSection } from "@/components/admin/admin-seo-section";
@@ -43,6 +45,9 @@ const EMPTY_FIELDS: ActivityFieldsAdmin = {
   currency: "USD",
   maxParticipants: null,
   videoYoutubeId: null,
+  description: null,
+  itinerary: [],
+  rates: [],
 };
 
 export function ActivityForm({
@@ -200,7 +205,30 @@ export function ActivityForm({
         />
       </section>
 
+      <section className="space-y-4 rounded-2xl border border-neutral-200 bg-white p-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Description</h2>
+        <label className="block text-sm">
+          <span className="mb-1 block font-medium text-neutral-700">Long-form write-up</span>
+          <textarea
+            value={fields.description ?? ""}
+            onChange={(e) => setFields((f) => ({ ...f, description: e.target.value || null }))}
+            rows={8}
+            placeholder="A fuller description than the short summary above — shown on the public page right under the hero, before the video/gallery."
+            className="w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none"
+          />
+          <p className="mt-1 text-xs text-neutral-500">Plain text. Leave a blank line between paragraphs.</p>
+        </label>
+      </section>
+
       <AdminPricingVideoSection fields={fields} setFields={setFields} />
+
+      <section className="rounded-2xl border border-neutral-200 bg-white p-4">
+        <ActivityItineraryEditor value={fields.itinerary} onChange={(itinerary) => setFields((f) => ({ ...f, itinerary }))} />
+      </section>
+
+      <section className="rounded-2xl border border-neutral-200 bg-white p-4">
+        <ActivityRatesEditor value={fields.rates} onChange={(rates) => setFields((f) => ({ ...f, rates }))} />
+      </section>
 
       <AdminSeoSection core={core} setCore={setCore} />
 

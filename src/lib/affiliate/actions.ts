@@ -1,5 +1,6 @@
 "use server";
 
+import { sendAffiliateApplicationNotification } from "@/lib/affiliate/notifications";
 import { createClient } from "@/lib/supabase/server";
 
 export interface ActionResult {
@@ -38,6 +39,7 @@ export async function createAffiliateAccount(input: CreateAffiliateAccountInput)
     } as unknown as never,
   );
   if (error) return { ok: false, error: error.message };
+  await sendAffiliateApplicationNotification({ businessName: input.businessName, contactEmail: input.contactEmail });
   return { ok: true };
 }
 

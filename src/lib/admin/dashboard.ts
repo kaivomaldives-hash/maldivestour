@@ -1,6 +1,7 @@
 import "server-only";
 
 import { BOOKING_STATUSES, type BookingStatus } from "@/lib/admin/booking-status";
+import { getAdminPendingCounts } from "@/lib/admin/pending-counts";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -37,6 +38,10 @@ export interface DashboardStats {
   commentsTotal: number;
   commentsFlagged: number;
   partnerRequestsNew: number;
+  partnerApplicationsPending: number;
+  partnerListingsPending: number;
+  agentApplicationsPending: number;
+  affiliateApplicationsPending: number;
   redirects: number;
   listingsPublished: number;
   listingsDraft: number;
@@ -101,7 +106,7 @@ async function getDashboardStatsUncached(): Promise<DashboardStats> {
     reviewsTotal,
     commentsTotal,
     commentsFlagged,
-    partnerRequestsNew,
+    pendingCounts,
     redirects,
     listingsPublished,
     listingsDraft,
@@ -124,7 +129,9 @@ async function getDashboardStatsUncached(): Promise<DashboardStats> {
     countRows(supabase, "reviews"),
     countRows(supabase, "article_comments"),
     countRows(supabase, "article_comments", { status: "flagged" }),
-    countRows(supabase, "partner_requests", { status: "new" }),
+    // Same underlying counts (and same 60s in-process cache) the admin
+    // nav's sidebar badges use — see src/lib/admin/pending-counts.ts.
+    getAdminPendingCounts(),
     countRows(supabase, "url_redirects"),
     countListingsByStatus(supabase, "published"),
     countListingsByStatus(supabase, "draft"),
@@ -155,7 +162,11 @@ async function getDashboardStatsUncached(): Promise<DashboardStats> {
     reviewsTotal,
     commentsTotal,
     commentsFlagged,
-    partnerRequestsNew,
+    partnerRequestsNew: pendingCounts.partnerLeads,
+    partnerApplicationsPending: pendingCounts.partnerApplications,
+    partnerListingsPending: pendingCounts.partnerListings,
+    agentApplicationsPending: pendingCounts.agentApplications,
+    affiliateApplicationsPending: pendingCounts.affiliateApplications,
     redirects,
     listingsPublished,
     listingsDraft,

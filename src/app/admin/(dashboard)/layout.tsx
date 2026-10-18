@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import { requireStaff } from "@/lib/admin/auth";
+import { getAdminPendingCounts } from "@/lib/admin/pending-counts";
 
 export const metadata: Metadata = {
   title: "Admin | MTG",
@@ -23,10 +24,11 @@ export const metadata: Metadata = {
  */
 export default async function AdminDashboardLayout({ children }: { children: ReactNode }) {
   const { isAdmin } = await requireStaff();
+  const pendingCounts = await getAdminPendingCounts();
 
   return (
     <div className="min-h-screen bg-sand-50 lg:flex">
-      <AdminSidebar isAdmin={isAdmin} />
+      <AdminSidebar isAdmin={isAdmin} pendingCounts={pendingCounts} />
       <main className="min-w-0 flex-1 px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-6xl">{children}</div>
       </main>

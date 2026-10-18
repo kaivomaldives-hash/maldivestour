@@ -1,5 +1,6 @@
 "use server";
 
+import { sendAgentApplicationNotification } from "@/lib/agent/notifications";
 import { createClient } from "@/lib/supabase/server";
 
 export interface ActionResult {
@@ -39,6 +40,7 @@ export async function createAgentAccount(input: CreateAgentAccountInput): Promis
     } as unknown as never,
   );
   if (error) return { ok: false, error: error.message };
+  await sendAgentApplicationNotification({ businessName: input.businessName, contactEmail: input.contactEmail });
   return { ok: true };
 }
 

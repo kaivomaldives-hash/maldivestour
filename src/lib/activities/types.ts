@@ -82,6 +82,13 @@ export interface PaginatedResult<T> {
 
 export interface ActivityFilters {
   category?: ActivityCategory;
+  /** Categories to exclude entirely — used by the generic /maldives/
+   * activities/ directory to keep fishing/diving/surfing off its
+   * "every other category" page when no specific category filter is
+   * active (those three have their own dedicated hub). Ignored when
+   * `category` is also set, since a single positive filter already
+   * narrows to one category. */
+  excludeCategories?: ActivityCategory[];
   atollId?: string;
   locationId?: string;
   providerId?: string;

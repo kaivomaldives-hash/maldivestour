@@ -269,6 +269,9 @@ async function getActivitiesUncached(options: GetActivitiesOptions = {}): Promis
     .eq("status", "published");
 
   if (options.category) query = query.eq("activities.activity_category", options.category);
+  else if (options.excludeCategories && options.excludeCategories.length > 0) {
+    query = query.not("activities.activity_category", "in", `(${options.excludeCategories.join(",")})`);
+  }
   if (options.providerId) query = query.eq("activities.operated_by_provider_id", options.providerId);
   if (options.difficulty) query = query.eq("activities.difficulty", options.difficulty);
   if (options.minDurationMinutes !== undefined) query = query.gte("activities.duration_minutes", options.minDurationMinutes);

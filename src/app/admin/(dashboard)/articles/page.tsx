@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { AdminSearchField } from "@/components/admin/admin-search-field";
 import { AdminTableHead } from "@/components/admin/admin-table-head";
+import { BulkInsertArticleListingsForm } from "@/components/admin/bulk-insert-article-listings-form";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -28,6 +29,8 @@ export default async function AdminArticlesPage({ searchParams }: { searchParams
           New article
         </Button>
       </div>
+
+      <BulkInsertArticleListingsForm />
 
       <form method="get" className="mt-4 flex items-end gap-3">
         <AdminSearchField label="Search" name="q" defaultValue={sp.q} placeholder="Search by title" className="w-72" />

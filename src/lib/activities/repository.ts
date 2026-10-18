@@ -269,8 +269,16 @@ async function getActivitiesUncached(options: GetActivitiesOptions = {}): Promis
     .eq("status", "published");
 
   if (options.category) query = query.eq("activities.activity_category", options.category);
-  else if (options.excludeCategories && options.excludeCategories.length > 0) {
-    query = query.not("activities.activity_category", "in", `(${options.excludeCategories.join(",")})`);
+  else if (options.excludeCategories) {
+    // Chained .neq() rather than a single .not(..., "in", ...) — the
+    // latter silently 400'd against this embedded-column (!inner) join
+    // (caught by the catch-all `if (error || !data) return empty` below,
+    // which is exactly what made every activity vanish from the page
+    // instead of just the diving/fishing/surfing ones). .neq() is the
+    // same proven-working filter mechanism .eq() above already uses.
+    for (const excluded of options.excludeCategories) {
+      query = query.neq("activities.activity_category", excluded);
+    }
   }
   if (options.providerId) query = query.eq("activities.operated_by_provider_id", options.providerId);
   if (options.difficulty) query = query.eq("activities.difficulty", options.difficulty);

@@ -134,7 +134,7 @@ export default async function AdminAccommodationsPage({
                     <Badge tone={STATUS_TONE[a.status]}>{a.status}</Badge>
                   </td>
                   <td className="px-4 py-3">
-                    <SortOrderInput nodeId={a.id} defaultValue={a.sortOrder} />
+                    <SortOrderInput nodeId={a.id} defaultValue={a.sortOrder} nodeType="accommodation" />
                   </td>
                   <td className="px-4 py-3 text-right">
                     <DeleteNodeButton nodeId={a.id} redirectTo="/admin/accommodations" />

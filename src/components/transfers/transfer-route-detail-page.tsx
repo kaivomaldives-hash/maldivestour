@@ -6,6 +6,7 @@ import { BookingToggle } from "@/components/bookings/booking-toggle";
 import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { PackageCard } from "@/components/packages/package-card";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
+import { RouteGallerySection } from "@/components/transfers/route-gallery-section";
 import { RouteMap } from "@/components/transfers/route-map";
 import { RouteVideo } from "@/components/transfers/route-video";
 import { routeVideoJsonLd } from "@/components/transfers/route-video-jsonld";
@@ -15,6 +16,7 @@ import { FaqSection } from "@/components/ui/faq-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getLocationBySlug, getLocationSummaryById } from "@/lib/locations/repository";
+import { getMediaForNode } from "@/lib/media/repository";
 import { getPackageViewsByTransferRoute } from "@/lib/packages/view-repository";
 import { getReviewsForNode } from "@/lib/reviews/repository";
 import { breadcrumbJsonLd, canonicalUrl, getSiteUrl, safeJsonLdStringify } from "@/lib/seo/site";
@@ -280,7 +282,7 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
   if (!route) notFound();
 
   const reverseSlug = route.origin && route.destination ? `${route.destination.slug}-to-${route.origin.slug}` : null;
-  const [reverseRoute, packages, originRoutes, destinationRoutes, atollRoutes, reviews, originDetail, destinationDetail, originAtoll] = await Promise.all([
+  const [reverseRoute, packages, originRoutes, destinationRoutes, atollRoutes, reviews, originDetail, destinationDetail, originAtoll, media] = await Promise.all([
     reverseSlug ? getTransferRouteBySlug(reverseSlug) : Promise.resolve(null),
     getPackageViewsByTransferRoute(route.id),
     route.origin ? getTransferRoutesByOrigin(route.origin.id) : Promise.resolve([]),
@@ -290,7 +292,9 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
     route.origin ? getLocationBySlug(route.origin.slug) : Promise.resolve(null),
     route.destination ? getLocationBySlug(route.destination.slug) : Promise.resolve(null),
     route.origin?.parentId ? getLocationSummaryById(route.origin.parentId) : Promise.resolve(null),
+    getMediaForNode(route.id),
   ]);
+  const galleryImages = media.filter((m) => m.role === "gallery").map((m) => m.asset);
 
   const relatedRoutes = [...originRoutes, ...destinationRoutes, ...atollRoutes]
     .filter((r) => r.id !== route.id)
@@ -428,6 +432,8 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
           </ul>
         </section>
       )}
+
+      <RouteGallerySection images={galleryImages} routeTitle={route.title} />
 
       <RouteVideo />
 

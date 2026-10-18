@@ -1,5 +1,6 @@
 "use server";
 
+import { sendPartnerApplicationNotification } from "@/lib/partner/notifications";
 import { createClient } from "@/lib/supabase/server";
 import type { PartnerKind, PropertyType } from "@/lib/partner/types";
 
@@ -128,5 +129,24 @@ export async function submitPartnerProfileForReview(): Promise<ActionResult> {
   const supabase = await createClient();
   const { error } = await supabase.rpc("submit_partner_profile_for_review" as unknown as never);
   if (error) return { ok: false, error: error.message };
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (user) {
+    const { data: account } = await supabase
+      .from("partner_accounts")
+      .select("business_name, contact_email, partner_kinds")
+      .eq("id", user.id)
+      .maybeSingle<{ business_name: string; contact_email: string; partner_kinds: PartnerKind[] }>();
+    if (account) {
+      await sendPartnerApplicationNotification({
+        businessName: account.business_name,
+        contactEmail: account.contact_email,
+        partnerKinds: account.partner_kinds,
+      });
+    }
+  }
+
   return { ok: true };
 }

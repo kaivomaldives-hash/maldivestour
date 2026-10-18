@@ -122,7 +122,11 @@ export default async function AdminDashboardPage() {
           <StatTile label="Reviews (total)" value={stats.reviewsTotal} href="/admin/reviews" />
           <StatTile label="Comments flagged" value={stats.commentsFlagged} href="/admin/comments?status=flagged" />
           <StatTile label="Comments (total)" value={stats.commentsTotal} href="/admin/comments" />
-          <StatTile label="New partner requests" value={stats.partnerRequestsNew} href="/admin/vendors?status=new" />
+          <StatTile label="New partner leads" value={stats.partnerRequestsNew} href="/admin/vendors?status=new" />
+          <StatTile label="Partner applications pending" value={stats.partnerApplicationsPending} href="/admin/partners?status=submitted" />
+          <StatTile label="Partner listings pending" value={stats.partnerListingsPending} href="/admin/partner-listings?status=pending" />
+          <StatTile label="Agent applications pending" value={stats.agentApplicationsPending} href="/admin/agents?status=pending" />
+          <StatTile label="Affiliate applications pending" value={stats.affiliateApplicationsPending} href="/admin/affiliates?status=pending" />
         </div>
       </section>
 

@@ -24,10 +24,10 @@ export default async function AdminVendorsPage({ searchParams }: { searchParams:
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-ocean-900">Vendors ({results.total})</h1>
+      <h1 className="text-2xl font-semibold text-ocean-900">Partner Leads ({results.total})</h1>
       <p className="mt-1 text-sm text-neutral-600">
-        Requests submitted through the &ldquo;Become a Partner&rdquo; footer form. This is request triage only — adding and managing a
-        vendor&rsquo;s own activities or properties is a separate feature, not built yet.
+        Requests submitted through the &ldquo;Become a Partner&rdquo; footer form — just an inquiry inbox, not an account of any kind.
+        Someone ready to list their own activities or properties applies separately under &ldquo;Partner Applications&rdquo;.
       </p>
 
       <nav className="mt-4 flex gap-2 text-sm">

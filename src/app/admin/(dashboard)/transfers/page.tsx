@@ -119,7 +119,7 @@ export default async function AdminTransfersPage({
                     <Badge tone={STATUS_TONE[r.status]}>{r.status}</Badge>
                   </td>
                   <td className="px-4 py-3">
-                    <SortOrderInput nodeId={r.id} defaultValue={r.sortOrder} />
+                    <SortOrderInput nodeId={r.id} defaultValue={r.sortOrder} nodeType="transfer_route" />
                   </td>
                   <td className="px-4 py-3 text-right">
                     <DeleteNodeButton nodeId={r.id} redirectTo="/admin/transfers" />

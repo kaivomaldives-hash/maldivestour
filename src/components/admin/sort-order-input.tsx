@@ -1,14 +1,20 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import { updateNodeSortOrder } from "@/lib/admin/content-sort-actions";
+import type { SortableNodeType } from "@/lib/content-sort/types";
 
-/** Per-row numeric position field for "manual" sort mode. Commits on blur
- * or Enter so staff can tab through a whole table without a save button
- * per row; an empty value clears the position (sorts last, per the
- * nulls-last ordering every repository applies). */
-export function SortOrderInput({ nodeId, defaultValue }: { nodeId: string; defaultValue: number | null }) {
+/** Per-row numeric position field. Commits on blur or Enter so staff can
+ * tab through a whole table without a save button per row; an empty
+ * value clears the position (sorts last, per the nulls-last ordering
+ * every repository applies). Saving a position also switches this
+ * content type's public sort to "manual" (see updateNodeSortOrder), so
+ * this refreshes the page afterward to keep the "Default order" dropdown
+ * above in sync with that change. */
+export function SortOrderInput({ nodeId, defaultValue, nodeType }: { nodeId: string; defaultValue: number | null; nodeType: SortableNodeType }) {
+  const router = useRouter();
   const [value, setValue] = useState<string>(defaultValue === null ? "" : String(defaultValue));
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -22,8 +28,12 @@ export function SortOrderInput({ nodeId, defaultValue }: { nodeId: string; defau
     }
     setError(null);
     startTransition(async () => {
-      const result = await updateNodeSortOrder(nodeId, position);
-      if (!result.ok) setError(result.error ?? "Failed to save.");
+      const result = await updateNodeSortOrder(nodeId, position, nodeType);
+      if (!result.ok) {
+        setError(result.error ?? "Failed to save.");
+        return;
+      }
+      router.refresh();
     });
   }
 

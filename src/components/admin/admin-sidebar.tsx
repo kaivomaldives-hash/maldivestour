@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { AdminNav } from "@/components/admin/admin-nav";
+import type { AdminPendingCounts } from "@/lib/admin/pending-counts";
 
 /**
  * Fixed left sidebar on lg+ screens; on smaller screens it's a slide-in
@@ -13,7 +14,7 @@ import { AdminNav } from "@/components/admin/admin-nav";
  * a plain Server Component, this is the only piece that needs to be
  * interactive.
  */
-export function AdminSidebar({ isAdmin }: { isAdmin: boolean }) {
+export function AdminSidebar({ isAdmin, pendingCounts }: { isAdmin: boolean; pendingCounts: AdminPendingCounts }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -63,7 +64,7 @@ export function AdminSidebar({ isAdmin }: { isAdmin: boolean }) {
         </div>
 
         <div className="flex-1 overflow-y-auto px-3 py-4">
-          <AdminNav isAdmin={isAdmin} onNavigate={() => setOpen(false)} />
+          <AdminNav isAdmin={isAdmin} pendingCounts={pendingCounts} onNavigate={() => setOpen(false)} />
         </div>
 
         <div className="shrink-0 border-t border-neutral-200 px-4 py-4">

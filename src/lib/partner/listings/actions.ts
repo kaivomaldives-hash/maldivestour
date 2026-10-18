@@ -1,5 +1,6 @@
 "use server";
 
+import { sendListingSubmissionNotification } from "@/lib/partner/listings/notifications";
 import { createClient } from "@/lib/supabase/server";
 import type { ListingNodeType, ListingPayload, ListingSubmissionKind } from "@/lib/partner/listings/types";
 import type { PartnerKind } from "@/lib/partner/types";
@@ -42,9 +43,9 @@ export async function submitListing(input: SubmitListingInput): Promise<ActionRe
 
   const { data: partner } = await supabase
     .from("partner_accounts")
-    .select("partner_kinds, onboarding_status")
+    .select("partner_kinds, onboarding_status, business_name")
     .eq("id", user.id)
-    .maybeSingle<{ partner_kinds: PartnerKind[]; onboarding_status: string }>();
+    .maybeSingle<{ partner_kinds: PartnerKind[]; onboarding_status: string; business_name: string }>();
   if (!partner) return { ok: false, error: "No partner account found." };
   if (partner.onboarding_status !== "approved") return { ok: false, error: "Your partner profile must be approved before you can submit a listing." };
 
@@ -74,5 +75,11 @@ export async function submitListing(input: SubmitListingInput): Promise<ActionRe
   } as unknown as never);
 
   if (error) return { ok: false, error: error.message };
+  await sendListingSubmissionNotification({
+    businessName: partner.business_name,
+    title,
+    nodeType,
+    submissionKind: input.submissionKind,
+  });
   return { ok: true };
 }

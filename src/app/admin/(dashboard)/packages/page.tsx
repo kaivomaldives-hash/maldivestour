@@ -119,7 +119,7 @@ export default async function AdminPackagesPage({
                     <Badge tone={STATUS_TONE[p.status]}>{p.status}</Badge>
                   </td>
                   <td className="px-4 py-3">
-                    <SortOrderInput nodeId={p.id} defaultValue={p.sortOrder} />
+                    <SortOrderInput nodeId={p.id} defaultValue={p.sortOrder} nodeType="package" />
                   </td>
                   <td className="px-4 py-3 text-right">
                     <DeleteNodeButton nodeId={p.id} redirectTo="/admin/packages" />

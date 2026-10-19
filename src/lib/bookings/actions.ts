@@ -62,6 +62,13 @@ export interface TransferBookingInquiryInput {
   specialRequests: string | null;
   estimatedPrice: number | null;
   currency: string;
+  /** An affiliate's referral code, typed into the booking form as a promo
+   * code (Task: affiliate promo codes). Resolved server-side, inside
+   * create_booking_inquiry itself — never trust a client-supplied
+   * affiliate id/discount/commission number. A code that doesn't resolve
+   * to an approved affiliate is silently ignored, never a submission
+   * error (see validatePromoCode for the live-feedback check). */
+  promoCode?: string | null;
   /** Hidden honeypot field — must always be empty for a real submission. */
   honeypot?: string;
 }
@@ -123,6 +130,7 @@ export async function createTransferBookingInquiry(
     p_estimated_price: input.estimatedPrice,
     p_currency: input.currency,
     p_source: "transfer" satisfies BookingSource,
+    p_promo_code: input.promoCode?.trim() || null,
   };
   const { data, error } = await supabase
     .rpc("create_booking_inquiry" as unknown as never, rpcArgs as unknown as undefined)
@@ -250,6 +258,8 @@ export interface NodeInquiryInput {
   mealPlan?: string | null;
   roomType?: string | null;
   specialRequests: string | null;
+  /** Same affiliate promo-code field as TransferBookingInquiryInput. */
+  promoCode?: string | null;
   /** Hidden honeypot field — must always be empty for a real submission. */
   honeypot?: string;
 }
@@ -309,6 +319,7 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
     p_currency: "USD",
     p_source: input.source,
     p_destination_label: input.destinationLabel?.trim() || null,
+    p_promo_code: input.promoCode?.trim() || null,
   };
   const { data, error } = await supabase
     .rpc("create_booking_inquiry" as unknown as never, rpcArgs as unknown as undefined)
@@ -337,6 +348,30 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
   });
 
   return { ok: true, bookingReference: data.booking_reference };
+}
+
+export interface PromoCodeValidation {
+  valid: boolean;
+  discountPercent: number | null;
+}
+
+/** Live "is this code real" check for a booking form's promo-code field —
+ * public, read-only, reveals nothing about the affiliate behind a valid
+ * code (see validate_affiliate_promo_code's own comment on why). The
+ * actual booking submission re-validates the code itself server-side
+ * inside create_booking_inquiry; this is purely UI feedback so a guest
+ * isn't left wondering whether their code did anything. */
+export async function validatePromoCode(code: string): Promise<PromoCodeValidation> {
+  const trimmed = code.trim();
+  if (!trimmed) return { valid: false, discountPercent: null };
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .rpc("validate_affiliate_promo_code" as unknown as never, { p_code: trimmed } as unknown as undefined)
+    .single<{ valid: boolean; discount_percent: number | null }>();
+
+  if (error || !data) return { valid: false, discountPercent: null };
+  return { valid: data.valid, discountPercent: data.valid ? data.discount_percent : null };
 }
 
 /** The RPC's own guard-rail exceptions (duplicate submission, rate limit)

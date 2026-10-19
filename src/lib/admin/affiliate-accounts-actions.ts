@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { requireStaff } from "@/lib/admin/auth";
 import { logAdminAction } from "@/lib/admin/audit-log";
 import type { AdminActionResult } from "@/lib/admin/node-actions";
@@ -57,5 +59,35 @@ export async function reconsiderAffiliateAccount(affiliateId: string): Promise<A
     .eq("id", affiliateId);
   if (error) return { ok: false, error: error.message };
   await logAdminAction("reconsider_affiliate", "affiliate_account", affiliateId);
+  return { ok: true };
+}
+
+/** Records a manual payout against an affiliate's accrued commission —
+ * this platform never moves money itself (see the migration this
+ * belongs to, 20261030000100), so this is purely a bookkeeping entry:
+ * "staff paid this affiliate $X outside the platform, on this date."
+ * Never tied to one specific booking — an affiliate is paid their
+ * running balance, not reconciled booking by booking. */
+export async function recordAffiliatePayout(
+  affiliateId: string,
+  amount: number,
+  method: string,
+  note: string,
+): Promise<AdminActionResult> {
+  const { userId } = await requireStaff();
+  if (!Number.isFinite(amount) || amount <= 0) return { ok: false, error: "Enter a payout amount greater than 0." };
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("affiliate_payouts").insert({
+    affiliate_id: affiliateId,
+    amount,
+    method: method.trim() || null,
+    note: note.trim() || null,
+    paid_by: userId,
+  } as unknown as never);
+  if (error) return { ok: false, error: error.message };
+
+  await logAdminAction("record_affiliate_payout", "affiliate_account", affiliateId, { amount, method: method.trim() || null });
+  revalidatePath(`/admin/affiliates/${affiliateId}`);
   return { ok: true };
 }

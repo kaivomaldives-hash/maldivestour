@@ -20,14 +20,7 @@ import {
   searchPackages,
 } from "@/lib/packages/repository";
 import type { PackageSummary } from "@/lib/packages/types";
-import {
-  EXPANSION_MATCH_SCORE,
-  expandKnownPlaceNames,
-  normalizeQuery,
-  scoreTitleMatch,
-  tokenize,
-  tokensAllPresent,
-} from "@/lib/search/normalize";
+import { EXPANSION_MATCH_SCORE, normalizeQuery, scoreTitleMatch, tokenize, tokensAllPresent } from "@/lib/search/normalize";
 import type {
   SearchFilterType,
   SearchGroupKey,
@@ -632,9 +625,8 @@ const GROUP_CAP = 6;
 /** The full search-results page: either a mixed, grouped view (no `type`
  * filter) or one flat, paginated list (a `type` filter is active). */
 export async function searchSite(rawQuery: string, options: SearchPageOptions = {}): Promise<SearchPageResult> {
-  const normalized = normalizeQuery(rawQuery);
-  if (!normalized) return { query: "", groups: [], flat: null, total: 0 };
-  const query = expandKnownPlaceNames(normalized);
+  const query = normalizeQuery(rawQuery);
+  if (!query) return { query: "", groups: [], flat: null, total: 0 };
 
   if (options.type) {
     const page = Math.max(1, options.page ?? 1);
@@ -666,9 +658,8 @@ export async function searchSite(rawQuery: string, options: SearchPageOptions = 
  * single debounced keystroke costs a fixed ~6 queries regardless of
  * what's typed. */
 export async function suggestSite(rawQuery: string, limit = 8): Promise<SearchResult[]> {
-  const normalized = normalizeQuery(rawQuery);
-  if (normalized.length < 2) return [];
-  const query = expandKnownPlaceNames(normalized);
+  const query = normalizeQuery(rawQuery);
+  if (query.length < 2) return [];
 
   const base = await baseSearch(query, 4);
   const results = await mapBaseResults(base, query);

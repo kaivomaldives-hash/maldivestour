@@ -1,6 +1,7 @@
 import "server-only";
 
 import { ACCOMMODATION_TYPE_SEGMENT } from "@/lib/accommodations/types";
+import { cachedRead } from "@/lib/cache/cached-read";
 import { createClient } from "@/lib/supabase/public";
 
 export interface EntityLinkTarget {
@@ -62,8 +63,18 @@ interface NodeTitleRow {
  * hand-authored list. Two lean queries (no hero-media joins, no pagination
  * loop) — not the full getAtolls()/getIslands()/getAccommodations()
  * repository functions, which fetch more than a title+slug+href needs.
+ *
+ * Every atoll, island, and article page rebuilds this on its own ISR
+ * regeneration, each paying for both full-table scans independently —
+ * unlike every other list query in this codebase, this one was never
+ * behind the shared cache, so it's wrapped below via cachedRead instead
+ * of being called directly. 30 minutes is generous: a newly published
+ * atoll/island/accommodation missing from contextual links for up to
+ * that long is a cosmetic lag, not a broken page, and busting this on
+ * every node edit would defeat the point of caching something this
+ * expensive and this rarely changed.
  */
-export async function buildEntityLinkMap(): Promise<EntityLinkTarget[]> {
+async function buildEntityLinkMapUncached(): Promise<EntityLinkTarget[]> {
   const supabase = await createClient();
 
   const [locationsResult, accommodationsResult] = await Promise.all([
@@ -98,3 +109,5 @@ export async function buildEntityLinkMap(): Promise<EntityLinkTarget[]> {
 
   return entities;
 }
+
+export const buildEntityLinkMap = cachedRead(buildEntityLinkMapUncached, ["linking:entity-link-map"], 1800);

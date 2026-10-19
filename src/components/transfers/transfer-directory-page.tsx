@@ -84,7 +84,7 @@ const FAQS = [
   },
   {
     question: "What's the difference between a resort transfer and an island transfer?",
-    answer: "A resort transfer goes to a private resort island; an island transfer goes to a local, inhabited Maldivian island (like Malé or Maafushi) with hotels or guesthouses rather than a resort.",
+    answer: "A resort transfer goes to a private resort island; an island transfer goes to a local, inhabited Maldivian island (like Male or Maafushi) with hotels or guesthouses rather than a resort.",
   },
   {
     question: "Are seaplane and domestic flight transfers available?",

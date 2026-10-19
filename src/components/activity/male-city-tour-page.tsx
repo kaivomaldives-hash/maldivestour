@@ -44,7 +44,7 @@ export async function MaleCityTourPage() {
         breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Male City Tour" }]}
         eyebrow="Excursion"
         title="Male City Tour"
-        description="A guided tour of Malé, the Maldives' capital island — with airport pickup and drop-off, so even a short layover is enough time to see it. Choose walking, bike, car, or bus."
+        description="A guided tour of Male, the Maldives' capital island — with airport pickup and drop-off, so even a short layover is enough time to see it. Choose walking, bike, car, or bus."
         image={HUB_HERO}
       />
 
@@ -52,11 +52,11 @@ export async function MaleCityTourPage() {
         <div className="max-w-3xl">
           <h2 className="text-xl font-semibold text-ocean-900">Why take a Male City Tour?</h2>
           <p className="mt-2 text-neutral-700">
-            Malé is one of the most densely populated cities in the world, packed into a single small island — a
+            Male is one of the most densely populated cities in the world, packed into a single small island — a
             genuinely different side of the Maldives from the resort islands. It sits right next to Velana
             International Airport, so a few hours of waiting time between flights or boats is enough to see it: our
-            guides pick you up at the airport, show you around, and drop you back off (or at your hotel in Malé or
-            Hulhumalé) afterwards.
+            guides pick you up at the airport, show you around, and drop you back off (or at your hotel in Male or
+            Hulhumale) afterwards.
           </p>
         </div>
 
@@ -81,7 +81,7 @@ export async function MaleCityTourPage() {
           <section className="mt-10">
             <h2 className="text-xl font-semibold text-ocean-900">Half-Day Tours (5–6 hours)</h2>
             <p className="mt-1 text-sm text-neutral-600">
-              For guests staying in Malé, Hulhumalé, or a nearby resort — covers Malé, Hulhumalé, and Vilimalé in one
+              For guests staying in Male, Hulhumale, or a nearby resort — covers Male, Hulhumale, and Vilimale in one
               trip, with tea and local snacks included.
             </p>
             <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -97,14 +97,14 @@ export async function MaleCityTourPage() {
           <dl className="mt-4 grid grid-cols-1 gap-6 text-sm sm:grid-cols-2">
             <div>
               <dt className="font-medium text-neutral-900">Meeting points</dt>
-              <dd className="mt-1 text-neutral-700">Malé Jetty No. 1, or the Airport Information Desk. Your guide will be waiting with a Maldives Tour Guide signboard.</dd>
+              <dd className="mt-1 text-neutral-700">Male Jetty No. 1, or the Airport Information Desk. Your guide will be waiting with a Maldives Tour Guide signboard.</dd>
             </div>
             <div>
               <dt className="font-medium text-neutral-900">Dress code</dt>
               <dd className="mt-1 text-neutral-700">
                 The Maldives is a Muslim country — modest clothing is fine for most of the tour (knee-length is okay), but entering
                 a mosque requires full-length clothing and a head covering for women (a scarf is fine). Alcohol isn&rsquo;t
-                permitted in Malé.
+                permitted in Male.
               </dd>
             </div>
             <div>

@@ -12,13 +12,13 @@ const config: TransferCategoryConfig = {
   eyebrow: "By sea",
   h1: "Maldives Speedboat Transfers",
   intro:
-    "Speedboat is the most common way to reach a Maldives resort or nearby local island from Velana International Airport — fast, scenic, and typically under an hour for atolls close to Malé. Real speedboat routes and prices below.",
+    "Speedboat is the most common way to reach a Maldives resort or nearby local island from Velana International Airport — fast, scenic, and typically under an hour for atolls close to Male. Real speedboat routes and prices below.",
   metaTitle: "Maldives Speedboat Transfers | Airport & Island Transfers",
   metaDescription: "Real Maldives speedboat transfer routes from Velana International Airport — prices and journey times by destination.",
   faqs: [
     {
       question: "Which destinations can be reached by speedboat?",
-      answer: "Resorts and local islands in atolls near Malé are typically reached by speedboat — see the real routes below for exact destinations and journey times.",
+      answer: "Resorts and local islands in atolls near Male are typically reached by speedboat — see the real routes below for exact destinations and journey times.",
     },
     {
       question: "How much do speedboat transfers cost?",

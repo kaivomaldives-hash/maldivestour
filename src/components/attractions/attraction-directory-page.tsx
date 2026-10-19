@@ -79,7 +79,7 @@ export async function AttractionDirectoryPage({
         breadcrumbs={[{ label: "Maldives", href: "/maldives/" }, { label: "Attractions" }]}
         eyebrow="Places to visit"
         title="Maldives Attractions"
-        description="Real, individually documented landmarks, museums, monuments and public beaches — starting with Malé's must-see sights."
+        description="Real, individually documented landmarks, museums, monuments and public beaches — starting with Male's must-see sights."
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>

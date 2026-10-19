@@ -1,6 +1,21 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Every canonical URL (src/lib/seo/site.ts's canonicalUrl()), every
+  // internal <Link href>, and every url_redirects.target_path sitewide
+  // already uses a trailing slash — but Next's own unconfigured default
+  // is the opposite (redirects trailing-slash URLs to the non-slash
+  // version, e.g. "/foo/" -> "/foo"). Every page on the site was
+  // therefore silently fighting its own canonical/link convention with a
+  // same-site 308 on every single request. Root cause of an SEO audit
+  // flagging dozens of "redirect loop"/non-indexable-canonical pages —
+  // the canonical tag points to the trailing-slash URL, which then
+  // redirects back to the no-slash URL a crawler just fetched. Setting
+  // this to true makes Next's own behavior match the convention already
+  // used everywhere instead of undoing it. (This was set once before,
+  // then lost in an unrelated batch of reverts on 2026-10-05 — see git
+  // history for commits 2ebd93b/94ac3a6 — restoring it now.)
+  trailingSlash: true,
   // Partner verification document uploads (business license/ID/bank
   // proof/property photos, src/lib/partner/document-actions.ts) go
   // through a Server Action as multipart/form-data — the 1MB default

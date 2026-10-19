@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import { combinePhone } from "@/components/bookings/combine-phone";
@@ -333,17 +333,32 @@ function DestinationField({
   const [results, setResults] = useState<DestinationOption[]>([]);
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Same 250ms-after-the-last-keystroke debounce as every other search box
+  // on the site (search-box.tsx, location-combobox.tsx) — this one was
+  // firing a server search (two Supabase queries) on every single
+  // keystroke instead of waiting for the visitor to pause typing.
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
 
   function search(next: string) {
     setQuery(next);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
     if (next.trim().length < 2) {
       setResults([]);
       return;
     }
-    startTransition(async () => {
-      const found = await searchDestinationOptions(next);
-      setResults(found);
-    });
+    debounceRef.current = setTimeout(() => {
+      startTransition(async () => {
+        const found = await searchDestinationOptions(next);
+        setResults(found);
+      });
+    }, 250);
   }
 
   return (

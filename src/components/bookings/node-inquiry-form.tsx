@@ -24,9 +24,11 @@ export interface NodeInquiryFormProps {
    * single-slot activity. Off by default so every other vertical's form
    * is unchanged. */
   showNumberOfDays?: boolean;
-  /** Adds a required destination picker (atoll/island/resort) — only for
-   * a product tagged to more than one destination (e.g. Emperor's
-   * charters, see src/lib/activities/types.ts's `locations`), where the
+  /** Adds a required destination picker (atoll/island/resort) — for a
+   * product tagged to more than one destination (e.g. Emperor's charters,
+   * see src/lib/activities/types.ts's `locations`), or one with no fixed
+   * destination at all (private speedboat charters — the whole point of
+   * chartering one is going wherever the guest wants), where the
    * product's own location is genuinely ambiguous without asking.
    * Off by default, so every single-location product's form is unchanged. */
   requireDestination?: boolean;

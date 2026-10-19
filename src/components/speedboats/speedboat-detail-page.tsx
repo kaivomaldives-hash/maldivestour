@@ -127,6 +127,7 @@ export async function SpeedboatDetailPage({ slug }: { slug: string }) {
               source="transfer"
               submitLabel="Request Private Charter"
               toggleLabel="Request Private Charter"
+              requireDestination
             />
           )}
         </section>

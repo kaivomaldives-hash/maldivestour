@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState, useTransition } from "react";
+import { useEffect, useId, useRef, useState, useTransition } from "react";
 
 import { searchListingEmbedOptions } from "@/lib/admin/listing-embed-actions";
 import { LISTING_EMBED_TYPE_LABEL, type ListingEmbedOption } from "@/lib/admin/listing-embed-types";
@@ -19,16 +19,27 @@ export function ListingInsertPicker({ onInsert }: { onInsert: (option: ListingEm
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<ListingEmbedOption[]>([]);
   const [isPending, startTransition] = useTransition();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
 
   function search(next: string) {
     setQuery(next);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
     if (next.trim().length < 2) {
       setResults([]);
       return;
     }
-    startTransition(async () => {
-      setResults(await searchListingEmbedOptions(next));
-    });
+    debounceRef.current = setTimeout(() => {
+      startTransition(async () => {
+        setResults(await searchListingEmbedOptions(next));
+      });
+    }, 250);
   }
 
   function close() {

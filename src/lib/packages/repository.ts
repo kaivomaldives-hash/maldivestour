@@ -600,7 +600,7 @@ export async function getPackagesByActivity(activityNodeId: string): Promise<Pac
 /** Every package with an itinerary item referencing a transfer_service on
  * this route — routeId -> transfer_services.id (many) -> itinerary items
  * -> stages -> package ids, all as separate batched queries. */
-export async function getPackagesByTransferRoute(routeId: string): Promise<PackageSummary[]> {
+async function getPackagesByTransferRouteUncached(routeId: string): Promise<PackageSummary[]> {
   const supabase = await createClient();
   const { data: serviceRows, error: serviceError } = await supabase
     .from("transfer_services")
@@ -632,6 +632,8 @@ export async function getPackagesByTransferRoute(routeId: string): Promise<Packa
   const result = await getPackages({ nodeIds: packageIds, pageSize: 100 });
   return result.items;
 }
+
+export const getPackagesByTransferRoute = cachedRead(getPackagesByTransferRouteUncached, ["packages:by-transfer-route"], 300);
 
 /** Every package touching this location, via its own node_locations
  * destination tags (set at seed time — see this file's header comment and

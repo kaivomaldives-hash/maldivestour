@@ -7,6 +7,7 @@ import {
   type GetActivitiesOptions,
 } from "@/lib/activities/repository";
 import type { ActivityDetail, ActivitySummary, PaginatedResult as ActivityPaginatedResult } from "@/lib/activities/types";
+import { cachedRead } from "@/lib/cache/cached-read";
 import { getCategoriesByGroup, getCategoryBySlug, getNodeIdsByCategory } from "@/lib/categories/repository";
 import type { CategorySummary } from "@/lib/categories/types";
 import { createClient } from "@/lib/supabase/public";
@@ -113,7 +114,7 @@ export async function getSurfingActivitiesByType(
 }
 
 /** The surf-type tag(s) attached to one activity, for detail-page display. */
-export async function getSurfingTypesForActivity(nodeId: string): Promise<CategorySummary[]> {
+async function getSurfingTypesForActivityUncached(nodeId: string): Promise<CategorySummary[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("node_categories")
@@ -127,6 +128,8 @@ export async function getSurfingTypesForActivity(nodeId: string): Promise<Catego
   const allTypes = await getCategoriesByGroup("activity-type");
   return allTypes.filter((t) => categoryIds.includes(t.id));
 }
+
+export const getSurfingTypesForActivity = cachedRead(getSurfingTypesForActivityUncached, ["surfing:types-for-activity"], 300);
 
 /** The specific surf break(s) a surfing activity visits, ONLY where the
  * source data names one (node_locations secondary tag) — most surfing

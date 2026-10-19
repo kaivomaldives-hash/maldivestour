@@ -24,7 +24,7 @@ export function LocationMediaUploadForm({ locationId }: { locationId: string }) 
 
   if (!showForm) {
     return (
-      <Button variant="secondary" size="sm" onClick={() => setShowForm(true)}>
+      <Button size="sm" onClick={() => setShowForm(true)}>
         Share your photos
       </Button>
     );

@@ -113,7 +113,7 @@ export async function getFishingActivitiesByType(
 }
 
 /** The fishing-type tag(s) attached to one activity, for detail-page display. */
-export async function getFishingTypesForActivity(nodeId: string): Promise<CategorySummary[]> {
+async function getFishingTypesForActivityUncached(nodeId: string): Promise<CategorySummary[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("node_categories")
@@ -127,3 +127,5 @@ export async function getFishingTypesForActivity(nodeId: string): Promise<Catego
   const allTypes = await getCategoriesByGroup("activity-type");
   return allTypes.filter((t) => categoryIds.includes(t.id));
 }
+
+export const getFishingTypesForActivity = cachedRead(getFishingTypesForActivityUncached, ["fishing:types-for-activity"], 300);

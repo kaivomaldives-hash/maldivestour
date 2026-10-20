@@ -215,6 +215,13 @@ export async function ActivityDirectoryPage({
         }
         image={(atoll || island) ? undefined : ACTIVITIES_HERO}
         video={(atoll || island) ? undefined : getActivitiesHeroVideo()}
+        meta={
+          (atoll || island || isSearching) ? undefined : (
+            <span>
+              <strong className="font-semibold text-white">{results.total}+</strong> activities listed
+            </span>
+          )
+        }
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>

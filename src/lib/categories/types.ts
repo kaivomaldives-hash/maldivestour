@@ -13,7 +13,8 @@ export type CategoryGroup =
   | "theme"
   | "article-category"
   | "transfer-category"
-  | "activity-category";
+  | "activity-category"
+  | "package-category";
 
 export interface CategorySummary {
   id: string;

@@ -16,7 +16,7 @@ import { getActivities, searchActivities } from "@/lib/activities/repository";
 import { activityHref, type ActivityCategory, type ActivityDifficulty } from "@/lib/activities/types";
 import { getAttractions } from "@/lib/attractions/repository";
 import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
-import { getSiteHeroVideo } from "@/lib/media/site-hero-video";
+import { getActivitiesHeroVideo } from "@/lib/media/site-hero-video";
 import { asset } from "@/lib/packages/category-images";
 import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
@@ -214,7 +214,7 @@ export async function ActivityDirectoryPage({
           (atoll || island) ? undefined : "Real, individually verified things to do in the Maldives — excursions, watersports, island hopping and more, sourced from official operator and resort information."
         }
         image={(atoll || island) ? undefined : ACTIVITIES_HERO}
-        video={(atoll || island) ? undefined : getSiteHeroVideo()}
+        video={(atoll || island) ? undefined : getActivitiesHeroVideo()}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>

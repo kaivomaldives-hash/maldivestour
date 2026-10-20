@@ -11,11 +11,11 @@ import type { HeroVideoSource, HeroVideoSources } from "@/components/ui/hero-vid
  * mobile/portrait set is optional — omit it and that page just gets its
  * desktop/landscape video on every screen size.
  *
- * Two distinct videos, not one shared asset: the homepage and the
- * Activities directory use the original site hero (a boat/speedboat
- * clip, generic enough for either), while the /maldives/ hub page gets
- * its own "Maldives country" video — different footage, so a different
- * Storage path rather than overloading one.
+ * Three distinct videos, not one shared asset: the homepage keeps the
+ * original boat/speedboat clip, the /maldives/ hub page gets its own
+ * "Maldives country" footage, and the Activities directory gets its
+ * own dedicated activities footage — each is different source footage,
+ * so each gets its own Storage path rather than overloading one.
  *
  * MP4-only, no WebM: publicStorageUrl() only confirms
  * NEXT_PUBLIC_SUPABASE_URL is configured, not that a file actually exists
@@ -44,6 +44,11 @@ const MALDIVES_HUB_VIDEO_POSTER_PATH = "site/maldives-country-hero-poster.webp";
 const MALDIVES_HUB_VIDEO_MOBILE_MP4_PATH = "site/maldives-country-hero-mobile.mp4";
 const MALDIVES_HUB_VIDEO_MOBILE_POSTER_PATH = "site/maldives-country-hero-mobile-poster.webp";
 
+const ACTIVITIES_VIDEO_MP4_PATH = "site/activities-hero.mp4";
+const ACTIVITIES_VIDEO_POSTER_PATH = "site/activities-hero-poster.webp";
+const ACTIVITIES_VIDEO_MOBILE_MP4_PATH = "site/activities-hero-mobile.mp4";
+const ACTIVITIES_VIDEO_MOBILE_POSTER_PATH = "site/activities-hero-mobile-poster.webp";
+
 function resolveSource(mp4Path: string, posterPath: string): HeroVideoSource | null {
   const mp4 = publicStorageUrl(mp4Path);
   const poster = publicStorageUrl(posterPath);
@@ -52,7 +57,7 @@ function resolveSource(mp4Path: string, posterPath: string): HeroVideoSource | n
   return { mp4, poster };
 }
 
-/** Homepage + Activities directory hero (the original boat/speedboat clip). */
+/** Homepage hero (the boat/speedboat clip). */
 export function getSiteHeroVideo(): HeroVideoSources | null {
   const desktop = resolveSource(HERO_VIDEO_MP4_PATH, HERO_VIDEO_POSTER_PATH);
   if (!desktop) return null;
@@ -67,5 +72,14 @@ export function getMaldivesHubHeroVideo(): HeroVideoSources | null {
   if (!desktop) return null;
 
   const mobile = resolveSource(MALDIVES_HUB_VIDEO_MOBILE_MP4_PATH, MALDIVES_HUB_VIDEO_MOBILE_POSTER_PATH) ?? undefined;
+  return { desktop, mobile };
+}
+
+/** Activities directory hero (dedicated activities-footage clip). */
+export function getActivitiesHeroVideo(): HeroVideoSources | null {
+  const desktop = resolveSource(ACTIVITIES_VIDEO_MP4_PATH, ACTIVITIES_VIDEO_POSTER_PATH);
+  if (!desktop) return null;
+
+  const mobile = resolveSource(ACTIVITIES_VIDEO_MOBILE_MP4_PATH, ACTIVITIES_VIDEO_MOBILE_POSTER_PATH) ?? undefined;
   return { desktop, mobile };
 }

@@ -75,7 +75,7 @@ export function PageHero({
           <div className="absolute inset-0 bg-gradient-to-t from-ocean-950/85 via-ocean-900/55 to-ocean-900/20" />
         </div>
       )}
-      <div className={`relative ${CONTAINER_CLASS} py-10 sm:py-14`}>
+      <div className={`relative ${CONTAINER_CLASS} ${video ? "py-16 sm:py-24" : "py-10 sm:py-14"}`}>
         {breadcrumbs && <Breadcrumbs items={breadcrumbs} tone={isLight ? "inverted" : "default"} />}
 
         {eyebrow && (

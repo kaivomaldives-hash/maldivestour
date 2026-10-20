@@ -14,7 +14,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { getAtolls, getCountry, getIslandBySlug } from "@/lib/locations/repository";
 import { getMediaAssetsByIds } from "@/lib/media/repository";
 import type { MediaAsset } from "@/lib/media/types";
-import { getSiteHeroVideo } from "@/lib/media/site-hero-video";
+import { getMaldivesHubHeroVideo } from "@/lib/media/site-hero-video";
 import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -106,7 +106,7 @@ export default async function MaldivesPage() {
 
       <PageHero
         variant="ocean"
-        video={getSiteHeroVideo()}
+        video={getMaldivesHubHeroVideo()}
         eyebrow="Maldives Tour Guide"
         title={country.title}
         description={country.summary ?? undefined}

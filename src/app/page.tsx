@@ -11,6 +11,7 @@ import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { Button } from "@/components/ui/button";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
+import { HeroVideoBackground } from "@/components/ui/hero-video-background";
 import { CompassIcon, DivingIcon, FishIcon, MapPinIcon } from "@/components/ui/icons";
 import { MediaImage } from "@/components/ui/media-image";
 import { SectionHeader } from "@/components/ui/section-header";
@@ -19,6 +20,7 @@ import { getActivities } from "@/lib/activities/repository";
 import { getRecentArticles } from "@/lib/articles/repository";
 import { getAttractions } from "@/lib/attractions/repository";
 import { getAtolls } from "@/lib/locations/repository";
+import { getSiteHeroVideo } from "@/lib/media/site-hero-video";
 import { getFeaturedPackageViews } from "@/lib/packages/view-repository";
 import { canonicalUrl } from "@/lib/seo/site";
 import { getTransferRoutes } from "@/lib/transfers/repository";
@@ -80,14 +82,17 @@ export default async function Home() {
 
   const islandCount = atolls.reduce((sum, atoll) => sum + atoll.islandCount, 0);
   const featuredAtolls = atolls.slice(0, 6);
+  const heroVideo = getSiteHeroVideo();
 
   return (
     <main className="flex-1">
-      {/* Hero — no stock imagery is used (none is available in this
-          dataset yet); the ocean gradient + real counts carry the section
-          instead of a placeholder photo. */}
-      <section className="bg-gradient-to-br from-ocean-950 via-ocean-800 to-maldives-600 text-white">
-        <Container className="py-16 sm:py-24">
+      {/* Hero — the ocean gradient stays on as a base layer even when a
+          video is set (see HeroVideoBackground/getSiteHeroVideo), so a
+          failed/not-yet-uploaded video never leaves white text on a bare
+          white page. */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-ocean-950 via-ocean-800 to-maldives-600 text-white">
+        {heroVideo && <HeroVideoBackground source={heroVideo} />}
+        <Container className="relative py-16 sm:py-24">
           <p className="text-xs font-semibold uppercase tracking-wide text-lagoon-200">Maldives Tour Guide</p>
           <h1 className="mt-3 max-w-2xl text-4xl font-semibold tracking-tight sm:text-5xl">
             A real, source-verified guide to the Maldives

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import { Breadcrumbs, type BreadcrumbItem } from "@/components/location/breadcrumbs";
 import { CONTAINER_CLASS } from "@/components/ui/container";
+import { HeroVideoBackground, type HeroVideoSource } from "@/components/ui/hero-video-background";
 import { MediaImage } from "@/components/ui/media-image";
 import type { MediaAsset } from "@/lib/media/types";
 
@@ -24,6 +25,7 @@ export function PageHero({
   action,
   variant = "plain",
   image,
+  video,
 }: {
   eyebrow?: string;
   title: ReactNode;
@@ -36,16 +38,37 @@ export function PageHero({
    * §20) — null for the vast majority of pages today. When present, it
    * takes over the band (dark text always reads white against it) instead
    * of the plain/ocean gradient, which is itself just a fallback for when
-   * there's no real photo. */
+   * there's no real photo. Ignored when `video` is also set. */
   image?: MediaAsset | null;
+  /** A full-bleed looping background video, for the handful of top-level
+   * gateway pages (homepage, /maldives/) that want one instead of a flat
+   * gradient — see HeroVideoBackground for why this is a hand-set source,
+   * not a MediaAsset. Takes over the band the same way `image` does. */
+  video?: HeroVideoSource | null;
 }) {
   const isOcean = variant === "ocean";
-  const hasImage = Boolean(image && image.mediaType === "image" && image.storagePath);
+  const hasImage = Boolean(!video && image && image.mediaType === "image" && image.storagePath);
+  const isLight = isOcean || hasImage || Boolean(video);
 
   return (
     <section
-      className={`relative ${hasImage ? "text-white" : isOcean ? "bg-gradient-to-br from-ocean-900 via-ocean-800 to-maldives-600 text-white" : "bg-sand-50"}`}
+      className={`relative ${
+        video
+          // The ocean gradient stays on as a base layer underneath the
+          // video/poster, not replaced by it — if the video and its
+          // poster are both still unset or fail to load (e.g. before the
+          // files are actually uploaded to Storage), white text must
+          // never end up sitting directly on the page's plain white
+          // background with nothing else behind it.
+          ? "bg-gradient-to-br from-ocean-900 via-ocean-800 to-maldives-600 text-white"
+          : hasImage
+            ? "text-white"
+            : isOcean
+              ? "bg-gradient-to-br from-ocean-900 via-ocean-800 to-maldives-600 text-white"
+              : "bg-sand-50"
+      }`}
     >
+      {video && <HeroVideoBackground source={video} />}
       {hasImage && (
         <div className="absolute inset-0">
           <MediaImage asset={image} alt="" fillParent priority sizes="100vw" />
@@ -53,20 +76,20 @@ export function PageHero({
         </div>
       )}
       <div className={`relative ${CONTAINER_CLASS} py-10 sm:py-14`}>
-        {breadcrumbs && <Breadcrumbs items={breadcrumbs} tone={isOcean || hasImage ? "inverted" : "default"} />}
+        {breadcrumbs && <Breadcrumbs items={breadcrumbs} tone={isLight ? "inverted" : "default"} />}
 
         {eyebrow && (
-          <p className={`mt-4 text-xs font-semibold uppercase tracking-wide ${isOcean || hasImage ? "text-lagoon-200" : "text-maldives-600"}`}>
+          <p className={`mt-4 text-xs font-semibold uppercase tracking-wide ${isLight ? "text-lagoon-200" : "text-maldives-600"}`}>
             {eyebrow}
           </p>
         )}
 
-        <h1 className={`${breadcrumbs || eyebrow ? "mt-2" : ""} text-3xl font-semibold tracking-tight sm:text-4xl ${isOcean || hasImage ? "text-white" : "text-ocean-900"}`}>
+        <h1 className={`${breadcrumbs || eyebrow ? "mt-2" : ""} text-3xl font-semibold tracking-tight sm:text-4xl ${isLight ? "text-white" : "text-ocean-900"}`}>
           {title}
         </h1>
 
         {description && (
-          <p className={`mt-3 max-w-2xl text-base ${isOcean || hasImage ? "text-lagoon-100" : "text-neutral-600"}`}>{description}</p>
+          <p className={`mt-3 max-w-2xl text-base ${isLight ? "text-lagoon-100" : "text-neutral-600"}`}>{description}</p>
         )}
 
         {meta && <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm">{meta}</div>}

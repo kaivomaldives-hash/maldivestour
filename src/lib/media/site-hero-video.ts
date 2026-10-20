@@ -17,13 +17,13 @@ import type { HeroVideoSource, HeroVideoSources } from "@/components/ui/hero-vid
  * that and hides itself, falling back to the page's own ocean gradient
  * rather than a broken-media icon.
  */
-const HERO_VIDEO_MP4_PATH = "site/hero.mp4";
-const HERO_VIDEO_WEBM_PATH = "site/hero.webm";
-const HERO_VIDEO_POSTER_PATH = "site/hero-poster.webp";
+const HERO_VIDEO_MP4_PATH = "site/maldives-hero.mp4";
+const HERO_VIDEO_WEBM_PATH = "site/maldives-hero.webm";
+const HERO_VIDEO_POSTER_PATH = "site/maldives-hero-poster.webp";
 
-const HERO_VIDEO_MOBILE_MP4_PATH = "site/hero-mobile.mp4";
-const HERO_VIDEO_MOBILE_WEBM_PATH = "site/hero-mobile.webm";
-const HERO_VIDEO_MOBILE_POSTER_PATH = "site/hero-mobile-poster.webp";
+const HERO_VIDEO_MOBILE_MP4_PATH = "site/maldives-hero-mobile.mp4";
+const HERO_VIDEO_MOBILE_WEBM_PATH = "site/maldives-hero-mobile.webm";
+const HERO_VIDEO_MOBILE_POSTER_PATH = "site/maldives-hero-mobile-poster.webp";
 
 function resolveSource(mp4Path: string, webmPath: string, posterPath: string): HeroVideoSource | null {
   const mp4 = publicStorageUrl(mp4Path);

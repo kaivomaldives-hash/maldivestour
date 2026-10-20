@@ -21,6 +21,7 @@ import { getAttractionsByIsland } from "@/lib/attractions/repository";
 import { getDiveSitesByLocation } from "@/lib/diving/repository";
 import { LocationCommentsSection } from "@/components/locations/location-comments-section";
 import { LocationMediaUploadForm } from "@/components/locations/location-media-upload-form";
+import { AddPlaceForm } from "@/components/locations/add-place-form";
 import { applyContextualLinks, escapeHtml } from "@/lib/linking/contextual-links";
 import { buildEntityLinkMap } from "@/lib/linking/entity-link-map";
 import { LocationGallerySection } from "@/components/locations/location-gallery-section";
@@ -208,6 +209,16 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
         <p className="mt-2 text-sm text-neutral-600">Been to {island.title}? Share a few photos — approved submissions are added to the gallery above.</p>
         <div className="mt-4">
           <LocationMediaUploadForm locationId={island.id} />
+        </div>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="text-xl font-semibold text-ocean-900">Know a Place We&rsquo;re Missing?</h2>
+        <p className="mt-2 text-sm text-neutral-600">
+          Suggest an attraction, restaurant, shop, or facility on {island.title} — approved submissions appear on our directory pages.
+        </p>
+        <div className="mt-4">
+          <AddPlaceForm locationId={island.id} initialLat={island.lat} initialLng={island.lng} />
         </div>
       </section>
 

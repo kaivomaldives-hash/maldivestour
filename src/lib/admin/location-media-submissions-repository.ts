@@ -19,6 +19,7 @@ export type LocationMediaSubmissionStatus = (typeof LOCATION_MEDIA_SUBMISSION_ST
 export interface AdminLocationMediaSubmissionImage {
   id: string;
   storagePath: string;
+  caption: string;
   fileName: string | null;
   contentType: string | null;
 }
@@ -49,6 +50,7 @@ interface ImageRow {
   id: string;
   submission_id: string;
   storage_path: string;
+  caption: string;
   file_name: string | null;
   content_type: string | null;
 }
@@ -90,7 +92,7 @@ export async function getLocationMediaSubmissionsAdmin(
   const imagesBySubmission = new Map<string, AdminLocationMediaSubmissionImage[]>();
   for (const img of images ?? []) {
     const list = imagesBySubmission.get(img.submission_id) ?? [];
-    list.push({ id: img.id, storagePath: img.storage_path, fileName: img.file_name, contentType: img.content_type });
+    list.push({ id: img.id, storagePath: img.storage_path, caption: img.caption, fileName: img.file_name, contentType: img.content_type });
     imagesBySubmission.set(img.submission_id, list);
   }
 

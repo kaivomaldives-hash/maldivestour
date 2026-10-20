@@ -48,9 +48,9 @@ export async function approveLocationMediaSubmission(submissionId: string): Prom
 
   const { data: images, error: imagesError } = await supabase
     .from("location_media_submission_images")
-    .select("id, storage_path, file_name, content_type")
+    .select("id, storage_path, caption, file_name, content_type")
     .eq("submission_id", submissionId)
-    .returns<Array<{ id: string; storage_path: string; file_name: string | null; content_type: string | null }>>();
+    .returns<Array<{ id: string; storage_path: string; caption: string; file_name: string | null; content_type: string | null }>>();
   if (imagesError) return { ok: false, error: imagesError.message };
   if (!images || images.length === 0) return { ok: false, error: "This submission has no images to approve." };
 
@@ -75,9 +75,13 @@ export async function approveLocationMediaSubmission(submissionId: string): Prom
     const { error: uploadError } = await supabase.storage.from("media").upload(newStoragePath, fileBlob, { contentType, upsert: false });
     if (uploadError) return { ok: false, error: uploadError.message };
 
+    // The submitter's required caption becomes both title and alt_text —
+    // see 20261105000100_photo_submission_captions.sql's own comment on
+    // why this used to be null for every guest-submitted photo on the
+    // site.
     const { data: assetRow, error: assetError } = await supabase
       .from("media_assets")
-      .insert({ media_type: "image", storage_path: newStoragePath, alt_text: null } as unknown as never)
+      .insert({ media_type: "image", storage_path: newStoragePath, title: image.caption || null, alt_text: image.caption || null } as unknown as never)
       .select("id")
       .single<{ id: string }>();
     if (assetError || !assetRow) {

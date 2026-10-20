@@ -20,6 +20,7 @@ export interface AdminPendingCounts {
   agentApplications: number;
   affiliateApplications: number;
   paymentRequests: number;
+  placeSubmissions: number;
 }
 
 type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
@@ -39,15 +40,16 @@ async function countRows(supabase: SupabaseServerClient, table: string, filters:
 
 async function getAdminPendingCountsUncached(): Promise<AdminPendingCounts> {
   const supabase = await createClient();
-  const [partnerLeads, partnerApplications, partnerListings, agentApplications, affiliateApplications, paymentRequests] = await Promise.all([
+  const [partnerLeads, partnerApplications, partnerListings, agentApplications, affiliateApplications, paymentRequests, placeSubmissions] = await Promise.all([
     countRows(supabase, "partner_requests", { status: "new" }),
     countRows(supabase, "partner_accounts", { onboarding_status: "submitted" }),
     countRows(supabase, "listing_submissions", { status: "pending" }),
     countRows(supabase, "agent_accounts", { status: "pending" }),
     countRows(supabase, "affiliate_accounts", { status: "pending" }),
     countRows(supabase, "payout_requests", { status: "pending" }),
+    countRows(supabase, "place_submissions", { status: "pending" }),
   ]);
-  return { partnerLeads, partnerApplications, partnerListings, agentApplications, affiliateApplications, paymentRequests };
+  return { partnerLeads, partnerApplications, partnerListings, agentApplications, affiliateApplications, paymentRequests, placeSubmissions };
 }
 
 let countsCache: { value: AdminPendingCounts; expiresAt: number } | null = null;

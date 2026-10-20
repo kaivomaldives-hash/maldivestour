@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 
+import { CaptionedPhotoPicker, type PickedPhoto } from "@/components/locations/captioned-photo-picker";
 import { Button } from "@/components/ui/button";
 import { createLocationMediaSubmission } from "@/lib/locations/media-submissions/actions";
 import { MAX_SUBMISSION_IMAGES } from "@/lib/locations/media-submissions/types";
@@ -13,6 +14,7 @@ export function LocationMediaUploadForm({ locationId }: { locationId: string }) 
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [photos, setPhotos] = useState<PickedPhoto[]>([]);
 
   if (submitted) {
     return (
@@ -38,6 +40,10 @@ export function LocationMediaUploadForm({ locationId }: { locationId: string }) 
         setError(null);
         const form = event.currentTarget;
         const data = new FormData(form);
+        for (const photo of photos) {
+          data.append("files", photo.file);
+          data.append("captions", photo.caption);
+        }
 
         startTransition(async () => {
           const result = await createLocationMediaSubmission(locationId, data);
@@ -49,17 +55,10 @@ export function LocationMediaUploadForm({ locationId }: { locationId: string }) 
         });
       }}
     >
-      <label className="block text-sm">
+      <div className="block text-sm">
         <span className="mb-1 block font-medium text-neutral-700">Photos (up to {MAX_SUBMISSION_IMAGES})</span>
-        <input
-          name="files"
-          type="file"
-          accept="image/jpeg,image/png,image/webp,image/avif"
-          multiple
-          required
-          className="block w-full text-sm text-neutral-700"
-        />
-      </label>
+        <CaptionedPhotoPicker photos={photos} onChange={setPhotos} max={MAX_SUBMISSION_IMAGES} />
+      </div>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label className="block text-sm">

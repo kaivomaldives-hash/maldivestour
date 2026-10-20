@@ -144,6 +144,13 @@ export async function AccommodationDirectoryPage({
         title={`${label} in the Maldives`}
         description={(atoll || island) ? undefined : `Real, individually verified ${label.toLowerCase()} across the Maldives.`}
         video={type === "resort" && !(atoll || island) ? getResortsHeroVideo() : undefined}
+        meta={
+          type === "resort" && !(atoll || island) && !isSearching ? (
+            <span>
+              <strong className="font-semibold text-white">{results.total}+</strong> resorts listed
+            </span>
+          ) : undefined
+        }
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>

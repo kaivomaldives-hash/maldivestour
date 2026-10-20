@@ -156,6 +156,16 @@ export async function TransferDirectoryPage() {
         description="Airport, resort, island, private speedboat, and other transportation options across the Maldives — real routes and prices, search by destination, or request a private charter."
         image={TRANSFER_CATEGORY_IMAGES.mainHub}
         video={getTransfersHeroVideo()}
+        meta={
+          <>
+            <span>
+              <strong className="font-semibold text-white">{airportTotal + resortTotal + islandTotal}+</strong> transfer routes
+            </span>
+            <span>
+              <strong className="font-semibold text-white">{boats.length}+</strong> private speedboats
+            </span>
+          </>
+        }
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>

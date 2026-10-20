@@ -18,7 +18,8 @@ export type LocationType =
   | "poi"
   | "dive_site"
   | "surf_break"
-  | "fishing_spot";
+  | "fishing_spot"
+  | "place";
 
 /** Shared fields every location listing/detail view needs. `lat`/`lng`
  * live here (not just on LocationDetail) so a summary-typed relation --

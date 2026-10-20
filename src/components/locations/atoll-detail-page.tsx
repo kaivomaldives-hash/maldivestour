@@ -23,6 +23,7 @@ import { getAtollBySlug, getAtollContent, getIslandsByAtollId } from "@/lib/loca
 import { LocationGallerySection } from "@/components/locations/location-gallery-section";
 import { LocationCommentsSection } from "@/components/locations/location-comments-section";
 import { LocationMediaUploadForm } from "@/components/locations/location-media-upload-form";
+import { AddPlaceForm } from "@/components/locations/add-place-form";
 import { getPublishedLocationComments } from "@/lib/locations/comments/repository";
 import { getHeroMediaByNodeIds, getMediaForNode } from "@/lib/media/repository";
 import { getPackageViewsByAtoll } from "@/lib/packages/view-repository";
@@ -149,7 +150,7 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
           { label: "Atolls", href: "/maldives/atolls/" },
           { label: atoll.title },
         ]}
-        eyebrow="Atoll"
+        eyebrow={atoll.slug === "male-city" ? "Capital City" : "Atoll"}
         title={atoll.title}
         description={atoll.summary ?? undefined}
         image={heroImage}
@@ -188,6 +189,16 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
         <p className="mt-2 text-sm text-neutral-600">Been to {atoll.title}? Share a few photos — approved submissions are added to the gallery above.</p>
         <div className="mt-4">
           <LocationMediaUploadForm locationId={atoll.id} />
+        </div>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="text-xl font-semibold text-ocean-900">Know a Place We&rsquo;re Missing?</h2>
+        <p className="mt-2 text-sm text-neutral-600">
+          Suggest an attraction, restaurant, shop, or facility in {atoll.title} — approved submissions appear on our directory pages.
+        </p>
+        <div className="mt-4">
+          <AddPlaceForm locationId={atoll.id} initialLat={atoll.lat} initialLng={atoll.lng} />
         </div>
       </section>
 

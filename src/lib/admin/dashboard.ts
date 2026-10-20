@@ -43,6 +43,7 @@ export interface DashboardStats {
   agentApplicationsPending: number;
   affiliateApplicationsPending: number;
   paymentRequestsPending: number;
+  placeSubmissionsPending: number;
   redirects: number;
   listingsPublished: number;
   listingsDraft: number;
@@ -169,6 +170,7 @@ async function getDashboardStatsUncached(): Promise<DashboardStats> {
     agentApplicationsPending: pendingCounts.agentApplications,
     affiliateApplicationsPending: pendingCounts.affiliateApplications,
     paymentRequestsPending: pendingCounts.paymentRequests,
+    placeSubmissionsPending: pendingCounts.placeSubmissions,
     redirects,
     listingsPublished,
     listingsDraft,

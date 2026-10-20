@@ -251,9 +251,7 @@ async function getIslandsUncached(options: GetIslandsOptions = {}): Promise<Pagi
 export const getIslands = cachedRead(getIslandsUncached, ["locations:islands"], 900, ["locations:islands", "locations"]);
 
 /** All islands belonging to one atoll (by atoll node id) — a single query,
- * not one per island. Split out from getIslandsByAtoll() below so a caller
- * that already has the atoll's id (e.g. an island's own parentId) can skip
- * the extra slug->id lookup that function does. */
+ * not one per island. */
 async function getIslandsByAtollIdUncached(atollId: string): Promise<IslandSummary[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -279,14 +277,6 @@ async function getIslandsByAtollIdUncached(atollId: string): Promise<IslandSumma
 }
 
 export const getIslandsByAtollId = cachedRead(getIslandsByAtollIdUncached, ["locations:islands-by-atoll-id"], 900, ["locations:islands-by-atoll-id", "locations"]);
-
-/** All islands belonging to one atoll (by atoll slug) — a single query, not
- * one per island. */
-export async function getIslandsByAtoll(atollSlug: string): Promise<IslandSummary[]> {
-  const atoll = await getAtollBySlug(atollSlug);
-  if (!atoll) return [];
-  return getIslandsByAtollId(atoll.id);
-}
 
 async function getIslandBySlugUncached(slug: string): Promise<IslandDetail | null> {
   const supabase = await createClient();

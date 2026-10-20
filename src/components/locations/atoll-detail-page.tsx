@@ -19,7 +19,7 @@ import { getArticlesRelatedToNodes } from "@/lib/articles/repository";
 import { getDiveSitesByAtoll } from "@/lib/diving/repository";
 import { applyContextualLinks, escapeHtml } from "@/lib/linking/contextual-links";
 import { buildEntityLinkMap } from "@/lib/linking/entity-link-map";
-import { getAtollBySlug, getAtollContent, getIslandsByAtoll } from "@/lib/locations/repository";
+import { getAtollBySlug, getAtollContent, getIslandsByAtollId } from "@/lib/locations/repository";
 import { LocationGallerySection } from "@/components/locations/location-gallery-section";
 import { LocationCommentsSection } from "@/components/locations/location-comments-section";
 import { LocationMediaUploadForm } from "@/components/locations/location-media-upload-form";
@@ -76,7 +76,7 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
   const [heroById, allIslands, content, accommodations, activities, diveSites, surfBreaks, transferRoutes, packages, relatedGuides, entityMap, mediaItems, comments] =
     await Promise.all([
       getHeroMediaByNodeIds([atoll.id]),
-      getIslandsByAtoll(slug),
+      getIslandsByAtollId(atoll.id),
       getAtollContent(atoll.id),
       getAccommodationsByAtoll(atoll.id),
       getActivitiesByAtoll(atoll.id),
@@ -105,7 +105,7 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
         )
       : null;
   const heroImage = heroById.get(atoll.id) ?? null;
-  // getIslandsByAtoll returns every location_type="island" row under this
+  // getIslandsByAtollId returns every location_type="island" row under this
   // atoll, which now includes uninhabited resort islands (added in Task 5
   // to give resorts a real location to attach to) alongside the inhabited
   // islands Task 4 seeded — split them rather than mislabel the count.

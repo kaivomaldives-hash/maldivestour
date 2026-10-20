@@ -246,6 +246,10 @@ async function getActivitiesUncached(options: GetActivitiesOptions = {}): Promis
 
   const supabase = await createClient();
 
+  // Kicked off alongside the node-id-filter resolution below (not awaited
+  // until the query is built) since the two are independent.
+  const sortModePromise = getContentSortSetting("activity");
+
   let nodeIdFilter: string[] | null = null;
   if (options.atollId || options.locationId) {
     const locationIds: string[] = [];
@@ -259,7 +263,10 @@ async function getActivitiesUncached(options: GetActivitiesOptions = {}): Promis
       locationIds.push(options.atollId, ...(islands ?? []).map((i) => i.id));
     }
     nodeIdFilter = await getNodeIdsAtLocations(locationIds);
-    if (nodeIdFilter.length === 0) return { items: [], total: 0, page, pageSize };
+    if (nodeIdFilter.length === 0) {
+      await sortModePromise;
+      return { items: [], total: 0, page, pageSize };
+    }
   }
 
   let query = supabase
@@ -279,7 +286,7 @@ async function getActivitiesUncached(options: GetActivitiesOptions = {}): Promis
   if (nodeIdFilter) query = query.in("id", nodeIdFilter);
   if (options.nodeIds) query = query.in("id", options.nodeIds);
 
-  const sortMode = await getContentSortSetting("activity");
+  const sortMode = await sortModePromise;
   query = applySortMode(query, sortMode, "activities.price_from");
 
   const { data, error, count } = await query.range(from, to).returns<NodeActivityRow[]>();

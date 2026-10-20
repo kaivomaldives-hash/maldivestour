@@ -233,6 +233,10 @@ async function getPackagesUncached(options: GetPackagesOptions = {}): Promise<Pa
 
   const supabase = await createClient();
 
+  // Kicked off alongside the node-id-filter resolution below (not awaited
+  // until the query is built) since the two are independent.
+  const sortModePromise = getContentSortSetting("package");
+
   const nodeIdFilters: string[][] = [];
 
   const taxonomyFilter = await resolveTaxonomyNodeIdFilter(options);
@@ -260,7 +264,10 @@ async function getPackagesUncached(options: GetPackagesOptions = {}): Promise<Pa
       const set = new Set(cur);
       return acc.filter((id) => set.has(id));
     });
-    if (nodeIdFilter.length === 0) return { items: [], total: 0, page, pageSize };
+    if (nodeIdFilter.length === 0) {
+      await sortModePromise;
+      return { items: [], total: 0, page, pageSize };
+    }
   }
 
   let query = supabase
@@ -271,7 +278,7 @@ async function getPackagesUncached(options: GetPackagesOptions = {}): Promise<Pa
 
   if (nodeIdFilter) query = query.in("id", nodeIdFilter);
 
-  const sortMode = await getContentSortSetting("package");
+  const sortMode = await sortModePromise;
   query = applySortMode(query, sortMode, "packages.price_from");
 
   const { data, error, count } = await query.range(from, to).returns<NodePackageRow[]>();

@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import { Breadcrumbs, type BreadcrumbItem } from "@/components/location/breadcrumbs";
 import { CONTAINER_CLASS } from "@/components/ui/container";
-import { HeroVideoBackground, type HeroVideoSource } from "@/components/ui/hero-video-background";
+import { HeroVideoBackground, type HeroVideoSources } from "@/components/ui/hero-video-background";
 import { MediaImage } from "@/components/ui/media-image";
 import type { MediaAsset } from "@/lib/media/types";
 
@@ -44,7 +44,7 @@ export function PageHero({
    * gateway pages (homepage, /maldives/) that want one instead of a flat
    * gradient — see HeroVideoBackground for why this is a hand-set source,
    * not a MediaAsset. Takes over the band the same way `image` does. */
-  video?: HeroVideoSource | null;
+  video?: HeroVideoSources | null;
 }) {
   const isOcean = variant === "ocean";
   const hasImage = Boolean(!video && image && image.mediaType === "image" && image.storagePath);

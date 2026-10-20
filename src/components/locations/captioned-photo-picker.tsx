@@ -2,6 +2,8 @@
 
 import { useRef } from "react";
 
+import { Button } from "@/components/ui/button";
+
 const ACCEPTED_TYPES = "image/jpeg,image/png,image/webp,image/avif";
 
 interface PickedPhoto {
@@ -39,13 +41,23 @@ export function CaptionedPhotoPicker({ photos, onChange, max = 5 }: { photos: Pi
         accept={ACCEPTED_TYPES}
         multiple
         disabled={photos.length >= max}
-        className="block w-full text-sm text-neutral-700 disabled:opacity-50"
+        className="sr-only"
         onChange={(event) => {
           const newFiles = Array.from(event.target.files ?? []);
           onChange([...photos, ...newFiles.map((file) => ({ file, caption: "" }))].slice(0, max));
           if (inputRef.current) inputRef.current.value = "";
         }}
       />
+      <Button
+        type="button"
+        variant="secondary"
+        size="sm"
+        disabled={photos.length >= max}
+        onClick={() => inputRef.current?.click()}
+      >
+        Choose photos
+      </Button>
+      {photos.length === 0 && <p className="mt-1 text-xs text-neutral-500">No photos chosen yet.</p>}
       {photos.length > 0 && (
         <ul className="mt-2 space-y-2">
           {photos.map((photo, index) => (

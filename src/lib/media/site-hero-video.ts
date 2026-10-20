@@ -6,16 +6,18 @@ import type { HeroVideoSource, HeroVideoSources } from "@/components/ui/hero-vid
  * pages that want a full-bleed looping background instead of a flat
  * gradient (see HeroVideoBackground's own comment for why these aren't
  * MediaAsset/node_media rows). Upload the compressed files to the
- * public `media` Storage bucket at exactly the paths below and the
- * matching hero picks them up with no further code change. Each page's
- * mobile/portrait set is optional — omit it and that page just gets its
- * desktop/landscape video on every screen size.
+ * public `media` Storage bucket at `site/{key}-hero.mp4` /
+ * `site/{key}-hero-poster.webp` (desktop) and `site/{key}-hero-mobile.mp4` /
+ * `site/{key}-hero-mobile-poster.webp` (mobile) and the matching hero
+ * picks them up with no further code change. The mobile/portrait set is
+ * optional — omit it and that page just gets its desktop/landscape
+ * video on every screen size.
  *
- * Three distinct videos, not one shared asset: the homepage keeps the
- * original boat/speedboat clip, the /maldives/ hub page gets its own
- * "Maldives country" footage, and the Activities directory gets its
- * own dedicated activities footage — each is different source footage,
- * so each gets its own Storage path rather than overloading one.
+ * Every page with a hero video gets its own `key` (own source footage,
+ * own Storage path) rather than sharing one asset — "maldives" is the
+ * homepage's boat/speedboat clip, "maldives-country" is the /maldives/
+ * hub page's own footage, "activities" is the Activities directory's,
+ * "resorts" is the Resorts directory's.
  *
  * MP4-only, no WebM: publicStorageUrl() only confirms
  * NEXT_PUBLIC_SUPABASE_URL is configured, not that a file actually exists
@@ -34,21 +36,6 @@ import type { HeroVideoSource, HeroVideoSources } from "@/components/ui/hero-vid
  * falling back to the page's own ocean gradient rather than a broken-
  * media icon.
  */
-const HERO_VIDEO_MP4_PATH = "site/maldives-hero.mp4";
-const HERO_VIDEO_POSTER_PATH = "site/maldives-hero-poster.webp";
-const HERO_VIDEO_MOBILE_MP4_PATH = "site/maldives-hero-mobile.mp4";
-const HERO_VIDEO_MOBILE_POSTER_PATH = "site/maldives-hero-mobile-poster.webp";
-
-const MALDIVES_HUB_VIDEO_MP4_PATH = "site/maldives-country-hero.mp4";
-const MALDIVES_HUB_VIDEO_POSTER_PATH = "site/maldives-country-hero-poster.webp";
-const MALDIVES_HUB_VIDEO_MOBILE_MP4_PATH = "site/maldives-country-hero-mobile.mp4";
-const MALDIVES_HUB_VIDEO_MOBILE_POSTER_PATH = "site/maldives-country-hero-mobile-poster.webp";
-
-const ACTIVITIES_VIDEO_MP4_PATH = "site/activities-hero.mp4";
-const ACTIVITIES_VIDEO_POSTER_PATH = "site/activities-hero-poster.webp";
-const ACTIVITIES_VIDEO_MOBILE_MP4_PATH = "site/activities-hero-mobile.mp4";
-const ACTIVITIES_VIDEO_MOBILE_POSTER_PATH = "site/activities-hero-mobile-poster.webp";
-
 function resolveSource(mp4Path: string, posterPath: string): HeroVideoSource | null {
   const mp4 = publicStorageUrl(mp4Path);
   const poster = publicStorageUrl(posterPath);
@@ -57,29 +44,30 @@ function resolveSource(mp4Path: string, posterPath: string): HeroVideoSource | n
   return { mp4, poster };
 }
 
-/** Homepage hero (the boat/speedboat clip). */
-export function getSiteHeroVideo(): HeroVideoSources | null {
-  const desktop = resolveSource(HERO_VIDEO_MP4_PATH, HERO_VIDEO_POSTER_PATH);
+function resolveHeroVideo(key: string): HeroVideoSources | null {
+  const desktop = resolveSource(`site/${key}-hero.mp4`, `site/${key}-hero-poster.webp`);
   if (!desktop) return null;
 
-  const mobile = resolveSource(HERO_VIDEO_MOBILE_MP4_PATH, HERO_VIDEO_MOBILE_POSTER_PATH) ?? undefined;
+  const mobile = resolveSource(`site/${key}-hero-mobile.mp4`, `site/${key}-hero-mobile-poster.webp`) ?? undefined;
   return { desktop, mobile };
+}
+
+/** Homepage hero (the boat/speedboat clip). */
+export function getSiteHeroVideo(): HeroVideoSources | null {
+  return resolveHeroVideo("maldives");
 }
 
 /** /maldives/ hub page hero (the "Maldives country" clip). */
 export function getMaldivesHubHeroVideo(): HeroVideoSources | null {
-  const desktop = resolveSource(MALDIVES_HUB_VIDEO_MP4_PATH, MALDIVES_HUB_VIDEO_POSTER_PATH);
-  if (!desktop) return null;
-
-  const mobile = resolveSource(MALDIVES_HUB_VIDEO_MOBILE_MP4_PATH, MALDIVES_HUB_VIDEO_MOBILE_POSTER_PATH) ?? undefined;
-  return { desktop, mobile };
+  return resolveHeroVideo("maldives-country");
 }
 
 /** Activities directory hero (dedicated activities-footage clip). */
 export function getActivitiesHeroVideo(): HeroVideoSources | null {
-  const desktop = resolveSource(ACTIVITIES_VIDEO_MP4_PATH, ACTIVITIES_VIDEO_POSTER_PATH);
-  if (!desktop) return null;
+  return resolveHeroVideo("activities");
+}
 
-  const mobile = resolveSource(ACTIVITIES_VIDEO_MOBILE_MP4_PATH, ACTIVITIES_VIDEO_MOBILE_POSTER_PATH) ?? undefined;
-  return { desktop, mobile };
+/** Resorts directory hero (dedicated resorts-footage clip). */
+export function getResortsHeroVideo(): HeroVideoSources | null {
+  return resolveHeroVideo("resorts");
 }

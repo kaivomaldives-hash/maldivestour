@@ -101,6 +101,21 @@ export interface AdminBookingDetail extends AdminBookingListItem {
   transferReturnCaptainLicense: string | null;
   transferReturnRegistrationNumber: string | null;
   paymentNote: string | null;
+  affiliateId: string | null;
+  affiliateBusinessName: string | null;
+  promoCode: string | null;
+  discountPercent: number | null;
+  discountSource: "affiliate" | "agent" | null;
+  commissionPercent: number | null;
+  commissionAmount: number | null;
+  commissionStatus: "none" | "pending" | "payable" | "void";
+  agentId: string | null;
+  agentBusinessName: string | null;
+  partnerId: string | null;
+  partnerBusinessName: string | null;
+  partnerCommissionPercent: number | null;
+  partnerCommissionAmount: number | null;
+  partnerCommissionStatus: "none" | "pending" | "payable" | "void";
 }
 
 interface BookingRow {
@@ -151,6 +166,18 @@ interface BookingRow {
   transfer_return_captain_license: string | null;
   transfer_return_registration_number: string | null;
   payment_note: string | null;
+  affiliate_id: string | null;
+  promo_code: string | null;
+  discount_percent: number | null;
+  discount_source: "affiliate" | "agent" | null;
+  commission_percent: number | null;
+  commission_amount: number | null;
+  commission_status: "none" | "pending" | "payable" | "void";
+  agent_id: string | null;
+  partner_id: string | null;
+  partner_commission_percent: number | null;
+  partner_commission_amount: number | null;
+  partner_commission_status: "none" | "pending" | "payable" | "void";
 }
 
 type AdminSupabaseClient = Awaited<ReturnType<typeof createClient>>;
@@ -246,9 +273,33 @@ export async function getBookingByIdAdmin(id: string): Promise<AdminBookingDetai
   const { data: row, error } = await supabase.from("bookings").select("*").eq("id", id).maybeSingle<BookingRow>();
   if (error || !row) return null;
 
-  const [titles, locationTitles] = await Promise.all([
+  const [titles, locationTitles, affiliateBusinessName, agentBusinessName, partnerBusinessName] = await Promise.all([
     resolveProductTitles(supabase, [row]),
     resolveLocationTitles(supabase, [row.origin_location_id, row.destination_location_id].filter((v): v is string => Boolean(v))),
+    row.affiliate_id
+      ? supabase
+          .from("affiliate_accounts")
+          .select("business_name")
+          .eq("id", row.affiliate_id)
+          .maybeSingle<{ business_name: string }>()
+          .then((r) => r.data?.business_name ?? null)
+      : Promise.resolve(null),
+    row.agent_id
+      ? supabase
+          .from("agent_accounts")
+          .select("business_name")
+          .eq("id", row.agent_id)
+          .maybeSingle<{ business_name: string }>()
+          .then((r) => r.data?.business_name ?? null)
+      : Promise.resolve(null),
+    row.partner_id
+      ? supabase
+          .from("partner_accounts")
+          .select("business_name")
+          .eq("id", row.partner_id)
+          .maybeSingle<{ business_name: string }>()
+          .then((r) => r.data?.business_name ?? null)
+      : Promise.resolve(null),
   ]);
 
   return {
@@ -287,5 +338,20 @@ export async function getBookingByIdAdmin(id: string): Promise<AdminBookingDetai
     transferReturnCaptainLicense: row.transfer_return_captain_license,
     transferReturnRegistrationNumber: row.transfer_return_registration_number,
     paymentNote: row.payment_note,
+    affiliateId: row.affiliate_id,
+    affiliateBusinessName,
+    promoCode: row.promo_code,
+    discountPercent: row.discount_percent,
+    discountSource: row.discount_source,
+    commissionPercent: row.commission_percent,
+    commissionAmount: row.commission_amount,
+    commissionStatus: row.commission_status,
+    agentId: row.agent_id,
+    agentBusinessName,
+    partnerId: row.partner_id,
+    partnerBusinessName,
+    partnerCommissionPercent: row.partner_commission_percent,
+    partnerCommissionAmount: row.partner_commission_amount,
+    partnerCommissionStatus: row.partner_commission_status,
   };
 }

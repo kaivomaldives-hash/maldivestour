@@ -39,6 +39,11 @@ export interface AccommodationListingPayload {
   priceFrom: number | null;
   locationId: string | null;
   rooms: PartnerRoomInput[];
+  /** The partner's own commission offer on this listing — floor enforced
+   * both client-side (CommissionPercentField) and server-side
+   * (submitListing, and again by the DB check constraint on
+   * bookable_products/transfer_services once approved). */
+  commissionPercent: number;
 }
 
 export interface ActivityListingPayload {
@@ -52,6 +57,7 @@ export interface ActivityListingPayload {
   currency: string;
   maxParticipants: number | null;
   locationId: string | null;
+  commissionPercent: number;
 }
 
 export interface PackageListingPayload {
@@ -60,6 +66,7 @@ export interface PackageListingPayload {
   durationNights: number | null;
   priceFrom: number | null;
   currency: string;
+  commissionPercent: number;
 }
 
 export interface TransferServicePayload {
@@ -78,6 +85,7 @@ export interface TransferServicePayload {
   bookingRequirements: string | null;
   cancellationPolicy: string | null;
   description: string | null;
+  commissionPercent: number;
 }
 
 export interface TransferRouteListingPayload {

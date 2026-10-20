@@ -72,12 +72,26 @@ export function SiteFooter({ availableLocales }: { availableLocales: Locale[] })
           <div>
             <FooterSocialLinks />
             <FooterSubscribeForm />
-            <Link
-              href="/become-a-partner/"
-              className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/20"
-            >
-              Become a Partner
-            </Link>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Link
+                href="/become-a-partner/"
+                className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/20"
+              >
+                Become a Partner
+              </Link>
+              <Link
+                href="/affiliate/signup/"
+                className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/20"
+              >
+                Become an Affiliate
+              </Link>
+              <Link
+                href="/agent/signup/"
+                className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/20"
+              >
+                Become a Travel Agent
+              </Link>
+            </div>
           </div>
         </div>
 

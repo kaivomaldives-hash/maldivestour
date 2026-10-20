@@ -3,9 +3,30 @@ import { notFound } from "next/navigation";
 
 import { PartnerAccountReviewForm } from "@/components/admin/partner-account-review-form";
 import { PartnerDocumentReviewList } from "@/components/admin/partner-document-review-list";
+import { PartnerPaymentForm } from "@/components/admin/partner-payment-form";
+import { Badge } from "@/components/ui/badge";
 import { requireStaff } from "@/lib/admin/auth";
-import { getPartnerAccountByIdAdmin } from "@/lib/admin/partner-accounts-repository";
+import { getPartnerAccountByIdAdmin, getPartnerEarningsAdmin } from "@/lib/admin/partner-accounts-repository";
+import type { PartnerCommissionStatus } from "@/lib/partner/bookings/repository";
 import { PARTNER_KINDS, PROPERTY_TYPES } from "@/lib/partner/types";
+
+const COMMISSION_STATUS_LABEL: Record<PartnerCommissionStatus, string> = {
+  none: "—",
+  pending: "Pending",
+  payable: "Payable",
+  void: "Cancelled",
+};
+
+const COMMISSION_STATUS_TONE: Record<PartnerCommissionStatus, "neutral" | "maldives" | "aqua" | "outline"> = {
+  none: "neutral",
+  pending: "aqua",
+  payable: "maldives",
+  void: "outline",
+};
+
+function money(amount: number, currency: string): string {
+  return `${currency} ${amount.toFixed(2)}`;
+}
 
 function Field({ label, value }: { label: string; value: string | number | null | undefined }) {
   if (value === null || value === undefined || value === "") return null;
@@ -20,7 +41,7 @@ function Field({ label, value }: { label: string; value: string | number | null 
 export default async function AdminPartnerDetailPage({ params }: { params: Promise<{ id: string }> }) {
   await requireStaff();
   const { id } = await params;
-  const partner = await getPartnerAccountByIdAdmin(id);
+  const [partner, earnings] = await Promise.all([getPartnerAccountByIdAdmin(id), getPartnerEarningsAdmin(id)]);
   if (!partner) notFound();
 
   return (
@@ -79,10 +100,73 @@ export default async function AdminPartnerDetailPage({ params }: { params: Promi
               <PartnerDocumentReviewList documents={partner.documents} />
             </div>
           </section>
+
+          <section className="rounded-2xl border border-neutral-200 bg-white p-4">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Commission Owed</h2>
+            <dl className="mt-3 grid grid-cols-3 gap-4">
+              <div>
+                <dt className="text-xs text-neutral-500">Owed to us</dt>
+                <dd className="text-lg font-semibold text-ocean-900">{money(earnings.balanceDue, earnings.currency)}</dd>
+              </div>
+              <div>
+                <dt className="text-xs text-neutral-500">Pending</dt>
+                <dd className="text-lg font-semibold text-ocean-900">{money(earnings.pendingAmount, earnings.currency)}</dd>
+              </div>
+              <div>
+                <dt className="text-xs text-neutral-500">Paid to date</dt>
+                <dd className="text-lg font-semibold text-ocean-900">{money(earnings.paidAmount, earnings.currency)}</dd>
+              </div>
+            </dl>
+
+            {earnings.bookings.length > 0 && (
+              <div className="mt-4 overflow-x-auto">
+                <table className="w-full min-w-[500px] text-left text-sm">
+                  <thead className="border-b border-neutral-200 text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                    <tr>
+                      <th className="py-2">Reference</th>
+                      <th className="py-2">Customer</th>
+                      <th className="py-2">Booking</th>
+                      <th className="py-2">Commission</th>
+                      <th className="py-2">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-neutral-100">
+                    {earnings.bookings.map((b) => (
+                      <tr key={b.id}>
+                        <td className="py-2 font-mono text-xs">{b.bookingReference}</td>
+                        <td className="py-2">{b.customerName}</td>
+                        <td className="py-2">{b.productTitle}</td>
+                        <td className="py-2">{b.commissionAmount != null ? money(b.commissionAmount, earnings.currency) : "—"}</td>
+                        <td className="py-2">
+                          <Badge tone={COMMISSION_STATUS_TONE[b.commissionStatus]}>{COMMISSION_STATUS_LABEL[b.commissionStatus]}</Badge>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {earnings.payments.length > 0 && (
+              <div className="mt-4">
+                <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Payment history</h3>
+                <ul className="mt-2 space-y-1 text-sm text-neutral-700">
+                  {earnings.payments.map((p) => (
+                    <li key={p.id}>
+                      {new Date(p.paidAt).toLocaleDateString()} — {money(p.amount, p.currency)}
+                      {p.method ? ` via ${p.method}` : ""}
+                      {p.note ? ` — ${p.note}` : ""}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </section>
         </div>
 
-        <div>
+        <div className="space-y-6">
           <PartnerAccountReviewForm partnerId={partner.id} providerId={partner.providerId} status={partner.onboardingStatus} />
+          <PartnerPaymentForm partnerId={partner.id} balanceDue={earnings.balanceDue} currency={earnings.currency} />
         </div>
       </div>
     </div>

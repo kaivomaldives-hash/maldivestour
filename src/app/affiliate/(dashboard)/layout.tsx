@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
@@ -42,6 +43,14 @@ export default async function AffiliateDashboardLayout({ children }: { children:
         </div>
         <AffiliateSignOutButton />
       </div>
+      <nav className="flex gap-4 border-b border-neutral-200 bg-white px-4 text-sm font-medium text-neutral-600 sm:px-6">
+        <Link href="/affiliate" className="border-b-2 border-transparent py-3 hover:text-ocean-900">
+          Profile
+        </Link>
+        <Link href="/affiliate/earnings" className="border-b-2 border-transparent py-3 hover:text-ocean-900">
+          Earnings
+        </Link>
+      </nav>
       <main className="px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-3xl">{children}</div>
       </main>

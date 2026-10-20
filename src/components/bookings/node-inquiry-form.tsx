@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { combinePhone } from "@/components/bookings/combine-phone";
 import { NationalityField, PhoneField, TermsCheckbox } from "@/components/bookings/customer-fields";
+import { PromoCodeField } from "@/components/bookings/promo-code-field";
 import { createNodeInquiry, searchDestinationOptions, type DestinationOption } from "@/lib/bookings/actions";
 import type { BookingSource } from "@/lib/bookings/copy";
 
@@ -61,6 +62,7 @@ export function NodeInquiryForm({
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [destination, setDestination] = useState<DestinationOption | null>(null);
+  const [promoCode, setPromoCode] = useState("");
   const [submitted, setSubmitted] = useState<{
     reference: string;
     customerName: string;
@@ -199,6 +201,7 @@ export function NodeInquiryForm({
             destinationLocationId: destination?.destinationLocationId ?? null,
             destinationLabel: destination?.label ?? null,
             specialRequests: String(data.get("specialRequests") ?? "") || null,
+            promoCode: promoCode.trim() || null,
             honeypot: String(data.get("website") ?? ""),
           });
 
@@ -288,6 +291,8 @@ export function NodeInquiryForm({
           </select>
         </label>
       )}
+
+      <PromoCodeField value={promoCode} onChange={setPromoCode} />
 
       <label className="block text-sm">
         <span className="mb-1 block font-medium text-neutral-700">What would you like to do? (optional)</span>

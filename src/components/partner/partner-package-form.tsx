@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
+import { CommissionPercentField } from "@/components/partner/commission-percent-field";
 import { submitListing } from "@/lib/partner/listings/actions";
 import type { PackageListingPayload } from "@/lib/partner/listings/types";
 
@@ -34,6 +35,7 @@ export function PartnerPackageForm({ nodeId, initial }: { nodeId: string | null;
           durationNights: Number(data.get("durationNights")) || null,
           priceFrom: Number(data.get("priceFrom")) || null,
           currency: String(data.get("currency") ?? "USD") || "USD",
+          commissionPercent: Number(data.get("commissionPercent")) || 15,
         };
 
         startTransition(async () => {
@@ -72,6 +74,8 @@ export function PartnerPackageForm({ nodeId, initial }: { nodeId: string | null;
           <input name="currency" type="text" defaultValue={initial?.currency ?? "USD"} className={INPUT_CLASS} />
         </label>
       </div>
+
+      <CommissionPercentField defaultValue={initial?.commissionPercent ?? null} />
 
       <p className="text-xs text-neutral-500">
         The day-by-day itinerary isn&rsquo;t part of this form — once approved, our team will build out the itinerary with you.

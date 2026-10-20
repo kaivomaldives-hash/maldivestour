@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
+import { CommissionPercentField } from "@/components/partner/commission-percent-field";
 import { PartnerLocationPicker } from "@/components/partner/partner-location-picker";
 import { Button } from "@/components/ui/button";
 import type { PartnerLocationOption } from "@/lib/partner/location-search-actions";
@@ -45,6 +46,7 @@ export function PartnerActivityForm({
           currency: String(data.get("currency") ?? "USD") || "USD",
           maxParticipants: Number(data.get("maxParticipants")) || null,
           locationId: location?.id ?? null,
+          commissionPercent: Number(data.get("commissionPercent")) || 15,
         };
 
         startTransition(async () => {
@@ -114,6 +116,8 @@ export function PartnerActivityForm({
       </div>
 
       <PartnerLocationPicker value={location} onChange={setLocation} label="Island / location" />
+
+      <CommissionPercentField defaultValue={initial?.commissionPercent ?? null} />
 
       <p className="text-xs text-neutral-500">
         Photos aren&rsquo;t part of this form yet — our team will add gallery images once it&rsquo;s approved.

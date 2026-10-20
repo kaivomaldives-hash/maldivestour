@@ -89,6 +89,12 @@ export interface TransferServiceInput {
   description: string | null;
   isBookable: boolean;
   facilities: string[];
+  /** What this route's operating partner owes MTG on a completed
+   * booking — floor-enforced by the DB check constraint (>= 15), not
+   * just here. Defaults to 15 for staff creating a service directly
+   * (no partner involved yet); a partner's own submission always
+   * supplies their own chosen value (see approveListingSubmission). */
+  commissionPercent?: number;
 }
 
 function serviceRow(input: TransferServiceInput) {
@@ -110,6 +116,7 @@ function serviceRow(input: TransferServiceInput) {
     description: input.description?.trim() || null,
     is_bookable: input.isBookable,
     facilities: input.facilities,
+    ...(input.commissionPercent !== undefined ? { commission_percent: input.commissionPercent } : {}),
   };
 }
 

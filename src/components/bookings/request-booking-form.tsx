@@ -5,6 +5,7 @@ import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { combinePhone } from "@/components/bookings/combine-phone";
 import { NationalityField, PhoneField, TermsCheckbox } from "@/components/bookings/customer-fields";
+import { PromoCodeField } from "@/components/bookings/promo-code-field";
 import { createTransferBookingInquiry } from "@/lib/bookings/actions";
 
 const WHATSAPP_NUMBER = "9607794332";
@@ -41,6 +42,7 @@ export function RequestBookingForm({
 }: RequestBookingFormProps) {
   const [isPending, startTransition] = useTransition();
   const [tripType, setTripType] = useState<"one_way" | "round_trip">("one_way");
+  const [promoCode, setPromoCode] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState<{
     reference: string;
@@ -138,6 +140,7 @@ export function RequestBookingForm({
             specialRequests: String(data.get("specialRequests") ?? "") || null,
             estimatedPrice: price,
             currency,
+            promoCode: promoCode.trim() || null,
             honeypot: String(data.get("website") ?? ""),
           });
 
@@ -203,6 +206,8 @@ export function RequestBookingForm({
       </div>
 
       <Field label="Flight number (optional)" name="flightNumber" type="text" />
+
+      <PromoCodeField value={promoCode} onChange={setPromoCode} />
 
       <label className="block text-sm">
         <span className="mb-1 block font-medium text-neutral-700">Special requests (optional)</span>

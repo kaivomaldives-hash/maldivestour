@@ -14,6 +14,8 @@ import { createClient } from "@/lib/supabase/server";
 
 export type PartnerBookingStatus = "new" | "contacted" | "pending" | "confirmed" | "cancelled" | "completed";
 
+export type PartnerCommissionStatus = "none" | "pending" | "payable" | "void";
+
 export interface PartnerBookingItem {
   id: string;
   bookingReference: string;
@@ -28,6 +30,9 @@ export interface PartnerBookingItem {
   currency: string;
   status: PartnerBookingStatus;
   createdAt: string;
+  partnerCommissionPercent: number | null;
+  partnerCommissionAmount: number | null;
+  partnerCommissionStatus: PartnerCommissionStatus;
 }
 
 interface BookingRow {
@@ -46,6 +51,9 @@ interface BookingRow {
   currency: string;
   status: PartnerBookingStatus;
   created_at: string;
+  partner_commission_percent: number | null;
+  partner_commission_amount: number | null;
+  partner_commission_status: PartnerCommissionStatus;
 }
 
 export async function getMyPartnerBookings(): Promise<PartnerBookingItem[]> {
@@ -53,7 +61,7 @@ export async function getMyPartnerBookings(): Promise<PartnerBookingItem[]> {
   const { data, error } = await supabase
     .from("bookings")
     .select(
-      "id, booking_reference, product_type, product_node_id, transfer_service_id, customer_name, customer_email, travel_date, adults, children, estimated_price, quoted_price, currency, status, created_at",
+      "id, booking_reference, product_type, product_node_id, transfer_service_id, customer_name, customer_email, travel_date, adults, children, estimated_price, quoted_price, currency, status, created_at, partner_commission_percent, partner_commission_amount, partner_commission_status",
     )
     .order("created_at", { ascending: false })
     .returns<BookingRow[]>();
@@ -98,6 +106,59 @@ export async function getMyPartnerBookings(): Promise<PartnerBookingItem[]> {
       currency: row.currency,
       status: row.status,
       createdAt: row.created_at,
+      partnerCommissionPercent: row.partner_commission_percent,
+      partnerCommissionAmount: row.partner_commission_amount,
+      partnerCommissionStatus: row.partner_commission_status,
     };
   });
+}
+
+/** The signed-in partner's own earnings summary — bookings already come
+ * from getMyPartnerBookings() (bookings_partner_read RLS, unlike the
+ * affiliate case which needed a narrow RPC — partners already see full
+ * booking rows for their own listings, including customer contact
+ * details, since they need to actually service the booking), reduced
+ * into balance-owed/pending/paid. Payment history is a plain table read
+ * under partner_payments_self_select RLS. */
+export async function getMyPartnerEarnings(): Promise<{
+  pendingAmount: number;
+  payableAmount: number;
+  paidAmount: number;
+  balanceDue: number;
+  currency: string;
+  bookings: PartnerBookingItem[];
+  payments: Array<{ id: string; amount: number; currency: string; method: string | null; note: string | null; paidAt: string }>;
+}> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { pendingAmount: 0, payableAmount: 0, paidAmount: 0, balanceDue: 0, currency: "USD", bookings: [], payments: [] };
+
+  const [allBookings, paymentsResult] = await Promise.all([
+    getMyPartnerBookings(),
+    supabase
+      .from("partner_payments")
+      .select("id, amount, currency, method, note, paid_at")
+      .eq("partner_id", user.id)
+      .order("paid_at", { ascending: false })
+      .returns<Array<{ id: string; amount: number; currency: string; method: string | null; note: string | null; paid_at: string }>>(),
+  ]);
+
+  const bookings = allBookings.filter((b) => b.partnerCommissionStatus !== "none");
+  const payments = paymentsResult.data ?? [];
+
+  const pendingAmount = bookings.filter((b) => b.partnerCommissionStatus === "pending").reduce((sum, b) => sum + (b.partnerCommissionAmount ?? 0), 0);
+  const payableAmount = bookings.filter((b) => b.partnerCommissionStatus === "payable").reduce((sum, b) => sum + (b.partnerCommissionAmount ?? 0), 0);
+  const paidAmount = payments.reduce((sum, p) => sum + p.amount, 0);
+
+  return {
+    pendingAmount,
+    payableAmount,
+    paidAmount,
+    balanceDue: payableAmount - paidAmount,
+    currency: "USD",
+    bookings,
+    payments: payments.map((p) => ({ id: p.id, amount: p.amount, currency: p.currency, method: p.method, note: p.note, paidAt: p.paid_at })),
+  };
 }

@@ -54,7 +54,7 @@ const FAQS = [
   },
   {
     question: "What water activities are available in the Maldives?",
-    answer: "Snorkeling, watersports (jet ski, parasailing, banana boating and similar), plus diving, fishing and surfing on their own dedicated pages — filter by category above to browse what's currently listed.",
+    answer: "Snorkeling and watersports (jet ski, parasailing, banana boating and similar) each have their own dedicated page, alongside diving, fishing and surfing — or filter by category above to browse what's currently listed.",
   },
   {
     question: "Are Maldives activities suitable for families?",
@@ -241,10 +241,34 @@ export async function ActivityDirectoryPage({
               ,{" "}
               <Link href="/maldives/fishing/" className="text-maldives-600 hover:underline">
                 Fishing
-              </Link>{" "}
-              and{" "}
+              </Link>
+              ,{" "}
               <Link href="/maldives/surfing/" className="text-maldives-600 hover:underline">
                 Surfing
+              </Link>
+              ,{" "}
+              <Link href="/maldives/snorkeling/" className="text-maldives-600 hover:underline">
+                Snorkeling
+              </Link>
+              ,{" "}
+              <Link href="/maldives/excursions/" className="text-maldives-600 hover:underline">
+                Excursions
+              </Link>
+              ,{" "}
+              <Link href="/maldives/sandbank-tours/" className="text-maldives-600 hover:underline">
+                Sandbank Tours
+              </Link>
+              ,{" "}
+              <Link href="/maldives/water-sports/" className="text-maldives-600 hover:underline">
+                Water Sports
+              </Link>
+              ,{" "}
+              <Link href="/maldives/island-hopping/" className="text-maldives-600 hover:underline">
+                Island Hopping
+              </Link>{" "}
+              and{" "}
+              <Link href="/maldives/dolphin-whale-watching/" className="text-maldives-600 hover:underline">
+                Dolphin & Whale Watching
               </Link>
               .
             </p>
@@ -394,6 +418,12 @@ export async function ActivityDirectoryPage({
               { href: "/maldives/fishing/", label: "Fishing" },
               { href: "/maldives/diving/", label: "Diving" },
               { href: "/maldives/surfing/", label: "Surfing" },
+              { href: "/maldives/snorkeling/", label: "Snorkeling" },
+              { href: "/maldives/excursions/", label: "Excursions" },
+              { href: "/maldives/sandbank-tours/", label: "Sandbank Tours" },
+              { href: "/maldives/water-sports/", label: "Water Sports" },
+              { href: "/maldives/island-hopping/", label: "Island Hopping" },
+              { href: "/maldives/dolphin-whale-watching/", label: "Dolphin & Whale Watching" },
               { href: "/maldives/attractions/", label: "Attractions" },
               { href: "/maldives/packages/", label: "Packages" },
               { href: "/maldives/resorts/", label: "Resorts" },

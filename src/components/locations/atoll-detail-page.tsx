@@ -149,7 +149,7 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
           { label: "Atolls", href: "/maldives/atolls/" },
           { label: atoll.title },
         ]}
-        eyebrow="Atoll"
+        eyebrow={atoll.slug === "male-city" ? "Capital City" : "Atoll"}
         title={atoll.title}
         description={atoll.summary ?? undefined}
         image={heroImage}

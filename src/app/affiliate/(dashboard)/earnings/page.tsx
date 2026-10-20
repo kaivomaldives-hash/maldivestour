@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { RequestWithdrawalForm } from "@/components/affiliate/request-withdrawal-form";
 import { Badge } from "@/components/ui/badge";
 import { getMyAffiliateEarnings } from "@/lib/affiliate/repository";
 import type { AffiliateCommissionStatus } from "@/lib/affiliate/types";
@@ -50,6 +51,10 @@ export default async function AffiliateEarningsPage() {
           <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Paid to date</p>
           <p className="mt-1 text-2xl font-semibold text-ocean-900">{money(earnings.paidAmount, earnings.currency)}</p>
         </div>
+      </div>
+
+      <div className="mt-6">
+        <RequestWithdrawalForm balanceDue={earnings.balanceDue} currency={earnings.currency} pendingPayoutRequest={earnings.pendingPayoutRequest} />
       </div>
 
       <section className="mt-8">

@@ -78,3 +78,19 @@ export async function updateAffiliateProfile(input: UpdateAffiliateProfileInput)
   if (error) return { ok: false, error: error.message };
   return { ok: true };
 }
+
+/** Thin wrapper over the `request_affiliate_payout` RPC (supabase/
+ * migrations/20261101000100_payout_requests.sql) — the minimum-amount and
+ * one-pending-request-at-a-time checks live there, not here, same
+ * reasoning as createAffiliateAccount() above. Surfaces on the admin
+ * Payments tab for staff to action; resolves automatically once staff
+ * records the matching payout via recordAffiliatePayout(). */
+export async function requestAffiliateWithdrawal(amount: number, note: string): Promise<ActionResult> {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("request_affiliate_payout" as unknown as never, {
+    p_amount: amount,
+    p_note: note,
+  } as unknown as never);
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}

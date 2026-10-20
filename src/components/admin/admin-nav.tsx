@@ -62,6 +62,7 @@ const NAV_SECTIONS: NavSection[] = [
       { label: "Partner Leads", href: "/admin/vendors", countKey: "partnerLeads" },
       { label: "Travel Agents", href: "/admin/agents", countKey: "agentApplications" },
       { label: "Affiliates", href: "/admin/affiliates", countKey: "affiliateApplications" },
+      { label: "Payments", href: "/admin/payments", countKey: "paymentRequests" },
     ],
   },
   {

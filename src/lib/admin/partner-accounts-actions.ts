@@ -77,7 +77,17 @@ export async function recordPartnerPayment(partnerId: string, amount: number, me
   } as unknown as never);
   if (error) return { ok: false, error: error.message };
 
+  // Clears any outstanding "Notify Payment Sent" for this partner now
+  // that staff has actually recorded the payment — same reasoning as
+  // recordAffiliatePayout's own payout_requests update.
+  await supabase
+    .from("payout_requests")
+    .update({ status: "resolved", resolved_at: new Date().toISOString(), resolved_by: userId } as unknown as never)
+    .eq("partner_id", partnerId)
+    .eq("status", "pending");
+
   revalidatePath(`/admin/partners/${partnerId}`);
+  revalidatePath("/admin/payments");
   return { ok: true };
 }
 

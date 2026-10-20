@@ -1,3 +1,4 @@
+import { NotifyPaymentSentForm } from "@/components/partner/notify-payment-sent-form";
 import { Badge } from "@/components/ui/badge";
 import { getMyPartnerEarnings } from "@/lib/partner/bookings/repository";
 import type { PartnerCommissionStatus } from "@/lib/partner/bookings/repository";
@@ -43,6 +44,10 @@ export default async function PartnerPaymentsPage() {
           <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Paid to date</p>
           <p className="mt-1 text-2xl font-semibold text-ocean-900">{money(earnings.paidAmount, earnings.currency)}</p>
         </div>
+      </div>
+
+      <div className="mt-6">
+        <NotifyPaymentSentForm balanceDue={earnings.balanceDue} currency={earnings.currency} pendingPaymentNotice={earnings.pendingPaymentNotice} />
       </div>
 
       <section className="mt-8">

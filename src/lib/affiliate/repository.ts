@@ -69,6 +69,13 @@ interface PayoutRow {
   paid_at: string;
 }
 
+interface PendingPayoutRequestRow {
+  id: string;
+  requested_amount: number;
+  note: string | null;
+  requested_at: string;
+}
+
 /** The signed-in affiliate's own commission-bearing bookings (via the
  * get_my_affiliate_commission_bookings RPC — bookings has no RLS policy
  * for an affiliate at all, deliberately, so the customer's own contact
@@ -82,15 +89,22 @@ export async function getMyAffiliateEarnings(): Promise<AffiliateEarningsSummary
   } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const [bookingsResult, payoutsResult] = await Promise.all([
+  const [bookingsResult, payoutsResult, pendingRequestResult] = await Promise.all([
     supabase.rpc("get_my_affiliate_commission_bookings" as unknown as never, {} as unknown as undefined) as unknown as Promise<{
       data: CommissionBookingRow[] | null;
     }>,
     supabase.from("affiliate_payouts").select("id, amount, currency, method, note, paid_at").eq("affiliate_id", user.id).order("paid_at", { ascending: false }).returns<PayoutRow[]>(),
+    supabase
+      .from("payout_requests")
+      .select("id, requested_amount, note, requested_at")
+      .eq("affiliate_id", user.id)
+      .eq("status", "pending")
+      .maybeSingle<PendingPayoutRequestRow>(),
   ]);
 
   const bookingRows = bookingsResult.data ?? [];
   const payoutRows = payoutsResult.data ?? [];
+  const pendingRequestRow = pendingRequestResult.data;
 
   const nodeIds = [...new Set(bookingRows.filter((r) => r.product_type === "node" && r.product_node_id).map((r) => r.product_node_id as string))];
   const serviceIds = [
@@ -147,5 +161,13 @@ export async function getMyAffiliateEarnings(): Promise<AffiliateEarningsSummary
       note: p.note,
       paidAt: p.paid_at,
     })),
+    pendingPayoutRequest: pendingRequestRow
+      ? {
+          id: pendingRequestRow.id,
+          requestedAmount: pendingRequestRow.requested_amount,
+          note: pendingRequestRow.note,
+          requestedAt: pendingRequestRow.requested_at,
+        }
+      : null,
   };
 }

@@ -25,6 +25,13 @@ export interface AffiliatePayout {
   paidAt: string;
 }
 
+export interface AffiliatePendingPayoutRequest {
+  id: string;
+  requestedAmount: number;
+  note: string | null;
+  requestedAt: string;
+}
+
 export interface AffiliateEarningsSummary {
   /** Commission on a booking that hasn't completed yet — not owed yet,
    * shown so the affiliate can see what's coming. */
@@ -38,6 +45,10 @@ export interface AffiliateEarningsSummary {
   currency: string;
   bookings: AffiliateCommissionBooking[];
   payouts: AffiliatePayout[];
+  /** Null unless a "Request Withdrawal" submission is still awaiting
+   * staff action — request_affiliate_payout() allows at most one at a
+   * time. */
+  pendingPayoutRequest: AffiliatePendingPayoutRequest | null;
 }
 
 export interface AffiliateAccount {

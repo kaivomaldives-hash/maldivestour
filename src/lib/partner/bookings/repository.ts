@@ -120,6 +120,13 @@ export async function getMyPartnerBookings(): Promise<PartnerBookingItem[]> {
  * details, since they need to actually service the booking), reduced
  * into balance-owed/pending/paid. Payment history is a plain table read
  * under partner_payments_self_select RLS. */
+export interface PartnerPendingPaymentNotice {
+  id: string;
+  requestedAmount: number;
+  note: string | null;
+  requestedAt: string;
+}
+
 export async function getMyPartnerEarnings(): Promise<{
   pendingAmount: number;
   payableAmount: number;
@@ -128,14 +135,19 @@ export async function getMyPartnerEarnings(): Promise<{
   currency: string;
   bookings: PartnerBookingItem[];
   payments: Array<{ id: string; amount: number; currency: string; method: string | null; note: string | null; paidAt: string }>;
+  /** Null unless a "Notify Payment Sent" submission is still awaiting
+   * staff confirmation — request_partner_payment_notice() allows at most
+   * one at a time. */
+  pendingPaymentNotice: PartnerPendingPaymentNotice | null;
 }> {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { pendingAmount: 0, payableAmount: 0, paidAmount: 0, balanceDue: 0, currency: "USD", bookings: [], payments: [] };
+  if (!user)
+    return { pendingAmount: 0, payableAmount: 0, paidAmount: 0, balanceDue: 0, currency: "USD", bookings: [], payments: [], pendingPaymentNotice: null };
 
-  const [allBookings, paymentsResult] = await Promise.all([
+  const [allBookings, paymentsResult, pendingNoticeResult] = await Promise.all([
     getMyPartnerBookings(),
     supabase
       .from("partner_payments")
@@ -143,10 +155,17 @@ export async function getMyPartnerEarnings(): Promise<{
       .eq("partner_id", user.id)
       .order("paid_at", { ascending: false })
       .returns<Array<{ id: string; amount: number; currency: string; method: string | null; note: string | null; paid_at: string }>>(),
+    supabase
+      .from("payout_requests")
+      .select("id, requested_amount, note, requested_at")
+      .eq("partner_id", user.id)
+      .eq("status", "pending")
+      .maybeSingle<{ id: string; requested_amount: number; note: string | null; requested_at: string }>(),
   ]);
 
   const bookings = allBookings.filter((b) => b.partnerCommissionStatus !== "none");
   const payments = paymentsResult.data ?? [];
+  const pendingNoticeRow = pendingNoticeResult.data;
 
   const pendingAmount = bookings.filter((b) => b.partnerCommissionStatus === "pending").reduce((sum, b) => sum + (b.partnerCommissionAmount ?? 0), 0);
   const payableAmount = bookings.filter((b) => b.partnerCommissionStatus === "payable").reduce((sum, b) => sum + (b.partnerCommissionAmount ?? 0), 0);
@@ -160,5 +179,13 @@ export async function getMyPartnerEarnings(): Promise<{
     currency: "USD",
     bookings,
     payments: payments.map((p) => ({ id: p.id, amount: p.amount, currency: p.currency, method: p.method, note: p.note, paidAt: p.paid_at })),
+    pendingPaymentNotice: pendingNoticeRow
+      ? {
+          id: pendingNoticeRow.id,
+          requestedAmount: pendingNoticeRow.requested_amount,
+          note: pendingNoticeRow.note,
+          requestedAt: pendingNoticeRow.requested_at,
+        }
+      : null,
   };
 }

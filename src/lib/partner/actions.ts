@@ -88,6 +88,23 @@ export async function updatePartnerProfile(input: UpdatePartnerProfileInput): Pr
   return { ok: true };
 }
 
+/** Thin wrapper over the `request_partner_payment_notice` RPC (supabase/
+ * migrations/20261101000100_payout_requests.sql) — tells staff "I've sent
+ * my owed commission, please confirm", since a partner owes MTG money
+ * rather than the other way around (see that migration's own comment on
+ * why this isn't a withdrawal). Surfaces on the admin Payments tab;
+ * resolves automatically once staff records the matching payment via
+ * recordPartnerPayment(). */
+export async function requestPartnerPaymentNotice(amount: number, note: string): Promise<ActionResult> {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("request_partner_payment_notice" as unknown as never, {
+    p_amount: amount,
+    p_note: note,
+  } as unknown as never);
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
 export interface UpdatePartnerBankDetailsInput {
   accountHolderName: string | null;
   bankName: string | null;

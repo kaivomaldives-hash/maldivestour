@@ -87,7 +87,19 @@ export async function recordAffiliatePayout(
   } as unknown as never);
   if (error) return { ok: false, error: error.message };
 
+  // Clears any outstanding "Request Withdrawal" for this affiliate now
+  // that staff has actually recorded a payout — the admin Payments tab
+  // (src/app/admin/(dashboard)/payments/page.tsx) only lists pending
+  // requests, so this is what makes a resolved one disappear from it
+  // without a separate manual step.
+  await supabase
+    .from("payout_requests")
+    .update({ status: "resolved", resolved_at: new Date().toISOString(), resolved_by: userId } as unknown as never)
+    .eq("affiliate_id", affiliateId)
+    .eq("status", "pending");
+
   await logAdminAction("record_affiliate_payout", "affiliate_account", affiliateId, { amount, method: method.trim() || null });
   revalidatePath(`/admin/affiliates/${affiliateId}`);
+  revalidatePath("/admin/payments");
   return { ok: true };
 }

@@ -10,6 +10,7 @@ import { Pagination } from "@/components/ui/pagination";
 import { getAccommodations, searchAccommodations } from "@/lib/accommodations/repository";
 import { ACCOMMODATION_TYPE_SEGMENT, type AccommodationType, type PriceTier } from "@/lib/accommodations/types";
 import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
+import { getResortsHeroVideo } from "@/lib/media/site-hero-video";
 import { ACCOMMODATION_SEO_LANDING_SPECS } from "@/lib/accommodations/seo-landing-content";
 import { canonicalUrl } from "@/lib/seo/site";
 
@@ -142,6 +143,7 @@ export async function AccommodationDirectoryPage({
         eyebrow="Places to stay"
         title={`${label} in the Maldives`}
         description={(atoll || island) ? undefined : `Real, individually verified ${label.toLowerCase()} across the Maldives.`}
+        video={type === "resort" && !(atoll || island) ? getResortsHeroVideo() : undefined}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>

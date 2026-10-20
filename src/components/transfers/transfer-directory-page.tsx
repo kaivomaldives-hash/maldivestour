@@ -14,6 +14,7 @@ import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { getFerryRoutes } from "@/lib/ferries/repository";
 import { getLocationBySlug } from "@/lib/locations/repository";
+import { getTransfersHeroVideo } from "@/lib/media/site-hero-video";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { getSpeedboats } from "@/lib/speedboats/repository";
 import { TRANSFER_CATEGORY_IMAGES } from "@/lib/transfers/category-images";
@@ -154,6 +155,7 @@ export async function TransferDirectoryPage() {
         title="Maldives Transfers"
         description="Airport, resort, island, private speedboat, and other transportation options across the Maldives — real routes and prices, search by destination, or request a private charter."
         image={TRANSFER_CATEGORY_IMAGES.mainHub}
+        video={getTransfersHeroVideo()}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>

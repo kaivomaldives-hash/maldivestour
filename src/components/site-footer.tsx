@@ -26,6 +26,12 @@ const TRAVEL_LINKS = [
   { label: "Ferry Schedule", href: "/maldives-ferry-schedule/" },
   { label: "Packages", href: "/maldives/packages/" },
   { label: "Travel Guide", href: "/maldives/travel-guide/" },
+  { label: "Attractions", href: "/maldives/attractions/" },
+  { label: "Restaurants", href: "/maldives/restaurants/" },
+  { label: "Shops", href: "/maldives/shops/" },
+  { label: "Hospitals", href: "/maldives/hospitals/" },
+  { label: "Schools", href: "/maldives/schools/" },
+  { label: "Gyms", href: "/maldives/gyms/" },
 ];
 
 const WHATSAPP_URL = "https://wa.me/9607794332";

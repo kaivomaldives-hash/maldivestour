@@ -128,6 +128,7 @@ export default async function AdminDashboardPage() {
           <StatTile label="Agent applications pending" value={stats.agentApplicationsPending} href="/admin/agents?status=pending" />
           <StatTile label="Affiliate applications pending" value={stats.affiliateApplicationsPending} href="/admin/affiliates?status=pending" />
           <StatTile label="Payment requests pending" value={stats.paymentRequestsPending} href="/admin/payments" />
+          <StatTile label="Place submissions pending" value={stats.placeSubmissionsPending} href="/admin/place-submissions" />
         </div>
       </section>
 

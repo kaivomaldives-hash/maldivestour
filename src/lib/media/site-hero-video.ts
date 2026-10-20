@@ -71,3 +71,8 @@ export function getActivitiesHeroVideo(): HeroVideoSources | null {
 export function getResortsHeroVideo(): HeroVideoSources | null {
   return resolveHeroVideo("resorts");
 }
+
+/** Transfers directory hero (dedicated transfers-footage clip). */
+export function getTransfersHeroVideo(): HeroVideoSources | null {
+  return resolveHeroVideo("transfers");
+}

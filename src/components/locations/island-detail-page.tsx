@@ -66,7 +66,7 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
   const island = await getIslandBySlug(slug);
   if (!island) notFound();
 
-  const [atoll, children, accommodations, activities, attractions, diveSites, surfBreaks, transferRoutes, packages, heroById, content] =
+  const [atoll, children, accommodations, activities, attractions, diveSites, surfBreaks, transferRoutes, packages, heroById, content, relatedGuides, entityMap, mediaItems, comments] =
     await Promise.all([
       getAtollSummary(island.parentId),
       getChildLocations(island.id),
@@ -79,16 +79,14 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
       getPackageViewsByLocation(island.id),
       getHeroMediaByNodeIds([island.id]),
       getIslandContent(island.id),
+      getArticlesRelatedToNodes([island.id, island.parentId].filter((id): id is string => Boolean(id))),
+      buildEntityLinkMap(),
+      getMediaForNode(island.id),
+      getPublishedLocationComments(island.id),
     ]);
   const heroImage = heroById.get(island.id) ?? null;
 
-  const [nearbyIslands, relatedGuides, entityMap, mediaItems, comments] = await Promise.all([
-    getNearbyIslands({ id: island.id, parentId: island.parentId }, content?.nearbyIslandSlugs ?? [], NEARBY_ISLANDS_LIMIT),
-    getArticlesRelatedToNodes([island.id, island.parentId].filter((id): id is string => Boolean(id))),
-    buildEntityLinkMap(),
-    getMediaForNode(island.id),
-    getPublishedLocationComments(island.id),
-  ]);
+  const nearbyIslands = await getNearbyIslands({ id: island.id, parentId: island.parentId }, content?.nearbyIslandSlugs ?? [], NEARBY_ISLANDS_LIMIT);
   const galleryImages = mediaItems.filter((m) => m.role === "gallery").map((m) => m.asset);
 
   // Contextual entity linking (Task 23 §67-68) over the island's own "About"

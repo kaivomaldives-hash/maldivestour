@@ -212,6 +212,10 @@ async function getAccommodationsUncached(
 
   const supabase = await createClient();
 
+  // Kicked off alongside the node-id-filter resolution below (not awaited
+  // until the query is built) since the two are independent.
+  const sortModePromise = getContentSortSetting("accommodation");
+
   // atollId/locationId filters resolve to a node-id allowlist first (via
   // node_locations), since "accommodation.island/atoll" isn't a column on
   // `nodes` or `accommodations` — it's a relationship.
@@ -229,6 +233,7 @@ async function getAccommodationsUncached(
     }
     nodeIdFilter = await getNodeIdsAtLocations(locationIds);
     if (nodeIdFilter.length === 0) {
+      await sortModePromise;
       return { items: [], total: 0, page, pageSize };
     }
   }
@@ -249,7 +254,7 @@ async function getAccommodationsUncached(
     query = query.eq("accommodations.overwater_villas", options.overwaterVillas);
   if (nodeIdFilter) query = query.in("id", nodeIdFilter);
 
-  const sortMode = await getContentSortSetting("accommodation");
+  const sortMode = await sortModePromise;
   query = applySortMode(query, sortMode, "accommodations.price_from");
 
   const { data, error, count } = await query.range(from, to).returns<NodeAccommodationRow[]>();

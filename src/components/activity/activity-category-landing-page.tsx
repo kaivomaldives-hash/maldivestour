@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ActivityCard } from "@/components/activity/activity-card";
+import { HubPageExtras } from "@/components/nodes/hub-page-extras";
+import type { GalleryVideo } from "@/components/ui/video-gallery-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { FaqSection } from "@/components/ui/faq-section";
@@ -37,6 +39,11 @@ export interface ActivityCategoryConfig {
   category: string;
   emptyMessage: string;
   heroImage?: MediaAsset;
+  /** Real, already-vetted YouTube videos on this exact topic (see
+   * src/components/activity/activities-video-jsonld.ts) — omitted
+   * entirely, never substituted, when nothing genuinely on-topic exists
+   * yet. */
+  videos?: ReadonlyArray<GalleryVideo>;
 }
 
 const OTHER_CATEGORIES = [
@@ -126,6 +133,16 @@ export async function ActivityCategoryLandingPage({ config }: { config: Activity
         )}
 
         <FaqSection faqs={config.faqs} title="Common questions" className="mt-14 border-t border-neutral-200 pt-10" />
+
+        {category && (
+          <HubPageExtras
+            nodeId={category.id}
+            galleryNodeIds={nodeIds}
+            galleryTitle={config.h1}
+            videos={config.videos}
+            videoTitle={`${config.h1} — Videos`}
+          />
+        )}
 
         <div className="mt-10 border-t border-neutral-200 pt-6">
           <p className="text-sm font-medium text-neutral-500">Browse other activity types</p>

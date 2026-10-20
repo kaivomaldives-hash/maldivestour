@@ -134,6 +134,34 @@ async function getMediaForNodeUncached(nodeId: string): Promise<NodeMediaItem[]>
 // (src/lib/cache/cached-read.ts).
 export const getMediaForNode = cachedRead(getMediaForNodeUncached, ["media:for-node"], 300, ["media:for-node", "node-media"]);
 
+/** Real photos pulled from a *set* of nodes' own galleries (hero + gallery
+ * roles), deduped by media id and capped at `limit` — for a category/hub
+ * page (e.g. "Snorkeling in the Maldives") that isn't itself a single
+ * photographed node, but stands over a set of real listings that are.
+ * Never a stock substitute: a category with no tagged listing that has a
+ * real photo yet simply returns an empty array. */
+async function getMediaForNodesUncached(nodeIds: string[], limit = 12): Promise<MediaAsset[]> {
+  if (nodeIds.length === 0) return [];
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("node_media")
+    .select("media_id, role, sort_order")
+    .in("node_id", nodeIds)
+    .in("role", ["hero", "gallery"])
+    .order("role", { ascending: true })
+    .order("sort_order", { ascending: true })
+    .returns<Array<{ media_id: string; role: MediaRole; sort_order: number }>>();
+
+  if (error || !data || data.length === 0) return [];
+
+  const uniqueMediaIds = Array.from(new Set(data.map((row) => row.media_id))).slice(0, limit);
+  const assetsById = await getMediaAssetsByIds(uniqueMediaIds);
+  return uniqueMediaIds.map((id) => assetsById.get(id)).filter((asset): asset is MediaAsset => asset !== undefined);
+}
+
+export const getMediaForNodes = cachedRead(getMediaForNodesUncached, ["media:for-nodes"], 300, ["media:for-nodes", "node-media"]);
+
 /**
  * Rewrites every `<figure><img src="...">...</figure>` in an article body
  * to use a real public Storage URL in place of the bare storage_path the

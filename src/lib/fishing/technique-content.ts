@@ -128,6 +128,39 @@ export const TECHNIQUE_PAGES: Record<string, TechniquePageContent> = {
       },
     ],
   },
+  trolling: {
+    pageSlug: "trolling",
+    metaTitle: "Trolling Fishing Maldives | Trolling Charters",
+    metaDescription:
+      "Trolling in the Maldives — pulling lures behind a moving boat across open water for tuna, wahoo and mahi-mahi, aboard Emperor, our private Gaafu Atoll fishing charter.",
+    h1: "Trolling in the Maldives",
+    heroDescription: "Pulling lures behind a moving boat across open water — a steady, productive technique for covering ground and finding feeding fish.",
+    howItWorks: [
+      "Trolling pulls a set of lures through the water behind a moving boat, covering open water until a feeding fish strikes. It's the underlying technique behind most big game fishing trips here, rather than a separate product of its own.",
+      "On our own Gaafu Atoll charters, trolling runs along reef edges and over open water further offshore, the same grounds used for our general big game fishing trips.",
+    ],
+    targetSpecies: [
+      { label: "Yellowfin Tuna", href: "/maldives/fishing/tuna-fishing/" },
+      { label: "Wahoo", href: "/maldives/fishing/wahoo-fishing/" },
+      { label: "Mahi-Mahi", href: "/maldives/fishing/mahi-mahi-fishing/" },
+    ],
+    charterSlugs: ["private-full-day-fishing-charter", "private-half-day-fishing-charter"],
+    faqs: [
+      {
+        question: "Is trolling the same as big game fishing?",
+        answer:
+          "Trolling is the technique used on most big game fishing trips — pulling lures behind the boat across open water — rather than a separate product. See Big Game Fishing for the full target species list and available charters.",
+      },
+      {
+        question: "What fish can I catch trolling in the Maldives?",
+        answer: "Yellowfin tuna, wahoo and mahi-mahi are the usual targets trolling open water and reef edges — see Target Species above.",
+      },
+      {
+        question: "Do I need my own trolling gear?",
+        answer: "No — basic fishing gear, including trolling lures, is included on our charters.",
+      },
+    ],
+  },
   "fly-fishing": {
     pageSlug: "fly-fishing",
     metaTitle: "Fly Fishing Maldives | Maldives Fly Fishing Charters",

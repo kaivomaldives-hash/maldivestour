@@ -4,6 +4,8 @@ import Link from "next/link";
 import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { Price } from "@/components/currency/price";
 import { ChipLinkList } from "@/components/fishing/chip-link-list";
+import { YOUTUBE_VIDEO_ID, YOUTUBE_VIDEO_TITLE } from "@/components/fishing/fishing-video-jsonld";
+import { HubPageExtras } from "@/components/nodes/hub-page-extras";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { FaqSection } from "@/components/ui/faq-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
@@ -12,6 +14,7 @@ import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { isSupportedCurrency } from "@/lib/currency/types";
 import { bookingCta } from "@/lib/bookings/copy";
+import { getCategoryBySlug, getNodeIdsByCategory } from "@/lib/categories/repository";
 import { getFishingActivityBySlug } from "@/lib/fishing/repository";
 import type { TechniquePageContent } from "@/lib/fishing/technique-content";
 import { FISHING_HERO_IMAGE } from "@/lib/packages/category-images";
@@ -37,9 +40,14 @@ export function techniquePageMetadata(content: TechniquePageContent): Metadata {
 }
 
 export async function TechniqueLandingPage({ content }: { content: TechniquePageContent }) {
-  const charters = (await Promise.all(content.charterSlugs.map((slug) => getFishingActivityBySlug(slug)))).filter(
-    (c): c is NonNullable<typeof c> => c !== null,
-  );
+  const [charters, category] = await Promise.all([
+    Promise.all(content.charterSlugs.map((slug) => getFishingActivityBySlug(slug))).then((list) =>
+      list.filter((c): c is NonNullable<typeof c> => c !== null),
+    ),
+    getCategoryBySlug(content.pageSlug, "activity-type"),
+  ]);
+  const taggedNodeIds = category ? await getNodeIdsByCategory(category.id) : [];
+  const galleryNodeIds = Array.from(new Set([...charters.map((c) => c.id), ...taggedNodeIds]));
 
   const waMessage = `Hi, I'd like to plan a ${content.h1.toLowerCase()} trip.\nMy location:\nDate:\nNumber of anglers:\nHalf day or full day:`;
 
@@ -159,6 +167,17 @@ export async function TechniqueLandingPage({ content }: { content: TechniquePage
 
         {/* FAQs */}
         <FaqSection faqs={content.faqs} />
+
+        {category && (
+          <HubPageExtras
+            nodeId={category.id}
+            galleryNodeIds={galleryNodeIds}
+            galleryTitle={content.h1}
+            videos={[{ id: YOUTUBE_VIDEO_ID, title: YOUTUBE_VIDEO_TITLE }]}
+            videoTitle={`${content.h1} — Video`}
+            videoDescription="Real footage of Maldives fishing trips."
+          />
+        )}
 
         {/* Related */}
         <section className="mt-12 border-t border-neutral-200 pt-10">

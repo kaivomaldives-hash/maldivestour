@@ -5,6 +5,7 @@ import {
   activityCategoryMetadata,
   type ActivityCategoryConfig,
 } from "@/components/activity/activity-category-landing-page";
+import { VIDEOS } from "@/components/activity/activities-video-jsonld";
 
 const config: ActivityCategoryConfig = {
   slug: "dolphin-whale-watching",
@@ -39,6 +40,7 @@ const config: ActivityCategoryConfig = {
   ],
   category: "dolphin-whale-watching",
   emptyMessage: "No dolphin or whale watching trips recorded yet — check Maldives Activities for the full current listing.",
+  videos: VIDEOS.filter((v) => v.id === "3wtrnR2BJoQ"),
 };
 
 export function generateMetadata(): Metadata {

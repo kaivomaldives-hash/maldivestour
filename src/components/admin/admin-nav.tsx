@@ -34,6 +34,7 @@ const NAV_SECTIONS: NavSection[] = [
       { label: "Reviews", href: "/admin/reviews" },
       { label: "Comments", href: "/admin/comments" },
       { label: "Location Comments", href: "/admin/location-comments" },
+      { label: "Page Comments", href: "/admin/node-comments" },
       { label: "Location Media", href: "/admin/location-media" },
       { label: "Place Submissions", href: "/admin/place-submissions", countKey: "placeSubmissions" },
     ],

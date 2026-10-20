@@ -87,6 +87,46 @@ from activities a join nodes n on n.id = a.id
 where n.title ilike '%dolphin%' or n.title ilike '%whale%'
 on conflict do nothing;
 
+-- ─────────────────────────────────────────────────────────────────
+-- Fishing-technique pages that don't yet have their own activity-type
+-- category node (big-game-fishing and fly-fishing already do — see
+-- 20250105000100_seed_fishing.sql / 20250131000400_fly_fishing.sql).
+-- Popping and jigging only ever ran on Emperor's own 2 general charters
+-- (no dedicated 3rd-party listing exists), and trolling is a brand new
+-- page — all 3 get a real category node so they, too, have somewhere to
+-- hang a gallery/comments thread and so a future real charter can be
+-- tagged into them the same way big-game-fishing's 3 third-party
+-- activities already are.
+insert into nodes (id, node_type, slug, title, status, published_at) values ('b4e1b5b1-6b0a-4b3f-9c1a-2f6a0f9b1a07', 'category', 'popping', 'Popping', 'published', now()) on conflict (node_type, slug) do nothing;
+insert into categories (id, category_group, path) select id, 'activity-type', 'popping'::ltree from nodes where node_type = 'category' and slug = 'popping' on conflict (id) do nothing;
+
+insert into nodes (id, node_type, slug, title, status, published_at) values ('b4e1b5b1-6b0a-4b3f-9c1a-2f6a0f9b1a08', 'category', 'jigging', 'Jigging', 'published', now()) on conflict (node_type, slug) do nothing;
+insert into categories (id, category_group, path) select id, 'activity-type', 'jigging'::ltree from nodes where node_type = 'category' and slug = 'jigging' on conflict (id) do nothing;
+
+insert into nodes (id, node_type, slug, title, status, published_at) values ('b4e1b5b1-6b0a-4b3f-9c1a-2f6a0f9b1a09', 'category', 'trolling', 'Trolling', 'published', now()) on conflict (node_type, slug) do nothing;
+insert into categories (id, category_group, path) select id, 'activity-type', 'trolling'::ltree from nodes where node_type = 'category' and slug = 'trolling' on conflict (id) do nothing;
+
+-- Emperor's own 2 general charters run all 3 techniques — tag both into
+-- each, same shape as big-game-fishing/fly-fishing's own charterSlugs.
+insert into node_categories (node_id, category_id)
+select n.id, (select id from nodes where node_type = 'category' and slug = c.slug)
+from nodes n
+cross join (values ('popping'), ('jigging'), ('trolling')) as c(slug)
+where n.node_type = 'activity' and n.slug in ('private-full-day-fishing-charter', 'private-half-day-fishing-charter')
+on conflict do nothing;
+
+-- One umbrella node for the main /maldives/fishing/ hub page itself
+-- (distinct from the activity-type technique/species sub-pages above) —
+-- gives it somewhere real to hang a gallery/comments thread, tagged with
+-- every real fishing-category activity for its gallery.
+insert into nodes (id, node_type, slug, title, status, published_at) values ('b4e1b5b1-6b0a-4b3f-9c1a-2f6a0f9b1a10', 'category', 'fishing-hub', 'Maldives Fishing', 'published', now()) on conflict (node_type, slug) do nothing;
+insert into categories (id, category_group, path) select id, 'activity-category', 'fishing_hub'::ltree from nodes where node_type = 'category' and slug = 'fishing-hub' on conflict (id) do nothing;
+insert into node_categories (node_id, category_id)
+select a.id, (select id from nodes where node_type = 'category' and slug = 'fishing-hub')
+from activities a
+where a.activity_category = 'fishing'
+on conflict do nothing;
+
 -- Pre-existing legacy redirect for this exact old URL pointed at the
 -- generic activities hub since no dedicated snorkeling page existed yet
 -- (20250111000100). Now that one does, point it there instead — strictly

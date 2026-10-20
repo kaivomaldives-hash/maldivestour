@@ -5,6 +5,7 @@ import {
   activityCategoryMetadata,
   type ActivityCategoryConfig,
 } from "@/components/activity/activity-category-landing-page";
+import { VIDEOS } from "@/components/activity/activities-video-jsonld";
 
 const config: ActivityCategoryConfig = {
   slug: "excursions",
@@ -39,6 +40,7 @@ const config: ActivityCategoryConfig = {
   ],
   category: "excursions",
   emptyMessage: "No excursions recorded yet — check Maldives Activities for the full current listing.",
+  videos: VIDEOS.filter((v) => v.id === "AW-UqFyoiVc"),
 };
 
 export function generateMetadata(): Metadata {

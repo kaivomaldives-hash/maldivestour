@@ -11,6 +11,7 @@ import { FishingGallerySection } from "@/components/fishing/fishing-gallery-sect
 import { FishingVideo } from "@/components/fishing/fishing-video";
 import { fishingVideoJsonLd } from "@/components/fishing/fishing-video-jsonld";
 import { FishSpeciesSection } from "@/components/fishing/fish-species-section";
+import { NodeCommentsSection } from "@/components/nodes/node-comments-section";
 import { PackageCard } from "@/components/packages/package-card";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
@@ -30,7 +31,9 @@ import {
   getFishingTypesInUse,
   searchFishingActivities,
 } from "@/lib/fishing/repository";
+import { getCategoryBySlug } from "@/lib/categories/repository";
 import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
+import { getPublishedNodeComments } from "@/lib/nodes/comments/repository";
 import { FISHING_HERO_IMAGE } from "@/lib/packages/category-images";
 import { filterPackageViews, getAllPackageViews } from "@/lib/packages/view-repository";
 import { getProviderBySlug } from "@/lib/providers/repository";
@@ -201,12 +204,14 @@ export async function FishingDirectoryPage({
   const query = sp.q?.trim() ?? "";
   const isSearching = query.length > 0;
 
-  const [atoll, island, supporting] = await Promise.all([
+  const [atoll, island, supporting, fishingHubCategory] = await Promise.all([
     sp.atoll ? getAtollBySlug(sp.atoll) : Promise.resolve(null),
     sp.island ? getIslandBySlug(sp.island) : Promise.resolve(null),
     getFishingSupportingContent(),
+    getCategoryBySlug("fishing-hub", "activity-category"),
   ]);
   const { atolls, fishingTypes, realCharters, fishingPackages, realOperators, realGuides, typesWithActivities } = supporting;
+  const fishingHubComments = fishingHubCategory ? await getPublishedNodeComments(fishingHubCategory.id) : [];
 
   const activeType = sp.type ? fishingTypes.find((t) => t.slug === sp.type) : undefined;
   const activeDuration = isFishingDurationBucket(sp.duration) ? sp.duration : undefined;
@@ -751,6 +756,8 @@ export async function FishingDirectoryPage({
 
         {/* FAQs */}
         <FaqSection faqs={FAQS} />
+
+        {fishingHubCategory && <NodeCommentsSection nodeId={fishingHubCategory.id} comments={fishingHubComments} />}
       </div>
     </main>
   );

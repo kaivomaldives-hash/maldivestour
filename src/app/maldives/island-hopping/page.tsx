@@ -5,6 +5,7 @@ import {
   activityCategoryMetadata,
   type ActivityCategoryConfig,
 } from "@/components/activity/activity-category-landing-page";
+import { VIDEOS } from "@/components/activity/activities-video-jsonld";
 
 const config: ActivityCategoryConfig = {
   slug: "island-hopping",
@@ -39,6 +40,7 @@ const config: ActivityCategoryConfig = {
   ],
   category: "island-hopping",
   emptyMessage: "No island hopping tours recorded yet — check Maldives Activities for the full current listing.",
+  videos: VIDEOS.filter((v) => v.id === "1e3k1QK66ZI"),
 };
 
 export function generateMetadata(): Metadata {

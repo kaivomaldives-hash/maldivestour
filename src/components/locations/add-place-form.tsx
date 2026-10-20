@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 
+import { CaptionedPhotoPicker, type PickedPhoto } from "@/components/locations/captioned-photo-picker";
 import { MapPicker } from "@/components/locations/map-picker";
 import { Button } from "@/components/ui/button";
 import { ATTRACTION_TYPE_LABEL, type AttractionType } from "@/lib/attractions/types";
@@ -35,6 +36,7 @@ export function AddPlaceForm({ locationId, initialLat, initialLng }: { locationI
   const [showForm, setShowForm] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [category, setCategory] = useState<SubmissionPlaceCategory>("attraction");
+  const [photos, setPhotos] = useState<PickedPhoto[]>([]);
 
   if (submitted) {
     return (
@@ -60,6 +62,10 @@ export function AddPlaceForm({ locationId, initialLat, initialLng }: { locationI
         setError(null);
         const form = event.currentTarget;
         const data = new FormData(form);
+        for (const photo of photos) {
+          data.append("files", photo.file);
+          data.append("captions", photo.caption);
+        }
 
         startTransition(async () => {
           const result = await createPlaceSubmission(locationId, data);
@@ -123,10 +129,10 @@ export function AddPlaceForm({ locationId, initialLat, initialLng }: { locationI
         <MapPicker initialLat={initialLat} initialLng={initialLng} />
       </div>
 
-      <label className="block text-sm">
+      <div className="block text-sm">
         <span className="mb-1 block font-medium text-neutral-700">Photos (optional, up to {MAX_SUBMISSION_IMAGES})</span>
-        <input name="files" type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple className="block w-full text-sm text-neutral-700" />
-      </label>
+        <CaptionedPhotoPicker photos={photos} onChange={setPhotos} max={MAX_SUBMISSION_IMAGES} />
+      </div>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label className="block text-sm">

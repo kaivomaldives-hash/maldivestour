@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { PlaceCard } from "@/components/places/place-card";
+import { placesItemListJsonLd } from "@/components/places/place-schema";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
@@ -8,7 +9,7 @@ import { Pagination } from "@/components/ui/pagination";
 import { getAtollBySlug } from "@/lib/locations/repository";
 import { getPlaces } from "@/lib/places/repository";
 import { PLACE_CATEGORY_LABEL, type PlaceCategory } from "@/lib/places/types";
-import { breadcrumbJsonLd, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
+import { breadcrumbJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 const PAGE_SIZE = 48;
 
@@ -84,14 +85,7 @@ export async function PlaceDirectoryPage({
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: safeJsonLdStringify(
-            itemListJsonLd(
-              results.items.map((p) => ({ title: p.title, href: p.island ? `/maldives/islands/${p.island.slug}/` : copy.basePath, summary: p.summary })),
-              "LocalBusiness",
-            ),
-          ),
-        }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(placesItemListJsonLd(category, results.items, copy.basePath)) }}
       />
 
       <PageHero

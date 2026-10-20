@@ -119,9 +119,9 @@ export async function approvePlaceSubmission(submissionId: string): Promise<Admi
 
   const { data: images } = await supabase
     .from("place_submission_images")
-    .select("id, storage_path, file_name, content_type")
+    .select("id, storage_path, caption, file_name, content_type")
     .eq("submission_id", submissionId)
-    .returns<Array<{ id: string; storage_path: string; file_name: string | null; content_type: string | null }>>();
+    .returns<Array<{ id: string; storage_path: string; caption: string; file_name: string | null; content_type: string | null }>>();
 
   let sortOrder = 0;
   for (const image of images ?? []) {
@@ -135,9 +135,13 @@ export async function approvePlaceSubmission(submissionId: string): Promise<Admi
     const { error: uploadError } = await supabase.storage.from("media").upload(newStoragePath, fileBlob, { contentType, upsert: false });
     if (uploadError) continue;
 
+    // The submitter's required caption becomes both title and alt_text —
+    // see 20261105000100_photo_submission_captions.sql's own comment on
+    // why this used to be null for every guest-submitted photo on the
+    // site.
     const { data: assetRow, error: assetError } = await supabase
       .from("media_assets")
-      .insert({ media_type: "image", storage_path: newStoragePath, alt_text: null } as unknown as never)
+      .insert({ media_type: "image", storage_path: newStoragePath, title: image.caption || null, alt_text: image.caption || null } as unknown as never)
       .select("id")
       .single<{ id: string }>();
     if (assetError || !assetRow) {

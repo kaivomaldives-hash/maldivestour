@@ -26,16 +26,26 @@ export async function createLocationMediaSubmission(locationId: string, formData
   const submitterName = String(formData.get("submitterName") ?? "").trim();
   const submitterEmail = String(formData.get("submitterEmail") ?? "").trim();
   const agreedToTerms = formData.get("agreedToTerms") === "on";
-  const files = formData.getAll("files").filter((f): f is File => f instanceof File && f.size > 0);
+  // "files" and "captions" are appended in matching pairs, one per photo
+  // (see CaptionedPhotoPicker's own comment) — zip them together before
+  // any filtering, so a dropped empty-file entry can never desync a
+  // caption from the wrong photo.
+  const rawFiles = formData.getAll("files");
+  const rawCaptions = formData.getAll("captions");
+  const photos = rawFiles
+    .map((file, index) => ({ file, caption: String(rawCaptions[index] ?? "").trim() }))
+    .filter((p): p is { file: File; caption: string } => p.file instanceof File && p.file.size > 0);
+  const files = photos.map((p) => p.file);
 
   if (!submitterName) return { ok: false, error: "Please enter your name." };
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(submitterEmail)) return { ok: false, error: "Please enter a valid email address." };
   if (!agreedToTerms) return { ok: false, error: "Please confirm you are responsible for these photos before submitting." };
   if (files.length === 0) return { ok: false, error: "Please choose at least one photo to upload." };
   if (files.length > MAX_SUBMISSION_IMAGES) return { ok: false, error: `You can upload at most ${MAX_SUBMISSION_IMAGES} photos per submission.` };
-  for (const file of files) {
-    if (file.size > MAX_FILE_BYTES) return { ok: false, error: `"${file.name}" is too large — the limit is 8MB per photo.` };
-    if (!ALLOWED_CONTENT_TYPES[file.type]) return { ok: false, error: `"${file.name}" isn't a supported image type — use JPEG, PNG, WebP, or AVIF.` };
+  for (const photo of photos) {
+    if (photo.file.size > MAX_FILE_BYTES) return { ok: false, error: `"${photo.file.name}" is too large — the limit is 8MB per photo.` };
+    if (!ALLOWED_CONTENT_TYPES[photo.file.type]) return { ok: false, error: `"${photo.file.name}" isn't a supported image type — use JPEG, PNG, WebP, or AVIF.` };
+    if (!photo.caption) return { ok: false, error: `Please add a short caption describing "${photo.file.name}".` };
   }
 
   const supabase = await createClient();
@@ -53,7 +63,8 @@ export async function createLocationMediaSubmission(locationId: string, formData
     return { ok: false, error: "We couldn't start your submission right now. Please try again." };
   }
 
-  for (const file of files) {
+  for (const photo of photos) {
+    const { file, caption } = photo;
     const ext = ALLOWED_CONTENT_TYPES[file.type];
     const storagePath = `${submissionId as string}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
@@ -62,7 +73,7 @@ export async function createLocationMediaSubmission(locationId: string, formData
 
     const { error: registerError } = await supabase.rpc(
       "create_location_media_submission_image" as unknown as never,
-      { p_submission_id: submissionId, p_storage_path: storagePath, p_file_name: file.name, p_content_type: file.type } as unknown as undefined,
+      { p_submission_id: submissionId, p_storage_path: storagePath, p_caption: caption, p_file_name: file.name, p_content_type: file.type } as unknown as undefined,
     );
     if (registerError) return { ok: false, error: "We saved your submission, but one of the photos failed to register. Please try again." };
   }

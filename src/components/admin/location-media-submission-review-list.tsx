@@ -112,7 +112,7 @@ export function LocationMediaSubmissionReviewList({ submissions }: { submissions
                   }}
                   className="rounded-lg border border-neutral-300 px-2.5 py-1 text-xs font-medium text-maldives-600 hover:underline disabled:opacity-50"
                 >
-                  {image.fileName ?? "View photo"}
+                  {image.caption || image.fileName || "View photo"}
                 </button>
               </li>
             ))}

@@ -18,6 +18,7 @@ export type PlaceSubmissionCategory = "attraction" | "restaurant" | "shop" | "ho
 export interface AdminPlaceSubmissionImage {
   id: string;
   storagePath: string;
+  caption: string;
   fileName: string | null;
   contentType: string | null;
 }
@@ -62,6 +63,7 @@ interface ImageRow {
   id: string;
   submission_id: string;
   storage_path: string;
+  caption: string;
   file_name: string | null;
   content_type: string | null;
 }
@@ -103,7 +105,7 @@ export async function getPlaceSubmissionsAdmin(
   const imagesBySubmission = new Map<string, AdminPlaceSubmissionImage[]>();
   for (const img of images ?? []) {
     const list = imagesBySubmission.get(img.submission_id) ?? [];
-    list.push({ id: img.id, storagePath: img.storage_path, fileName: img.file_name, contentType: img.content_type });
+    list.push({ id: img.id, storagePath: img.storage_path, caption: img.caption, fileName: img.file_name, contentType: img.content_type });
     imagesBySubmission.set(img.submission_id, list);
   }
 

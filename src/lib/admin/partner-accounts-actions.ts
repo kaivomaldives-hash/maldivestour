@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { requireStaff } from "@/lib/admin/auth";
 import type { AdminActionResult } from "@/lib/admin/node-actions";
 import type { PartnerDocumentStatus } from "@/lib/partner/types";
@@ -53,6 +55,29 @@ export async function suspendPartnerAccount(partnerId: string, reason: string): 
     .update({ onboarding_status: "suspended", reviewed_by: userId, reviewed_at: new Date().toISOString(), rejection_reason: reason.trim() || null } as unknown as never)
     .eq("id", partnerId);
   if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
+/** Records a manual payment received from a partner, against their
+ * accrued commission — mirrors recordAffiliatePayout (src/lib/admin/
+ * affiliate-accounts-actions.ts), direction reversed: the partner pays
+ * MTG, staff just logs that it happened. Never tied to one specific
+ * booking, same "running balance, not reconciled line by line" reasoning. */
+export async function recordPartnerPayment(partnerId: string, amount: number, method: string, note: string): Promise<AdminActionResult> {
+  const { userId } = await requireStaff();
+  if (!Number.isFinite(amount) || amount <= 0) return { ok: false, error: "Enter a payment amount greater than 0." };
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("partner_payments").insert({
+    partner_id: partnerId,
+    amount,
+    method: method.trim() || null,
+    note: note.trim() || null,
+    recorded_by: userId,
+  } as unknown as never);
+  if (error) return { ok: false, error: error.message };
+
+  revalidatePath(`/admin/partners/${partnerId}`);
   return { ok: true };
 }
 

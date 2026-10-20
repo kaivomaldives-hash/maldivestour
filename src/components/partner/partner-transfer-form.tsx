@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
+import { CommissionPercentField } from "@/components/partner/commission-percent-field";
 import { PartnerLocationPicker } from "@/components/partner/partner-location-picker";
 import { Button } from "@/components/ui/button";
 import type { PartnerLocationOption } from "@/lib/partner/location-search-actions";
@@ -64,6 +65,7 @@ export function PartnerTransferForm({
             bookingRequirements: String(data.get("bookingRequirements") ?? "") || null,
             cancellationPolicy: String(data.get("cancellationPolicy") ?? "") || null,
             description: String(data.get("description") ?? "") || null,
+            commissionPercent: Number(data.get("commissionPercent")) || 15,
           },
         };
 
@@ -177,6 +179,8 @@ export function PartnerTransferForm({
         <span className="mb-1 block font-medium text-neutral-700">Description</span>
         <textarea name="description" rows={3} defaultValue={initial?.service.description ?? ""} className={INPUT_CLASS} />
       </label>
+
+      <CommissionPercentField defaultValue={initial?.service.commissionPercent ?? null} />
 
       {error && (
         <p role="alert" className="text-sm text-red-600">

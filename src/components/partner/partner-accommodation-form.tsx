@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useId, useState, useTransition } from "react";
 
+import { CommissionPercentField } from "@/components/partner/commission-percent-field";
 import { PartnerLocationPicker } from "@/components/partner/partner-location-picker";
 import { Button } from "@/components/ui/button";
 import type { PartnerLocationOption } from "@/lib/partner/location-search-actions";
@@ -56,6 +57,7 @@ export function PartnerAccommodationForm({
           priceFrom: Number(data.get("priceFrom")) || null,
           locationId: location?.id ?? null,
           rooms: rooms.filter((r) => r.name.trim().length > 0),
+          commissionPercent: Number(data.get("commissionPercent")) || 15,
         };
 
         startTransition(async () => {
@@ -211,6 +213,8 @@ export function PartnerAccommodationForm({
           ))}
         </div>
       </div>
+
+      <CommissionPercentField defaultValue={initial?.commissionPercent ?? null} />
 
       <p className="text-xs text-neutral-500">
         Photos aren&rsquo;t part of this form yet — our team will add gallery images for your property once it&rsquo;s approved.

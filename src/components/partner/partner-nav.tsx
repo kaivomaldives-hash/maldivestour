@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { label: "Dashboard", href: "/partner" },
   { label: "My Listings", href: "/partner/listings" },
   { label: "Bookings", href: "/partner/bookings" },
+  { label: "Payments", href: "/partner/payments" },
 ];
 
 function isActive(pathname: string, href: string): boolean {

@@ -109,6 +109,31 @@ export default async function AdminBookingDetailPage({ params }: { params: Promi
               </dl>
             </section>
           )}
+
+          {booking.agentId && (
+            <section className="rounded-2xl border border-neutral-200 bg-white p-4">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Travel agent booking</h2>
+              <dl className="mt-3 grid grid-cols-2 gap-4">
+                <Field label="Agent" value={booking.agentBusinessName} />
+                <Field label="Agent discount" value={booking.discountPercent != null ? `${booking.discountPercent}%` : null} />
+              </dl>
+            </section>
+          )}
+
+          {booking.partnerId && (
+            <section className="rounded-2xl border border-neutral-200 bg-white p-4">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Partner commission owed</h2>
+              <dl className="mt-3 grid grid-cols-2 gap-4">
+                <Field label="Partner" value={booking.partnerBusinessName} />
+                <Field label="Commission rate" value={booking.partnerCommissionPercent != null ? `${booking.partnerCommissionPercent}%` : null} />
+                <Field
+                  label="Commission amount"
+                  value={booking.partnerCommissionAmount != null ? `${booking.currency} ${booking.partnerCommissionAmount}` : null}
+                />
+                <Field label="Commission status" value={booking.partnerCommissionStatus} />
+              </dl>
+            </section>
+          )}
         </div>
 
         <div>

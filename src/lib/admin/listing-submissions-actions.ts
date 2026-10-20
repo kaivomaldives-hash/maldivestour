@@ -60,6 +60,27 @@ async function setNodeCreatedBy(nodeId: string, partnerId: string): Promise<void
   await supabase.from("nodes").update({ created_by: partnerId } as unknown as never).eq("id", nodeId);
 }
 
+/**
+ * Nothing in this codebase ever wrote a `bookable_products` row outside
+ * the one-off legacy seed migrations (confirmed: no admin action touches
+ * this table) — meaning every accommodation/activity/package created
+ * through this approval flow, or the staff admin editors, was never
+ * actually bookable (isBookable derives from this row's mere existence —
+ * see getAccommodationBySlugUncached/getActivityBySlugUncached/
+ * getPackageBySlugUncached). This is the fix, and the only place a
+ * partner-chosen commission_percent for these three node types can land,
+ * since accommodations/activities/packages themselves have no commission
+ * column of their own (transfer routes differ — their commission lives
+ * directly on transfer_services, already a real write path via
+ * createTransferService/updateTransferService).
+ */
+async function upsertBookableCommission(nodeId: string, commissionPercent: number): Promise<void> {
+  const supabase = await createClient();
+  await supabase
+    .from("bookable_products")
+    .upsert({ id: nodeId, booking_mode: "inquiry", commission_percent: commissionPercent } as unknown as never, { onConflict: "id" });
+}
+
 export async function approveListingSubmission(submissionId: string): Promise<AdminActionResult> {
   const { userId } = await requireStaff();
   const submission = await getListingSubmissionByIdAdmin(submissionId);
@@ -103,6 +124,7 @@ export async function approveListingSubmission(submissionId: string): Promise<Ad
       if (!updated.ok) return { ok: false, error: updated.error };
     }
 
+    await upsertBookableCommission(resultNodeId, payload.commissionPercent);
     await setPrimaryLocation(resultNodeId, payload.locationId, `/maldives/resorts/`);
     await supabase.from("accommodation_rooms").delete().eq("accommodation_id", resultNodeId);
     if (payload.rooms.length > 0) {
@@ -158,6 +180,7 @@ export async function approveListingSubmission(submissionId: string): Promise<Ad
       if (!updated.ok) return { ok: false, error: updated.error };
     }
 
+    await upsertBookableCommission(resultNodeId, payload.commissionPercent);
     await setPrimaryLocation(resultNodeId, payload.locationId, `/maldives/activities/`);
   } else if (submission.nodeType === "package") {
     const payload = submission.payload as PackageListingPayload;
@@ -178,6 +201,8 @@ export async function approveListingSubmission(submissionId: string): Promise<Ad
       const updated = await updatePackage(resultNodeId, core, fields);
       if (!updated.ok) return { ok: false, error: updated.error };
     }
+
+    await upsertBookableCommission(resultNodeId, payload.commissionPercent);
   } else {
     const payload = submission.payload as TransferRouteListingPayload;
     const routeFields = {
@@ -222,6 +247,7 @@ export async function approveListingSubmission(submissionId: string): Promise<Ad
       description: payload.service.description,
       isBookable: true,
       facilities: [] as string[],
+      commissionPercent: payload.service.commissionPercent,
     };
 
     if (payload.service.id) {

@@ -71,6 +71,7 @@ function AccommodationFields({ payload }: { payload: AccommodationListingPayload
         <Field label="From price" value={payload.priceFrom != null ? `${payload.currency} ${payload.priceFrom}` : null} />
         <Field label="All-inclusive" value={payload.allInclusive ? "Yes" : "No"} />
         <Field label="Overwater villas" value={payload.overwaterVillas ? "Yes" : "No"} />
+        <Field label="Commission to MTG" value={`${payload.commissionPercent}%`} />
       </dl>
       {payload.summary && <p className="mt-4 whitespace-pre-wrap text-sm text-neutral-900">{payload.summary}</p>}
       {payload.rooms.length > 0 && (
@@ -102,6 +103,7 @@ function ActivityFields({ payload }: { payload: ActivityListingPayload }) {
         <Field label="Minimum age" value={payload.minAge} />
         <Field label="Max participants" value={payload.maxParticipants} />
         <Field label="From price" value={payload.priceFrom != null ? `${payload.currency} ${payload.priceFrom}` : null} />
+        <Field label="Commission to MTG" value={`${payload.commissionPercent}%`} />
       </dl>
       {payload.summary && <p className="mt-4 whitespace-pre-wrap text-sm text-neutral-900">{payload.summary}</p>}
     </>
@@ -115,6 +117,7 @@ function PackageFields({ payload }: { payload: PackageListingPayload }) {
         <Field label="Title" value={payload.title} />
         <Field label="Duration (nights)" value={payload.durationNights} />
         <Field label="From price" value={payload.priceFrom != null ? `${payload.currency} ${payload.priceFrom}` : null} />
+        <Field label="Commission to MTG" value={`${payload.commissionPercent}%`} />
       </dl>
       {payload.summary && <p className="mt-4 whitespace-pre-wrap text-sm text-neutral-900">{payload.summary}</p>}
     </>
@@ -134,6 +137,7 @@ function TransferFields({ payload }: { payload: TransferRouteListingPayload }) {
         <Field label="Price" value={`${payload.service.currency} ${payload.service.price}`} />
         <Field label="Capacity" value={payload.service.capacity} />
         <Field label="Luggage allowance" value={payload.service.luggageAllowance} />
+        <Field label="Commission to MTG" value={`${payload.service.commissionPercent}%`} />
       </dl>
       {payload.summary && <p className="mt-4 whitespace-pre-wrap text-sm text-neutral-900">{payload.summary}</p>}
       {payload.service.description && <p className="mt-2 whitespace-pre-wrap text-sm text-neutral-700">{payload.service.description}</p>}

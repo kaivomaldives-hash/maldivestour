@@ -149,12 +149,15 @@ export async function getAccommodationForEdit(nodeId: string): Promise<Accommoda
     }>();
   if (!accommodation) return null;
 
-  const { data: rooms } = await supabase
-    .from("accommodation_rooms")
-    .select("name, price_from, price_currency, bed_type, max_occupancy")
-    .eq("accommodation_id", nodeId)
-    .order("sort_order", { ascending: true })
-    .returns<{ name: string; price_from: number | null; price_currency: string; bed_type: string | null; max_occupancy: number | null }[]>();
+  const [{ data: rooms }, { data: bookable }] = await Promise.all([
+    supabase
+      .from("accommodation_rooms")
+      .select("name, price_from, price_currency, bed_type, max_occupancy")
+      .eq("accommodation_id", nodeId)
+      .order("sort_order", { ascending: true })
+      .returns<{ name: string; price_from: number | null; price_currency: string; bed_type: string | null; max_occupancy: number | null }[]>(),
+    supabase.from("bookable_products").select("commission_percent").eq("id", nodeId).maybeSingle<{ commission_percent: number }>(),
+  ]);
 
   return {
     title: node.title,
@@ -177,6 +180,7 @@ export async function getAccommodationForEdit(nodeId: string): Promise<Accommoda
       bedType: r.bed_type,
       maxOccupancy: r.max_occupancy,
     })),
+    commissionPercent: bookable?.commission_percent ?? 15,
   };
 }
 
@@ -194,19 +198,22 @@ export async function getActivityForEdit(nodeId: string): Promise<ActivityListin
   }>();
   if (!node || node.created_by !== user.id) return null;
 
-  const { data: activity } = await supabase
-    .from("activities")
-    .select("activity_category, duration_minutes, min_age, difficulty, price_from, currency, max_participants")
-    .eq("id", nodeId)
-    .maybeSingle<{
-      activity_category: ActivityListingPayload["activityCategory"];
-      duration_minutes: number | null;
-      min_age: number | null;
-      difficulty: ActivityListingPayload["difficulty"];
-      price_from: number | null;
-      currency: string;
-      max_participants: number | null;
-    }>();
+  const [{ data: activity }, { data: bookable }] = await Promise.all([
+    supabase
+      .from("activities")
+      .select("activity_category, duration_minutes, min_age, difficulty, price_from, currency, max_participants")
+      .eq("id", nodeId)
+      .maybeSingle<{
+        activity_category: ActivityListingPayload["activityCategory"];
+        duration_minutes: number | null;
+        min_age: number | null;
+        difficulty: ActivityListingPayload["difficulty"];
+        price_from: number | null;
+        currency: string;
+        max_participants: number | null;
+      }>(),
+    supabase.from("bookable_products").select("commission_percent").eq("id", nodeId).maybeSingle<{ commission_percent: number }>(),
+  ]);
   if (!activity) return null;
 
   return {
@@ -220,6 +227,7 @@ export async function getActivityForEdit(nodeId: string): Promise<ActivityListin
     currency: activity.currency,
     maxParticipants: activity.max_participants,
     locationId: await getPrimaryLocationId(nodeId),
+    commissionPercent: bookable?.commission_percent ?? 15,
   };
 }
 
@@ -237,11 +245,14 @@ export async function getPackageForEdit(nodeId: string): Promise<PackageListingP
   }>();
   if (!node || node.created_by !== user.id) return null;
 
-  const { data: pkg } = await supabase
-    .from("packages")
-    .select("duration_nights, price_from, currency")
-    .eq("id", nodeId)
-    .maybeSingle<{ duration_nights: number | null; price_from: number | null; currency: string | null }>();
+  const [{ data: pkg }, { data: bookable }] = await Promise.all([
+    supabase
+      .from("packages")
+      .select("duration_nights, price_from, currency")
+      .eq("id", nodeId)
+      .maybeSingle<{ duration_nights: number | null; price_from: number | null; currency: string | null }>(),
+    supabase.from("bookable_products").select("commission_percent").eq("id", nodeId).maybeSingle<{ commission_percent: number }>(),
+  ]);
   if (!pkg) return null;
 
   return {
@@ -250,6 +261,7 @@ export async function getPackageForEdit(nodeId: string): Promise<PackageListingP
     durationNights: pkg.duration_nights,
     priceFrom: pkg.price_from,
     currency: pkg.currency ?? "USD",
+    commissionPercent: bookable?.commission_percent ?? 15,
   };
 }
 
@@ -277,7 +289,7 @@ export async function getTransferRouteForEdit(nodeId: string): Promise<TransferR
   const { data: service } = await supabase
     .from("transfer_services")
     .select(
-      "id, transfer_type, vehicle_type, shared_or_private, duration_minutes, price, currency, capacity, luggage_allowance, status, pickup_instructions, dropoff_instructions, booking_requirements, cancellation_policy, description",
+      "id, transfer_type, vehicle_type, shared_or_private, duration_minutes, price, currency, capacity, luggage_allowance, status, pickup_instructions, dropoff_instructions, booking_requirements, cancellation_policy, description, commission_percent",
     )
     .eq("route_id", nodeId)
     .order("created_at", { ascending: true })
@@ -298,6 +310,7 @@ export async function getTransferRouteForEdit(nodeId: string): Promise<TransferR
       booking_requirements: string | null;
       cancellation_policy: string | null;
       description: string | null;
+      commission_percent: number;
     }>();
 
   return {
@@ -324,6 +337,7 @@ export async function getTransferRouteForEdit(nodeId: string): Promise<TransferR
           bookingRequirements: service.booking_requirements,
           cancellationPolicy: service.cancellation_policy,
           description: service.description,
+          commissionPercent: service.commission_percent,
         }
       : {
           id: null,
@@ -341,6 +355,7 @@ export async function getTransferRouteForEdit(nodeId: string): Promise<TransferR
           bookingRequirements: null,
           cancellationPolicy: null,
           description: null,
+          commissionPercent: 15,
         },
   };
 }

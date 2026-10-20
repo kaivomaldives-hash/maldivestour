@@ -2,7 +2,15 @@
 
 import { sendListingSubmissionNotification } from "@/lib/partner/listings/notifications";
 import { createClient } from "@/lib/supabase/server";
-import type { ListingNodeType, ListingPayload, ListingSubmissionKind } from "@/lib/partner/listings/types";
+import type {
+  AccommodationListingPayload,
+  ActivityListingPayload,
+  ListingNodeType,
+  ListingPayload,
+  ListingSubmissionKind,
+  PackageListingPayload,
+  TransferRouteListingPayload,
+} from "@/lib/partner/listings/types";
 import type { PartnerKind } from "@/lib/partner/types";
 
 export interface ActionResult {
@@ -64,6 +72,16 @@ export async function submitListing(input: SubmitListingInput): Promise<ActionRe
 
   const title = input.payload.title.trim();
   if (!title) return { ok: false, error: "Title is required." };
+
+  // The real floor: a transfer_route payload's commission lives on its
+  // nested `service`, every other node type carries it directly — see
+  // ListingPayload's own per-type shape. Re-checked here regardless of
+  // what the client sent/validated, same as every other server action in
+  // this codebase never trusting client-side-only validation.
+  const submittedCommission = nodeType === "transfer_route" ? (input.payload as TransferRouteListingPayload).service.commissionPercent : (input.payload as AccommodationListingPayload | ActivityListingPayload | PackageListingPayload).commissionPercent;
+  if (!Number.isFinite(submittedCommission) || submittedCommission < 15) {
+    return { ok: false, error: "Commission must be at least 15%." };
+  }
 
   const { error } = await supabase.from("listing_submissions").insert({
     partner_id: user.id,

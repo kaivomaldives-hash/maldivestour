@@ -412,8 +412,8 @@ export async function ActivityDirectoryPage({
         </section>
 
         <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Explore More Maldives</h2>
-          <nav aria-label="Related Maldives links" className="mt-4 flex flex-wrap gap-2">
+          <h2 className="text-xl font-semibold text-ocean-900">Explore More Maldives Activities</h2>
+          <nav aria-label="Related Maldives activities links" className="mt-4 flex flex-wrap gap-2">
             {[
               { href: "/maldives/fishing/", label: "Fishing" },
               { href: "/maldives/diving/", label: "Diving" },

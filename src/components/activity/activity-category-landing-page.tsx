@@ -53,6 +53,7 @@ const OTHER_CATEGORIES = [
   { slug: "water-sports", label: "Water Sports" },
   { slug: "island-hopping", label: "Island Hopping" },
   { slug: "dolphin-whale-watching", label: "Dolphin & Whale Watching" },
+  { slug: "sightseeing", label: "Sightseeing" },
 ];
 
 export function activityCategoryMetadata(config: ActivityCategoryConfig): Metadata {

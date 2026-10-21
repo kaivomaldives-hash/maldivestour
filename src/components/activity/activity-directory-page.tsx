@@ -265,10 +265,14 @@ export async function ActivityDirectoryPage({
               ,{" "}
               <Link href="/maldives/island-hopping/" className="text-maldives-600 hover:underline">
                 Island Hopping
-              </Link>{" "}
-              and{" "}
+              </Link>
+              ,{" "}
               <Link href="/maldives/dolphin-whale-watching/" className="text-maldives-600 hover:underline">
                 Dolphin & Whale Watching
+              </Link>{" "}
+              and{" "}
+              <Link href="/maldives/sightseeing/" className="text-maldives-600 hover:underline">
+                Sightseeing
               </Link>
               .
             </p>
@@ -424,6 +428,7 @@ export async function ActivityDirectoryPage({
               { href: "/maldives/water-sports/", label: "Water Sports" },
               { href: "/maldives/island-hopping/", label: "Island Hopping" },
               { href: "/maldives/dolphin-whale-watching/", label: "Dolphin & Whale Watching" },
+              { href: "/maldives/sightseeing/", label: "Sightseeing" },
               { href: "/maldives/attractions/", label: "Attractions" },
               { href: "/maldives/packages/", label: "Packages" },
               { href: "/maldives/resorts/", label: "Resorts" },

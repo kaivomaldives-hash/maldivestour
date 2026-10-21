@@ -6,6 +6,7 @@ import { RouteVideo } from "@/components/transfers/route-video";
 import { routeVideoJsonLd } from "@/components/transfers/route-video-jsonld";
 import { TransferFinder } from "@/components/transfers/transfer-finder";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
+import { TransferRouteSearch } from "@/components/transfers/transfer-route-search";
 import { CarTransfersSection } from "@/components/vehicles/car-transfers-section";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { FaqSection } from "@/components/ui/faq-section";
@@ -171,6 +172,12 @@ export async function TransferDirectoryPage() {
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
         {/* 2. Transfer search */}
         <TransferFinder defaultFromSlug={velanaAirport?.slug} defaultFromLabel={velanaAirport?.title} />
+
+        {/* Already know the resort/hotel/island name? Jump straight to its
+            route instead of using the From/To finder above. */}
+        <div className="mt-6">
+          <TransferRouteSearch placeholder="e.g. Centara, Club Med Kani, Maafushi…" />
+        </div>
 
         {/* 3. Airport transfers */}
         {airportResult.items.length > 0 && (

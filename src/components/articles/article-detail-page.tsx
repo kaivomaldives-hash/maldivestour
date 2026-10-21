@@ -47,11 +47,12 @@ export async function ArticleDetailPage({ slug }: { slug: string }) {
   const article = await getArticleBySlug(slug);
   if (!article) notFound();
 
-  const entityMap = await buildEntityLinkMap();
+  // getArticleLocalePaths only needs article.id/slug, already in hand —
+  // it doesn't depend on entityMap and was needlessly waiting behind it.
+  const [entityMap, localePaths] = await Promise.all([buildEntityLinkMap(), getArticleLocalePaths(article.id, article.slug)]);
   const bodyHtml = applyContextualLinks(article.bodyHtml, entityMap, { excludeHref: articleHref(article) });
   const bodySegments = splitArticleBodyOnListings(bodyHtml);
   const listingEmbeds = await resolveListingEmbeds(bodySegments);
-  const localePaths = await getArticleLocalePaths(article.id, article.slug);
 
   return (
     <main>

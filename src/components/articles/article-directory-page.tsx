@@ -53,7 +53,7 @@ export async function ArticleDirectoryPage({ searchParams }: { searchParams: Pro
         {results.items.length === 0 ? (
           <EmptyState title="No articles in this category yet" />
         ) : (
-          <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {results.items.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}

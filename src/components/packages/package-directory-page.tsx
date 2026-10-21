@@ -179,7 +179,7 @@ export async function PackageDirectoryPage({ searchParams }: { searchParams: Pro
         {pageItems.length === 0 ? (
           <EmptyState title="No packages match your selected filters." description="Try clearing a filter or searching a different term." />
         ) : (
-          <ul className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {pageItems.map((pkg) => (
               <PackageCard key={pkg.slug} pkg={pkg} />
             ))}
@@ -192,7 +192,7 @@ export async function PackageDirectoryPage({ searchParams }: { searchParams: Pro
           <>
             <section className="mt-14 border-t border-neutral-200 pt-10">
               <h2 className="text-xl font-semibold text-ocean-900">Featured Maldives Packages</h2>
-              <ul className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <ul className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 {featured.map((pkg) => (
                   <PackageCard key={pkg.slug} pkg={pkg} />
                 ))}

@@ -139,7 +139,7 @@ export async function AttractionDirectoryPage({
             {SUPER_GROUP_ORDER.filter((group) => superGroups.has(group)).map((group) => (
               <section key={group}>
                 <h2 className="text-xl font-semibold text-ocean-900">{ATTRACTION_SUPER_GROUP_LABEL[group]}</h2>
-                <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                   {superGroups.get(group)!.map((attraction) => (
                     <AttractionCard key={attraction.id} attraction={attraction} />
                   ))}
@@ -148,7 +148,7 @@ export async function AttractionDirectoryPage({
             ))}
           </div>
         ) : (
-          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {results.items.map((attraction) => (
               <AttractionCard key={attraction.id} attraction={attraction} />
             ))}

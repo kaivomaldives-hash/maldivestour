@@ -11,7 +11,9 @@ import { LocationMap } from "@/components/locations/location-map";
 import { PackageCard } from "@/components/packages/package-card";
 import { SurfBreakCard } from "@/components/surfing/surf-break-card";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
+import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
+import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodationsByAtoll } from "@/lib/accommodations/repository";
 import { getActivitiesByAtoll } from "@/lib/activities/repository";
@@ -19,7 +21,8 @@ import { getArticlesRelatedToNodes } from "@/lib/articles/repository";
 import { getDiveSitesByAtoll } from "@/lib/diving/repository";
 import { applyContextualLinks, escapeHtml } from "@/lib/linking/contextual-links";
 import { buildEntityLinkMap } from "@/lib/linking/entity-link-map";
-import { getAtollBySlug, getAtollContent, getIslandsByAtollId } from "@/lib/locations/repository";
+import { getAtollBySlug, getAtollContent, getChildLocations, getIslandsByAtollId } from "@/lib/locations/repository";
+import { publicDestinationPath } from "@/lib/locations/public-destination-path";
 import { LocationGallerySection } from "@/components/locations/location-gallery-section";
 import { LocationCommentsSection } from "@/components/locations/location-comments-section";
 import { LocationMediaUploadForm } from "@/components/locations/location-media-upload-form";
@@ -75,10 +78,11 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
   const atoll = await getAtollBySlug(slug);
   if (!atoll) notFound();
 
-  const [heroById, allIslands, content, accommodations, activities, diveSites, surfBreaks, transferRoutes, packages, relatedGuides, entityMap, mediaItems, comments] =
+  const [heroById, allIslands, children, content, accommodations, activities, diveSites, surfBreaks, transferRoutes, packages, relatedGuides, entityMap, mediaItems, comments] =
     await Promise.all([
       getHeroMediaByNodeIds([atoll.id]),
       getIslandsByAtollId(atoll.id),
+      getChildLocations(atoll.id),
       getAtollContent(atoll.id),
       getAccommodationsByAtoll(atoll.id),
       getActivitiesByAtoll(atoll.id),
@@ -112,6 +116,11 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
   // to give resorts a real location to attach to) alongside the inhabited
   // islands Task 4 seeded — split them rather than mislabel the count.
   const islands = allIslands.filter((island) => island.isInhabited !== false);
+  // Places submitted directly against this atoll (not one of its islands)
+  // via AddPlaceForm below — getChildLocations returns every child
+  // regardless of type, so islands (already shown in their own section
+  // above) are excluded here to avoid listing them twice.
+  const places = children.filter((child) => child.locationType !== "island");
   // Visit Maldives' own atoll pages consistently separate local-island
   // guesthouses/hotels from private-island resorts rather than listing
   // every stay together — real, verifiable structural pattern (checked
@@ -219,6 +228,32 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
           </ul>
         )}
       </section>
+
+      <AtollCardSection
+        title={`On ${atoll.title}`}
+        items={places}
+        renderItem={(place) => {
+          const href = publicDestinationPath(place.locationType, place.slug);
+          return (
+            <li key={place.id} className={CARD_CLASS}>
+              {place.heroImage && (
+                <div className={CARD_IMAGE_BLEED_CLASS}>
+                  <MediaImage asset={place.heroImage} alt={place.title} aspectClassName="aspect-[4/3]" />
+                </div>
+              )}
+              {href ? (
+                <Link href={`${href}/`} className="text-lg font-medium text-ocean-900 transition-colors hover:text-maldives-600">
+                  {place.title}
+                </Link>
+              ) : (
+                <p className="text-lg font-medium text-ocean-900">{place.title}</p>
+              )}
+              <p className="mt-1 text-xs capitalize text-neutral-500">{place.locationType.replace("_", " ")}</p>
+              {place.summary && <p className="mt-1.5 text-sm text-neutral-600 line-clamp-2">{place.summary}</p>}
+            </li>
+          );
+        }}
+      />
 
       <AtollCardSection
         title={`Resorts in ${atoll.title}`}

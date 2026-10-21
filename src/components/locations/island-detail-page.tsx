@@ -11,8 +11,10 @@ import { LocationMap } from "@/components/locations/location-map";
 import { PackageCard } from "@/components/packages/package-card";
 import { SurfBreakCard } from "@/components/surfing/surf-break-card";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
+import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { FaqSection } from "@/components/ui/faq-section";
+import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { getActivitiesByLocation } from "@/lib/activities/repository";
@@ -29,6 +31,7 @@ import { LocationGallerySection } from "@/components/locations/location-gallery-
 import { getPublishedLocationComments } from "@/lib/locations/comments/repository";
 import { getChildLocations, getIslandBySlug, getIslandContent } from "@/lib/locations/repository";
 import { getNearbyIslands } from "@/lib/locations/nearby-islands";
+import { publicDestinationPath } from "@/lib/locations/public-destination-path";
 import { getHeroMediaByNodeIds, getMediaForNode } from "@/lib/media/repository";
 import { getPackageViewsByLocation } from "@/lib/packages/view-repository";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
@@ -230,13 +233,28 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
       {children.length > 0 && (
         <section className="mt-10">
           <h2 className="text-xl font-semibold text-ocean-900">On this island</h2>
-          <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-3">
-            {children.map((child) => (
-              <li key={child.id} className="capitalize">
-                {child.title}
-                <span className="ml-1 text-xs text-neutral-500">({child.locationType.replace("_", " ")})</span>
-              </li>
-            ))}
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {children.map((child) => {
+              const href = publicDestinationPath(child.locationType, child.slug);
+              return (
+                <li key={child.id} className={CARD_CLASS}>
+                  {child.heroImage && (
+                    <div className={CARD_IMAGE_BLEED_CLASS}>
+                      <MediaImage asset={child.heroImage} alt={child.title} aspectClassName="aspect-[4/3]" />
+                    </div>
+                  )}
+                  {href ? (
+                    <Link href={`${href}/`} className="text-lg font-medium text-ocean-900 transition-colors hover:text-maldives-600">
+                      {child.title}
+                    </Link>
+                  ) : (
+                    <p className="text-lg font-medium text-ocean-900">{child.title}</p>
+                  )}
+                  <p className="mt-1 text-xs capitalize text-neutral-500">{child.locationType.replace("_", " ")}</p>
+                  {child.summary && <p className="mt-1.5 text-sm text-neutral-600 line-clamp-2">{child.summary}</p>}
+                </li>
+              );
+            })}
           </ul>
         </section>
       )}

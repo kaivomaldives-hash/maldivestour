@@ -1,16 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { TransferFilterBar } from "@/components/transfers/transfer-filter-bar";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { TransferRouteSearch } from "@/components/transfers/transfer-route-search";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { FaqSection } from "@/components/ui/faq-section";
 import { PageHero } from "@/components/ui/page-hero";
+import { getAtolls } from "@/lib/locations/repository";
 import type { MediaAsset } from "@/lib/media/types";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { getTransferRoutes } from "@/lib/transfers/repository";
-import type { TransferType } from "@/lib/transfers/types";
+import type { SharedOrPrivate, TransferType } from "@/lib/transfers/types";
+
+const MODE_VALUES = new Set<string>(["speedboat", "seaplane", "domestic_flight", "ferry", "private_yacht", "land_transfer"]);
+const TYPE_VALUES = new Set<string>(["shared", "private"]);
+
+export interface TransferCategorySearchParams {
+  atoll?: string;
+  mode?: string;
+  type?: string;
+}
 
 /**
  * Task 20: one shared implementation behind the transfer-category landing
@@ -79,9 +90,38 @@ function faqJsonLd(faqs: TransferCategoryConfig["faqs"]) {
   };
 }
 
-export async function TransferCategoryLandingPage({ config }: { config: TransferCategoryConfig }) {
-  const fetched = await getTransferRoutes({ category: config.category, transferType: config.transferType, pageSize: 100 });
+export async function TransferCategoryLandingPage({
+  config,
+  searchParams,
+}: {
+  config: TransferCategoryConfig;
+  searchParams?: Promise<TransferCategorySearchParams>;
+}) {
+  const sp = (await searchParams) ?? {};
+  const activeAtollSlug = sp.atoll;
+  // The mode filter is hidden (and ignored) on speedboat-transfers, where
+  // config.transferType already fixes the mode -- a visitor there can't
+  // meaningfully pick a different one.
+  const activeMode = !config.transferType && sp.mode && MODE_VALUES.has(sp.mode) ? (sp.mode as TransferType) : undefined;
+  const activeType = sp.type && TYPE_VALUES.has(sp.type) ? (sp.type as SharedOrPrivate) : undefined;
+
+  const atolls = await getAtolls();
+  const activeAtoll = activeAtollSlug ? atolls.find((a) => a.slug === activeAtollSlug) : undefined;
+
+  const fetched = await getTransferRoutes({
+    category: config.category,
+    transferType: config.transferType ?? activeMode,
+    atollId: activeAtoll?.id,
+    sharedOrPrivate: activeType,
+    pageSize: 100,
+  });
   const routes = fetched.items;
+  const hasActiveFilters = Boolean(activeAtollSlug || activeMode || activeType);
+
+  const currentParams = new URLSearchParams();
+  if (sp.atoll) currentParams.set("atoll", sp.atoll);
+  if (sp.mode) currentParams.set("mode", sp.mode);
+  if (sp.type) currentParams.set("type", sp.type);
 
   const faq = faqJsonLd(config.faqs);
 
@@ -109,17 +149,28 @@ export async function TransferCategoryLandingPage({ config }: { config: Transfer
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
+        <TransferRouteSearch />
+        <TransferFilterBar
+          basePath={`/maldives/${config.slug}/`}
+          currentParams={currentParams}
+          atolls={atolls}
+          activeAtollSlug={activeAtollSlug}
+          activeMode={activeMode}
+          activeType={activeType}
+          showMode={!config.transferType}
+          resultCount={routes.length}
+        />
+
         {routes.length === 0 ? (
-          <EmptyState title={config.emptyMessage} />
+          <div className="mt-6">
+            <EmptyState title={hasActiveFilters ? "No transfer routes match these filters." : config.emptyMessage} />
+          </div>
         ) : (
-          <>
-            <TransferRouteSearch />
-            <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {routes.map((route) => (
-                <TransferRouteCard key={route.id} route={route} />
-              ))}
-            </ul>
-          </>
+          <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {routes.map((route) => (
+              <TransferRouteCard key={route.id} route={route} />
+            ))}
+          </ul>
         )}
 
         <FaqSection faqs={config.faqs} title="Common questions" className="mt-14 border-t border-neutral-200 pt-10" />

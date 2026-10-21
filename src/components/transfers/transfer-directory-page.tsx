@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ComingSoonSection } from "@/components/transfers/coming-soon-section";
 import { RouteVideo } from "@/components/transfers/route-video";
 import { routeVideoJsonLd } from "@/components/transfers/route-video-jsonld";
-import { TransferFinder } from "@/components/transfers/transfer-finder";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { TransferRouteSearch } from "@/components/transfers/transfer-route-search";
 import { CarTransfersSection } from "@/components/vehicles/car-transfers-section";
@@ -14,7 +13,6 @@ import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { getFerryRoutes } from "@/lib/ferries/repository";
-import { getLocationBySlug } from "@/lib/locations/repository";
 import { getTransfersHeroVideo } from "@/lib/media/site-hero-video";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { getSpeedboats } from "@/lib/speedboats/repository";
@@ -25,11 +23,14 @@ import { getTransferRoutes } from "@/lib/transfers/repository";
  * Task 20: the main Maldives transportation hub. Rebuilt as a full
  * search engine + directory + booking/inquiry funnel, not a page of
  * generic card sections — see the section order in the task brief
- * (§11): hero, finder, airport, speedboat charter, car, resort, island,
- * seaplane/domestic-flight (coming soon), ferry, why-us, how-it-works,
- * FAQ, related links. (The catch-all "browse every route" directory that
- * used to sit beneath all of this was removed on request — the category
- * pages linked from each section's "See all" already cover that.)
+ * (§11): hero (with the route-name search built in, not a separate
+ * section below it — the old From/To finder was removed on request to
+ * let the hero stand taller), airport, speedboat charter, car, resort,
+ * island, seaplane/domestic-flight (coming soon), ferry, why-us,
+ * how-it-works, FAQ, related links. (The catch-all "browse every route"
+ * directory that used to sit beneath all of this was removed on request
+ * — the category pages linked from each section's "See all" already
+ * cover that.)
  */
 
 const HOW_IT_WORKS = [
@@ -125,8 +126,7 @@ function SeeAllLink({ href, total, label }: { href: string; total: number; label
 }
 
 export async function TransferDirectoryPage() {
-  const [velanaAirport, airportResult, resortResult, islandResult, boats, ferryRoutes] = await Promise.all([
-    getLocationBySlug("velana-international-airport"),
+  const [airportResult, resortResult, islandResult, boats, ferryRoutes] = await Promise.all([
     getTransferRoutes({ category: "airport", pageSize: 6 }),
     getTransferRoutes({ category: "resort-transfer", pageSize: 6 }),
     getTransferRoutes({ category: "island-transfer", pageSize: 6 }),
@@ -167,19 +167,11 @@ export async function TransferDirectoryPage() {
             </span>
           </>
         }
+        action={<TransferRouteSearch placeholder="Search by resort, hotel, or island name…" />}
       />
 
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
-        {/* 2. Transfer search */}
-        <TransferFinder defaultFromSlug={velanaAirport?.slug} defaultFromLabel={velanaAirport?.title} />
-
-        {/* Already know the resort/hotel/island name? Jump straight to its
-            route instead of using the From/To finder above. */}
-        <div className="mt-6">
-          <TransferRouteSearch placeholder="e.g. Centara, Club Med Kani, Maafushi…" />
-        </div>
-
-        {/* 3. Airport transfers */}
+        {/* 2. Airport transfers */}
         {airportResult.items.length > 0 && (
           <section className="mt-10">
             <div className="flex items-baseline justify-between">
@@ -194,7 +186,7 @@ export async function TransferDirectoryPage() {
           </section>
         )}
 
-        {/* 4. Private speedboat charters */}
+        {/* 3. Private speedboat charters */}
         {boats.length > 0 && (
           <section className="mt-10">
             <div className="flex items-baseline justify-between">
@@ -220,10 +212,10 @@ export async function TransferDirectoryPage() {
           </section>
         )}
 
-        {/* 5. Car transfers */}
+        {/* 4. Car transfers */}
         <CarTransfersSection />
 
-        {/* 6. Resort transfers */}
+        {/* 5. Resort transfers */}
         {resortResult.items.length > 0 && (
           <section className="mt-10">
             <div className="flex items-baseline justify-between">
@@ -238,7 +230,7 @@ export async function TransferDirectoryPage() {
           </section>
         )}
 
-        {/* 7. Island transfers */}
+        {/* 6. Island transfers */}
         {islandResult.items.length > 0 && (
           <section className="mt-10">
             <div className="flex items-baseline justify-between">
@@ -253,7 +245,7 @@ export async function TransferDirectoryPage() {
           </section>
         )}
 
-        {/* 8-9. Seaplane / domestic flight — coming soon */}
+        {/* 7-8. Seaplane / domestic flight — coming soon */}
         <ComingSoonSection
           title="Seaplane Transfers"
           description="We're working on confirming real seaplane operator, route, and pricing data before listing it here — no fabricated schedules or availability in the meantime."
@@ -265,7 +257,7 @@ export async function TransferDirectoryPage() {
           image={TRANSFER_CATEGORY_IMAGES.domesticFlightComingSoon}
         />
 
-        {/* 10. Ferry schedule */}
+        {/* 9. Ferry schedule */}
         {ferryRoutes.length > 0 && (
           <section className="mt-10">
             <div className="flex items-baseline justify-between">
@@ -289,7 +281,7 @@ export async function TransferDirectoryPage() {
         {/* Getting-around explainer video */}
         <RouteVideo />
 
-        {/* 11. Why use MTG */}
+        {/* 10. Why use MTG */}
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Why Use Maldives Tour Guide for Transfers</h2>
           <p className="mt-2 max-w-2xl text-sm text-neutral-700">
@@ -299,7 +291,7 @@ export async function TransferDirectoryPage() {
           </p>
         </section>
 
-        {/* 12. How transfers work */}
+        {/* 11. How transfers work */}
         <section className="mt-10">
           <h2 className="text-xl font-semibold text-ocean-900">How Maldives Transfers Work</h2>
           <dl className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -312,10 +304,10 @@ export async function TransferDirectoryPage() {
           </dl>
         </section>
 
-        {/* 13. FAQs */}
+        {/* 12. FAQs */}
         <FaqSection faqs={FAQS} />
 
-        {/* 14. Related Maldives travel links */}
+        {/* 13. Related Maldives travel links */}
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Related Maldives Travel Links</h2>
           <nav aria-label="Related Maldives travel links" className="mt-4 flex flex-wrap gap-2">

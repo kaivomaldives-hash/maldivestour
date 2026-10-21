@@ -73,13 +73,10 @@ export async function getMyProfile(userId: string): Promise<MyProfile | null> {
 
 export async function getUsersAdmin(): Promise<AdminUserItem[]> {
   const supabase = await createClient();
-  const { data: profiles } = await supabase
-    .from("profiles")
-    .select("id, display_name, role, created_at")
-    .order("created_at", { ascending: false })
-    .returns<ProfileRow[]>();
-
-  const emailById = await listAllAuthEmails();
+  const [{ data: profiles }, emailById] = await Promise.all([
+    supabase.from("profiles").select("id, display_name, role, created_at").order("created_at", { ascending: false }).returns<ProfileRow[]>(),
+    listAllAuthEmails(),
+  ]);
 
   return (profiles ?? []).map((p) => ({
     id: p.id,

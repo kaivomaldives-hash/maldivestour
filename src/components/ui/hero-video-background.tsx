@@ -57,6 +57,16 @@ export function HeroVideoBackground({ source, overlayClassName }: { source: Hero
   // homepage both keep their ocean-gradient base layer underneath this
   // for exactly that case, so hiding this layer just reveals it.
   const [failed, setFailed] = useState(false);
+  // Mounting <video autoPlay> starts its byte stream immediately,
+  // competing with the poster <img> for bandwidth on the very connection
+  // LCP is timed against — real Chrome field data (Search Console's Core
+  // Web Vitals report) showed a sitewide mobile LCP/CLS regression after
+  // this hero shipped. Rendering only the (fast, high-priority) poster
+  // image for the first idle tick, then swapping in the real <video>,
+  // keeps the poster as the uncontested LCP resource; since the <video>
+  // itself also shows that exact same image via its own `poster`
+  // attribute until playback starts, the swap is visually seamless.
+  const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -72,15 +82,36 @@ export function HeroVideoBackground({ source, overlayClassName }: { source: Hero
     return () => query.removeEventListener("change", handleChange);
   }, []);
 
+  useEffect(() => {
+    const w = window as Window & { requestIdleCallback?: (cb: () => void) => number; cancelIdleCallback?: (id: number) => void };
+    if (w.requestIdleCallback) {
+      const id = w.requestIdleCallback(() => setVideoReady(true));
+      return () => w.cancelIdleCallback?.(id);
+    }
+    const id = window.setTimeout(() => setVideoReady(true), 300);
+    return () => window.clearTimeout(id);
+  }, []);
+
   if (failed) return null;
 
   const active = isMobile && source.mobile ? source.mobile : source.desktop;
 
   return (
     <div className="absolute inset-0 overflow-hidden">
-      {reducedMotion ? (
+      {reducedMotion || !videoReady ? (
         // eslint-disable-next-line @next/next/no-img-element -- a plain full-bleed background image, not page content; next/image's fixed intrinsic sizing doesn't fit this absolutely-positioned cover layer.
-        <img key={active.poster} src={active.poster} alt="" className="h-full w-full object-cover" onError={() => setFailed(true)} />
+        <img
+          key={active.poster}
+          src={active.poster}
+          alt=""
+          // fetchPriority: this poster is the hero band's LCP candidate —
+          // without a priority hint it competes on a level footing with
+          // every other resource the page requests, including the video
+          // byte stream itself once autoplay kicks in.
+          fetchPriority="high"
+          className="h-full w-full object-cover"
+          onError={() => setFailed(true)}
+        />
       ) : (
         <video
           key={active.mp4}
@@ -91,6 +122,13 @@ export function HeroVideoBackground({ source, overlayClassName }: { source: Hero
           playsInline
           preload="none"
           poster={active.poster}
+          // Same reasoning as the <img> branch's fetchPriority above — the
+          // poster is what Chrome measures for LCP here, not the decoded
+          // video frame, so it needs the same priority hint.
+          // @ts-expect-error -- fetchPriority is valid on <video> per the
+          // HTML spec and supported in Chromium, but not yet in React's
+          // DOM typings.
+          fetchPriority="high"
           onError={() => setFailed(true)}
         >
           {active.webm && <source src={active.webm} type="video/webm" />}

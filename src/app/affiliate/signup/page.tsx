@@ -25,8 +25,7 @@ export default async function AffiliateSignupPage() {
       <div className="w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm">
         <h1 className="text-xl font-semibold text-ocean-900">Become an Affiliate</h1>
         <p className="mt-1 text-sm text-neutral-600">
-          Once approved, you&rsquo;ll get a referral link and code — your referrals get 5% off, and you earn 5% commission. Already have an
-          account?{" "}
+          Once approved, you&rsquo;ll get a referral link and code and earn commission on referred bookings. Already have an account?{" "}
           <Link href="/affiliate/login" className="font-medium text-maldives-600 hover:underline">
             Sign in
           </Link>

@@ -207,7 +207,7 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
 
       <section className="mt-10">
         <h2 className="text-xl font-semibold text-ocean-900">Share Your Photos</h2>
-        <p className="mt-2 text-sm text-neutral-600">Been to {island.title}? Share a few photos — approved submissions are added to the gallery above.</p>
+        <p className="mt-2 text-sm text-neutral-600">Been to {island.title}? Share a few photos.</p>
         <div className="mt-4">
           <LocationMediaUploadForm locationId={island.id} />
         </div>
@@ -216,8 +216,8 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
       <section className="mt-10">
         <h2 className="text-xl font-semibold text-ocean-900">Know a Place We&rsquo;re Missing?</h2>
         <p className="mt-2 text-sm text-neutral-600">
-          Suggest an attraction, restaurant, shop, or facility on {island.title} — approved submissions appear on our directory pages. Run a
-          resort, activity, or transfer service here? List it as a partner instead.
+          Suggest an attraction, restaurant, shop, or facility on {island.title}. Run a resort, activity, or transfer service here? List it
+          as a partner instead.
         </p>
         <div className="mt-4 flex flex-wrap items-start gap-3">
           <AddPlaceForm locationId={island.id} initialLat={island.lat} initialLng={island.lng} />

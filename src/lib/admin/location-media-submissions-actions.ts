@@ -5,6 +5,7 @@ import { revalidatePath, updateTag } from "next/cache";
 import { requireStaff } from "@/lib/admin/auth";
 import type { AdminActionResult } from "@/lib/admin/node-actions";
 import { publicDestinationPath } from "@/lib/locations/public-destination-path";
+import { compressImage } from "@/lib/media/compress-image";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -16,13 +17,6 @@ import { createClient } from "@/lib/supabase/server";
  * uses, so there's only ever one way an image becomes part of a node's
  * gallery.
  */
-
-const CONTENT_TYPE_EXT: Record<string, string> = {
-  "image/jpeg": "jpg",
-  "image/png": "png",
-  "image/webp": "webp",
-  "image/avif": "avif",
-};
 
 export async function getLocationMediaSubmissionImageSignedUrl(storagePath: string): Promise<{ url: string | null; error?: string }> {
   await requireStaff();
@@ -68,13 +62,16 @@ export async function approveLocationMediaSubmission(submissionId: string): Prom
     const { data: fileBlob, error: downloadError } = await supabase.storage.from("location-submissions").download(image.storage_path);
     if (downloadError || !fileBlob) return { ok: false, error: `Could not read "${image.file_name ?? image.storage_path}" — ${downloadError?.message ?? "file missing"}.` };
 
-    const contentType = image.content_type ?? fileBlob.type ?? "image/jpeg";
-    const ext = CONTENT_TYPE_EXT[contentType] ?? "jpg";
-    const newStoragePath = `guest-uploads/${submission.location_id}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    // Resized/recompressed to WebP here rather than relying on Next's
+    // per-request image optimizer — see compressImage's own comment.
+    const compressed = await compressImage(await fileBlob.arrayBuffer());
+    const newStoragePath = `guest-uploads/${submission.location_id}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${compressed.ext}`;
 
     // cacheControl: see the identical comment in src/lib/admin/media-
     // actions.ts — newStoragePath is never reused, so this is safe.
-    const { error: uploadError } = await supabase.storage.from("media").upload(newStoragePath, fileBlob, { contentType, upsert: false, cacheControl: "31536000" });
+    const { error: uploadError } = await supabase.storage
+      .from("media")
+      .upload(newStoragePath, compressed.buffer, { contentType: compressed.contentType, upsert: false, cacheControl: "31536000" });
     if (uploadError) return { ok: false, error: uploadError.message };
 
     // The submitter's required caption becomes both title and alt_text —

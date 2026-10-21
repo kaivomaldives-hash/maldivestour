@@ -4,6 +4,7 @@ import {
   TransferCategoryLandingPage,
   transferCategoryMetadata,
   type TransferCategoryConfig,
+  type TransferCategorySearchParams,
 } from "@/components/transfers/transfer-category-landing-page";
 import { TRANSFER_CATEGORY_IMAGES } from "@/lib/transfers/category-images";
 
@@ -34,6 +35,6 @@ export function generateMetadata(): Metadata {
   return transferCategoryMetadata(config);
 }
 
-export default function IslandTransfersPage() {
-  return <TransferCategoryLandingPage config={config} />;
+export default function IslandTransfersPage({ searchParams }: { searchParams: Promise<TransferCategorySearchParams> }) {
+  return <TransferCategoryLandingPage config={config} searchParams={searchParams} />;
 }

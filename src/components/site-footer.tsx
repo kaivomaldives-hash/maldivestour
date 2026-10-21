@@ -24,6 +24,7 @@ const TRAVEL_LINKS = [
   { label: "Water Sports", href: "/maldives/water-sports/" },
   { label: "Island Hopping", href: "/maldives/island-hopping/" },
   { label: "Dolphin & Whale Watching", href: "/maldives/dolphin-whale-watching/" },
+  { label: "Sightseeing", href: "/maldives/sightseeing/" },
   { label: "Transfers", href: "/maldives/transfers/" },
   { label: "Airport Transfers", href: "/maldives/airport-transfers/" },
   { label: "Resort Transfers", href: "/maldives/resort-transfers/" },

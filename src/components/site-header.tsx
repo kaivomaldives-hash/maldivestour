@@ -8,6 +8,7 @@ import { useState } from "react";
 import { SearchBox } from "@/components/search/search-box";
 import { CurrencySelector } from "@/components/currency/currency-selector";
 import { HeaderAccountMenu } from "@/components/header-account-menu";
+import { HeaderMoreMenu, MORE_NAV_ITEMS } from "@/components/header-more-menu";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { CloseIcon, MenuIcon, SearchIcon } from "@/components/ui/icons";
@@ -21,7 +22,6 @@ const PRIMARY_NAV = [
   { label: "Fishing", href: "/maldives/fishing/" },
   { label: "Transfers", href: "/maldives/transfers/" },
   { label: "Packages", href: "/maldives/packages/" },
-  { label: "Travel Guide", href: "/maldives/travel-guide/" },
 ];
 
 const WHATSAPP_URL = "https://wa.me/9607794332";
@@ -86,6 +86,7 @@ export function SiteHeader({ availableLocales }: { availableLocales: Locale[] })
               </Link>
             );
           })}
+          <HeaderMoreMenu />
         </nav>
 
         <div className="hidden shrink-0 items-center gap-2 lg:flex">
@@ -142,6 +143,23 @@ export function SiteHeader({ availableLocales }: { availableLocales: Locale[] })
         <div id="mobile-nav-panel" className="border-t border-neutral-200 bg-white lg:hidden">
           <nav aria-label="Primary" className={`${CONTAINER_CLASS} flex flex-col gap-1 py-3`}>
             {PRIMARY_NAV.map((item) => {
+              const active = isActive(pathname, item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  prefetch={false}
+                  aria-current={active ? "page" : undefined}
+                  className={`rounded-lg px-3 py-2.5 text-base font-medium transition-colors ${
+                    active ? "bg-lagoon-100 text-ocean-900" : "text-neutral-700 hover:bg-neutral-100"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+            <p className="mt-2 border-t border-neutral-200 px-3 pt-3 text-xs font-medium uppercase tracking-wide text-neutral-400">Pages</p>
+            {MORE_NAV_ITEMS.map((item) => {
               const active = isActive(pathname, item.href);
               return (
                 <Link

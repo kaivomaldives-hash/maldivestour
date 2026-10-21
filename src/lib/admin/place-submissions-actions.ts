@@ -5,6 +5,7 @@ import { revalidatePath, updateTag } from "next/cache";
 import { requireStaff } from "@/lib/admin/auth";
 import type { AdminActionResult } from "@/lib/admin/node-actions";
 import { publicDestinationPath } from "@/lib/locations/public-destination-path";
+import { compressImage } from "@/lib/media/compress-image";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -16,13 +17,6 @@ import { createClient } from "@/lib/supabase/server";
  * insert itself is new territory (see 20261104000100_place_submissions.sql's
  * own comment) — every location before this was seed-migration-only.
  */
-
-const CONTENT_TYPE_EXT: Record<string, string> = {
-  "image/jpeg": "jpg",
-  "image/png": "png",
-  "image/webp": "webp",
-  "image/avif": "avif",
-};
 
 const CATEGORY_DIRECTORY_PATH: Record<string, string> = {
   attraction: "/maldives/attractions",
@@ -128,11 +122,16 @@ export async function approvePlaceSubmission(submissionId: string): Promise<Admi
     const { data: fileBlob, error: downloadError } = await supabase.storage.from("place-submissions").download(image.storage_path);
     if (downloadError || !fileBlob) continue;
 
-    const contentType = image.content_type ?? fileBlob.type ?? "image/jpeg";
-    const ext = CONTENT_TYPE_EXT[contentType] ?? "jpg";
-    const newStoragePath = `guest-uploads/${newNodeId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    // Resized/recompressed to WebP here rather than relying on Next's
+    // per-request image optimizer — see compressImage's own comment.
+    const compressed = await compressImage(await fileBlob.arrayBuffer());
+    const newStoragePath = `guest-uploads/${newNodeId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${compressed.ext}`;
 
-    const { error: uploadError } = await supabase.storage.from("media").upload(newStoragePath, fileBlob, { contentType, upsert: false });
+    // cacheControl: see the identical comment in src/lib/admin/media-
+    // actions.ts — newStoragePath is never reused, so this is safe.
+    const { error: uploadError } = await supabase.storage
+      .from("media")
+      .upload(newStoragePath, compressed.buffer, { contentType: compressed.contentType, upsert: false, cacheControl: "31536000" });
     if (uploadError) continue;
 
     // The submitter's required caption becomes both title and alt_text —

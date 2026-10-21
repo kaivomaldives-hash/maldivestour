@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
+import { TransferRouteSearch } from "@/components/transfers/transfer-route-search";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { FaqSection } from "@/components/ui/faq-section";
@@ -111,11 +112,14 @@ export async function TransferCategoryLandingPage({ config }: { config: Transfer
         {routes.length === 0 ? (
           <EmptyState title={config.emptyMessage} />
         ) : (
-          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {routes.map((route) => (
-              <TransferRouteCard key={route.id} route={route} />
-            ))}
-          </ul>
+          <>
+            <TransferRouteSearch />
+            <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {routes.map((route) => (
+                <TransferRouteCard key={route.id} route={route} />
+              ))}
+            </ul>
+          </>
         )}
 
         <FaqSection faqs={config.faqs} title="Common questions" className="mt-14 border-t border-neutral-200 pt-10" />

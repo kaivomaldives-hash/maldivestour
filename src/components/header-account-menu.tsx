@@ -60,16 +60,29 @@ export function HeaderAccountMenu() {
     return () => subscription.subscription.unsubscribe();
   }, []);
 
-  if (status.kind === "loading") return null;
+  // A fixed h-9 w-9 footprint in every state (loading, anon, signed in) —
+  // this used to return `null` while loading and a wider text+icon link
+  // once resolved, which meant every single pageview on the whole site
+  // popped this element in from zero width inside the sticky header,
+  // shifting everything below it. Real Chrome field data (Search
+  // Console's Core Web Vitals report) showed a sitewide mobile CLS
+  // regression consistent with exactly this shape. Matching the
+  // signed-in avatar button's own dimensions in every state, and
+  // dropping "Log in" to an icon + title/aria-label rather than visible
+  // text, eliminates the shift entirely instead of just softening it.
+  if (status.kind === "loading") {
+    return <span aria-hidden="true" className="h-9 w-9 shrink-0 rounded-full" />;
+  }
 
   if (status.kind === "anon") {
     return (
       <Link
         href="/partner/login"
-        className="min-touch-target inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-ocean-900"
+        title="Log in"
+        className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 text-neutral-600 hover:bg-neutral-100 hover:text-ocean-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maldives-600"
       >
-        <UserIcon className="h-4 w-4" />
-        Log in
+        <UserIcon className="h-4.5 w-4.5" />
+        <span className="sr-only">Log in</span>
       </Link>
     );
   }

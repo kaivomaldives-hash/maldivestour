@@ -1,5 +1,6 @@
 "use server";
 
+import { sendNodeCommentNotification } from "@/lib/nodes/comments/notifications";
 import { createClient } from "@/lib/supabase/server";
 
 /** Wraps the submit_node_comment RPC — generic counterpart to
@@ -48,6 +49,11 @@ export async function submitNodeComment(input: SubmitNodeCommentInput): Promise<
     }
     return { ok: false, error: "We couldn't submit your comment right now. Please try again." };
   }
+
+  // Best-effort — never blocks the submitter's own success response on an
+  // email provider hiccup (see sendNodeCommentNotification's own comment).
+  const { data: node } = await supabase.from("nodes").select("title").eq("id", input.nodeId).maybeSingle<{ title: string }>();
+  await sendNodeCommentNotification({ nodeTitle: node?.title ?? "a page", commenterName: name, body });
 
   return { ok: true };
 }

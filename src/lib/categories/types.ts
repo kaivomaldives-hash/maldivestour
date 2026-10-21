@@ -12,7 +12,9 @@ export type CategoryGroup =
   | "inclusion"
   | "theme"
   | "article-category"
-  | "transfer-category";
+  | "transfer-category"
+  | "activity-category"
+  | "package-category";
 
 export interface CategorySummary {
   id: string;

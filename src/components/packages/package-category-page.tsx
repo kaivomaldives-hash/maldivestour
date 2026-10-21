@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { HubPageExtras } from "@/components/nodes/hub-page-extras";
 import { PackageCard } from "@/components/packages/package-card";
 import type { PackageCategoryPageSearchParams } from "@/components/packages/package-category-metadata";
 import { PackageFilterBar } from "@/components/packages/package-filter-bar";
@@ -8,6 +9,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { FaqSection } from "@/components/ui/faq-section";
 import { PageHero } from "@/components/ui/page-hero";
 import { Pagination } from "@/components/ui/pagination";
+import { getCategoryBySlug } from "@/lib/categories/repository";
 import { PACKAGE_CATEGORY_CONTENT } from "@/lib/packages/category-content";
 import { PACKAGE_CATEGORY_FALLBACK_IMAGES, type PackageCategoryFallbackKey } from "@/lib/packages/category-images";
 import {
@@ -28,6 +30,22 @@ const SORT_OPTIONS: PackageSortOption[] = ["recommended", "price-asc", "price-de
 /** Maps a package category slug to its fallback hero image key — most
  * overlap 1:1 with category-images.ts; the two without a dedicated real
  * image (long-stay, solo) fall back to a genuinely close real photo. */
+/** The real category node (see 20261109000100_package_category_hub_nodes)
+ * each style page anchors its gallery/comments to. */
+const CATEGORY_HUB_SLUG: Record<PackageCategorySlug, string> = {
+  luxury: "luxury-packages",
+  family: "family-packages",
+  "adults-only": "adults-only-packages",
+  "long-stay": "long-stay-packages",
+  budget: "budget-packages",
+  honeymoon: "honeymoon-packages",
+  solo: "solo-packages",
+  diving: "diving-packages",
+  fishing: "fishing-packages",
+  surfing: "surfing-packages",
+  liveaboard: "liveaboard-packages",
+};
+
 const CATEGORY_IMAGE_KEY: Record<PackageCategorySlug, PackageCategoryFallbackKey> = {
   luxury: "luxury",
   family: "family",
@@ -64,11 +82,12 @@ export async function PackageCategoryPage({
   const activeDuration = PACKAGE_DURATION_BANDS.some((b) => b.slug === sp.duration) ? (sp.duration as PackageDurationBandSlug) : undefined;
   const content = PACKAGE_CATEGORY_CONTENT[category];
 
-  const [allViews, categoryCounts, atolls, durationCounts] = await Promise.all([
+  const [allViews, categoryCounts, atolls, durationCounts, hubCategory] = await Promise.all([
     getAllPackageViews(),
     getPackageCategoryCounts(),
     getPackageAtollsInUse(),
     getPackageDurationBandCounts(),
+    getCategoryBySlug(CATEGORY_HUB_SLUG[category], "package-category"),
   ]);
 
   const filtered = filterPackageViews(allViews, {
@@ -148,6 +167,14 @@ export async function PackageCategoryPage({
         <Pagination page={page} totalPages={totalPages} basePath={basePath} baseQuery={baseQuery} />
 
         <FaqSection faqs={content.faqs} className="mt-14 border-t border-neutral-200 pt-10" />
+
+        {hubCategory && (
+          <HubPageExtras
+            nodeId={hubCategory.id}
+            galleryNodeIds={sorted.map((pkg) => pkg.id)}
+            galleryTitle={PACKAGE_CATEGORY_TITLE[category]}
+          />
+        )}
 
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">Related Maldives Links</h2>

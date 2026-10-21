@@ -24,6 +24,7 @@ import { LocationGallerySection } from "@/components/locations/location-gallery-
 import { LocationCommentsSection } from "@/components/locations/location-comments-section";
 import { LocationMediaUploadForm } from "@/components/locations/location-media-upload-form";
 import { AddPlaceForm } from "@/components/locations/add-place-form";
+import { Button } from "@/components/ui/button";
 import { getPublishedLocationComments } from "@/lib/locations/comments/repository";
 import { getHeroMediaByNodeIds, getMediaForNode } from "@/lib/media/repository";
 import { getPackageViewsByAtoll } from "@/lib/packages/view-repository";
@@ -195,10 +196,14 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
       <section className="mt-10">
         <h2 className="text-xl font-semibold text-ocean-900">Know a Place We&rsquo;re Missing?</h2>
         <p className="mt-2 text-sm text-neutral-600">
-          Suggest an attraction, restaurant, shop, or facility in {atoll.title} — approved submissions appear on our directory pages.
+          Suggest an attraction, restaurant, shop, or facility in {atoll.title} — approved submissions appear on our directory pages. Run a
+          resort, activity, or transfer service here? List it as a partner instead.
         </p>
-        <div className="mt-4">
+        <div className="mt-4 flex flex-wrap items-start gap-3">
           <AddPlaceForm locationId={atoll.id} initialLat={atoll.lat} initialLng={atoll.lng} />
+          <Button href="/become-a-partner/" variant="secondary" size="sm">
+            List Your Property
+          </Button>
         </div>
       </section>
 

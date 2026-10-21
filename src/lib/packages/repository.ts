@@ -324,6 +324,8 @@ async function getCategoriesForPackage(packageId: string): Promise<Record<Catego
     theme: [],
     "article-category": [],
     "transfer-category": [],
+    "activity-category": [],
+    "package-category": [],
   };
 
   const supabase = await createClient();

@@ -273,6 +273,36 @@ async function getAccommodationsUncached(
 
 export const getAccommodations = cachedRead(getAccommodationsUncached, ["accommodations:list"], 300);
 
+/** Direct node-id lookup — for a small, explicit set of accommodations
+ * tagged via node_categories (e.g. the 'surfing' amenity) rather than a
+ * relational filter GetAccommodationsOptions already covers. Order is not
+ * guaranteed to match `nodeIds`; callers with a handful of ids typically
+ * don't need it to. */
+async function getAccommodationsByNodeIdsUncached(nodeIds: string[]): Promise<AccommodationSummary[]> {
+  if (nodeIds.length === 0) return [];
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("nodes")
+    .select(NODE_ACCOMMODATION_SELECT)
+    .eq("node_type", "accommodation")
+    .eq("status", "published")
+    .in("id", nodeIds)
+    .returns<NodeAccommodationRow[]>();
+
+  if (error || !data) return [];
+
+  const bares = data.map(bareAccommodationOf).filter((b): b is BareAccommodation => b !== null);
+  const [locationsByNodeId, heroByNodeId] = await Promise.all([
+    attachPrimaryLocations(bares.map((b) => b.id)),
+    getHeroMediaByNodeIds(bares.map((b) => b.id)),
+  ]);
+
+  return bares.map((b) => toSummary(b, locationsByNodeId.get(b.id) ?? null, heroByNodeId.get(b.id) ?? null));
+}
+
+export const getAccommodationsByNodeIds = cachedRead(getAccommodationsByNodeIdsUncached, ["accommodations:by-node-ids"], 300);
+
 export async function getAccommodationsByType(
   type: AccommodationType,
   options: Omit<GetAccommodationsOptions, "type"> = {},

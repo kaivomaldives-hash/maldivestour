@@ -132,7 +132,9 @@ export async function approvePlaceSubmission(submissionId: string): Promise<Admi
     const ext = CONTENT_TYPE_EXT[contentType] ?? "jpg";
     const newStoragePath = `guest-uploads/${newNodeId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
-    const { error: uploadError } = await supabase.storage.from("media").upload(newStoragePath, fileBlob, { contentType, upsert: false });
+    // cacheControl: see the identical comment in src/lib/admin/media-
+    // actions.ts — newStoragePath is never reused, so this is safe.
+    const { error: uploadError } = await supabase.storage.from("media").upload(newStoragePath, fileBlob, { contentType, upsert: false, cacheControl: "31536000" });
     if (uploadError) continue;
 
     // The submitter's required caption becomes both title and alt_text —

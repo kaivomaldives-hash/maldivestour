@@ -46,7 +46,12 @@ export async function uploadAndAttachMedia(nodeId: string, formData: FormData, r
   const supabase = await createClient();
   const storagePath = `admin-uploads/${nodeId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
-  const { error: uploadError } = await supabase.storage.from("media").upload(storagePath, file, { contentType: file.type, upsert: false });
+  // cacheControl: 1 year — storagePath is timestamp/random-suffixed and
+  // never overwritten (upsert: false), so this exact URL's bytes never
+  // change; nothing to invalidate. Left at the Supabase SDK's 1-hour
+  // default otherwise, which Search Console's Core Web Vitals report
+  // flagged as a real, sitewide "inefficient cache lifetime" cost.
+  const { error: uploadError } = await supabase.storage.from("media").upload(storagePath, file, { contentType: file.type, upsert: false, cacheControl: "31536000" });
   if (uploadError) return { ok: false, error: uploadError.message };
 
   const { data: assetRow, error: assetError } = await supabase

@@ -8,9 +8,9 @@ import { getActivities } from "@/lib/activities/repository";
 import { activityHref } from "@/lib/activities/types";
 import { getArticles } from "@/lib/articles/repository";
 import { getAttractions } from "@/lib/attractions/repository";
-import { articleHref } from "@/lib/articles/types";
 import { getDiveSites } from "@/lib/diving/repository";
-import { getPublishedLocalesForPage } from "@/lib/i18n/repository";
+import { localizedPath, type Locale } from "@/lib/i18n/locales";
+import { getEntityLocaleSlugsByIds, getPublishedLocalesForPage } from "@/lib/i18n/repository";
 import { getAtolls, getIslands } from "@/lib/locations/repository";
 import { getPackages } from "@/lib/packages/repository";
 import { getProviders } from "@/lib/providers/repository";
@@ -211,7 +211,43 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const p of packages) entries.push({ url: url(`/maldives/packages/${p.slug}/`), changeFrequency: "weekly", priority: 0.7 });
   for (const t of transferRoutes) entries.push({ url: url(`/maldives/transfers/${t.slug}/`), changeFrequency: "monthly", priority: 0.6 });
   for (const b of speedboats) entries.push({ url: url(`/maldives-speedboats-charter/${b.slug}/`), changeFrequency: "monthly", priority: 0.5 });
-  for (const a of articles) entries.push({ url: url(articleHref(a)), changeFrequency: "monthly", priority: 0.6, lastModified: a.publishedAt ?? undefined });
+  // Translated travel-guide articles (Task 19 follow-up): each published
+  // translations row gets its own sitemap entry at its real per-locale
+  // slug, with a reciprocal hreflang set back to English and every other
+  // translated locale -- mirrors the per-article alternates already
+  // emitted by article-detail-metadata.ts and the [locale] article route.
+  // Never a shared-path pattern like hreflangAlternates() assumes, since
+  // each locale's slug is genuinely different per article.
+  const articleLocaleSlugs = await getEntityLocaleSlugsByIds(articles.map((a) => a.id));
+  for (const a of articles) {
+    const translations = articleLocaleSlugs.get(a.id) ?? [];
+    const englishPath = `/maldives/travel-guide/${a.slug}/`;
+    const languages: Record<string, string> | undefined =
+      translations.length > 0
+        ? (() => {
+            const map: Record<string, string> = { en: url(englishPath) };
+            for (const t of translations) map[t.locale] = url(localizedPath(t.locale, `/maldives/travel-guide/${t.slug}/`));
+            map["x-default"] = map.en;
+            return map;
+          })()
+        : undefined;
+
+    entries.push({
+      url: url(englishPath),
+      changeFrequency: "monthly",
+      priority: 0.6,
+      lastModified: a.publishedAt ?? undefined,
+      ...(languages ? { alternates: { languages } } : {}),
+    });
+    for (const t of translations) {
+      entries.push({
+        url: url(localizedPath(t.locale as Locale, `/maldives/travel-guide/${t.slug}/`)),
+        changeFrequency: "monthly",
+        priority: 0.6,
+        ...(languages ? { alternates: { languages } } : {}),
+      });
+    }
+  }
   for (const p of providers) entries.push({ url: url(`/maldives/providers/${p.slug}/`), changeFrequency: "monthly", priority: 0.4 });
 
   // Curated accommodation SEO landing pages (e.g. /maldives/resorts/luxury/)

@@ -239,6 +239,32 @@ async function getEntitySlugsByLocaleUncached(entityId: string): Promise<Array<{
 
 export const getEntitySlugsByLocale = cachedRead(getEntitySlugsByLocaleUncached, ["i18n:entity-slugs-by-locale"], 900);
 
+/** Batched form of getEntitySlugsByLocale for a whole listing (e.g. the
+ * sitemap's full article catalog) -- one query instead of N, same
+ * published-only guarantee. Keyed by entityId; an entity with no
+ * translations is simply absent, never an empty-array placeholder. */
+async function getEntityLocaleSlugsByIdsUncached(entityIds: string[]): Promise<Map<string, Array<{ locale: Locale; slug: string }>>> {
+  const result = new Map<string, Array<{ locale: Locale; slug: string }>>();
+  if (entityIds.length === 0) return result;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("translations")
+    .select("entity_id, locale, slug")
+    .in("entity_id", entityIds)
+    .returns<Array<{ entity_id: string; locale: Locale; slug: string }>>();
+
+  if (error || !data) return result;
+  for (const row of data) {
+    const list = result.get(row.entity_id) ?? [];
+    list.push({ locale: row.locale, slug: row.slug });
+    result.set(row.entity_id, list);
+  }
+  return result;
+}
+
+export const getEntityLocaleSlugsByIds = cachedRead(getEntityLocaleSlugsByIdsUncached, ["i18n:entity-locale-slugs-by-ids"], 900);
+
 /** Router-relative path to this article in every locale it's published
  * under, keyed by locale (always includes "en"). Used by the language
  * switcher to jump straight to the equivalent translated article instead

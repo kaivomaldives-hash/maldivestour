@@ -1,0 +1,15 @@
+-- Adds the "packages-hub" page_translations rows for all 6 rolled-out
+-- languages, powering the new /{locale}/maldives/packages/ page.
+-- Already applied directly against the live DB; this migration keeps a
+-- from-scratch replay in sync.
+insert into page_translations (page_key, locale, slug, title, meta_title, meta_description, hero_heading, hero_intro, sections, translation_status, translated_by) values
+('packages-hub', 'de', 'pakete', 'Malediven Urlaubspakete', 'Malediven Urlaubspakete | MTG', 'Entdecken Sie Malediven-Urlaubs-, Flitterwochen-, Familien-, Tauch-, Angel-, Surf-, Luxus- und Budgetpakete – suchen, filtern und direkt anfragen.', 'Malediven Urlaubspakete', 'Echte, mehrtägige Reiserouten aus realer Unterkunft, Aktivitäten und Transfers.', '{}'::jsonb, 'published', 'claude'),
+('packages-hub', 'es', 'paquetes', 'Paquetes Vacacionales de Maldivas', 'Paquetes Vacacionales de Maldivas | MTG', 'Descubre paquetes de vacaciones, luna de miel, familia, buceo, pesca, surf, lujo y presupuesto en Maldivas — busca, filtra y consulta directamente.', 'Paquetes Vacacionales de Maldivas', 'Itinerarios reales de varios días con alojamiento, actividades y traslados reales.', '{}'::jsonb, 'published', 'claude'),
+('packages-hub', 'it', 'pacchetti', 'Pacchetti Vacanza alle Maldive', 'Pacchetti Vacanza alle Maldive | MTG', 'Scopri pacchetti vacanza, luna di miele, famiglia, immersioni, pesca, surf, lusso ed economici alle Maldive — cerca, filtra e richiedi informazioni direttamente.', 'Pacchetti Vacanza alle Maldive', 'Itinerari reali di più giorni con alloggi, attività e trasferimenti reali.', '{}'::jsonb, 'published', 'claude'),
+('packages-hub', 'ru', 'pakety', 'Туристические пакеты на Мальдивы', 'Туристические пакеты на Мальдивы | MTG', 'Откройте для себя туристические, свадебные, семейные, дайвинг-, рыболовные, серф-, люксовые и бюджетные пакеты на Мальдивы — ищите, фильтруйте и отправляйте запрос напрямую.', 'Туристические пакеты на Мальдивы', 'Настоящие многодневные маршруты из реального проживания, активностей и трансферов.', '{}'::jsonb, 'published', 'claude'),
+('packages-hub', 'ja', 'pakeji', 'モルディブ ホリデーパッケージ', 'モルディブ ホリデーパッケージ | MTG', 'モルディブの旅行、ハネムーン、ファミリー、ダイビング、フィッシング、サーフィン、ラグジュアリー、格安パッケージを発見――検索、フィルター、直接お問い合わせができます。', 'モルディブ ホリデーパッケージ', '実際の宿泊施設、アクティビティ、送迎から構成された本物の複数日程の旅程。', '{}'::jsonb, 'published', 'claude'),
+('packages-hub', 'zh', 'taocan', '马尔代夫度假套餐', '马尔代夫度假套餐 | MTG', '探索马尔代夫度假、蜜月、家庭、潜水、钓鱼、冲浪、豪华和经济型套餐——搜索、筛选并直接咨询。', '马尔代夫度假套餐', '由真实住宿、活动和接送服务组成的真实多日行程。', '{}'::jsonb, 'published', 'claude')
+on conflict (page_key, locale) do update set
+  slug = excluded.slug, title = excluded.title, meta_title = excluded.meta_title, meta_description = excluded.meta_description,
+  hero_heading = excluded.hero_heading, hero_intro = excluded.hero_intro, translation_status = excluded.translation_status,
+  translated_by = excluded.translated_by, updated_at = now();

@@ -10,8 +10,8 @@
 -- family, and 3 standalone entities). short_description and description
 -- both equal the translated summary, mirroring ActivityDetail.summary
 -- being the single underlying field. body_html is unused for activities
--- (kept empty). Already applied directly against the live DB; this
--- migration keeps a from-scratch replay in sync.
+-- (kept empty). Run this migration (e.g. via the Supabase SQL editor)
+-- to apply it -- it has not been applied automatically.
 insert into translations (entity_id, entity_type, locale, slug, title, short_description, description, body_html, meta_title, meta_description, translation_status, translated_by) values
 ('7a2fce93-c74d-4ab2-aa5c-b000cfe95c8e', 'activity', 'de', 'gefuhrte-male-tour', 'Geführte Male-Tour', 'Geführte Male-Tour ist ein kulturelles Erlebnis auf Vihamanaafushi, Kaafu Atoll. Dauer: 180 Minuten. Es wird von Universal Resorts betrieben.', 'Geführte Male-Tour ist ein kulturelles Erlebnis auf Vihamanaafushi, Kaafu Atoll. Dauer: 180 Minuten. Es wird von Universal Resorts betrieben.', '', 'Geführte Male-Tour | MTG', 'Geführte Male-Tour ist ein kulturelles Erlebnis auf Vihamanaafushi, Kaafu Atoll. Dauer: 180 Minuten. Es wird von Universal Resorts betrieben.', 'published', 'claude'),
 ('7a2fce93-c74d-4ab2-aa5c-b000cfe95c8e', 'activity', 'es', 'tour-guiado-por-male', 'Tour Guiado por Malé', 'Tour Guiado por Malé es una experiencia cultural en Vihamanaafushi, Kaafu Atoll. Duración: 180 minutos. Está operado por Universal Resorts.', 'Tour Guiado por Malé es una experiencia cultural en Vihamanaafushi, Kaafu Atoll. Duración: 180 minutos. Está operado por Universal Resorts.', '', 'Tour Guiado por Malé | MTG', 'Tour Guiado por Malé es una experiencia cultural en Vihamanaafushi, Kaafu Atoll. Duración: 180 minutos. Está operado por Universal Resorts.', 'published', 'claude'),

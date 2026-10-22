@@ -71,7 +71,24 @@ export async function SpeedboatDirectoryPage() {
         <FaqSection faqs={FAQS} title="Common questions" className="mt-14 border-t border-neutral-200 pt-10" />
 
         <div className="mt-10 border-t border-neutral-200 pt-6">
-          <Link href="/maldives/transfers/" className="text-sm font-medium text-maldives-600 hover:underline">
+          <p className="text-sm font-medium text-neutral-500">Explore more Maldives transfers</p>
+          <nav aria-label="Related Maldives transfer links" className="mt-2 flex flex-wrap gap-2">
+            {[
+              { href: "/maldives/airport-transfers/", label: "Airport Transfers" },
+              { href: "/maldives/resort-transfers/", label: "Resort Transfers" },
+              { href: "/maldives/island-transfers/", label: "Island Transfers" },
+              { href: "/maldives/speedboat-transfers/", label: "Speedboat Transfers" },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+          <Link href="/maldives/transfers/" className="mt-4 inline-block text-sm font-medium text-maldives-600 hover:underline">
             ← All Maldives transfers
           </Link>
         </div>

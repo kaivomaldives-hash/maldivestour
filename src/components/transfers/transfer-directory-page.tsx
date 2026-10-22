@@ -316,6 +316,8 @@ export async function TransferDirectoryPage() {
               { href: "/maldives/atolls/", label: "Maldives Atolls" },
               { href: "/maldives/resorts/", label: "Maldives Resorts" },
               { href: "/maldives/hotels/", label: "Maldives Hotels" },
+              { href: "/maldives/hotel-transfers/", label: "Hotel Transfers" },
+              { href: "/maldives/speedboat-transfers/", label: "Speedboat Transfers" },
               { href: "/maldives/packages/", label: "Maldives Packages" },
               { href: "/maldives/travel-guide/", label: "Travel Guide" },
             ].map((link) => (

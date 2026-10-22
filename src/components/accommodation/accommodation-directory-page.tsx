@@ -202,6 +202,31 @@ export async function AccommodationDirectoryPage({
         )}
 
         {!isSearching && <Pagination page={page} totalPages={totalPages} basePath={`/maldives/${segment}/`} baseQuery={baseQuery} />}
+
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Explore More Maldives</h2>
+          <nav aria-label="Related Maldives links" className="mt-4 flex flex-wrap gap-2">
+            {[
+              { href: "/maldives/resorts/", label: "Resorts" },
+              { href: "/maldives/hotels/", label: "Hotels" },
+              { href: "/maldives/guesthouses/", label: "Guesthouses" },
+              { href: "/maldives/islands/", label: "Islands" },
+              { href: "/maldives/atolls/", label: "Atolls" },
+              { href: "/maldives/activities/", label: "Things to Do" },
+              { href: "/maldives/transfers/", label: "Transfers" },
+              { href: "/maldives/packages/", label: "Packages" },
+              { href: "/maldives/travel-guide/", label: "Travel Guide" },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </section>
       </div>
     </main>
   );

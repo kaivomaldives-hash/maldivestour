@@ -260,19 +260,51 @@ export async function PackageDirectoryPage({ searchParams }: { searchParams: Pro
                 </div>
                 <div>
                   <dt className="font-medium text-ocean-900">Planning a honeymoon</dt>
-                  <dd className="mt-1 text-sm text-neutral-700">Overwater villas, adult-focused resorts, and private dining are the usual honeymoon staples — see our Honeymoon Packages for real options.</dd>
+                  <dd className="mt-1 text-sm text-neutral-700">
+                    Overwater villas, adult-focused resorts, and private dining are the usual honeymoon staples — see our{" "}
+                    <Link href="/maldives/packages/honeymoon/" className="font-medium text-maldives-600 hover:underline">
+                      Honeymoon Packages
+                    </Link>{" "}
+                    for real options.
+                  </dd>
                 </div>
                 <div>
                   <dt className="font-medium text-ocean-900">Traveling with family</dt>
-                  <dd className="mt-1 text-sm text-neutral-700">Look for resorts close to the airport (shorter transfer with kids) and a real range of family activities on record — see our Family Packages.</dd>
+                  <dd className="mt-1 text-sm text-neutral-700">
+                    Look for resorts close to the airport (shorter transfer with kids) and a real range of family activities on record — see our{" "}
+                    <Link href="/maldives/packages/family/" className="font-medium text-maldives-600 hover:underline">
+                      Family Packages
+                    </Link>
+                    .
+                  </dd>
                 </div>
                 <div>
                   <dt className="font-medium text-ocean-900">Diving holidays</dt>
-                  <dd className="mt-1 text-sm text-neutral-700">Both resort dive centres and local-island operators run real courses and guided dives — see our Diving Packages, or Liveaboard Packages for a multi-site week aboard a dive vessel.</dd>
+                  <dd className="mt-1 text-sm text-neutral-700">
+                    Both resort dive centres and local-island operators run real courses and guided dives — see our{" "}
+                    <Link href="/maldives/packages/diving/" className="font-medium text-maldives-600 hover:underline">
+                      Diving Packages
+                    </Link>
+                    , or{" "}
+                    <Link href="/maldives/packages/liveaboard/" className="font-medium text-maldives-600 hover:underline">
+                      Liveaboard Packages
+                    </Link>{" "}
+                    for a multi-site week aboard a dive vessel.
+                  </dd>
                 </div>
                 <div>
                   <dt className="font-medium text-ocean-900">Fishing and surfing holidays</dt>
-                  <dd className="mt-1 text-sm text-neutral-700">Sunset, night and big-game fishing trips, and genuine surf breaks near islands like Thulusdhoo, are all real, bookable activities — see Fishing and Surfing Packages.</dd>
+                  <dd className="mt-1 text-sm text-neutral-700">
+                    Sunset, night and big-game fishing trips, and genuine surf breaks near islands like Thulusdhoo, are all real, bookable activities — see{" "}
+                    <Link href="/maldives/packages/fishing/" className="font-medium text-maldives-600 hover:underline">
+                      Fishing
+                    </Link>{" "}
+                    and{" "}
+                    <Link href="/maldives/packages/surfing/" className="font-medium text-maldives-600 hover:underline">
+                      Surfing Packages
+                    </Link>
+                    .
+                  </dd>
                 </div>
               </dl>
             </section>
@@ -280,6 +312,56 @@ export async function PackageDirectoryPage({ searchParams }: { searchParams: Pro
         )}
 
         <FaqSection faqs={FAQS} className="mt-14 border-t border-neutral-200 pt-10" />
+
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Browse Packages by Style</h2>
+          <nav aria-label="Package categories" className="mt-4 flex flex-wrap gap-2">
+            {[
+              { href: "/maldives/packages/luxury/", label: "Luxury" },
+              { href: "/maldives/packages/budget/", label: "Budget" },
+              { href: "/maldives/packages/honeymoon/", label: "Honeymoon" },
+              { href: "/maldives/packages/family/", label: "Family" },
+              { href: "/maldives/packages/solo/", label: "Solo" },
+              { href: "/maldives/packages/adults-only/", label: "Adults-Only" },
+              { href: "/maldives/packages/long-stay/", label: "Long Stay" },
+              { href: "/maldives/packages/diving/", label: "Diving" },
+              { href: "/maldives/packages/liveaboard/", label: "Liveaboard" },
+              { href: "/maldives/packages/fishing/", label: "Fishing" },
+              { href: "/maldives/packages/surfing/", label: "Surfing" },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </section>
+
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Explore More Maldives</h2>
+          <nav aria-label="Related Maldives links" className="mt-4 flex flex-wrap gap-2">
+            {[
+              { href: "/maldives/resorts/", label: "Resorts" },
+              { href: "/maldives/hotels/", label: "Hotels" },
+              { href: "/maldives/guesthouses/", label: "Guesthouses" },
+              { href: "/maldives/activities/", label: "Things to Do" },
+              { href: "/maldives/diving/", label: "Diving" },
+              { href: "/maldives/transfers/", label: "Transfers" },
+              { href: "/maldives/travel-guide/", label: "Travel Guide" },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </section>
       </div>
     </main>
   );

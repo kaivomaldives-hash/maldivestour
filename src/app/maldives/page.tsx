@@ -37,15 +37,26 @@ export async function generateMetadata(): Promise<Metadata> {
 // island node, so this list can never surface a broken card.
 const FEATURED_ISLAND_SLUGS = ["thulusdhoo", "maafushi", "dhigurah", "ukulhas", "fuvahmulah", "gan"];
 
-// Real legacy-site images already migrated into media_assets (see
-// supabase/migrations/20250115000100_full_legacy_image_library.sql) —
-// reused here rather than uploaded again, for the country-level
-// People/Community/History/Economy context section below.
+// Real images already in media_assets, reused here rather than uploaded
+// again, for the country-level context sections below. The original
+// `community` and `history` images (unattributed legacy stock photos,
+// credit unknown) were swapped out on request over copyright concerns —
+// their replacements, and every newly added topic below, are instead
+// real photos of specific, identifiable, real things (an actual local
+// island activity, the real Muleeaage presidential building, the real
+// Hukuru Miskiy mosque, etc.), all already live elsewhere on the site.
 const COUNTRY_CONTEXT_MEDIA_IDS = {
   people: "60630ddc-d244-a2ea-bd3c-469a719f1d6d",
-  community: "f326cf2a-f6ab-5dcb-9e77-88a167c319e4",
-  history: "640bfe55-191e-8218-073b-cd325ef238d1",
+  community: "19e18816-19e5-e1d4-55ec-c8c2361d3359",
+  history: "d5859ef5-1b65-30dd-c3b5-4bc47f2fe3fc",
   economy: "534b411e-fd78-091f-10b9-009abcc1a99a",
+  religion: "48013214-6420-c4ce-bd60-acac594d6ea6",
+  language: "bab14953-abb5-7e0a-c8e6-9c0d9dc61396",
+  education: "c8488a67-4fc4-18ac-1916-063ec467d38e",
+  currency: "729d5776-dd33-0728-2641-c2cf4e37964c",
+  weather: "16931d18-c78e-e9ad-50ae-24e7b97127d5",
+  tourism: "8c2e8baf-376e-b0b6-a222-a8450b073a09",
+  bestTime: "b09e4ab7-8694-2714-1687-e0242eba9b6e",
 } as const;
 
 function ContextSection({
@@ -251,7 +262,7 @@ export default async function MaldivesPage() {
               </p>
             </ContextSection>
 
-            <ContextSection eyebrow="History" title="A Short History" image={countryContextMedia.get(COUNTRY_CONTEXT_MEDIA_IDS.history)} imageAlt="Maldives history">
+            <ContextSection eyebrow="History" title="A Short History" image={countryContextMedia.get(COUNTRY_CONTEXT_MEDIA_IDS.history)} imageAlt="Muleeaage, a historic early-20th-century building in Malé">
               <p>
                 The islands were first settled by Buddhist seafarers over two thousand years ago, before the
                 Maldives converted to Islam in 1153 CE under Sultan Dharumavantha Rasgefaanu — a single, unbroken
@@ -279,6 +290,120 @@ export default async function MaldivesPage() {
                 exchange earnings, directly funding the roads, ferries, airports, schools and hospitals used across
                 the islands. Boat building, shipping and, increasingly, agriculture round out an economy still
                 largely tied to the ocean around it.
+              </p>
+            </ContextSection>
+
+            <ContextSection
+              eyebrow="Religion"
+              title="Islam in Everyday Life"
+              image={countryContextMedia.get(COUNTRY_CONTEXT_MEDIA_IDS.religion)}
+              imageAlt="Hukuru Miskiy (Old Friday Mosque), Malé"
+              reverse
+            >
+              <p>
+                Islam is the state religion, and the constitution requires every citizen to be Sunni Muslim — there
+                is no legal provision for any other faith among Maldivians. Life runs around the five daily calls to
+                prayer and the Friday congregational prayer, which is also the week&rsquo;s shared holiday. Every
+                inhabited island has its own mosque at the centre of community life; Malé&rsquo;s Hukuru Miskiy (Old
+                Friday Mosque), built from coral stone in 1656, is the country&rsquo;s oldest surviving example and
+                sits alongside the much larger modern Islamic Centre a short walk away.
+              </p>
+            </ContextSection>
+
+            <ContextSection
+              eyebrow="Language"
+              title="Dhivehi & the Thaana Script"
+              image={countryContextMedia.get(COUNTRY_CONTEXT_MEDIA_IDS.language)}
+              imageAlt="The Thaana script, the alphabet used to write Dhivehi"
+            >
+              <p>
+                Dhivehi is the national language, an Indo-Aryan language found nowhere else, written right-to-left
+                in Thaana — a unique script devised in the 16th-18th centuries, unrelated to Arabic or any
+                neighbouring writing system despite sharing the same reading direction. English is widely spoken
+                throughout the tourism industry and taught alongside Dhivehi in schools, so most resort and
+                guesthouse staff, and anyone working in transfers or tour operations, communicate with visitors in
+                English without difficulty.
+              </p>
+            </ContextSection>
+
+            <ContextSection
+              eyebrow="Education"
+              title="Schools on the Local Islands"
+              image={countryContextMedia.get(COUNTRY_CONTEXT_MEDIA_IDS.education)}
+              imageAlt="A school on a Maldivian local island"
+              reverse
+            >
+              <p>
+                Education is free and compulsory, and the Maldives has one of the highest literacy rates in South
+                Asia as a result — the vast majority of adults can read and write. Nearly every inhabited island has
+                its own primary school, with secondary education concentrated on larger islands and in Malé; higher
+                education is centred on the Maldives National University. A visit to a local island as part of an
+                island-hopping or city tour often includes seeing a working school up close, part of what makes a
+                local-island trip a genuine look at daily Maldivian life rather than a resort&rsquo;s version of it.
+              </p>
+            </ContextSection>
+
+            <ContextSection
+              eyebrow="Currency"
+              title="Rufiyaa & US Dollars"
+              image={countryContextMedia.get(COUNTRY_CONTEXT_MEDIA_IDS.currency)}
+              imageAlt="Maldivian Rufiyaa currency"
+            >
+              <p>
+                The official currency is the Maldivian Rufiyaa (MVR, symbol Rf or ރ), but US dollars are accepted
+                almost everywhere tourists go — resorts, liveaboards, speedboat and seaplane transfers, and most
+                shops in Malé typically price and bill in USD. Cards are widely accepted at resorts and in Malé;
+                smaller local-island guesthouses and shops are more likely to be cash-only, so it&rsquo;s worth
+                carrying some cash (dollars or rufiyaa) for those.
+              </p>
+            </ContextSection>
+
+            <ContextSection
+              eyebrow="Weather"
+              title="A Warm, Two-Season Climate"
+              image={countryContextMedia.get(COUNTRY_CONTEXT_MEDIA_IDS.weather)}
+              imageAlt="Maldives weather and climate"
+              reverse
+            >
+              <p>
+                The Maldives has a tropical monsoon climate — warm year-round, typically 26-31°C (79-88°F), with no
+                real winter or summer. Two monsoons define the year instead: the drier Iruvai season (roughly
+                December to April, driven by the northeast monsoon) and the wetter Hulhangu season (May to
+                November, driven by the southwest monsoon). Even in the wetter months, rain usually arrives as
+                short, heavy showers rather than all-day downpours, with plenty of sun either side.
+              </p>
+            </ContextSection>
+
+            <ContextSection
+              eyebrow="Tourism"
+              title="One Island, One Resort"
+              image={countryContextMedia.get(COUNTRY_CONTEXT_MEDIA_IDS.tourism)}
+              imageAlt="Aerial view of a Maldives atoll"
+            >
+              <p>
+                Tourism began in 1972 with the opening of Kurumba, the country&rsquo;s first resort, built on the
+                &ldquo;one island, one resort&rdquo; model that still defines Maldivian tourism today — almost every resort
+                occupies its own private island, with no other property sharing it. For decades, overnight stays on
+                local islands weren&rsquo;t permitted at all; guesthouses on inhabited islands were only legalised
+                in 2009, which is what makes today&rsquo;s budget-friendly local-island travel possible alongside
+                the traditional private-resort experience.
+              </p>
+            </ContextSection>
+
+            <ContextSection
+              eyebrow="Best Time to Visit"
+              title="When to Go"
+              image={countryContextMedia.get(COUNTRY_CONTEXT_MEDIA_IDS.bestTime)}
+              imageAlt="Maldives travel seasons"
+              reverse
+            >
+              <p>
+                The dry Iruvai season (December to April) is the most popular time to visit — calmer seas, the
+                least rain, and generally the best underwater visibility, with January to March the peak (and most
+                expensive) stretch. The wetter Hulhangu season (May to November) brings more rain and swell but
+                lower prices and fewer crowds, and it&rsquo;s also surf season in atolls like Thaa and Gaafu Dhaalu.
+                It&rsquo;s also when Hanifaru Bay in Baa Atoll sees its famous manta ray and whale shark
+                aggregations, roughly June to November.
               </p>
             </ContextSection>
           </div>

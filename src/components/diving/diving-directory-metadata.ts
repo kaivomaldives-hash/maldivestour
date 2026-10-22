@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 import { getDiveSites } from "@/lib/diving/repository";
-import { canonicalUrl } from "@/lib/seo/site";
+import { getPublishedLocalesForPage } from "@/lib/i18n/repository";
+import { canonicalUrl, hreflangAlternates } from "@/lib/seo/site";
 
 export interface DivingDirectorySearchParams {
   q?: string;
@@ -29,11 +30,12 @@ export async function divingDirectoryMetadata(searchParams: Promise<DivingDirect
       : "Maldives Diving | Dive Trips, Packages & Dive Sites";
   const description = "Real, source-verified Maldives diving activities, dive centers, dive sites and diving packages — search by type, location and provider.";
   const url = canonicalUrl("/maldives/diving");
+  const publishedLocales = await getPublishedLocalesForPage("diving-hub");
 
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages: hreflangAlternates("/maldives/diving/", publishedLocales) },
     openGraph: { title, description, url },
     robots: hasAnyFilter(sp) ? { index: false, follow: true } : undefined,
   };

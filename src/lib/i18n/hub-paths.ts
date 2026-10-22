@@ -58,6 +58,30 @@ export const LOCALIZED_HUB_PREFIXES: Record<string, Partial<Record<Locale, strin
     ja: "/morudibu/ryokou-gaido/",
     zh: "/maerdaifu/lvyou-zhinan/",
   },
+  "/maldives/fishing/": {
+    de: "/malediven/angeln/",
+    es: "/maldivas/pesca/",
+    it: "/maldive/pesca/",
+    ru: "/maldivy/rybalka/",
+    ja: "/morudibu/tsuri/",
+    zh: "/maerdaifu/diaoyu/",
+  },
+  "/maldives/diving/": {
+    de: "/malediven/tauchen/",
+    es: "/maldivas/buceo/",
+    it: "/maldive/immersioni/",
+    ru: "/maldivy/dayving/",
+    ja: "/morudibu/daibingu/",
+    zh: "/maerdaifu/qianshui/",
+  },
+  "/maldives/activities/": {
+    de: "/malediven/aktivitaeten/",
+    es: "/maldivas/actividades/",
+    it: "/maldive/attivita/",
+    ru: "/maldivy/aktivnosti/",
+    ja: "/morudibu/akutibiti/",
+    zh: "/maerdaifu/huodong/",
+  },
 };
 
 // Longest (most specific) prefix first, so "/maldives/packages/" is

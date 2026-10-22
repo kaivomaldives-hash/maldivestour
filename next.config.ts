@@ -17,6 +17,9 @@ const LOCALIZED_HUBS: Array<{ englishSegment: string; parent: string | null; wor
   { englishSegment: "packages", parent: "maldives", words: { de: "pakete", es: "paquetes", it: "pacchetti", ru: "pakety", ja: "pakeji", zh: "taocan" } },
   { englishSegment: "transfers", parent: "maldives", words: { de: "transfer", es: "traslados", it: "trasferimenti", ru: "transfery", ja: "sogei", zh: "jiesong" } },
   { englishSegment: "travel-guide", parent: "maldives", words: { de: "reisefuehrer", es: "guia-de-viaje", it: "guida-di-viaggio", ru: "putevoditel", ja: "ryokou-gaido", zh: "lvyou-zhinan" } },
+  { englishSegment: "fishing", parent: "maldives", words: { de: "angeln", es: "pesca", it: "pesca", ru: "rybalka", ja: "tsuri", zh: "diaoyu" } },
+  { englishSegment: "diving", parent: "maldives", words: { de: "tauchen", es: "buceo", it: "immersioni", ru: "dayving", ja: "daibingu", zh: "qianshui" } },
+  { englishSegment: "activities", parent: "maldives", words: { de: "aktivitaeten", es: "actividades", it: "attivita", ru: "aktivnosti", ja: "akutibiti", zh: "huodong" } },
 ];
 
 const LOCALES = ["de", "es", "it", "ru", "ja", "zh"];

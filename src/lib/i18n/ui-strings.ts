@@ -248,6 +248,55 @@ export interface UiStrings {
     schools: string;
     gyms: string;
   };
+  fishingHub: {
+    heroEyebrow: string;
+    title: string;
+    description: string;
+    introP1: string;
+    introP2: string;
+    featuredTitle: string;
+    faqTitle: string;
+    faqs: { question: string; answer: string }[];
+    exploreMoreTitle: string;
+  };
+  divingHub: {
+    heroEyebrow: string;
+    title: string;
+    description: string;
+    introP1: string;
+    introP2: string;
+    featuredTitle: string;
+    faqTitle: string;
+    faqs: { question: string; answer: string }[];
+    exploreMoreTitle: string;
+  };
+  activitiesHub: {
+    heroEyebrow: string;
+    title: string;
+    description: string;
+    introP1: string;
+    introP2: string;
+    featuredTitle: string;
+    faqTitle: string;
+    faqs: { question: string; answer: string }[];
+    exploreMoreTitle: string;
+  };
+  /** Shared chrome for the fishing/diving/generic-activities detail
+   * pages -- the category-specific eyebrow text reuses ui.nav.fishing/
+   * diving/activities rather than duplicating it here. */
+  activityDetail: {
+    durationLabel: string;
+    bookingIntro: string;
+    otherTripsTitle: string;
+    packagesFeaturingTitle: string;
+    pickupLocationsTitle: string;
+    pickupLocationsIntro: string;
+    exploreMoreTitle: string;
+    allFishingLink: string;
+    allDivingLink: string;
+    allActivitiesLink: string;
+    englishVersionLink: string;
+  };
 }
 
 const EN: UiStrings = {
@@ -513,6 +562,79 @@ const EN: UiStrings = {
     hospitals: "Hospitals",
     schools: "Schools",
     gyms: "Gyms",
+  },
+  fishingHub: {
+    heroEyebrow: "Maldives fishing",
+    title: "Maldives Fishing",
+    description: "Real fishing charters and trips across the Maldives — private full-day and half-day charters, big game, reef and traditional fishing, sourced from real operators.",
+    introP1: "Every trip below is real and individually verified — not a generic directory listing. See the full English listing for search and filters.",
+    introP2: "Private charters give you your own boat and crew; shared and local trips are a lower-cost way to get out on the water.",
+    featuredTitle: "Fishing Trips & Charters",
+    faqTitle: "Common questions",
+    faqs: [
+      {
+        question: "What kinds of fishing are available in the Maldives?",
+        answer: "Big game trolling, reef and bottom fishing, traditional handline trips, and night fishing — each page shows the real trip on offer.",
+      },
+      {
+        question: "Can I book a private charter?",
+        answer: "Yes — most operators offer a private full-day or half-day charter with your own boat and crew.",
+      },
+    ],
+    exploreMoreTitle: "Explore More Maldives",
+  },
+  divingHub: {
+    heroEyebrow: "Maldives diving",
+    title: "Maldives Diving",
+    description: "Real diving trips, courses and dive centers across the Maldives — fun dives, PADI courses, and Discover Scuba Diving, sourced from real operators.",
+    introP1: "Every dive below is real and individually verified — not a generic directory listing. See the full English listing for search and filters.",
+    introP2: "A fun dive suits certified divers; PADI courses and Discover Scuba Diving are for beginners with no certification yet.",
+    featuredTitle: "Diving Trips & Courses",
+    faqTitle: "Common questions",
+    faqs: [
+      {
+        question: "Do I need a certification to dive in the Maldives?",
+        answer: "No — Discover Scuba Diving lets you dive with an instructor with no certification; PADI courses let you get certified.",
+      },
+      {
+        question: "What's a fun dive?",
+        answer: "A guided reef dive for already-certified divers, usually a single tank.",
+      },
+    ],
+    exploreMoreTitle: "Explore More Maldives",
+  },
+  activitiesHub: {
+    heroEyebrow: "Things to do",
+    title: "Maldives Activities",
+    description: "Real, bookable Maldives activities and excursions — island hopping, watersports, dolphin cruises, city tours and more.",
+    introP1: "Every activity below is real and individually verified — not a generic directory listing. See the full English listing for search and filters.",
+    introP2: "Fishing, diving and surfing each have their own dedicated section — this page covers everything else: watersports, excursions, island hopping and more.",
+    featuredTitle: "Popular Activities",
+    faqTitle: "Common questions",
+    faqs: [
+      {
+        question: "How do I book an activity?",
+        answer: "Open the activity's page and send an enquiry with your preferred date and group size — we follow up directly.",
+      },
+      {
+        question: "Where do I find fishing, diving or surfing?",
+        answer: "Those have their own dedicated sections — see Explore More below.",
+      },
+    ],
+    exploreMoreTitle: "Explore More Maldives",
+  },
+  activityDetail: {
+    durationLabel: "Duration",
+    bookingIntro: "Tell us your preferred date and group size and we'll follow up on availability.",
+    otherTripsTitle: "Other trips on",
+    packagesFeaturingTitle: "Packages featuring",
+    pickupLocationsTitle: "Available with pickup from",
+    pickupLocationsIntro: "This trip offers pickup from any of these resorts and islands.",
+    exploreMoreTitle: "Explore More Maldives",
+    allFishingLink: "All Maldives Fishing",
+    allDivingLink: "All Maldives Diving",
+    allActivitiesLink: "All Maldives Activities",
+    englishVersionLink: "View this page in English",
   },
 };
 
@@ -781,6 +903,79 @@ const DE: UiStrings = {
     schools: "Schulen",
     gyms: "Fitnessstudios",
   },
+  fishingHub: {
+    heroEyebrow: "Angeln auf den Malediven",
+    title: "Angeln auf den Malediven",
+    description: "Echte Angelcharter und -ausflüge auf den Malediven — private Ganztags- und Halbtagscharter, Big-Game-, Riff- und traditionelles Angeln, von echten Anbietern.",
+    introP1: "Jeder Ausflug unten ist real und einzeln geprüft — kein generisches Verzeichnis. Die vollständige englische Liste bietet Suche und Filter.",
+    introP2: "Private Charter bieten ein eigenes Boot und eine eigene Crew; geteilte und lokale Ausflüge sind eine günstigere Möglichkeit, aufs Wasser zu kommen.",
+    featuredTitle: "Angelausflüge & Charter",
+    faqTitle: "Häufige Fragen",
+    faqs: [
+      {
+        question: "Welche Arten des Angelns gibt es auf den Malediven?",
+        answer: "Big-Game-Schleppangeln, Riff- und Grundangeln, traditionelles Handleinenangeln und Nachtangeln — jede Seite zeigt den tatsächlichen Ausflug.",
+      },
+      {
+        question: "Kann ich einen privaten Charter buchen?",
+        answer: "Ja — die meisten Anbieter bieten einen privaten Ganztags- oder Halbtagscharter mit eigenem Boot und eigener Crew an.",
+      },
+    ],
+    exploreMoreTitle: "Mehr von den Malediven entdecken",
+  },
+  divingHub: {
+    heroEyebrow: "Tauchen auf den Malediven",
+    title: "Tauchen auf den Malediven",
+    description: "Echte Tauchausflüge, Kurse und Tauchzentren auf den Malediven — Fun Dives, PADI-Kurse und Discover Scuba Diving, von echten Anbietern.",
+    introP1: "Jeder Tauchgang unten ist real und einzeln geprüft — kein generisches Verzeichnis. Die vollständige englische Liste bietet Suche und Filter.",
+    introP2: "Ein Fun Dive eignet sich für zertifizierte Taucher; PADI-Kurse und Discover Scuba Diving sind für Anfänger ohne Zertifizierung.",
+    featuredTitle: "Tauchausflüge & Kurse",
+    faqTitle: "Häufige Fragen",
+    faqs: [
+      {
+        question: "Brauche ich eine Zertifizierung, um auf den Malediven zu tauchen?",
+        answer: "Nein — bei Discover Scuba Diving tauchen Sie mit einem Lehrer ohne Zertifizierung; PADI-Kurse ermöglichen eine Zertifizierung.",
+      },
+      {
+        question: "Was ist ein Fun Dive?",
+        answer: "Ein geführter Riff-Tauchgang für bereits zertifizierte Taucher, meist mit einer Flasche.",
+      },
+    ],
+    exploreMoreTitle: "Mehr von den Malediven entdecken",
+  },
+  activitiesHub: {
+    heroEyebrow: "Unternehmungen",
+    title: "Aktivitäten auf den Malediven",
+    description: "Echte, buchbare Aktivitäten und Ausflüge auf den Malediven — Inselhüpfen, Wassersport, Delfintouren, Stadtrundfahrten und mehr.",
+    introP1: "Jede Aktivität unten ist real und einzeln geprüft — kein generisches Verzeichnis. Die vollständige englische Liste bietet Suche und Filter.",
+    introP2: "Angeln, Tauchen und Surfen haben jeweils ihren eigenen Bereich — diese Seite deckt alles andere ab: Wassersport, Ausflüge, Inselhüpfen und mehr.",
+    featuredTitle: "Beliebte Aktivitäten",
+    faqTitle: "Häufige Fragen",
+    faqs: [
+      {
+        question: "Wie buche ich eine Aktivität?",
+        answer: "Öffnen Sie die Seite der Aktivität und senden Sie eine Anfrage mit Ihrem bevorzugten Datum und Ihrer Gruppengröße — wir melden uns direkt.",
+      },
+      {
+        question: "Wo finde ich Angeln, Tauchen oder Surfen?",
+        answer: "Diese haben ihre eigenen Bereiche — siehe „Mehr entdecken\" unten.",
+      },
+    ],
+    exploreMoreTitle: "Mehr von den Malediven entdecken",
+  },
+  activityDetail: {
+    durationLabel: "Dauer",
+    bookingIntro: "Teilen Sie uns Ihr bevorzugtes Datum und Ihre Gruppengröße mit — wir melden uns zur Verfügbarkeit.",
+    otherTripsTitle: "Weitere Ausflüge auf",
+    packagesFeaturingTitle: "Pakete mit",
+    pickupLocationsTitle: "Verfügbar mit Abholung von",
+    pickupLocationsIntro: "Dieser Ausflug bietet Abholung von jedem dieser Resorts und Inseln.",
+    exploreMoreTitle: "Mehr von den Malediven entdecken",
+    allFishingLink: "Alle Malediven-Angelausflüge",
+    allDivingLink: "Alle Malediven-Tauchausflüge",
+    allActivitiesLink: "Alle Malediven-Aktivitäten",
+    englishVersionLink: "Diese Seite auf Englisch ansehen",
+  },
 };
 
 const ES: UiStrings = {
@@ -1046,6 +1241,79 @@ const ES: UiStrings = {
     hospitals: "Hospitales",
     schools: "Escuelas",
     gyms: "Gimnasios",
+  },
+  fishingHub: {
+    heroEyebrow: "Pesca en Maldivas",
+    title: "Pesca en Maldivas",
+    description: "Chárteres y excursiones de pesca reales por toda Maldivas — chárteres privados de día completo y medio día, pesca de altura, de arrecife y tradicional, de operadores reales.",
+    introP1: "Cada excursión de abajo es real y verificada individualmente — no un directorio genérico. Consulta el listado completo en inglés para buscar y filtrar.",
+    introP2: "Los chárteres privados ofrecen tu propio barco y tripulación; las excursiones compartidas y locales son una forma más económica de salir al agua.",
+    featuredTitle: "Excursiones y Chárteres de Pesca",
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+      {
+        question: "¿Qué tipos de pesca hay disponibles en Maldivas?",
+        answer: "Pesca de altura con señuelo, pesca de arrecife y de fondo, excursiones tradicionales con sedal de mano y pesca nocturna — cada página muestra la excursión real disponible.",
+      },
+      {
+        question: "¿Puedo reservar un chárter privado?",
+        answer: "Sí — la mayoría de operadores ofrecen un chárter privado de día completo o medio día con tu propio barco y tripulación.",
+      },
+    ],
+    exploreMoreTitle: "Explorar Más de Maldivas",
+  },
+  divingHub: {
+    heroEyebrow: "Buceo en Maldivas",
+    title: "Buceo en Maldivas",
+    description: "Excursiones de buceo, cursos y centros de buceo reales por toda Maldivas — inmersiones de ocio, cursos PADI y Discover Scuba Diving, de operadores reales.",
+    introP1: "Cada inmersión de abajo es real y verificada individualmente — no un directorio genérico. Consulta el listado completo en inglés para buscar y filtrar.",
+    introP2: "Una inmersión de ocio es para buceadores certificados; los cursos PADI y Discover Scuba Diving son para principiantes sin certificación.",
+    featuredTitle: "Excursiones y Cursos de Buceo",
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+      {
+        question: "¿Necesito una certificación para bucear en Maldivas?",
+        answer: "No — con Discover Scuba Diving buceas con un instructor sin certificación; los cursos PADI te permiten certificarte.",
+      },
+      {
+        question: "¿Qué es una inmersión de ocio?",
+        answer: "Una inmersión guiada en arrecife para buceadores ya certificados, normalmente con una botella.",
+      },
+    ],
+    exploreMoreTitle: "Explorar Más de Maldivas",
+  },
+  activitiesHub: {
+    heroEyebrow: "Qué hacer",
+    title: "Actividades en Maldivas",
+    description: "Actividades y excursiones reales y reservables en Maldivas — isla en isla, deportes acuáticos, cruceros de delfines, tours urbanos y más.",
+    introP1: "Cada actividad de abajo es real y verificada individualmente — no un directorio genérico. Consulta el listado completo en inglés para buscar y filtrar.",
+    introP2: "La pesca, el buceo y el surf tienen cada uno su propia sección — esta página cubre todo lo demás: deportes acuáticos, excursiones, isla en isla y más.",
+    featuredTitle: "Actividades Populares",
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+      {
+        question: "¿Cómo reservo una actividad?",
+        answer: "Abre la página de la actividad y envía una consulta con tu fecha y tamaño de grupo preferidos — te responderemos directamente.",
+      },
+      {
+        question: "¿Dónde encuentro pesca, buceo o surf?",
+        answer: "Esos tienen sus propias secciones — ver Explorar Más abajo.",
+      },
+    ],
+    exploreMoreTitle: "Explorar Más de Maldivas",
+  },
+  activityDetail: {
+    durationLabel: "Duración",
+    bookingIntro: "Indícanos tu fecha y tamaño de grupo preferidos y te responderemos sobre disponibilidad.",
+    otherTripsTitle: "Otras excursiones en",
+    packagesFeaturingTitle: "Paquetes que incluyen",
+    pickupLocationsTitle: "Disponible con recogida desde",
+    pickupLocationsIntro: "Esta excursión ofrece recogida desde cualquiera de estos resorts e islas.",
+    exploreMoreTitle: "Explorar Más de Maldivas",
+    allFishingLink: "Toda la Pesca en Maldivas",
+    allDivingLink: "Todo el Buceo en Maldivas",
+    allActivitiesLink: "Todas las Actividades en Maldivas",
+    englishVersionLink: "Ver esta página en inglés",
   },
 };
 
@@ -1313,6 +1581,79 @@ const IT: UiStrings = {
     schools: "Scuole",
     gyms: "Palestre",
   },
+  fishingHub: {
+    heroEyebrow: "Pesca alle Maldive",
+    title: "Pesca alle Maldive",
+    description: "Charter ed escursioni di pesca reali in tutte le Maldive — charter privati di giornata intera e mezza giornata, pesca d'altura, di barriera e tradizionale, da operatori reali.",
+    introP1: "Ogni escursione qui sotto è reale e verificata individualmente — non un elenco generico. Consulta l'elenco completo in inglese per ricerca e filtri.",
+    introP2: "I charter privati offrono una barca e un equipaggio propri; le escursioni condivise e locali sono un modo più economico per uscire in acqua.",
+    featuredTitle: "Escursioni e Charter di Pesca",
+    faqTitle: "Domande frequenti",
+    faqs: [
+      {
+        question: "Quali tipi di pesca sono disponibili alle Maldive?",
+        answer: "Traina d'altura, pesca di barriera e di fondo, escursioni tradizionali con lenza a mano e pesca notturna — ogni pagina mostra l'escursione reale disponibile.",
+      },
+      {
+        question: "Posso prenotare un charter privato?",
+        answer: "Sì — la maggior parte degli operatori offre un charter privato di giornata intera o mezza giornata con barca ed equipaggio propri.",
+      },
+    ],
+    exploreMoreTitle: "Esplora Altro delle Maldive",
+  },
+  divingHub: {
+    heroEyebrow: "Immersioni alle Maldive",
+    title: "Immersioni alle Maldive",
+    description: "Escursioni di immersione, corsi e diving center reali in tutte le Maldive — immersioni ricreative, corsi PADI e Discover Scuba Diving, da operatori reali.",
+    introP1: "Ogni immersione qui sotto è reale e verificata individualmente — non un elenco generico. Consulta l'elenco completo in inglese per ricerca e filtri.",
+    introP2: "Un'immersione ricreativa è per sub già certificati; i corsi PADI e il Discover Scuba Diving sono per principianti senza certificazione.",
+    featuredTitle: "Escursioni e Corsi di Immersione",
+    faqTitle: "Domande frequenti",
+    faqs: [
+      {
+        question: "Serve una certificazione per immergersi alle Maldive?",
+        answer: "No — con il Discover Scuba Diving ti immergi con un istruttore senza certificazione; i corsi PADI permettono di certificarsi.",
+      },
+      {
+        question: "Cos'è un'immersione ricreativa?",
+        answer: "Un'immersione guidata in barriera per sub già certificati, di solito con una bombola.",
+      },
+    ],
+    exploreMoreTitle: "Esplora Altro delle Maldive",
+  },
+  activitiesHub: {
+    heroEyebrow: "Cosa fare",
+    title: "Attività alle Maldive",
+    description: "Attività ed escursioni reali e prenotabili alle Maldive — island hopping, sport acquatici, crociere con i delfini, tour cittadini e altro.",
+    introP1: "Ogni attività qui sotto è reale e verificata individualmente — non un elenco generico. Consulta l'elenco completo in inglese per ricerca e filtri.",
+    introP2: "Pesca, immersioni e surf hanno ciascuno una propria sezione — questa pagina copre tutto il resto: sport acquatici, escursioni, island hopping e altro.",
+    featuredTitle: "Attività Popolari",
+    faqTitle: "Domande frequenti",
+    faqs: [
+      {
+        question: "Come prenoto un'attività?",
+        answer: "Apri la pagina dell'attività e invia una richiesta con la data e la dimensione del gruppo preferite — ti risponderemo direttamente.",
+      },
+      {
+        question: "Dove trovo pesca, immersioni o surf?",
+        answer: "Hanno le loro sezioni dedicate — vedi Esplora Altro qui sotto.",
+      },
+    ],
+    exploreMoreTitle: "Esplora Altro delle Maldive",
+  },
+  activityDetail: {
+    durationLabel: "Durata",
+    bookingIntro: "Indicaci la data e la dimensione del gruppo preferite e ti risponderemo sulla disponibilità.",
+    otherTripsTitle: "Altre escursioni a",
+    packagesFeaturingTitle: "Pacchetti che includono",
+    pickupLocationsTitle: "Disponibile con pickup da",
+    pickupLocationsIntro: "Questa escursione offre il pickup da uno di questi resort e isole.",
+    exploreMoreTitle: "Esplora Altro delle Maldive",
+    allFishingLink: "Tutta la Pesca alle Maldive",
+    allDivingLink: "Tutte le Immersioni alle Maldive",
+    allActivitiesLink: "Tutte le Attività alle Maldive",
+    englishVersionLink: "Visualizza questa pagina in inglese",
+  },
 };
 
 const RU: UiStrings = {
@@ -1578,6 +1919,79 @@ const RU: UiStrings = {
     hospitals: "Больницы",
     schools: "Школы",
     gyms: "Спортзалы",
+  },
+  fishingHub: {
+    heroEyebrow: "Рыбалка на Мальдивах",
+    title: "Рыбалка на Мальдивах",
+    description: "Настоящие рыболовные чартеры и поездки по всем Мальдивам — частные чартеры на полный и половину дня, глубоководная, рифовая и традиционная рыбалка от реальных операторов.",
+    introP1: "Каждая поездка ниже — настоящая и индивидуально проверенная, а не общий каталог. Полный список на английском языке с поиском и фильтрами доступен отдельно.",
+    introP2: "Частный чартер даёт собственную лодку и команду; совместные и местные поездки — более доступный способ выйти на воду.",
+    featuredTitle: "Рыболовные поездки и чартеры",
+    faqTitle: "Часто задаваемые вопросы",
+    faqs: [
+      {
+        question: "Какие виды рыбалки доступны на Мальдивах?",
+        answer: "Троллинг на крупную рыбу, рифовая и донная рыбалка, традиционная рыбалка на леску и ночная рыбалка — на каждой странице показана реальная предлагаемая поездка.",
+      },
+      {
+        question: "Можно ли заказать частный чартер?",
+        answer: "Да — большинство операторов предлагают частный чартер на полный или половину дня с собственной лодкой и командой.",
+      },
+    ],
+    exploreMoreTitle: "Исследовать больше Мальдив",
+  },
+  divingHub: {
+    heroEyebrow: "Дайвинг на Мальдивах",
+    title: "Дайвинг на Мальдивах",
+    description: "Настоящие дайвинг-поездки, курсы и дайв-центры по всем Мальдивам — развлекательные погружения, курсы PADI и Discover Scuba Diving от реальных операторов.",
+    introP1: "Каждое погружение ниже — настоящее и индивидуально проверенное, а не общий каталог. Полный список на английском языке с поиском и фильтрами доступен отдельно.",
+    introP2: "Развлекательное погружение подходит сертифицированным дайверам; курсы PADI и Discover Scuba Diving — для новичков без сертификации.",
+    featuredTitle: "Дайвинг-поездки и курсы",
+    faqTitle: "Часто задаваемые вопросы",
+    faqs: [
+      {
+        question: "Нужна ли сертификация для дайвинга на Мальдивах?",
+        answer: "Нет — Discover Scuba Diving позволяет погружаться с инструктором без сертификации; курсы PADI дают возможность сертифицироваться.",
+      },
+      {
+        question: "Что такое развлекательное погружение?",
+        answer: "Погружение на рифе с гидом для уже сертифицированных дайверов, обычно с одним баллоном.",
+      },
+    ],
+    exploreMoreTitle: "Исследовать больше Мальдив",
+  },
+  activitiesHub: {
+    heroEyebrow: "Чем заняться",
+    title: "Активности на Мальдивах",
+    description: "Настоящие, доступные для бронирования активности и экскурсии на Мальдивах — путешествия по островам, водные виды спорта, круизы с дельфинами, городские туры и многое другое.",
+    introP1: "Каждая активность ниже — настоящая и индивидуально проверенная, а не общий каталог. Полный список на английском языке с поиском и фильтрами доступен отдельно.",
+    introP2: "У рыбалки, дайвинга и сёрфинга есть собственные разделы — эта страница охватывает всё остальное: водные виды спорта, экскурсии, путешествия по островам и многое другое.",
+    featuredTitle: "Популярные активности",
+    faqTitle: "Часто задаваемые вопросы",
+    faqs: [
+      {
+        question: "Как забронировать активность?",
+        answer: "Откройте страницу активности и отправьте запрос с предпочитаемой датой и размером группы — мы свяжемся напрямую.",
+      },
+      {
+        question: "Где найти рыбалку, дайвинг или сёрфинг?",
+        answer: "У них есть собственные разделы — см. «Исследовать больше» ниже.",
+      },
+    ],
+    exploreMoreTitle: "Исследовать больше Мальдив",
+  },
+  activityDetail: {
+    durationLabel: "Продолжительность",
+    bookingIntro: "Сообщите нам предпочитаемую дату и размер группы, и мы свяжемся с вами по поводу доступности.",
+    otherTripsTitle: "Другие поездки на",
+    packagesFeaturingTitle: "Пакеты с",
+    pickupLocationsTitle: "Доступно с трансфером из",
+    pickupLocationsIntro: "Эта поездка предлагает трансфер из любого из этих курортов и островов.",
+    exploreMoreTitle: "Исследовать больше Мальдив",
+    allFishingLink: "Вся рыбалка на Мальдивах",
+    allDivingLink: "Весь дайвинг на Мальдивах",
+    allActivitiesLink: "Все активности на Мальдивах",
+    englishVersionLink: "Посмотреть эту страницу на английском",
   },
 };
 
@@ -1845,6 +2259,79 @@ const JA: UiStrings = {
     schools: "学校",
     gyms: "ジム",
   },
+  fishingHub: {
+    heroEyebrow: "モルディブの釣り",
+    title: "モルディブの釣り",
+    description: "モルディブ全土の本物の釣りチャーターとツアー——プライベートの終日・半日チャーター、大物釣り、リーフフィッシング、伝統釣りを実在のオペレーターから。",
+    introP1: "以下の各ツアーは実在し個別に確認されたものです——一般的なディレクトリではありません。検索とフィルター機能付きの完全な英語版リストもご覧いただけます。",
+    introP2: "プライベートチャーターは専用のボートとクルーを提供し、乗り合いやローカルツアーはより手頃に海に出る方法です。",
+    featuredTitle: "釣りツアー&チャーター",
+    faqTitle: "よくある質問",
+    faqs: [
+      {
+        question: "モルディブではどのような釣りができますか?",
+        answer: "ビッグゲームトローリング、リーフ・ボトムフィッシング、伝統的な手釣りツアー、ナイトフィッシングなど——各ページで実際のツアー内容を確認できます。",
+      },
+      {
+        question: "プライベートチャーターは予約できますか?",
+        answer: "はい——ほとんどのオペレーターが専用のボートとクルー付きの終日または半日のプライベートチャーターを提供しています。",
+      },
+    ],
+    exploreMoreTitle: "モルディブをもっと探る",
+  },
+  divingHub: {
+    heroEyebrow: "モルディブのダイビング",
+    title: "モルディブのダイビング",
+    description: "モルディブ全土の本物のダイビングツアー、コース、ダイブセンター——ファンダイブ、PADIコース、体験ダイビングを実在のオペレーターから。",
+    introP1: "以下の各ダイブは実在し個別に確認されたものです——一般的なディレクトリではありません。検索とフィルター機能付きの完全な英語版リストもご覧いただけます。",
+    introP2: "ファンダイブは認定ダイバー向け、PADIコースと体験ダイビングは認定資格のない初心者向けです。",
+    featuredTitle: "ダイビングツアー&コース",
+    faqTitle: "よくある質問",
+    faqs: [
+      {
+        question: "モルディブでダイビングするには認定資格が必要ですか?",
+        answer: "いいえ——体験ダイビングでは資格なしでインストラクターと一緒に潜ることができ、PADIコースで資格を取得できます。",
+      },
+      {
+        question: "ファンダイブとは何ですか?",
+        answer: "既に認定を受けたダイバー向けのガイド付きリーフダイブで、通常1本のタンクを使用します。",
+      },
+    ],
+    exploreMoreTitle: "モルディブをもっと探る",
+  },
+  activitiesHub: {
+    heroEyebrow: "やってみよう",
+    title: "モルディブのアクティビティ",
+    description: "モルディブの本物の予約可能なアクティビティとエクスカーション——アイランドホッピング、ウォータースポーツ、ドルフィンクルーズ、シティツアーなど。",
+    introP1: "以下の各アクティビティは実在し個別に確認されたものです——一般的なディレクトリではありません。検索とフィルター機能付きの完全な英語版リストもご覧いただけます。",
+    introP2: "釣り、ダイビング、サーフィンにはそれぞれ専用セクションがあります——このページではウォータースポーツ、エクスカーション、アイランドホッピングなど、その他すべてを扱います。",
+    featuredTitle: "人気のアクティビティ",
+    faqTitle: "よくある質問",
+    faqs: [
+      {
+        question: "アクティビティはどのように予約しますか?",
+        answer: "アクティビティのページを開き、希望の日付とグループ人数を記載してお問い合わせください——直接ご連絡いたします。",
+      },
+      {
+        question: "釣り、ダイビング、サーフィンはどこにありますか?",
+        answer: "それぞれ専用セクションがあります——下記の「もっと探る」をご覧ください。",
+      },
+    ],
+    exploreMoreTitle: "モルディブをもっと探る",
+  },
+  activityDetail: {
+    durationLabel: "所要時間",
+    bookingIntro: "ご希望の日付とグループ人数をお知らせください。空き状況についてご連絡いたします。",
+    otherTripsTitle: "その他のツアー:",
+    packagesFeaturingTitle: "含まれるパッケージ:",
+    pickupLocationsTitle: "送迎可能な場所",
+    pickupLocationsIntro: "このツアーは以下のリゾートや島からの送迎が可能です。",
+    exploreMoreTitle: "モルディブをもっと探る",
+    allFishingLink: "モルディブの釣り全て",
+    allDivingLink: "モルディブのダイビング全て",
+    allActivitiesLink: "モルディブのアクティビティ全て",
+    englishVersionLink: "英語版でこのページを見る",
+  },
 };
 
 const ZH: UiStrings = {
@@ -2110,6 +2597,79 @@ const ZH: UiStrings = {
     hospitals: "医院",
     schools: "学校",
     gyms: "健身房",
+  },
+  fishingHub: {
+    heroEyebrow: "马尔代夫钓鱼",
+    title: "马尔代夫钓鱼",
+    description: "马尔代夫各地真实的钓鱼租船和行程——私人全天和半天租船、大物钓鱼、礁石钓鱼和传统钓鱼,均来自真实运营商。",
+    introP1: "以下每个行程均为真实且经过单独核实,而非笼统的目录列表。完整的英文列表提供搜索和筛选功能。",
+    introP2: "私人租船提供专属船只和船员;共享和本地行程则是更经济的出海方式。",
+    featuredTitle: "钓鱼行程与租船",
+    faqTitle: "常见问题",
+    faqs: [
+      {
+        question: "马尔代夫有哪些钓鱼方式?",
+        answer: "大物拖钓、礁石和底层钓鱼、传统手线钓鱼以及夜钓——每个页面都显示实际提供的行程。",
+      },
+      {
+        question: "可以预订私人租船吗?",
+        answer: "可以——大多数运营商提供配备专属船只和船员的全天或半天私人租船服务。",
+      },
+    ],
+    exploreMoreTitle: "探索更多马尔代夫",
+  },
+  divingHub: {
+    heroEyebrow: "马尔代夫潜水",
+    title: "马尔代夫潜水",
+    description: "马尔代夫各地真实的潜水行程、课程和潜水中心——休闲潜水、PADI课程和体验潜水,均来自真实运营商。",
+    introP1: "以下每次潜水均为真实且经过单独核实,而非笼统的目录列表。完整的英文列表提供搜索和筛选功能。",
+    introP2: "休闲潜水适合持证潜水员;PADI课程和体验潜水适合尚未获得认证的初学者。",
+    featuredTitle: "潜水行程与课程",
+    faqTitle: "常见问题",
+    faqs: [
+      {
+        question: "在马尔代夫潜水需要潜水证吗?",
+        answer: "不需要——体验潜水可让您在没有证书的情况下与教练一起潜水;PADI课程可让您获得认证。",
+      },
+      {
+        question: "什么是休闲潜水?",
+        answer: "适合已持证潜水员的有导潜陪同的礁石潜水,通常使用一个气瓶。",
+      },
+    ],
+    exploreMoreTitle: "探索更多马尔代夫",
+  },
+  activitiesHub: {
+    heroEyebrow: "休闲活动",
+    title: "马尔代夫活动",
+    description: "马尔代夫真实可预订的活动和短途游览——跳岛游、水上运动、海豚巡游、城市观光等。",
+    introP1: "以下每项活动均为真实且经过单独核实,而非笼统的目录列表。完整的英文列表提供搜索和筛选功能。",
+    introP2: "钓鱼、潜水和冲浪各有专属板块——本页面涵盖其余所有内容:水上运动、短途游览、跳岛游等。",
+    featuredTitle: "热门活动",
+    faqTitle: "常见问题",
+    faqs: [
+      {
+        question: "如何预订活动?",
+        answer: "打开活动页面,提交您偏好的日期和团队人数的咨询——我们会直接与您联系。",
+      },
+      {
+        question: "在哪里可以找到钓鱼、潜水或冲浪?",
+        answer: "这些都有各自的专属板块——请参见下方的「探索更多」。",
+      },
+    ],
+    exploreMoreTitle: "探索更多马尔代夫",
+  },
+  activityDetail: {
+    durationLabel: "时长",
+    bookingIntro: "请告知我们您偏好的日期和团队人数,我们会就可用性与您联系。",
+    otherTripsTitle: "其他行程,位于",
+    packagesFeaturingTitle: "包含该项目的套餐",
+    pickupLocationsTitle: "可提供接送的地点",
+    pickupLocationsIntro: "此行程可从以下任意度假村或岛屿提供接送服务。",
+    exploreMoreTitle: "探索更多马尔代夫",
+    allFishingLink: "马尔代夫所有钓鱼项目",
+    allDivingLink: "马尔代夫所有潜水项目",
+    allActivitiesLink: "马尔代夫所有活动",
+    englishVersionLink: "查看英文版页面",
   },
 };
 

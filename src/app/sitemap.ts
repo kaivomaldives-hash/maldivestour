@@ -12,6 +12,7 @@ import { getDiveSites } from "@/lib/diving/repository";
 import type { Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getEntityLocaleSlugsByIds, getPublishedLocalesForPage } from "@/lib/i18n/repository";
+import { UI_STRINGS_LOCALES } from "@/lib/i18n/ui-strings";
 import { getAtolls, getIslands } from "@/lib/locations/repository";
 import { getPackages } from "@/lib/packages/repository";
 import { getProviders } from "@/lib/providers/repository";
@@ -151,6 +152,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     maldivesHubLocales,
     packagesHubLocales,
     transfersHubLocales,
+    fishingHubLocales,
+    divingHubLocales,
+    activitiesHubLocales,
   ] = await Promise.all([
     getAtolls(),
     fetchAllPages((page) => getIslands({ page, pageSize: PAGE_SIZE })),
@@ -172,22 +176,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getPublishedLocalesForPage("maldives-hub"),
     getPublishedLocalesForPage("packages-hub"),
     getPublishedLocalesForPage("transfers-hub"),
+    getPublishedLocalesForPage("fishing-hub"),
+    getPublishedLocalesForPage("diving-hub"),
+    getPublishedLocalesForPage("activities-hub"),
   ]);
+  // Travel Guide hub is UI-strings-only (no page_translations row, see
+  // src/app/[locale]/maldives/travel-guide/page.tsx) -- its "published"
+  // set is simply every locale with real UI-strings copy, same as that
+  // page's own generateMetadata. Missing from this sitemap entirely
+  // until now (Task 22 follow-up).
+  const travelGuideHubLocales: Locale[] = UI_STRINGS_LOCALES;
+
+  const HUB_LOCALES_BY_PATH: Record<string, Locale[]> = {
+    "/maldives/": maldivesHubLocales,
+    "/maldives/packages/": packagesHubLocales,
+    "/maldives/transfers/": transfersHubLocales,
+    "/maldives/travel-guide/": travelGuideHubLocales,
+    "/maldives/fishing/": fishingHubLocales,
+    "/maldives/diving/": divingHubLocales,
+    "/maldives/activities/": activitiesHubLocales,
+  };
 
   const entries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => {
     const isHomepage = path === "/";
     const isMaldivesHub = path === "/maldives/";
-    const isPackagesHub = path === "/maldives/packages/";
-    const isTransfersHub = path === "/maldives/transfers/";
-    const publishedLocales = isHomepage
-      ? homepageLocales
-      : isMaldivesHub
-        ? maldivesHubLocales
-        : isPackagesHub
-          ? packagesHubLocales
-          : isTransfersHub
-            ? transfersHubLocales
-            : [];
+    const publishedLocales = isHomepage ? homepageLocales : HUB_LOCALES_BY_PATH[path] ?? [];
     return {
       url: url(path),
       changeFrequency: "weekly",
@@ -210,27 +223,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       alternates: { languages: hreflangAlternates("/maldives/", maldivesHubLocales) },
     });
   }
-  for (const locale of packagesHubLocales) {
-    entries.push({
-      url: localizedCanonicalUrl(locale, "/maldives/packages/"),
-      changeFrequency: "weekly",
-      priority: 0.8,
-      alternates: { languages: hreflangAlternates("/maldives/packages/", packagesHubLocales) },
-    });
-  }
-  for (const locale of transfersHubLocales) {
-    entries.push({
-      url: localizedCanonicalUrl(locale, "/maldives/transfers/"),
-      changeFrequency: "weekly",
-      priority: 0.8,
-      alternates: { languages: hreflangAlternates("/maldives/transfers/", transfersHubLocales) },
-    });
+  for (const [path, locales] of Object.entries(HUB_LOCALES_BY_PATH)) {
+    if (path === "/maldives/") continue; // handled above at a higher priority
+    for (const locale of locales) {
+      entries.push({
+        url: localizedCanonicalUrl(locale, path),
+        changeFrequency: "weekly",
+        priority: 0.8,
+        alternates: { languages: hreflangAlternates(path, locales) },
+      });
+    }
   }
 
   for (const a of atolls) entries.push({ url: url(`/maldives/atolls/${a.slug}/`), changeFrequency: "monthly", priority: 0.7 });
   for (const i of islands) entries.push({ url: url(`/maldives/islands/${i.slug}/`), changeFrequency: "monthly", priority: 0.6 });
   for (const a of accommodations) entries.push({ url: url(`/maldives/${ACCOMMODATION_TYPE_SEGMENT[a.accommodationType]}/${a.slug}/`), changeFrequency: "weekly", priority: 0.7 });
-  for (const a of activities) entries.push({ url: url(activityHref(a)), changeFrequency: "monthly", priority: 0.6 });
+  // Only surfing activities are pushed here as plain entries -- fishing,
+  // diving, and every other category (Task 22) are now translated and get
+  // both their English entry AND reciprocal hreflang alternates from
+  // pushLocalizedEntityEntries below instead; pushing them again here
+  // would duplicate the English URL (Task 16 §30: never a duplicate).
+  // Surfing has no translated route yet, so it stays exactly as before.
+  for (const a of activities) if (a.activityCategory === "surfing") entries.push({ url: url(activityHref(a)), changeFrequency: "monthly", priority: 0.6 });
   for (const a of attractions) entries.push({ url: url(`/maldives/attractions/${a.slug}/`), changeFrequency: "monthly", priority: 0.5 });
   for (const d of diveSites) entries.push({ url: url(`/maldives/dive-sites/${d.slug}/`), changeFrequency: "monthly", priority: 0.5 });
   for (const s of surfBreaks) entries.push({ url: url(`/maldives/surf-breaks/${s.slug}/`), changeFrequency: "monthly", priority: 0.5 });
@@ -304,6 +318,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const transferRouteLocaleSlugs = await getEntityLocaleSlugsByIds(transferRoutes.map((t) => t.id));
   pushLocalizedEntityEntries(transferRoutes, transferRouteLocaleSlugs, "/maldives/transfers/", 0.6);
+
+  // Activities: fishing and diving each keep their own dedicated URL
+  // segment (same as the real English routes), everything except
+  // surfing (not translated yet, still pushed as a plain entry above)
+  // falls back to the shared /maldives/activities/ prefix -- mirrors
+  // activityHref()'s own category routing in src/lib/activities/types.ts.
+  const fishingActivities = activities.filter((a) => a.activityCategory === "fishing");
+  const divingActivities = activities.filter((a) => a.activityCategory === "diving");
+  const genericActivities = activities.filter((a) => a.activityCategory !== "fishing" && a.activityCategory !== "diving" && a.activityCategory !== "surfing");
+  const activityLocaleSlugs = await getEntityLocaleSlugsByIds([...fishingActivities, ...divingActivities, ...genericActivities].map((a) => a.id));
+  pushLocalizedEntityEntries(fishingActivities, activityLocaleSlugs, "/maldives/fishing/", 0.6);
+  pushLocalizedEntityEntries(divingActivities, activityLocaleSlugs, "/maldives/diving/", 0.6);
+  pushLocalizedEntityEntries(genericActivities, activityLocaleSlugs, "/maldives/activities/", 0.5);
 
   for (const p of providers) entries.push({ url: url(`/maldives/providers/${p.slug}/`), changeFrequency: "monthly", priority: 0.4 });
 

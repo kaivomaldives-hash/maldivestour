@@ -183,7 +183,7 @@ export default async function Home() {
               description="Real, individually verified accommodation across the Maldives."
               action={{ label: "Browse all stays", href: "/maldives/stays/" }}
             />
-            <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {stays.map((accommodation) => (
                 <AccommodationCard key={accommodation.id} accommodation={accommodation} />
               ))}
@@ -210,7 +210,7 @@ export default async function Home() {
               description="Real operators and activities, sourced island by island."
               action={{ label: "View all activities", href: "/maldives/activities/" }}
             />
-            <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {activities.items.map((activity) => (
                 <ActivityCard key={activity.id} activity={activity} />
               ))}
@@ -242,7 +242,7 @@ export default async function Home() {
               description="Real, individually documented landmarks, museums, monuments and public beaches — not bookable, but part of any Maldives trip."
               action={{ label: "Explore Maldives attractions", href: "/maldives/attractions/" }}
             />
-            <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {attractions.items.map((attraction) => (
                 <AttractionCard key={attraction.id} attraction={attraction} />
               ))}
@@ -293,7 +293,7 @@ export default async function Home() {
               description="Multi-day itineraries built from real accommodation, activities and transfers — honeymoon, family, diving, fishing, surfing, luxury and budget."
               action={{ label: "View all packages", href: "/maldives/packages/" }}
             />
-            <ul className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {packages.map((pkg) => (
                 <PackageCard key={pkg.id} pkg={pkg} />
               ))}
@@ -313,7 +313,7 @@ export default async function Home() {
               description="Real, researched guides to islands, atolls, diving, weather and culture."
               action={{ label: "View all guides", href: "/maldives/travel-guide/" }}
             />
-            <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {articles.map((article) => (
                 <ArticleCard key={article.id} article={article} />
               ))}

@@ -8,9 +8,9 @@ import { getActivities } from "@/lib/activities/repository";
 import { activityHref } from "@/lib/activities/types";
 import { getArticles } from "@/lib/articles/repository";
 import { getAttractions } from "@/lib/attractions/repository";
-import { articleHref } from "@/lib/articles/types";
 import { getDiveSites } from "@/lib/diving/repository";
-import { getPublishedLocalesForPage } from "@/lib/i18n/repository";
+import { localizedPath, type Locale } from "@/lib/i18n/locales";
+import { getEntityLocaleSlugsByIds, getPublishedLocalesForPage } from "@/lib/i18n/repository";
 import { getAtolls, getIslands } from "@/lib/locations/repository";
 import { getPackages } from "@/lib/packages/repository";
 import { getProviders } from "@/lib/providers/repository";
@@ -148,6 +148,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     speedboats,
     homepageLocales,
     maldivesHubLocales,
+    packagesHubLocales,
   ] = await Promise.all([
     getAtolls(),
     fetchAllPages((page) => getIslands({ page, pageSize: PAGE_SIZE })),
@@ -161,18 +162,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     fetchAllPages((page) => getArticles({ page, pageSize: PAGE_SIZE })),
     fetchAllPages((page) => getProviders({ page, pageSize: PAGE_SIZE })),
     getSpeedboats(),
-    // Task 19: only these two page_keys have any published translation
-    // today (the [locale] route tree 404s everything else), so this is
-    // the entire locale-aware surface for now -- not a placeholder for
-    // pages that don't exist yet.
+    // Task 19 follow-up: these three page_keys have published
+    // translations today (the [locale] route tree 404s everything
+    // else), so this is the entire locale-aware surface for now -- not
+    // a placeholder for pages that don't exist yet.
     getPublishedLocalesForPage("homepage"),
     getPublishedLocalesForPage("maldives-hub"),
+    getPublishedLocalesForPage("packages-hub"),
   ]);
 
   const entries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => {
     const isHomepage = path === "/";
     const isMaldivesHub = path === "/maldives/";
-    const publishedLocales = isHomepage ? homepageLocales : isMaldivesHub ? maldivesHubLocales : [];
+    const isPackagesHub = path === "/maldives/packages/";
+    const publishedLocales = isHomepage ? homepageLocales : isMaldivesHub ? maldivesHubLocales : isPackagesHub ? packagesHubLocales : [];
     return {
       url: url(path),
       changeFrequency: "weekly",
@@ -195,6 +198,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       alternates: { languages: hreflangAlternates("/maldives/", maldivesHubLocales) },
     });
   }
+  for (const locale of packagesHubLocales) {
+    entries.push({
+      url: localizedCanonicalUrl(locale, "/maldives/packages/"),
+      changeFrequency: "weekly",
+      priority: 0.8,
+      alternates: { languages: hreflangAlternates("/maldives/packages/", packagesHubLocales) },
+    });
+  }
 
   for (const a of atolls) entries.push({ url: url(`/maldives/atolls/${a.slug}/`), changeFrequency: "monthly", priority: 0.7 });
   for (const i of islands) entries.push({ url: url(`/maldives/islands/${i.slug}/`), changeFrequency: "monthly", priority: 0.6 });
@@ -211,7 +222,65 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const p of packages) entries.push({ url: url(`/maldives/packages/${p.slug}/`), changeFrequency: "weekly", priority: 0.7 });
   for (const t of transferRoutes) entries.push({ url: url(`/maldives/transfers/${t.slug}/`), changeFrequency: "monthly", priority: 0.6 });
   for (const b of speedboats) entries.push({ url: url(`/maldives-speedboats-charter/${b.slug}/`), changeFrequency: "monthly", priority: 0.5 });
-  for (const a of articles) entries.push({ url: url(articleHref(a)), changeFrequency: "monthly", priority: 0.6, lastModified: a.publishedAt ?? undefined });
+  // Translated entities (Task 19 follow-up): each published translations
+  // row gets its own sitemap entry at its real per-locale slug, with a
+  // reciprocal hreflang set back to English and every other translated
+  // locale -- mirrors the per-entity alternates already emitted by each
+  // vertical's own detail-metadata.ts and [locale] route. Never a
+  // shared-path pattern like hreflangAlternates() assumes, since each
+  // locale's slug is genuinely different per entity. Shared across every
+  // translated entity type (articles, packages, ...) so the hreflang-set
+  // construction logic lives in exactly one place.
+  function pushLocalizedEntityEntries(
+    items: Array<{ id: string; slug: string; lastModified?: string | null }>,
+    localeSlugsByEntityId: Map<string, Array<{ locale: Locale; slug: string }>>,
+    pathPrefix: string,
+    priority: number,
+  ): void {
+    for (const item of items) {
+      const translations = localeSlugsByEntityId.get(item.id) ?? [];
+      const englishPath = `${pathPrefix}${item.slug}/`;
+      const languages: Record<string, string> | undefined =
+        translations.length > 0
+          ? (() => {
+              const map: Record<string, string> = { en: url(englishPath) };
+              for (const t of translations) map[t.locale] = url(localizedPath(t.locale, `${pathPrefix}${t.slug}/`));
+              map["x-default"] = map.en;
+              return map;
+            })()
+          : undefined;
+
+      entries.push({
+        url: url(englishPath),
+        changeFrequency: "monthly",
+        priority,
+        lastModified: item.lastModified ?? undefined,
+        ...(languages ? { alternates: { languages } } : {}),
+      });
+      for (const t of translations) {
+        entries.push({
+          url: url(localizedPath(t.locale, `${pathPrefix}${t.slug}/`)),
+          changeFrequency: "monthly",
+          priority,
+          ...(languages ? { alternates: { languages } } : {}),
+        });
+      }
+    }
+  }
+
+  const articleLocaleSlugs = await getEntityLocaleSlugsByIds(articles.map((a) => a.id));
+  pushLocalizedEntityEntries(
+    articles.map((a) => ({ id: a.id, slug: a.slug, lastModified: a.publishedAt })),
+    articleLocaleSlugs,
+    "/maldives/travel-guide/",
+    0.6,
+  );
+
+  // Translated packages (demo packages excluded -- see the comment above
+  // the plain packages loop; only real packages are ever translated).
+  const packageLocaleSlugs = await getEntityLocaleSlugsByIds(packages.map((p) => p.id));
+  pushLocalizedEntityEntries(packages, packageLocaleSlugs, "/maldives/packages/", 0.7);
+
   for (const p of providers) entries.push({ url: url(`/maldives/providers/${p.slug}/`), changeFrequency: "monthly", priority: 0.4 });
 
   // Curated accommodation SEO landing pages (e.g. /maldives/resorts/luxury/)

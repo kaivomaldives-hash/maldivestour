@@ -53,7 +53,7 @@ export async function ArticleDirectoryPage({ searchParams }: { searchParams: Pro
         {results.items.length === 0 ? (
           <EmptyState title="No articles in this category yet" />
         ) : (
-          <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {results.items.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}
@@ -66,6 +66,30 @@ export async function ArticleDirectoryPage({ searchParams }: { searchParams: Pro
           basePath="/maldives/travel-guide/"
           baseQuery={activeCategory ? `category=${activeCategory}` : undefined}
         />
+
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Explore More Maldives</h2>
+          <nav aria-label="Related Maldives links" className="mt-4 flex flex-wrap gap-2">
+            {[
+              { href: "/maldives/", label: "Maldives Overview" },
+              { href: "/maldives/islands/", label: "Islands" },
+              { href: "/maldives/atolls/", label: "Atolls" },
+              { href: "/maldives/resorts/", label: "Resorts" },
+              { href: "/maldives/activities/", label: "Things to Do" },
+              { href: "/maldives/diving/", label: "Diving" },
+              { href: "/maldives/transfers/", label: "Transfers" },
+              { href: "/maldives/packages/", label: "Packages" },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </section>
       </div>
     </main>
   );

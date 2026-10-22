@@ -139,7 +139,7 @@ export async function AttractionDirectoryPage({
             {SUPER_GROUP_ORDER.filter((group) => superGroups.has(group)).map((group) => (
               <section key={group}>
                 <h2 className="text-xl font-semibold text-ocean-900">{ATTRACTION_SUPER_GROUP_LABEL[group]}</h2>
-                <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                   {superGroups.get(group)!.map((attraction) => (
                     <AttractionCard key={attraction.id} attraction={attraction} />
                   ))}
@@ -148,7 +148,7 @@ export async function AttractionDirectoryPage({
             ))}
           </div>
         ) : (
-          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {results.items.map((attraction) => (
               <AttractionCard key={attraction.id} attraction={attraction} />
             ))}
@@ -156,6 +156,30 @@ export async function AttractionDirectoryPage({
         )}
 
         <Pagination page={page} totalPages={totalPages} basePath="/maldives/attractions/" />
+
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Explore More Maldives</h2>
+          <nav aria-label="Related Maldives links" className="mt-4 flex flex-wrap gap-2">
+            {[
+              { href: "/maldives/activities/", label: "Things to Do" },
+              { href: "/maldives/diving/", label: "Diving" },
+              { href: "/maldives/sightseeing/", label: "Sightseeing" },
+              { href: "/maldives/islands/", label: "Islands" },
+              { href: "/maldives/atolls/", label: "Atolls" },
+              { href: "/maldives/resorts/", label: "Resorts" },
+              { href: "/maldives/packages/", label: "Packages" },
+              { href: "/maldives/travel-guide/", label: "Travel Guide" },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </section>
       </div>
     </main>
   );

@@ -130,6 +130,32 @@ export async function PlaceDirectoryPage({
         )}
 
         <Pagination page={page} totalPages={totalPages} basePath={copy.basePath} />
+
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Explore More Maldives</h2>
+          <nav aria-label="Related Maldives links" className="mt-4 flex flex-wrap gap-2">
+            {[
+              { href: "/maldives/restaurants/", label: "Restaurants" },
+              { href: "/maldives/shops/", label: "Shops" },
+              { href: "/maldives/hospitals/", label: "Hospitals" },
+              { href: "/maldives/schools/", label: "Schools" },
+              { href: "/maldives/gyms/", label: "Gyms" },
+              { href: "/maldives/islands/", label: "Islands" },
+              { href: "/maldives/attractions/", label: "Attractions" },
+              { href: "/maldives/guesthouses/", label: "Guesthouses" },
+            ]
+              .filter((link) => link.label.toLowerCase() !== `${PLACE_CATEGORY_LABEL[category].toLowerCase()}s`)
+              .map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
+                >
+                  {link.label}
+                </Link>
+              ))}
+          </nav>
+        </section>
       </div>
     </main>
   );

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { ActivityCard } from "@/components/activity/activity-card";
 import { PAGE_PATH } from "@/components/activity/male-city-tour-metadata";
 import { CONTAINER_CLASS } from "@/components/ui/container";
@@ -122,6 +124,30 @@ export async function MaleCityTourPage() {
               </dd>
             </div>
           </dl>
+        </section>
+
+        <section className="mt-10 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Explore More Maldives</h2>
+          <nav aria-label="Related Maldives links" className="mt-4 flex flex-wrap gap-2">
+            {[
+              { href: "/maldives/airport-transfers/", label: "Airport Transfers" },
+              { href: "/maldives/sightseeing/", label: "Sightseeing" },
+              { href: "/maldives/excursions/", label: "Excursions" },
+              { href: "/maldives/island-hopping/", label: "Island Hopping" },
+              { href: "/maldives/activities/", label: "All Activities" },
+              { href: "/maldives/islands/", label: "Islands" },
+              { href: "/maldives/packages/", label: "Packages" },
+              { href: "/maldives/travel-guide/", label: "Travel Guide" },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </section>
       </div>
     </main>

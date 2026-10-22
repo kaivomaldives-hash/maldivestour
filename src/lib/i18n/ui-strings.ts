@@ -113,6 +113,29 @@ export interface UiStrings {
     emptyStateTitle: string;
     comingSoonNote: string;
   };
+  packagesHub: {
+    heroEyebrow: string;
+    title: string;
+    description: string;
+    introP1: string;
+    introP2: string;
+    featuredTitle: string;
+    styleTitle: string;
+    categoryLuxury: string;
+    categoryFamily: string;
+    categoryAdultsOnly: string;
+    categoryLongStay: string;
+    categoryBudget: string;
+    categoryHoneymoon: string;
+    categorySolo: string;
+    categoryDiving: string;
+    categoryFishing: string;
+    categorySurfing: string;
+    categoryLiveaboard: string;
+    faqTitle: string;
+    faqs: { question: string; answer: string }[];
+    exploreMoreTitle: string;
+  };
   articleDetail: {
     minRead: string;
     relatedPlaces: string;
@@ -120,6 +143,30 @@ export interface UiStrings {
     topic: string;
     relatedArticles: string;
     backToGuide: string;
+  };
+  packageDetail: {
+    eyebrow: string;
+    nightsDays: string;
+    fromPrice: string;
+    quoteOnRequest: string;
+    perPerson: string;
+    perCouple: string;
+    perPackage: string;
+    overviewTitle: string;
+    galleryTitle: string;
+    highlightsTitle: string;
+    bestForTitle: string;
+    itineraryTitle: string;
+    accommodationTitle: string;
+    includedTitle: string;
+    excludedTitle: string;
+    activitiesTitle: string;
+    destinationTitle: string;
+    faqTitle: string;
+    relatedTitle: string;
+    exploreMoreTitle: string;
+    allPackagesLink: string;
+    englishVersionLink: string;
   };
 }
 
@@ -223,6 +270,48 @@ const EN: UiStrings = {
     emptyStateTitle: "No guides in this language yet",
     comingSoonNote: "More guides are being translated — browse the full English Travel Guide meanwhile.",
   },
+  packagesHub: {
+    heroEyebrow: "Maldives holidays",
+    title: "Maldives Holiday Packages",
+    description: "Discover Maldives holiday, honeymoon, family, diving, fishing, surfing, luxury and budget packages — search, filter, and enquire directly.",
+    introP1:
+      "Every package below is a real, multi-day itinerary built from real accommodation, activities and transfers — not a generic template. Browse by style, or see the full English listing for search and filters.",
+    introP2:
+      "Resort-island packages are all-inclusive, one-property stays; local-island packages combine independently run guesthouses with the same reefs and activities, usually at a much lower price.",
+    featuredTitle: "Featured Maldives Packages",
+    styleTitle: "Browse Packages by Style",
+    categoryLuxury: "Luxury",
+    categoryFamily: "Family",
+    categoryAdultsOnly: "Adults-Only",
+    categoryLongStay: "Long Stay",
+    categoryBudget: "Budget",
+    categoryHoneymoon: "Honeymoon",
+    categorySolo: "Solo",
+    categoryDiving: "Diving",
+    categoryFishing: "Fishing",
+    categorySurfing: "Surfing",
+    categoryLiveaboard: "Liveaboard",
+    faqTitle: "Common questions",
+    faqs: [
+      {
+        question: "How many nights should I spend in the Maldives?",
+        answer: "Most first-time visitors spend 5–7 nights. Shorter trips (3–4 nights) suit a quick resort escape; long-stay packages (10+ nights) suit travelers combining a resort and a local island, or wanting genuine downtime.",
+      },
+      {
+        question: "Are Maldives packages inclusive of airport transfers?",
+        answer: "It varies by package — check the Included section on each package's own page. Most resort-based packages include a speedboat or seaplane transfer; local-island packages usually use the public ferry.",
+      },
+      {
+        question: "Can I customize a Maldives package?",
+        answer: "Yes — every package's enquiry form lets you note your preferred dates and any changes. We confirm what's actually possible before you book, real availability permitting.",
+      },
+      {
+        question: "Are flights included in package prices?",
+        answer: "No — international flights to Velana International Airport are never included in any package price on this site; see each package's Excluded section.",
+      },
+    ],
+    exploreMoreTitle: "Explore More Maldives",
+  },
   articleDetail: {
     minRead: "min read",
     relatedPlaces: "Related places",
@@ -230,6 +319,30 @@ const EN: UiStrings = {
     topic: "Topic",
     relatedArticles: "Related Travel Guide articles",
     backToGuide: "← Back to Travel Guide",
+  },
+  packageDetail: {
+    eyebrow: "Maldives package",
+    nightsDays: "Nights / Days",
+    fromPrice: "From",
+    quoteOnRequest: "Quote on request",
+    perPerson: "per person",
+    perCouple: "per couple",
+    perPackage: "per package",
+    overviewTitle: "Overview",
+    galleryTitle: "Gallery",
+    highlightsTitle: "Highlights",
+    bestForTitle: "Who This Package Is For",
+    itineraryTitle: "Itinerary",
+    accommodationTitle: "Accommodation",
+    includedTitle: "What's Included",
+    excludedTitle: "What's Not Included",
+    activitiesTitle: "Activities",
+    destinationTitle: "Destination",
+    faqTitle: "Common questions",
+    relatedTitle: "You May Also Like",
+    exploreMoreTitle: "Explore More Maldives",
+    allPackagesLink: "All Maldives Packages",
+    englishVersionLink: "View this package in English",
   },
 };
 
@@ -334,6 +447,48 @@ const DE: UiStrings = {
     emptyStateTitle: "Noch keine Guides in dieser Sprache",
     comingSoonNote: "Weitere Guides werden derzeit übersetzt — stöbern Sie in der Zwischenzeit im vollständigen englischen Reiseführer.",
   },
+  packagesHub: {
+    heroEyebrow: "Malediven-Urlaub",
+    title: "Malediven Urlaubspakete",
+    description: "Entdecken Sie Malediven-Urlaubs-, Flitterwochen-, Familien-, Tauch-, Angel-, Surf-, Luxus- und Budgetpakete – suchen, filtern und direkt anfragen.",
+    introP1:
+      "Jedes Paket unten ist eine echte, mehrtägige Reiseroute, zusammengestellt aus realer Unterkunft, Aktivitäten und Transfers – keine generische Vorlage. Durchstöbern Sie nach Stil, oder sehen Sie die vollständige englische Liste mit Suche und Filtern.",
+    introP2:
+      "Resortinsel-Pakete sind All-Inclusive-Aufenthalte auf einer einzigen Insel; Pakete auf lokalen Inseln kombinieren unabhängig geführte Gästehäuser mit denselben Riffen und Aktivitäten, meist zu einem deutlich niedrigeren Preis.",
+    featuredTitle: "Ausgewählte Malediven-Pakete",
+    styleTitle: "Pakete nach Stil durchsuchen",
+    categoryLuxury: "Luxus",
+    categoryFamily: "Familie",
+    categoryAdultsOnly: "Nur für Erwachsene",
+    categoryLongStay: "Langzeitaufenthalt",
+    categoryBudget: "Budget",
+    categoryHoneymoon: "Flitterwochen",
+    categorySolo: "Alleinreisende",
+    categoryDiving: "Tauchen",
+    categoryFishing: "Angeln",
+    categorySurfing: "Surfen",
+    categoryLiveaboard: "Liveaboard",
+    faqTitle: "Häufige Fragen",
+    faqs: [
+      {
+        question: "Wie viele Nächte sollte ich auf den Malediven verbringen?",
+        answer: "Die meisten Erstbesucher verbringen 5-7 Nächte. Kürzere Reisen (3-4 Nächte) eignen sich für einen schnellen Resort-Ausflug; Langzeitpakete (10+ Nächte) eignen sich für Reisende, die ein Resort mit einer lokalen Insel kombinieren oder echte Ruhezeit suchen.",
+      },
+      {
+        question: "Sind bei Malediven-Paketen Flughafentransfers enthalten?",
+        answer: "Das variiert je nach Paket – prüfen Sie den Abschnitt \"Enthalten\" auf der jeweiligen Paketseite. Die meisten Resort-Pakete beinhalten einen Speedboot- oder Wasserflugzeug-Transfer; Pakete auf lokalen Inseln nutzen meist die öffentliche Fähre.",
+      },
+      {
+        question: "Kann ich ein Malediven-Paket individuell anpassen?",
+        answer: "Ja – im Anfrageformular jedes Pakets können Sie Ihre bevorzugten Daten und etwaige Änderungen angeben. Wir bestätigen vor Ihrer Buchung, was tatsächlich möglich ist, abhängig von der tatsächlichen Verfügbarkeit.",
+      },
+      {
+        question: "Sind Flüge in den Paketpreisen enthalten?",
+        answer: "Nein – internationale Flüge zum Flughafen Velana International sind in keinem Paketpreis auf dieser Website enthalten; siehe den Abschnitt \"Nicht enthalten\" jedes Pakets.",
+      },
+    ],
+    exploreMoreTitle: "Mehr von den Malediven entdecken",
+  },
   articleDetail: {
     minRead: "Min. Lesezeit",
     relatedPlaces: "Passende Orte",
@@ -341,6 +496,30 @@ const DE: UiStrings = {
     topic: "Thema",
     relatedArticles: "Weitere Reiseführer-Artikel",
     backToGuide: "← Zurück zum Reiseführer",
+  },
+  packageDetail: {
+    eyebrow: "Malediven-Paket",
+    nightsDays: "Nächte / Tage",
+    fromPrice: "Ab",
+    quoteOnRequest: "Preis auf Anfrage",
+    perPerson: "pro Person",
+    perCouple: "pro Paar",
+    perPackage: "pro Paket",
+    overviewTitle: "Übersicht",
+    galleryTitle: "Galerie",
+    highlightsTitle: "Highlights",
+    bestForTitle: "Für wen dieses Paket geeignet ist",
+    itineraryTitle: "Reiseroute",
+    accommodationTitle: "Unterkunft",
+    includedTitle: "Was ist enthalten",
+    excludedTitle: "Was ist nicht enthalten",
+    activitiesTitle: "Aktivitäten",
+    destinationTitle: "Reiseziel",
+    faqTitle: "Häufige Fragen",
+    relatedTitle: "Das könnte Ihnen auch gefallen",
+    exploreMoreTitle: "Mehr von den Malediven entdecken",
+    allPackagesLink: "Alle Malediven-Pakete",
+    englishVersionLink: "Dieses Paket auf Englisch ansehen",
   },
 };
 
@@ -444,6 +623,48 @@ const ES: UiStrings = {
     emptyStateTitle: "Aún no hay guías en este idioma",
     comingSoonNote: "Se están traduciendo más guías — mientras tanto, explora la Guía de Viaje completa en inglés.",
   },
+  packagesHub: {
+    heroEyebrow: "Vacaciones en Maldivas",
+    title: "Paquetes Vacacionales de Maldivas",
+    description: "Descubre paquetes de vacaciones, luna de miel, familia, buceo, pesca, surf, lujo y presupuesto en Maldivas — busca, filtra y consulta directamente.",
+    introP1:
+      "Cada paquete a continuación es un itinerario real de varios días, construido con alojamiento, actividades y traslados reales, no una plantilla genérica. Explora por estilo, o consulta el listado completo en inglés para buscar y filtrar.",
+    introP2:
+      "Los paquetes de isla-resort son estancias todo incluido en una sola propiedad; los paquetes de isla local combinan pensiones gestionadas de forma independiente con los mismos arrecifes y actividades, normalmente a un precio mucho más bajo.",
+    featuredTitle: "Paquetes Destacados de Maldivas",
+    styleTitle: "Explorar Paquetes por Estilo",
+    categoryLuxury: "Lujo",
+    categoryFamily: "Familia",
+    categoryAdultsOnly: "Solo Adultos",
+    categoryLongStay: "Estancia Larga",
+    categoryBudget: "Económico",
+    categoryHoneymoon: "Luna de Miel",
+    categorySolo: "Viajero Solo",
+    categoryDiving: "Buceo",
+    categoryFishing: "Pesca",
+    categorySurfing: "Surf",
+    categoryLiveaboard: "Liveaboard",
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+      {
+        question: "¿Cuántas noches debería pasar en Maldivas?",
+        answer: "La mayoría de los visitantes primerizos pasan 5-7 noches. Los viajes más cortos (3-4 noches) son adecuados para una escapada rápida al resort; los paquetes de estancia larga (10+ noches) convienen a quienes combinan un resort con una isla local, o buscan un descanso genuino.",
+      },
+      {
+        question: "¿Los paquetes de Maldivas incluyen traslados al aeropuerto?",
+        answer: "Varía según el paquete — consulta la sección \"Incluye\" en la página de cada paquete. La mayoría de los paquetes en resorts incluyen un traslado en lancha rápida o hidroavión; los paquetes de isla local suelen usar el ferri público.",
+      },
+      {
+        question: "¿Puedo personalizar un paquete de Maldivas?",
+        answer: "Sí — el formulario de consulta de cada paquete te permite indicar tus fechas preferidas y cualquier cambio. Confirmamos lo que realmente es posible antes de reservar, según la disponibilidad real.",
+      },
+      {
+        question: "¿Los vuelos están incluidos en el precio del paquete?",
+        answer: "No — los vuelos internacionales al Aeropuerto Internacional de Velana nunca están incluidos en el precio de ningún paquete de este sitio; consulta la sección \"No incluye\" de cada paquete.",
+      },
+    ],
+    exploreMoreTitle: "Explorar Más de Maldivas",
+  },
   articleDetail: {
     minRead: "min. de lectura",
     relatedPlaces: "Lugares relacionados",
@@ -451,6 +672,30 @@ const ES: UiStrings = {
     topic: "Tema",
     relatedArticles: "Más artículos de la Guía de Viaje",
     backToGuide: "← Volver a la Guía de Viaje",
+  },
+  packageDetail: {
+    eyebrow: "Paquete de Maldivas",
+    nightsDays: "Noches / Días",
+    fromPrice: "Desde",
+    quoteOnRequest: "Precio a consultar",
+    perPerson: "por persona",
+    perCouple: "por pareja",
+    perPackage: "por paquete",
+    overviewTitle: "Resumen",
+    galleryTitle: "Galería",
+    highlightsTitle: "Puntos destacados",
+    bestForTitle: "Para quién es este paquete",
+    itineraryTitle: "Itinerario",
+    accommodationTitle: "Alojamiento",
+    includedTitle: "Qué incluye",
+    excludedTitle: "Qué no incluye",
+    activitiesTitle: "Actividades",
+    destinationTitle: "Destino",
+    faqTitle: "Preguntas frecuentes",
+    relatedTitle: "También te puede gustar",
+    exploreMoreTitle: "Explorar Más de Maldivas",
+    allPackagesLink: "Todos los Paquetes de Maldivas",
+    englishVersionLink: "Ver este paquete en inglés",
   },
 };
 
@@ -554,6 +799,48 @@ const IT: UiStrings = {
     emptyStateTitle: "Nessuna guida ancora in questa lingua",
     comingSoonNote: "Altre guide sono in fase di traduzione — nel frattempo sfoglia la Guida di Viaggio completa in inglese.",
   },
+  packagesHub: {
+    heroEyebrow: "Vacanze alle Maldive",
+    title: "Pacchetti Vacanza alle Maldive",
+    description: "Scopri pacchetti vacanza, luna di miele, famiglia, immersioni, pesca, surf, lusso ed economici alle Maldive — cerca, filtra e richiedi informazioni direttamente.",
+    introP1:
+      "Ogni pacchetto qui sotto è un itinerario reale di più giorni, costruito con alloggi, attività e trasferimenti reali — non un modello generico. Esplora per stile, oppure consulta l'elenco completo in inglese per la ricerca e i filtri.",
+    introP2:
+      "I pacchetti su isola-resort sono soggiorni all-inclusive in un'unica proprietà; i pacchetti su isola locale combinano guesthouse gestite in modo indipendente con le stesse barriere coralline e attività, solitamente a un prezzo molto più basso.",
+    featuredTitle: "Pacchetti in Evidenza alle Maldive",
+    styleTitle: "Esplora i Pacchetti per Stile",
+    categoryLuxury: "Lusso",
+    categoryFamily: "Famiglia",
+    categoryAdultsOnly: "Solo Adulti",
+    categoryLongStay: "Soggiorno Lungo",
+    categoryBudget: "Economico",
+    categoryHoneymoon: "Luna di Miele",
+    categorySolo: "Viaggiatore Singolo",
+    categoryDiving: "Immersioni",
+    categoryFishing: "Pesca",
+    categorySurfing: "Surf",
+    categoryLiveaboard: "Liveaboard",
+    faqTitle: "Domande frequenti",
+    faqs: [
+      {
+        question: "Quante notti dovrei trascorrere alle Maldive?",
+        answer: "La maggior parte dei visitatori alle prime armi trascorre 5-7 notti. I viaggi più brevi (3-4 notti) sono adatti per una rapida fuga in resort; i pacchetti di lunga durata (10+ notti) sono adatti a chi combina un resort con un'isola locale, o desidera un vero riposo.",
+      },
+      {
+        question: "I pacchetti delle Maldive includono i trasferimenti aeroportuali?",
+        answer: "Varia in base al pacchetto — controlla la sezione \"Incluso\" nella pagina di ciascun pacchetto. La maggior parte dei pacchetti basati su resort include un trasferimento in motoscafo o hydroplane; i pacchetti su isola locale di solito usano il traghetto pubblico.",
+      },
+      {
+        question: "Posso personalizzare un pacchetto alle Maldive?",
+        answer: "Sì — il modulo di richiesta di ogni pacchetto ti permette di indicare le date preferite e eventuali modifiche. Confermiamo cosa è effettivamente possibile prima della prenotazione, in base alla disponibilità reale.",
+      },
+      {
+        question: "I voli sono inclusi nel prezzo del pacchetto?",
+        answer: "No — i voli internazionali per l'Aeroporto Internazionale di Velana non sono mai inclusi nel prezzo di nessun pacchetto su questo sito; consulta la sezione \"Escluso\" di ogni pacchetto.",
+      },
+    ],
+    exploreMoreTitle: "Esplora Altro delle Maldive",
+  },
   articleDetail: {
     minRead: "min di lettura",
     relatedPlaces: "Luoghi correlati",
@@ -561,6 +848,30 @@ const IT: UiStrings = {
     topic: "Argomento",
     relatedArticles: "Altri articoli della Guida di Viaggio",
     backToGuide: "← Torna alla Guida di Viaggio",
+  },
+  packageDetail: {
+    eyebrow: "Pacchetto Maldive",
+    nightsDays: "Notti / Giorni",
+    fromPrice: "Da",
+    quoteOnRequest: "Preventivo su richiesta",
+    perPerson: "a persona",
+    perCouple: "a coppia",
+    perPackage: "a pacchetto",
+    overviewTitle: "Panoramica",
+    galleryTitle: "Galleria",
+    highlightsTitle: "Punti salienti",
+    bestForTitle: "Per chi è adatto questo pacchetto",
+    itineraryTitle: "Itinerario",
+    accommodationTitle: "Alloggio",
+    includedTitle: "Cosa è incluso",
+    excludedTitle: "Cosa non è incluso",
+    activitiesTitle: "Attività",
+    destinationTitle: "Destinazione",
+    faqTitle: "Domande frequenti",
+    relatedTitle: "Potrebbe interessarti anche",
+    exploreMoreTitle: "Esplora Altro delle Maldive",
+    allPackagesLink: "Tutti i Pacchetti delle Maldive",
+    englishVersionLink: "Visualizza questo pacchetto in inglese",
   },
 };
 
@@ -664,6 +975,48 @@ const RU: UiStrings = {
     emptyStateTitle: "Пока нет статей на этом языке",
     comingSoonNote: "Другие статьи переводятся — а пока ознакомьтесь с полным путеводителем на английском языке.",
   },
+  packagesHub: {
+    heroEyebrow: "Отдых на Мальдивах",
+    title: "Туристические пакеты на Мальдивы",
+    description: "Откройте для себя туристические, свадебные, семейные, дайвинг-, рыболовные, серф-, люксовые и бюджетные пакеты на Мальдивы — ищите, фильтруйте и отправляйте запрос напрямую.",
+    introP1:
+      "Каждый пакет ниже — это реальный многодневный маршрут, составленный из реального проживания, активностей и трансферов, а не общий шаблон. Просматривайте по стилю или смотрите полный список на английском языке с поиском и фильтрами.",
+    introP2:
+      "Пакеты на курортных островах — это проживание всё включено на одном острове; пакеты на местных островах сочетают независимо управляемые гестхаусы с теми же рифами и активностями, обычно по гораздо более низкой цене.",
+    featuredTitle: "Популярные пакеты на Мальдивы",
+    styleTitle: "Выбрать пакет по стилю",
+    categoryLuxury: "Люкс",
+    categoryFamily: "Семейный",
+    categoryAdultsOnly: "Только для взрослых",
+    categoryLongStay: "Долгосрочное проживание",
+    categoryBudget: "Бюджетный",
+    categoryHoneymoon: "Медовый месяц",
+    categorySolo: "Для одиночных путешественников",
+    categoryDiving: "Дайвинг",
+    categoryFishing: "Рыбалка",
+    categorySurfing: "Серфинг",
+    categoryLiveaboard: "Лайвабоард",
+    faqTitle: "Часто задаваемые вопросы",
+    faqs: [
+      {
+        question: "Сколько ночей нужно провести на Мальдивах?",
+        answer: "Большинство новичков проводят 5-7 ночей. Короткие поездки (3-4 ночи) подходят для быстрого отдыха на курорте; пакеты на долгий срок (10+ ночей) подходят путешественникам, сочетающим курорт с местным островом, или желающим настоящего отдыха.",
+      },
+      {
+        question: "Включены ли трансферы из аэропорта в пакеты на Мальдивы?",
+        answer: "Это зависит от пакета — проверьте раздел «Включено» на странице каждого пакета. Большинство курортных пакетов включают трансфер на speedboat или гидросамолёте; пакеты на местных островах обычно используют общественный паром.",
+      },
+      {
+        question: "Можно ли настроить пакет на Мальдивы по своему желанию?",
+        answer: "Да — форма запроса каждого пакета позволяет указать предпочитаемые даты и любые изменения. Мы подтверждаем, что действительно возможно, перед бронированием, с учётом реальной доступности.",
+      },
+      {
+        question: "Включены ли авиабилеты в стоимость пакета?",
+        answer: "Нет — международные авиаперелёты до международного аэропорта Velana никогда не включены в стоимость пакетов на этом сайте; смотрите раздел «Не включено» каждого пакета.",
+      },
+    ],
+    exploreMoreTitle: "Исследовать больше Мальдив",
+  },
   articleDetail: {
     minRead: "мин. чтения",
     relatedPlaces: "Похожие места",
@@ -671,6 +1024,30 @@ const RU: UiStrings = {
     topic: "Тема",
     relatedArticles: "Другие статьи путеводителя",
     backToGuide: "← Назад к путеводителю",
+  },
+  packageDetail: {
+    eyebrow: "Пакет на Мальдивы",
+    nightsDays: "Ночей / Дней",
+    fromPrice: "От",
+    quoteOnRequest: "Цена по запросу",
+    perPerson: "на человека",
+    perCouple: "на пару",
+    perPackage: "за пакет",
+    overviewTitle: "Обзор",
+    galleryTitle: "Галерея",
+    highlightsTitle: "Особенности",
+    bestForTitle: "Для кого подходит этот пакет",
+    itineraryTitle: "Маршрут",
+    accommodationTitle: "Проживание",
+    includedTitle: "Что включено",
+    excludedTitle: "Что не включено",
+    activitiesTitle: "Активности",
+    destinationTitle: "Направление",
+    faqTitle: "Часто задаваемые вопросы",
+    relatedTitle: "Вам также может понравиться",
+    exploreMoreTitle: "Исследовать больше Мальдив",
+    allPackagesLink: "Все пакеты на Мальдивы",
+    englishVersionLink: "Посмотреть этот пакет на английском",
   },
 };
 
@@ -774,6 +1151,48 @@ const JA: UiStrings = {
     emptyStateTitle: "この言語の記事はまだありません",
     comingSoonNote: "さらに多くの記事を翻訳中です――その間、英語版の完全なガイドをご覧ください。",
   },
+  packagesHub: {
+    heroEyebrow: "モルディブ旅行",
+    title: "モルディブ ホリデーパッケージ",
+    description: "モルディブの旅行、ハネムーン、ファミリー、ダイビング、フィッシング、サーフィン、ラグジュアリー、格安パッケージを発見――検索、フィルター、直接お問い合わせができます。",
+    introP1:
+      "以下の各パッケージは、実際の宿泊施設、アクティビティ、送迎から構成された本物の複数日程の旅程です――汎用的なテンプレートではありません。スタイル別に探すか、検索とフィルター機能付きの完全な英語版リストをご覧ください。",
+    introP2:
+      "リゾートアイランドのパッケージは一つの施設でのオールインクルーシブの滞在です。ローカルアイランドのパッケージは独立運営のゲストハウスと同じ礁やアクティビティを組み合わせ、通常はずっと低価格です。",
+    featuredTitle: "モルディブのおすすめパッケージ",
+    styleTitle: "スタイル別にパッケージを探す",
+    categoryLuxury: "ラグジュアリー",
+    categoryFamily: "ファミリー",
+    categoryAdultsOnly: "アダルトオンリー",
+    categoryLongStay: "長期滞在",
+    categoryBudget: "格安",
+    categoryHoneymoon: "ハネムーン",
+    categorySolo: "ソロ旅行",
+    categoryDiving: "ダイビング",
+    categoryFishing: "フィッシング",
+    categorySurfing: "サーフィン",
+    categoryLiveaboard: "ライブアボード",
+    faqTitle: "よくある質問",
+    faqs: [
+      {
+        question: "モルディブには何泊すればよいですか?",
+        answer: "初めての訪問者の多くは5〜7泊します。短い旅行(3〜4泊)はリゾートでの短い休暇に適しており、長期パッケージ(10泊以上)はリゾートとローカルアイランドを組み合わせたい方や本当の休息を求める方に適しています。",
+      },
+      {
+        question: "モルディブのパッケージには空港送迎が含まれていますか?",
+        answer: "パッケージによって異なります――各パッケージページの「含まれるもの」セクションをご確認ください。リゾートベースのパッケージの大半はスピードボートまたは水上飛行機の送迎を含みます。ローカルアイランドのパッケージは通常公共フェリーを利用します。",
+      },
+      {
+        question: "モルディブのパッケージはカスタマイズできますか?",
+        answer: "はい――各パッケージのお問い合わせフォームで希望の日程や変更点を記入できます。実際の空き状況に応じて、ご予約前に可能な内容を確認いたします。",
+      },
+      {
+        question: "航空券はパッケージ料金に含まれていますか?",
+        answer: "いいえ――ヴェラナ国際空港への国際線フライトは、当サイトのどのパッケージ料金にも含まれていません。各パッケージの「含まれないもの」セクションをご確認ください。",
+      },
+    ],
+    exploreMoreTitle: "モルディブをもっと探る",
+  },
   articleDetail: {
     minRead: "分で読めます",
     relatedPlaces: "関連スポット",
@@ -781,6 +1200,30 @@ const JA: UiStrings = {
     topic: "トピック",
     relatedArticles: "ガイドの他の記事",
     backToGuide: "← ガイドに戻る",
+  },
+  packageDetail: {
+    eyebrow: "モルディブパッケージ",
+    nightsDays: "泊 / 日",
+    fromPrice: "料金",
+    quoteOnRequest: "お見積りはお問い合わせください",
+    perPerson: "1人あたり",
+    perCouple: "1組あたり",
+    perPackage: "1パッケージあたり",
+    overviewTitle: "概要",
+    galleryTitle: "ギャラリー",
+    highlightsTitle: "ハイライト",
+    bestForTitle: "このパッケージがおすすめな方",
+    itineraryTitle: "旅程",
+    accommodationTitle: "宿泊施設",
+    includedTitle: "含まれるもの",
+    excludedTitle: "含まれないもの",
+    activitiesTitle: "アクティビティ",
+    destinationTitle: "目的地",
+    faqTitle: "よくある質問",
+    relatedTitle: "こちらもおすすめ",
+    exploreMoreTitle: "モルディブをもっと探る",
+    allPackagesLink: "モルディブの全パッケージ",
+    englishVersionLink: "英語版でこのパッケージを見る",
   },
 };
 
@@ -884,6 +1327,48 @@ const ZH: UiStrings = {
     emptyStateTitle: "该语言暂无指南文章",
     comingSoonNote: "更多文章正在翻译中——在此期间，欢迎浏览完整的英文旅行指南。",
   },
+  packagesHub: {
+    heroEyebrow: "马尔代夫假期",
+    title: "马尔代夫度假套餐",
+    description: "探索马尔代夫度假、蜜月、家庭、潜水、钓鱼、冲浪、豪华和经济型套餐——搜索、筛选并直接咨询。",
+    introP1:
+      "下面的每个套餐都是由真实住宿、活动和接送服务组成的真实多日行程——不是通用模板。按风格浏览,或查看带有搜索和筛选功能的完整英文列表。",
+    introP2:
+      "度假村岛屿套餐是在单一物业内的全包式住宿;本地岛屿套餐则将独立经营的民宿与相同的珊瑚礁和活动结合,通常价格更为实惠。",
+    featuredTitle: "马尔代夫精选套餐",
+    styleTitle: "按风格浏览套餐",
+    categoryLuxury: "豪华",
+    categoryFamily: "家庭",
+    categoryAdultsOnly: "仅限成人",
+    categoryLongStay: "长住",
+    categoryBudget: "经济型",
+    categoryHoneymoon: "蜜月",
+    categorySolo: "单人旅行",
+    categoryDiving: "潜水",
+    categoryFishing: "钓鱼",
+    categorySurfing: "冲浪",
+    categoryLiveaboard: "潜水船宿",
+    faqTitle: "常见问题",
+    faqs: [
+      {
+        question: "我应该在马尔代夫待几个晚上?",
+        answer: "大多数首次到访者会停留5-7晚。较短的行程(3-4晚)适合快速的度假村之旅;长住套餐(10晚以上)适合将度假村与本地岛屿结合,或希望真正放松的旅行者。",
+      },
+      {
+        question: "马尔代夫套餐是否包含机场接送?",
+        answer: "这取决于具体套餐——请查看每个套餐页面上的「包含项目」部分。大多数基于度假村的套餐包含快艇或水上飞机接送;本地岛屿套餐通常使用公共渡轮。",
+      },
+      {
+        question: "我可以定制马尔代夫套餐吗?",
+        answer: "可以——每个套餐的咨询表单都允许您注明您偏好的日期和任何更改。我们会在您预订前确认实际可行的内容,取决于真实的可用性。",
+      },
+      {
+        question: "套餐价格是否包含机票?",
+        answer: "不包含——本网站任何套餐价格均不包含前往维拉纳国际机场的国际航班;请查看每个套餐的「不包含项目」部分。",
+      },
+    ],
+    exploreMoreTitle: "探索更多马尔代夫",
+  },
   articleDetail: {
     minRead: "分钟阅读",
     relatedPlaces: "相关地点",
@@ -891,6 +1376,30 @@ const ZH: UiStrings = {
     topic: "主题",
     relatedArticles: "更多旅行指南文章",
     backToGuide: "← 返回旅行指南",
+  },
+  packageDetail: {
+    eyebrow: "马尔代夫套餐",
+    nightsDays: "晚 / 天",
+    fromPrice: "起价",
+    quoteOnRequest: "询价",
+    perPerson: "每人",
+    perCouple: "每对",
+    perPackage: "每套餐",
+    overviewTitle: "概览",
+    galleryTitle: "图库",
+    highlightsTitle: "亮点",
+    bestForTitle: "适合人群",
+    itineraryTitle: "行程",
+    accommodationTitle: "住宿",
+    includedTitle: "包含项目",
+    excludedTitle: "不包含项目",
+    activitiesTitle: "活动",
+    destinationTitle: "目的地",
+    faqTitle: "常见问题",
+    relatedTitle: "您可能还喜欢",
+    exploreMoreTitle: "探索更多马尔代夫",
+    allPackagesLink: "所有马尔代夫套餐",
+    englishVersionLink: "查看英文版套餐",
   },
 };
 

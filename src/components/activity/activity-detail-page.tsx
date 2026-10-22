@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ActivityItinerarySection } from "@/components/activity/activity-itinerary-section";
@@ -197,6 +198,30 @@ export async function ActivityDetailPage({ slug }: { slug: string }) {
           </ul>
         </section>
       )}
+
+      <section className="mt-10">
+        <h2 className="text-xl font-semibold text-ocean-900">Browse Packages by Style</h2>
+        <nav aria-label="Package categories" className="mt-4 flex flex-wrap gap-2">
+          {[
+            { href: "/maldives/packages/luxury/", label: "Luxury" },
+            { href: "/maldives/packages/honeymoon/", label: "Honeymoon" },
+            { href: "/maldives/packages/family/", label: "Family" },
+            { href: "/maldives/packages/diving/", label: "Diving" },
+            { href: "/maldives/packages/liveaboard/", label: "Liveaboard" },
+            { href: "/maldives/packages/fishing/", label: "Fishing" },
+            { href: "/maldives/packages/surfing/", label: "Surfing" },
+            { href: "/maldives/packages/", label: "All Packages" },
+          ].map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+      </section>
 
       <WhereToStaySection nearby={nearbyStays} islandTitle={primaryLocation?.title ?? null} atollTitle={atoll?.title ?? null} />
       </div>

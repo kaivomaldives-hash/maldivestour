@@ -1,5 +1,7 @@
 import "server-only";
 
+import { getEntityTranslationBySlug } from "@/lib/i18n/repository";
+import type { Locale } from "@/lib/i18n/locales";
 import { getLocationSummaryById } from "@/lib/locations/repository";
 import type { LocationSummary } from "@/lib/locations/types";
 import {
@@ -9,6 +11,7 @@ import {
   getPackagesByActivity,
   getPackagesByTransferRoute,
 } from "@/lib/packages/repository";
+import { createClient } from "@/lib/supabase/public";
 import type { PackageSummary } from "@/lib/packages/types";
 import { getDemoPackageViewBySlug, getDemoPackageViews, getDemoPackagesReferencingNode } from "@/lib/packages/demo";
 import { realPackageToView, withAtoll } from "@/lib/packages/view";
@@ -71,6 +74,40 @@ export async function getPackageViewBySlug(slug: string): Promise<PackageView | 
     return withAtoll(view, atoll);
   }
   return getDemoPackageViewBySlug(slug);
+}
+
+/** Localized equivalent of getPackageViewBySlug, for the [locale] package
+ * detail route. `slug` here is the *translated* slug (translations.slug),
+ * resolved via getEntityTranslationBySlug -- never the canonical English
+ * slug. Only real packages are ever translated (demo packages are
+ * noindex, never worth translating -- Task 21 §10/§38), so this 404s for
+ * anything that doesn't resolve to a real package's canonical English
+ * row. Every field besides title/shortDescription/description/slug
+ * comes from the real, un-translated canonical view -- same convention
+ * as getTranslatedArticleBySlug (images, pricing, itinerary, highlights,
+ * included/excluded, FAQs, linked activities/accommodations stay as
+ * their real English data, since the translations table has no
+ * equivalent fields for those yet). */
+export async function getTranslatedPackageViewBySlug(locale: Locale, slug: string): Promise<PackageView | null> {
+  if (locale === "en") return getPackageViewBySlug(slug);
+
+  const translation = await getEntityTranslationBySlug(locale, slug);
+  if (!translation || translation.entityType !== "package") return null;
+
+  const supabase = await createClient();
+  const { data } = await supabase.from("nodes").select("slug").eq("id", translation.entityId).maybeSingle<{ slug: string }>();
+  if (!data) return null;
+
+  const canonical = await getPackageViewBySlug(data.slug);
+  if (!canonical || canonical.isDemo) return null;
+
+  return {
+    ...canonical,
+    slug: translation.slug,
+    title: translation.title,
+    shortDescription: translation.shortDescription,
+    description: translation.description,
+  };
 }
 
 export interface PackageViewFilters {

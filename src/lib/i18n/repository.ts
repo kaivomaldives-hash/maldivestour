@@ -239,6 +239,32 @@ async function getEntitySlugsByLocaleUncached(entityId: string): Promise<Array<{
 
 export const getEntitySlugsByLocale = cachedRead(getEntitySlugsByLocaleUncached, ["i18n:entity-slugs-by-locale"], 900);
 
+/** Batched form of getEntitySlugsByLocale for a whole listing (e.g. the
+ * sitemap's full article catalog) -- one query instead of N, same
+ * published-only guarantee. Keyed by entityId; an entity with no
+ * translations is simply absent, never an empty-array placeholder. */
+async function getEntityLocaleSlugsByIdsUncached(entityIds: string[]): Promise<Map<string, Array<{ locale: Locale; slug: string }>>> {
+  const result = new Map<string, Array<{ locale: Locale; slug: string }>>();
+  if (entityIds.length === 0) return result;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("translations")
+    .select("entity_id, locale, slug")
+    .in("entity_id", entityIds)
+    .returns<Array<{ entity_id: string; locale: Locale; slug: string }>>();
+
+  if (error || !data) return result;
+  for (const row of data) {
+    const list = result.get(row.entity_id) ?? [];
+    list.push({ locale: row.locale, slug: row.slug });
+    result.set(row.entity_id, list);
+  }
+  return result;
+}
+
+export const getEntityLocaleSlugsByIds = cachedRead(getEntityLocaleSlugsByIdsUncached, ["i18n:entity-locale-slugs-by-ids"], 900);
+
 /** Router-relative path to this article in every locale it's published
  * under, keyed by locale (always includes "en"). Used by the language
  * switcher to jump straight to the equivalent translated article instead
@@ -246,10 +272,23 @@ export const getEntitySlugsByLocale = cachedRead(getEntitySlugsByLocaleUncached,
  * per-locale slug (unlike the fixed page_key pages), so the switcher
  * can't derive this from the current pathname alone. */
 export async function getArticleLocalePaths(entityId: string, englishSlug: string): Promise<Partial<Record<Locale, string>>> {
+  return getEntityLocalePaths(entityId, englishSlug, "/maldives/travel-guide/");
+}
+
+/** Generic form of getArticleLocalePaths -- same per-locale-slug lookup,
+ * parameterized by the entity's own English path prefix (e.g.
+ * "/maldives/packages/"), so every translated entity type (articles,
+ * packages, ...) can build its hreflang/switcher paths from this one
+ * function rather than duplicating the locale-prefixing logic. */
+export async function getEntityLocalePaths(
+  entityId: string,
+  englishSlug: string,
+  pathPrefix: string,
+): Promise<Partial<Record<Locale, string>>> {
   const translatedSlugs = await getEntitySlugsByLocale(entityId);
-  const paths: Partial<Record<Locale, string>> = { en: `/maldives/travel-guide/${englishSlug}/` };
+  const paths: Partial<Record<Locale, string>> = { en: `${pathPrefix}${englishSlug}/` };
   for (const { locale, slug } of translatedSlugs) {
-    paths[locale] = localizedPath(locale, `/maldives/travel-guide/${slug}/`);
+    paths[locale] = localizedPath(locale, `${pathPrefix}${slug}/`);
   }
   return paths;
 }

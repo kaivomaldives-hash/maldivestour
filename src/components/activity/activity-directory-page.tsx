@@ -313,7 +313,7 @@ export async function ActivityDirectoryPage({
         {results.items.length === 0 ? (
           <EmptyState title="No activities recorded for this filter yet" />
         ) : (
-          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {results.items.map((activity) => (
               <ActivityCard key={activity.id} activity={activity} />
             ))}

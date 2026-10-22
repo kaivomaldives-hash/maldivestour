@@ -11,9 +11,11 @@ import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodationsByAtoll, getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { getActivitiesByAtoll, getActivitiesByLocation } from "@/lib/activities/repository";
 import { getAttractionBySlug } from "@/lib/attractions/repository";
-import { ATTRACTION_TYPE_LABEL } from "@/lib/attractions/types";
+import { ATTRACTION_TYPE_LABEL, attractionHref } from "@/lib/attractions/types";
 import { getArticleBySlug } from "@/lib/articles/repository";
 import { articleHref } from "@/lib/articles/types";
+import { applyContextualLinks, escapeHtml } from "@/lib/linking/contextual-links";
+import { buildEntityLinkMap } from "@/lib/linking/entity-link-map";
 import { getPublishedLocationComments } from "@/lib/locations/comments/repository";
 import { getMediaForNode } from "@/lib/media/repository";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
@@ -41,7 +43,7 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
   // tied to an open-water/atoll-wide site (Hanifaru Bay) or an unseeded
   // resort island (Ozen Maadhoo), an atoll parent instead — fall back to
   // atoll-level activities/accommodations rather than showing nothing.
-  const [activities, accommodations, sourceArticle, comments, mediaItems] = await Promise.all([
+  const [activities, accommodations, sourceArticle, comments, mediaItems, entityMap] = await Promise.all([
     attraction.island
       ? getActivitiesByLocation(attraction.island.id)
       : attraction.atoll
@@ -55,8 +57,12 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
     attraction.sourceArticleSlug ? getArticleBySlug(attraction.sourceArticleSlug) : Promise.resolve(null),
     getPublishedLocationComments(attraction.id),
     getMediaForNode(attraction.id),
+    buildEntityLinkMap(),
   ]);
   const galleryImages = mediaItems.filter((m) => m.role === "gallery").map((m) => m.asset);
+  const bodyHtml = attraction.body
+    ? applyContextualLinks(`<p>${escapeHtml(attraction.body)}</p>`, entityMap, { excludeHref: attractionHref(attraction) })
+    : null;
 
   return (
     <main>
@@ -118,10 +124,8 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
           )}
         </dl>
 
-        {attraction.body && (
-          <section className="prose-sm mt-6 max-w-none text-sm text-neutral-700">
-            <p>{attraction.body}</p>
-          </section>
+        {bodyHtml && (
+          <section className="prose-sm mt-6 max-w-none text-sm text-neutral-700" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
         )}
 
         <LocationGallerySection title={attraction.title} images={galleryImages} />

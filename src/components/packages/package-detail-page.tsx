@@ -11,6 +11,8 @@ import { LocationMap } from "@/components/locations/location-map";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { bookingCta, FISHING_PACKAGE_CTA } from "@/lib/bookings/copy";
+import { applyContextualLinks, escapeHtml } from "@/lib/linking/contextual-links";
+import { buildEntityLinkMap } from "@/lib/linking/entity-link-map";
 import { MFH_PRICE_TABLES } from "@/lib/packages/mfh-price-tables";
 import { getRelatedPackageViews, getPackageViewBySlug } from "@/lib/packages/view-repository";
 import { PACKAGE_CATEGORY_TITLE } from "@/lib/packages/view-types";
@@ -89,8 +91,11 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
   const pkg = await getPackageViewBySlug(slug);
   if (!pkg) notFound();
 
-  const related = await getRelatedPackageViews(pkg, 6);
+  const [related, entityMap] = await Promise.all([getRelatedPackageViews(pkg, 6), buildEntityLinkMap()]);
   const youtubeId = pkg.youtubeId ? extractYoutubeId(pkg.youtubeId) : null;
+  const descriptionHtml = pkg.description
+    ? applyContextualLinks(`<p>${escapeHtml(pkg.description)}</p>`, entityMap, { excludeHref: `/maldives/packages/${pkg.slug}/` })
+    : null;
 
   return (
     <main>
@@ -197,10 +202,10 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
         )}
 
         {/* Overview */}
-        {pkg.description && (
+        {descriptionHtml && (
           <section className="mt-10">
             <h2 className="text-xl font-semibold text-ocean-900">Overview</h2>
-            <p className="mt-2 text-sm text-neutral-700">{pkg.description}</p>
+            <div className="prose-sm mt-2 max-w-none text-sm text-neutral-700" dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
           </section>
         )}
 

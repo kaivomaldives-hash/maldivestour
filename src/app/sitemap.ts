@@ -148,6 +148,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     speedboats,
     homepageLocales,
     maldivesHubLocales,
+    packagesHubLocales,
   ] = await Promise.all([
     getAtolls(),
     fetchAllPages((page) => getIslands({ page, pageSize: PAGE_SIZE })),
@@ -161,18 +162,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     fetchAllPages((page) => getArticles({ page, pageSize: PAGE_SIZE })),
     fetchAllPages((page) => getProviders({ page, pageSize: PAGE_SIZE })),
     getSpeedboats(),
-    // Task 19: only these two page_keys have any published translation
-    // today (the [locale] route tree 404s everything else), so this is
-    // the entire locale-aware surface for now -- not a placeholder for
-    // pages that don't exist yet.
+    // Task 19 follow-up: these three page_keys have published
+    // translations today (the [locale] route tree 404s everything
+    // else), so this is the entire locale-aware surface for now -- not
+    // a placeholder for pages that don't exist yet.
     getPublishedLocalesForPage("homepage"),
     getPublishedLocalesForPage("maldives-hub"),
+    getPublishedLocalesForPage("packages-hub"),
   ]);
 
   const entries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => {
     const isHomepage = path === "/";
     const isMaldivesHub = path === "/maldives/";
-    const publishedLocales = isHomepage ? homepageLocales : isMaldivesHub ? maldivesHubLocales : [];
+    const isPackagesHub = path === "/maldives/packages/";
+    const publishedLocales = isHomepage ? homepageLocales : isMaldivesHub ? maldivesHubLocales : isPackagesHub ? packagesHubLocales : [];
     return {
       url: url(path),
       changeFrequency: "weekly",
@@ -193,6 +196,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.9,
       alternates: { languages: hreflangAlternates("/maldives/", maldivesHubLocales) },
+    });
+  }
+  for (const locale of packagesHubLocales) {
+    entries.push({
+      url: localizedCanonicalUrl(locale, "/maldives/packages/"),
+      changeFrequency: "weekly",
+      priority: 0.8,
+      alternates: { languages: hreflangAlternates("/maldives/packages/", packagesHubLocales) },
     });
   }
 

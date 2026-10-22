@@ -149,6 +149,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     homepageLocales,
     maldivesHubLocales,
     packagesHubLocales,
+    transfersHubLocales,
   ] = await Promise.all([
     getAtolls(),
     fetchAllPages((page) => getIslands({ page, pageSize: PAGE_SIZE })),
@@ -169,13 +170,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getPublishedLocalesForPage("homepage"),
     getPublishedLocalesForPage("maldives-hub"),
     getPublishedLocalesForPage("packages-hub"),
+    getPublishedLocalesForPage("transfers-hub"),
   ]);
 
   const entries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => {
     const isHomepage = path === "/";
     const isMaldivesHub = path === "/maldives/";
     const isPackagesHub = path === "/maldives/packages/";
-    const publishedLocales = isHomepage ? homepageLocales : isMaldivesHub ? maldivesHubLocales : isPackagesHub ? packagesHubLocales : [];
+    const isTransfersHub = path === "/maldives/transfers/";
+    const publishedLocales = isHomepage
+      ? homepageLocales
+      : isMaldivesHub
+        ? maldivesHubLocales
+        : isPackagesHub
+          ? packagesHubLocales
+          : isTransfersHub
+            ? transfersHubLocales
+            : [];
     return {
       url: url(path),
       changeFrequency: "weekly",
@@ -206,6 +217,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       alternates: { languages: hreflangAlternates("/maldives/packages/", packagesHubLocales) },
     });
   }
+  for (const locale of transfersHubLocales) {
+    entries.push({
+      url: localizedCanonicalUrl(locale, "/maldives/transfers/"),
+      changeFrequency: "weekly",
+      priority: 0.8,
+      alternates: { languages: hreflangAlternates("/maldives/transfers/", transfersHubLocales) },
+    });
+  }
 
   for (const a of atolls) entries.push({ url: url(`/maldives/atolls/${a.slug}/`), changeFrequency: "monthly", priority: 0.7 });
   for (const i of islands) entries.push({ url: url(`/maldives/islands/${i.slug}/`), changeFrequency: "monthly", priority: 0.6 });
@@ -214,13 +233,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const a of attractions) entries.push({ url: url(`/maldives/attractions/${a.slug}/`), changeFrequency: "monthly", priority: 0.5 });
   for (const d of diveSites) entries.push({ url: url(`/maldives/dive-sites/${d.slug}/`), changeFrequency: "monthly", priority: 0.5 });
   for (const s of surfBreaks) entries.push({ url: url(`/maldives/surf-breaks/${s.slug}/`), changeFrequency: "monthly", priority: 0.5 });
-  // getPackages() only ever returns real DB packages — Task 21's demo
-  // package inventory (src/lib/packages/demo-packages.ts) is deliberately
-  // excluded here (each demo package page is also `noindex,follow` — see
-  // packageDetailMetadata) so it's never presented to search engines as
-  // real commercial inventory.
-  for (const p of packages) entries.push({ url: url(`/maldives/packages/${p.slug}/`), changeFrequency: "weekly", priority: 0.7 });
-  for (const t of transferRoutes) entries.push({ url: url(`/maldives/transfers/${t.slug}/`), changeFrequency: "monthly", priority: 0.6 });
+  // Packages and transfer routes are NOT pushed here as plain entries --
+  // pushLocalizedEntityEntries below already pushes the English entry
+  // for every one of them (translated or not), plus reciprocal hreflang
+  // alternates for the translated ones. Pushing them again here would
+  // duplicate the English URL (Task 16 §30: never a duplicate). Demo
+  // packages stay excluded from that call (getPackages() only ever
+  // returns real DB packages — Task 21's demo package inventory is
+  // `noindex,follow` and never presented as real commercial inventory).
   for (const b of speedboats) entries.push({ url: url(`/maldives-speedboats-charter/${b.slug}/`), changeFrequency: "monthly", priority: 0.5 });
   // Translated entities (Task 19 follow-up): each published translations
   // row gets its own sitemap entry at its real per-locale slug, with a
@@ -280,6 +300,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // the plain packages loop; only real packages are ever translated).
   const packageLocaleSlugs = await getEntityLocaleSlugsByIds(packages.map((p) => p.id));
   pushLocalizedEntityEntries(packages, packageLocaleSlugs, "/maldives/packages/", 0.7);
+
+  const transferRouteLocaleSlugs = await getEntityLocaleSlugsByIds(transferRoutes.map((t) => t.id));
+  pushLocalizedEntityEntries(transferRoutes, transferRouteLocaleSlugs, "/maldives/transfers/", 0.6);
 
   for (const p of providers) entries.push({ url: url(`/maldives/providers/${p.slug}/`), changeFrequency: "monthly", priority: 0.4 });
 

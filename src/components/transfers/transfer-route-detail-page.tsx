@@ -15,6 +15,7 @@ import { CARD_CLASS } from "@/components/ui/card";
 import { FaqSection } from "@/components/ui/faq-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
+import { getEntityLocalePaths } from "@/lib/i18n/repository";
 import { getLocationBySlug, getLocationSummaryById } from "@/lib/locations/repository";
 import { getMediaForNode } from "@/lib/media/repository";
 import { getPackageViewsByTransferRoute } from "@/lib/packages/view-repository";
@@ -79,13 +80,29 @@ export async function transferRouteDetailMetadata(slug: string): Promise<Metadat
     route.summary ??
     `Transfers from ${originTitle} to ${destinationTitle}${types.length > 0 ? ` — ${types.join(", ")}` : ""}.`;
   const url = canonicalUrl(`/maldives/transfers/${route.slug}`);
+  const languages = await transferRouteHreflangAlternates(route.id, route.slug);
 
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages },
     openGraph: { title, description, url },
   };
+}
+
+/** Mirrors packageHreflangAlternates()/[locale] transfer route -- the
+ * English route is the other reciprocal half of that pair, so it needs
+ * the identical hreflang set pointing at every translated version. Only
+ * ever includes locales with a real, published translations row --
+ * getEntityLocalePaths already enforces that. */
+async function transferRouteHreflangAlternates(entityId: string, englishSlug: string): Promise<Record<string, string>> {
+  const paths = await getEntityLocalePaths(entityId, englishSlug, "/maldives/transfers/");
+  const alternates: Record<string, string> = {};
+  for (const [locale, path] of Object.entries(paths)) {
+    alternates[locale] = canonicalUrl(path);
+  }
+  alternates["x-default"] = alternates.en;
+  return alternates;
 }
 
 /** Real, visible-on-page facts only — no ratings/reviews/availability
@@ -114,7 +131,7 @@ function routeJsonLd(route: TransferRouteDetail) {
 /** Route-specific FAQ (Task 20 §36) — every answer is derived from this
  * route's own real data, never a generic template repeated unchanged
  * across routes. */
-function buildRouteFaqs(route: TransferRouteDetail): Array<{ question: string; answer: string }> {
+export function buildRouteFaqs(route: TransferRouteDetail): Array<{ question: string; answer: string }> {
   const faqs: Array<{ question: string; answer: string }> = [];
   const originTitle = route.origin?.title ?? "the airport";
   const destinationTitle = route.destination?.title ?? route.title;

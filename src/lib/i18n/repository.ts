@@ -13,7 +13,8 @@ export type PageKey =
   | "surfing-hub"
   | "packages-hub"
   | "stays-hub"
-  | "travel-guide-hub";
+  | "travel-guide-hub"
+  | "transfers-hub";
 
 export interface PageTranslation {
   pageKey: PageKey;
@@ -291,4 +292,17 @@ export async function getEntityLocalePaths(
     paths[locale] = localizedPath(locale, `${pathPrefix}${slug}/`);
   }
   return paths;
+}
+
+/** Single-href convenience wrapper around getEntityLocalePaths -- for a
+ * cross-link FROM one translated page TO another entity (e.g. a
+ * transfer route page linking to a related package), resolving straight
+ * to that target's OWN translated URL when one exists for the current
+ * locale, falling back to its plain English URL otherwise. Never
+ * fabricates a translated URL for content that isn't actually
+ * translated (Task 19 convention, carried into Task 22's transfers
+ * work). */
+export async function localizedEntityHref(locale: Locale, entityId: string, englishSlug: string, pathPrefix: string): Promise<string> {
+  const paths = await getEntityLocalePaths(entityId, englishSlug, pathPrefix);
+  return paths[locale] ?? paths.en ?? `${pathPrefix}${englishSlug}/`;
 }

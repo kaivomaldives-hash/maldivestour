@@ -168,6 +168,46 @@ export interface UiStrings {
     allPackagesLink: string;
     englishVersionLink: string;
   };
+  transfersHub: {
+    heroEyebrow: string;
+    title: string;
+    description: string;
+    introP1: string;
+    introP2: string;
+    airportSectionTitle: string;
+    resortSectionTitle: string;
+    islandSectionTitle: string;
+    faqTitle: string;
+    faqs: { question: string; answer: string }[];
+    exploreMoreTitle: string;
+  };
+  transferDetail: {
+    eyebrow: string;
+    fromLabel: string;
+    toLabel: string;
+    durationLabel: string;
+    distanceLabel: string;
+    reverseRoutePrompt: string;
+    servicesTitle: string;
+    noServicesNote: string;
+    privateTransferTitle: string;
+    privateTransferBody: string;
+    privateTransferCta: string;
+    packagesUsingRouteTitle: string;
+    faqTitle: string;
+    relatedTitle: string;
+    exploreMoreTitle: string;
+    allTransfersLink: string;
+    englishVersionLink: string;
+    typeSpeedboat: string;
+    typeSeaplane: string;
+    typeDomesticFlight: string;
+    typeFerry: string;
+    typePrivateYacht: string;
+    typeLandTransfer: string;
+    modeShared: string;
+    modePrivate: string;
+  };
 }
 
 const EN: UiStrings = {
@@ -343,6 +383,63 @@ const EN: UiStrings = {
     exploreMoreTitle: "Explore More Maldives",
     allPackagesLink: "All Maldives Packages",
     englishVersionLink: "View this package in English",
+  },
+  transfersHub: {
+    heroEyebrow: "Maldives transportation",
+    title: "Maldives Transfers",
+    description: "Real airport, resort, island and speedboat transfer routes across the Maldives — search by destination, or request a private charter.",
+    introP1: "Every route below is a real, individually verified transfer — not a generic estimate. See the full English listing for search and filters.",
+    introP2: "Resort transfers run on each resort's own schedule; local-island transfers mostly run by public ferry or private speedboat.",
+    airportSectionTitle: "Maldives Airport Transfers",
+    resortSectionTitle: "Resort Transfers",
+    islandSectionTitle: "Island Transfers",
+    faqTitle: "Common questions",
+    faqs: [
+      {
+        question: "How do Maldives airport transfers work?",
+        answer: "You land at Velana International Airport, then continue by speedboat, ferry, seaplane, or domestic flight depending on your destination.",
+      },
+      {
+        question: "Are Maldives speedboat transfers shared?",
+        answer: "Both — most resorts offer a scheduled shared transfer, and a private transfer or full charter is also usually available. Each route page shows what's actually on offer.",
+      },
+      {
+        question: "How early should I arrange my transfer?",
+        answer: "As soon as your accommodation is confirmed, especially for resorts that time transfers to specific flights.",
+      },
+      {
+        question: "What's the difference between a resort transfer and an island transfer?",
+        answer: "A resort transfer goes to a private resort island; an island transfer goes to a local, inhabited Maldivian island with hotels or guesthouses rather than a resort.",
+      },
+    ],
+    exploreMoreTitle: "Explore More Maldives",
+  },
+  transferDetail: {
+    eyebrow: "Transfer route",
+    fromLabel: "From",
+    toLabel: "To",
+    durationLabel: "Typical duration",
+    distanceLabel: "Distance",
+    reverseRoutePrompt: "Travelling the other way?",
+    servicesTitle: "Transfer services",
+    noServicesNote: "No verified transfer services recorded for this route yet.",
+    privateTransferTitle: "Private Transfer",
+    privateTransferBody: "Prefer your own boat and your own schedule? A private transfer means a private group, flexible timing, and a custom arrangement for this route.",
+    privateTransferCta: "Book This Trip as a Private Transfer",
+    packagesUsingRouteTitle: "Packages Using This Route",
+    faqTitle: "Common questions",
+    relatedTitle: "Related Transfers",
+    exploreMoreTitle: "Explore More Maldives",
+    allTransfersLink: "All Maldives Transfers",
+    englishVersionLink: "View this route in English",
+    typeSpeedboat: "Speedboat",
+    typeSeaplane: "Seaplane",
+    typeDomesticFlight: "Domestic Flight",
+    typeFerry: "Ferry",
+    typePrivateYacht: "Private Yacht",
+    typeLandTransfer: "Land Transfer",
+    modeShared: "Shared",
+    modePrivate: "Private",
   },
 };
 
@@ -521,6 +618,63 @@ const DE: UiStrings = {
     allPackagesLink: "Alle Malediven-Pakete",
     englishVersionLink: "Dieses Paket auf Englisch ansehen",
   },
+  transfersHub: {
+    heroEyebrow: "Fortbewegung auf den Malediven",
+    title: "Malediven-Transfers",
+    description: "Echte Flughafen-, Resort-, Insel- und Speedboot-Transferrouten auf den Malediven — nach Ziel suchen oder eine private Charter anfragen.",
+    introP1: "Jede Route unten ist ein echter, einzeln geprüfter Transfer — keine generische Schätzung. Die vollständige englische Liste bietet Suche und Filter.",
+    introP2: "Resort-Transfers laufen nach dem eigenen Zeitplan des jeweiligen Resorts; Transfers zu lokalen Inseln erfolgen meist per öffentlicher Fähre oder privatem Speedboot.",
+    airportSectionTitle: "Malediven-Flughafentransfers",
+    resortSectionTitle: "Resort-Transfers",
+    islandSectionTitle: "Inseltransfers",
+    faqTitle: "Häufige Fragen",
+    faqs: [
+      {
+        question: "Wie funktionieren Flughafentransfers auf den Malediven?",
+        answer: "Sie landen am Flughafen Velana International und reisen dann je nach Ziel per Speedboot, Fähre, Wasserflugzeug oder Inlandsflug weiter.",
+      },
+      {
+        question: "Sind Speedboot-Transfers auf den Malediven geteilt?",
+        answer: "Beides — die meisten Resorts bieten einen geplanten geteilten Transfer an, meist ist auch ein privater Transfer oder eine Komplett-Charter verfügbar. Jede Routenseite zeigt, was tatsächlich angeboten wird.",
+      },
+      {
+        question: "Wie früh sollte ich meinen Transfer organisieren?",
+        answer: "Sobald Ihre Unterkunft bestätigt ist, besonders bei Resorts, die Transfers auf bestimmte Flüge abstimmen.",
+      },
+      {
+        question: "Was ist der Unterschied zwischen einem Resort- und einem Inseltransfer?",
+        answer: "Ein Resort-Transfer führt zu einer privaten Resortinsel; ein Inseltransfer führt zu einer bewohnten maledivischen Insel mit Hotels oder Gästehäusern statt zu einem Resort.",
+      },
+    ],
+    exploreMoreTitle: "Mehr von den Malediven entdecken",
+  },
+  transferDetail: {
+    eyebrow: "Transferroute",
+    fromLabel: "Von",
+    toLabel: "Nach",
+    durationLabel: "Typische Dauer",
+    distanceLabel: "Entfernung",
+    reverseRoutePrompt: "Reisen Sie in die andere Richtung?",
+    servicesTitle: "Transferangebote",
+    noServicesNote: "Für diese Route sind noch keine geprüften Transferangebote erfasst.",
+    privateTransferTitle: "Privater Transfer",
+    privateTransferBody: "Bevorzugen Sie Ihr eigenes Boot und Ihren eigenen Zeitplan? Ein privater Transfer bedeutet eine private Gruppe, flexible Zeiten und eine individuelle Vereinbarung für diese Route.",
+    privateTransferCta: "Diese Fahrt als privaten Transfer buchen",
+    packagesUsingRouteTitle: "Pakete mit dieser Route",
+    faqTitle: "Häufige Fragen",
+    relatedTitle: "Ähnliche Transfers",
+    exploreMoreTitle: "Mehr von den Malediven entdecken",
+    allTransfersLink: "Alle Malediven-Transfers",
+    englishVersionLink: "Diese Route auf Englisch ansehen",
+    typeSpeedboat: "Speedboot",
+    typeSeaplane: "Wasserflugzeug",
+    typeDomesticFlight: "Inlandsflug",
+    typeFerry: "Fähre",
+    typePrivateYacht: "Private Yacht",
+    typeLandTransfer: "Landtransfer",
+    modeShared: "Geteilt",
+    modePrivate: "Privat",
+  },
 };
 
 const ES: UiStrings = {
@@ -696,6 +850,63 @@ const ES: UiStrings = {
     exploreMoreTitle: "Explorar Más de Maldivas",
     allPackagesLink: "Todos los Paquetes de Maldivas",
     englishVersionLink: "Ver este paquete en inglés",
+  },
+  transfersHub: {
+    heroEyebrow: "Transporte en Maldivas",
+    title: "Traslados en Maldivas",
+    description: "Rutas reales de traslado en aeropuerto, resort, isla y lancha rápida por todas las Maldivas — busca por destino o solicita un chárter privado.",
+    introP1: "Cada ruta de abajo es un traslado real, verificado individualmente — no una estimación genérica. Consulta el listado completo en inglés para buscar y filtrar.",
+    introP2: "Los traslados de resort siguen el propio horario de cada resort; los traslados a islas locales se hacen principalmente en ferry público o lancha rápida privada.",
+    airportSectionTitle: "Traslados del Aeropuerto de Maldivas",
+    resortSectionTitle: "Traslados a Resorts",
+    islandSectionTitle: "Traslados a Islas",
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+      {
+        question: "¿Cómo funcionan los traslados del aeropuerto en Maldivas?",
+        answer: "Aterrizas en el Aeropuerto Internacional de Velana y luego continúas en lancha rápida, ferry, hidroavión o vuelo doméstico según tu destino.",
+      },
+      {
+        question: "¿Los traslados en lancha rápida en Maldivas son compartidos?",
+        answer: "Ambos — la mayoría de los resorts ofrecen un traslado compartido programado, y normalmente también hay disponible un traslado privado o chárter completo. Cada página de ruta muestra lo que realmente se ofrece.",
+      },
+      {
+        question: "¿Con cuánta antelación debo organizar mi traslado?",
+        answer: "En cuanto se confirme tu alojamiento, especialmente en resorts que ajustan los traslados a vuelos específicos.",
+      },
+      {
+        question: "¿Cuál es la diferencia entre un traslado de resort y un traslado de isla?",
+        answer: "Un traslado de resort va a una isla privada de resort; un traslado de isla va a una isla maldiva habitada con hoteles o pensiones en lugar de un resort.",
+      },
+    ],
+    exploreMoreTitle: "Explorar Más de Maldivas",
+  },
+  transferDetail: {
+    eyebrow: "Ruta de traslado",
+    fromLabel: "Desde",
+    toLabel: "Hasta",
+    durationLabel: "Duración típica",
+    distanceLabel: "Distancia",
+    reverseRoutePrompt: "¿Viajas en sentido contrario?",
+    servicesTitle: "Servicios de traslado",
+    noServicesNote: "Aún no hay servicios de traslado verificados registrados para esta ruta.",
+    privateTransferTitle: "Traslado Privado",
+    privateTransferBody: "¿Prefieres tu propio barco y tu propio horario? Un traslado privado significa un grupo privado, horario flexible y un arreglo personalizado para esta ruta.",
+    privateTransferCta: "Reservar Este Viaje como Traslado Privado",
+    packagesUsingRouteTitle: "Paquetes que Usan Esta Ruta",
+    faqTitle: "Preguntas frecuentes",
+    relatedTitle: "Traslados Relacionados",
+    exploreMoreTitle: "Explorar Más de Maldivas",
+    allTransfersLink: "Todos los Traslados de Maldivas",
+    englishVersionLink: "Ver esta ruta en inglés",
+    typeSpeedboat: "Lancha rápida",
+    typeSeaplane: "Hidroavión",
+    typeDomesticFlight: "Vuelo doméstico",
+    typeFerry: "Ferry",
+    typePrivateYacht: "Yate privado",
+    typeLandTransfer: "Traslado terrestre",
+    modeShared: "Compartido",
+    modePrivate: "Privado",
   },
 };
 
@@ -873,6 +1084,63 @@ const IT: UiStrings = {
     allPackagesLink: "Tutti i Pacchetti delle Maldive",
     englishVersionLink: "Visualizza questo pacchetto in inglese",
   },
+  transfersHub: {
+    heroEyebrow: "Trasporti alle Maldive",
+    title: "Trasferimenti alle Maldive",
+    description: "Percorsi di trasferimento reali per aeroporto, resort, isola e motoscafo in tutte le Maldive — cerca per destinazione o richiedi un charter privato.",
+    introP1: "Ogni percorso qui sotto è un trasferimento reale, verificato individualmente — non una stima generica. Consulta l'elenco completo in inglese per ricerca e filtri.",
+    introP2: "I trasferimenti per resort seguono l'orario del resort stesso; i trasferimenti verso isole locali avvengono principalmente tramite traghetto pubblico o motoscafo privato.",
+    airportSectionTitle: "Trasferimenti dall'Aeroporto delle Maldive",
+    resortSectionTitle: "Trasferimenti per Resort",
+    islandSectionTitle: "Trasferimenti per Isole",
+    faqTitle: "Domande frequenti",
+    faqs: [
+      {
+        question: "Come funzionano i trasferimenti aeroportuali alle Maldive?",
+        answer: "Si arriva all'Aeroporto Internazionale di Velana e si prosegue poi in motoscafo, traghetto, hydroplane o volo nazionale in base alla destinazione.",
+      },
+      {
+        question: "I trasferimenti in motoscafo alle Maldive sono condivisi?",
+        answer: "Entrambi — la maggior parte dei resort offre un trasferimento condiviso programmato, ed è generalmente disponibile anche un trasferimento privato o un charter completo. Ogni pagina del percorso mostra cosa è realmente offerto.",
+      },
+      {
+        question: "Con quanto anticipo dovrei organizzare il mio trasferimento?",
+        answer: "Non appena l'alloggio è confermato, soprattutto per i resort che programmano i trasferimenti su voli specifici.",
+      },
+      {
+        question: "Qual è la differenza tra un trasferimento per resort e un trasferimento per isola?",
+        answer: "Un trasferimento per resort porta a un'isola privata di un resort; un trasferimento per isola porta a un'isola maldiviana abitata con hotel o guesthouse invece di un resort.",
+      },
+    ],
+    exploreMoreTitle: "Esplora Altro delle Maldive",
+  },
+  transferDetail: {
+    eyebrow: "Percorso di trasferimento",
+    fromLabel: "Da",
+    toLabel: "A",
+    durationLabel: "Durata tipica",
+    distanceLabel: "Distanza",
+    reverseRoutePrompt: "Viaggi nella direzione opposta?",
+    servicesTitle: "Servizi di trasferimento",
+    noServicesNote: "Nessun servizio di trasferimento verificato ancora registrato per questo percorso.",
+    privateTransferTitle: "Trasferimento Privato",
+    privateTransferBody: "Preferisci la tua barca e il tuo orario? Un trasferimento privato significa un gruppo privato, orari flessibili e un accordo personalizzato per questo percorso.",
+    privateTransferCta: "Prenota Questo Viaggio come Trasferimento Privato",
+    packagesUsingRouteTitle: "Pacchetti che Usano Questo Percorso",
+    faqTitle: "Domande frequenti",
+    relatedTitle: "Trasferimenti Correlati",
+    exploreMoreTitle: "Esplora Altro delle Maldive",
+    allTransfersLink: "Tutti i Trasferimenti delle Maldive",
+    englishVersionLink: "Visualizza questo percorso in inglese",
+    typeSpeedboat: "Motoscafo",
+    typeSeaplane: "Hydroplane",
+    typeDomesticFlight: "Volo nazionale",
+    typeFerry: "Traghetto",
+    typePrivateYacht: "Yacht privato",
+    typeLandTransfer: "Trasferimento terrestre",
+    modeShared: "Condiviso",
+    modePrivate: "Privato",
+  },
 };
 
 const RU: UiStrings = {
@@ -1048,6 +1316,63 @@ const RU: UiStrings = {
     exploreMoreTitle: "Исследовать больше Мальдив",
     allPackagesLink: "Все пакеты на Мальдивы",
     englishVersionLink: "Посмотреть этот пакет на английском",
+  },
+  transfersHub: {
+    heroEyebrow: "Транспорт на Мальдивах",
+    title: "Трансферы на Мальдивах",
+    description: "Настоящие маршруты трансфера из аэропорта, в курорт, на остров и на скоростном катере по всем Мальдивам — ищите по направлению или запросите частный чартер.",
+    introP1: "Каждый маршрут ниже — это настоящий, индивидуально проверенный трансфер, а не общая оценка. Полный список на английском языке с поиском и фильтрами доступен отдельно.",
+    introP2: "Трансферы на курорты идут по собственному расписанию каждого курорта; трансферы на местные острова в основном осуществляются общественным паромом или частным скоростным катером.",
+    airportSectionTitle: "Трансферы из аэропорта Мальдив",
+    resortSectionTitle: "Трансферы на курорты",
+    islandSectionTitle: "Трансферы на острова",
+    faqTitle: "Часто задаваемые вопросы",
+    faqs: [
+      {
+        question: "Как работают трансферы из аэропорта на Мальдивах?",
+        answer: "Вы прилетаете в международный аэропорт Velana, а затем продолжаете путь на скоростном катере, пароме, гидросамолёте или внутреннем рейсе в зависимости от направления.",
+      },
+      {
+        question: "Являются ли трансферы на скоростных катерах на Мальдивах общими?",
+        answer: "И то, и другое — большинство курортов предлагают запланированный общий трансфер, а также, как правило, доступен частный трансфер или полный чартер. На странице каждого маршрута показано, что фактически предлагается.",
+      },
+      {
+        question: "Как заранее нужно организовывать трансфер?",
+        answer: "Сразу после подтверждения проживания, особенно для курортов, которые привязывают трансферы к конкретным рейсам.",
+      },
+      {
+        question: "В чём разница между трансфером на курорт и трансфером на остров?",
+        answer: "Трансфер на курорт ведёт на частный курортный остров; трансфер на остров ведёт на обитаемый мальдивский остров с отелями или гестхаусами вместо курорта.",
+      },
+    ],
+    exploreMoreTitle: "Исследовать больше Мальдив",
+  },
+  transferDetail: {
+    eyebrow: "Маршрут трансфера",
+    fromLabel: "Из",
+    toLabel: "В",
+    durationLabel: "Типичная продолжительность",
+    distanceLabel: "Расстояние",
+    reverseRoutePrompt: "Едете в обратном направлении?",
+    servicesTitle: "Услуги трансфера",
+    noServicesNote: "Для этого маршрута пока не зарегистрировано проверенных услуг трансфера.",
+    privateTransferTitle: "Частный трансфер",
+    privateTransferBody: "Предпочитаете собственную лодку и собственное расписание? Частный трансфер означает отдельную группу, гибкое время и индивидуальную организацию для этого маршрута.",
+    privateTransferCta: "Заказать эту поездку как частный трансфер",
+    packagesUsingRouteTitle: "Пакеты с этим маршрутом",
+    faqTitle: "Часто задаваемые вопросы",
+    relatedTitle: "Похожие трансферы",
+    exploreMoreTitle: "Исследовать больше Мальдив",
+    allTransfersLink: "Все трансферы на Мальдивах",
+    englishVersionLink: "Посмотреть этот маршрут на английском",
+    typeSpeedboat: "Скоростной катер",
+    typeSeaplane: "Гидросамолёт",
+    typeDomesticFlight: "Внутренний рейс",
+    typeFerry: "Паром",
+    typePrivateYacht: "Частная яхта",
+    typeLandTransfer: "Наземный трансфер",
+    modeShared: "Общий",
+    modePrivate: "Частный",
   },
 };
 
@@ -1225,6 +1550,63 @@ const JA: UiStrings = {
     allPackagesLink: "モルディブの全パッケージ",
     englishVersionLink: "英語版でこのパッケージを見る",
   },
+  transfersHub: {
+    heroEyebrow: "モルディブの交通手段",
+    title: "モルディブの送迎",
+    description: "モルディブ全土の空港、リゾート、島、スピードボートの実際の送迎ルート——目的地で検索するか、プライベートチャーターをリクエストできます。",
+    introP1: "以下の各ルートは実在し個別に確認された送迎です——一般的な推定ではありません。検索とフィルター機能付きの完全な英語版リストもご覧いただけます。",
+    introP2: "リゾート送迎は各リゾート独自のスケジュールで運行され、ローカルアイランドへの送迎は主に公共フェリーまたはプライベートスピードボートで行われます。",
+    airportSectionTitle: "モルディブ空港送迎",
+    resortSectionTitle: "リゾート送迎",
+    islandSectionTitle: "島への送迎",
+    faqTitle: "よくある質問",
+    faqs: [
+      {
+        question: "モルディブの空港送迎はどのように機能しますか?",
+        answer: "ヴェラナ国際空港に到着後、目的地に応じてスピードボート、フェリー、水上飛行機、または国内線で移動を続けます。",
+      },
+      {
+        question: "モルディブのスピードボート送迎は乗り合いですか?",
+        answer: "どちらもあります——ほとんどのリゾートは予定された乗り合い送迎を提供し、通常はプライベート送迎やチャーターも利用可能です。各ルートページで実際に提供されている内容を確認できます。",
+      },
+      {
+        question: "送迎はどれくらい前に手配すべきですか?",
+        answer: "宿泊先が確定したらすぐに、特にフライトに合わせて送迎時間を設定するリゾートの場合は早めに手配してください。",
+      },
+      {
+        question: "リゾート送迎と島送迎の違いは何ですか?",
+        answer: "リゾート送迎はプライベートリゾートアイランドへ向かい、島送迎はリゾートではなくホテルやゲストハウスのある有人のモルディブの島へ向かいます。",
+      },
+    ],
+    exploreMoreTitle: "モルディブをもっと探る",
+  },
+  transferDetail: {
+    eyebrow: "送迎ルート",
+    fromLabel: "出発地",
+    toLabel: "目的地",
+    durationLabel: "標準的な所要時間",
+    distanceLabel: "距離",
+    reverseRoutePrompt: "反対方向へ移動しますか?",
+    servicesTitle: "送迎サービス",
+    noServicesNote: "このルートには確認済みの送迎サービスがまだ登録されていません。",
+    privateTransferTitle: "プライベート送迎",
+    privateTransferBody: "自分のボートと自分のスケジュールをお好みですか?プライベート送迎とは、専用グループ、柔軟な時間設定、このルート専用の個別手配を意味します。",
+    privateTransferCta: "この旅をプライベート送迎として予約する",
+    packagesUsingRouteTitle: "このルートを使用するパッケージ",
+    faqTitle: "よくある質問",
+    relatedTitle: "関連する送迎",
+    exploreMoreTitle: "モルディブをもっと探る",
+    allTransfersLink: "モルディブの全送迎",
+    englishVersionLink: "英語版でこのルートを見る",
+    typeSpeedboat: "スピードボート",
+    typeSeaplane: "水上飛行機",
+    typeDomesticFlight: "国内線",
+    typeFerry: "フェリー",
+    typePrivateYacht: "プライベートヨット",
+    typeLandTransfer: "陸路送迎",
+    modeShared: "乗り合い",
+    modePrivate: "プライベート",
+  },
 };
 
 const ZH: UiStrings = {
@@ -1400,6 +1782,63 @@ const ZH: UiStrings = {
     exploreMoreTitle: "探索更多马尔代夫",
     allPackagesLink: "所有马尔代夫套餐",
     englishVersionLink: "查看英文版套餐",
+  },
+  transfersHub: {
+    heroEyebrow: "马尔代夫交通",
+    title: "马尔代夫接送服务",
+    description: "马尔代夫各地真实的机场、度假村、岛屿和快艇接送路线——按目的地搜索,或申请私人租船服务。",
+    introP1: "以下每条路线均为真实、经过单独核实的接送服务,而非笼统估算。完整的英文列表提供搜索和筛选功能。",
+    introP2: "度假村接送按各度假村自己的时间表运行;本地岛屿接送主要通过公共渡轮或私人快艇进行。",
+    airportSectionTitle: "马尔代夫机场接送",
+    resortSectionTitle: "度假村接送",
+    islandSectionTitle: "岛屿接送",
+    faqTitle: "常见问题",
+    faqs: [
+      {
+        question: "马尔代夫的机场接送如何运作?",
+        answer: "您抵达维拉纳国际机场后,根据目的地继续乘坐快艇、渡轮、水上飞机或国内航班前往。",
+      },
+      {
+        question: "马尔代夫的快艇接送是共享的吗?",
+        answer: "两种都有——大多数度假村提供定时共享接送,通常也可提供私人接送或整船租赁。每个路线页面都会显示实际提供的服务。",
+      },
+      {
+        question: "我应该提前多久安排接送?",
+        answer: "一旦住宿确认后应尽快安排,尤其是那些将接送时间与特定航班对接的度假村。",
+      },
+      {
+        question: "度假村接送和岛屿接送有什么区别?",
+        answer: "度假村接送前往私人度假村岛屿;岛屿接送前往有酒店或民宿的马尔代夫有人居住岛屿,而非度假村。",
+      },
+    ],
+    exploreMoreTitle: "探索更多马尔代夫",
+  },
+  transferDetail: {
+    eyebrow: "接送路线",
+    fromLabel: "出发地",
+    toLabel: "目的地",
+    durationLabel: "通常时长",
+    distanceLabel: "距离",
+    reverseRoutePrompt: "要前往相反方向吗?",
+    servicesTitle: "接送服务",
+    noServicesNote: "此路线暂无已核实的接送服务记录。",
+    privateTransferTitle: "私人接送",
+    privateTransferBody: "想要自己的船只和时间安排吗?私人接送意味着专属团队、灵活的时间以及针对此路线的定制安排。",
+    privateTransferCta: "将此行程预订为私人接送",
+    packagesUsingRouteTitle: "使用此路线的套餐",
+    faqTitle: "常见问题",
+    relatedTitle: "相关接送服务",
+    exploreMoreTitle: "探索更多马尔代夫",
+    allTransfersLink: "马尔代夫所有接送服务",
+    englishVersionLink: "查看英文版路线",
+    typeSpeedboat: "快艇",
+    typeSeaplane: "水上飞机",
+    typeDomesticFlight: "国内航班",
+    typeFerry: "渡轮",
+    typePrivateYacht: "私人游艇",
+    typeLandTransfer: "陆路接送",
+    modeShared: "共享",
+    modePrivate: "私人",
   },
 };
 

@@ -208,6 +208,46 @@ export interface UiStrings {
     modeShared: string;
     modePrivate: string;
   };
+  /** One label per src/components/site-footer.tsx TRAVEL_LINKS entry,
+   * in the same order. Only the maldives/transfers/packages/travelGuide
+   * entries resolve to a real localized href (via localizeHubPath) --
+   * every other label is still shown in this language, but its link
+   * stays the plain English URL since that vertical has no translated
+   * route yet (same "translate the word, not a fabricated URL"
+   * convention as everywhere else). */
+  footerLinks: {
+    maldives: string;
+    atolls: string;
+    islands: string;
+    resorts: string;
+    hotels: string;
+    guesthouses: string;
+    activities: string;
+    fishing: string;
+    diving: string;
+    surfing: string;
+    snorkeling: string;
+    excursions: string;
+    sandbankTours: string;
+    waterSports: string;
+    islandHopping: string;
+    dolphinWhaleWatching: string;
+    sightseeing: string;
+    transfers: string;
+    airportTransfers: string;
+    resortTransfers: string;
+    islandTransfers: string;
+    speedboatCharter: string;
+    ferrySchedule: string;
+    packages: string;
+    travelGuide: string;
+    attractions: string;
+    restaurants: string;
+    shops: string;
+    hospitals: string;
+    schools: string;
+    gyms: string;
+  };
 }
 
 const EN: UiStrings = {
@@ -440,6 +480,39 @@ const EN: UiStrings = {
     typeLandTransfer: "Land Transfer",
     modeShared: "Shared",
     modePrivate: "Private",
+  },
+  footerLinks: {
+    maldives: "Maldives",
+    atolls: "Atolls",
+    islands: "Islands",
+    resorts: "Resorts",
+    hotels: "Hotels",
+    guesthouses: "Guesthouses",
+    activities: "Activities",
+    fishing: "Fishing",
+    diving: "Diving",
+    surfing: "Surfing",
+    snorkeling: "Snorkeling",
+    excursions: "Excursions",
+    sandbankTours: "Sandbank Tours",
+    waterSports: "Water Sports",
+    islandHopping: "Island Hopping",
+    dolphinWhaleWatching: "Dolphin & Whale Watching",
+    sightseeing: "Sightseeing",
+    transfers: "Transfers",
+    airportTransfers: "Airport Transfers",
+    resortTransfers: "Resort Transfers",
+    islandTransfers: "Island Transfers",
+    speedboatCharter: "Private Speedboat Charter",
+    ferrySchedule: "Ferry Schedule",
+    packages: "Packages",
+    travelGuide: "Travel Guide",
+    attractions: "Attractions",
+    restaurants: "Restaurants",
+    shops: "Shops",
+    hospitals: "Hospitals",
+    schools: "Schools",
+    gyms: "Gyms",
   },
 };
 
@@ -675,6 +748,39 @@ const DE: UiStrings = {
     modeShared: "Geteilt",
     modePrivate: "Privat",
   },
+  footerLinks: {
+    maldives: "Malediven",
+    atolls: "Atolle",
+    islands: "Inseln",
+    resorts: "Resorts",
+    hotels: "Hotels",
+    guesthouses: "Gästehäuser",
+    activities: "Aktivitäten",
+    fishing: "Angeln",
+    diving: "Tauchen",
+    surfing: "Surfen",
+    snorkeling: "Schnorcheln",
+    excursions: "Ausflüge",
+    sandbankTours: "Sandbank-Touren",
+    waterSports: "Wassersport",
+    islandHopping: "Inselhüpfen",
+    dolphinWhaleWatching: "Delfin- & Walbeobachtung",
+    sightseeing: "Sightseeing",
+    transfers: "Transfer",
+    airportTransfers: "Flughafentransfers",
+    resortTransfers: "Resort-Transfers",
+    islandTransfers: "Inseltransfers",
+    speedboatCharter: "Private Speedboot-Charter",
+    ferrySchedule: "Fährplan",
+    packages: "Pakete",
+    travelGuide: "Reiseführer",
+    attractions: "Attraktionen",
+    restaurants: "Restaurants",
+    shops: "Geschäfte",
+    hospitals: "Krankenhäuser",
+    schools: "Schulen",
+    gyms: "Fitnessstudios",
+  },
 };
 
 const ES: UiStrings = {
@@ -907,6 +1013,39 @@ const ES: UiStrings = {
     typeLandTransfer: "Traslado terrestre",
     modeShared: "Compartido",
     modePrivate: "Privado",
+  },
+  footerLinks: {
+    maldives: "Maldivas",
+    atolls: "Atolones",
+    islands: "Islas",
+    resorts: "Resorts",
+    hotels: "Hoteles",
+    guesthouses: "Pensiones",
+    activities: "Actividades",
+    fishing: "Pesca",
+    diving: "Buceo",
+    surfing: "Surf",
+    snorkeling: "Esnórquel",
+    excursions: "Excursiones",
+    sandbankTours: "Tours a Bancos de Arena",
+    waterSports: "Deportes Acuáticos",
+    islandHopping: "Isla en Isla",
+    dolphinWhaleWatching: "Avistamiento de Delfines y Ballenas",
+    sightseeing: "Turismo",
+    transfers: "Traslados",
+    airportTransfers: "Traslados de Aeropuerto",
+    resortTransfers: "Traslados de Resort",
+    islandTransfers: "Traslados de Isla",
+    speedboatCharter: "Chárter de Lancha Privada",
+    ferrySchedule: "Horario de Ferris",
+    packages: "Paquetes",
+    travelGuide: "Guía de Viaje",
+    attractions: "Atracciones",
+    restaurants: "Restaurantes",
+    shops: "Tiendas",
+    hospitals: "Hospitales",
+    schools: "Escuelas",
+    gyms: "Gimnasios",
   },
 };
 
@@ -1141,6 +1280,39 @@ const IT: UiStrings = {
     modeShared: "Condiviso",
     modePrivate: "Privato",
   },
+  footerLinks: {
+    maldives: "Maldive",
+    atolls: "Atolli",
+    islands: "Isole",
+    resorts: "Resort",
+    hotels: "Hotel",
+    guesthouses: "Guesthouse",
+    activities: "Attività",
+    fishing: "Pesca",
+    diving: "Immersioni",
+    surfing: "Surf",
+    snorkeling: "Snorkeling",
+    excursions: "Escursioni",
+    sandbankTours: "Tour ai Banchi di Sabbia",
+    waterSports: "Sport Acquatici",
+    islandHopping: "Island Hopping",
+    dolphinWhaleWatching: "Avvistamento Delfini e Balene",
+    sightseeing: "Turismo",
+    transfers: "Trasferimenti",
+    airportTransfers: "Trasferimenti Aeroportuali",
+    resortTransfers: "Trasferimenti Resort",
+    islandTransfers: "Trasferimenti Isola",
+    speedboatCharter: "Charter Privato di Motoscafo",
+    ferrySchedule: "Orario dei Traghetti",
+    packages: "Pacchetti",
+    travelGuide: "Guida di Viaggio",
+    attractions: "Attrazioni",
+    restaurants: "Ristoranti",
+    shops: "Negozi",
+    hospitals: "Ospedali",
+    schools: "Scuole",
+    gyms: "Palestre",
+  },
 };
 
 const RU: UiStrings = {
@@ -1373,6 +1545,39 @@ const RU: UiStrings = {
     typeLandTransfer: "Наземный трансфер",
     modeShared: "Общий",
     modePrivate: "Частный",
+  },
+  footerLinks: {
+    maldives: "Мальдивы",
+    atolls: "Атоллы",
+    islands: "Острова",
+    resorts: "Курорты",
+    hotels: "Отели",
+    guesthouses: "Гестхаусы",
+    activities: "Активности",
+    fishing: "Рыбалка",
+    diving: "Дайвинг",
+    surfing: "Сёрфинг",
+    snorkeling: "Снорклинг",
+    excursions: "Экскурсии",
+    sandbankTours: "Туры на песчаные банки",
+    waterSports: "Водные виды спорта",
+    islandHopping: "Путешествие по островам",
+    dolphinWhaleWatching: "Наблюдение за дельфинами и китами",
+    sightseeing: "Экскурсии по достопримечательностям",
+    transfers: "Трансферы",
+    airportTransfers: "Трансферы из аэропорта",
+    resortTransfers: "Трансферы на курорт",
+    islandTransfers: "Трансферы на остров",
+    speedboatCharter: "Частный чартер катера",
+    ferrySchedule: "Расписание паромов",
+    packages: "Пакеты",
+    travelGuide: "Путеводитель",
+    attractions: "Достопримечательности",
+    restaurants: "Рестораны",
+    shops: "Магазины",
+    hospitals: "Больницы",
+    schools: "Школы",
+    gyms: "Спортзалы",
   },
 };
 
@@ -1607,6 +1812,39 @@ const JA: UiStrings = {
     modeShared: "乗り合い",
     modePrivate: "プライベート",
   },
+  footerLinks: {
+    maldives: "モルディブ",
+    atolls: "環礁",
+    islands: "島",
+    resorts: "リゾート",
+    hotels: "ホテル",
+    guesthouses: "ゲストハウス",
+    activities: "アクティビティ",
+    fishing: "フィッシング",
+    diving: "ダイビング",
+    surfing: "サーフィン",
+    snorkeling: "シュノーケリング",
+    excursions: "小旅行",
+    sandbankTours: "サンドバンクツアー",
+    waterSports: "ウォータースポーツ",
+    islandHopping: "アイランドホッピング",
+    dolphinWhaleWatching: "イルカ・クジラウォッチング",
+    sightseeing: "観光",
+    transfers: "送迎",
+    airportTransfers: "空港送迎",
+    resortTransfers: "リゾート送迎",
+    islandTransfers: "島送迎",
+    speedboatCharter: "プライベートスピードボートチャーター",
+    ferrySchedule: "フェリースケジュール",
+    packages: "パッケージ",
+    travelGuide: "旅行ガイド",
+    attractions: "観光スポット",
+    restaurants: "レストラン",
+    shops: "ショップ",
+    hospitals: "病院",
+    schools: "学校",
+    gyms: "ジム",
+  },
 };
 
 const ZH: UiStrings = {
@@ -1840,6 +2078,39 @@ const ZH: UiStrings = {
     modeShared: "共享",
     modePrivate: "私人",
   },
+  footerLinks: {
+    maldives: "马尔代夫",
+    atolls: "环礁",
+    islands: "岛屿",
+    resorts: "度假村",
+    hotels: "酒店",
+    guesthouses: "民宿",
+    activities: "活动",
+    fishing: "钓鱼",
+    diving: "潜水",
+    surfing: "冲浪",
+    snorkeling: "浮潜",
+    excursions: "短途游览",
+    sandbankTours: "沙洲之旅",
+    waterSports: "水上运动",
+    islandHopping: "跳岛游",
+    dolphinWhaleWatching: "观赏海豚和鲸鱼",
+    sightseeing: "观光",
+    transfers: "接送服务",
+    airportTransfers: "机场接送",
+    resortTransfers: "度假村接送",
+    islandTransfers: "岛屿接送",
+    speedboatCharter: "私人快艇租赁",
+    ferrySchedule: "渡轮时间表",
+    packages: "套餐",
+    travelGuide: "旅游指南",
+    attractions: "景点",
+    restaurants: "餐厅",
+    shops: "商店",
+    hospitals: "医院",
+    schools: "学校",
+    gyms: "健身房",
+  },
 };
 
 const UI_STRINGS: Partial<Record<Locale, UiStrings>> = { en: EN, de: DE, es: ES, it: IT, ru: RU, ja: JA, zh: ZH };
@@ -1849,3 +2120,10 @@ const UI_STRINGS: Partial<Record<Locale, UiStrings>> = { en: EN, de: DE, es: ES,
 export function getUiStrings(locale: Locale): UiStrings {
   return UI_STRINGS[locale] ?? EN;
 }
+
+/** Every non-English locale with real UI-strings copy -- used by pages
+ * whose hub is pure static copy (no page_translations row to check a
+ * "published" state against, e.g. the Travel Guide hub) to build their
+ * hreflang alternates from the same rollout list this file itself
+ * defines, rather than a second hardcoded locale array. */
+export const UI_STRINGS_LOCALES: Locale[] = Object.keys(UI_STRINGS).filter((l): l is Locale => l !== "en") as Locale[];

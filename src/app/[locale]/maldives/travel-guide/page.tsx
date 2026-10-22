@@ -7,8 +7,9 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { PageHero } from "@/components/ui/page-hero";
 import { getTranslatedArticles } from "@/lib/articles/repository";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
-import { getUiStrings } from "@/lib/i18n/ui-strings";
-import { localizedCanonicalUrl } from "@/lib/seo/site";
+import { localizeHubPath } from "@/lib/i18n/hub-paths";
+import { getUiStrings, UI_STRINGS_LOCALES } from "@/lib/i18n/ui-strings";
+import { hreflangAlternates, localizedCanonicalUrl } from "@/lib/seo/site";
 
 // Staggered (not a round 3600) so ISR regenerations don't cluster with
 // every other route's -- see src/app/page.tsx for why.
@@ -38,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: `${h.title} | MTG`,
     description: h.description,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages: hreflangAlternates("/maldives/travel-guide/", UI_STRINGS_LOCALES) },
     openGraph: { title: h.title, description: h.description, url, locale },
   };
 }
@@ -54,7 +55,7 @@ export default async function LocaleTravelGuideHubPage({ params }: { params: Pro
   return (
     <main>
       <PageHero
-        breadcrumbs={[{ label: ui.nav.maldives, href: `/${locale}/maldives/` }, { label: ui.nav.travelGuide }]}
+        breadcrumbs={[{ label: ui.nav.maldives, href: localizeHubPath(locale, "/maldives/") }, { label: ui.nav.travelGuide }]}
         eyebrow={h.heroEyebrow}
         title={h.title}
         description={h.description}

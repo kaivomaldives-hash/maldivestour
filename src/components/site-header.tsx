@@ -12,17 +12,34 @@ import { HeaderMoreMenu, MORE_NAV_ITEMS } from "@/components/header-more-menu";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { CloseIcon, MenuIcon, SearchIcon } from "@/components/ui/icons";
-import type { Locale } from "@/lib/i18n/locales";
+import { localizeHubPath } from "@/lib/i18n/hub-paths";
+import { SUPPORTED_LOCALES, type Locale } from "@/lib/i18n/locales";
+import { getUiStrings } from "@/lib/i18n/ui-strings";
 
+// `navKey` indexes ui.nav; `href` is the real English URL. Only
+// maldives/transfers/packages resolve through localizeHubPath (via
+// `translatedHub: true`) -- stays/activities/diving/fishing show a
+// translated label but keep their plain English href, since those
+// verticals have no translated route yet.
 const PRIMARY_NAV = [
-  { label: "Maldives", href: "/maldives/" },
-  { label: "Stays", href: "/maldives/stays/" },
-  { label: "Activities", href: "/maldives/activities/" },
-  { label: "Diving", href: "/maldives/diving/" },
-  { label: "Fishing", href: "/maldives/fishing/" },
-  { label: "Transfers", href: "/maldives/transfers/" },
-  { label: "Packages", href: "/maldives/packages/" },
-];
+  { navKey: "maldives", href: "/maldives/", translatedHub: true },
+  { navKey: "stays", href: "/maldives/stays/" },
+  { navKey: "activities", href: "/maldives/activities/" },
+  { navKey: "diving", href: "/maldives/diving/" },
+  { navKey: "fishing", href: "/maldives/fishing/" },
+  { navKey: "transfers", href: "/maldives/transfers/", translatedHub: true },
+  { navKey: "packages", href: "/maldives/packages/", translatedHub: true },
+] as const;
+
+/** Derives the current locale from the first path segment -- same
+ * pattern as LanguageSwitcher, which this header already renders. A
+ * Client Component still server-renders with the real request pathname
+ * on first load, so the nav is correctly localized from the first
+ * byte, not a post-hydration swap. */
+function localeFromPathname(pathname: string): Locale {
+  const first = pathname.split("/").filter(Boolean)[0];
+  return (SUPPORTED_LOCALES as readonly string[]).includes(first) ? (first as Locale) : "en";
+}
 
 const WHATSAPP_URL = "https://wa.me/9607794332";
 
@@ -31,14 +48,23 @@ const WHATSAPP_URL = "https://wa.me/9607794332";
 const SEARCH_ENABLED = false;
 
 function isActive(pathname: string, href: string): boolean {
-  if (href === "/maldives/") return pathname === "/maldives" || pathname === "/maldives/";
-  return pathname === href || pathname.startsWith(href);
+  // href already has its trailing slash (trailingSlash: true sitewide);
+  // also matching the no-slash form guards against any edge case where
+  // pathname hasn't been normalized yet.
+  if (pathname === href || pathname === href.slice(0, -1)) return true;
+  return pathname.startsWith(href);
 }
 
 type MobilePanel = "none" | "nav" | "search";
 
 export function SiteHeader({ availableLocales }: { availableLocales: Locale[] }) {
   const pathname = usePathname();
+  const locale = localeFromPathname(pathname);
+  const ui = getUiStrings(locale);
+  const navItems = PRIMARY_NAV.map((item) => ({
+    href: "translatedHub" in item && item.translatedHub ? localizeHubPath(locale, item.href) : item.href,
+    label: ui.nav[item.navKey],
+  }));
   const [mobilePanel, setMobilePanel] = useState<MobilePanel>("none");
 
   // Close whichever mobile panel is open on route change, so it never
@@ -70,7 +96,7 @@ export function SiteHeader({ availableLocales }: { availableLocales: Locale[] })
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
-          {PRIMARY_NAV.map((item) => {
+          {navItems.map((item) => {
             const active = isActive(pathname, item.href);
             return (
               <Link
@@ -142,7 +168,7 @@ export function SiteHeader({ availableLocales }: { availableLocales: Locale[] })
       {mobilePanel === "nav" && (
         <div id="mobile-nav-panel" className="border-t border-neutral-200 bg-white lg:hidden">
           <nav aria-label="Primary" className={`${CONTAINER_CLASS} flex flex-col gap-1 py-3`}>
-            {PRIMARY_NAV.map((item) => {
+            {navItems.map((item) => {
               const active = isActive(pathname, item.href);
               return (
                 <Link

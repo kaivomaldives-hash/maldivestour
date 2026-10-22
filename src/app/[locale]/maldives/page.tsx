@@ -10,6 +10,7 @@ import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { SectionHeader } from "@/components/ui/section-header";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
+import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getPageTranslation, getPublishedLocalesForPage } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
 import { getAtolls, getIslandBySlug } from "@/lib/locations/repository";
@@ -26,10 +27,14 @@ export const revalidate = 3660;
  * is localized (getUiStrings().maldivesHub); atoll/island titles
  * themselves stay as their real, un-translated location data, same as
  * every other card on this page. The "Explore More Maldives" links
- * below still point at plain English URLs (those sections don't have
- * their own /{locale}/... translation yet) — never a fabricated German
- * URL for content that doesn't exist (Task 19 §16/§29).
+ * below resolve through localizeHubPath per item -- translated
+ * sub-hubs (packages, transfers, travel guide) get their own real
+ * localized URL; everything else still points at the plain English URL
+ * since those sections have no /{locale}/... translation yet (Task 19
+ * §16/§29: never a fabricated URL for content that doesn't exist).
  */
+const TRANSLATED_HUB_PATHS = new Set(["/maldives/packages/", "/maldives/transfers/", "/maldives/travel-guide/"]);
+
 const EXPLORE_MORE_LINKS = [
   { href: "/maldives/activities/", labelKey: "activities" },
   { href: "/maldives/diving/", labelKey: "diving" },
@@ -39,6 +44,10 @@ const EXPLORE_MORE_LINKS = [
   { href: "/maldives/packages/", labelKey: "packages" },
   { href: "/maldives/travel-guide/", labelKey: "travelGuide" },
 ] as const;
+
+function exploreMoreHref(locale: Locale, href: string): string {
+  return TRANSLATED_HUB_PATHS.has(href) ? localizeHubPath(locale, href) : href;
+}
 
 const FEATURED_ISLAND_SLUGS = ["thulusdhoo", "maafushi", "dhigurah", "ukulhas", "fuvahmulah", "gan"];
 
@@ -171,7 +180,7 @@ export default async function LocaleMaldivesHubPage({ params }: { params: Promis
             {EXPLORE_MORE_LINKS.map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
+                href={exploreMoreHref(locale, link.href)}
                 className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
               >
                 {ui.nav[link.labelKey]}

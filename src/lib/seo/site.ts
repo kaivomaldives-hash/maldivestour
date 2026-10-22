@@ -1,4 +1,5 @@
-import { DEFAULT_LOCALE, SUPPORTED_LOCALES, localizedPath, type Locale } from "@/lib/i18n/locales";
+import { DEFAULT_LOCALE, SUPPORTED_LOCALES, type Locale } from "@/lib/i18n/locales";
+import { localizeHubPath } from "@/lib/i18n/hub-paths";
 
 const DEFAULT_SITE_URL = "https://maldivestour.guide";
 
@@ -17,9 +18,12 @@ export function canonicalUrl(path: string): string {
  * get their `/xx/...` prefix. Every localized page canonicalizes to
  * *itself*, never to the English URL (Task 19 §15) — this is the only
  * function that should ever be used to build a canonical for a page
- * under src/app/[locale]/. */
+ * under src/app/[locale]/. Routes through localizeHubPath so a page
+ * under a translated hub segment (e.g. "/maldives/packages/") gets its
+ * real localized URL ("/ru/maldivy/pakety/") rather than the English
+ * segment with just a locale prefix. */
 export function localizedCanonicalUrl(locale: Locale, englishPath: string): string {
-  return canonicalUrl(localizedPath(locale, englishPath));
+  return canonicalUrl(localizeHubPath(locale, englishPath));
 }
 
 /** hreflang alternates for a page, built ONLY from locales that actually

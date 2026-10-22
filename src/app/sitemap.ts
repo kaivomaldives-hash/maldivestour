@@ -9,7 +9,8 @@ import { activityHref } from "@/lib/activities/types";
 import { getArticles } from "@/lib/articles/repository";
 import { getAttractions } from "@/lib/attractions/repository";
 import { getDiveSites } from "@/lib/diving/repository";
-import { localizedPath, type Locale } from "@/lib/i18n/locales";
+import type { Locale } from "@/lib/i18n/locales";
+import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getEntityLocaleSlugsByIds, getPublishedLocalesForPage } from "@/lib/i18n/repository";
 import { getAtolls, getIslands } from "@/lib/locations/repository";
 import { getPackages } from "@/lib/packages/repository";
@@ -264,7 +265,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         translations.length > 0
           ? (() => {
               const map: Record<string, string> = { en: url(englishPath) };
-              for (const t of translations) map[t.locale] = url(localizedPath(t.locale, `${pathPrefix}${t.slug}/`));
+              for (const t of translations) map[t.locale] = url(localizeHubPath(t.locale, `${pathPrefix}${t.slug}/`));
               map["x-default"] = map.en;
               return map;
             })()
@@ -279,7 +280,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
       for (const t of translations) {
         entries.push({
-          url: url(localizedPath(t.locale, `${pathPrefix}${t.slug}/`)),
+          url: url(localizeHubPath(t.locale, `${pathPrefix}${t.slug}/`)),
           changeFrequency: "monthly",
           priority,
           ...(languages ? { alternates: { languages } } : {}),

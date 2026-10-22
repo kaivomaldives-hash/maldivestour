@@ -14,7 +14,8 @@ import { FaqSection } from "@/components/ui/faq-section";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { isSupportedCurrency } from "@/lib/currency/types";
-import { isLocale, localizedPath, type Locale } from "@/lib/i18n/locales";
+import { isLocale, type Locale } from "@/lib/i18n/locales";
+import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getEntityLocalePaths, localizedEntityHref } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
 import { getLocationBySlug } from "@/lib/locations/repository";
@@ -87,7 +88,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 
   const title = route.title;
   const description = route.summary ?? undefined;
-  const url = localizedPath(locale, `/maldives/transfers/${route.slug}/`);
+  const url = localizeHubPath(locale, `/maldives/transfers/${route.slug}/`);
   const englishSlug = (await getEnglishSlug(route.id)) ?? route.slug;
   const paths = await getEntityLocalePaths(route.id, englishSlug, "/maldives/transfers/");
   const languages: Record<string, string> = {};
@@ -167,11 +168,11 @@ export default async function LocaleTransferRouteDetailPage({ params }: { params
 
   const breadcrumb = breadcrumbJsonLd(
     [
-      { label: ui.nav.maldives, href: `/${locale}/maldives/` },
-      { label: ui.nav.transfers, href: `/${locale}/maldives/transfers/` },
+      { label: ui.nav.maldives, href: localizeHubPath(locale, "/maldives/") },
+      { label: ui.nav.transfers, href: localizeHubPath(locale, "/maldives/transfers/") },
       { label: route.title },
     ],
-    localizedPath(locale, `/maldives/transfers/${route.slug}`),
+    localizeHubPath(locale, `/maldives/transfers/${route.slug}`),
   );
 
   return (
@@ -180,8 +181,8 @@ export default async function LocaleTransferRouteDetailPage({ params }: { params
 
       <PageHero
         breadcrumbs={[
-          { label: ui.nav.maldives, href: `/${locale}/maldives/` },
-          { label: ui.nav.transfers, href: `/${locale}/maldives/transfers/` },
+          { label: ui.nav.maldives, href: localizeHubPath(locale, "/maldives/") },
+          { label: ui.nav.transfers, href: localizeHubPath(locale, "/maldives/transfers/") },
           { label: route.title },
         ]}
         eyebrow={d.eyebrow}
@@ -311,7 +312,7 @@ export default async function LocaleTransferRouteDetailPage({ params }: { params
 
         <nav aria-label="Related transfer links" className="mt-10 flex flex-wrap gap-2 border-t border-neutral-200 pt-6">
           <Link
-            href={`/${locale}/maldives/transfers/`}
+            href={localizeHubPath(locale, "/maldives/transfers/")}
             className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
           >
             {d.allTransfersLink}

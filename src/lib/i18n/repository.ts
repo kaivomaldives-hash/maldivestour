@@ -1,8 +1,9 @@
 import "server-only";
 
 import { cachedRead } from "@/lib/cache/cached-read";
+import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { createClient } from "@/lib/supabase/public";
-import { localizedPath, type Locale } from "@/lib/i18n/locales";
+import type { Locale } from "@/lib/i18n/locales";
 
 export type PageKey =
   | "homepage"
@@ -289,7 +290,7 @@ export async function getEntityLocalePaths(
   const translatedSlugs = await getEntitySlugsByLocale(entityId);
   const paths: Partial<Record<Locale, string>> = { en: `${pathPrefix}${englishSlug}/` };
   for (const { locale, slug } of translatedSlugs) {
-    paths[locale] = localizedPath(locale, `${pathPrefix}${slug}/`);
+    paths[locale] = localizeHubPath(locale, `${pathPrefix}${slug}/`);
   }
   return paths;
 }

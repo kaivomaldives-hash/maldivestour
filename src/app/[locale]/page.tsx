@@ -19,6 +19,7 @@ import { getActivities } from "@/lib/activities/repository";
 import { getRecentArticles } from "@/lib/articles/repository";
 import { getAttractions } from "@/lib/attractions/repository";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
+import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getPageTranslation, getPublishedLocalesForPage } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
 import { getAtolls } from "@/lib/locations/repository";
@@ -98,10 +99,10 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
           <h1 className="mt-3 max-w-2xl text-4xl font-semibold tracking-tight sm:text-5xl">{h.heroTitle}</h1>
           <p className="mt-4 max-w-xl text-lg text-lagoon-100">{h.heroDescription}</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Button href={`/${locale}/maldives/`} variant="inverted" size="md">
+            <Button href={localizeHubPath(locale, "/maldives/")} variant="inverted" size="md">
               {h.ctaExplore}
             </Button>
-            <Button href="/maldives/packages/" variant="secondary" size="md" className="border-white/30 bg-white/10 text-white hover:bg-white/20">
+            <Button href={localizeHubPath(locale, "/maldives/packages/")} variant="secondary" size="md" className="border-white/30 bg-white/10 text-white hover:bg-white/20">
               {h.ctaPackages}
             </Button>
           </div>
@@ -215,7 +216,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
       {transferRoutes.items.length > 0 && (
         <section className="bg-sand-50 py-14 sm:py-20">
           <Container>
-            <SectionHeader eyebrow={h.transfersEyebrow} title={h.transfersTitle} description={h.transfersDescription} action={{ label: h.transfersCta, href: "/maldives/transfers/" }} />
+            <SectionHeader eyebrow={h.transfersEyebrow} title={h.transfersTitle} description={h.transfersDescription} action={{ label: h.transfersCta, href: localizeHubPath(locale, "/maldives/transfers/") }} />
             <nav aria-label="Transfer categories" className="mt-4 flex flex-wrap gap-2">
               {[
                 { href: "/maldives/airport-transfers/", label: h.transferCategoryAirport },
@@ -239,7 +240,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
       {packages.length > 0 && (
         <section className="py-14 sm:py-20">
           <Container>
-            <SectionHeader eyebrow={h.packagesEyebrow} title={h.packagesTitle} description={h.packagesDescription} action={{ label: h.packagesCta, href: "/maldives/packages/" }} />
+            <SectionHeader eyebrow={h.packagesEyebrow} title={h.packagesTitle} description={h.packagesDescription} action={{ label: h.packagesCta, href: localizeHubPath(locale, "/maldives/packages/") }} />
             <ul className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {packages.map((pkg) => (
                 <PackageCard key={pkg.id} pkg={pkg} />
@@ -252,7 +253,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
       {articles.length > 0 && (
         <section className="bg-sand-50 py-14 sm:py-20">
           <Container>
-            <SectionHeader eyebrow={h.guideEyebrow} title={h.guideTitle} description={h.guideDescription} action={{ label: h.guideCta, href: "/maldives/travel-guide/" }} />
+            <SectionHeader eyebrow={h.guideEyebrow} title={h.guideTitle} description={h.guideDescription} action={{ label: h.guideCta, href: localizeHubPath(locale, "/maldives/travel-guide/") }} />
             <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
               {articles.map((article) => (
                 <ArticleCard key={article.id} article={article} />
@@ -269,7 +270,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
             <p className="mt-2 max-w-xl text-lagoon-100">{h.finalCtaDescription}</p>
           </div>
           <div className="flex shrink-0 flex-wrap gap-3">
-            <Button href={`/${locale}/maldives/`} variant="inverted">
+            <Button href={localizeHubPath(locale, "/maldives/")} variant="inverted">
               {h.finalCtaExplore}
             </Button>
             <Button href={WHATSAPP_URL} variant="secondary" className="border-white/30 bg-white/10 text-white hover:bg-white/20" target="_blank" rel="noopener noreferrer">

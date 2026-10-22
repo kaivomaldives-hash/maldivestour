@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import { useArticleLocaleLinks } from "@/components/i18n/article-locale-links-context";
 import { GlobeIcon } from "@/components/ui/icons";
+import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { LOCALE_NAMES, SUPPORTED_LOCALES, type Locale } from "@/lib/i18n/locales";
 
 /**
@@ -61,12 +62,18 @@ export function LanguageSwitcher({
   const currentLocale: Locale = (SUPPORTED_LOCALES as readonly string[]).includes(segments[0]) ? (segments[0] as Locale) : "en";
   const pathAfterLocale = currentLocale === "en" ? pathname : `/${segments.slice(1).join("/")}`;
   const isHomepage = pathAfterLocale === "/" || pathAfterLocale === "";
-  const isMaldivesHub = pathAfterLocale === "/maldives" || pathAfterLocale === "/maldives/";
+  // Compares the full pathname against this locale's own localized
+  // Maldives-hub URL (localizeHubPath("en", ...) is a no-op, so this
+  // still matches "/maldives" and "/maldives/" on English) -- a plain
+  // string match on "/maldives/" would silently stop matching once the
+  // hub segment itself got localized per locale (Task 22 follow-up).
+  const maldivesHubPath = localizeHubPath(currentLocale, "/maldives/");
+  const isMaldivesHub = pathname === maldivesHubPath || pathname === maldivesHubPath.slice(0, -1);
 
   function targetHref(locale: Locale): string {
     const prefix = locale === "en" ? "" : `/${locale}`;
     if (isHomepage) return locale === "en" ? "/" : publishedLocales.includes(locale) ? `${prefix}/` : pathname;
-    if (isMaldivesHub) return locale === "en" ? "/maldives/" : publishedLocales.includes(locale) ? `${prefix}/maldives/` : pathname;
+    if (isMaldivesHub) return locale === "en" ? "/maldives/" : publishedLocales.includes(locale) ? localizeHubPath(locale, "/maldives/") : pathname;
     if (articleLocalePaths) {
       // On a Travel Guide article page: use the article's real translated
       // path when this locale has one, else fall back to that locale's
@@ -75,12 +82,12 @@ export function LanguageSwitcher({
       const articlePath = articleLocalePaths[locale];
       if (articlePath) return articlePath;
       if (locale === "en") return "/maldives/travel-guide/";
-      return publishedLocales.includes(locale) ? `${prefix}/maldives/travel-guide/` : pathname;
+      return publishedLocales.includes(locale) ? localizeHubPath(locale, "/maldives/travel-guide/") : pathname;
     }
     // Any other page: no per-entity translation lookup wired in yet --
     // fall back to that locale's Maldives hub if it's published.
     if (locale === "en") return "/maldives/";
-    return publishedLocales.includes(locale) ? `${prefix}/maldives/` : pathname;
+    return publishedLocales.includes(locale) ? localizeHubPath(locale, "/maldives/") : pathname;
   }
 
   const triggerClass =

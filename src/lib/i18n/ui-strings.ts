@@ -144,6 +144,30 @@ export interface UiStrings {
     relatedArticles: string;
     backToGuide: string;
   };
+  packageDetail: {
+    eyebrow: string;
+    nightsDays: string;
+    fromPrice: string;
+    quoteOnRequest: string;
+    perPerson: string;
+    perCouple: string;
+    perPackage: string;
+    overviewTitle: string;
+    galleryTitle: string;
+    highlightsTitle: string;
+    bestForTitle: string;
+    itineraryTitle: string;
+    accommodationTitle: string;
+    includedTitle: string;
+    excludedTitle: string;
+    activitiesTitle: string;
+    destinationTitle: string;
+    faqTitle: string;
+    relatedTitle: string;
+    exploreMoreTitle: string;
+    allPackagesLink: string;
+    englishVersionLink: string;
+  };
 }
 
 const EN: UiStrings = {
@@ -295,6 +319,30 @@ const EN: UiStrings = {
     topic: "Topic",
     relatedArticles: "Related Travel Guide articles",
     backToGuide: "← Back to Travel Guide",
+  },
+  packageDetail: {
+    eyebrow: "Maldives package",
+    nightsDays: "Nights / Days",
+    fromPrice: "From",
+    quoteOnRequest: "Quote on request",
+    perPerson: "per person",
+    perCouple: "per couple",
+    perPackage: "per package",
+    overviewTitle: "Overview",
+    galleryTitle: "Gallery",
+    highlightsTitle: "Highlights",
+    bestForTitle: "Who This Package Is For",
+    itineraryTitle: "Itinerary",
+    accommodationTitle: "Accommodation",
+    includedTitle: "What's Included",
+    excludedTitle: "What's Not Included",
+    activitiesTitle: "Activities",
+    destinationTitle: "Destination",
+    faqTitle: "Common questions",
+    relatedTitle: "You May Also Like",
+    exploreMoreTitle: "Explore More Maldives",
+    allPackagesLink: "All Maldives Packages",
+    englishVersionLink: "View this package in English",
   },
 };
 
@@ -449,6 +497,30 @@ const DE: UiStrings = {
     relatedArticles: "Weitere Reiseführer-Artikel",
     backToGuide: "← Zurück zum Reiseführer",
   },
+  packageDetail: {
+    eyebrow: "Malediven-Paket",
+    nightsDays: "Nächte / Tage",
+    fromPrice: "Ab",
+    quoteOnRequest: "Preis auf Anfrage",
+    perPerson: "pro Person",
+    perCouple: "pro Paar",
+    perPackage: "pro Paket",
+    overviewTitle: "Übersicht",
+    galleryTitle: "Galerie",
+    highlightsTitle: "Highlights",
+    bestForTitle: "Für wen dieses Paket geeignet ist",
+    itineraryTitle: "Reiseroute",
+    accommodationTitle: "Unterkunft",
+    includedTitle: "Was ist enthalten",
+    excludedTitle: "Was ist nicht enthalten",
+    activitiesTitle: "Aktivitäten",
+    destinationTitle: "Reiseziel",
+    faqTitle: "Häufige Fragen",
+    relatedTitle: "Das könnte Ihnen auch gefallen",
+    exploreMoreTitle: "Mehr von den Malediven entdecken",
+    allPackagesLink: "Alle Malediven-Pakete",
+    englishVersionLink: "Dieses Paket auf Englisch ansehen",
+  },
 };
 
 const ES: UiStrings = {
@@ -600,6 +672,30 @@ const ES: UiStrings = {
     topic: "Tema",
     relatedArticles: "Más artículos de la Guía de Viaje",
     backToGuide: "← Volver a la Guía de Viaje",
+  },
+  packageDetail: {
+    eyebrow: "Paquete de Maldivas",
+    nightsDays: "Noches / Días",
+    fromPrice: "Desde",
+    quoteOnRequest: "Precio a consultar",
+    perPerson: "por persona",
+    perCouple: "por pareja",
+    perPackage: "por paquete",
+    overviewTitle: "Resumen",
+    galleryTitle: "Galería",
+    highlightsTitle: "Puntos destacados",
+    bestForTitle: "Para quién es este paquete",
+    itineraryTitle: "Itinerario",
+    accommodationTitle: "Alojamiento",
+    includedTitle: "Qué incluye",
+    excludedTitle: "Qué no incluye",
+    activitiesTitle: "Actividades",
+    destinationTitle: "Destino",
+    faqTitle: "Preguntas frecuentes",
+    relatedTitle: "También te puede gustar",
+    exploreMoreTitle: "Explorar Más de Maldivas",
+    allPackagesLink: "Todos los Paquetes de Maldivas",
+    englishVersionLink: "Ver este paquete en inglés",
   },
 };
 
@@ -753,6 +849,30 @@ const IT: UiStrings = {
     relatedArticles: "Altri articoli della Guida di Viaggio",
     backToGuide: "← Torna alla Guida di Viaggio",
   },
+  packageDetail: {
+    eyebrow: "Pacchetto Maldive",
+    nightsDays: "Notti / Giorni",
+    fromPrice: "Da",
+    quoteOnRequest: "Preventivo su richiesta",
+    perPerson: "a persona",
+    perCouple: "a coppia",
+    perPackage: "a pacchetto",
+    overviewTitle: "Panoramica",
+    galleryTitle: "Galleria",
+    highlightsTitle: "Punti salienti",
+    bestForTitle: "Per chi è adatto questo pacchetto",
+    itineraryTitle: "Itinerario",
+    accommodationTitle: "Alloggio",
+    includedTitle: "Cosa è incluso",
+    excludedTitle: "Cosa non è incluso",
+    activitiesTitle: "Attività",
+    destinationTitle: "Destinazione",
+    faqTitle: "Domande frequenti",
+    relatedTitle: "Potrebbe interessarti anche",
+    exploreMoreTitle: "Esplora Altro delle Maldive",
+    allPackagesLink: "Tutti i Pacchetti delle Maldive",
+    englishVersionLink: "Visualizza questo pacchetto in inglese",
+  },
 };
 
 const RU: UiStrings = {
@@ -904,6 +1024,30 @@ const RU: UiStrings = {
     topic: "Тема",
     relatedArticles: "Другие статьи путеводителя",
     backToGuide: "← Назад к путеводителю",
+  },
+  packageDetail: {
+    eyebrow: "Пакет на Мальдивы",
+    nightsDays: "Ночей / Дней",
+    fromPrice: "От",
+    quoteOnRequest: "Цена по запросу",
+    perPerson: "на человека",
+    perCouple: "на пару",
+    perPackage: "за пакет",
+    overviewTitle: "Обзор",
+    galleryTitle: "Галерея",
+    highlightsTitle: "Особенности",
+    bestForTitle: "Для кого подходит этот пакет",
+    itineraryTitle: "Маршрут",
+    accommodationTitle: "Проживание",
+    includedTitle: "Что включено",
+    excludedTitle: "Что не включено",
+    activitiesTitle: "Активности",
+    destinationTitle: "Направление",
+    faqTitle: "Часто задаваемые вопросы",
+    relatedTitle: "Вам также может понравиться",
+    exploreMoreTitle: "Исследовать больше Мальдив",
+    allPackagesLink: "Все пакеты на Мальдивы",
+    englishVersionLink: "Посмотреть этот пакет на английском",
   },
 };
 
@@ -1057,6 +1201,30 @@ const JA: UiStrings = {
     relatedArticles: "ガイドの他の記事",
     backToGuide: "← ガイドに戻る",
   },
+  packageDetail: {
+    eyebrow: "モルディブパッケージ",
+    nightsDays: "泊 / 日",
+    fromPrice: "料金",
+    quoteOnRequest: "お見積りはお問い合わせください",
+    perPerson: "1人あたり",
+    perCouple: "1組あたり",
+    perPackage: "1パッケージあたり",
+    overviewTitle: "概要",
+    galleryTitle: "ギャラリー",
+    highlightsTitle: "ハイライト",
+    bestForTitle: "このパッケージがおすすめな方",
+    itineraryTitle: "旅程",
+    accommodationTitle: "宿泊施設",
+    includedTitle: "含まれるもの",
+    excludedTitle: "含まれないもの",
+    activitiesTitle: "アクティビティ",
+    destinationTitle: "目的地",
+    faqTitle: "よくある質問",
+    relatedTitle: "こちらもおすすめ",
+    exploreMoreTitle: "モルディブをもっと探る",
+    allPackagesLink: "モルディブの全パッケージ",
+    englishVersionLink: "英語版でこのパッケージを見る",
+  },
 };
 
 const ZH: UiStrings = {
@@ -1208,6 +1376,30 @@ const ZH: UiStrings = {
     topic: "主题",
     relatedArticles: "更多旅行指南文章",
     backToGuide: "← 返回旅行指南",
+  },
+  packageDetail: {
+    eyebrow: "马尔代夫套餐",
+    nightsDays: "晚 / 天",
+    fromPrice: "起价",
+    quoteOnRequest: "询价",
+    perPerson: "每人",
+    perCouple: "每对",
+    perPackage: "每套餐",
+    overviewTitle: "概览",
+    galleryTitle: "图库",
+    highlightsTitle: "亮点",
+    bestForTitle: "适合人群",
+    itineraryTitle: "行程",
+    accommodationTitle: "住宿",
+    includedTitle: "包含项目",
+    excludedTitle: "不包含项目",
+    activitiesTitle: "活动",
+    destinationTitle: "目的地",
+    faqTitle: "常见问题",
+    relatedTitle: "您可能还喜欢",
+    exploreMoreTitle: "探索更多马尔代夫",
+    allPackagesLink: "所有马尔代夫套餐",
+    englishVersionLink: "查看英文版套餐",
   },
 };
 

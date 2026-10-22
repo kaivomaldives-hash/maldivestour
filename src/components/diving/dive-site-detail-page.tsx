@@ -1,13 +1,16 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { getNearbyAccommodations } from "@/lib/accommodations/repository";
 import { ActivityCard } from "@/components/activity/activity-card";
+import { WhereToStaySection } from "@/components/accommodation/where-to-stay-section";
+import { DiveSiteCard } from "@/components/diving/dive-site-card";
 import { LocationCommentsSection } from "@/components/locations/location-comments-section";
 import { LocationGallerySection } from "@/components/locations/location-gallery-section";
 import { LocationMediaUploadForm } from "@/components/locations/location-media-upload-form";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
-import { getDiveSiteBySlug, getDivingActivitiesAtSite } from "@/lib/diving/repository";
+import { getDiveSiteBySlug, getDiveSitesByAtoll, getDivingActivitiesAtSite } from "@/lib/diving/repository";
 import { getPublishedLocationComments } from "@/lib/locations/comments/repository";
 import { getMediaForNode } from "@/lib/media/repository";
 import { breadcrumbJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
@@ -26,12 +29,15 @@ export async function DiveSiteDetailPage({ slug }: { slug: string }) {
   const site = await getDiveSiteBySlug(slug);
   if (!site) notFound();
 
-  const [activities, comments, mediaItems] = await Promise.all([
+  const [activities, comments, mediaItems, nearbyStays, sitesInAtoll] = await Promise.all([
     getDivingActivitiesAtSite(site.id),
     getPublishedLocationComments(site.id),
     getMediaForNode(site.id),
+    getNearbyAccommodations({ islandId: site.nearbyIsland?.id ?? null, atollId: site.atoll?.id ?? null }),
+    site.atoll ? getDiveSitesByAtoll(site.atoll.id) : Promise.resolve([]),
   ]);
   const galleryImages = mediaItems.filter((m) => m.role === "gallery").map((m) => m.asset);
+  const nearbySites = sitesInAtoll.filter((s) => s.id !== site.id).slice(0, 3);
 
   return (
     <main>
@@ -149,13 +155,45 @@ export async function DiveSiteDetailPage({ slug }: { slug: string }) {
 
       <LocationCommentsSection locationId={site.id} comments={comments} />
 
-      <p className="mt-10 text-sm text-neutral-600">
-        Planning a trip?{" "}
-        <Link href="/maldives/diving/" className="font-medium text-maldives-600 hover:underline">
-          See all Maldives diving activities, packages and dive sites
-        </Link>
-        .
-      </p>
+      {nearbySites.length > 0 && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">
+            More dive sites in {site.atoll?.title ?? "the area"}
+          </h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {nearbySites.map((nearbySite) => (
+              <DiveSiteCard key={nearbySite.id} site={nearbySite} />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <WhereToStaySection nearby={nearbyStays} islandTitle={site.nearbyIsland?.title ?? null} atollTitle={site.atoll?.title ?? null} />
+
+      <section className="mt-10 border-t border-neutral-200 pt-10">
+        <h2 className="text-xl font-semibold text-ocean-900">Explore More Maldives Diving</h2>
+        <p className="mt-2 text-sm text-neutral-600">
+          Planning a trip? See all Maldives diving activities, packages and dive sites, or browse the links below.
+        </p>
+        <nav aria-label="Related Maldives diving links" className="mt-4 flex flex-wrap gap-2">
+          {[
+            { href: "/maldives/diving/", label: "All Diving Activities & Sites" },
+            { href: "/maldives/dive-sites/", label: "All Dive Sites" },
+            { href: "/maldives/packages/diving/", label: "Diving Packages" },
+            { href: "/maldives/packages/liveaboard/", label: "Liveaboard Packages" },
+            ...(site.atoll ? [{ href: `/maldives/atolls/${site.atoll.slug}/`, label: `${site.atoll.title} Atoll` }] : []),
+            { href: "/maldives/resorts/", label: "Resorts" },
+          ].map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+      </section>
       </div>
     </main>
   );

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { Price } from "@/components/currency/price";
+import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
 import { RouteGallerySection } from "@/components/transfers/route-gallery-section";
 import { RouteMap } from "@/components/transfers/route-map";
 import { RouteVideo } from "@/components/transfers/route-video";
@@ -150,6 +151,7 @@ export default async function LocaleTransferRouteDetailPage({ params }: { params
     getEnglishSlug(route.id),
     reverseEnglishSlug ? getTransferRouteBySlug(reverseEnglishSlug) : Promise.resolve(null),
   ]);
+  const localePaths = await getEntityLocalePaths(route.id, englishSlug ?? route.slug, "/maldives/transfers/");
   const galleryImages = media.filter((m) => m.role === "gallery").map((m) => m.asset);
 
   const relatedRoutes = [...originRoutes, ...destinationRoutes, ...atollRoutes]
@@ -177,6 +179,7 @@ export default async function LocaleTransferRouteDetailPage({ params }: { params
 
   return (
     <main>
+      <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath="/maldives/transfers/" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(breadcrumb) }} />
 
       <PageHero

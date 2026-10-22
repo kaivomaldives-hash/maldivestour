@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
+import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
 import { PackageCard } from "@/components/packages/package-card";
 import { Badge } from "@/components/ui/badge";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
@@ -11,6 +12,7 @@ import { LocationMap } from "@/components/locations/location-map";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { bookingCta, FISHING_PACKAGE_CTA } from "@/lib/bookings/copy";
+import { getEntityLocalePaths } from "@/lib/i18n/repository";
 import { applyContextualLinks, escapeHtml } from "@/lib/linking/contextual-links";
 import { buildEntityLinkMap } from "@/lib/linking/entity-link-map";
 import { MFH_PRICE_TABLES } from "@/lib/packages/mfh-price-tables";
@@ -91,7 +93,11 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
   const pkg = await getPackageViewBySlug(slug);
   if (!pkg) notFound();
 
-  const [related, entityMap] = await Promise.all([getRelatedPackageViews(pkg, 6), buildEntityLinkMap()]);
+  const [related, entityMap, localePaths] = await Promise.all([
+    getRelatedPackageViews(pkg, 6),
+    buildEntityLinkMap(),
+    getEntityLocalePaths(pkg.id, pkg.slug, "/maldives/packages/"),
+  ]);
   const youtubeId = pkg.youtubeId ? extractYoutubeId(pkg.youtubeId) : null;
   const descriptionHtml = pkg.description
     ? applyContextualLinks(`<p>${escapeHtml(pkg.description)}</p>`, entityMap, { excludeHref: `/maldives/packages/${pkg.slug}/` })
@@ -99,6 +105,7 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
 
   return (
     <main>
+      <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath="/maldives/packages/" />
       {packageJsonLd(pkg).map((entry, i) => (
         <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(entry) }} />
       ))}

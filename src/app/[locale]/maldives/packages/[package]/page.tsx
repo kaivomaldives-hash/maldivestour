@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
 import { PackageCard } from "@/components/packages/package-card";
 import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
@@ -92,6 +93,7 @@ export default async function LocalePackageDetailPage({ params }: { params: Prom
   const [related, englishSlug] = await Promise.all([getRelatedPackageViews(pkg, 6), getEnglishSlug(pkg.id)]);
   const youtubeId = pkg.youtubeId ? extractYoutubeId(pkg.youtubeId) : null;
   const priceTypeLabel = pkg.priceType === "per-person" ? d.perPerson : pkg.priceType === "per-couple" ? d.perCouple : pkg.priceType === "per-package" ? d.perPackage : null;
+  const localePaths = await getEntityLocalePaths(pkg.id, englishSlug ?? pkg.slug, "/maldives/packages/");
 
   const breadcrumb = breadcrumbJsonLd(
     [
@@ -104,6 +106,7 @@ export default async function LocalePackageDetailPage({ params }: { params: Prom
 
   return (
     <main>
+      <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath="/maldives/packages/" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(breadcrumb) }} />
 
       <PageHero

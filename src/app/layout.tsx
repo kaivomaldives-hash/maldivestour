@@ -6,7 +6,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { CurrencyProvider } from "@/components/currency/currency-context";
-import { ArticleLocaleLinksProvider } from "@/components/i18n/article-locale-links-context";
+import { EntityLocaleLinksProvider } from "@/components/i18n/entity-locale-links-context";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -89,14 +89,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           }}
         />
         <CurrencyProvider rates={exchangeRates}>
-          <ArticleLocaleLinksProvider>
+          <EntityLocaleLinksProvider>
             <SiteHeader availableLocales={availableLocales} />
             {/* pb-20 clears the fixed mobile bottom nav (h-16 + safe-area inset)
                 on small screens; lg:pb-0 removes it once that nav is hidden. */}
             <div className="flex flex-1 flex-col pb-20 lg:pb-0">{children}</div>
             <SiteFooter availableLocales={availableLocales} />
             <MobileBottomNav />
-          </ArticleLocaleLinksProvider>
+          </EntityLocaleLinksProvider>
         </CurrencyProvider>
         <Analytics />
         <SpeedInsights />

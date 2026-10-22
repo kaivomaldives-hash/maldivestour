@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
 import { ActivityCard } from "@/components/activity/activity-card";
 import { ArticleVideoSection } from "@/components/articles/article-video-section";
-import { RegisterArticleLocaleLinks } from "@/components/i18n/article-locale-links-context";
+import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
 import { PackageCard } from "@/components/packages/package-card";
 import { TransferRouteCard } from "@/components/transfers/transfer-route-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
@@ -56,7 +56,7 @@ export async function ArticleDetailPage({ slug }: { slug: string }) {
 
   return (
     <main>
-      <RegisterArticleLocaleLinks paths={localePaths} />
+      <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath="/maldives/travel-guide/" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(articleJsonLd(article)) }} />
 
       <PageHero

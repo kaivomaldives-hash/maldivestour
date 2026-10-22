@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { BookingToggle } from "@/components/bookings/booking-toggle";
 import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
+import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
 import { PackageCard } from "@/components/packages/package-card";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { RouteGallerySection } from "@/components/transfers/route-gallery-section";
@@ -299,7 +300,7 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
   if (!route) notFound();
 
   const reverseSlug = route.origin && route.destination ? `${route.destination.slug}-to-${route.origin.slug}` : null;
-  const [reverseRoute, packages, originRoutes, destinationRoutes, atollRoutes, reviews, originDetail, destinationDetail, originAtoll, media] = await Promise.all([
+  const [reverseRoute, packages, originRoutes, destinationRoutes, atollRoutes, reviews, originDetail, destinationDetail, originAtoll, media, localePaths] = await Promise.all([
     reverseSlug ? getTransferRouteBySlug(reverseSlug) : Promise.resolve(null),
     getPackageViewsByTransferRoute(route.id),
     route.origin ? getTransferRoutesByOrigin(route.origin.id) : Promise.resolve([]),
@@ -310,6 +311,7 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
     route.destination ? getLocationBySlug(route.destination.slug) : Promise.resolve(null),
     route.origin?.parentId ? getLocationSummaryById(route.origin.parentId) : Promise.resolve(null),
     getMediaForNode(route.id),
+    getEntityLocalePaths(route.id, route.slug, "/maldives/transfers/"),
   ]);
   const galleryImages = media.filter((m) => m.role === "gallery").map((m) => m.asset);
 
@@ -324,6 +326,7 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
 
   return (
     <main>
+      <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath="/maldives/transfers/" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(routeJsonLd(route)) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(routeVideoJsonLd()) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(faqJsonLd(faqs)) }} />

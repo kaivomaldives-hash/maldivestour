@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ArticleVideoSection } from "@/components/articles/article-video-section";
-import { RegisterArticleLocaleLinks } from "@/components/i18n/article-locale-links-context";
+import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getTranslatedArticleBySlug } from "@/lib/articles/repository";
@@ -116,7 +116,7 @@ export default async function LocaleArticleDetailPage({ params }: { params: Prom
 
   return (
     <main>
-      <RegisterArticleLocaleLinks paths={localePaths} />
+      <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath="/maldives/travel-guide/" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(articleJsonLd(locale, article)) }} />
 
       <PageHero

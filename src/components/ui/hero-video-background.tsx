@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { preload } from "react-dom";
 
 export interface HeroVideoSource {
   mp4: string;
@@ -44,13 +45,28 @@ export interface HeroVideoSources {
  * fallback <img> below) shows immediately either way, before either
  * check has run.
  */
+const MOBILE_MEDIA = "(max-width: 639px)";
+const DESKTOP_MEDIA = "(min-width: 640px)";
+
+function useMediaQuery(query: string): boolean {
+  return useSyncExternalStore(
+    (onChange) => {
+      const list = window.matchMedia(query);
+      list.addEventListener("change", onChange);
+      return () => list.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(query).matches,
+    () => false,
+  );
+}
+
 export function HeroVideoBackground({ source, overlayClassName }: { source: HeroVideoSources; overlayClassName?: string }) {
-  const [reducedMotion, setReducedMotion] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  );
-  const [isMobile, setIsMobile] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(max-width: 639px)").matches,
-  );
+  // Both read false during SSR and hydration (getServerSnapshot), then
+  // the real value -- so hydration never swaps anything the server
+  // rendered. The poster doesn't depend on them at all (see the <picture>
+  // below); only the later choice of video source does.
+  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const isMobile = useMediaQuery(MOBILE_MEDIA);
   // Hides the whole layer on a genuine load failure (e.g. the files
   // haven't actually been uploaded to Storage yet) so a broken-image/
   // broken-video icon never sits on top of the page — PageHero/the
@@ -69,20 +85,6 @@ export function HeroVideoBackground({ source, overlayClassName }: { source: Hero
   const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const handleChange = (event: MediaQueryListEvent) => setReducedMotion(event.matches);
-    query.addEventListener("change", handleChange);
-    return () => query.removeEventListener("change", handleChange);
-  }, []);
-
-  useEffect(() => {
-    const query = window.matchMedia("(max-width: 639px)");
-    const handleChange = (event: MediaQueryListEvent) => setIsMobile(event.matches);
-    query.addEventListener("change", handleChange);
-    return () => query.removeEventListener("change", handleChange);
-  }, []);
-
-  useEffect(() => {
     const w = window as Window & { requestIdleCallback?: (cb: () => void) => number; cancelIdleCallback?: (id: number) => void };
     if (w.requestIdleCallback) {
       const id = w.requestIdleCallback(() => setVideoReady(true));
@@ -92,17 +94,32 @@ export function HeroVideoBackground({ source, overlayClassName }: { source: Hero
     return () => window.clearTimeout(id);
   }, []);
 
+  // The poster is the LCP element. It used to be chosen from `isMobile`,
+  // which the server can't know -- so the server always sent the desktop
+  // poster and phones only requested theirs after hydration (~1s of LCP
+  // "resource load delay" in Lighthouse). Now the HTML picks it: a <link
+  // rel=preload> per breakpoint in <head> (React hoists preload()) and a
+  // <picture> below, so the right file starts downloading as soon as the
+  // HTML arrives, with no JS involved.
+  const { desktop, mobile } = source;
+  if (mobile) {
+    preload(mobile.poster, { as: "image", fetchPriority: "high", media: MOBILE_MEDIA });
+    preload(desktop.poster, { as: "image", fetchPriority: "high", media: DESKTOP_MEDIA });
+  } else {
+    preload(desktop.poster, { as: "image", fetchPriority: "high" });
+  }
+
   if (failed) return null;
 
-  const active = isMobile && source.mobile ? source.mobile : source.desktop;
+  const active = isMobile && mobile ? mobile : desktop;
 
   return (
     <div className="absolute inset-0 overflow-hidden">
       {reducedMotion || !videoReady ? (
-        // eslint-disable-next-line @next/next/no-img-element -- a plain full-bleed background image, not page content; next/image's fixed intrinsic sizing doesn't fit this absolutely-positioned cover layer.
-        <img
-          key={active.poster}
-          src={active.poster}
+        <picture>
+          {mobile && <source media={MOBILE_MEDIA} srcSet={mobile.poster} />}
+          <img
+          src={desktop.poster}
           alt=""
           // fetchPriority: this poster is the hero band's LCP candidate —
           // without a priority hint it competes on a level footing with
@@ -111,7 +128,8 @@ export function HeroVideoBackground({ source, overlayClassName }: { source: Hero
           fetchPriority="high"
           className="h-full w-full object-cover"
           onError={() => setFailed(true)}
-        />
+          />
+        </picture>
       ) : (
         <video
           key={active.mp4}

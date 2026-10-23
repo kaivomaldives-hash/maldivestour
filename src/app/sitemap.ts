@@ -22,6 +22,8 @@ import { getSiteUrl, hreflangAlternates, localizedCanonicalUrl } from "@/lib/seo
 import { getSpeedboats } from "@/lib/speedboats/repository";
 import { getSurfBreaks } from "@/lib/surfing/repository";
 import { getTransferRoutes } from "@/lib/transfers/repository";
+import { PACKAGE_CATEGORY_LOCALES } from "@/lib/i18n/package-categories";
+import { PACKAGE_CATEGORIES } from "@/lib/packages/view-types";
 
 /**
  * Task 16 §30: the sitemap must contain only real, currently-live
@@ -207,6 +209,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/maldives/resorts/": STAYS_STRINGS_LOCALES,
     "/maldives/hotels/": STAYS_STRINGS_LOCALES,
     "/maldives/guesthouses/": STAYS_STRINGS_LOCALES,
+    ...Object.fromEntries(PACKAGE_CATEGORIES.map((c) => [`/maldives/packages/${c.slug}/`, PACKAGE_CATEGORY_LOCALES])),
   };
 
   const entries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => {

@@ -1,0 +1,15 @@
+{
+  "/maldives/packages/": {
+    "luxury": { "de": "luxus", "es": "lujo", "it": "lusso", "ru": "lyuks", "ja": "rakushari", "zh": "haohua" },
+    "family": { "de": "familie", "es": "familia", "it": "famiglia", "ru": "semeynye", "ja": "famirii", "zh": "qinzi" },
+    "adults-only": { "de": "nur-erwachsene", "es": "solo-adultos", "it": "solo-adulti", "ru": "tolko-dlya-vzroslykh", "ja": "otona-gentei", "zh": "jin-xian-chengren" },
+    "long-stay": { "de": "langzeit", "es": "estancias-largas", "it": "soggiorni-lunghi", "ru": "dlitelnoe-prebyvanie", "ja": "chouki-taizai", "zh": "changzhu" },
+    "budget": { "de": "budget", "es": "economicos", "it": "economici", "ru": "byudzhetnye", "ja": "kakuyasu", "zh": "jingji" },
+    "honeymoon": { "de": "flitterwochen", "es": "luna-de-miel", "it": "luna-di-miele", "ru": "medovyy-mesyats", "ja": "hanemuun", "zh": "miyue" },
+    "solo": { "de": "alleinreisende", "es": "viajeros-solos", "it": "viaggiatori-singoli", "ru": "dlya-puteshestvuyushchikh-v-odinochku", "ja": "hitori-tabi", "zh": "dulv" },
+    "diving": { "de": "tauchen", "es": "buceo", "it": "immersioni", "ru": "dayving", "ja": "daibingu", "zh": "qianshui" },
+    "fishing": { "de": "angeln", "es": "pesca", "it": "pesca", "ru": "rybalka", "ja": "tsuri", "zh": "diaoyu" },
+    "surfing": { "de": "surfen", "es": "surf", "it": "surf", "ru": "serfing", "ja": "saafin", "zh": "chonglang" },
+    "liveaboard": { "de": "tauchsafari", "es": "cruceros-de-buceo", "it": "crociere-sub", "ru": "dayv-safari", "ja": "raibuaboodo", "zh": "qianshui-chuansu" }
+  }
+}

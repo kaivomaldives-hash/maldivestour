@@ -1,5 +1,7 @@
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "@/lib/i18n/locales";
 
+import leafPages from "./localized-leaf-pages.json";
+
 /**
  * Single source of truth for every [locale] route segment beyond the
  * bare `/{locale}` prefix -- next.config.ts's rewrites/redirects,
@@ -147,6 +149,28 @@ export const LOCALIZED_HUB_PREFIXES: Record<string, Partial<Record<Locale, strin
     zh: "/maerdaifu/jingdian/",
   },
 };
+
+/**
+ * Single pages nested under a hub (package styles, activity types,
+ * transfer types, fishing techniques...) that have their own translated
+ * page: parent hub -> English segment -> per-locale last segment. Shared
+ * with next.config.ts (a plain JSON file, so its config loader can read
+ * it too). Merged into LOCALIZED_HUB_PREFIXES below as fully composed
+ * prefixes, so localizeHubPath/localizedSiteHref/the language switcher
+ * treat them exactly like hubs.
+ */
+export const LOCALIZED_LEAF_PAGES = leafPages as Record<string, Record<string, Partial<Record<Locale, string>>>>;
+
+for (const [parent, leaves] of Object.entries(LOCALIZED_LEAF_PAGES)) {
+  for (const [segment, words] of Object.entries(leaves)) {
+    const composed: Partial<Record<Locale, string>> = {};
+    for (const [locale, word] of Object.entries(words) as Array<[Locale, string]>) {
+      const parentPrefix = LOCALIZED_HUB_PREFIXES[parent]?.[locale];
+      if (parentPrefix) composed[locale] = `${parentPrefix}${word}/`;
+    }
+    LOCALIZED_HUB_PREFIXES[`${parent}${segment}/`] = composed;
+  }
+}
 
 // Longest (most specific) prefix first, so "/maldives/packages/" is
 // tried before the more general "/maldives/" -- otherwise the shorter

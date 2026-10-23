@@ -148,7 +148,7 @@ export default async function LocalePackagesHubPage({ params }: { params: Promis
             {PACKAGE_CATEGORIES.map((c) => (
               <Link
                 key={c.slug}
-                href={`/maldives/packages/${c.slug}/`}
+                href={L.href(`/maldives/packages/${c.slug}/`)}
                 className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
               >
                 {h[CATEGORY_LABEL_KEY[c.slug]]}

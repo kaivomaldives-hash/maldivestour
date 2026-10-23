@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+import LEAF_PAGES from "./src/lib/i18n/localized-leaf-pages.json";
+
 /**
  * Localized URL segments for the translated [locale] hubs -- must stay
  * in sync with src/lib/i18n/hub-paths.ts's LOCALIZED_HUB_PREFIXES (the
@@ -52,8 +54,29 @@ function localizedPathFor(hub: (typeof LOCALIZED_HUBS)[number], locale: string):
 // localize.
 const ORDERED_HUBS = [...LOCALIZED_HUBS].sort((a, b) => englishPathFor(b).length - englishPathFor(a).length);
 
+/** Translated single pages under a hub (src/lib/i18n/localized-leaf-pages.json,
+ * also read by hub-paths.ts): [englishPath, localizedPath] per locale.
+ * Exact-match rules, emitted BEFORE the hubs' `:path*` wildcards so the
+ * parent hub's rule doesn't swallow them. */
+function leafPairs(locale: string): Array<[string, string]> {
+  const pairs: Array<[string, string]> = [];
+  for (const [parentPath, leaves] of Object.entries(LEAF_PAGES as Record<string, Record<string, Partial<Record<string, string>>>>)) {
+    const parent = LOCALIZED_HUBS.find((h) => englishPathFor(h) === parentPath);
+    const parentLocalized = parent && localizedPathFor(parent, locale);
+    if (!parentLocalized) continue;
+    for (const [segment, words] of Object.entries(leaves)) {
+      const word = words[locale];
+      if (word) pairs.push([`${parentPath}${segment}/`, `${parentLocalized}${word}/`]);
+    }
+  }
+  return pairs;
+}
+
 function buildHubRewrites() {
   const rules: Array<{ source: string; destination: string }> = [];
+  for (const locale of LOCALES) {
+    for (const [englishPath, localizedPath] of leafPairs(locale)) rules.push({ source: `/${locale}${localizedPath}`, destination: `/${locale}${englishPath}` });
+  }
   for (const locale of LOCALES) {
     for (const hub of ORDERED_HUBS) {
       const localizedPath = localizedPathFor(hub, locale);
@@ -68,6 +91,19 @@ function buildHubRewrites() {
 
 function buildHubRedirects() {
   const rules: Array<{ source: string; destination: string; permanent: true }> = [];
+  for (const locale of LOCALES) {
+    for (const [englishPath, localizedPath] of leafPairs(locale)) {
+      if (englishPath === localizedPath) continue;
+      rules.push({ source: `/${locale}${englishPath}`, destination: `/${locale}${localizedPath}`, permanent: true });
+      // The English last segment under the localized parent (e.g.
+      // /de/malediven/pakete/honeymoon/) would otherwise also serve the
+      // page via the parent hub's wildcard rewrite -- one URL per page.
+      const englishSegmentUnderLocalizedParent = `${localizedPath.slice(0, localizedPath.slice(0, -1).lastIndexOf("/") + 1)}${englishPath.split("/").filter(Boolean).pop()}/`;
+      if (englishSegmentUnderLocalizedParent !== localizedPath) {
+        rules.push({ source: `/${locale}${englishSegmentUnderLocalizedParent}`, destination: `/${locale}${localizedPath}`, permanent: true });
+      }
+    }
+  }
   for (const locale of LOCALES) {
     for (const hub of ORDERED_HUBS) {
       const localizedPath = localizedPathFor(hub, locale);

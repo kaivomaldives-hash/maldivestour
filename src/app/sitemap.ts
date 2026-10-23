@@ -22,6 +22,7 @@ import { getSiteUrl, hreflangAlternates, localizedCanonicalUrl } from "@/lib/seo
 import { getSpeedboats } from "@/lib/speedboats/repository";
 import { getSurfBreaks } from "@/lib/surfing/repository";
 import { getTransferRoutes } from "@/lib/transfers/repository";
+import { ACTIVITY_CATEGORY_LOCALES, ACTIVITY_CATEGORY_SLUGS } from "@/lib/i18n/activity-categories";
 import { PACKAGE_CATEGORY_LOCALES } from "@/lib/i18n/package-categories";
 import { PACKAGE_CATEGORIES } from "@/lib/packages/view-types";
 
@@ -210,6 +211,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/maldives/hotels/": STAYS_STRINGS_LOCALES,
     "/maldives/guesthouses/": STAYS_STRINGS_LOCALES,
     ...Object.fromEntries(PACKAGE_CATEGORIES.map((c) => [`/maldives/packages/${c.slug}/`, PACKAGE_CATEGORY_LOCALES])),
+    ...Object.fromEntries(ACTIVITY_CATEGORY_SLUGS.map((slug) => [`/maldives/${slug}/`, ACTIVITY_CATEGORY_LOCALES])),
   };
 
   const entries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => {

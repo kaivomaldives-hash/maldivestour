@@ -85,7 +85,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
     getActivities({ pageSize: 6 }),
     getAttractions({ pageSize: 6 }),
     getTransferRoutes({ pageSize: 4 }),
-    getFeaturedPackageViews(6),
+    getFeaturedPackageViews(18).then((views) => views.filter((v) => !v.isDemo).slice(0, 6)),
     getRecentArticles(3),
     getLinkLocalizer(locale),
   ]);

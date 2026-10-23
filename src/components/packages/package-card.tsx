@@ -17,6 +17,10 @@ const PRICE_TYPE_LABEL: Record<string, string> = {
 };
 
 export function PackageCard({ pkg, localize }: { pkg: PackageView; localize?: LinkLocalizer }) {
+  // Demo/sample packages are never translated (their [locale] URL 404s,
+  // see getTranslatedPackageViewBySlug) -- on a translated page they're
+  // left out rather than linking across to English.
+  if (localize && pkg.isDemo) return null;
   const englishHref = `/maldives/packages/${pkg.slug}/`;
   const href = localize ? localize.href(englishHref) : englishHref;
   const title = localize ? localize.title(englishHref, pkg.title) : pkg.title;

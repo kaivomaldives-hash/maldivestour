@@ -99,7 +99,7 @@ export default async function LocalePackageDetailPage({ params }: { params: Prom
   const ui = getUiStrings(locale);
   const d = ui.packageDetail;
 
-  const [related, englishSlug] = await Promise.all([getRelatedPackageViews(pkg, 6), getEnglishSlug(pkg.id)]);
+  const [related, englishSlug] = await Promise.all([getRelatedPackageViews(pkg, 18).then((views) => views.filter((v) => !v.isDemo).slice(0, 6)), getEnglishSlug(pkg.id)]);
   const youtubeId = pkg.youtubeId ? extractYoutubeId(pkg.youtubeId) : null;
   const priceTypeLabel = pkg.priceType === "per-person" ? d.perPerson : pkg.priceType === "per-couple" ? d.perCouple : pkg.priceType === "per-package" ? d.perPackage : null;
   const localePaths = await getEntityLocalePaths(pkg.id, englishSlug ?? pkg.slug, "/maldives/packages/");

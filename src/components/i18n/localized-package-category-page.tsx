@@ -63,7 +63,7 @@ export async function LocalizedPackageCategoryPage({ locale, category }: { local
   const englishPath = `/maldives/packages/${category}/`;
 
   const [allViews, L] = await Promise.all([getAllPackageViews(), getLinkLocalizer(locale)]);
-  const packages = sortPackageViews(filterPackageViews(allViews, { category }), "recommended");
+  const packages = sortPackageViews(filterPackageViews(allViews, { category }), "recommended").filter((v) => !v.isDemo);
 
   const breadcrumbs = [
     { label: ui.breadcrumbHome, href: `/${locale}/` },

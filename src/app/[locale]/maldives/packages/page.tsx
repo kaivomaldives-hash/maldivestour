@@ -106,7 +106,7 @@ export default async function LocalePackagesHubPage({ params }: { params: Promis
   const ui = getUiStrings(locale);
   const h = ui.packagesHub;
 
-  const featured = await getFeaturedPackageViews(8);
+  const featured = (await getFeaturedPackageViews(24)).filter((v) => !v.isDemo).slice(0, 8);
 
   const L = await getLinkLocalizer(locale);
 

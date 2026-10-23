@@ -82,7 +82,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Diet",
     description:
       "With their distinctive disk-shaped bodies and vibrant patterns, butterflyfish are among the most recognizable reef fish in the Maldives. The archipelago is home to over 40 species, including the iconic Threadfin Butterflyfish and the Raccoon Butterflyfish. They're often seen in pairs, meticulously picking at coral polyps with their specialized snouts.",
-    image: asset("5952e704-4f3e-7b97-3c86-719cf879e437", "legacy/fishing/images/butterfly-fish.webp", "Butterflyfish in the Maldives"),
+    image: asset("5952e704-4f3e-7b97-3c86-719cf879e437", "opt/legacy/fishing/images/butterfly-fish.webp", "Butterflyfish in the Maldives"),
   },
   {
     slug: "angelfish",
@@ -95,7 +95,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Diet",
     description:
       "Angelfish are among the most beautiful fish in Maldivian waters, with their vibrant colors and elegant fins. The Emperor Angelfish undergoes a remarkable transformation from its juvenile \"blue ring\" pattern to the striking yellow and blue adult form. Other common species include the Regal Angelfish and the Semicircle Angelfish.",
-    image: asset("8f209f81-bd00-a318-68ea-c7841aedbb3a", "legacy/fishing/images/angel-fish.webp", "Emperor Angelfish in the Maldives"),
+    image: asset("8f209f81-bd00-a318-68ea-c7841aedbb3a", "opt/legacy/fishing/images/angel-fish.webp", "Emperor Angelfish in the Maldives"),
   },
   {
     slug: "parrotfish",
@@ -108,7 +108,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Diet",
     description:
       "Named for their fused teeth that resemble a parrot's beak, these colorful fish play a crucial role in reef health by cleaning algae and creating sand. The Maldives hosts numerous species, including the Steephead Parrotfish and the Bullethead Parrotfish. Many parrotfish species change color and even gender as they mature.",
-    image: asset("900cd205-4d09-fc07-d87b-cc79a3ed2bb9", "legacy/fishing/images/parrot-fish.webp", "Parrotfish in the Maldives"),
+    image: asset("900cd205-4d09-fc07-d87b-cc79a3ed2bb9", "opt/legacy/fishing/images/parrot-fish.webp", "Parrotfish in the Maldives"),
   },
   {
     slug: "wrasse",
@@ -121,7 +121,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Diet",
     description:
       "The wrasse family includes some of the most diverse and colorful fish in the Maldives. From the tiny Cleaner Wrasse that sets up \"cleaning stations\" for larger fish to the massive Napoleon Wrasse (which can grow to over 2 meters), these fish are fascinating to observe. The Napoleon Wrasse is protected in the Maldives due to its vulnerable conservation status.",
-    image: asset("7f9725e7-fd00-b7e2-dd37-608d3de55985", "legacy/fishing/images/napoleon-wrasse.jpg", "Napoleon Wrasse in the Maldives"),
+    image: asset("7f9725e7-fd00-b7e2-dd37-608d3de55985", "opt/legacy/fishing/images/napoleon-wrasse.webp", "Napoleon Wrasse in the Maldives"),
   },
   {
     slug: "triggerfish",
@@ -134,7 +134,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Diet",
     description:
       "Known for their oval-shaped bodies and powerful jaws, triggerfish are common throughout Maldivian reefs. The Titan Triggerfish is the largest species and can be territorial, especially during nesting season. The Clown Triggerfish, with its polka-dot pattern, is one of the most visually striking fish in the ocean.",
-    image: asset("a0f822d5-ef1d-096a-7733-9c491dbebe6e", "legacy/fishing/images/trigger-fish.webp", "Titan Triggerfish in the Maldives"),
+    image: asset("a0f822d5-ef1d-096a-7733-9c491dbebe6e", "opt/legacy/fishing/images/trigger-fish.webp", "Titan Triggerfish in the Maldives"),
   },
   {
     slug: "anemonefish",
@@ -147,7 +147,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Diet",
     description:
       "Made famous by the movie \"Finding Nemo,\" clownfish or anemonefish are beloved for their bright orange coloration and symbiotic relationship with sea anemones. The Maldives is home to several species, including the Clark's Anemonefish and the Maldives Anemonefish, which is endemic to the region.",
-    image: asset("ed076800-70ea-de89-765c-9052120f3f95", "legacy/fishing/images/clownfish-maldives.webp", "Clownfish in the Maldives"),
+    image: asset("ed076800-70ea-de89-765c-9052120f3f95", "opt/legacy/fishing/images/clownfish-maldives.webp", "Clownfish in the Maldives"),
   },
 
   // Pelagic Fish
@@ -162,7 +162,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Best Season",
     description:
       "Yellowfin tuna are powerful, fast-swimming predators identified by their bright yellow fins and streamlined bodies. They're a primary target for sport fishermen in the Maldives and are also commercially important. These fish can be found around the edges of atolls and in open water, often hunting in schools and capable of impressive speeds.",
-    image: asset("572c610a-06c9-2ce3-7a45-a3e102138d7c", "uploads/assets/uploads/fishing/images/gallery/yellowfin-tuna.webp", "Yellowfin Tuna in the Maldives"),
+    image: asset("572c610a-06c9-2ce3-7a45-a3e102138d7c", "opt/uploads/assets/uploads/fishing/images/gallery/yellowfin-tuna.webp", "Yellowfin Tuna in the Maldives"),
   },
   {
     slug: "skipjack-tuna",
@@ -175,7 +175,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Best Season",
     description:
       "Skipjack tuna are the most abundant tuna species in Maldivian waters and form the backbone of the traditional pole-and-line fishing industry. They're identified by their distinctive dark stripes on the lower body. These fast-growing fish travel in large schools and are often found feeding near the surface, making them accessible to traditional fishing methods.",
-    image: asset("b01af010-f4a9-7461-9134-cfa8377a9e49", "legacy/images/fishing/tuna-fish-in-maldives.webp", "Skipjack Tuna in the Maldives"),
+    image: asset("b01af010-f4a9-7461-9134-cfa8377a9e49", "opt/legacy/images/fishing/tuna-fish-in-maldives.webp", "Skipjack Tuna in the Maldives"),
   },
   {
     slug: "giant-trevally",
@@ -188,7 +188,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Best Season",
     description:
       "The Giant Trevally or GT is the ultimate sport fishing challenge in the Maldives. These powerful predators are known for their explosive strikes and incredible fighting strength. Silver-gray in color, they patrol reef edges and channels, hunting smaller fish with remarkable aggression. The Maldives is one of the best destinations worldwide for targeting trophy-sized GTs.",
-    image: asset("9caab764-5e7b-5cf3-dc39-30bb3b9a98d8", "legacy/images/fishing/giant-trevally-fish.webp", "Giant Trevally in the Maldives"),
+    image: asset("9caab764-5e7b-5cf3-dc39-30bb3b9a98d8", "opt/legacy/images/fishing/giant-trevally-fish.webp", "Giant Trevally in the Maldives"),
   },
   {
     slug: "dogtooth-tuna",
@@ -201,7 +201,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Best Season",
     description:
       "Named for their prominent, dog-like teeth, Dogtooth Tuna are powerful predators that inhabit the deeper reef slopes and drop-offs around Maldivian atolls. They're known for their incredible fighting ability and tendency to dive deep when hooked. These solitary hunters are prized catches for experienced anglers using jigging techniques.",
-    image: asset("390aad4e-f870-8e2c-0869-bbb6906dba92", "legacy/fishing/images/dogtooth-tuna-in-maldives.webp", "Dogtooth Tuna in the Maldives"),
+    image: asset("390aad4e-f870-8e2c-0869-bbb6906dba92", "opt/legacy/fishing/images/dogtooth-tuna-in-maldives.webp", "Dogtooth Tuna in the Maldives"),
   },
   {
     slug: "wahoo",
@@ -214,7 +214,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Best Season",
     description:
       "Wahoo are among the fastest fish in the ocean, capable of speeds up to 80 km/h. Their streamlined, torpedo-shaped bodies and razor-sharp teeth make them formidable predators. In the Maldives, they're often found near the edges of atolls and are prized for both their fighting ability and excellent taste. Trolling is the most effective method for targeting wahoo.",
-    image: asset("e5ffdf3e-f374-906a-92b3-61c4c7190d3c", "uploads/assets/uploads/fishing/images/gallery/wahoo-in-maldives.webp", "Wahoo in the Maldives"),
+    image: asset("e5ffdf3e-f374-906a-92b3-61c4c7190d3c", "opt/uploads/assets/uploads/fishing/images/gallery/wahoo-in-maldives.webp", "Wahoo in the Maldives"),
   },
   {
     slug: "mahi-mahi",
@@ -227,7 +227,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Best Season",
     description:
       "With their vibrant colors and distinctive blunt head, Mahi-Mahi are among the most beautiful pelagic fish. Males develop a prominent forehead as they mature. These fast-growing fish are often found near floating debris or FADs (Fish Aggregating Devices) and are known for their acrobatic jumps when hooked. They're excellent table fare and a popular target for sport fishermen.",
-    image: asset("080f091e-1114-7565-3709-c85533388ec2", "uploads/assets/uploads/fishing/images/gallery/mahi-mahi-fish.webp", "Mahi-Mahi in the Maldives"),
+    image: asset("080f091e-1114-7565-3709-c85533388ec2", "opt/uploads/assets/uploads/fishing/images/gallery/mahi-mahi-fish.webp", "Mahi-Mahi in the Maldives"),
   },
 
   // Bottom Dwellers
@@ -242,7 +242,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Diet",
     description:
       "The Maldives is home to numerous grouper species, from the colorful Coral Grouper to the massive Goliath Grouper. These ambush predators typically hide in reef crevices and caves, darting out to capture prey. Many grouper species change sex from female to male as they grow larger. They're highly prized for their firm, white flesh but are vulnerable to overfishing.",
-    image: asset("9470f23c-f113-241a-49ae-eb70b72218dd", "legacy/images/fishing/groupers-maldives.webp", "Coral Grouper in the Maldives"),
+    image: asset("9470f23c-f113-241a-49ae-eb70b72218dd", "opt/legacy/images/fishing/groupers-maldives.webp", "Coral Grouper in the Maldives"),
   },
   {
     slug: "snappers",
@@ -255,7 +255,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Diet",
     description:
       "Snappers are common throughout Maldivian waters, with species like the Red Snapper and Humpback Snapper being particularly abundant. These fish are characterized by their strong teeth and are often found in schools around reef edges and drop-offs. They're popular targets for bottom fishing and provide excellent eating.",
-    image: asset("6a568121-cf94-c905-4b2d-bba7ceff1137", "uploads/assets/uploads/fishing/images/gallery/redsnappers-in-maldives.webp", "Red Snapper in the Maldives"),
+    image: asset("6a568121-cf94-c905-4b2d-bba7ceff1137", "opt/uploads/assets/uploads/fishing/images/gallery/redsnappers-in-maldives.webp", "Red Snapper in the Maldives"),
   },
   {
     slug: "emperor-fish",
@@ -268,7 +268,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Diet",
     description:
       "Emperor fish, including the popular Spangled Emperor, are common in the sandy areas and reef flats of the Maldives. They have powerful jaws designed for crushing shells and crustaceans. These fish are easily identified by their slightly elongated snouts and bright coloration. They're excellent table fish and a common target for both traditional and modern fishing methods.",
-    image: asset("5a37ef28-6eb2-9443-dc66-ca56a994189d", "legacy/fishing/images/emperor-fish-maldives.webp", "Spangled Emperor in the Maldives"),
+    image: asset("5a37ef28-6eb2-9443-dc66-ca56a994189d", "opt/legacy/fishing/images/emperor-fish-maldives.webp", "Spangled Emperor in the Maldives"),
   },
   {
     slug: "sweetlips",
@@ -281,7 +281,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Diet",
     description:
       "Named for their thick, fleshy lips, sweetlips are striking fish with distinctive spotted or striped patterns. The Oriental Sweetlips and Harlequin Sweetlips are common in Maldivian waters. Juveniles have even more dramatic patterns and perform a unique \"dancing\" swimming style. These fish are typically found in small groups around reef slopes and caves.",
-    image: asset("adc042af-2741-3a01-1fac-a989b1175d0c", "legacy/fishing/images/sweetlips-maldives.webp", "Oriental Sweetlips in the Maldives"),
+    image: asset("adc042af-2741-3a01-1fac-a989b1175d0c", "opt/legacy/fishing/images/sweetlips-maldives.webp", "Oriental Sweetlips in the Maldives"),
   },
 
   // Sharks & Rays
@@ -296,7 +296,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Status",
     description:
       "Blacktip and Whitetip Reef Sharks are common sights in the Maldives, patrolling the edges of reefs and lagoons. These elegant predators are generally shy around humans and play a vital role in maintaining reef health by removing weak or sick fish. All shark species are protected in the Maldives, with shark fishing banned since 2010.",
-    image: asset("1a23939d-3a9c-ff67-6ef1-88f5a29f2166", "legacy/images/fishing/reef-sharks-maldives.webp", "Blacktip Reef Shark in the Maldives"),
+    image: asset("1a23939d-3a9c-ff67-6ef1-88f5a29f2166", "opt/legacy/images/fishing/reef-sharks-maldives.webp", "Blacktip Reef Shark in the Maldives"),
   },
   {
     slug: "whale-shark",
@@ -309,7 +309,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Status",
     description:
       "The gentle giants of the ocean, Whale Sharks are the world's largest fish and a highlight for many visitors to the Maldives. Despite their enormous size, they feed primarily on plankton and small fish. South Ari Atoll is famous for year-round whale shark sightings, while Hanifaru Bay in Baa Atoll hosts seasonal feeding aggregations.",
-    image: asset("263ea34e-c78a-4ed0-e7d6-45fd4c436f41", "legacy/images/fishing/whale-shark-in-maldives.webp", "Whale Shark in the Maldives"),
+    image: asset("263ea34e-c78a-4ed0-e7d6-45fd4c436f41", "opt/legacy/images/fishing/whale-shark-in-maldives.webp", "Whale Shark in the Maldives"),
   },
   {
     slug: "manta-ray",
@@ -335,7 +335,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Status",
     description:
       "Various species of stingrays inhabit the sandy bottoms and lagoons of the Maldives. These flat, disc-shaped fish are often partially buried in sand with only their eyes visible. The Bluespotted Stingray, with its distinctive blue spots on a sandy-colored body, is a common sight in shallow lagoons.",
-    image: asset("cd389a5a-9ae2-3acd-f094-db9e5f925fbd", "legacy/images/stingray-snorkeling-male-atoll.webp", "Stingray in the Maldives"),
+    image: asset("cd389a5a-9ae2-3acd-f094-db9e5f925fbd", "opt/legacy/images/stingray-snorkeling-male-atoll.webp", "Stingray in the Maldives"),
   },
 ];
 

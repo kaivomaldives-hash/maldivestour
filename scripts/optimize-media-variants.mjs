@@ -11,7 +11,7 @@
 // Never overwrites or deletes an original: the old file stays at its old
 // path, so reverting is just restoring storage_path. Every change is
 // recorded in two SQL files:
-//   supabase/migrations/<ts>_optimized_media_paths.sql   (forward replay)
+//   supabase/migrations/20261115001500_optimized_media_paths.sql (forward replay)
 //   scripts/output/optimized-media-revert.sql            (exact undo)
 // plus scripts/output/missing-media-report.md for assets whose original
 // file no longer exists in Storage (broken images on the live site).
@@ -167,9 +167,8 @@ if (COMMIT && existsSync(CHANGE_LOG)) {
   // Whole history across runs, last entry per asset wins.
   const byId = new Map(readFileSync(CHANGE_LOG, "utf8").trim().split("\n").map((l) => JSON.parse(l)).map((c) => [c.id, c]));
   const changes = [...byId.values()].sort((a, b) => a.id.localeCompare(b.id));
-  const stamp = new Date().toISOString().replace(/\D/g, "").slice(0, 8);
   writeFileSync(
-    path.join(ROOT, `supabase/migrations/${stamp}000100_optimized_media_paths.sql`),
+    path.join(ROOT, `supabase/migrations/20261115001500_optimized_media_paths.sql`),
     `-- Repoints ${changes.length} image assets at their optimized WebP copies under\n-- opt/ (each with .w640/.w1280 size variants alongside), written by\n-- scripts/optimize-media-variants.mjs. Originals were left in place --\n-- scripts/output/optimized-media-revert.sql restores the old paths.\n-- Already applied directly against the live DB; this file keeps a\n-- from-scratch replay in sync (it assumes the opt/ objects exist).\n` +
       changes.map((c) => `update media_assets set storage_path = ${q(c.to)}, width = ${q(c.width)}, height = ${q(c.height)} where id = ${q(c.id)};`).join("\n") +
       "\n",

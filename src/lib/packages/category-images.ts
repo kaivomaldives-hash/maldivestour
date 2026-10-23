@@ -19,16 +19,16 @@ export function asset(id: string, storagePath: string, altText: string): MediaAs
 }
 
 export const PACKAGE_CATEGORY_FALLBACK_IMAGES = {
-  luxury: asset("415eec24-cb9d-38b4-f50b-3ae454ec3340", "legacy/images/overwater-hammock-in-maldives.webp", "Overwater hammock in the Maldives"),
-  family: asset("b2dd1496-624c-b618-ac54-584a6d521434", "legacy/images/family-friendly-resort-in-maldives.webp", "Family-friendly resort in the Maldives"),
-  honeymoon: asset("3a026c96-ee91-6bdc-6997-0bb4c46a947e", "legacy/images/maldives-honeymoons.webp", "Maldives honeymoons"),
-  adultsOnly: asset("a61a1207-4442-db99-d0a4-f929d1c5d429", "legacy/images/things-to-do-in-maldives-for-couples.webp", "Things to do in the Maldives for couples"),
-  budget: asset("994c5411-0851-6d11-e362-a38bdc6da9f3", "legacy/images/maldives-hotel.webp", "Maldives hotel"),
-  diving: asset("26b550f8-e366-ffc3-e1a7-081a18ccadb4", "legacy/images/maldives-diving-activities.webp", "Maldives diving activities"),
-  fishing: asset("e39bcc5a-22e2-4c59-2b5f-cc5f02f481eb", "legacy/images/maldives-fishing-activities.webp", "Maldives fishing activities"),
-  surfing: asset("7ae65646-fc62-e395-f51a-9e1bae536501", "legacy/images/maldives-surfing-holiday-package.webp", "Maldives surfing holiday package"),
-  liveaboard: asset("8c1c0e97-e7b4-a6fb-83c5-b9c0bb1d6715", "legacy/images/activities/liveaboard-dive-vessels.webp", "Liveaboard dive vessels in the Maldives"),
-  mainHub: asset("a613b5e9-e3f6-e3af-319b-0f609deceef7", "legacy/images/maldives-vacations-and-honeymoons.webp", "Maldives vacations and honeymoons"),
+  luxury: asset("415eec24-cb9d-38b4-f50b-3ae454ec3340", "opt/legacy/images/overwater-hammock-in-maldives.webp", "Overwater hammock in the Maldives"),
+  family: asset("b2dd1496-624c-b618-ac54-584a6d521434", "opt/legacy/images/family-friendly-resort-in-maldives.webp", "Family-friendly resort in the Maldives"),
+  honeymoon: asset("3a026c96-ee91-6bdc-6997-0bb4c46a947e", "opt/legacy/images/maldives-honeymoons.webp", "Maldives honeymoons"),
+  adultsOnly: asset("a61a1207-4442-db99-d0a4-f929d1c5d429", "opt/legacy/images/things-to-do-in-maldives-for-couples.webp", "Things to do in the Maldives for couples"),
+  budget: asset("994c5411-0851-6d11-e362-a38bdc6da9f3", "opt/legacy/images/maldives-hotel.webp", "Maldives hotel"),
+  diving: asset("26b550f8-e366-ffc3-e1a7-081a18ccadb4", "opt/legacy/images/maldives-diving-activities.webp", "Maldives diving activities"),
+  fishing: asset("e39bcc5a-22e2-4c59-2b5f-cc5f02f481eb", "opt/legacy/images/maldives-fishing-activities.webp", "Maldives fishing activities"),
+  surfing: asset("7ae65646-fc62-e395-f51a-9e1bae536501", "opt/legacy/images/maldives-surfing-holiday-package.webp", "Maldives surfing holiday package"),
+  liveaboard: asset("8c1c0e97-e7b4-a6fb-83c5-b9c0bb1d6715", "opt/legacy/images/activities/liveaboard-dive-vessels.webp", "Liveaboard dive vessels in the Maldives"),
+  mainHub: asset("a613b5e9-e3f6-e3af-319b-0f609deceef7", "opt/legacy/images/maldives-vacations-and-honeymoons.webp", "Maldives vacations and honeymoons"),
 } as const;
 
 export type PackageCategoryFallbackKey = keyof typeof PACKAGE_CATEGORY_FALLBACK_IMAGES;
@@ -50,9 +50,9 @@ export type PackageCategoryFallbackKey = keyof typeof PACKAGE_CATEGORY_FALLBACK_
  * scripts/attach-fishing-uploads.mjs, which registers this file's
  * media_assets row (not yet in the legacy library).
  */
-export const DIVING_HERO_IMAGE = asset("eec07825-78df-21de-fc72-7e604440e43c", "legacy/images/diving/scuba-divers-maldives.webp", "Scuba divers in the Maldives");
+export const DIVING_HERO_IMAGE = asset("eec07825-78df-21de-fc72-7e604440e43c", "opt/legacy/images/diving/scuba-divers-maldives.webp", "Scuba divers in the Maldives");
 export const FISHING_HERO_IMAGE = asset(
   "cdb0fc20-985d-4734-a1c8-79b6d020e07a",
-  "uploads/assets/uploads/fishing/images/gallery/fishing-charter-boat.webp",
+  "opt/uploads/assets/uploads/fishing/images/gallery/fishing-charter-boat.webp",
   "Maldives fishing charter boat",
 );

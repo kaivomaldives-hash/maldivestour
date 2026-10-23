@@ -15,7 +15,7 @@ import { breadcrumbJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 const HUB_HERO: MediaAsset = {
   id: "city-tour-hub-hero",
   mediaType: "image",
-  storagePath: "uploads/assets/uploads/city-tour/maldives-city-tour.webp",
+  storagePath: "opt/uploads/assets/uploads/city-tour/maldives-city-tour.webp",
   youtubeId: null,
   title: null,
   altText: "Male City Tour",

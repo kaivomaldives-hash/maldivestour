@@ -322,7 +322,7 @@ export const FISH_SPECIES: FishSpecies[] = [
     dietOrSeasonLabel: "Status",
     description:
       "The Maldives is home to the world's largest known population of reef manta rays, with over 5,000 individuals identified. These graceful creatures are frequently spotted at cleaning stations where smaller fish remove parasites from their bodies. Hanifaru Bay in Baa Atoll is famous for its spectacular manta feeding aggregations during the southwest monsoon.",
-    image: asset("bd3b41a5-79b7-dd34-d52e-f6efd963ee14", "legacy/images/activities/new-folder/manta-ray-snorkeling-in-the-maldives.webp", "Manta Ray in the Maldives"),
+    image: asset("bd3b41a5-79b7-dd34-d52e-f6efd963ee14", "opt/uploads/assets/uploads/diving/manta-ray-snorkeling-in-the-maldives.webp", "Manta Ray in the Maldives"),
   },
   {
     slug: "stingrays",

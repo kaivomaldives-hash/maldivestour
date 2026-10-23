@@ -7,6 +7,7 @@ update media_assets set storage_path = 'legacy/resorts/velassaru/images/velassar
 update media_assets set storage_path = 'legacy/resorts/raffles/images/raffles-maldives-meradhoo-resort-restaurant.webp', width = null, height = null where id = '005666dd-c35a-dc75-24a1-56fcca91e7e3';
 update media_assets set storage_path = 'legacy/images/water-sports-in-maldives.webp', width = null, height = null where id = '0057d5e0-ca59-03e7-7725-2c906a660b64';
 update media_assets set storage_path = 'legacy/resorts/meeru-island/images/meeru-island-resort-and-spa-jacuzzi-water-villa.webp', width = null, height = null where id = '00693ca9-ca49-71c7-eaef-739af25c96e7';
+update media_assets set storage_path = 'transfers/jw-marriot-maldives/jw-marriot-island-speedboat.webp', width = null, height = null where id = '006cf8b3-7f41-474b-9e71-4c1da1add896';
 update media_assets set storage_path = 'legacy/resorts/reethi-beach/images/reethi-beach-resort-maldives-honeymoon.webp', width = 1920, height = 1080 where id = '006f127f-3891-1a11-d0f6-c9ed503e58c5';
 update media_assets set storage_path = 'legacy/fishing/images/jobfish-maldives.webp', width = null, height = null where id = '00747a9a-6c56-3924-f84c-8b274d919430';
 update media_assets set storage_path = 'legacy/resorts/komandoo-island/images/komandoo-island-resort-and-spa-water-sports.webp', width = null, height = null where id = '00757c70-c8e9-5b8b-b93e-c5ca075c35bc';
@@ -40,8 +41,10 @@ update media_assets set storage_path = 'legacy/resorts/angaga-island/images/anga
 update media_assets set storage_path = 'legacy/images/male/shopping-in-male-city.webp', width = null, height = null where id = '01b90981-d395-3008-96bb-2d3bd5f266df';
 update media_assets set storage_path = 'legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room41.webp', width = null, height = null where id = '01b9bb87-bbd8-8932-b5bf-fded70dca797';
 update media_assets set storage_path = 'legacy/resorts/w-maldives/images/wmaldives-island-resort-ari-atoll.webp', width = null, height = null where id = '01bbd318-52e3-48eb-8b8b-206ab900e59e';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-airport-transfers.webp', width = null, height = null where id = '01c07c1c-2c38-4e76-9758-569bdd38c44b';
 update media_assets set storage_path = 'legacy/images/resorts/finolhu-island-resort-baa-atoll-maldives-dinning.webp', width = null, height = null where id = '01c733c1-c110-8de9-c51c-1a17be9aaf0c';
 update media_assets set storage_path = 'legacy/images/fishing/chartered-fishing-trip.webp', width = null, height = null where id = '01c75d0c-8041-0b15-5800-d859234a378d';
+update media_assets set storage_path = 'transfers/all-routes-gallery/private-speedboat-charter-maldives.webp', width = null, height = null where id = '01f9fd46-5bc4-4732-a158-234520d14fe4';
 update media_assets set storage_path = 'uploads/assets/uploads/central/ha-thuraakunu-island.jpg', width = null, height = null where id = '01fe68f4-b917-7fa6-c1a3-da908548b6ed';
 update media_assets set storage_path = 'legacy/resorts/patina-maldives/images/the-patina-maldives-fari-island-maldives.webp', width = null, height = null where id = '020b9fe0-fb67-1a14-9d1d-5695e495a898';
 update media_assets set storage_path = 'uploads/assets/uploads/atoll/seenu-maradhoo-maldives.jpg', width = null, height = null where id = '0210bcfe-4efe-1e53-0cd3-ae94028c5a14';
@@ -64,6 +67,7 @@ update media_assets set storage_path = 'legacy/resorts/mirihi-island/images/miri
 update media_assets set storage_path = 'legacy/resorts/hideaway-beach/images/hideaway-beach-island-resort-and-spa-haa-alif-atoll.webp', width = null, height = null where id = '02ef0dc9-255b-1f79-6075-b09ac55563cb';
 update media_assets set storage_path = 'legacy/resorts/dhiggiri/images/nakai-dhiggiri-resort-maldives-sea.webp', width = null, height = null where id = '02f23b26-8618-a358-2765-876c3bdd62e9';
 update media_assets set storage_path = 'legacy/resorts/south-palm/images/south-palm-resort-water-villa1.webp', width = null, height = null where id = '02fd2612-bf57-533b-0d79-bba3d852a554';
+update media_assets set storage_path = 'transfers/all-routes-gallery/Maldives-budget-transfers.webp', width = null, height = null where id = '02ff544d-84f2-4699-be5c-8718eaae9b15';
 update media_assets set storage_path = 'legacy/resorts/alimathaa/images/alimathaa-maldives-map.webp', width = null, height = null where id = '030953b8-c3e1-c7cd-5f27-08bc36a7a2c4';
 update media_assets set storage_path = 'uploads/assets/uploads/activities/full-day/stingray-point-snorkeling.webp', width = null, height = null where id = '0316bad5-785e-cedd-b5cf-f12fb8cb05db';
 update media_assets set storage_path = 'legacy/images/maldives/angsana-velavaru-maldives-resort-island.webp', width = null, height = null where id = '03171e2f-4a2c-9af6-1f83-23a6b4b0078c';
@@ -119,6 +123,7 @@ update media_assets set storage_path = 'legacy/hotels/island-break-fulidhoo/imag
 update media_assets set storage_path = 'legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-beach.webp', width = null, height = null where id = '056622aa-4c3d-ff32-97e3-f52b70636422';
 update media_assets set storage_path = 'legacy/resorts/images/underwater-resort-in-maldives.jpg', width = null, height = null where id = '056a4411-a55f-8a49-470f-dda9622f0959';
 update media_assets set storage_path = 'legacy/resorts/bandos-island/images/bandos-island-beach-pool-villa.webp', width = null, height = null where id = '0574dfec-ecdb-47ba-273d-2758977e7206';
+update media_assets set storage_path = 'transfers/makunudu-island/makunudu-maldives-transfer.webp', width = null, height = null where id = '057c8dd3-3f63-4065-b5c0-a96a8864e0da';
 update media_assets set storage_path = 'legacy/resorts/sun-siyam-iruveli/images/sun-siyam-iru-veli-island.webp', width = null, height = null where id = '0585b55e-32c6-b063-43c2-75fe82ceadef';
 update media_assets set storage_path = 'legacy/resorts/residence-dhigurah/images/the-residence-maldives-dhigurah.webp', width = null, height = null where id = '058c5b8c-d9d1-b908-0eb2-374bb1f8be87';
 update media_assets set storage_path = 'legacy/resorts/lily-beach/images/lily-beach-resort-maldives-island-map.webp', width = null, height = null where id = '05a5f376-0fb3-0074-1297-e75e6dbe4cc1';
@@ -137,6 +142,7 @@ update media_assets set storage_path = 'legacy/resorts/adaaran-club-rannalhi/ima
 update media_assets set storage_path = 'legacy/images/articles/religion-in-the-maldives.webp', width = null, height = null where id = '066383a5-2696-0583-a53f-af83abe9b372';
 update media_assets set storage_path = 'legacy/images/transfers/oblu-select-lobigili-transfer.webp', width = null, height = null where id = '0663fb4c-52b6-b1c5-ed9b-8bf60e19cc72';
 update media_assets set storage_path = 'legacy/images/thumbs/activities.webp', width = null, height = null where id = '0671faad-0e24-c14d-64db-d52eda65d623';
+update media_assets set storage_path = 'transfers/oblu-XPERIENCE-Ailafushi/oblu-xperience-ailafushi-maldives-transfer.webp', width = null, height = null where id = '06720ff2-67ad-455c-8c44-69a5bfe08ed3';
 update media_assets set storage_path = 'legacy/images/transfers/oblu-xperience-ailafushi-maldives-transfer.webp', width = null, height = null where id = '0688b123-2f3d-e378-9b8d-dcc9ba71e923';
 update media_assets set storage_path = 'legacy/resorts/residence-falhumaafushi/images/the-residence-maldives-at-falhumaafushi-water-villa.webp', width = null, height = null where id = '068ff0bf-acca-8081-28d8-11e5413bcb94';
 update media_assets set storage_path = 'legacy/images/transfers/maldives-yatch-transfers.webp', width = null, height = null where id = '06a81680-5b49-8efa-28c8-35d3d375763e';
@@ -191,14 +197,17 @@ update media_assets set storage_path = 'uploads/assets/uploads/speedboats/winove
 update media_assets set storage_path = 'legacy/resorts/one-and-only/images/one-and-only-reethi-rah-island.webp', width = null, height = null where id = '0860a9e7-eb6b-5516-289c-38a762c72c41';
 update media_assets set storage_path = 'uploads/assets/uploads/north/ba-dhonfanu-island.jpg', width = null, height = null where id = '086906f2-bcd2-3cef-72cd-a0bb6f0c2817';
 update media_assets set storage_path = 'legacy/images/diving/maldives-dive-spots.webp', width = null, height = null where id = '08792bbc-244f-f946-c34b-656ba4b22f15';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-airport-to-hotels.webp', width = null, height = null where id = '087cf2b4-1700-436c-9a4e-89d03ff41b69';
 update media_assets set storage_path = 'legacy/resorts/cocoon/images/cocoon-maldives-island-resort-beah-dinner.webp', width = null, height = null where id = '08895014-99d8-a13b-7f0a-bed94b8644d9';
 update media_assets set storage_path = 'legacy/resorts/sun-island/images/sun-island-resort-water-bungalow1.webp', width = null, height = null where id = '0894bef8-8377-dc33-9586-52bb502bd107';
 update media_assets set storage_path = 'legacy/images/transfers/male-airport-to-patina-maldives.webp', width = null, height = null where id = '089e8419-9af6-775f-f073-8df45bf24b42';
 update media_assets set storage_path = 'legacy/resorts/siyam-world/images/siyam-world-maldives-pool-noonu-atoll.webp', width = null, height = null where id = '08c4c1e6-9c22-232b-c78f-6b6a15adce38';
 update media_assets set storage_path = 'legacy/resorts/oblu-xperience-ailafushi/images/oblu-xperience-ailafushi-maldives.webp', width = null, height = null where id = '08d3af5e-307a-4f3f-2f4e-204373332832';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-hotel-speedboat-transfers.webp', width = null, height = null where id = '08db6732-79cf-4134-8531-58ea624c8e50';
 update media_assets set storage_path = 'legacy/resorts/six-senses-laamu/images/six-senses-laamu-maldives-excursions.webp', width = 1920, height = 1080 where id = '09039b1c-8c82-8d3e-957b-405d9d1576bc';
 update media_assets set storage_path = 'legacy/resorts/noku/images/noku-maldives-kudafunfaru-island-resort.webp', width = null, height = null where id = '09079b01-ec50-cb21-d405-fa1ce4066bf6';
 update media_assets set storage_path = 'legacy/images/maldives/best-time-to-visit-maldives.webp', width = null, height = null where id = '0909d111-540b-6f0c-c3a5-41081644fed2';
+update media_assets set storage_path = 'transfers/one-and-only-reethi-rah/Male-airport-to-one-and-only-reethi-rah-maldives.webp', width = null, height = null where id = '09162220-cb76-4e79-9439-beff0672c87a';
 update media_assets set storage_path = 'legacy/images/articles/ar/famous-places-on-the-world.webp', width = null, height = null where id = '0925813f-2c92-73c6-1849-f2602ca5a95f';
 update media_assets set storage_path = 'legacy/images/activities/sandbank-visiting.webp', width = null, height = null where id = '092e23ff-f826-d7d6-af15-f777f018a8ac';
 update media_assets set storage_path = 'legacy/images/transfers/lux-north-male-transfer.webp', width = null, height = null where id = '093153e9-3651-cfc5-3eec-6b6d046eb0ff';
@@ -243,6 +252,7 @@ update media_assets set storage_path = 'legacy/resorts/patina-maldives/images/th
 update media_assets set storage_path = 'admin-uploads/775eef32-7124-4d26-979f-6f69e03f63ae/1792580801002-yb64h9.webp', width = null, height = null where id = '0b32b133-f9c9-4634-9a96-d1b14da51af5';
 update media_assets set storage_path = 'legacy/resorts/robinson-club/images/robinson-club-noonu-maldives.webp', width = null, height = null where id = '0b4e64c6-9aea-16ef-8c2f-a0ad02c77a1f';
 update media_assets set storage_path = 'legacy/resorts/amaya-resort/images/amaya-kuda-rah-island-maldives-resort-copy.webp', width = null, height = null where id = '0b590b2d-7a89-c6f0-8062-6f0590d366f8';
+update media_assets set storage_path = 'transfers/all-routes-gallery/speedboat-transfers-in-maldives.webp', width = null, height = null where id = '0b5d7139-653c-4434-a9a1-9d7c3a2c78b1';
 update media_assets set storage_path = 'admin-uploads/shared-transfer-gallery/1792581133453-swonql.webp', width = null, height = null where id = '0b6fd1c7-29b0-4639-ad1c-0f6402482e28';
 update media_assets set storage_path = 'legacy/resorts/intercontinental/images/intercontinental-maldives-maamunagau-resort.webp', width = null, height = null where id = '0b78710b-e69e-32c9-a96f-4f67600f0be5';
 update media_assets set storage_path = 'legacy/images/surfing/adaaran-select-hudhuranfushi-lohis.webp', width = null, height = null where id = '0b80ee5a-a9da-8f1e-6a6c-bfbe35a769af';
@@ -260,6 +270,7 @@ update media_assets set storage_path = 'legacy/resorts/cinnamon-hakuraa/images/c
 update media_assets set storage_path = 'legacy/resorts/furaveri/images/furaveri-maldives-water-villa1.webp', width = null, height = null where id = '0c174fbd-b798-1041-2404-ecff3d8ce615';
 update media_assets set storage_path = 'legacy/images/maldives-islands.webp', width = null, height = null where id = '0c1bd9af-d088-d963-c26e-78da16a2c56d';
 update media_assets set storage_path = 'legacy/images/diving/one-rock-maldives.webp', width = null, height = null where id = '0c30e277-a0cd-4adb-0e8a-ac226314e9be';
+update media_assets set storage_path = 'transfers/ritz-carlton-maldives/the-ritz-carlton-island-maldives-speedboat.webp', width = null, height = null where id = '0c337d90-03cc-4fdc-b7ef-8831df3811f6';
 update media_assets set storage_path = 'admin-uploads/cb1fc7c9-ab7e-474e-8ef5-673ae8a5fcb1/1792580895521-8qks75.webp', width = null, height = null where id = '0c4dea5f-00a1-4533-9201-b7f4738d2b68';
 update media_assets set storage_path = 'legacy/images/thumbs/maldives-speedboat-transfers.webp', width = null, height = null where id = '0c58a9fc-941a-ee1d-f2a5-45d97733d9f3';
 update media_assets set storage_path = 'legacy/resorts/meeru-island/images/meeru-island-resort-and-spa-wedding.webp', width = null, height = null where id = '0c6a1904-224d-93fd-2c3c-7cd8e0c8f269';
@@ -277,6 +288,7 @@ update media_assets set storage_path = 'legacy/resorts/faarufushi/images/faarufu
 update media_assets set storage_path = 'legacy/images/activities/new-folder/snorkeling-activity-in-maldives.webp', width = null, height = null where id = '0cdcf1bf-ee5c-9566-1708-4e8ba8fdccda';
 update media_assets set storage_path = 'legacy/images/maldives-activities.webp', width = null, height = null where id = '0cf97c52-51eb-62ab-5a30-43e2782c6dce';
 update media_assets set storage_path = 'legacy/resorts/makunudu-island/images/makunudu-island-resort-maldives-beach.webp', width = null, height = null where id = '0cfe9573-73ca-7d33-3cd2-4ef4b35d4a55';
+update media_assets set storage_path = 'transfers/all-routes-gallery/transfers.webp', width = null, height = null where id = '0d00c231-5045-458d-bcef-fc2716459167';
 update media_assets set storage_path = 'legacy/images/ferry/maldives-public-ferry-transfers-schedules.webp', width = null, height = null where id = '0d073305-0e55-54e8-a100-17bb37665570';
 update media_assets set storage_path = 'legacy/resorts/coco-bodu-hithi/images/coco-bodu-hithi-maldives-water-villa1.webp', width = null, height = null where id = '0d11dae9-d512-34f5-9daf-26ac60a89510';
 update media_assets set storage_path = 'legacy/resorts/vilamendhoo-island/images/vilamendhoo-island-resort-and-spa-garden-villa1.webp', width = null, height = null where id = '0d1ad126-50c5-f494-3f2b-c48ee4998bce';
@@ -365,6 +377,7 @@ update media_assets set storage_path = 'legacy/images/fishing/tuna-fishing-in-ma
 update media_assets set storage_path = 'legacy/resorts/the-ritz-carlton/images/ritz-carlton-fari-island-beach-pool-villa.jpg', width = null, height = null where id = '110eda2f-8290-7698-1b74-ce27f853d64c';
 update media_assets set storage_path = 'legacy/resorts/vilamendhoo-island/images/vilamendhoo-island-resort-and-spa-pool.webp', width = null, height = null where id = '11148b33-9fdc-46a5-f2e7-b0a1a9fda2a3';
 update media_assets set storage_path = 'legacy/images/articles/ithaa-undersea-restaurant-maldives.webp', width = null, height = null where id = '11164de1-176d-9a6e-7853-f1c871749711';
+update media_assets set storage_path = 'transfers/all-routes-gallery/Maldives-budget-transfers.webp', width = null, height = null where id = '112eb711-80b2-409d-a983-c0ce84976d19';
 update media_assets set storage_path = 'legacy/resorts/fushifaru/images/fushifaru-maldives-island-water-villa.webp', width = null, height = null where id = '112fdff4-d41b-6de1-279b-46c42119ca39';
 update media_assets set storage_path = 'admin-uploads/716398c1-4674-46cf-9246-7db054f52986/1792580844888-bktb8f.webp', width = null, height = null where id = '113f3000-c65f-4282-8268-adc38c3e3dd0';
 update media_assets set storage_path = 'legacy/resorts/conrad-rangali/images/conrad-maldives-rangali-island-resort-underwater-room.webp', width = null, height = null where id = '114e1739-3320-2d5b-e78f-551b5aad6661';
@@ -407,6 +420,7 @@ update media_assets set storage_path = 'legacy/images/resorts/fushifaru-resort-m
 update media_assets set storage_path = 'legacy/images/transfers/maldivian-dhoni.webp', width = null, height = null where id = '132ac1c0-116b-6c7e-5913-1c1a8f536204';
 update media_assets set storage_path = 'legacy/resorts/mirihi-island/images/mirihi-island-resort-maldives-dinning.webp', width = null, height = null where id = '132b1f0c-05a6-d9d9-8180-2e0802250d36';
 update media_assets set storage_path = 'legacy/images/maldives/coco-bodu-hithi-maldives-resort.webp', width = null, height = null where id = '1330be5d-d105-7e24-f929-f04023d1e2d8';
+update media_assets set storage_path = 'transfers/oblu-XPERIENCE-Ailafushi/Male-airport-to-oblu-xperience-ailafushi.webp', width = null, height = null where id = '13395511-672d-4b1b-a5a4-b00ce22c383e';
 update media_assets set storage_path = 'legacy/resorts/images/isla-maldivas-resorts.jpg', width = null, height = null where id = '133ed22e-c061-92af-d2c4-2f41face9993';
 update media_assets set storage_path = 'admin-uploads/c57ed083-b918-4fc0-a4c7-ac2740d6ff35/1792580828740-29wbgp.webp', width = null, height = null where id = '1358313c-27e2-4464-a1b0-874c9c1f976c';
 update media_assets set storage_path = 'legacy/images/jet-ski-riding-in-maldives.webp', width = null, height = null where id = '13763bf0-f11d-f248-da0a-4f39fd178bfa';
@@ -437,6 +451,7 @@ update media_assets set storage_path = 'legacy/resorts/baros-island/images/baros
 update media_assets set storage_path = 'legacy/resorts/residence-dhigurah/images/the-residence-maldives-at-dhigurah-gym.webp', width = null, height = null where id = '14f78ad9-876e-e6e4-87bf-7ac0f80b8452';
 update media_assets set storage_path = 'uploads/assets/uploads/fishing/images/packages/tuna-male.webp', width = null, height = null where id = '1505402c-5d03-9f97-3c2b-2a173a8f46e5';
 update media_assets set storage_path = 'legacy/resorts/radisson-blu/images/radisson-blu-maldives-water-pool-villa.webp', width = null, height = null where id = '1511e025-cd05-56f1-5256-ab5f15c32a20';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-airport-to-hotels.webp', width = null, height = null where id = '1533cbaf-0547-4218-bb43-10a40cc2e469';
 update media_assets set storage_path = 'legacy/images/resorts/lux-south-ari-atoll-resorts-and-villas-activities.webp', width = null, height = null where id = '153e6b4b-9ee9-55d3-71bd-eaa0e5620370';
 update media_assets set storage_path = 'uploads/assets/uploads/gotrip/packages/surfing-5n-sandbank-maldives.webp', width = null, height = null where id = '1540c3c9-f6e0-f8bb-2787-6cbb92026026';
 update media_assets set storage_path = 'legacy/images/maldives-hotels.webp', width = null, height = null where id = '1543080a-62f2-fd12-2740-3aef35488987';
@@ -548,6 +563,7 @@ update media_assets set storage_path = 'legacy/images/resorts/best-luxury-resort
 update media_assets set storage_path = 'legacy/images/ferry/adaaran-vadoo-maldives-airport-transfers.webp', width = null, height = null where id = '1a5994f3-bb53-9d58-f5ce-ae965d03dff7';
 update media_assets set storage_path = 'legacy/resorts/kuda-villingili/images/kuda-villingili-resort-maldives-beach.webp', width = null, height = null where id = '1a59e32d-dc93-dc6b-3422-0c9167de5359';
 update media_assets set storage_path = 'uploads/assets/uploads/resorts/bandos-maldives-266x266-bk.jpg', width = null, height = null where id = '1a5fd530-fb1f-4217-4a75-3211038357d8';
+update media_assets set storage_path = 'transfers/all-routes-gallery/speedboat-service-in-maldives.webp', width = null, height = null where id = '1a6bc8c5-894f-44a7-a4ac-500b0f83400c';
 update media_assets set storage_path = 'legacy/images/maps/taj-coral-reef-resort-spa-2.jpg', width = null, height = null where id = '1a87288b-2c11-6871-06cc-42704d7a2b2f';
 update media_assets set storage_path = 'legacy/resorts/dhigufaru-island/images/dhigufaru-island-resort-maldives-beach-dinner.webp', width = null, height = null where id = '1aacbc0b-eb5b-36a8-14b8-e6fb7247606c';
 update media_assets set storage_path = 'legacy/images/surfing/budget-surfing-island-gulhi.webp', width = null, height = null where id = '1ab187bc-c135-c88d-1d2c-c81f43b6ba4b';
@@ -555,6 +571,7 @@ update media_assets set storage_path = 'legacy/resorts/patina-maldives/images/th
 update media_assets set storage_path = 'legacy/images/lin.png', width = null, height = null where id = '1ab5cf31-084f-0921-698e-302ade142153';
 update media_assets set storage_path = 'legacy/images/activities/island-hopping3.jpg', width = null, height = null where id = '1ac9d6bd-2145-16da-635d-ce03acb8d3fd';
 update media_assets set storage_path = 'legacy/images/transfers/rosewood-ranfaru-transfer.webp', width = null, height = null where id = '1aec58f3-f72b-28df-dedb-498dc9d29592';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-hotel-speedboat-transfers.webp', width = null, height = null where id = '1af6434c-7a8e-4a02-bbd7-9a0c18d64158';
 update media_assets set storage_path = 'uploads/assets/uploads/speedboats/seaguard/boat-bow-seating.jpg', width = null, height = null where id = '1b0e960c-06f8-e636-cc04-b67fefc3ef89';
 update media_assets set storage_path = 'legacy/images/articles/ar/famous-destinations-in-the-world.webp', width = null, height = null where id = '1b14dde0-ca93-6fb5-11bf-29bce3dc519c';
 update media_assets set storage_path = 'legacy/resorts/ozen-reserve-bolifushi/images/ozen-reserve-bolifushi-maldive-water-sports.webp', width = null, height = null where id = '1b19a39a-e163-cd5a-e6c0-75cce00b2d27';
@@ -570,6 +587,7 @@ update media_assets set storage_path = 'legacy/hotels/maagiri/images/maagiri-hot
 update media_assets set storage_path = 'legacy/images/maps/cn/maldives-island-map.webp', width = null, height = null where id = '1b861219-1cbb-9f74-6af7-e3c7ad40e33a';
 update media_assets set storage_path = 'legacy/resorts/ozen-reserve-bolifushi/images/ozen-reserve-bolifushi-maldive-pool.webp', width = null, height = null where id = '1b9d88f6-482c-5617-8680-4e2153e52f7b';
 update media_assets set storage_path = 'legacy/resorts/amari-havodda/images/amari-havodda-island-maldives.webp', width = null, height = null where id = '1ba7e14c-4164-38de-0960-04af04a1b091';
+update media_assets set storage_path = 'transfers/all-routes-gallery/transfers.webp', width = null, height = null where id = '1bbfcaa8-a635-444a-8f67-6404ab1d204b';
 update media_assets set storage_path = 'uploads/assets/uploads/north/alifu-dhaalu-fenfushi-isand.jpg', width = null, height = null where id = '1bd146e8-7c5d-0e6f-d0a7-1c269abf0e4e';
 update media_assets set storage_path = 'legacy/images/transfers/makunudu-maldives-transfer.webp', width = null, height = null where id = '1be9168f-2d5b-814e-0b23-5da5fc9e2524';
 update media_assets set storage_path = 'legacy/images/thumbs/mv-intl-airport.webp', width = null, height = null where id = '1becb360-5702-a2ae-9568-55cacf0dec79';
@@ -592,6 +610,7 @@ update media_assets set storage_path = 'legacy/images/thumbs/8.webp', width = nu
 update media_assets set storage_path = 'legacy/images/male/male-city-republic-square.webp', width = 720, height = 508 where id = '1ca773b3-c63d-f6de-7dae-44552d2c7529';
 update media_assets set storage_path = 'uploads/assets/uploads/north/alifu-dhaalu-atoll-maldives.jpg', width = null, height = null where id = '1cb76419-5ba5-313c-9115-3bb44a2db721';
 update media_assets set storage_path = 'legacy/resorts/innahura/images/innahura-maldives-resort-island-map.webp', width = null, height = null where id = '1cbcc0bf-6118-d751-a0c4-63c98061b9cd';
+update media_assets set storage_path = 'transfers/jw-marriot-maldives/jw-marriot-maldives-transfer.webp', width = null, height = null where id = '1cc44d10-804d-48e2-937f-a2ee476fedc7';
 update media_assets set storage_path = 'legacy/resorts/angsana-velavaru/images/angsana-velavaru-maldives-ocean-villa.webp', width = null, height = null where id = '1cc5a648-f71b-3095-b128-bb03346a510d';
 update media_assets set storage_path = 'legacy/images/maldives/baros-island-maldives.webp', width = null, height = null where id = '1ccac7ad-bb23-85b9-6737-0a8db8c6ff98';
 update media_assets set storage_path = 'uploads/assets/uploads/city-tour/visit-male-city.webp', width = null, height = null where id = '1cd53b0d-e612-ac43-e063-0580cae9e219';
@@ -814,6 +833,7 @@ update media_assets set storage_path = 'legacy/images/maps/es/maldivas-mapa.webp
 update media_assets set storage_path = 'legacy/resorts/radisson-blu/images/radisson-blu-maldives-spa.webp', width = null, height = null where id = '28272b9b-0918-34f8-9771-5dd055843669';
 update media_assets set storage_path = 'legacy/resorts/the-ritz-carlton/images/ritz-carlton-fari-island-ocean-pool-villa.webp', width = null, height = null where id = '284db651-243e-b9c1-f3b1-75765043e80f';
 update media_assets set storage_path = 'legacy/images/maps/cn/maldives-map.webp', width = null, height = null where id = '2856da58-ada7-c903-9bca-3e9dc19f4d85';
+update media_assets set storage_path = 'transfers/oblu-select-sangeli/Male-airport-to-oblu-select-sangeli.webp', width = null, height = null where id = '28598302-45f7-4aaa-8265-42527e1c7d49';
 update media_assets set storage_path = 'legacy/resorts/you-and-me/images/you-and-me-by-cocoon-maldives-diving.webp', width = null, height = null where id = '287a7379-c428-ff98-8f29-0394110f895c';
 update media_assets set storage_path = 'legacy/images/surfing/budget-surfing-island-huraa.webp', width = null, height = null where id = '28850ef3-0532-9ea0-ed41-1edab95fbad6';
 update media_assets set storage_path = 'legacy/resorts/joali/images/joali-maldives-muravandhoo-island-beach-pool-villa1.webp', width = null, height = null where id = '28a22988-d4a7-07cc-6aac-387709b89fd4';
@@ -862,6 +882,7 @@ update media_assets set storage_path = 'legacy/resorts/saii-lagoon/images/saii-l
 update media_assets set storage_path = 'legacy/images/maps/shaviyani-funadhoo-airport.jpg', width = null, height = null where id = '2aa9ed57-1083-6f38-1302-c69144b48a95';
 update media_assets set storage_path = 'uploads/assets/uploads/speedboats/winover/malahini-kuda-bandos-maldives-transfer.webp', width = null, height = null where id = '2abd8dd6-543b-1422-6ca6-2fb78b02a50f';
 update media_assets set storage_path = 'uploads/assets/uploads/atoll/raa-rasmaadhoo-island.jpg', width = null, height = null where id = '2abdae9d-647c-1085-9841-d14feeccd51f';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-resort-transfers.webp', width = null, height = null where id = '2ac79314-b307-4323-8409-501109f16145';
 update media_assets set storage_path = 'legacy/images/activities/act-local-2.jpg', width = null, height = null where id = '2ace6961-534a-9c10-1597-f7f65f437e73';
 update media_assets set storage_path = 'legacy/resorts/maayafushi/images/nakai-maayafushi-maldives-beach.webp', width = null, height = null where id = '2aced307-7281-e45c-6d50-0c4617ef0837';
 update media_assets set storage_path = 'uploads/assets/uploads/activities/sand-bank/sand-bank-excursion.webp', width = null, height = null where id = '2ae7045d-29d0-6db4-6e68-15a37827265c';
@@ -1036,6 +1057,7 @@ update media_assets set storage_path = 'legacy/images/articles/fishing.webp', wi
 update media_assets set storage_path = 'legacy/hotels/mantha-view-hotel/images/manthaview-map.jpg', width = null, height = null where id = '32f8bd8e-fb91-8fff-1b69-a8aec8f5b47d';
 update media_assets set storage_path = 'legacy/resorts/reethi-beach/images/reethi-beach-island-resort-maldives.webp', width = null, height = null where id = '32fef9a8-c0b2-1095-7285-80d8b538ba5a';
 update media_assets set storage_path = 'legacy/images/ferry/oblu-helengeli-maldives-airport-transfers.webp', width = null, height = null where id = '3305ada9-9fea-0a3b-3136-97fd3e389988';
+update media_assets set storage_path = 'transfers/clubmed-kani/Male-airport-to-clubmed-kani.webp', width = null, height = null where id = '331cf801-b936-4194-9b08-fc85e9d77a6e';
 update media_assets set storage_path = 'legacy/resorts/kuda-villingili/images/kuda-villingili-resort-maldives-beach-villa-pool.webp', width = null, height = null where id = '3322a45b-9268-5c24-398b-ecf4980dbdb9';
 update media_assets set storage_path = 'legacy/resorts/park-hyatt/images/park-hyatt-maldives-hadahaa-jetty.webp', width = null, height = null where id = '333e66f6-153b-252b-fc4d-c786ade9d7d5';
 update media_assets set storage_path = 'legacy/images/articles/male-airport-lounge.webp', width = null, height = null where id = '33488952-e3ec-f66a-89b1-25045498f383';
@@ -1248,6 +1270,7 @@ update media_assets set storage_path = 'legacy/images/islandhop.webp', width = n
 update media_assets set storage_path = 'legacy/resorts/taj-exotica/images/taj-exotica-resort-and-spa-holiday.webp', width = null, height = null where id = '3c3851ac-7822-8744-deb2-546772a29c9e';
 update media_assets set storage_path = 'legacy/images/articles/the-buddhist-heritage.webp', width = null, height = null where id = '3c3bc90a-7c07-2e3e-1392-87d45d081d4e';
 update media_assets set storage_path = 'legacy/images/activities/nurse-shark/vaavu-shipwreck.webp', width = null, height = null where id = '3c456765-7ff4-b155-6bf1-8b5b107da41c';
+update media_assets set storage_path = 'transfers/all-routes-gallery/speedboat-service-in-maldives.webp', width = null, height = null where id = '3c47b48a-547c-4056-97d4-d40dc5d559bf';
 update media_assets set storage_path = 'legacy/images/transfers/taj-coral-reef-island-maldives-speedboat.webp', width = null, height = null where id = '3c507217-96d6-bb7f-89bf-e0a8cd157172';
 update media_assets set storage_path = 'legacy/resorts/joali/images/joali-maldives-muravandhoo-island-dinning.webp', width = null, height = null where id = '3c53b05d-90f9-9bc0-14c2-932ffda3e6ea';
 update media_assets set storage_path = 'uploads/assets/uploads/resorts2/st-regis-vommuli-resort-maldives.webp', width = null, height = null where id = '3c605b45-9dbc-6b2e-806e-6e0b275597c4';
@@ -1306,6 +1329,7 @@ update media_assets set storage_path = 'legacy/images/articles/anantara-kihavah-
 update media_assets set storage_path = 'legacy/images/transfers/oaga-art-transfer.webp', width = null, height = null where id = '3f1772ad-2785-7912-fd3e-aa5ae87c76e2';
 update media_assets set storage_path = 'legacy/images/resorts/innahura-maldives-resort-snorkeling.webp', width = null, height = null where id = '3f241dd1-3df9-6212-6670-aa77b950dea5';
 update media_assets set storage_path = 'legacy/resorts/joali/images/joali-maldives-luxury-resort.webp', width = null, height = null where id = '3f46ace1-0d15-27df-bcd0-119e5ec6aa29';
+update media_assets set storage_path = 'transfers/one-and-only-reethi-rah/one-and-only-reethirah-transfer.webp', width = null, height = null where id = '3f475605-4ddf-4ed7-a620-c854b9bf053c';
 update media_assets set storage_path = 'legacy/resorts/sun-siyam-olhuveli/images/sun-siyam-olhuveli-island-south-male-atoll.webp', width = null, height = null where id = '3f47614e-41ec-ad7e-4769-a6b101981819';
 update media_assets set storage_path = 'legacy/resorts/paradise/images/paradise-island-resort-water-room1.webp', width = null, height = null where id = '3f55d774-a23b-b6a5-4e10-5f71120b2a34';
 update media_assets set storage_path = 'uploads/assets/uploads/south/hdh-vaikaradhoo-island.jpg', width = null, height = null where id = '3f621d75-3eec-ec51-73f0-4f9581aec385';
@@ -1545,6 +1569,7 @@ update media_assets set storage_path = 'legacy/resorts/komandoo-island/images/ko
 update media_assets set storage_path = 'legacy/images/transfers/male-airport-to-como-cocoa.webp', width = null, height = null where id = '4970a269-576d-1a62-74f9-82d43302e8b0';
 update media_assets set storage_path = 'legacy/images/transfers/speedboat-service-in-maldives.webp', width = null, height = null where id = '497a850d-613d-b804-7988-9704d89176da';
 update media_assets set storage_path = 'legacy/resorts/amilla-fushi/images/amilla-fushi-maldives-island-resort-and-residences.webp', width = null, height = null where id = '4980495e-0f70-81d7-efea-1aa0941cb622';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-hotel-speedboat-transfers.webp', width = null, height = null where id = '49a4c551-219a-4c9e-a3af-4af10f05ec3c';
 update media_assets set storage_path = 'legacy/images/activities/things-to-do/bandos-maldives-island-resort-romanctic-dinner.webp', width = null, height = null where id = '49b1ba6c-6127-efca-7fb7-4c3ed70109de';
 update media_assets set storage_path = 'legacy/resorts/hard-rock-hotel/images/hard-rock-hotel-maldives-island.webp', width = null, height = null where id = '49b960d4-cc40-4ebe-c8dd-7cb2271558cc';
 update media_assets set storage_path = 'legacy/resorts/grand-park-kodhipparu/images/grand-park-kodhipparu-maldives-island-ocean-water-villa.webp', width = null, height = null where id = '49ba6184-24eb-1835-3650-54125bc32d8c';
@@ -1613,6 +1638,7 @@ update media_assets set storage_path = 'legacy/resorts/aaaveee-natures-paradise/
 update media_assets set storage_path = 'legacy/resorts/vakkaru/images/vakkaru-maldives-dinning.webp', width = null, height = null where id = '4c8e040b-13f6-ff00-3c08-c503fcaba9b6';
 update media_assets set storage_path = 'legacy/hotels/crystal-beach/images/crystal-beach-in.webp', width = null, height = null where id = '4c8ff439-01cc-7bb5-8e58-264f7d2b1ed5';
 update media_assets set storage_path = 'legacy/resorts/amari-havodda/images/amari-havodda-maldives-snorkeling.webp', width = null, height = null where id = '4c9561ba-da1b-cd9b-9482-6d3261a2e35e';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-airport-transfers.webp', width = null, height = null where id = '4c9615d3-3619-41fa-800b-336cf76847fa';
 update media_assets set storage_path = 'legacy/images/maldives-sumset.webp', width = null, height = null where id = '4cbbcd51-28ee-7b77-8092-8272467256be';
 update media_assets set storage_path = 'legacy/resorts/fushifaru/images/fushifaru-maldives-island-resort-dinning.webp', width = null, height = null where id = '4cc31b63-99d6-5493-84d2-b2cd312124a2';
 update media_assets set storage_path = 'legacy/images/surfing/maldives-surfing-islands.webp', width = null, height = null where id = '4cd20e68-f2e5-f498-6fb0-074924fc28aa';
@@ -1623,6 +1649,7 @@ update media_assets set storage_path = 'legacy/resorts/siyam-world/images/siyam-
 update media_assets set storage_path = 'legacy/resorts/summer-island/images/summer-island-maldives-garden-room1.webp', width = null, height = null where id = '4cf9ff6a-79e4-21e2-eb78-e941b33a554a';
 update media_assets set storage_path = 'legacy/resorts/saii-lagoon/images/royal-island-premium-all-inclusive-resort-maldives.webp', width = null, height = null where id = '4d0d6fff-5801-4edc-786f-0f8195f4e3a6';
 update media_assets set storage_path = 'legacy/resorts/milaidhoo/images/milaidhoo-island-maldives-luxury-resort.webp', width = null, height = null where id = '4d27b5e0-5213-3a50-6fa0-c1bcf58fa459';
+update media_assets set storage_path = 'transfers/oblu-XPERIENCE-Ailafushi/oblu-xperience-ailafushi-island-maldives-speedboat.webp', width = null, height = null where id = '4d2d69a8-2ceb-47f7-8049-8f8334010ef7';
 update media_assets set storage_path = 'legacy/images/articles/affordable-travel.webp', width = null, height = null where id = '4d31c189-475c-0db3-a01b-71bd62f2b02b';
 update media_assets set storage_path = 'legacy/images/ferry/vaavu-atoll-ferry-transfer-schedules.webp', width = null, height = null where id = '4d34471f-a93b-6dae-2ef4-cdeaee1d08a0';
 update media_assets set storage_path = 'admin-uploads/24cfdee5-dc63-4463-8481-220e3ae09b2a/1792580759400-pyt9hn.webp', width = null, height = null where id = '4d56214d-5bb0-4395-afce-e91f9d9dd72b';
@@ -1698,6 +1725,7 @@ update media_assets set storage_path = 'legacy/hotels/island-break-fulidhoo/imag
 update media_assets set storage_path = 'legacy/resorts/dhiggiri/images/nakai-dhiggiri-resort-maldives-over-water-villa.webp', width = null, height = null where id = '504b94fa-34c7-854e-0406-b2a973c233c0';
 update media_assets set storage_path = 'legacy/images/male/male-city-guided-tour.webp', width = 720, height = 508 where id = '505b8ca8-7a27-520c-4566-b0a73cf49b21';
 update media_assets set storage_path = 'admin-uploads/96fab9ec-a144-4e46-8b0d-aebd580daa5e/1792581080444-mfd79c.webp', width = null, height = null where id = '5064bbf5-249d-4a28-875c-bcd97c4dc543';
+update media_assets set storage_path = 'transfers/all-routes-gallery/Maldives-tour-guide-airport-staff.webp', width = null, height = null where id = '506608b5-f035-4d6d-8e5d-96d972c953ac';
 update media_assets set storage_path = 'uploads/assets/uploads/resorts/ayada-maldives-beach.webp', width = null, height = null where id = '506b6894-6609-3c34-daec-675d119ff574';
 update media_assets set storage_path = 'legacy/resorts/gangehi-island/images/gangehi-island-resort-club-room.webp', width = null, height = null where id = '507da6d7-076b-a393-0d48-5da9ed5849e5';
 update media_assets set storage_path = 'legacy/images/activities/maldives-snorkeling.webp', width = null, height = null where id = '5088b1e5-3f6d-d025-fffc-194a53bf40a9';
@@ -1718,6 +1746,7 @@ update media_assets set storage_path = 'legacy/images/resorts/kandima-maldives-i
 update media_assets set storage_path = 'legacy/resorts/reethi-faru/images/reethi-faru-resort-deluxe-beach-villa.webp', width = null, height = null where id = '512561c5-659f-97d4-0754-70e09f088158';
 update media_assets set storage_path = 'legacy/images/transfers/bandos-island-speedboat.webp', width = null, height = null where id = '5137e1db-d0fe-b403-1b5b-55a9b6137509';
 update media_assets set storage_path = 'legacy/resorts/fairmont/images/fairmont-maldives-sirru-fen-fushi-water-villa.webp', width = null, height = null where id = '513babbb-fbac-84e2-23d2-fda4b500bec5';
+update media_assets set storage_path = 'transfers/all-routes-gallery/transfers.webp', width = null, height = null where id = '51442c57-ee43-43c6-a6c0-dea815dcc890';
 update media_assets set storage_path = 'legacy/images/activities/maldives-fishing.webp', width = null, height = null where id = '5149c065-8edc-01a1-9b2a-b18fa0bab13a';
 update media_assets set storage_path = 'legacy/images/transfers/male-airport-to-biyadhoo-island.webp', width = null, height = null where id = '5154c382-2f50-5147-8c9f-b88711ae8bb9';
 update media_assets set storage_path = 'legacy/images/ferry/waldorf-astoria-maldives-ithaafushi.webp', width = null, height = null where id = '5160fba0-d3fa-95ba-8daa-635f7e5df1bc';
@@ -1752,6 +1781,7 @@ update media_assets set storage_path = 'legacy/images/activities/dusit-thani-mal
 update media_assets set storage_path = 'legacy/resorts/the-ritz-carlton/images/ritz-carlton-maldives.webp', width = null, height = null where id = '5364695c-4cea-7672-1945-6b7282984a45';
 update media_assets set storage_path = 'admin-uploads/3c144294-933d-4f7a-90ff-e8609c1286fe/1792308345596-wdmfz3.jpg', width = null, height = null where id = '5367ed2a-a4f5-4810-86d6-12004263f976';
 update media_assets set storage_path = 'legacy/resorts/waldorf-astoria/images/waldorf-astoria-maldives-ithaafushi-beach.webp', width = null, height = null where id = '5372c9f4-d925-1d08-dbb2-d60f0fa466a6';
+update media_assets set storage_path = 'transfers/crossroad-maldives/Male-airport-to-marina-crossroad.webp', width = null, height = null where id = '539c7681-b2e1-4dbe-be69-4eb56bd69f21';
 update media_assets set storage_path = 'legacy/resorts/angaga-island/images/angaga-island-resort-spa-maldives-restaurant.jpg', width = null, height = null where id = '53b2fe10-4890-06ce-5f00-dbe90b4edc49';
 update media_assets set storage_path = 'uploads/assets/uploads/atoll/raa-innamaadhoo-island.jpg', width = null, height = null where id = '53b3b48b-c781-cc4e-90fc-ef6209223860';
 update media_assets set storage_path = 'legacy/resorts/amaya-resort/images/amaya-kuda-rah-maldives-water-pool-villa1.webp', width = null, height = null where id = '53c006ed-d38d-680b-f3ff-c23cb8db6e33';
@@ -1761,8 +1791,10 @@ update media_assets set storage_path = 'legacy/resorts/amari-havodda/images/amar
 update media_assets set storage_path = 'legacy/images/maldives/angsana-velavaru-maldives-ocean-villa1.webp', width = null, height = null where id = '53f968b2-634b-7425-6c9d-24434c607d43';
 update media_assets set storage_path = 'legacy/images/male/2.webp', width = null, height = null where id = '541120be-2ae5-3750-626c-f84c5533671d';
 update media_assets set storage_path = 'legacy/images/ferry/taj-exotica-maldives-airport-transfers.webp', width = null, height = null where id = '54189380-1d56-728c-0c49-0827eab267dc';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-hotel-speedboat-transfers.webp', width = null, height = null where id = '5434e007-58d7-4a69-a837-a5c9aa1a161b';
 update media_assets set storage_path = 'legacy/resorts/nautilus/images/nautilus-island-map.jpg', width = null, height = null where id = '54356024-1750-1292-a922-182b7d64e7a4';
 update media_assets set storage_path = 'legacy/resorts/ja-manafaru/images/ja-manafaru-maldives-island-resort-sunrise-water-villa1.webp', width = null, height = null where id = '546f8720-d0d8-464b-e865-20a7f9d2d1af';
+update media_assets set storage_path = 'transfers/all-routes-gallery/Maldives-budget-transfers.webp', width = null, height = null where id = '548fc551-90e5-403b-92f3-b3fc2b192988';
 update media_assets set storage_path = 'legacy/images/articles/the-impact-of-islam-on-maldivian-society.webp', width = null, height = null where id = '5493bb00-b7c9-1b7a-8bab-654646e0db72';
 update media_assets set storage_path = 'uploads/assets/uploads/activities/island-hopping/male-atoll-island-hopping-tour.webp', width = null, height = null where id = '5497fe83-2d61-fbb7-719d-f60d7cff092d';
 update media_assets set storage_path = 'legacy/images/maps/es/maldivas-moneda.webp', width = null, height = null where id = '54a1b2aa-34f3-7a0f-5eb3-6acef8b3df15';
@@ -1793,6 +1825,7 @@ update media_assets set storage_path = 'admin-uploads/4b61a135-f3a3-4d34-98bf-cd
 update media_assets set storage_path = 'legacy/resorts/ja-manafaru/images/ja-manafaru-maldivesi-island-map.webp', width = null, height = null where id = '561a882e-ed84-699a-1941-533b2a97de74';
 update media_assets set storage_path = 'legacy/resorts/como-maalifushi/images/como-maalifushi-island-resort-maldives-beach-suite1.webp', width = null, height = null where id = '5622b605-a49e-e8a4-e211-2ff3e85b236d';
 update media_assets set storage_path = 'uploads/assets/uploads/activities/full-day/vaavu-shipwreck-excursioon.webp', width = null, height = null where id = '562993cb-02c3-2ced-01b9-e1fc1aef3b6f';
+update media_assets set storage_path = 'transfers/makunudu-island/Male-airport-to-makunudu.webp', width = null, height = null where id = '562d6bef-4232-4816-8497-9d528bb554d0';
 update media_assets set storage_path = 'legacy/resorts/filitheyo-island/images/filitheyo-island-resort-maldives-pool.webp', width = null, height = null where id = '563a023e-1d80-17c0-db91-3ae9e17543d1';
 update media_assets set storage_path = 'legacy/resorts/oblu-nature-helengeli/images/oblu-nature-helengeli-maldives-beach-villa.webp', width = null, height = null where id = '56409a82-8bf4-2433-3fff-8db01bd2227b';
 update media_assets set storage_path = 'legacy/images/diving/alif-alif-fesdhoo-wreck-maldives.webp', width = null, height = null where id = '5649f560-3d06-9ead-7165-845904400e2b';
@@ -1821,6 +1854,7 @@ update media_assets set storage_path = 'legacy/images/activities/full-day/vaavu-
 update media_assets set storage_path = 'legacy/images/transfers/male-airport-to-adaaran-club-rannalhi.webp', width = null, height = null where id = '57aa90b9-5afe-acff-2780-ec5a39a06eb1';
 update media_assets set storage_path = 'legacy/resorts/faarufushi/images/emerald-faarufushi-maldives-restaurant.webp', width = null, height = null where id = '57b0f374-d193-1c3e-4662-c13b52bc7812';
 update media_assets set storage_path = 'legacy/resorts/you-and-me/images/you-and-me-by-cocoon-maldives-resort.webp', width = null, height = null where id = '57b3486a-ce90-9dbc-a496-675b98bbf63e';
+update media_assets set storage_path = 'transfers/all-routes-gallery/Maldives-tour-guide-airport-staff.webp', width = null, height = null where id = '57b3723f-dc11-4314-81df-2b42b9993cad';
 update media_assets set storage_path = 'guest-uploads/7e55221e-ed88-4e62-bd51-795779154563/1792593367621-nqc9aa.webp', width = null, height = null where id = '57beac1b-5ebb-460e-b0e8-f03f0fc8c9fa';
 update media_assets set storage_path = 'legacy/images/transfers/male-airport-to-adaaran-prestige-vadoo.webp', width = null, height = null where id = '57d3e39d-4cd6-11da-2c5d-5e32da094e08';
 update media_assets set storage_path = 'legacy/hotels/kaanibeach-maafushi/images/kaani-beach-hotel-in-maafushi-maldives.jpg', width = null, height = null where id = '57d97e22-92a2-a86e-45b0-b3d487546305';
@@ -1831,11 +1865,13 @@ update media_assets set storage_path = 'uploads/assets/uploads/resorts/emerald-f
 update media_assets set storage_path = 'legacy/images/resorts/maldives-budget-resort.webp', width = null, height = null where id = '5839c611-d69a-428a-a6ae-b6d36645600c';
 update media_assets set storage_path = 'legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-dinner.webp', width = 1920, height = 1080 where id = '5855b9d8-4a35-ed83-2b32-462d79a1ecd3';
 update media_assets set storage_path = 'legacy/hotels/mantha-view-hotel/images/paradise-island-maldives-resort.webp', width = null, height = null where id = '585bccb1-826d-1613-f180-e731d194cf76';
+update media_assets set storage_path = 'transfers/all-routes-gallery/speedboat-transfers-in-maldives.webp', width = null, height = null where id = '5874c0e2-35e7-4af2-a79f-2f4586f3b9b9';
 update media_assets set storage_path = 'legacy/resorts/anantara-dhigu/images/anantara-dhigu-water-villa2.webp', width = null, height = null where id = '58808314-05db-27e5-a645-4ab6f66ffefa';
 update media_assets set storage_path = 'legacy/resorts/coco-bodu-hithi/images/coco-bodu-hithi-maldives-beach.webp', width = null, height = null where id = '5881b79f-9193-1c6a-3a33-4fdd8f23c1d4';
 update media_assets set storage_path = 'legacy/resorts/eriyadu-island/images/eriyadu-island-resort-maldives-male-atoll.webp', width = null, height = null where id = '588a4e61-42e4-aacc-47ea-70c8a0d017dc';
 update media_assets set storage_path = 'legacy/images/resorts/maldives-family-islands-resorts.webp', width = null, height = null where id = '5898cc50-1ea6-c516-0a6c-0574a9bd5a66';
 update media_assets set storage_path = 'legacy/images/ferry/kandooma-maldives-airport-transfers.webp', width = null, height = null where id = '58a26a09-a49e-4bd9-3fb7-6e2705ea30a9';
+update media_assets set storage_path = 'transfers/all-routes-gallery/resort-transfers-maldives.webp', width = null, height = null where id = '58ae8df3-94eb-4382-b222-e271c9dcca55';
 update media_assets set storage_path = 'legacy/images/transfers/rosewood-ranfaru-island-maldives-speedboat.webp', width = null, height = null where id = '58aefb57-06b0-0142-b04c-e4fdfa39f64d';
 update media_assets set storage_path = 'legacy/images/transfers/lux-north-male-maldives-transfer.webp', width = null, height = null where id = '58af0da2-b7bc-c97d-d4cb-ad76d3440790';
 update media_assets set storage_path = 'legacy/images/activities/things-to-do/dusit-thani-maldives-island-snorkeling.webp', width = null, height = null where id = '58b0dec1-1a82-0b39-1337-20734f0e0e80';
@@ -1881,6 +1917,7 @@ update media_assets set storage_path = 'legacy/images/male-atoll-dive-sitemap.jp
 update media_assets set storage_path = 'legacy/resorts/adaaran-vadoo/images/adaaran-prestige-vadoo-maldives-island-beach.webp', width = null, height = null where id = '5a61309b-603c-1de8-5bba-ebe7c87103c6';
 update media_assets set storage_path = 'legacy/images/maldives-history.jpg', width = null, height = null where id = '5a6b7d17-72b4-9c07-25a9-05cee1cd9704';
 update media_assets set storage_path = 'legacy/resorts/amari-havodda/images/amari-havodda-maldives-gym.webp', width = null, height = null where id = '5a9048fb-3970-6771-1f91-32a267902bfc';
+update media_assets set storage_path = 'transfers/all-routes-gallery/speedboat-transfers-in-maldives.webp', width = null, height = null where id = '5aa52527-a923-48eb-a660-35ea9090b079';
 update media_assets set storage_path = 'legacy/images/activities/things-to-do/dusit-thani-maldives-island-resort-water-sports.webp', width = null, height = null where id = '5ab4359d-64bb-77a2-5b07-635bf6a6d63f';
 update media_assets set storage_path = 'legacy/resorts/dhigali/images/dhigali-maldives-resort.webp', width = null, height = null where id = '5acc189e-e840-24e6-2804-0a17dede2ce0';
 update media_assets set storage_path = 'admin-uploads/3b42f367-9e06-4edf-bc02-f39ff7cf3185/1792580982641-odya49.webp', width = null, height = null where id = '5adfbc0f-6c4b-429b-b92c-0bec364730e9';
@@ -1931,6 +1968,7 @@ update media_assets set storage_path = 'legacy/images/transfers/kurumba-island-m
 update media_assets set storage_path = 'legacy/resorts/noku/images/noku-maldives-kudafunfaru-room.webp', width = null, height = null where id = '5d817f50-96e5-f012-0d61-c8722b66bede';
 update media_assets set storage_path = 'admin-uploads/b79a1734-d8bb-4f63-9d2e-b7c435264e3d/1792580963962-ssf8pd.webp', width = null, height = null where id = '5da512a1-8cce-48cd-8459-02821f23ffd9';
 update media_assets set storage_path = 'legacy/resorts/jumeirah-olhahali/images/jumeirah-olhahali-island-maldives-dinning.webp', width = null, height = null where id = '5dbb3c05-4ddf-52db-0f14-ccaadb74bf91';
+update media_assets set storage_path = 'transfers/all-routes-gallery/speedboat-service-in-maldives.webp', width = null, height = null where id = '5dc8919f-a9ae-448c-b7c2-f78252c04157';
 update media_assets set storage_path = 'legacy/resorts/oblu-nature-helengeli/images/oblu-nature-helengeli-maldives-dinning.webp', width = null, height = null where id = '5dcc8918-990f-a780-7eee-784aebee9b3d';
 update media_assets set storage_path = 'legacy/images/activities/dolphin/dolphin-trip.webp', width = null, height = null where id = '5dd06d1a-b77b-180b-2b99-07d175590728';
 update media_assets set storage_path = 'legacy/images/ferry/maldives-island-transfers-schedules.jpg', width = null, height = null where id = '5df06264-411f-373c-49c9-a0e2d0a7a1a0';
@@ -2000,6 +2038,7 @@ update media_assets set storage_path = 'uploads/assets/uploads/resorts/bandos-is
 update media_assets set storage_path = 'legacy/resorts/kandolhu/images/kandolhu-maldives-island-resort.webp', width = null, height = null where id = '6058f86b-7c9b-56b1-d3c8-e0925deb5ea7';
 update media_assets set storage_path = 'legacy/images/maldives-people.webp', width = null, height = null where id = '60630ddc-d244-a2ea-bd3c-469a719f1d6d';
 update media_assets set storage_path = 'legacy/resorts/vommuli/images/the-st-regis-vommuli.webp', width = null, height = null where id = '6064e5e6-51c7-9b43-d205-6f4cd77a3a70';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-resort-transfers.webp', width = null, height = null where id = '60708368-b0c5-4397-82fe-ce62db3528cb';
 update media_assets set storage_path = 'legacy/resorts/anantara-dhigu/images/anantara-dhigu-hotel.webp', width = null, height = null where id = '60783c24-3a6c-5408-b11c-9ecc33c1747b';
 update media_assets set storage_path = 'legacy/images/ferry/maldives-public-transportation.jpg', width = null, height = null where id = '607e1e8f-07d0-d2a8-6859-9fe60dc8f272';
 update media_assets set storage_path = 'legacy/resorts/fairmont/images/fairmont-maldives-sirru-fenfushi-island-map.webp', width = null, height = null where id = '60824386-3cc6-df30-445b-3492daed1a70';
@@ -2063,6 +2102,7 @@ update media_assets set storage_path = 'legacy/resorts/radisson-blu/images/radis
 update media_assets set storage_path = 'legacy/resorts/summer-island/images/summer-island-hotel.webp', width = null, height = null where id = '6286c9fb-3651-792b-2bf6-473086088722';
 update media_assets set storage_path = 'legacy/resorts/residence-falhumaafushi/images/the-residence-falhumaafushi-maldives-map.webp', width = null, height = null where id = '62967390-0144-40d3-9ae3-292015f970d7';
 update media_assets set storage_path = 'legacy/resorts/sun-island/images/sun-island-resort-south-ari-atoll.webp', width = null, height = null where id = '62a25238-bc37-8076-0b62-a2c74b3f9e6c';
+update media_assets set storage_path = 'transfers/all-routes-gallery/private-speedboat-charter-maldives.webp', width = null, height = null where id = '62cb74d6-7ce0-4fa2-95b3-2c769d4c1df7';
 update media_assets set storage_path = 'uploads/assets/uploads/fishing/images/charters/laamu-legend.webp', width = null, height = null where id = '62cfa070-1a33-708b-6729-1a5cee5b6a49';
 update media_assets set storage_path = 'uploads/assets/uploads/speedboats/arriva/arriva-exterior.jpeg', width = null, height = null where id = '62f88477-b3de-3703-4db4-b97bfe079843';
 update media_assets set storage_path = 'legacy/images/resorts/huvafen-fushi-island-maldives-resort.webp', width = null, height = null where id = '62fe575b-7e09-9850-ac00-be79099df809';
@@ -2089,10 +2129,12 @@ update media_assets set storage_path = 'legacy/hotels/gaafaru-view-inn-maldives/
 update media_assets set storage_path = 'legacy/images/activities/act7.webp', width = null, height = null where id = '6424c20d-32f4-8d4e-8807-3b7ed27964d5';
 update media_assets set storage_path = 'legacy/resorts/varu-atmosphere/images/varu-by-atmosphere-male-atoll.webp', width = null, height = null where id = '6426a074-17cf-c330-326c-81abcda15efe';
 update media_assets set storage_path = 'legacy/resorts/maayafushi/images/nakai-maayafushi-maldives-spa.webp', width = null, height = null where id = '6428cb28-1a8e-9034-e35c-0e3669f2dd6f';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-airport-to-hotels.webp', width = null, height = null where id = '643624b1-b44d-4c39-852b-8b554b55832b';
 update media_assets set storage_path = 'uploads/assets/uploads/fishing/images/packages/family-ari.webp', width = null, height = null where id = '6438802c-801f-b2aa-a77d-af0e3c1df112';
 update media_assets set storage_path = 'legacy/images/ferry/pullman-airport-transfer.webp', width = null, height = null where id = '643a9b1b-9294-d08d-1665-d71c10e5a4f9';
 update media_assets set storage_path = 'legacy/resorts/faarufushi/images/emerald-faarufushi-maldives-beach.webp', width = null, height = null where id = '644e3988-44b6-6de7-92a6-68c509accf21';
 update media_assets set storage_path = 'legacy/images/activities/jack-fishes.jpg', width = null, height = null where id = '644ecdcd-86b5-4b0c-1265-b2415b255df3';
+update media_assets set storage_path = 'transfers/all-routes-gallery/private-speedboat-charter-maldives.webp', width = null, height = null where id = '647c28a1-10c0-4340-9b73-881da68b4753';
 update media_assets set storage_path = 'legacy/resorts/fihalhohi/images/fihalhohi-island-resort.webp', width = null, height = null where id = '64835628-4ba3-f1b2-c8f1-85100cc2a3c8';
 update media_assets set storage_path = 'legacy/resorts/westin-miriandhoo/images/the-westin-maldives-miriandhoo-resort-baa-atoll.webp', width = null, height = null where id = '6490cc13-a195-4133-1427-66be5325766a';
 update media_assets set storage_path = 'legacy/resorts/cinnamon-dhonveli/images/cinnamon-dhonveli-maldives-beach-bungalow.webp', width = null, height = null where id = '6497bc97-9559-1ca9-64db-ca5785f1d0fd';
@@ -2132,6 +2174,7 @@ update media_assets set storage_path = 'legacy/resorts/aaaveee-natures-paradise/
 update media_assets set storage_path = 'legacy/resorts/outrigger-konotta/images/outrigger-konotta-maldives-resort-over-waterl-villa-pool.webp', width = null, height = null where id = '660708fc-b743-5348-32b6-e009e102eda0';
 update media_assets set storage_path = 'legacy/resorts/angsana-velavaru/images/angsana-velavaru-maldives-ocean-villa1.webp', width = null, height = null where id = '660b91e0-a1c4-3c94-a32a-2e7b2b25274c';
 update media_assets set storage_path = 'legacy/resorts/centara-rasfushi/images/centara-rasfushi-island-premium-deluxe-spa-water-villa.webp', width = null, height = null where id = '660f1fab-f6e5-9cdb-a288-f4331353808e';
+update media_assets set storage_path = 'transfers/all-routes-gallery/resort-transfers-maldives.webp', width = null, height = null where id = '66239bac-37bf-482c-8bc5-a8a3671d42ed';
 update media_assets set storage_path = 'legacy/resorts/angaga-island/images/angaga-island-resort-spa-maldives.jpg', width = null, height = null where id = '6623e288-1f89-7245-6444-07494f267d11';
 update media_assets set storage_path = 'admin-uploads/05e9ddf1-d5f9-4d7c-bcdc-89a9122b1043/1792581109089-6q45mv.webp', width = null, height = null where id = '66271ee5-4653-4ddf-9f56-fc8cc54a16e6';
 update media_assets set storage_path = 'legacy/images/fishing/skate-fishs-and-rays.webp', width = null, height = null where id = '662b83b7-9b80-0120-4870-0e4d571b8534';
@@ -2205,6 +2248,7 @@ update media_assets set storage_path = 'legacy/resorts/bookingphp/img/background
 update media_assets set storage_path = 'uploads/assets/uploads/south/hdh-nellaidhoo-island.jpg', width = null, height = null where id = '69404ae7-06f9-b7a5-27e8-2596eabde7d0';
 update media_assets set storage_path = 'legacy/resorts/anantara-dhigu/images/anantara-dhigu-resort.webp', width = null, height = null where id = '69507772-4e04-c4bb-af0a-d045443f79b8';
 update media_assets set storage_path = 'legacy/resorts/bandos-island/images/bandos-maldives-island-resort-beach.webp', width = null, height = null where id = '696bd3bb-a14d-a13b-b99b-c31b5f717af5';
+update media_assets set storage_path = 'transfers/clubmed-kani/clubmed-kani-speedboat.webp', width = null, height = null where id = '6977e2f3-8252-4f6d-82c1-31914b6d0fdb';
 update media_assets set storage_path = 'legacy/resorts/sheraton/images/sheraton-maldives-full-moon-resort-beach-front-deluxe.webp', width = null, height = null where id = '697c989f-ecca-e638-24fb-3b1de64e3faf';
 update media_assets set storage_path = 'legacy/resorts/makunudu-island/images/makunudu-island-resort-maldives-snorkeling-north-male-atoll.webp', width = null, height = null where id = '6992236d-6796-937b-3cc7-a6f45aa0cfc2';
 update media_assets set storage_path = 'legacy/images/bike.webp', width = null, height = null where id = '699ebcee-a12c-a80c-5228-eced477bdebe';
@@ -2243,6 +2287,7 @@ update media_assets set storage_path = 'uploads/assets/uploads/resorts2/noku-mal
 update media_assets set storage_path = 'legacy/resorts/cinnamon-velifushi/images/cinnamon-velifushi-maldives-island.webp', width = null, height = null where id = '6aca1f12-f8ad-413f-28a5-d9c3b678b8e8';
 update media_assets set storage_path = 'legacy/hotels/reveries-village/reveries-diving-village-surfing.webp', width = null, height = null where id = '6ad86073-8b20-9bdb-5549-8afd22a982a9';
 update media_assets set storage_path = 'uploads/assets/uploads/central/ha-vashafaru-island.jpg', width = null, height = null where id = '6adbdbe4-927b-ba42-7ab1-65ded2ddb6c9';
+update media_assets set storage_path = 'transfers/all-routes-gallery/Maldives-budget-transfers.webp', width = null, height = null where id = '6af655a1-40ef-41f5-8d55-fc4706d33d92';
 update media_assets set storage_path = 'legacy/resorts/royal-island/images/royal-island-premium-all-inclusive-resort-maldives-garden.webp', width = null, height = null where id = '6afda7fb-54b2-3ebc-2105-6ed683c8b5ac';
 update media_assets set storage_path = 'legacy/images/maps/maafushi-map.webp', width = null, height = null where id = '6b00941a-d836-5a87-7c16-3cc5592a8e8e';
 update media_assets set storage_path = 'legacy/resorts/furaveri/images/furaveri-maldives-water-villa.webp', width = null, height = null where id = '6b08e7c5-7bfb-0f08-0073-d112c2deb44b';
@@ -2298,6 +2343,7 @@ update media_assets set storage_path = 'admin-uploads/f6eb68d7-6eeb-4bb6-be6a-37
 update media_assets set storage_path = 'legacy/resorts/huvafenfushi/images/huvafen-fushi-maldives.webp', width = null, height = null where id = '6d45ba0a-a50a-3d56-763d-f475992f287f';
 update media_assets set storage_path = 'legacy/images/transfers/cinnamon-dhonveli-island-speedboat.webp', width = null, height = null where id = '6d46bf46-c364-cbae-a6fa-a7d5c22be512';
 update media_assets set storage_path = 'legacy/images/transfers/the-ritz-carlton-maldives-transfer.webp', width = null, height = null where id = '6d5227af-7c60-4d4d-e0e6-cf64938bd835';
+update media_assets set storage_path = 'transfers/all-routes-gallery/resort-transfers-maldives.webp', width = null, height = null where id = '6d58bd05-6a2c-409d-802a-4d8a968770bb';
 update media_assets set storage_path = 'legacy/resorts/dusit-thani/images/dusit-thani-maldives-island-resort-water-pool-villa.webp', width = null, height = null where id = '6d5d2d0c-e76f-2366-5b86-724edab46263';
 update media_assets set storage_path = 'legacy/images/resorts/best-places-for-snorkeling-maldives.webp', width = null, height = null where id = '6d6129dd-4eff-2f7b-cefb-8994266163bc';
 update media_assets set storage_path = 'legacy/resorts/cinnamon-hakuraa/images/cinnamon-hakuraa-huraa-maldives-water-villa.webp', width = null, height = null where id = '6d651681-8a21-d7e8-379d-eefc79445e54';
@@ -2331,6 +2377,7 @@ update media_assets set storage_path = 'legacy/resorts/fun-island/images/fun-isl
 update media_assets set storage_path = 'legacy/images/activities/flyboard-maldives.webp', width = null, height = null where id = '6e382864-79e4-9ebc-1c1a-125b55018615';
 update media_assets set storage_path = 'legacy/images/maldives/komandoo-island-resort-and-spa-beach-villa1.webp', width = null, height = null where id = '6e3937e4-d112-2dfa-bcc8-3ddb778a3730';
 update media_assets set storage_path = 'legacy/resorts/alimathaa/images/nakai-alimatha-maldives-island-resort-spa.webp', width = null, height = null where id = '6e48e3e7-3ca4-000b-a7b7-38c9b3d00dc7';
+update media_assets set storage_path = 'transfers/all-routes-gallery/private-speedboat-charter-maldives.webp', width = null, height = null where id = '6e497c00-109f-48ac-9b1f-455b28fc1685';
 update media_assets set storage_path = 'legacy/resorts/six-senses-laamu/images/six-senses-laamu-maldives-map.webp', width = null, height = null where id = '6e5274c2-7f63-d3a3-27ef-ea94252869d8';
 update media_assets set storage_path = 'legacy/images/traditional-maldivian-dance-performance.webp', width = null, height = null where id = '6e6901aa-a5f9-0f99-4d83-1e8a11c548f6';
 update media_assets set storage_path = 'legacy/resorts/fushifaru/images/fushifaru-maldives-island.webp', width = null, height = null where id = '6e6e873a-c5ca-2eb7-c44b-c6d8be43650d';
@@ -2486,6 +2533,7 @@ update media_assets set storage_path = 'uploads/assets/uploads/gotrip/lodge/mfh-
 update media_assets set storage_path = 'uploads/assets/uploads/destinations/four-seasons-maldives-landaa-giraavaru-sunset-water-villa.webp', width = null, height = null where id = '74bd6685-3b96-7a7f-9513-745c225f9b71';
 update media_assets set storage_path = 'legacy/resorts/summer-island/images/summer-island-maldives-garden-room.webp', width = null, height = null where id = '74c3f7a5-16e5-ed4d-5c21-777ae9c91808';
 update media_assets set storage_path = 'legacy/resorts/makunudu-island/images/makunudu-island-resort-maldives-beach-bangalow1.webp', width = null, height = null where id = '74d68571-066a-7fee-38f4-3786de2f84cd';
+update media_assets set storage_path = 'transfers/clubmed-kani/clubmed-kani-maldives-transfer.webp', width = null, height = null where id = '74e024b6-4baf-4d55-87f2-4ed0c657609b';
 update media_assets set storage_path = 'legacy/resorts/the-ritz-carlton/images/ritz-carlton-island-maldives.webp', width = null, height = null where id = '74f61564-a845-1a4a-a2ba-945925eb1352';
 update media_assets set storage_path = 'admin-uploads/71ab6e97-13c0-4cf4-9cf9-faa8b6cb4391/1792581092432-6rp8gp.webp', width = null, height = null where id = '74f73623-db58-4af3-8c3c-4bd7d715d428';
 update media_assets set storage_path = 'legacy/resorts/como-maalifushi/images/como-maalifushi-island-resort-reef.webp', width = null, height = null where id = '74f81ef0-3191-df1f-9fd0-ce8c23737270';
@@ -2548,6 +2596,7 @@ update media_assets set storage_path = 'admin-uploads/b79a1734-d8bb-4f63-9d2e-b7
 update media_assets set storage_path = 'legacy/images/male/male-maldives.webp', width = 720, height = 508 where id = '77f1a68b-9ea0-4775-71ef-45b7eac9b32a';
 update media_assets set storage_path = 'legacy/resorts/noku/images/noku-maldives-kudafunfaru-water-villa1.webp', width = null, height = null where id = '780da0fb-528c-142b-3fe9-862b383be2e5';
 update media_assets set storage_path = 'legacy/images/maldives/nakai-alimatha-maldives-island-resort.webp', width = null, height = null where id = '780f2f62-b5cd-2cca-253e-6544f41efb6b';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-resort-transfers.webp', width = null, height = null where id = '7817a4a2-4b43-4f60-8cc1-c96e06a13a29';
 update media_assets set storage_path = 'legacy/resorts/vakarufalhi/images/vakarufalhi-maldives.webp', width = null, height = null where id = '78238656-ed0a-90e7-7bf7-21f91a4a85c8';
 update media_assets set storage_path = 'legacy/hotels/surfview-male/images/surfview-hotel-in-male-maldives.jpg', width = null, height = null where id = '7838258e-6e3f-4ef1-a5f5-15419eb78d13';
 update media_assets set storage_path = 'legacy/resorts/ozen-reserve-bolifushi/images/ozen-reserve-bolifushi-maldive-earth-pool-sunset-villa.webp', width = null, height = null where id = '78418afc-dfc8-d283-e6cc-b56894de8580';
@@ -2591,6 +2640,7 @@ update media_assets set storage_path = 'legacy/resorts/embudu-village/images/emb
 update media_assets set storage_path = 'legacy/resorts/images/maldives-all-inclusive-resorts.jpg', width = null, height = null where id = '79a3ea49-b675-7b1e-4b6f-fec5246b9cca';
 update media_assets set storage_path = 'uploads/assets/uploads/resorts/atmosphere-kanifushi-maldives-island-resort.webp', width = null, height = null where id = '79a4fa1d-7c26-b79a-d30d-21d40faa3a52';
 update media_assets set storage_path = 'legacy/resorts/kurumba/images/kurumba-maldives-island-resort-pool.webp', width = null, height = null where id = '79a8473b-6ce9-ce79-646a-0c12dbe71d77';
+update media_assets set storage_path = 'transfers/ritz-carlton-maldives/the-ritz-carlton-transfer.webp', width = null, height = null where id = '79c42233-a52e-4e86-b282-66712d21195f';
 update media_assets set storage_path = 'legacy/resorts/malahini-kuda-bandos/images/malahini-kuda-bandos-maldives-activities.webp', width = null, height = null where id = '79d2ab40-319f-ee16-78d2-e57827463bea';
 update media_assets set storage_path = 'uploads/assets/uploads/south/lhaviyani-olhuvelifushi-island.jpg', width = null, height = null where id = '79f20d1a-4ce3-5590-1a70-866ebee625ad';
 update media_assets set storage_path = 'legacy/resorts/outrigger-maafushivaru/images/outrigger-maldives-maafushivaru-resort-beach-villa.webp', width = null, height = null where id = '79f87809-b72f-704d-3bd7-0d1542c69576';
@@ -2634,6 +2684,8 @@ update media_assets set storage_path = 'legacy/hotels/arena-maafushi/images/area
 update media_assets set storage_path = 'legacy/resorts/jumeirah-olhahali/images/jumeirah-olhahali-island-maldives-luxury-hotel-male-atoll.webp', width = null, height = null where id = '7b332db9-5093-d281-cc1a-9b1016032271';
 update media_assets set storage_path = 'legacy/resorts/reethi-beach/images/reethi-beach-resort-maldives-beach-baa-atoll.webp', width = null, height = null where id = '7b36670c-f3d4-c3bc-684a-ae9912a3a6ef';
 update media_assets set storage_path = 'legacy/resorts/kandolhu/images/kandolhu-maldives-island-resort-sandbank-north-ari-atoll.webp', width = null, height = null where id = '7b42d9aa-5d56-7650-c2d6-6509f309b1f3';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-hotel-speedboat-transfers.webp', width = null, height = null where id = '7b523755-3831-480f-adf7-3145928989ab';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-airport-transfers.webp', width = null, height = null where id = '7b6301ef-deb1-493f-9984-50ede383cb03';
 update media_assets set storage_path = 'legacy/resorts/nika-island/images/nika-island-resort-and-spa-maldives-ari-atoll.webp', width = null, height = null where id = '7b6c2972-dfcd-1ead-436a-4d3bbcafe976';
 update media_assets set storage_path = 'legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives-beach.webp', width = null, height = null where id = '7b9c3e22-beec-4517-4056-ddb2d67ab816';
 update media_assets set storage_path = 'uploads/assets/uploads/activities/nurse-shark/nurs-shark-snorkeling.jpg', width = null, height = null where id = '7b9cf078-a55b-da31-2c90-ffca456094b4';
@@ -2669,6 +2721,7 @@ update media_assets set storage_path = 'legacy/resorts/hurawalhi-island/images/h
 update media_assets set storage_path = 'legacy/resorts/lily-beach/images/lily-beach-resort-and-spa-maldives-spa.webp', width = null, height = null where id = '7cfd631d-e4d8-462b-59fd-76ca02c09710';
 update media_assets set storage_path = 'legacy/resorts/maayafushi/images/nakai-maayafushi-maldives.webp', width = null, height = null where id = '7d04d706-22d7-3c1e-9042-083c3954a3a1';
 update media_assets set storage_path = 'legacy/resorts/vilamendhoo-island/images/vilamendhoo-island-resort-and-spa-water-spports-south-ari-atoll.webp', width = null, height = null where id = '7d110ee6-d1ae-5c94-30f2-1891e18164da';
+update media_assets set storage_path = 'transfers/all-routes-gallery/speedboat-transfers-in-maldives.webp', width = null, height = null where id = '7d215f99-116f-4154-9a9e-3cc9aa9dc508';
 update media_assets set storage_path = 'legacy/resorts/taj-coral-reef/images/taj-coral-reef-resort-and-spa-north-male-atoll.webp', width = null, height = null where id = '7d317eeb-c8fd-483f-3abf-456be7b563c9';
 update media_assets set storage_path = 'uploads/assets/uploads/activities/full-day/sand-bank-excursion.webp', width = null, height = null where id = '7d3aa51e-55bc-d5da-ca3a-0dc5e0e88014';
 update media_assets set storage_path = 'legacy/resorts/robinson-maldives/images/robinson-club-maldives-lagoon-villa1.webp', width = null, height = null where id = '7d423361-a529-cbff-129a-078dcb187be6';
@@ -2791,6 +2844,7 @@ update media_assets set storage_path = 'admin-uploads/fc82b4af-8bcf-4721-bc9d-9c
 update media_assets set storage_path = 'legacy/images/maldives/meeru-island-maldives.webp', width = null, height = null where id = '82e47b58-cabc-3582-07cb-643a62d89e4a';
 update media_assets set storage_path = 'legacy/resorts/cocoon/images/cocoon-maldives-resort.webp', width = null, height = null where id = '82ec8225-3454-883a-c63d-3f1d20cfda73';
 update media_assets set storage_path = 'legacy/images/maps/es/saiilagoon-transfer-maldives.webp', width = null, height = null where id = '8318001e-1d24-b921-ff78-f4309544cee8';
+update media_assets set storage_path = 'transfers/all-routes-gallery/private-speedboat-charter-maldives.webp', width = null, height = null where id = '832e2dbb-75b2-489e-9752-efd2e27eb390';
 update media_assets set storage_path = 'admin-uploads/71ab6e97-13c0-4cf4-9cf9-faa8b6cb4391/1792581096345-avowtr.webp', width = null, height = null where id = '8330a4c1-ded3-4440-8efc-7d93fda18cbb';
 update media_assets set storage_path = 'legacy/images/transfers/adaaran-select-hudhuranfushi-transfer.webp', width = null, height = null where id = '834cdde7-6a92-b465-29aa-c6a6881ba0af';
 update media_assets set storage_path = 'legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-kuda-huraa-island-map.webp', width = null, height = null where id = '835a8d4e-6408-5d0a-eac4-8a010b187e0c';
@@ -2830,6 +2884,7 @@ update media_assets set storage_path = 'legacy/images/maldives-community.webp', 
 update media_assets set storage_path = 'legacy/images/tours/whale-submarine.webp', width = null, height = null where id = '8564b10d-0761-d4be-6cd1-332ccf2ac5c9';
 update media_assets set storage_path = 'legacy/resorts/innahura/images/innahura-maldives-resort-beach.webp', width = null, height = null where id = '8567034b-c018-6bf3-90de-27fe39ae4208';
 update media_assets set storage_path = 'legacy/images/transfers/centara-ras-fushi-maldives-transfer.webp', width = null, height = null where id = '856d350f-8ad9-e1b3-35b0-b18cd3548b89';
+update media_assets set storage_path = 'transfers/crossroad-maldives/marina-crossroad-transfer.webp', width = null, height = null where id = '85711ff5-c778-4b28-94a1-bfc97b642671';
 update media_assets set storage_path = 'legacy/images/ferry/lux-north-maldives-airport-transfers.webp', width = null, height = null where id = '8575551c-8990-6211-58eb-0164de4a0288';
 update media_assets set storage_path = 'legacy/resorts/heritance-aarah/images/heritance-aarah-maldives-island-resort-raa-atoll.webp', width = null, height = null where id = '85860055-24b0-157b-44c1-503417d036f7';
 update media_assets set storage_path = 'legacy/images/resorts/gili-lankanfushi-maldives-family-villa1.webp', width = null, height = null where id = '85a3451d-545c-81f0-f446-0ebc9bd50945';
@@ -2878,6 +2933,7 @@ update media_assets set storage_path = 'legacy/resorts/faarufushi/images/emerald
 update media_assets set storage_path = 'legacy/images/transfers/male-airport-to-meeru-island.webp', width = null, height = null where id = '88724011-0034-9e92-9bb3-5a1a2ebe27b8';
 update media_assets set storage_path = 'legacy/images/maps/cn/indian-ocean.webp', width = null, height = null where id = '887a205c-4393-e9f7-3b1d-ce0cb8adf39d';
 update media_assets set storage_path = 'legacy/resorts/amari-havodda/images/amari-havodda-maldives-beach-villa.webp', width = null, height = null where id = '88855953-e324-6c21-5bd7-cd9b494dddaa';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-airport-to-hotels.webp', width = null, height = null where id = '888e5303-93d6-4319-b771-485661b6115e';
 update media_assets set storage_path = 'uploads/assets/uploads/resorts2/pullman-maldives-maamutaa-aqua-villa.webp', width = null, height = null where id = '8890d009-cecd-327f-03bf-811a241a6f61';
 update media_assets set storage_path = 'legacy/images/maps/es/donde-alojarse-en-maldivas.webp', width = null, height = null where id = '88933f2f-b6ee-315c-da37-a6f53926070b';
 update media_assets set storage_path = 'legacy/resorts/patina-maldives/images/the-patina-maldives-fari-island-water-villa1.webp', width = null, height = null where id = '889b0de8-400a-48ea-6536-6d4b8cf2d892';
@@ -2895,6 +2951,7 @@ update media_assets set storage_path = 'legacy/resorts/hideaway-beach/images/hid
 update media_assets set storage_path = 'legacy/images/logo2.jpg', width = null, height = null where id = '890ee2ba-91a3-7b6d-98c8-778505c1883f';
 update media_assets set storage_path = 'legacy/resorts/amilla-fushi/images/amilla-fushi-maldives-island.webp', width = null, height = null where id = '890f6fff-b8ba-1e29-97f6-84078f674edf';
 update media_assets set storage_path = 'legacy/resorts/furaveri/images/furaveri-maldives-beach-villa1.webp', width = null, height = null where id = '8919fb06-9710-8ee0-76a8-cfa1a700f47e';
+update media_assets set storage_path = 'transfers/all-routes-gallery/transfers.webp', width = null, height = null where id = '891d77d9-076d-4d40-9ee5-cd9ae7608e22';
 update media_assets set storage_path = 'legacy/resorts/faarufushi/images/emerald-faarufushi-maldives-raa-atoll.webp', width = null, height = null where id = '893cda07-9582-3516-88be-0f5832c68d67';
 update media_assets set storage_path = 'legacy/resorts/hideaway-beach/images/hideaway-beach-resort-and-spa-maldives-beach.webp', width = null, height = null where id = '895bc356-13af-7ce0-a232-0432da7c2bf6';
 update media_assets set storage_path = 'legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-tripple-seaview-room1.webp', width = null, height = null where id = '895ccc7a-dfe7-3751-09d0-38e3d2739bd1';
@@ -2990,6 +3047,7 @@ update media_assets set storage_path = 'uploads/assets/uploads/speedboats/winove
 update media_assets set storage_path = 'legacy/resorts/park-hyatt/images/park-hyatt-maldives-hadahaa-reception-gaafu-alifu-atoll.webp', width = null, height = null where id = '8e37e26c-43bd-8c48-0bf3-5b5c35ec20e1';
 update media_assets set storage_path = 'legacy/resorts/cinnamon-dhonveli/images/cinnamon-dhonveli-maldives-resort.webp', width = null, height = null where id = '8e3bfb3e-b78a-73d5-bf79-ea913e9bfd0e';
 update media_assets set storage_path = 'legacy/resorts/you-and-me/images/you-and-me-by-cocoon-maldives-water-sports.webp', width = null, height = null where id = '8e59211a-ca4c-c8a2-f02c-0deda48d163b';
+update media_assets set storage_path = 'transfers/jw-marriot-maldives/Male-airport-to-jw-marriot.webp', width = null, height = null where id = '8e998865-e8cc-4309-b29f-9f7415dea35e';
 update media_assets set storage_path = 'legacy/images/eid-celebrations.webp', width = null, height = null where id = '8e9d75cc-c38a-eb9b-df3f-7411d6381dfd';
 update media_assets set storage_path = 'legacy/resorts/adaaran-club-rannalhi/images/adaaran-club-rannalhi-island-maldives.webp', width = null, height = null where id = '8ece2ae9-63b9-4e94-09ec-af46ede658d4';
 update media_assets set storage_path = 'legacy/images/maldives-equator.png', width = null, height = null where id = '8ed23d42-c84e-f70c-e378-cee7e34c5795';
@@ -3073,6 +3131,7 @@ update media_assets set storage_path = 'legacy/resorts/kandima/images/kandima-ma
 update media_assets set storage_path = 'legacy/resorts/aaaveee-natures-paradise/images/aaaveee-natures-paradise-dhoores-dhaalu-maldives.webp', width = null, height = null where id = '91a7b9cb-ba02-4cde-6550-8a4ee78a021e';
 update media_assets set storage_path = 'uploads/assets/uploads/resorts2/robinson-club-maldives-yoga.webp', width = null, height = null where id = '91af4976-1e1f-81eb-77b5-f3a6a8b10af9';
 update media_assets set storage_path = 'legacy/resorts/fihalhohi/images/water-villa1.webp', width = null, height = null where id = '91c6edd3-c488-aa6a-3d0b-15ca7ae46386';
+update media_assets set storage_path = 'transfers/oblu-XPERIENCE-Ailafushi/oblu-xperience-ailafushi-transfer.webp', width = null, height = null where id = '91e59a31-9494-4d5c-94d4-6fd55ff5f20f';
 update media_assets set storage_path = 'legacy/images/transfers/male-airport-to-oblu-select-sangeli.webp', width = null, height = null where id = '920211ea-031e-d6aa-8386-ba247f16af65';
 update media_assets set storage_path = 'legacy/resorts/sun-island/images/sun-island-maldives.webp', width = null, height = null where id = '92050e82-2ab7-cb14-6ffe-6d1cd52ee1e2';
 update media_assets set storage_path = 'legacy/resorts/varu-atmosphere/images/varu-by-atmosphere.webp', width = null, height = null where id = '920e7397-c07d-2990-e7c4-d6ca2d8fc485';
@@ -3138,6 +3197,7 @@ update media_assets set storage_path = 'legacy/resorts/dhigufaru-island/images/d
 update media_assets set storage_path = 'legacy/images/resorts/komandoo-island-resort-and-spa-pool-lhaviyani-atoll.webp', width = null, height = null where id = '95177b18-f8ae-a2c3-e969-e0d685780766';
 update media_assets set storage_path = 'legacy/images/articles/tmc7.webp', width = null, height = null where id = '9537f2cf-17bd-ef31-afc8-d496aca146d8';
 update media_assets set storage_path = 'legacy/resorts/nautilus/images/the-nautilus-resort-maldives.webp', width = null, height = null where id = '953a9334-3ebe-772e-32f1-2dfbedc3c2e1';
+update media_assets set storage_path = 'transfers/ritz-carlton-maldives/the-ritz-carlton-maldives-transfer.webp', width = null, height = null where id = '954998fe-7544-4338-bca1-83cdf6101ce9';
 update media_assets set storage_path = 'legacy/resorts/dusit-thani/images/dusit-thani-maldives-1.webp', width = null, height = null where id = '954d0310-9fe3-efd2-a777-668d795f5b2b';
 update media_assets set storage_path = 'admin-uploads/cb1fc7c9-ab7e-474e-8ef5-673ae8a5fcb1/1792580897604-9h3q2b.webp', width = null, height = null where id = '9553fd3a-42b5-4cb0-91e6-4f9d7785d680';
 update media_assets set storage_path = 'legacy/resorts/milaidhoo/images/milaidhoo-island-maldives-dinning.webp', width = null, height = null where id = '956984c5-6edb-2637-945c-c3d43729a808';
@@ -3196,6 +3256,7 @@ update media_assets set storage_path = 'legacy/images/resorts/movenpick-resort-k
 update media_assets set storage_path = 'legacy/images/maldives-traditional-cuisine.webp', width = null, height = null where id = '9850c151-f809-c706-375a-b556573f77be';
 update media_assets set storage_path = 'legacy/resorts/hotel-riu/images/riu-palace-maldives-gadifuri.webp', width = null, height = null where id = '985a6d83-1515-3226-7fd6-2cfcda152dc3';
 update media_assets set storage_path = 'legacy/resorts/grand-park-kodhipparu/images/grand-park-kodhipparu-maldives-beach.webp', width = null, height = null where id = '9862d7b5-ccf8-6381-cf39-6215eb2f840d';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-resort-transfers.webp', width = null, height = null where id = '986ab1c3-72b9-4170-b343-5181cf709ab2';
 update media_assets set storage_path = 'legacy/images/transfers/male-airport-to-hardrock-hotel.webp', width = null, height = null where id = '986bd44e-e079-7481-b414-bd898da32613';
 update media_assets set storage_path = 'admin-uploads/3c144294-933d-4f7a-90ff-e8609c1286fe/1792308363505-brsnp0.jpg', width = null, height = null where id = '98708aed-e664-45db-8ede-5a4adca55d1c';
 update media_assets set storage_path = 'legacy/resorts/four-seasons-giraavaru/images/four-seasons-maldives-at-landaa-giraavaru.webp', width = null, height = null where id = '9871d8d5-0853-0dfb-cdea-df7fcee5b6dc';
@@ -3385,6 +3446,7 @@ update media_assets set storage_path = 'legacy/hotels/surfview-male/images/surfv
 update media_assets set storage_path = 'uploads/assets/uploads/south/laamu-hithadhoo-maldives.jpg', width = null, height = null where id = 'a061ca02-58e5-75f5-0ee0-dafb46b8f3d5';
 update media_assets set storage_path = 'legacy/resorts/emerald-maldives/images/emerald-maldives-island-resort-beach-pool-villa1.webp', width = null, height = null where id = 'a06deb82-804a-b763-8565-4d722aff17a1';
 update media_assets set storage_path = 'legacy/resorts/adaaran-club-rannalhi/images/adaaran-club-rannalhi-maldives.webp', width = null, height = null where id = 'a06ff2d9-44b1-f8d5-2f00-87c5cdd2e8c3';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-airport-transfers.webp', width = null, height = null where id = 'a08c9ba8-df9f-487d-8c71-c2c5406fa20d';
 update media_assets set storage_path = 'legacy/images/resorts/floating-breakfast-in-maldives.webp', width = null, height = null where id = 'a091869a-d6b0-1dcb-c37e-5290f1f4beb7';
 update media_assets set storage_path = 'legacy/resorts/sun-siyam-vilureef/images/sun-siyam-vilu-reef-maldives.webp', width = null, height = null where id = 'a0935bf3-077b-677f-e334-a31327e767d4';
 update media_assets set storage_path = 'uploads/assets/uploads/atolls/sh-kanditheemu-island.jpg', width = null, height = null where id = 'a0c88998-b1ca-baf5-c437-c759f683ccc1';
@@ -3413,6 +3475,7 @@ update media_assets set storage_path = 'uploads/assets/uploads/fishing/images/ga
 update media_assets set storage_path = 'legacy/resorts/hideaway-beach/images/hideaway-beach-resort-and-spa.webp', width = 1920, height = 1080 where id = 'a21c1875-da36-bce5-bcca-7099f91d21fe';
 update media_assets set storage_path = 'legacy/resorts/heritance-aarah/images/heritance-aarah-maldives-ocean-villa1.webp', width = null, height = null where id = 'a21fbde9-2c7a-5249-e0e0-c0bfefda8df8';
 update media_assets set storage_path = 'legacy/resorts/hideaway-beach/images/hideaway-beach-resort-and-spa-sunset-beach-villa.webp', width = null, height = null where id = 'a238ff36-9b4f-adc4-f75a-03769991b7ca';
+update media_assets set storage_path = 'transfers/crossroad-maldives/marina-crossroad-island-maldives-speedboat.webp', width = null, height = null where id = 'a23c5376-f556-4e13-86f7-80ba84295f98';
 update media_assets set storage_path = 'uploads/assets/uploads/hotels/yuvi-blue-himmafushi/himmafushi-beach.jpeg', width = null, height = null where id = 'a23d658f-4b58-d531-64c0-b5cd689a4337';
 update media_assets set storage_path = 'legacy/resorts/movenpick/images/movenpick-resort-kuredhivaru-maldives-welness.webp', width = null, height = null where id = 'a248dcd7-18ce-264d-97c6-de73dbbcd3f9';
 update media_assets set storage_path = 'legacy/images/activities/windsurfing-maldives.webp', width = null, height = null where id = 'a25a37fb-3fc9-2295-6f9c-cbff30ee9dd2';
@@ -3449,6 +3512,7 @@ update media_assets set storage_path = 'legacy/resorts/cora-cora/images/cora-cor
 update media_assets set storage_path = 'legacy/hotels/mantha-view-hotel/images/hotel-mantha-view.jpg', width = null, height = null where id = 'a428e423-ebb9-a8f8-3721-28d5f122c756';
 update media_assets set storage_path = 'legacy/hotels/kaanibeach-maafushi/images/kaani-beach-maafushi-island-hotel.webp', width = 1920, height = 1080 where id = 'a42f6b6a-be87-5b65-2770-cb1f24fe13e5';
 update media_assets set storage_path = 'uploads/assets/uploads/fishing/images/charters/equator-star-gaaf.webp', width = null, height = null where id = 'a4348f77-376a-5b2d-57a0-e5c2c76ed0fd';
+update media_assets set storage_path = 'transfers/all-routes-gallery/Maldives-tour-guide-airport-staff.webp', width = null, height = null where id = 'a43dc48c-694d-4943-8618-9341ca6bf378';
 update media_assets set storage_path = 'uploads/assets/uploads/south/laamu-maamendhoo-maldives.jpg', width = null, height = null where id = 'a43e8420-0b60-0951-b4a9-e8a641438017';
 update media_assets set storage_path = 'legacy/resorts/kudadoo/images/kudadoo-maldives-private-island-resort-ocean-pool-residence1.webp', width = null, height = null where id = 'a4476ec8-db06-c38c-ad16-1c56cdced29d';
 update media_assets set storage_path = 'legacy/resorts/outrigger-maafushivaru/images/outrigger-maldives-maafushivaru-resort-beach-villa1.webp', width = null, height = null where id = 'a44a5751-9dcb-63ab-3dfa-cdb13d49353b';
@@ -3465,11 +3529,13 @@ update media_assets set storage_path = 'legacy/resorts/coco-bodu-hithi/images/co
 update media_assets set storage_path = 'legacy/images/thumbs/island2.webp', width = null, height = null where id = 'a4cae73f-8707-e182-c2c0-94d3e7c37c72';
 update media_assets set storage_path = 'legacy/resorts/eriyadu-island/images/eriyadu-island-resort.webp', width = null, height = null where id = 'a4de9a82-3709-dc9e-6ad5-1b9f70637581';
 update media_assets set storage_path = 'legacy/images/maldives/komandoo-island-resort-and-spa-dinning.webp', width = null, height = null where id = 'a4e2ef3d-e0e1-0bdf-024b-48a7bad9ec93';
+update media_assets set storage_path = 'transfers/all-routes-gallery/speedboat-transfers-in-maldives.webp', width = null, height = null where id = 'a4e817f5-2fab-4960-a8a2-77e35dc37c91';
 update media_assets set storage_path = 'legacy/images/dolphin-watching-tour.webp', width = null, height = null where id = 'a5062c8c-7017-53bf-1919-2750d859ae45';
 update media_assets set storage_path = 'legacy/resorts/varu-atmosphere/images/varu-by-atmosphere-maldives-map.webp', width = null, height = null where id = 'a5065a39-99c7-c3d8-4103-f24164b02393';
 update media_assets set storage_path = 'legacy/resorts/nika-island/images/nika-island-resort-and-spa-maldives-beach-north-ari-atoll.webp', width = null, height = null where id = 'a506cd2a-8b12-6a92-4a8c-3ee418e69ed6';
 update media_assets set storage_path = 'legacy/resorts/four-seasons-huraa/images/four-seasons-maldives-at-kuda-huraa-sunrise-brach-bangalow1.webp', width = null, height = null where id = 'a50b771d-4176-5fbf-4621-2b073bb7463d';
 update media_assets set storage_path = 'uploads/assets/uploads/resorts/banyan-tree-vabbinfaru-maldives-island-resort-wedding-events.webp', width = null, height = null where id = 'a513e773-7b62-3a1a-ccb2-e9a414226116';
+update media_assets set storage_path = 'transfers/all-routes-gallery/resort-transfers-maldives.webp', width = null, height = null where id = 'a51ce579-f9ea-44b4-97c2-24cfad8535a8';
 update media_assets set storage_path = 'legacy/resorts/sun-island/images/sun-island-resort-spa.webp', width = null, height = null where id = 'a5358624-16eb-3cde-5de4-e08be6b9d563';
 update media_assets set storage_path = 'legacy/images/male/maldives-history.webp', width = null, height = null where id = 'a53d5d58-17ea-a48b-02d1-b4c628470ea3';
 update media_assets set storage_path = 'legacy/images/resorts/hurawalhi-island-resort-maldives-underwater-restaurant.webp', width = null, height = null where id = 'a5523a8c-573c-99ab-a4ba-5aab8a4252ca';
@@ -3669,6 +3735,7 @@ update media_assets set storage_path = 'legacy/images/ferry/kagi-maldives-transf
 update media_assets set storage_path = 'legacy/resorts/innahura/images/innahura-maldives-resort-beach-lhaviyani-atoll.webp', width = null, height = null where id = 'adc38021-4938-12a0-8199-c882edbd22e0';
 update media_assets set storage_path = 'uploads/assets/uploads/city-tour/maldives-bus-tour.webp', width = null, height = null where id = 'ade3cf58-2fa8-9254-72c8-340beccd14de';
 update media_assets set storage_path = 'legacy/images/thumbs/whale-submarine.webp', width = null, height = null where id = 'ade4c95c-928a-d546-5720-70aad91c209c';
+update media_assets set storage_path = 'transfers/all-routes-gallery/Maldives-tour-guide-airport-staff.webp', width = null, height = null where id = 'adef84d2-f05a-4ec5-989e-96686ddae27b';
 update media_assets set storage_path = 'legacy/resorts/alimathaa/images/nakai-alimatha-maldives.webp', width = null, height = null where id = 'adf98ce6-18cf-1837-07ec-6b0361f93cbd';
 update media_assets set storage_path = 'legacy/resorts/meeru-island/images/meeru-island-resort-maldives-map.webp', width = null, height = null where id = 'ae03eb8d-0afa-7961-9fe3-d95ccdffe4ba';
 update media_assets set storage_path = 'legacy/images/maldives-beach.webp', width = null, height = null where id = 'ae0cd7ab-c7a0-f7d4-a1f4-39961854c571';
@@ -3714,6 +3781,7 @@ update media_assets set storage_path = 'legacy/resorts/grand-park-kodhipparu/ima
 update media_assets set storage_path = 'legacy/images/maps/es/la-isla-maldivas.webp', width = null, height = null where id = 'affc27d6-adb7-80dc-7a3a-bd5b04c621cf';
 update media_assets set storage_path = 'legacy/hotels/reveries-village/reveries-diving-hotel.webp', width = null, height = null where id = 'b001a499-dc57-1945-e295-88279da1acc6';
 update media_assets set storage_path = 'legacy/resorts/amari-havodda/images/amari-havodda-maldives-sunrise-pool-villa1.webp', width = null, height = null where id = 'b0082b9b-55c0-3c12-eaea-8dc83304f474';
+update media_assets set storage_path = 'transfers/all-routes-gallery/speedboat-service-in-maldives.webp', width = null, height = null where id = 'b00aeebc-5669-419d-9504-ac22b922d29f';
 update media_assets set storage_path = 'legacy/images/fishing/tuna-fish-in-maldives.webp', width = null, height = null where id = 'b01af010-f4a9-7461-9134-cfa8377a9e49';
 update media_assets set storage_path = 'legacy/images/ferry/club-med-finolhu-maldives-airport-transfers.jpg', width = null, height = null where id = 'b01d9a2b-040e-2277-77ab-a91042655bcf';
 update media_assets set storage_path = 'uploads/assets/uploads/resorts/baros-maldives-island-resort.webp', width = null, height = null where id = 'b02a814a-228c-2987-c21e-c69481accaaf';
@@ -3740,6 +3808,7 @@ update media_assets set storage_path = 'legacy/hotels/casa-retreat/images/casa-r
 update media_assets set storage_path = 'uploads/assets/uploads/destinations/lily-beach-resort-and-spa-maldives-spa.webp', width = null, height = null where id = 'b121b7d8-715e-6fde-0ba9-de3dfa8acc40';
 update media_assets set storage_path = 'legacy/images/resorts/maldives-resorts.webp', width = null, height = null where id = 'b125b79e-5a8c-6b10-cb47-724623394d13';
 update media_assets set storage_path = 'legacy/resorts/aaaveee-natures-paradise/images/aaaveee-natures-paradise-dhoores-maldives.webp', width = null, height = null where id = 'b127a412-6d86-61d6-5fb5-6a78bc68c79c';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-airport-to-hotels.webp', width = null, height = null where id = 'b15b68e8-de22-4a64-aba2-4f5150365768';
 update media_assets set storage_path = 'legacy/images/diving/meedhoo-coral-garden.webp', width = 640, height = 480 where id = 'b168136b-5954-7363-1938-3ebc25d6ef97';
 update media_assets set storage_path = 'admin-uploads/a6c8e009-49b5-4c3c-b948-f86988aa0a3b/1792580732295-2wormx.webp', width = null, height = null where id = 'b168f242-9ee9-46b6-9ed1-7ab8c898b8ce';
 update media_assets set storage_path = 'admin-uploads/66b6b8ad-9690-41f3-afe9-dbfb88b1e85f/1792581122495-ctkb83.webp', width = null, height = null where id = 'b17f6fd1-d7be-4a8e-b7c5-041e2b7bff85';
@@ -3802,6 +3871,7 @@ update media_assets set storage_path = 'legacy/resorts/furaveri/images/furaveri-
 update media_assets set storage_path = 'legacy/images/transfers/coral-speed-boat.webp', width = null, height = null where id = 'b462a150-9487-50f9-9c6d-cdf1b6e3b8d2';
 update media_assets set storage_path = 'legacy/images/activities/act-local-8.jpg', width = null, height = null where id = 'b4742a6a-0e6c-7b43-5cf3-a3af47d1978d';
 update media_assets set storage_path = 'uploads/assets/uploads/south/lhaviyani-atoll-maldives.jpg', width = null, height = null where id = 'b47f7b67-36c9-15fe-935d-6ccaad2db822';
+update media_assets set storage_path = 'transfers/jw-marriot-maldives/jw-marriot-transfer.webp', width = null, height = null where id = 'b48d3bae-9442-4b0a-813e-7db7d938343b';
 update media_assets set storage_path = 'admin-uploads/1a716e9d-f4ef-49e1-b8ac-ba126b3b9d7f/1792580771047-6406w6.webp', width = null, height = null where id = 'b49be999-de72-4cdd-ba4d-72aec6fcf142';
 update media_assets set storage_path = 'legacy/resorts/alimathaa/images/nakai-alimatha-maldives-island.webp', width = null, height = null where id = 'b49c16f7-1ec8-fc39-5f8d-373fa4d0fc12';
 update media_assets set storage_path = 'legacy/fishing/images/humpback-snapper-fish-in-maldives.webp', width = null, height = null where id = 'b4adfeca-cae8-0fc1-46fc-525b44da2de1';
@@ -3809,6 +3879,7 @@ update media_assets set storage_path = 'legacy/images/activities/act-local-1.jpg
 update media_assets set storage_path = 'legacy/images/maps/taj-exotica-resort-spa.jpg', width = null, height = null where id = 'b4b7c765-7f23-134e-267b-33c0a6e0794c';
 update media_assets set storage_path = 'legacy/resorts/robinson-club/images/robinson-club-noonu-maldives-noonu-atoll.webp', width = null, height = null where id = 'b4b8221d-ae21-1bd2-9406-b3301bd1fc98';
 update media_assets set storage_path = 'legacy/resorts/cora-cora/images/cora-cora-maldives-island-resort-pool.webp', width = null, height = null where id = 'b4b8b3d4-d7a5-9545-89a7-9258cdbc1a38';
+update media_assets set storage_path = 'transfers/all-routes-gallery/transfers.webp', width = null, height = null where id = 'b4c0169a-6d33-486f-9884-9206089c7300';
 update media_assets set storage_path = 'legacy/fishing/images/maldives-fishing-boat.webp', width = null, height = null where id = 'b4c93029-555d-afc8-abc1-6a2298e4916c';
 update media_assets set storage_path = 'uploads/assets/uploads/activities/island-hopping/male-atoll-island-hopping-tour.jpg', width = null, height = null where id = 'b4d1965d-c267-a8e0-3771-5c7e4878457a';
 update media_assets set storage_path = 'legacy/resorts/veligandu-island/images/veligandu-island-resort-spa.webp', width = null, height = null where id = 'b4e41b2f-4c2b-64fa-7747-cd45995fdfb1';
@@ -3855,6 +3926,7 @@ update media_assets set storage_path = 'legacy/images/fishing/worldwide-fishing-
 update media_assets set storage_path = 'legacy/fishing/images/maldives-fishing-tour.webp', width = null, height = null where id = 'b73f69c1-65e3-59e3-5bfa-edb5ec5fde51';
 update media_assets set storage_path = 'legacy/resorts/dusit-thani/images/dusit-thani-maldives-island-map.webp', width = null, height = null where id = 'b741cdca-3ba5-a54b-7ad7-feaaf48185ad';
 update media_assets set storage_path = 'legacy/resorts/soneva-fushi/images/soneva-fushi-maldives-one-bedroom-water-retreat.webp', width = null, height = null where id = 'b7450abb-1b63-19bb-d765-cfcd33ae1892';
+update media_assets set storage_path = 'transfers/oblu-select-sangeli/oblu-select-sangeli-maldives-transfer.webp', width = null, height = null where id = 'b75242dd-5293-4869-9f68-fe41d320813c';
 update media_assets set storage_path = 'legacy/hotels/gaafaru-view-inn-maldives/images/gaafaru-view-maldives-room1.webp', width = null, height = null where id = 'b763919b-5364-e4f0-f6c6-127fa55b32f5';
 update media_assets set storage_path = 'uploads/assets/uploads/north/alifu-alifu-mathiveri-island.jpg', width = null, height = null where id = 'b766c663-ab9a-837e-ff21-ccc183a045c1';
 update media_assets set storage_path = 'legacy/resorts/dhiggiri/images/nakai-dhiggiri-resort-maldives-over-water-villa1.webp', width = null, height = null where id = 'b7742cce-5de5-7e2e-8863-07d08fd9dcb3';
@@ -3862,6 +3934,7 @@ update media_assets set storage_path = 'legacy/images/live-cooking-class-in-mald
 update media_assets set storage_path = 'legacy/resorts/cora-cora/images/cora-cora-maldives-island.webp', width = null, height = null where id = 'b7864084-e7f6-aa38-85cf-5f92711d9e64';
 update media_assets set storage_path = 'legacy/resorts/outrigger-maafushivaru/images/outrigger-maldives-maafushivaru-resort-fitness-gym.webp', width = null, height = null where id = 'b7a02d92-9891-4eab-6223-fb0fd90e41e1';
 update media_assets set storage_path = 'legacy/images/diving/maldives-dive-environment.webp', width = null, height = null where id = 'b7a13e6a-5efe-f05a-331f-4ddeaba017c9';
+update media_assets set storage_path = 'transfers/all-routes-gallery/speedboat-service-in-maldives.webp', width = null, height = null where id = 'b7a1569c-e3c5-432a-b10b-35004d6055e0';
 update media_assets set storage_path = 'legacy/resorts/gili-lankanfushi/images/gili-lankanfushi-maldives-villa-suite1.webp', width = null, height = null where id = 'b7c8109b-ddd4-c19f-d0fc-ce5c70c56f0b';
 update media_assets set storage_path = 'legacy/images/activities/tmc2.jpg', width = null, height = null where id = 'b7da5c75-7de8-e30a-985a-614a5cb691a6';
 update media_assets set storage_path = 'legacy/images/mifco-buying-fish-from-maldivians.webp', width = null, height = null where id = 'b7e12604-ac87-fc17-0ac2-aeb9c0a3130c';
@@ -3876,6 +3949,7 @@ update media_assets set storage_path = 'legacy/resorts/hard-rock-hotel/images/ha
 update media_assets set storage_path = 'admin-uploads/94ba5eaa-eee4-4198-90dd-df183741cd9b/1792580691294-y6zcuo.webp', width = null, height = null where id = 'b86499cd-62c0-4cb9-bde4-a2a6e557cb10';
 update media_assets set storage_path = 'legacy/resorts/intercontinental/images/intercontinental-maldives-maamunagau-resort-kids-pool.webp', width = null, height = null where id = 'b8682e3a-1f1b-aabc-2bc8-403d285f51da';
 update media_assets set storage_path = 'legacy/images/activities/soneva-fushi-baa-atoll.webp', width = null, height = null where id = 'b877a2c6-37e1-ac58-979d-8733c0a81d84';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-resort-transfers.webp', width = null, height = null where id = 'b8808bf2-68b8-4a0d-9938-9a66bb9fca9a';
 update media_assets set storage_path = 'legacy/images/maps/oblu-nature-helengeli-by-sentido.jpg', width = null, height = null where id = 'b88d66a1-8600-8441-cc02-c95f2d19f279';
 update media_assets set storage_path = 'legacy/resorts/kandima/images/kandima-maldivesi-island-map.webp', width = null, height = null where id = 'b89a0e22-f9eb-63dc-c9c4-23d6c59eac08';
 update media_assets set storage_path = 'legacy/images/transfers/one-and-only-reethirah-maldives-transfer.webp', width = null, height = null where id = 'b89ccf60-7f79-b9fb-3426-ab833e843fa3';
@@ -3950,6 +4024,7 @@ update media_assets set storage_path = 'legacy/images/ferry/embudhu-village-mald
 update media_assets set storage_path = 'legacy/resorts/medhufushi-island/images/medhufushi-island-resort-maldives-pool.webp', width = null, height = null where id = 'bc47f9dd-63f2-abf5-645b-23e1434ffc2d';
 update media_assets set storage_path = 'legacy/images/maldives/coco-bodu-hithi-maldives-island.webp', width = null, height = null where id = 'bc577dc8-8370-516e-c2fe-6bb94b28afca';
 update media_assets set storage_path = 'legacy/resorts/adaaran-hudhuranfushi/images/adaaran-select-hudhuranfushi-maldives.jpg', width = null, height = null where id = 'bc58a14b-c2c3-08c6-47db-3e7237495462';
+update media_assets set storage_path = 'transfers/all-routes-gallery/resort-transfers-maldives.webp', width = null, height = null where id = 'bc67b6b4-3572-49b8-88ee-a21c339e6ef6';
 update media_assets set storage_path = 'legacy/images/transfers/taj-coral-reef-maldives-transfer.webp', width = null, height = null where id = 'bc6d3ce5-73c6-96d1-fd7e-4e31d13fe6f1';
 update media_assets set storage_path = 'legacy/resorts/fushifaru/images/fushifaru-maldives-island-map.webp', width = null, height = null where id = 'bc6f731d-0bd3-b5a5-7604-93dda26bdeb3';
 update media_assets set storage_path = 'legacy/hotels/island-break-fulidhoo/images/island-break-maldives-room73.webp', width = null, height = null where id = 'bc946638-7b8c-602a-fa05-5119905dbf8f';
@@ -4077,6 +4152,7 @@ update media_assets set storage_path = 'legacy/resorts/angaga-island/images/anga
 update media_assets set storage_path = 'legacy/images/surfing/maldives-northern-atolls-surfing-map.webp', width = null, height = null where id = 'c1b37d40-0565-3517-6ab2-239051014f8b';
 update media_assets set storage_path = 'legacy/images/thumbs/bike1.webp', width = null, height = null where id = 'c1b810e6-8f14-6317-5f16-303d03445071';
 update media_assets set storage_path = 'legacy/images/maldives/floating-breakfast-maldives.webp', width = null, height = null where id = 'c1bc53d4-720f-2441-92f8-e93d251bc407';
+update media_assets set storage_path = 'transfers/all-routes-gallery/Maldives-budget-transfers.webp', width = null, height = null where id = 'c1c45942-9237-4a60-81aa-0dbd455dff1f';
 update media_assets set storage_path = 'legacy/resorts/maayafushi/images/nakai-maayafushi-maldives-over-water-bungalow1.webp', width = null, height = null where id = 'c1d7a779-c3ec-2204-e098-cf5614b51567';
 update media_assets set storage_path = 'uploads/assets/uploads/fishing/images/gallery/giant-trevally.webp', width = null, height = null where id = 'c1e3ca08-0e43-1f98-3061-c6d9951c6834';
 update media_assets set storage_path = 'legacy/images/activities/jack-fish.jpg', width = null, height = null where id = 'c1ed3c6c-bd60-d9c2-d054-9159e39483a9';
@@ -4171,6 +4247,8 @@ update media_assets set storage_path = 'legacy/images/transfers/male-airport-to-
 update media_assets set storage_path = 'legacy/images/articles/maldives-airport.webp', width = null, height = null where id = 'c5f011c4-3971-1b0c-4850-0d84f4d27418';
 update media_assets set storage_path = 'uploads/assets/uploads/activities/full-day/sandbank-excursion-male-atoll.webp', width = null, height = null where id = 'c5f2e254-40ca-b2f6-0a3b-8a22909ff286';
 update media_assets set storage_path = 'legacy/resorts/waldorf-astoria/images/waldorf-astoria-maldives-ithaafushi-resort-male-atoll.webp', width = null, height = null where id = 'c606b78c-62d0-9b64-f960-033b2aabcea9';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-airport-to-hotels.webp', width = null, height = null where id = 'c606e82c-89f1-40f8-996f-816abd0ceac7';
+update media_assets set storage_path = 'transfers/clubmed-kani/clubmed-kani-transfer.webp', width = null, height = null where id = 'c60c827d-ffd3-4351-86bc-e71ff975ae8f';
 update media_assets set storage_path = 'legacy/resorts/baglioni-resort/images/baglioni-maldives-island-resort.webp', width = null, height = null where id = 'c6161f30-012e-d074-3891-e3e3d021cf87';
 update media_assets set storage_path = 'legacy/resorts/adaaran-select/images/adaaran-select-meedhupparu-island-map.webp', width = null, height = null where id = 'c616d938-5cfc-a00a-5ca1-129c020455cf';
 update media_assets set storage_path = 'legacy/resorts/malahini-kuda-bandos/images/malahini-kuda-bandos.webp', width = null, height = null where id = 'c61b189f-8717-310e-33f6-6ef729f70d2e';
@@ -4238,6 +4316,7 @@ update media_assets set storage_path = 'legacy/images/maps/thulhagiri-island-res
 update media_assets set storage_path = 'legacy/images/transfers/male-airport-to-cinnamon-dhonveli.webp', width = null, height = null where id = 'c9334928-9300-dd7e-f849-c2460205c590';
 update media_assets set storage_path = 'legacy/resorts/malahini-kuda-bandos/images/malahini-kuda-bandos-maldives-island.webp', width = null, height = null where id = 'c94235bf-e57b-26c2-12f0-bad9b37a0ea9';
 update media_assets set storage_path = 'admin-uploads/775eef32-7124-4d26-979f-6f69e03f63ae/1792580798782-8krzbf.webp', width = null, height = null where id = 'c9453192-b0a8-455b-9bac-c63a3454772d';
+update media_assets set storage_path = 'transfers/makunudu-island/makunudu-island-maldives-speedboat.webp', width = null, height = null where id = 'c9509ec6-af5c-46cf-8e3b-083f606d13d6';
 update media_assets set storage_path = 'legacy/images/surfing/maldives-surfing-seasons.webp', width = null, height = null where id = 'c959dd15-6cb3-a328-96f1-05087411ce83';
 update media_assets set storage_path = 'uploads/assets/uploads/gotrip/packages/family-5n-island-tour.jpeg', width = null, height = null where id = 'c9639b9b-f401-a49b-3b0e-3db16bddaae0';
 update media_assets set storage_path = 'legacy/resorts/aaaveee-natures-paradise/images/aaaveee-natures-paradise-deck-villa2.webp', width = null, height = null where id = 'c971c6a0-b244-df7f-a393-c3c66a505e44';
@@ -4249,6 +4328,7 @@ update media_assets set storage_path = 'legacy/images/maldives-resorts.webp', wi
 update media_assets set storage_path = 'legacy/images/fishing/dolphin-in-maldives.webp', width = null, height = null where id = 'c9b65894-749d-1289-06d9-9c970a5fb776';
 update media_assets set storage_path = 'legacy/images/activities/ws5.jpg', width = null, height = null where id = 'c9bd7950-dab6-9138-11a0-cf322858840d';
 update media_assets set storage_path = 'legacy/resorts/outrigger-konotta/images/outrigger-konotta-maldives-resort.webp', width = null, height = null where id = 'c9c97021-cd3b-a3e9-724f-78b766fe15e8';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-airport-transfers.webp', width = null, height = null where id = 'c9d166a6-b3a3-47ed-beb6-f5011235b190';
 update media_assets set storage_path = 'legacy/resorts/cinnamon-hakuraa/images/cinnamon-hakuraa-huraa-maldives-beach-villa.webp', width = null, height = null where id = 'c9eb8afa-4c5d-af74-a46e-8b11c96469df';
 update media_assets set storage_path = 'uploads/assets/uploads/atolls/thaa-vandhoo-maldives.jpg', width = null, height = null where id = 'c9ed8fec-1513-3a5f-b93f-63d31936ea0f';
 update media_assets set storage_path = 'legacy/resorts/saii-lagoon/images/royal-island-resort-maldives-beach-pool-family-villa1.webp', width = null, height = null where id = 'c9f7d9fc-a969-85ac-4732-cb98b9f77d99';
@@ -4259,15 +4339,18 @@ update media_assets set storage_path = 'legacy/images/speedboat/maldives-ariport
 update media_assets set storage_path = 'legacy/resorts/robinson-club/images/robinson-club-noonu-beach-pool-bungalow.webp', width = null, height = null where id = 'ca3a0d33-bde4-9e14-4445-a4a980a19396';
 update media_assets set storage_path = 'legacy/resorts/conrad-rangali/images/conrad-maldives-rangali-island-resort-water-villa.webp', width = null, height = null where id = 'ca3e45a7-67b0-ed47-d980-aa89dc18d5a5';
 update media_assets set storage_path = 'legacy/resorts/conrad-rangali/images/conrad-maldives-rangali-island-resort-underwater-restaurant.webp', width = null, height = null where id = 'ca60397c-e1e4-f83f-3980-d63e6f587b9f';
+update media_assets set storage_path = 'transfers/crossroad-maldives/marina-crossroad-maldives-transfer.webp', width = null, height = null where id = 'ca65ab07-f8f4-4e8f-b26b-9ca4a107c791';
 update media_assets set storage_path = 'legacy/images/articles/maldives-seaplane.webp', width = null, height = null where id = 'ca6b8d0f-b2fe-587f-03c6-b49e821bd611';
 update media_assets set storage_path = 'legacy/resorts/como-cocoa/images/como-cocoa-island-maldives-map.webp', width = null, height = null where id = 'ca6e35fd-ca34-70da-5857-c1d21b266bc8';
 update media_assets set storage_path = 'legacy/resorts/fihalhohi/images/fihalhohi-island.webp', width = null, height = null where id = 'ca8f2e0d-1ea7-a698-9587-7821e7bf1035';
 update media_assets set storage_path = 'uploads/assets/uploads/atolls/vaavu-atoll-maldives.jpg', width = null, height = null where id = 'ca9844c1-4f25-1477-a348-932f26af927c';
+update media_assets set storage_path = 'transfers/all-routes-gallery/Maldives-budget-transfers.webp', width = null, height = null where id = 'ca9cda31-93a1-4b2a-a79d-f81e9d97c172';
 update media_assets set storage_path = 'admin-uploads/324aabb5-c78e-4837-abc2-71731a5bf1c6/1792580934254-gdxj1p.webp', width = null, height = null where id = 'cac17597-a876-4c5d-a4d5-eeb3423f81a8';
 update media_assets set storage_path = 'legacy/resorts/angsana-velavaru/images/angsana-velavaru-maldives-resort.webp', width = null, height = null where id = 'cac9753b-8f2a-6e76-a528-8f603f3f8aa0';
 update media_assets set storage_path = 'legacy/resorts/embudu-village/images/embudu-village-island.webp', width = null, height = null where id = 'cacaf02d-0a14-324a-5db6-6d078f504177';
 update media_assets set storage_path = 'legacy/images/activities/maldives-dive-environment.webp', width = null, height = null where id = 'cad7508b-6a4c-11e8-1a71-7538c5e1f8e6';
 update media_assets set storage_path = 'uploads/assets/uploads/resorts/anantara-dhigu-resort-maldives.webp', width = null, height = null where id = 'cae1413c-8861-6290-1bd3-c02a4ae9d943';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-resort-transfers.webp', width = null, height = null where id = 'cae5edd5-d480-4037-8792-65af44107d0b';
 update media_assets set storage_path = 'legacy/images/resorts/diving.webp', width = null, height = null where id = 'cb144107-b9c0-0b88-0bb7-b569c57df2bc';
 update media_assets set storage_path = 'legacy/images/transfers/adaaran-club-rannalhi-maldives-transfer.webp', width = null, height = null where id = 'cb15c9a9-fc73-2968-7703-7c4d1420e9e0';
 update media_assets set storage_path = 'legacy/hotels/mantha-view-hotel/images/mantha-view-hotel.webp', width = null, height = null where id = 'cb1f311b-f026-52e0-b054-ddea1b81009d';
@@ -4387,6 +4470,7 @@ update media_assets set storage_path = 'uploads/assets/uploads/resorts2/the-resi
 update media_assets set storage_path = 'legacy/images/maps/cn/maldives-airport-map-4.webp', width = null, height = null where id = 'd002538f-cf26-50fe-bca3-2a6f8a4a0488';
 update media_assets set storage_path = 'uploads/assets/uploads/resorts/adaaran-select-hudhuranfushi.jpg', width = null, height = null where id = 'd00b11dd-f26d-4f41-fb80-8857d0f7d7ac';
 update media_assets set storage_path = 'uploads/assets/uploads/south/laamu-mundoo-maldives.jpg', width = null, height = null where id = 'd00bd44f-aada-1cec-2a30-1e285deb95bb';
+update media_assets set storage_path = 'transfers/all-routes-gallery/speedboat-transfers-in-maldives.webp', width = null, height = null where id = 'd00e0cf9-5369-4dfd-acbf-704d4f0b5c00';
 update media_assets set storage_path = 'legacy/resorts/fihalhohi/images/fihalhohi-resort-maldives.webp', width = null, height = null where id = 'd012b971-d93e-e394-0e82-1fb7c82f9ab0';
 update media_assets set storage_path = 'legacy/images/articles/flight-map.webp', width = null, height = null where id = 'd01bedb6-af0f-7011-3c10-35c02bda6422';
 update media_assets set storage_path = 'legacy/images/surfing/como-maalifushi-farms-mikados.webp', width = null, height = null where id = 'd03530d2-7ae4-9cda-7949-c9a6dab52f1a';
@@ -4506,6 +4590,7 @@ update media_assets set storage_path = 'legacy/images/surfing/niyama-private-isl
 update media_assets set storage_path = 'legacy/resorts/one-and-only/images/one-and-only-reethi-rah-pool.webp', width = null, height = null where id = 'd63760b4-e93a-306e-fe69-455d9e343a75';
 update media_assets set storage_path = 'uploads/assets/uploads/resorts2/rahaa-resort-maldives-hotel.webp', width = null, height = null where id = 'd63f2daa-67a9-53db-14f1-f5f9ba06ad99';
 update media_assets set storage_path = 'uploads/assets/uploads/fishing/images/gallery/sailfish-maldives.webp', width = null, height = null where id = 'd647a2a4-2099-8667-168f-88c292b6de0d';
+update media_assets set storage_path = 'transfers/oblu-select-sangeli/oblu-select-sangeli-island-maldives-speedboat.webp', width = null, height = null where id = 'd64cd642-7aea-48d7-b3da-7b4a7806a72b';
 update media_assets set storage_path = 'legacy/resorts/hotel-riu/images/riu-palace-maldives-gadifuri-junior-suite-with-beach1.webp', width = null, height = null where id = 'd65c6c17-8164-2767-da80-c80234054459';
 update media_assets set storage_path = 'legacy/resorts/como-maalifushi/images/como-maalifushi-island-resort.webp', width = null, height = null where id = 'd66a592d-dc57-1e70-9ca9-4f3b5e7b473d';
 update media_assets set storage_path = 'legacy/resorts/the-ritz-carlton/images/ritz-carlton-fari-island-transfer.webp', width = null, height = null where id = 'd676896d-a3c0-cbf6-0f76-9a9de9db2b93';
@@ -4569,6 +4654,7 @@ update media_assets set storage_path = 'legacy/images/thumbs/isl7.webp', width =
 update media_assets set storage_path = 'legacy/hotels/surfview-male/images/surfview-hotel-seaview-room.webp', width = null, height = null where id = 'd99512c8-1da1-248a-ae79-b9659f652544';
 update media_assets set storage_path = 'legacy/resorts/alila-kothaifaru/images/alila-kothaifaru-maldives-island-resort.webp', width = null, height = null where id = 'd9afa4eb-7868-d58a-424b-d2733817c3ad';
 update media_assets set storage_path = 'legacy/resorts/taj-exotica/images/taj-exotica-maldives-map.webp', width = null, height = null where id = 'd9b025aa-3ae7-be04-b392-f5797b85e43f';
+update media_assets set storage_path = 'transfers/all-routes-gallery/resort-transfers-maldives.webp', width = null, height = null where id = 'd9b2e775-81c9-478d-9780-a33bb13c9961';
 update media_assets set storage_path = 'legacy/images/transfers/oaga-art-maldives-transfer.webp', width = null, height = null where id = 'd9b6f6d5-fb64-fb14-1475-9b934456ea9c';
 update media_assets set storage_path = 'legacy/images/maldives-snorkeling.webp', width = null, height = null where id = 'd9bed661-8181-7562-c38b-91968ea58f75';
 update media_assets set storage_path = 'legacy/resorts/sun-island/images/sun-island-resort-beach-pool-villa.webp', width = null, height = null where id = 'd9c7f187-12f0-e473-e721-499bb86319c8';
@@ -4596,6 +4682,7 @@ update media_assets set storage_path = 'legacy/resorts/gili-lankanfushi/images/g
 update media_assets set storage_path = 'legacy/resorts/pullman/images/pullman-maldives-maamutaa-ocean-villa.webp', width = null, height = null where id = 'daec9e5b-d1ed-467e-f5e7-e8fef8e6f9f8';
 update media_assets set storage_path = 'uploads/assets/uploads/destinations/heritance-aarah-maldives-ocean-villa1.webp', width = null, height = null where id = 'db05b1e7-cbd3-f2f9-c086-fb661f75ee39';
 update media_assets set storage_path = 'legacy/resorts/dhigali/images/dhigali-maldives-luxury-island.webp', width = null, height = null where id = 'db0b7cfc-e5aa-aa0d-7c5b-3e86f437513b';
+update media_assets set storage_path = 'transfers/all-routes-gallery/speedboat-service-in-maldives.webp', width = null, height = null where id = 'db11d319-70f9-4d0f-abaf-c3c95ef1067c';
 update media_assets set storage_path = 'admin-uploads/b976b381-8ad0-4b2b-a9be-14efba24b07d/1792332456013-4hqbfp.webp', width = null, height = null where id = 'db13b8f7-e027-4c0b-8ef7-eb2f33b18040';
 update media_assets set storage_path = 'legacy/resorts/one-and-only/images/one-and-only-reethi-rah-kaafu-atoll.webp', width = null, height = null where id = 'db1c7319-8159-bbd4-c5d8-d6a0816cc25f';
 update media_assets set storage_path = 'uploads/assets/uploads/activities/full-day/maldives-lucky-dolphin-trip.webp', width = null, height = null where id = 'db20933b-db38-7f4d-899f-5ac744e7f141';
@@ -4654,6 +4741,7 @@ update media_assets set storage_path = 'legacy/resorts/fairmont/images/fairmont-
 update media_assets set storage_path = 'legacy/images/activities/local-island-tours.webp', width = null, height = null where id = 'de21e5c4-d91c-b857-5947-d5c8f0a202ed';
 update media_assets set storage_path = 'legacy/resorts/hideaway-beach/images/hideaway-beach-resort-and-spa-maldives-pool.webp', width = null, height = null where id = 'de29bad3-6d8c-c9da-806e-d0963ebeabf3';
 update media_assets set storage_path = 'uploads/assets/uploads/atolls/vaavu-keyodhoo-maldives.jpg', width = null, height = null where id = 'de2c5c64-2950-aa29-fb19-eba79feb9c79';
+update media_assets set storage_path = 'transfers/all-routes-gallery/Maldives-tour-guide-airport-staff.webp', width = null, height = null where id = 'de34f983-d18b-4196-b309-ab45871e6eda';
 update media_assets set storage_path = 'admin-uploads/2d21d38e-fd80-44d0-a433-19748da2953b/1792580742502-kl49ib.webp', width = null, height = null where id = 'de3a1ce2-f578-4fb3-85a3-fbbd6dbcd7ba';
 update media_assets set storage_path = 'legacy/images/articles/maldives-sand-bank.webp', width = null, height = null where id = 'de3d2714-9004-d52e-1abb-1216ce623265';
 update media_assets set storage_path = 'legacy/resorts/sun-siyam-iruveli/images/sun-siyam-iru-veli-maldives-resort.webp', width = null, height = null where id = 'de49f47d-c68b-d16c-5458-bc4458529d4d';
@@ -4687,6 +4775,7 @@ update media_assets set storage_path = 'legacy/images/surfing/maldives-surfing-w
 update media_assets set storage_path = 'legacy/images/male/maldives-capital.webp', width = null, height = null where id = 'df9f98db-a21c-cf74-3789-4d520e40f50a';
 update media_assets set storage_path = 'legacy/resorts/kandolhu/images/kandolhu-maldives-island-resort-restaurant.webp', width = null, height = null where id = 'dfa308b2-ec8b-1364-3afe-7abc94c9d8ef';
 update media_assets set storage_path = 'uploads/assets/uploads/activities/island-hopping/fullday-activities-male-atoll.jpg', width = null, height = null where id = 'dfa79407-4228-b4ac-d2fa-1eadc66f9bf6';
+update media_assets set storage_path = 'transfers/one-and-only-reethi-rah/one-and-only-reethirah-maldives-transfer.webp', width = null, height = null where id = 'dfaee7a1-2974-4086-b69b-613fa93eb0e4';
 update media_assets set storage_path = 'legacy/images/transfers/male-airport-to-joy-island.webp', width = null, height = null where id = 'dfb410c0-a587-40ef-da96-df5858756eac';
 update media_assets set storage_path = 'legacy/images/activities/bandos-island-resort.webp', width = null, height = null where id = 'dfc92e8d-d4ab-3715-f80b-0e677408a999';
 update media_assets set storage_path = 'legacy/images/activities/full-day/snorkeling-activity.webp', width = null, height = null where id = 'dfcac805-317e-82c1-fe56-fc2c3bbeb16a';
@@ -4701,6 +4790,7 @@ update media_assets set storage_path = 'legacy/images/activities/act7.jpg', widt
 update media_assets set storage_path = 'legacy/resorts/angaga-island/images/maldives-angaga-island-resort-spa.jpg', width = null, height = null where id = 'e023ed52-4c2d-cbb1-17b0-e41b2ed81080';
 update media_assets set storage_path = 'legacy/resorts/baglioni-resort/images/baglioni-resort-maldives-island-map.webp', width = null, height = null where id = 'e02b882c-7ba0-50ec-140d-685a5edb2d6d';
 update media_assets set storage_path = 'legacy/resorts/emerald-maldives/images/emerald-maldives-resort-and-spa.webp', width = null, height = null where id = 'e039944e-9df9-0397-ecec-1261288fac97';
+update media_assets set storage_path = 'transfers/all-routes-gallery/private-speedboat-charter-maldives.webp', width = null, height = null where id = 'e042d53c-f889-4e33-b49c-34ad6dde590a';
 update media_assets set storage_path = 'legacy/images/maps/es/isla-maldivas-mapa.webp', width = null, height = null where id = 'e04a6912-0f0d-cc47-96db-bbe2fad7f4d4';
 update media_assets set storage_path = 'legacy/resorts/soneva-jani/images/soneva-jani-medhufaru-island-resort-maldives-noonu-atoll.webp', width = null, height = null where id = 'e0917872-a036-c4fb-e397-e5927b4cc36a';
 update media_assets set storage_path = 'legacy/resorts/adaaran-hudhuranfushi/images/adaaran-select-hudhuran-fushi.webp', width = null, height = null where id = 'e094555a-c836-08c3-042b-7815d1fea8aa';
@@ -4750,6 +4840,7 @@ update media_assets set storage_path = 'legacy/resorts/sun-siyam-iruveli/images/
 update media_assets set storage_path = 'uploads/assets/uploads/atolls/sh-lhaimagu-island.jpg', width = null, height = null where id = 'e364889c-2bb3-3f89-6752-ae2f6a4d7fab';
 update media_assets set storage_path = 'legacy/resorts/nova/images/nova-maldives-island-resort-south-ari-atoll.webp', width = null, height = null where id = 'e36c1ba1-daee-ce25-b939-56dda65835f0';
 update media_assets set storage_path = 'legacy/images/activities/things-to-do/como-cocoa-island-maldives-beach.webp', width = null, height = null where id = 'e3863353-1187-3983-80b0-d317fa155d40';
+update media_assets set storage_path = 'transfers/all-routes-gallery/Maldives-tour-guide-airport-staff.webp', width = null, height = null where id = 'e38ea3f6-294e-4111-9c34-39163ffc5fe8';
 update media_assets set storage_path = 'uploads/assets/uploads/transfers/maldives-ferry-transfer.webp', width = null, height = null where id = 'e3987935-b355-11fb-12b9-79a394a09ce5';
 update media_assets set storage_path = 'legacy/images/maldives-fishing-activities.webp', width = null, height = null where id = 'e39bcc5a-22e2-4c59-2b5f-cc5f02f481eb';
 update media_assets set storage_path = 'legacy/resorts/oblu-select-lobigili/images/oblu-select-lobigili-maldives-sunnest-beach-pool-villa1.webp', width = null, height = null where id = 'e39ef560-eab0-330d-488f-c4b11cd099b6';
@@ -4925,9 +5016,11 @@ update media_assets set storage_path = 'legacy/images/resorts/maldives-adult-onl
 update media_assets set storage_path = 'legacy/images/maps/es/maldives-fishing-map.webp', width = null, height = null where id = 'ebf375cd-14b7-3ee8-7dd3-b399da39a524';
 update media_assets set storage_path = 'uploads/assets/uploads/north/alifu-dhaalu-mandhoo-isand.jpg', width = null, height = null where id = 'ebf6c570-6efa-7897-0d11-ec1259c97949';
 update media_assets set storage_path = 'legacy/resorts/coco-bodu-hithi/images/coco-bodu-hithi-maldives-pool.webp', width = null, height = null where id = 'ebf7ca8e-52b1-a1e4-0d56-c470e22c6aff';
+update media_assets set storage_path = 'uploads/assets/uploads/articles/Tsunami-Monument-in-Male.webp', width = null, height = null where id = 'ec16a513-b74d-675f-aa34-930f0ab7ec3d';
 update media_assets set storage_path = 'legacy/images/maps/cn/maldives-airport-map-6.webp', width = null, height = null where id = 'ec29377f-e2b2-2b3e-0b12-569993b956c0';
 update media_assets set storage_path = 'legacy/fishing/images/mahi-mahi-fish.webp', width = null, height = null where id = 'ec38b13b-21e1-0b56-a620-757e0601a38b';
 update media_assets set storage_path = 'legacy/resorts/malahini-kuda-bandos/images/malahini-kuda-bandos-maldives.webp', width = null, height = null where id = 'ec41fd5a-89e0-ca92-7098-a9f994062cec';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-airport-transfers.webp', width = null, height = null where id = 'ec504f1a-e24a-45b5-933c-6c6584980a7d';
 update media_assets set storage_path = 'legacy/images/transfers/saii-lagoon-speedboat.webp', width = null, height = null where id = 'ec57a878-6f3b-b3be-7f98-3c9a8dd3199d';
 update media_assets set storage_path = 'legacy/resorts/ayada/images/ayada-maldives-playground.webp', width = null, height = null where id = 'ec5d258e-b1a9-3527-3965-bb38b86a2376';
 update media_assets set storage_path = 'legacy/images/activities/full-day/male-atoll-excursion.webp', width = null, height = null where id = 'ec5fdc0a-6aa5-5cf6-722f-8209539581d2';
@@ -5054,6 +5147,7 @@ update media_assets set storage_path = 'legacy/resorts/jw-marriott/images/jw-mar
 update media_assets set storage_path = 'legacy/resorts/makunudu-island/images/makunudu-island-resort-maldives-snorkeling.webp', width = null, height = null where id = 'f24d0f03-5e01-cdd1-21c9-8316b637e046';
 update media_assets set storage_path = 'legacy/resorts/angsana-velavaru/images/angsana-velavaru-maldives-resort-island.webp', width = null, height = null where id = 'f24eecfe-3287-0764-a73f-a466f2e7df65';
 update media_assets set storage_path = 'legacy/images/articles/maldives-international-airport-arrival-terminal.webp', width = null, height = null where id = 'f25d158d-5df3-943b-ab77-efb7a28c7660';
+update media_assets set storage_path = 'transfers/oblu-select-sangeli/oblu-select-sangeli-transfer.webp', width = null, height = null where id = 'f26557c9-50c4-4643-ae9b-73abff1c5a22';
 update media_assets set storage_path = 'legacy/resorts/pullman/images/pullman-maldives-maamutaa-gym.webp', width = null, height = null where id = 'f26e1bf7-684f-f01c-5a48-9ecd5a5fb0f0';
 update media_assets set storage_path = 'legacy/images/activities/things-to-do/baros-maldives-island-resort-beach-dinner.webp', width = null, height = null where id = 'f26fefd2-1ae4-d851-5f75-b3684772a60b';
 update media_assets set storage_path = 'legacy/images/resorts/floating-breakfast-in-your-private-pool.webp', width = null, height = null where id = 'f2a8eaff-37f8-2f7c-0147-3df9d676c411';
@@ -5089,6 +5183,7 @@ update media_assets set storage_path = 'legacy/images/resorts/maldives-luxury-re
 update media_assets set storage_path = 'legacy/resorts/summer-island/images/summer-island-maldives-resort.webp', width = null, height = null where id = 'f43c9539-df05-075a-f1d4-7c441bbf98f6';
 update media_assets set storage_path = 'admin-uploads/0078417b-5ea0-4cd9-b681-2324416e5b71/1792580693312-b9iyyh.webp', width = null, height = null where id = 'f440c71d-4b05-4cdb-9296-ba966dd7edf7';
 update media_assets set storage_path = 'legacy/images/ferry/four-season-kudahuraa-maldives-airport-transfers.webp', width = null, height = null where id = 'f44900f9-71e5-a471-4dee-f500b39a168d';
+update media_assets set storage_path = 'transfers/makunudu-island/makunudu-transfer.webp', width = null, height = null where id = 'f453d821-55a1-4b93-a3d4-a87ca9d5b882';
 update media_assets set storage_path = 'legacy/images/maldives/joali-maldives-island.webp', width = null, height = null where id = 'f45b863b-8a9e-43eb-450c-0ad939d6c9cc';
 update media_assets set storage_path = 'legacy/images/transfers/joy-island-transfer.webp', width = null, height = null where id = 'f45f8700-200c-0538-3b17-539e98a06451';
 update media_assets set storage_path = 'legacy/resorts/hideaway-beach/images/hideaway-beach-resort-maldives-island-map.webp', width = null, height = null where id = 'f4641ce3-0ebb-a828-f734-7db8b9f45cb8';
@@ -5262,6 +5357,7 @@ update media_assets set storage_path = 'legacy/images/maps/es/maldives-map.webp'
 update media_assets set storage_path = 'legacy/resorts/alimathaa/images/nakai-alimatha-maldives-island-resort-beach.webp', width = null, height = null where id = 'fc4709b5-a235-bea4-0d03-97ee8ffba66d';
 update media_assets set storage_path = 'legacy/resorts/veligandu-island/images/veligandu-island-resort-and-spa-wedding.webp', width = null, height = null where id = 'fc4a16ce-8731-a0c8-73eb-3ea87584c62a';
 update media_assets set storage_path = 'legacy/images/diving/fushi-kandu-maldives.webp', width = null, height = null where id = 'fc4f382c-eb59-731f-ded0-a046bfb13c38';
+update media_assets set storage_path = 'transfers/all-routes-gallery/transfers.webp', width = null, height = null where id = 'fc5aff72-f8a8-4792-9a90-d5b94cb075b2';
 update media_assets set storage_path = 'legacy/resorts/sun-siyam-olhuveli/images/sun-siyam-olhuveli-maldives-beach.webp', width = null, height = null where id = 'fc60d1e9-6d55-d738-d545-dad6de84ce51';
 update media_assets set storage_path = 'legacy/resorts/palm-beach/images/palm-beach-island-resort-and-spa.webp', width = null, height = null where id = 'fc717d08-ea94-c8dd-8dbe-3e9f3d695329';
 update media_assets set storage_path = 'legacy/images/maps/de/karte-der-malediven.webp', width = null, height = null where id = 'fc99e8fa-b662-dba3-4e2f-eb0b1740595f';
@@ -5282,6 +5378,7 @@ update media_assets set storage_path = 'legacy/images/resorts/banyan-tree-vabbin
 update media_assets set storage_path = 'legacy/images/resorts/intercontinental-maldives-maamunagau-resort-yoga.webp', width = null, height = null where id = 'fd1442c3-d360-ab85-e86d-926666061094';
 update media_assets set storage_path = 'legacy/images/activities/stingray/stingray-point-snorkeling.webp', width = null, height = null where id = 'fd1813d7-4c7a-9710-f29d-eb86f23c71e4';
 update media_assets set storage_path = 'legacy/resorts/cinnamon-dhonveli/images/cinnamon-dhonveli-maldives-island-resort.webp', width = null, height = null where id = 'fd1fd58b-7fd7-5b79-e943-eb862818b53b';
+update media_assets set storage_path = 'transfers/ritz-carlton-maldives/Male-airport-to-the-ritz-carlton.webp', width = null, height = null where id = 'fd2c0c1d-9c11-4aac-9113-c4f79e1ad6e0';
 update media_assets set storage_path = 'legacy/images/maps/es/maldives-airport-map-6.webp', width = null, height = null where id = 'fd30cd37-0ea3-f799-557c-a4d1c7098fa2';
 update media_assets set storage_path = 'legacy/resorts/mirihi-island/images/mirihi-island-resort-maldives-beach-villa.webp', width = null, height = null where id = 'fd38db1e-565d-c0e6-52a9-d3814029bfcd';
 update media_assets set storage_path = 'legacy/images/articles/maldives-international-airport-luggage-store.webp', width = null, height = null where id = 'fd3eb96b-1bb5-c448-e1a3-79e1dedc884d';
@@ -5313,6 +5410,7 @@ update media_assets set storage_path = 'legacy/images/transfers/fourseasons-kuda
 update media_assets set storage_path = 'legacy/images/maps/cn/maldives-on-equator.webp', width = null, height = null where id = 'feafca67-3726-723a-19ef-12e7937000ee';
 update media_assets set storage_path = 'legacy/images/maps/one-and-only-reethi-rah.jpg', width = null, height = null where id = 'febae2bb-c2ea-e7a0-8ee2-858fe5cf4f1c';
 update media_assets set storage_path = 'admin-uploads/66b6b8ad-9690-41f3-afe9-dbfb88b1e85f/1792581118868-k8hu0p.webp', width = null, height = null where id = 'feccc2c2-0703-4a9f-8b56-f304f59abbc6';
+update media_assets set storage_path = 'transfers/one-and-only-reethi-rah/one-and-only-reethirah-speedboat.webp', width = null, height = null where id = 'feccf53f-6bd4-40c5-8396-b1ca1521f9e4';
 update media_assets set storage_path = 'legacy/images/diving/male-atoll-nassimo-thila-maldives.webp', width = null, height = null where id = 'fece2e76-0781-2245-965c-03fc2116c5aa';
 update media_assets set storage_path = 'legacy/images/maldives-cooking-class.webp', width = null, height = null where id = 'fee556e0-9626-1087-b55e-ba17ffdf95cc';
 update media_assets set storage_path = 'legacy/images/activities/nurse-shark/nurse-shark-snorkeling.jpg', width = null, height = null where id = 'feee9327-1cb1-0689-12c6-dbd5274c62f0';
@@ -5324,6 +5422,7 @@ update media_assets set storage_path = 'legacy/images/maldives/mirihi-island-mal
 update media_assets set storage_path = 'legacy/images/activities/full-day/island-hopping-tour.webp', width = null, height = null where id = 'ff474d8b-ac7b-6813-361e-7f41d7b85f82';
 update media_assets set storage_path = 'legacy/resorts/hotel-riu/images/riu-palace-maldives-gadifuri-snorkeling.webp', width = null, height = null where id = 'ff507f48-8506-8497-97b4-f587ed8905e0';
 update media_assets set storage_path = 'legacy/resorts/centara-rasfushi/images/centara-rasfushi-island-deluxe-water-villa1.webp', width = null, height = null where id = 'ff653c2d-2d00-37a7-6dbb-b944e0344a11';
+update media_assets set storage_path = 'transfers/all-routes-gallery/maldives-hotel-speedboat-transfers.webp', width = null, height = null where id = 'ff6df82e-10f9-4396-ad03-7bcc2bdcdead';
 update media_assets set storage_path = 'legacy/resorts/oblu-nature-helengeli/images/oblu-nature-helengeli-maldives.webp', width = null, height = null where id = 'ff90a11a-5f0c-5cb8-3b6e-7e6073845f65';
 update media_assets set storage_path = 'admin-uploads/a4fe21bb-3535-4244-8c18-0a61047fbd0a/1792580814013-3oxpqc.webp', width = null, height = null where id = 'ff9721d8-0470-4bc1-b0fe-b61f007c25bf';
 update media_assets set storage_path = 'legacy/resorts/outrigger-maafushivaru/images/outrigger-maldives-maafushivaru-resort-beach-villa-pool.webp', width = null, height = null where id = 'ffa18703-543b-9b0d-b7c6-57c3a7a07d75';

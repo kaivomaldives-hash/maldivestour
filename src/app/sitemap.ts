@@ -13,6 +13,7 @@ import type { Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getEntityLocaleSlugsByIds, getPublishedLocalesForPage } from "@/lib/i18n/repository";
 import { DESTINATION_STRINGS_LOCALES } from "@/lib/i18n/destination-strings";
+import { STAYS_STRINGS_LOCALES } from "@/lib/i18n/stays-strings";
 import { UI_STRINGS_LOCALES } from "@/lib/i18n/ui-strings";
 import { getAtolls, getIslands } from "@/lib/locations/repository";
 import { getPackages } from "@/lib/packages/repository";
@@ -202,6 +203,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/maldives/islands/": DESTINATION_STRINGS_LOCALES,
     "/maldives/dive-sites/": DESTINATION_STRINGS_LOCALES,
     "/maldives/attractions/": DESTINATION_STRINGS_LOCALES,
+    "/maldives/stays/": STAYS_STRINGS_LOCALES,
+    "/maldives/resorts/": STAYS_STRINGS_LOCALES,
+    "/maldives/hotels/": STAYS_STRINGS_LOCALES,
+    "/maldives/guesthouses/": STAYS_STRINGS_LOCALES,
   };
 
   const entries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => {
@@ -242,7 +247,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  for (const a of accommodations) entries.push({ url: url(`/maldives/${ACCOMMODATION_TYPE_SEGMENT[a.accommodationType]}/${a.slug}/`), changeFrequency: "weekly", priority: 0.7 });
+  // Resorts/hotels/guesthouses are translated and get their English entry
+  // plus hreflang from pushLocalizedEntityEntries below; any other type
+  // (villa/liveaboard/other) has no translated route and stays plain.
+  for (const a of accommodations) {
+    if (a.accommodationType === "resort" || a.accommodationType === "hotel" || a.accommodationType === "guesthouse") continue;
+    entries.push({ url: url(`/maldives/${ACCOMMODATION_TYPE_SEGMENT[a.accommodationType]}/${a.slug}/`), changeFrequency: "weekly", priority: 0.7 });
+  }
   // Only surfing activities are pushed here as plain entries -- fishing,
   // diving, and every other category (Task 22) are now translated and get
   // both their English entry AND reciprocal hreflang alternates from
@@ -344,6 +355,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   pushLocalizedEntityEntries(islands, destinationLocaleSlugs, "/maldives/islands/", 0.6);
   pushLocalizedEntityEntries(diveSites, destinationLocaleSlugs, "/maldives/dive-sites/", 0.5);
   pushLocalizedEntityEntries(attractions, destinationLocaleSlugs, "/maldives/attractions/", 0.5);
+
+  const stayLocaleSlugs = await getEntityLocaleSlugsByIds(accommodations.map((a) => a.id));
+  for (const type of ["resort", "hotel", "guesthouse"] as const) {
+    pushLocalizedEntityEntries(
+      accommodations.filter((a) => a.accommodationType === type),
+      stayLocaleSlugs,
+      `/maldives/${ACCOMMODATION_TYPE_SEGMENT[type]}/`,
+      0.7,
+    );
+  }
 
   for (const p of providers) entries.push({ url: url(`/maldives/providers/${p.slug}/`), changeFrequency: "monthly", priority: 0.4 });
 

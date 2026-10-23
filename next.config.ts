@@ -23,6 +23,10 @@ const LOCALIZED_HUBS: Array<{ englishSegment: string; parent: string | null; wor
   { englishSegment: "atolls", parent: "maldives", words: { de: "atolle", es: "atolones", it: "atolli", ru: "atolly", ja: "kansho", zh: "huanjiao" } },
   { englishSegment: "islands", parent: "maldives", words: { de: "inseln", es: "islas", it: "isole", ru: "ostrova", ja: "shima", zh: "daoyu" } },
   { englishSegment: "dive-sites", parent: "maldives", words: { de: "tauchplaetze", es: "puntos-de-buceo", it: "siti-di-immersione", ru: "dayv-sayty", ja: "daibu-pointo", zh: "qianshui-didian" } },
+  { englishSegment: "stays", parent: "maldives", words: { de: "unterkuenfte", es: "alojamiento", it: "alloggi", ru: "prozhivanie", ja: "shukuhaku", zh: "zhusu" } },
+  { englishSegment: "resorts", parent: "maldives", words: { de: "resorts", es: "resorts", it: "resort", ru: "kurorty", ja: "rizooto", zh: "dujiacun" } },
+  { englishSegment: "hotels", parent: "maldives", words: { de: "hotels", es: "hoteles", it: "hotel", ru: "oteli", ja: "hoteru", zh: "jiudian" } },
+  { englishSegment: "guesthouses", parent: "maldives", words: { de: "gaestehaeuser", es: "casas-de-huespedes", it: "guesthouse", ru: "gostevye-doma", ja: "gesutohausu", zh: "minsu" } },
   { englishSegment: "attractions", parent: "maldives", words: { de: "sehenswuerdigkeiten", es: "atracciones", it: "attrazioni", ru: "dostoprimechatelnosti", ja: "kanko-supotto", zh: "jingdian" } },
 ];
 

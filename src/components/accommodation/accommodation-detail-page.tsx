@@ -11,6 +11,7 @@ import { VideoSection } from "@/components/accommodation/video-section";
 import { ArticleCard } from "@/components/articles/article-card";
 import { AttractionCard } from "@/components/attractions/attraction-card";
 import { NodeInquiryForm } from "@/components/bookings/node-inquiry-form";
+import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
 import { LocationMap } from "@/components/locations/location-map";
 import { PackageCard } from "@/components/packages/package-card";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
@@ -22,6 +23,7 @@ import { getNearbyActivities } from "@/lib/activities/repository";
 import { getArticlesRelatedToNodes } from "@/lib/articles/repository";
 import { getNearbyAttractions } from "@/lib/attractions/repository";
 import { bookingCta } from "@/lib/bookings/copy";
+import { getEntityLocalePaths } from "@/lib/i18n/repository";
 import { getPackageViewsByAccommodation } from "@/lib/packages/view-repository";
 import { getReviewsForNode } from "@/lib/reviews/repository";
 import { breadcrumbJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
@@ -41,13 +43,14 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
   const segment = ACCOMMODATION_TYPE_SEGMENT[type];
   const { primaryLocation, atoll } = accommodation;
   const locationFilter = { islandId: primaryLocation?.id ?? null, atollId: atoll?.id ?? null };
-  const [packages, nearbyActivities, nearbyAttractions, transferRoutes, relatedGuides, reviews] = await Promise.all([
+  const [packages, nearbyActivities, nearbyAttractions, transferRoutes, relatedGuides, reviews, localePaths] = await Promise.all([
     getPackageViewsByAccommodation(accommodation.id),
     getNearbyActivities(locationFilter),
     getNearbyAttractions(locationFilter),
     primaryLocation ? getTransferRoutesByLocation(primaryLocation.id) : Promise.resolve([]),
     getArticlesRelatedToNodes([accommodation.id, primaryLocation?.id, atoll?.id].filter((id): id is string => Boolean(id))),
     getReviewsForNode(accommodation.id),
+    getEntityLocalePaths(accommodation.id, accommodation.slug, `/maldives/${segment}/`),
   ]);
 
   const videoJsonLd = accommodationVideoJsonLd(accommodation.videoYoutubeId, accommodation.title, accommodation.summary, accommodation.publishedAt);
@@ -59,6 +62,7 @@ export async function AccommodationDetailPage({ type, slug }: { type: Accommodat
 
   return (
     <main>
+      <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath={`/maldives/${segment}/`} />
       {/* Task 17 audit: every other detail-page type already emits this;
           accommodation had the visual breadcrumb via PageHero below but no
           matching structured data. */}

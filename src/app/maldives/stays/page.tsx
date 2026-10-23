@@ -5,7 +5,8 @@ import { AccommodationCard } from "@/components/accommodation/accommodation-card
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getAccommodations } from "@/lib/accommodations/repository";
-import { canonicalUrl } from "@/lib/seo/site";
+import { STAYS_STRINGS_LOCALES } from "@/lib/i18n/stays-strings";
+import { canonicalUrl, hreflangAlternates } from "@/lib/seo/site";
 
 // Staggered (not a round 3600) so ISR regenerations don't cluster with
 // every other route's -- see src/app/page.tsx for why.
@@ -15,7 +16,7 @@ export function generateMetadata(): Metadata {
   const title = "Maldives Stays — Resorts, Hotels & Guesthouses | MTG";
   const description = "Real, source-verified Maldives resorts, hotels and guesthouses — with real rooms, photos, and prices where we have them.";
   const url = canonicalUrl("/maldives/stays");
-  return { title, description, alternates: { canonical: url }, openGraph: { title, description, url } };
+  return { title, description, alternates: { canonical: url, languages: hreflangAlternates("/maldives/stays/", STAYS_STRINGS_LOCALES) }, openGraph: { title, description, url } };
 }
 
 const TYPES = [

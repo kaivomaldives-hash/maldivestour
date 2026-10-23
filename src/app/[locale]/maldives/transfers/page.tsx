@@ -11,6 +11,7 @@ import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { localizedSiteHref, localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getPageTranslation, getPublishedLocalesForPage, localizedEntityHref } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
+import { getTransferCategoryStrings, TRANSFER_CATEGORY_SLUGS } from "@/lib/i18n/transfer-categories";
 import { TRANSFER_CATEGORY_IMAGES } from "@/lib/transfers/category-images";
 import { getTransferRoutes } from "@/lib/transfers/repository";
 import type { TransferRouteSummary } from "@/lib/transfers/types";
@@ -102,6 +103,8 @@ export default async function LocaleTransfersHubPage({ params }: { params: Promi
     getTransferRoutes({ category: "island-transfer", pageSize: 6 }),
   ]);
 
+  const categoryStrings = getTransferCategoryStrings(locale);
+
   return (
     <main>
       <PageHero
@@ -141,6 +144,23 @@ export default async function LocaleTransfersHubPage({ params }: { params: Promi
           <section className="mt-10">
             <h2 className="text-xl font-semibold text-ocean-900">{h.islandSectionTitle}</h2>
             <RouteCardList locale={locale} routes={islandResult.items} />
+          </section>
+        )}
+
+        {categoryStrings && (
+          <section className="mt-12 border-t border-neutral-200 pt-10">
+            <h2 className="text-xl font-semibold text-ocean-900">{categoryStrings.otherTypes}</h2>
+            <nav aria-label={categoryStrings.otherTypes} className="mt-4 flex flex-wrap gap-2">
+              {TRANSFER_CATEGORY_SLUGS.map((slug) => (
+                <Link
+                  key={slug}
+                  href={localizeHubPath(locale, `/maldives/${slug}/`)}
+                  className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
+                >
+                  {categoryStrings.categories[slug].label}
+                </Link>
+              ))}
+            </nav>
           </section>
         )}
 

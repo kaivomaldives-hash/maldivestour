@@ -145,6 +145,46 @@
       "ru": "obzornye-ekskursii",
       "ja": "kankou",
       "zh": "guanguang"
+    },
+    "airport-transfers": {
+      "de": "flughafentransfer",
+      "es": "traslados-aeropuerto",
+      "it": "trasferimenti-aeroporto",
+      "ru": "transfery-iz-aeroporta",
+      "ja": "kuukou-sougei",
+      "zh": "jichang-jiesong"
+    },
+    "resort-transfers": {
+      "de": "resort-transfer",
+      "es": "traslados-a-resorts",
+      "it": "trasferimenti-resort",
+      "ru": "transfery-na-kurorty",
+      "ja": "rizooto-sougei",
+      "zh": "dujiacun-jiesong"
+    },
+    "hotel-transfers": {
+      "de": "hotel-transfer",
+      "es": "traslados-a-hoteles",
+      "it": "trasferimenti-hotel",
+      "ru": "transfery-v-oteli",
+      "ja": "hoteru-sougei",
+      "zh": "jiudian-jiesong"
+    },
+    "island-transfers": {
+      "de": "insel-transfer",
+      "es": "traslados-entre-islas",
+      "it": "trasferimenti-isole",
+      "ru": "transfery-na-ostrova",
+      "ja": "shima-sougei",
+      "zh": "daoyu-jiesong"
+    },
+    "speedboat-transfers": {
+      "de": "speedboot-transfer",
+      "es": "traslados-en-lancha",
+      "it": "trasferimenti-motoscafo",
+      "ru": "transfery-na-katere",
+      "ja": "supiidobooto-sougei",
+      "zh": "kuaiting-jiesong"
     }
   }
 }

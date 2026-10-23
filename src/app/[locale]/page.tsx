@@ -225,7 +225,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
                 { href: "/maldives-speedboats-charter/", label: h.transferCategorySpeedboat },
                 { href: "/maldives/island-transfers/", label: h.transferCategoryIsland },
               ].map((link) => (
-                <Link key={link.href} href={link.href} className="rounded-full border border-neutral-300 bg-white px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                <Link key={link.href} href={L.href(link.href)} className="rounded-full border border-neutral-300 bg-white px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
                   {link.label}
                 </Link>
               ))}

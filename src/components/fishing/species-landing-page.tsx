@@ -16,7 +16,8 @@ import { bookingCta } from "@/lib/bookings/copy";
 import { getFishSpeciesBySlug } from "@/lib/fishing/fish-species";
 import { getFishingActivityBySlug } from "@/lib/fishing/repository";
 import type { SpeciesPageContent } from "@/lib/fishing/species-content";
-import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
+import { FISHING_PAGES_LOCALES } from "@/lib/i18n/fishing-pages";
+import { breadcrumbJsonLd, canonicalUrl, hreflangAlternates, safeJsonLdStringify } from "@/lib/seo/site";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 function faqJsonLd(faqs: SpeciesPageContent["faqs"]) {
@@ -32,7 +33,7 @@ export function speciesPageMetadata(content: SpeciesPageContent): Metadata {
   return {
     title: content.metaTitle,
     description: content.metaDescription,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages: hreflangAlternates(`/maldives/fishing/${content.pageSlug}/`, FISHING_PAGES_LOCALES) },
     openGraph: { title: content.metaTitle, description: content.metaDescription, url },
   };
 }

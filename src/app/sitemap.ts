@@ -23,6 +23,7 @@ import { getSpeedboats } from "@/lib/speedboats/repository";
 import { getSurfBreaks } from "@/lib/surfing/repository";
 import { getTransferRoutes } from "@/lib/transfers/repository";
 import { ACTIVITY_CATEGORY_LOCALES, ACTIVITY_CATEGORY_SLUGS } from "@/lib/i18n/activity-categories";
+import { FISHING_PAGES_LOCALES, FISHING_SPECIES_PAGE_SLUGS, FISHING_TECHNIQUE_PAGE_SLUGS } from "@/lib/i18n/fishing-pages";
 import { PACKAGE_CATEGORY_LOCALES } from "@/lib/i18n/package-categories";
 import { TRANSFER_CATEGORY_LOCALES, TRANSFER_CATEGORY_SLUGS } from "@/lib/i18n/transfer-categories";
 import { PACKAGE_CATEGORIES } from "@/lib/packages/view-types";
@@ -214,6 +215,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...Object.fromEntries(PACKAGE_CATEGORIES.map((c) => [`/maldives/packages/${c.slug}/`, PACKAGE_CATEGORY_LOCALES])),
     ...Object.fromEntries(ACTIVITY_CATEGORY_SLUGS.map((slug) => [`/maldives/${slug}/`, ACTIVITY_CATEGORY_LOCALES])),
     ...Object.fromEntries(TRANSFER_CATEGORY_SLUGS.map((slug) => [`/maldives/${slug}/`, TRANSFER_CATEGORY_LOCALES])),
+    ...Object.fromEntries([...FISHING_SPECIES_PAGE_SLUGS, ...FISHING_TECHNIQUE_PAGE_SLUGS].map((slug) => [`/maldives/fishing/${slug}/`, FISHING_PAGES_LOCALES])),
   };
 
   const entries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => {

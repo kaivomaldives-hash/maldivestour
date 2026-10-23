@@ -18,7 +18,8 @@ import { getCategoryBySlug, getNodeIdsByCategory } from "@/lib/categories/reposi
 import { getFishingActivityBySlug } from "@/lib/fishing/repository";
 import type { TechniquePageContent } from "@/lib/fishing/technique-content";
 import { FISHING_HERO_IMAGE } from "@/lib/packages/category-images";
-import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
+import { FISHING_PAGES_LOCALES } from "@/lib/i18n/fishing-pages";
+import { breadcrumbJsonLd, canonicalUrl, hreflangAlternates, safeJsonLdStringify } from "@/lib/seo/site";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 function faqJsonLd(faqs: TechniquePageContent["faqs"]) {
@@ -34,7 +35,7 @@ export function techniquePageMetadata(content: TechniquePageContent): Metadata {
   return {
     title: content.metaTitle,
     description: content.metaDescription,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages: hreflangAlternates(`/maldives/fishing/${content.pageSlug}/`, FISHING_PAGES_LOCALES) },
     openGraph: { title: content.metaTitle, description: content.metaDescription, url },
   };
 }

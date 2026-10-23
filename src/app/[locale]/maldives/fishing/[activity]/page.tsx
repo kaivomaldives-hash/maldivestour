@@ -22,6 +22,7 @@ import { bookingCta } from "@/lib/bookings/copy";
 import { getTranslatedActivityViewBySlug } from "@/lib/activities/repository";
 import { getFishingActivitiesByLocation } from "@/lib/fishing/repository";
 import { getFishingPagesStrings, isFishingSpeciesPageSlug, isFishingTechniquePageSlug } from "@/lib/i18n/fishing-pages";
+import { getChromeStrings } from "@/lib/i18n/chrome-strings";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getEntityLocalePaths, localizedEntityHref } from "@/lib/i18n/repository";
@@ -52,11 +53,12 @@ interface Params {
  * actually a fishing-category activity (mirrors the English
  * getFishingActivityBySlug's own category check).
  */
-function formatDuration(minutes: number | null): string | null {
+function formatDuration(minutes: number | null, locale: Locale): string | null {
   if (!minutes) return null;
-  if (minutes < 60) return `${minutes} min`;
+  const units = getChromeStrings(locale);
+  if (minutes < 60) return units.minutes.replace("{n}", String(minutes));
   const hours = minutes / 60;
-  return Number.isInteger(hours) ? `${hours} hr` : `${hours.toFixed(1)} hr`;
+  return units.hours.replace("{n}", Number.isInteger(hours) ? String(hours) : hours.toFixed(1));
 }
 
 async function getEnglishSlug(entityId: string): Promise<string | null> {
@@ -113,7 +115,7 @@ export default async function LocaleFishingDetailPage({ params }: { params: Prom
   const d = ui.activityDetail;
 
   const { primaryLocation, atoll } = activity;
-  const duration = formatDuration(activity.durationMinutes);
+  const duration = formatDuration(activity.durationMinutes, locale);
 
   const [sameIslandTrips, packages, nearbyStays, englishSlug, localePaths] = await Promise.all([
     primaryLocation ? getFishingActivitiesByLocation(primaryLocation.id) : Promise.resolve([]),

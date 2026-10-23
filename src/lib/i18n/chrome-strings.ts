@@ -26,6 +26,17 @@ export interface ChromeStrings {
   moreStaysIn: string;
   theArea: string;
   browseAllStays: string;
+  /** Card/quick-facts labels -- "{n}" / "{nights}" / "{days}" are placeholders. */
+  cardFrom: string;
+  minutes: string;
+  hours: string;
+  locationsCount: string;
+  mtgCurated: string;
+  nightsDays: string;
+  minRead: string;
+  activityCategories: Record<string, string>;
+  difficulty: Record<string, string>;
+  quickFacts: { category: string; duration: string; level: string; difficulty: string; minimumAge: string; maxParticipants: string; priceFrom: string; location: string; atoll: string };
 }
 
 const EN: ChromeStrings = {
@@ -49,6 +60,16 @@ const EN: ChromeStrings = {
   moreStaysIn: "More Stays in {name}",
   theArea: "the Area",
   browseAllStays: "Browse all places to stay →",
+  cardFrom: "From",
+  minutes: "{n} min",
+  hours: "{n} hr",
+  locationsCount: "{n} locations",
+  mtgCurated: "MTG-curated",
+  nightsDays: "{nights} Nights / {days} Days",
+  minRead: "{n} min read",
+  activityCategories: { general: "General", fishing: "Fishing", diving: "Diving", surfing: "Surfing", watersports: "Watersports", excursion: "Excursion", island_hopping: "Island Hopping", spa: "Spa", culture: "Culture" },
+  difficulty: { beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced", all_levels: "All levels" },
+  quickFacts: { category: "Category", duration: "Duration", level: "Level", difficulty: "Difficulty", minimumAge: "Minimum age", maxParticipants: "Max participants", priceFrom: "Price from", location: "Location", atoll: "Atoll" },
 };
 
 const CHROME: Partial<Record<Locale, ChromeStrings>> = {
@@ -74,6 +95,16 @@ const CHROME: Partial<Record<Locale, ChromeStrings>> = {
     moreStaysIn: "Weitere Unterkünfte: {name}",
     theArea: "Umgebung",
     browseAllStays: "Alle Unterkünfte ansehen →",
+    cardFrom: "Ab",
+    minutes: "{n} Min.",
+    hours: "{n} Std.",
+    locationsCount: "{n} Orte",
+    mtgCurated: "Von MTG kuratiert",
+    nightsDays: "{nights} Nächte / {days} Tage",
+    minRead: "{n} Min. Lesezeit",
+    activityCategories: { general: "Allgemein", fishing: "Angeln", diving: "Tauchen", surfing: "Surfen", watersports: "Wassersport", excursion: "Ausflug", island_hopping: "Inselhopping", spa: "Spa", culture: "Kultur" },
+    difficulty: { beginner: "Einsteiger", intermediate: "Fortgeschrittene", advanced: "Erfahrene", all_levels: "Alle Niveaus" },
+    quickFacts: { category: "Kategorie", duration: "Dauer", level: "Niveau", difficulty: "Schwierigkeit", minimumAge: "Mindestalter", maxParticipants: "Max. Teilnehmer", priceFrom: "Preis ab", location: "Ort", atoll: "Atoll" },
   },
   es: {
     pagesMenu: "Páginas",
@@ -96,6 +127,16 @@ const CHROME: Partial<Record<Locale, ChromeStrings>> = {
     moreStaysIn: "Más alojamientos: {name}",
     theArea: "la zona",
     browseAllStays: "Ver todos los alojamientos →",
+    cardFrom: "Desde",
+    minutes: "{n} min",
+    hours: "{n} h",
+    locationsCount: "{n} ubicaciones",
+    mtgCurated: "Seleccionado por MTG",
+    nightsDays: "{nights} noches / {days} días",
+    minRead: "{n} min de lectura",
+    activityCategories: { general: "General", fishing: "Pesca", diving: "Buceo", surfing: "Surf", watersports: "Deportes acuáticos", excursion: "Excursión", island_hopping: "Salto de islas", spa: "Spa", culture: "Cultura" },
+    difficulty: { beginner: "Principiante", intermediate: "Intermedio", advanced: "Avanzado", all_levels: "Todos los niveles" },
+    quickFacts: { category: "Categoría", duration: "Duración", level: "Nivel", difficulty: "Dificultad", minimumAge: "Edad mínima", maxParticipants: "Máx. participantes", priceFrom: "Precio desde", location: "Ubicación", atoll: "Atolón" },
   },
   it: {
     pagesMenu: "Pagine",
@@ -118,6 +159,16 @@ const CHROME: Partial<Record<Locale, ChromeStrings>> = {
     moreStaysIn: "Altri alloggi: {name}",
     theArea: "la zona",
     browseAllStays: "Vedi tutti gli alloggi →",
+    cardFrom: "Da",
+    minutes: "{n} min",
+    hours: "{n} h",
+    locationsCount: "{n} località",
+    mtgCurated: "Selezionato da MTG",
+    nightsDays: "{nights} notti / {days} giorni",
+    minRead: "{n} min di lettura",
+    activityCategories: { general: "Generale", fishing: "Pesca", diving: "Immersioni", surfing: "Surf", watersports: "Sport acquatici", excursion: "Escursione", island_hopping: "Island hopping", spa: "Spa", culture: "Cultura" },
+    difficulty: { beginner: "Principiante", intermediate: "Intermedio", advanced: "Avanzato", all_levels: "Tutti i livelli" },
+    quickFacts: { category: "Categoria", duration: "Durata", level: "Livello", difficulty: "Difficoltà", minimumAge: "Età minima", maxParticipants: "Max partecipanti", priceFrom: "Prezzo da", location: "Località", atoll: "Atollo" },
   },
   ru: {
     pagesMenu: "Разделы",
@@ -140,6 +191,16 @@ const CHROME: Partial<Record<Locale, ChromeStrings>> = {
     moreStaysIn: "Ещё варианты: {name}",
     theArea: "окрестности",
     browseAllStays: "Все варианты проживания →",
+    cardFrom: "От",
+    minutes: "{n} мин",
+    hours: "{n} ч",
+    locationsCount: "Мест: {n}",
+    mtgCurated: "Подборка MTG",
+    nightsDays: "Ночей: {nights} / дней: {days}",
+    minRead: "{n} мин чтения",
+    activityCategories: { general: "Общее", fishing: "Рыбалка", diving: "Дайвинг", surfing: "Сёрфинг", watersports: "Водные виды спорта", excursion: "Экскурсия", island_hopping: "Островной тур", spa: "Спа", culture: "Культура" },
+    difficulty: { beginner: "Для начинающих", intermediate: "Средний уровень", advanced: "Продвинутый уровень", all_levels: "Любой уровень" },
+    quickFacts: { category: "Категория", duration: "Длительность", level: "Уровень", difficulty: "Сложность", minimumAge: "Минимальный возраст", maxParticipants: "Макс. участников", priceFrom: "Цена от", location: "Место", atoll: "Атолл" },
   },
   ja: {
     pagesMenu: "ページ",
@@ -162,6 +223,16 @@ const CHROME: Partial<Record<Locale, ChromeStrings>> = {
     moreStaysIn: "{name}のその他の宿泊施設",
     theArea: "周辺",
     browseAllStays: "すべての宿泊施設を見る →",
+    cardFrom: "料金",
+    minutes: "{n}分",
+    hours: "{n}時間",
+    locationsCount: "{n}か所",
+    mtgCurated: "MTG厳選",
+    nightsDays: "{nights}泊{days}日",
+    minRead: "約{n}分で読めます",
+    activityCategories: { general: "一般", fishing: "釣り", diving: "ダイビング", surfing: "サーフィン", watersports: "マリンスポーツ", excursion: "エクスカーション", island_hopping: "アイランドホッピング", spa: "スパ", culture: "文化" },
+    difficulty: { beginner: "初心者向け", intermediate: "中級者向け", advanced: "上級者向け", all_levels: "全レベル" },
+    quickFacts: { category: "カテゴリー", duration: "所要時間", level: "レベル", difficulty: "難易度", minimumAge: "最低年齢", maxParticipants: "最大参加人数", priceFrom: "料金", location: "場所", atoll: "環礁" },
   },
   zh: {
     pagesMenu: "页面",
@@ -184,6 +255,16 @@ const CHROME: Partial<Record<Locale, ChromeStrings>> = {
     moreStaysIn: "{name}的更多住宿",
     theArea: "周边",
     browseAllStays: "浏览所有住宿 →",
+    cardFrom: "起价",
+    minutes: "{n}分钟",
+    hours: "{n}小时",
+    locationsCount: "{n}个地点",
+    mtgCurated: "MTG精选",
+    nightsDays: "{nights}晚{days}天",
+    minRead: "阅读约{n}分钟",
+    activityCategories: { general: "综合", fishing: "钓鱼", diving: "潜水", surfing: "冲浪", watersports: "水上运动", excursion: "一日游", island_hopping: "跳岛游", spa: "水疗", culture: "文化" },
+    difficulty: { beginner: "初学者", intermediate: "中级", advanced: "高级", all_levels: "不限水平" },
+    quickFacts: { category: "类别", duration: "时长", level: "水平", difficulty: "难度", minimumAge: "最低年龄", maxParticipants: "最多人数", priceFrom: "起价", location: "地点", atoll: "环礁" },
   },
 };
 

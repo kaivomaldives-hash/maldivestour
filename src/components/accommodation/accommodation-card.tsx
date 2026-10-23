@@ -6,6 +6,7 @@ import { MediaImage } from "@/components/ui/media-image";
 import { ACCOMMODATION_TYPE_SEGMENT, type AccommodationSummary } from "@/lib/accommodations/types";
 import { isSupportedCurrency } from "@/lib/currency/types";
 import type { LinkLocalizer } from "@/lib/i18n/link-localizer";
+import { getStaysStrings } from "@/lib/i18n/stays-strings";
 
 const PRICE_TIER_LABEL: Record<string, string> = {
   budget: "Budget",
@@ -19,6 +20,8 @@ export function AccommodationCard({ accommodation, localize }: { accommodation: 
   const href = localize ? localize.href(englishHref) : englishHref;
   const title = localize ? localize.title(englishHref, accommodation.title) : accommodation.title;
   const priceFromCurrency = accommodation.priceFromCurrency ?? "USD";
+  // English labels unless shown on a translated page (`localize`).
+  const s = localize ? getStaysStrings(localize.locale) : null;
 
   return (
     <li className={CARD_CLASS}>
@@ -33,9 +36,9 @@ export function AccommodationCard({ accommodation, localize }: { accommodation: 
       <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-sm text-neutral-600">
         {accommodation.primaryLocation && <span>{accommodation.primaryLocation.title}</span>}
         {accommodation.starRating && <span>{accommodation.starRating}★</span>}
-        {accommodation.priceTier && <span>{PRICE_TIER_LABEL[accommodation.priceTier] ?? accommodation.priceTier}</span>}
-        {accommodation.allInclusive && <span>All-inclusive</span>}
-        {accommodation.overwaterVillas && <span>Overwater villas</span>}
+        {accommodation.priceTier && <span>{(s?.priceTiers ?? PRICE_TIER_LABEL)[accommodation.priceTier] ?? accommodation.priceTier}</span>}
+        {accommodation.allInclusive && <span>{s?.allInclusiveBadge ?? "All-inclusive"}</span>}
+        {accommodation.overwaterVillas && <span>{s?.overwaterBadge ?? "Overwater villas"}</span>}
       </div>
       {/* A real "from" figure is fine on a card/listing — it's the one
           place the task spec allows a price at all. The property's own
@@ -45,7 +48,7 @@ export function AccommodationCard({ accommodation, localize }: { accommodation: 
           §21-24) -- this remains a "from" indicator, never a bookable rate. */}
       {accommodation.priceFrom !== null && (
         <p className="mt-2 text-sm text-neutral-600">
-          From{" "}
+          {s?.detail.from ?? "From"}{" "}
           <span className="font-semibold text-ocean-900">
             {isSupportedCurrency(priceFromCurrency) ? (
               <Price baseAmount={accommodation.priceFrom} baseCurrency={priceFromCurrency} />
@@ -56,7 +59,7 @@ export function AccommodationCard({ accommodation, localize }: { accommodation: 
               </>
             )}
           </span>{" "}
-          / night
+          {s?.detail.perNight ?? "/ night"}
         </p>
       )}
     </li>

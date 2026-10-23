@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import type { ActivityDetail } from "@/lib/activities/types";
+import { getChromeStrings } from "@/lib/i18n/chrome-strings";
 import type { LinkLocalizer } from "@/lib/i18n/link-localizer";
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -37,6 +38,10 @@ export function ActivityQuickFacts({
   /** On a translated page: links the location/atoll to their own translated pages. */
   localize?: LinkLocalizer;
 }) {
+  // English labels unless shown on a translated page (`localize`).
+  const t = localize ? getChromeStrings(localize.locale) : null;
+  const q = t?.quickFacts;
+  const levelLabel = t ? (difficultyLabel === "Difficulty" ? t.quickFacts.difficulty : t.quickFacts.level) : difficultyLabel;
   const link = (href: string, title: string) => (localize ? { href: localize.href(href), title: localize.title(href, title) } : { href, title });
   const location =
     activity.primaryLocation &&
@@ -49,37 +54,37 @@ export function ActivityQuickFacts({
     <dl className="mt-6 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
       {showCategory && (
         <div>
-          <dt className="text-neutral-500">Category</dt>
-          <dd className="font-medium">{CATEGORY_LABEL[activity.activityCategory] ?? activity.activityCategory}</dd>
+          <dt className="text-neutral-500">{q?.category ?? "Category"}</dt>
+          <dd className="font-medium">{(t?.activityCategories ?? CATEGORY_LABEL)[activity.activityCategory] ?? activity.activityCategory}</dd>
         </div>
       )}
       {duration && (
         <div>
-          <dt className="text-neutral-500">Duration</dt>
+          <dt className="text-neutral-500">{q?.duration ?? "Duration"}</dt>
           <dd className="font-medium">{duration}</dd>
         </div>
       )}
       {showDifficulty && activity.difficulty && (
         <div>
-          <dt className="text-neutral-500">{difficultyLabel}</dt>
-          <dd className="font-medium capitalize">{activity.difficulty.replace("_", " ")}</dd>
+          <dt className="text-neutral-500">{levelLabel}</dt>
+          <dd className="font-medium capitalize">{t ? (t.difficulty[activity.difficulty] ?? activity.difficulty) : activity.difficulty.replace("_", " ")}</dd>
         </div>
       )}
       {showMinAge && activity.minAge !== null && (
         <div>
-          <dt className="text-neutral-500">Minimum age</dt>
+          <dt className="text-neutral-500">{q?.minimumAge ?? "Minimum age"}</dt>
           <dd className="font-medium">{activity.minAge}</dd>
         </div>
       )}
       {activity.maxParticipants !== null && (
         <div>
-          <dt className="text-neutral-500">Max participants</dt>
+          <dt className="text-neutral-500">{q?.maxParticipants ?? "Max participants"}</dt>
           <dd className="font-medium">{activity.maxParticipants}</dd>
         </div>
       )}
       {activity.priceFrom !== null && (
         <div>
-          <dt className="text-neutral-500">Price from</dt>
+          <dt className="text-neutral-500">{q?.priceFrom ?? "Price from"}</dt>
           <dd className="font-medium">
             {activity.currency ?? "USD"} {activity.priceFrom}
           </dd>
@@ -87,7 +92,7 @@ export function ActivityQuickFacts({
       )}
       {location && (
         <div>
-          <dt className="text-neutral-500">Location</dt>
+          <dt className="text-neutral-500">{q?.location ?? "Location"}</dt>
           <dd className="font-medium">
             <Link href={location.href} className="hover:underline">
               {location.title}
@@ -97,7 +102,7 @@ export function ActivityQuickFacts({
       )}
       {atoll && (
         <div>
-          <dt className="text-neutral-500">Atoll</dt>
+          <dt className="text-neutral-500">{q?.atoll ?? "Atoll"}</dt>
           <dd className="font-medium">
             <Link href={atoll.href} className="hover:underline">
               {atoll.title}

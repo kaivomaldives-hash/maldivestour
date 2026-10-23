@@ -6,6 +6,8 @@ import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { MediaImage } from "@/components/ui/media-image";
 import { isSupportedCurrency } from "@/lib/currency/types";
 import { getChromeStrings } from "@/lib/i18n/chrome-strings";
+import { getPackageCategoryStrings } from "@/lib/i18n/package-categories";
+import { getUiStrings } from "@/lib/i18n/ui-strings";
 import type { LinkLocalizer } from "@/lib/i18n/link-localizer";
 import { PACKAGE_CATEGORY_TITLE } from "@/lib/packages/view-types";
 import type { PackageView } from "@/lib/packages/view-types";
@@ -25,6 +27,11 @@ export function PackageCard({ pkg, localize }: { pkg: PackageView; localize?: Li
   const href = localize ? localize.href(englishHref) : englishHref;
   const title = localize ? localize.title(englishHref, pkg.title) : pkg.title;
   const chrome = getChromeStrings(localize?.locale ?? "en");
+  const ui = getUiStrings(localize?.locale ?? "en");
+  const categoryStrings = localize ? getPackageCategoryStrings(localize.locale) : null;
+  const priceTypeLabel: Record<string, string> = localize
+    ? { "per-person": ui.packageDetail.perPerson, "per-couple": ui.packageDetail.perCouple, "per-package": ui.packageDetail.perPackage }
+    : PRICE_TYPE_LABEL;
   const primaryDestination = pkg.destinations[0] ?? null;
   const primaryCategory = pkg.categories[0] ?? null;
   const priceCurrency = pkg.currency ?? "USD";
@@ -43,7 +50,7 @@ export function PackageCard({ pkg, localize }: { pkg: PackageView; localize?: Li
         </Link>
         {pkg.isMtgCurated && !pkg.isDemo && (
           <Badge tone="aqua" className="shrink-0">
-            MTG-curated
+            {chrome.mtgCurated}
           </Badge>
         )}
       </div>
@@ -53,7 +60,7 @@ export function PackageCard({ pkg, localize }: { pkg: PackageView; localize?: Li
         {primaryCategory && (
           <>
             {primaryDestination && <span aria-hidden="true">·</span>}
-            <span>{PACKAGE_CATEGORY_TITLE[primaryCategory]}</span>
+            <span>{categoryStrings?.categories[primaryCategory].title ?? PACKAGE_CATEGORY_TITLE[primaryCategory]}</span>
           </>
         )}
       </div>
@@ -69,7 +76,7 @@ export function PackageCard({ pkg, localize }: { pkg: PackageView; localize?: Li
       <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
         {pkg.nights !== null && (
           <span className="text-base font-semibold text-ocean-900">
-            {pkg.nights} Night{pkg.nights === 1 ? "" : "s"} / {pkg.days} Days
+            {localize ? chrome.nightsDays.replace("{nights}", String(pkg.nights)).replace("{days}", String(pkg.days)) : `${pkg.nights} Night${pkg.nights === 1 ? "" : "s"} / ${pkg.days} Days`}
           </span>
         )}
       </div>
@@ -78,17 +85,17 @@ export function PackageCard({ pkg, localize }: { pkg: PackageView; localize?: Li
         {pkg.price !== null ? (
           <>
             <span className="font-medium text-ocean-900">
-              From{" "}
+              {chrome.cardFrom}{" "}
               {isSupportedCurrency(priceCurrency) ? (
                 <Price baseAmount={pkg.price} baseCurrency={priceCurrency} />
               ) : (
                 `${priceCurrency} ${pkg.price.toLocaleString()}`
               )}
             </span>{" "}
-            {pkg.priceType && <span className="text-neutral-500">{PRICE_TYPE_LABEL[pkg.priceType]}</span>}
+            {pkg.priceType && <span className="text-neutral-500">{priceTypeLabel[pkg.priceType]}</span>}
           </>
         ) : (
-          <span>Quote on request</span>
+          <span>{localize ? ui.packageDetail.quoteOnRequest : "Quote on request"}</span>
         )}
       </div>
 

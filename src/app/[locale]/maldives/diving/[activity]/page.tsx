@@ -15,6 +15,7 @@ import { getNearbyAccommodations } from "@/lib/accommodations/repository";
 import { getTranslatedActivityViewBySlug } from "@/lib/activities/repository";
 import { bookingCta } from "@/lib/bookings/copy";
 import { getDiveSitesForActivity, getDivingActivitiesByLocation } from "@/lib/diving/repository";
+import { getChromeStrings } from "@/lib/i18n/chrome-strings";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getEntityLocalePaths, localizedEntityHref } from "@/lib/i18n/repository";
@@ -43,11 +44,12 @@ interface Params {
  * English for an un-translated vertical" convention as everywhere
  * else). 404s if the resolved entity isn't a diving-category activity.
  */
-function formatDuration(minutes: number | null): string | null {
+function formatDuration(minutes: number | null, locale: Locale): string | null {
   if (!minutes) return null;
-  if (minutes < 60) return `${minutes} min`;
+  const units = getChromeStrings(locale);
+  if (minutes < 60) return units.minutes.replace("{n}", String(minutes));
   const hours = minutes / 60;
-  return Number.isInteger(hours) ? `${hours} hr` : `${hours.toFixed(1)} hr`;
+  return units.hours.replace("{n}", Number.isInteger(hours) ? String(hours) : hours.toFixed(1));
 }
 
 async function getEnglishSlug(entityId: string): Promise<string | null> {
@@ -93,7 +95,7 @@ export default async function LocaleDivingDetailPage({ params }: { params: Promi
   const d = ui.activityDetail;
 
   const { primaryLocation, atoll } = activity;
-  const duration = formatDuration(activity.durationMinutes);
+  const duration = formatDuration(activity.durationMinutes, locale);
 
   const [diveSites, sameIslandActivities, packages, nearbyStays, englishSlug, localePaths] = await Promise.all([
     getDiveSitesForActivity(activity.id),

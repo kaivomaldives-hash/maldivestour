@@ -5,6 +5,7 @@ import { MediaImage } from "@/components/ui/media-image";
 import { articleHref, type ArticleSummary } from "@/lib/articles/types";
 import type { Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
+import { getChromeStrings } from "@/lib/i18n/chrome-strings";
 import type { LinkLocalizer } from "@/lib/i18n/link-localizer";
 
 /** `locale` only changes the href prefix (e.g. `/de/malediven/reisefuehrer/
@@ -31,7 +32,7 @@ export function ArticleCard({ article, locale, localize }: { article: ArticleSum
       {article.summary && <p className="mt-1.5 text-sm text-neutral-600">{article.summary}</p>}
       <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-neutral-500">
         {article.category && <span>{article.category.title}</span>}
-        {article.readingTimeMinutes !== null && <span>{article.readingTimeMinutes} min read</span>}
+        {article.readingTimeMinutes !== null && <span>{getChromeStrings(localize?.locale ?? locale ?? "en").minRead.replace("{n}", String(article.readingTimeMinutes))}</span>}
       </div>
     </li>
   );

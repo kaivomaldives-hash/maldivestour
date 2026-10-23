@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { MediaImage } from "@/components/ui/media-image";
 import { ATTRACTION_TYPE_LABEL, attractionHref, type AttractionSummary } from "@/lib/attractions/types";
+import { getDestinationStrings } from "@/lib/i18n/destination-strings";
 import type { LinkLocalizer } from "@/lib/i18n/link-localizer";
 
 export function AttractionCard({ attraction, localize }: { attraction: AttractionSummary; localize?: LinkLocalizer }) {
@@ -20,7 +21,7 @@ export function AttractionCard({ attraction, localize }: { attraction: Attractio
         {title}
       </Link>
       <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-sm text-neutral-600">
-        {attraction.attractionType && <span>{ATTRACTION_TYPE_LABEL[attraction.attractionType] ?? attraction.attractionType}</span>}
+        {attraction.attractionType && <span>{(localize ? getDestinationStrings(localize.locale).attractionTypes : ATTRACTION_TYPE_LABEL)[attraction.attractionType] ?? attraction.attractionType}</span>}
         {attraction.island && <span>{attraction.island.title}</span>}
       </div>
       {attraction.summary && <p className="mt-1.5 text-sm text-neutral-600 line-clamp-2">{attraction.summary}</p>}

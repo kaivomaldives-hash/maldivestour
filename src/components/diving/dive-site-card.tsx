@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { MediaImage } from "@/components/ui/media-image";
 import type { DiveSiteSummary } from "@/lib/diving/types";
+import { getDestinationStrings } from "@/lib/i18n/destination-strings";
 import type { LinkLocalizer } from "@/lib/i18n/link-localizer";
 
 const SITE_TYPE_LABEL: Record<string, string> = {
@@ -30,7 +31,7 @@ export function DiveSiteCard({ site, localize }: { site: DiveSiteSummary; locali
         {title}
       </Link>
       {site.siteType && (
-        <div className="mt-1.5 text-sm text-neutral-600">{SITE_TYPE_LABEL[site.siteType] ?? site.siteType}</div>
+        <div className="mt-1.5 text-sm text-neutral-600">{(localize ? getDestinationStrings(localize.locale).siteTypes : SITE_TYPE_LABEL)[site.siteType] ?? site.siteType}</div>
       )}
     </li>
   );

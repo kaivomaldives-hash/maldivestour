@@ -5,20 +5,23 @@ import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { MediaImage } from "@/components/ui/media-image";
 import { isSupportedCurrency } from "@/lib/currency/types";
 import type { TransferRouteSummary } from "@/lib/transfers/types";
+import { getChromeStrings } from "@/lib/i18n/chrome-strings";
 import type { LinkLocalizer } from "@/lib/i18n/link-localizer";
 
-function formatDuration(minutes: number | null): string | null {
+function formatDuration(minutes: number | null, units: { minutes: string; hours: string }): string | null {
   if (!minutes) return null;
-  if (minutes < 60) return `${minutes} min`;
+  if (minutes < 60) return units.minutes.replace("{n}", String(minutes));
   const hours = minutes / 60;
-  return Number.isInteger(hours) ? `${hours} hr` : `${hours.toFixed(1)} hr`;
+  return units.hours.replace("{n}", Number.isInteger(hours) ? String(hours) : hours.toFixed(1));
 }
 
 export function TransferRouteCard({ route, localize }: { route: TransferRouteSummary; localize?: LinkLocalizer }) {
   const englishHref = `/maldives/transfers/${route.slug}/`;
   const href = localize ? localize.href(englishHref) : englishHref;
   const title = localize ? localize.title(englishHref, route.title) : route.title;
-  const duration = formatDuration(route.typicalDurationMinutes);
+  // English labels unless shown on a translated page (`localize`).
+  const t = getChromeStrings(localize?.locale ?? "en");
+  const duration = formatDuration(route.typicalDurationMinutes, t);
   const priceCurrency = route.currency ?? "USD";
 
   return (
@@ -36,7 +39,7 @@ export function TransferRouteCard({ route, localize }: { route: TransferRouteSum
         {route.distanceKm !== null && <span>{route.distanceKm} km</span>}
         {route.priceFrom !== null && (
           <span>
-            From{" "}
+            {t.cardFrom}{" "}
             {isSupportedCurrency(priceCurrency) ? (
               <Price baseAmount={route.priceFrom} baseCurrency={priceCurrency} />
             ) : (

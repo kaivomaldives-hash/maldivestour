@@ -22,6 +22,7 @@ import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getEntityLocalePaths } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
+import { getLinkLocalizer } from "@/lib/i18n/link-localizer";
 import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
 import { getReviewsForNode } from "@/lib/reviews/repository";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
@@ -121,6 +122,8 @@ export default async function LocaleActivityDetailPage({ params }: { params: Pro
     localizeHubPath(locale, `/maldives/activities/${activity.slug}`),
   );
 
+  const L = await getLinkLocalizer(locale);
+
   return (
     <main>
       <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath="/maldives/activities/" />
@@ -157,7 +160,7 @@ export default async function LocaleActivityDetailPage({ params }: { params: Pro
           </div>
         )}
 
-        <ActivityQuickFacts activity={activity} duration={duration} showCategory difficultyLabel="Difficulty" />
+        <ActivityQuickFacts activity={activity} duration={duration} localize={L} showCategory difficultyLabel="Difficulty" />
 
         {activity.locations.length > 1 && (
           <section className="mt-10">
@@ -167,10 +170,10 @@ export default async function LocaleActivityDetailPage({ params }: { params: Pro
               {activity.locations.map((location) => (
                 <li key={location.id}>
                   <a
-                    href={location.locationType === "atoll" ? `/maldives/atolls/${location.slug}/` : `/maldives/islands/${location.slug}/`}
+                    href={L.href(location.locationType === "atoll" ? `/maldives/atolls/${location.slug}/` : `/maldives/islands/${location.slug}/`)}
                     className="inline-block rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-300 hover:bg-maldives-50 hover:text-maldives-700"
                   >
-                    {location.title}
+                    {L.title(location.locationType === "atoll" ? `/maldives/atolls/${location.slug}/` : `/maldives/islands/${location.slug}/`, location.title)}
                   </a>
                 </li>
               ))}
@@ -210,13 +213,13 @@ export default async function LocaleActivityDetailPage({ params }: { params: Pro
             </h2>
             <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {packages.map((pkg) => (
-                <PackageCard key={pkg.id} pkg={pkg} />
+                <PackageCard key={pkg.id} pkg={pkg} localize={L} />
               ))}
             </ul>
           </section>
         )}
 
-        <WhereToStaySection nearby={nearbyStays} islandTitle={primaryLocation?.title ?? null} atollTitle={atoll?.title ?? null} />
+        <WhereToStaySection nearby={nearbyStays} islandTitle={primaryLocation?.title ?? null} atollTitle={atoll?.title ?? null} localize={L} />
 
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">{d.exploreMoreTitle}</h2>

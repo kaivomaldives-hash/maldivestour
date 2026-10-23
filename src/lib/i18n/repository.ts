@@ -2,6 +2,7 @@ import "server-only";
 
 import { cachedRead } from "@/lib/cache/cached-read";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
+import { pageTranslationFallback, pageTranslationFallbackLocales } from "@/lib/i18n/page-translation-fallbacks";
 import { canonicalUrl } from "@/lib/seo/site";
 import { createClient } from "@/lib/supabase/public";
 import type { Locale } from "@/lib/i18n/locales";
@@ -69,7 +70,7 @@ async function getPageTranslationUncached(pageKey: PageKey, locale: Locale): Pro
     .eq("locale", locale)
     .maybeSingle<PageTranslationRow>();
 
-  if (error || !data) return null;
+  if (error || !data) return pageTranslationFallback(pageKey, locale);
   return pageTranslationOf(data);
 }
 
@@ -82,8 +83,8 @@ async function getPublishedLocalesForPageUncached(pageKey: PageKey): Promise<Loc
   const supabase = await createClient();
   const { data, error } = await supabase.from("page_translations").select("locale").eq("page_key", pageKey).returns<Array<{ locale: Locale }>>();
 
-  if (error || !data) return [];
-  return data.map((row) => row.locale);
+  const locales = error || !data ? [] : data.map((row) => row.locale);
+  return [...new Set([...locales, ...pageTranslationFallbackLocales(pageKey)])];
 }
 
 export const getPublishedLocalesForPage = cachedRead(getPublishedLocalesForPageUncached, ["i18n:page-locales"], 900);

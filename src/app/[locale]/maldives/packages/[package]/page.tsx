@@ -16,6 +16,7 @@ import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getEntityLocalePaths } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
+import { getLinkLocalizer } from "@/lib/i18n/link-localizer";
 import { getRelatedPackageViews, getTranslatedPackageViewBySlug } from "@/lib/packages/view-repository";
 import { PACKAGE_CATEGORY_TITLE } from "@/lib/packages/view-types";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
@@ -103,6 +104,8 @@ export default async function LocalePackageDetailPage({ params }: { params: Prom
     ],
     localizeHubPath(locale, `/maldives/packages/${pkg.slug}`),
   );
+
+  const L = await getLinkLocalizer(locale);
 
   return (
     <main>
@@ -248,8 +251,8 @@ export default async function LocalePackageDetailPage({ params }: { params: Prom
                       <MediaImage asset={a.accommodation.heroImage} alt={a.accommodation.title} aspectClassName="aspect-[16/10]" />
                     </div>
                   )}
-                  <Link href={a.href} className="font-medium text-ocean-900 hover:text-maldives-600">
-                    {a.accommodation.title}
+                  <Link href={L.href(a.href)} className="font-medium text-ocean-900 hover:text-maldives-600">
+                    {L.title(a.href, a.accommodation.title)}
                   </Link>
                   {a.accommodation.primaryLocation && <p className="mt-1 text-sm text-neutral-600">{a.accommodation.primaryLocation.title}</p>}
                 </li>
@@ -297,8 +300,8 @@ export default async function LocalePackageDetailPage({ params }: { params: Prom
             <ul className="mt-3 flex flex-wrap gap-2">
               {pkg.activities.map((a) => (
                 <li key={a.activity.id}>
-                  <Link href={a.href} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
-                    {a.activity.title}
+                  <Link href={L.href(a.href)} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                    {L.title(a.href, a.activity.title)}
                   </Link>
                 </li>
               ))}
@@ -313,8 +316,8 @@ export default async function LocalePackageDetailPage({ params }: { params: Prom
               {pkg.destinations.map((loc, i) => (
                 <span key={loc.id}>
                   {i > 0 && ", "}
-                  <Link href={loc.locationType === "atoll" ? `/maldives/atolls/${loc.slug}/` : `/maldives/islands/${loc.slug}/`} className="text-maldives-600 hover:underline">
-                    {loc.title}
+                  <Link href={L.href(loc.locationType === "atoll" ? `/maldives/atolls/${loc.slug}/` : `/maldives/islands/${loc.slug}/`)} className="text-maldives-600 hover:underline">
+                    {L.title(loc.locationType === "atoll" ? `/maldives/atolls/${loc.slug}/` : `/maldives/islands/${loc.slug}/`, loc.title)}
                   </Link>
                 </span>
               ))}
@@ -332,7 +335,7 @@ export default async function LocalePackageDetailPage({ params }: { params: Prom
             <h2 className="text-xl font-semibold text-ocean-900">{d.relatedTitle}</h2>
             <ul className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((r) => (
-                <PackageCard key={r.slug} pkg={r} />
+                <PackageCard key={r.slug} pkg={r} localize={L} />
               ))}
             </ul>
           </section>

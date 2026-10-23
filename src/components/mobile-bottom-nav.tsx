@@ -5,13 +5,20 @@ import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 
 import { BedIcon, BoatIcon, CompassIcon, DivingIcon, FishIcon, GlobeIcon, MapPinIcon, PackageIcon } from "@/components/ui/icons";
+import { getChromeStrings } from "@/lib/i18n/chrome-strings";
+import { localizedSiteHref } from "@/lib/i18n/hub-paths";
+import { localeFromPathname, type Locale } from "@/lib/i18n/locales";
+import { getUiStrings } from "@/lib/i18n/ui-strings";
 
+// `labelKey` indexes ui.footerLinks (or chrome strings for Liveaboards);
+// `href` is the real English URL, sent through localizedSiteHref so the
+// bar keeps the visitor in their own language wherever that page exists.
 const PRIMARY_ITEMS = [
-  { label: "Resorts", href: "/maldives/resorts/", Icon: BedIcon },
-  { label: "Activities", href: "/maldives/activities/", Icon: CompassIcon },
-  { label: "Fishing", href: "/maldives/fishing/", Icon: FishIcon },
-  { label: "Diving", href: "/maldives/diving/", Icon: DivingIcon },
-  { label: "Transfers", href: "/maldives/transfers/", Icon: BoatIcon },
+  { labelKey: "resorts", href: "/maldives/resorts/", Icon: BedIcon },
+  { labelKey: "activities", href: "/maldives/activities/", Icon: CompassIcon },
+  { labelKey: "fishing", href: "/maldives/fishing/", Icon: FishIcon },
+  { labelKey: "diving", href: "/maldives/diving/", Icon: DivingIcon },
+  { labelKey: "transfers", href: "/maldives/transfers/", Icon: BoatIcon },
 ] as const;
 
 // Liveaboards has no dedicated accommodation-type directory yet (no real
@@ -20,12 +27,24 @@ const PRIMARY_ITEMS = [
 // populated liveaboard page that exists today rather than a page with
 // nothing on it.
 const SECONDARY_ITEMS = [
-  { label: "Guesthouses", href: "/maldives/guesthouses/", Icon: BedIcon },
-  { label: "Liveaboards", href: "/maldives/packages/liveaboard/", Icon: BoatIcon },
-  { label: "Packages", href: "/maldives/packages/", Icon: PackageIcon },
-  { label: "Attractions", href: "/maldives/attractions/", Icon: MapPinIcon },
-  { label: "Maldives", href: "/maldives/", Icon: GlobeIcon },
+  { labelKey: "guesthouses", href: "/maldives/guesthouses/", Icon: BedIcon },
+  { labelKey: "liveaboards", href: "/maldives/packages/liveaboard/", Icon: BoatIcon },
+  { labelKey: "packages", href: "/maldives/packages/", Icon: PackageIcon },
+  { labelKey: "attractions", href: "/maldives/attractions/", Icon: MapPinIcon },
+  { labelKey: "maldives", href: "/maldives/", Icon: GlobeIcon },
 ] as const;
+
+type NavItem = (typeof PRIMARY_ITEMS)[number] | (typeof SECONDARY_ITEMS)[number];
+
+function localizeItems(items: readonly NavItem[], locale: Locale) {
+  const ui = getUiStrings(locale);
+  const chrome = getChromeStrings(locale);
+  return items.map((item) => ({
+    ...item,
+    label: item.labelKey === "liveaboards" ? chrome.liveaboards : ui.footerLinks[item.labelKey],
+    href: localizedSiteHref(locale, item.href),
+  }));
+}
 
 // Swipe up this many pixels on the bar to reveal the second row; swipe
 // down by the same amount to hide it again.
@@ -51,6 +70,11 @@ export function MobileBottomNav() {
 
 function BottomNavBar({ pathname }: { pathname: string }) {
   const [expanded, setExpanded] = useState(false);
+  const locale = localeFromPathname(pathname);
+  const primary = localizeItems(PRIMARY_ITEMS, locale);
+  const secondary = localizeItems(SECONDARY_ITEMS, locale);
+  const maldivesHref = localizedSiteHref(locale, "/maldives/");
+  const chrome = getChromeStrings(locale);
   const touchStartY = useRef<number | null>(null);
 
   function onTouchStart(event: React.TouchEvent) {
@@ -85,7 +109,7 @@ function BottomNavBar({ pathname }: { pathname: string }) {
           type="button"
           onClick={() => setExpanded((v) => !v)}
           aria-expanded={expanded}
-          aria-label={expanded ? "Show fewer destinations" : "Show more destinations"}
+          aria-label={expanded ? chrome.fewerDestinations : chrome.moreDestinations}
           className="absolute -top-5 left-1/2 flex h-5 w-12 -translate-x-1/2 items-center justify-center"
         >
           <span className="h-1 w-9 rounded-full bg-neutral-300" />
@@ -93,8 +117,8 @@ function BottomNavBar({ pathname }: { pathname: string }) {
 
         {expanded && (
           <ul className="grid grid-cols-5 border-t border-neutral-100">
-            {SECONDARY_ITEMS.map(({ label, href, Icon }) => {
-              const active = pathname === href || (href !== "/maldives/" && pathname.startsWith(href));
+            {secondary.map(({ label, href, Icon }) => {
+              const active = pathname === href || (href !== maldivesHref && pathname.startsWith(href));
               return (
                 <li key={href}>
                   <Link
@@ -112,7 +136,7 @@ function BottomNavBar({ pathname }: { pathname: string }) {
         )}
 
         <ul className="grid grid-cols-5">
-          {PRIMARY_ITEMS.map(({ label, href, Icon }) => {
+          {primary.map(({ label, href, Icon }) => {
             const active = pathname === href || pathname.startsWith(href);
             return (
               <li key={href}>

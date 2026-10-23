@@ -4,6 +4,7 @@ import { Price } from "@/components/currency/price";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { MediaImage } from "@/components/ui/media-image";
 import { activityHref, type ActivitySummary } from "@/lib/activities/types";
+import type { LinkLocalizer } from "@/lib/i18n/link-localizer";
 import { isSupportedCurrency } from "@/lib/currency/types";
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -25,7 +26,10 @@ function formatDuration(minutes: number | null): string | null {
   return Number.isInteger(hours) ? `${hours} hr` : `${hours.toFixed(1)} hr`;
 }
 
-export function ActivityCard({ activity }: { activity: ActivitySummary }) {
+export function ActivityCard({ activity, localize }: { activity: ActivitySummary; localize?: LinkLocalizer }) {
+  const englishHref = activityHref(activity);
+  const href = localize ? localize.href(englishHref) : englishHref;
+  const title = localize ? localize.title(englishHref, activity.title) : activity.title;
   const duration = formatDuration(activity.durationMinutes);
   const priceCurrency = activity.currency ?? "USD";
 
@@ -33,11 +37,11 @@ export function ActivityCard({ activity }: { activity: ActivitySummary }) {
     <li className={CARD_CLASS}>
       {activity.heroImage && (
         <div className={CARD_IMAGE_BLEED_CLASS}>
-          <MediaImage asset={activity.heroImage} alt={activity.title} aspectClassName="aspect-[4/3]" />
+          <MediaImage asset={activity.heroImage} alt={title} aspectClassName="aspect-[4/3]" />
         </div>
       )}
-      <Link href={activityHref(activity)} className="text-lg font-medium text-ocean-900 transition-colors hover:text-maldives-600">
-        {activity.title}
+      <Link href={href} className="text-lg font-medium text-ocean-900 transition-colors hover:text-maldives-600">
+        {title}
       </Link>
       <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-sm text-neutral-600">
         <span>{CATEGORY_LABEL[activity.activityCategory] ?? activity.activityCategory}</span>

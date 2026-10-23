@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import type { ActivityDetail } from "@/lib/activities/types";
+import type { LinkLocalizer } from "@/lib/i18n/link-localizer";
 
 const CATEGORY_LABEL: Record<string, string> = {
   general: "General",
@@ -25,6 +26,7 @@ export function ActivityQuickFacts({
   difficultyLabel = "Level",
   showDifficulty = true,
   showMinAge = true,
+  localize,
 }: {
   activity: ActivityDetail;
   duration: string | null;
@@ -32,7 +34,17 @@ export function ActivityQuickFacts({
   difficultyLabel?: string;
   showDifficulty?: boolean;
   showMinAge?: boolean;
+  /** On a translated page: links the location/atoll to their own translated pages. */
+  localize?: LinkLocalizer;
 }) {
+  const link = (href: string, title: string) => (localize ? { href: localize.href(href), title: localize.title(href, title) } : { href, title });
+  const location =
+    activity.primaryLocation &&
+    link(
+      activity.primaryLocation.locationType === "island" ? `/maldives/islands/${activity.primaryLocation.slug}/` : `/maldives/atolls/${activity.primaryLocation.slug}/`,
+      activity.primaryLocation.title,
+    );
+  const atoll = activity.atoll && link(`/maldives/atolls/${activity.atoll.slug}/`, activity.atoll.title);
   return (
     <dl className="mt-6 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
       {showCategory && (
@@ -73,29 +85,22 @@ export function ActivityQuickFacts({
           </dd>
         </div>
       )}
-      {activity.primaryLocation && (
+      {location && (
         <div>
           <dt className="text-neutral-500">Location</dt>
           <dd className="font-medium">
-            <Link
-              href={
-                activity.primaryLocation.locationType === "island"
-                  ? `/maldives/islands/${activity.primaryLocation.slug}/`
-                  : `/maldives/atolls/${activity.primaryLocation.slug}/`
-              }
-              className="hover:underline"
-            >
-              {activity.primaryLocation.title}
+            <Link href={location.href} className="hover:underline">
+              {location.title}
             </Link>
           </dd>
         </div>
       )}
-      {activity.atoll && (
+      {atoll && (
         <div>
           <dt className="text-neutral-500">Atoll</dt>
           <dd className="font-medium">
-            <Link href={`/maldives/atolls/${activity.atoll.slug}/`} className="hover:underline">
-              {activity.atoll.title}
+            <Link href={atoll.href} className="hover:underline">
+              {atoll.title}
             </Link>
           </dd>
         </div>

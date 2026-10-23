@@ -8,7 +8,7 @@ import { FaqSection } from "@/components/ui/faq-section";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
-import { localizeHubPath } from "@/lib/i18n/hub-paths";
+import { localizedSiteHref, localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getPageTranslation, getPublishedLocalesForPage, localizedEntityHref } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
 import { TRANSFER_CATEGORY_IMAGES } from "@/lib/transfers/category-images";
@@ -33,8 +33,6 @@ export const revalidate = 3790;
  * are separate, un-translated verticals) -- this page links out to the
  * English hub for anyone who wants the full picture.
  */
-const TRANSLATED_HUB_PATHS = new Set(["/maldives/packages/", "/maldives/travel-guide/"]);
-
 const EXPLORE_MORE_LINKS = [
   { href: "/maldives/packages/", labelKey: "packages" },
   { href: "/maldives/activities/", labelKey: "activities" },
@@ -43,7 +41,7 @@ const EXPLORE_MORE_LINKS = [
 ] as const;
 
 function exploreMoreHref(locale: Locale, href: string): string {
-  return TRANSLATED_HUB_PATHS.has(href) ? localizeHubPath(locale, href) : href;
+  return localizedSiteHref(locale, href);
 }
 
 async function loadOrNotFound(locale: string) {

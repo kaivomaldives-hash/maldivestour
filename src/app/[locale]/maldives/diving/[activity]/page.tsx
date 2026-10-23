@@ -19,6 +19,7 @@ import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getEntityLocalePaths, localizedEntityHref } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
+import { getLinkLocalizer } from "@/lib/i18n/link-localizer";
 import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { createClient } from "@/lib/supabase/public";
@@ -114,6 +115,8 @@ export default async function LocaleDivingDetailPage({ params }: { params: Promi
     localizeHubPath(locale, `/maldives/diving/${activity.slug}`),
   );
 
+  const L = await getLinkLocalizer(locale);
+
   return (
     <main>
       <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath="/maldives/diving/" />
@@ -140,13 +143,13 @@ export default async function LocaleDivingDetailPage({ params }: { params: Promi
           </div>
         )}
 
-        <ActivityQuickFacts activity={activity} duration={duration} />
+        <ActivityQuickFacts activity={activity} duration={duration} localize={L} />
 
         {diveSites.length > 0 && (
           <section className="mt-10">
             <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {diveSites.map((site) => (
-                <DiveSiteCard key={site.id} site={site} />
+                <DiveSiteCard key={site.id} site={site} localize={L} />
               ))}
             </ul>
           </section>
@@ -176,7 +179,7 @@ export default async function LocaleDivingDetailPage({ params }: { params: Promi
             </h2>
             <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {packages.map((pkg) => (
-                <PackageCard key={pkg.id} pkg={pkg} />
+                <PackageCard key={pkg.id} pkg={pkg} localize={L} />
               ))}
             </ul>
           </section>
@@ -198,7 +201,7 @@ export default async function LocaleDivingDetailPage({ params }: { params: Promi
           </section>
         )}
 
-        <WhereToStaySection nearby={nearbyStays} islandTitle={primaryLocation?.title ?? null} atollTitle={atoll?.title ?? null} />
+        <WhereToStaySection nearby={nearbyStays} islandTitle={primaryLocation?.title ?? null} atollTitle={atoll?.title ?? null} localize={L} />
 
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">{d.exploreMoreTitle}</h2>

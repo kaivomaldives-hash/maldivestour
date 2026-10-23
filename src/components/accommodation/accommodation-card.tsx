@@ -5,6 +5,7 @@ import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { MediaImage } from "@/components/ui/media-image";
 import { ACCOMMODATION_TYPE_SEGMENT, type AccommodationSummary } from "@/lib/accommodations/types";
 import { isSupportedCurrency } from "@/lib/currency/types";
+import type { LinkLocalizer } from "@/lib/i18n/link-localizer";
 
 const PRICE_TIER_LABEL: Record<string, string> = {
   budget: "Budget",
@@ -13,19 +14,21 @@ const PRICE_TIER_LABEL: Record<string, string> = {
   ultra_luxury: "Ultra-luxury",
 };
 
-export function AccommodationCard({ accommodation }: { accommodation: AccommodationSummary }) {
-  const href = `/maldives/${ACCOMMODATION_TYPE_SEGMENT[accommodation.accommodationType]}/${accommodation.slug}/`;
+export function AccommodationCard({ accommodation, localize }: { accommodation: AccommodationSummary; localize?: LinkLocalizer }) {
+  const englishHref = `/maldives/${ACCOMMODATION_TYPE_SEGMENT[accommodation.accommodationType]}/${accommodation.slug}/`;
+  const href = localize ? localize.href(englishHref) : englishHref;
+  const title = localize ? localize.title(englishHref, accommodation.title) : accommodation.title;
   const priceFromCurrency = accommodation.priceFromCurrency ?? "USD";
 
   return (
     <li className={CARD_CLASS}>
       {accommodation.heroImage && (
         <div className={CARD_IMAGE_BLEED_CLASS}>
-          <MediaImage asset={accommodation.heroImage} alt={accommodation.title} aspectClassName="aspect-[16/10]" />
+          <MediaImage asset={accommodation.heroImage} alt={title} aspectClassName="aspect-[16/10]" />
         </div>
       )}
       <Link href={href} className="text-lg font-medium text-ocean-900 transition-colors hover:text-maldives-600">
-        {accommodation.title}
+        {title}
       </Link>
       <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-sm text-neutral-600">
         {accommodation.primaryLocation && <span>{accommodation.primaryLocation.title}</span>}

@@ -198,3 +198,19 @@ export function hubPrefixForPath(locale: Locale, pathname: string): string | nul
   }
   return null;
 }
+
+/**
+ * Same-language href for site chrome (header, footer, mobile bar) and
+ * any other link to a hub: the site root becomes `/{locale}/`, a
+ * registered hub page becomes its localized hub URL, and everything else
+ * -- including category pages under a hub (e.g. /maldives/packages/
+ * honeymoon/), which have no translated route -- stays the plain English
+ * path. Unlike localizeHubPath, it never builds a localized URL for a
+ * page that doesn't exist in that language (localizeHubPath would turn
+ * that honeymoon path into a translated *package* slug that 404s).
+ */
+export function localizedSiteHref(locale: Locale, englishPath: string): string {
+  if (locale === DEFAULT_LOCALE) return englishPath;
+  if (englishPath === "/") return `/${locale}/`;
+  return englishPath in LOCALIZED_HUB_PREFIXES ? localizeHubPath(locale, englishPath) : englishPath;
+}

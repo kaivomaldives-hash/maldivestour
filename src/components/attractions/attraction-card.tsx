@@ -3,17 +3,21 @@ import Link from "next/link";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { MediaImage } from "@/components/ui/media-image";
 import { ATTRACTION_TYPE_LABEL, attractionHref, type AttractionSummary } from "@/lib/attractions/types";
+import type { LinkLocalizer } from "@/lib/i18n/link-localizer";
 
-export function AttractionCard({ attraction }: { attraction: AttractionSummary }) {
+export function AttractionCard({ attraction, localize }: { attraction: AttractionSummary; localize?: LinkLocalizer }) {
+  const englishHref = attractionHref(attraction);
+  const href = localize ? localize.href(englishHref) : englishHref;
+  const title = localize ? localize.title(englishHref, attraction.title) : attraction.title;
   return (
     <li className={CARD_CLASS}>
       {attraction.heroImage && (
         <div className={CARD_IMAGE_BLEED_CLASS}>
-          <MediaImage asset={attraction.heroImage} alt={attraction.title} aspectClassName="aspect-[4/3]" />
+          <MediaImage asset={attraction.heroImage} alt={title} aspectClassName="aspect-[4/3]" />
         </div>
       )}
-      <Link href={attractionHref(attraction)} className="text-lg font-medium text-ocean-900 transition-colors hover:text-maldives-600">
-        {attraction.title}
+      <Link href={href} className="text-lg font-medium text-ocean-900 transition-colors hover:text-maldives-600">
+        {title}
       </Link>
       <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-sm text-neutral-600">
         {attraction.attractionType && <span>{ATTRACTION_TYPE_LABEL[attraction.attractionType] ?? attraction.attractionType}</span>}

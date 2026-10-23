@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { MediaImage } from "@/components/ui/media-image";
 import { isSupportedCurrency } from "@/lib/currency/types";
+import { getChromeStrings } from "@/lib/i18n/chrome-strings";
+import type { LinkLocalizer } from "@/lib/i18n/link-localizer";
 import { PACKAGE_CATEGORY_TITLE } from "@/lib/packages/view-types";
 import type { PackageView } from "@/lib/packages/view-types";
 
@@ -14,7 +16,11 @@ const PRICE_TYPE_LABEL: Record<string, string> = {
   "per-package": "per package",
 };
 
-export function PackageCard({ pkg }: { pkg: PackageView }) {
+export function PackageCard({ pkg, localize }: { pkg: PackageView; localize?: LinkLocalizer }) {
+  const englishHref = `/maldives/packages/${pkg.slug}/`;
+  const href = localize ? localize.href(englishHref) : englishHref;
+  const title = localize ? localize.title(englishHref, pkg.title) : pkg.title;
+  const chrome = getChromeStrings(localize?.locale ?? "en");
   const primaryDestination = pkg.destinations[0] ?? null;
   const primaryCategory = pkg.categories[0] ?? null;
   const priceCurrency = pkg.currency ?? "USD";
@@ -23,13 +29,13 @@ export function PackageCard({ pkg }: { pkg: PackageView }) {
     <li className={CARD_CLASS}>
       {pkg.heroImage && (
         <div className={CARD_IMAGE_BLEED_CLASS}>
-          <MediaImage asset={pkg.heroImage} alt={pkg.title} aspectClassName="aspect-[4/3]" />
+          <MediaImage asset={pkg.heroImage} alt={title} aspectClassName="aspect-[4/3]" />
         </div>
       )}
 
       <div className="flex flex-wrap items-start justify-between gap-2">
-        <Link href={`/maldives/packages/${pkg.slug}/`} className="text-lg font-medium text-ocean-900 transition-colors hover:text-maldives-600">
-          {pkg.title}
+        <Link href={href} className="text-lg font-medium text-ocean-900 transition-colors hover:text-maldives-600">
+          {title}
         </Link>
         {pkg.isMtgCurated && !pkg.isDemo && (
           <Badge tone="aqua" className="shrink-0">
@@ -96,10 +102,10 @@ export function PackageCard({ pkg }: { pkg: PackageView }) {
       )}
 
       <Link
-        href={`/maldives/packages/${pkg.slug}/`}
+        href={href}
         className="mt-3 inline-flex items-center justify-center rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-ocean-800"
       >
-        View Package
+        {chrome.viewPackage}
       </Link>
     </li>
   );

@@ -7,9 +7,10 @@ import { CONTAINER_CLASS } from "@/components/ui/container";
 import { FaqSection } from "@/components/ui/faq-section";
 import { PageHero } from "@/components/ui/page-hero";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
-import { localizeHubPath } from "@/lib/i18n/hub-paths";
+import { localizedSiteHref, localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getPageTranslation, getPublishedLocalesForPage } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
+import { getLinkLocalizer } from "@/lib/i18n/link-localizer";
 import { PACKAGE_CATEGORY_FALLBACK_IMAGES } from "@/lib/packages/category-images";
 import { getFeaturedPackageViews } from "@/lib/packages/view-repository";
 import { PACKAGE_CATEGORIES, type PackageCategorySlug } from "@/lib/packages/view-types";
@@ -31,10 +32,8 @@ export const revalidate = 3690;
  * listing for anyone who wants to filter. Category links point at plain
  * English URLs -- those verticals have no translated route yet (Task 19
  * §16/§29: never a fabricated URL for content that doesn't exist).
- * "Explore More" links use localizeHubPath per-item, so a sibling hub
- * that's since been translated (transfers, travel guide) automatically
- * gets its own real localized URL without this file needing to change
- * again later.
+ * "Explore More" links go through localizedSiteHref, so every translated
+ * sibling hub gets its own real localized URL.
  */
 type CategoryLabelKey =
   | "categoryLuxury"
@@ -64,7 +63,7 @@ const CATEGORY_LABEL_KEY: Record<PackageCategorySlug, CategoryLabelKey> = {
 };
 
 const EXPLORE_MORE_LINKS = [
-  { href: "/maldives/resorts/", labelKey: "stays" },
+  { href: "/maldives/stays/", labelKey: "stays" },
   { href: "/maldives/activities/", labelKey: "activities" },
   { href: "/maldives/diving/", labelKey: "diving" },
   { href: "/maldives/transfers/", labelKey: "transfers" },
@@ -72,7 +71,7 @@ const EXPLORE_MORE_LINKS = [
 ] as const;
 
 function exploreMoreHref(locale: Locale, href: string): string {
-  return href === "/maldives/transfers/" || href === "/maldives/travel-guide/" ? localizeHubPath(locale, href) : href;
+  return localizedSiteHref(locale, href);
 }
 
 async function loadOrNotFound(locale: string) {
@@ -109,6 +108,8 @@ export default async function LocalePackagesHubPage({ params }: { params: Promis
 
   const featured = await getFeaturedPackageViews(8);
 
+  const L = await getLinkLocalizer(locale);
+
   return (
     <main>
       <PageHero
@@ -135,7 +136,7 @@ export default async function LocalePackagesHubPage({ params }: { params: Promis
             <h2 className="text-xl font-semibold text-ocean-900">{h.featuredTitle}</h2>
             <ul className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {featured.map((pkg) => (
-                <PackageCard key={pkg.slug} pkg={pkg} />
+                <PackageCard key={pkg.slug} pkg={pkg} localize={L} />
               ))}
             </ul>
           </section>

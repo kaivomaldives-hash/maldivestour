@@ -5,21 +5,31 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { ChevronRightIcon } from "@/components/ui/icons";
+import { getChromeStrings } from "@/lib/i18n/chrome-strings";
+import { localizedSiteHref } from "@/lib/i18n/hub-paths";
+import { localeFromPathname, type Locale } from "@/lib/i18n/locales";
+import { getUiStrings } from "@/lib/i18n/ui-strings";
 
 // Exported so the mobile nav panel (site-header.tsx), which is already a
 // single flat list rather than a dropdown, can render the same 5 items
-// inline instead of duplicating this list.
-export const MORE_NAV_ITEMS = [
-  { label: "Travel Guide", href: "/maldives/travel-guide/" },
-  { label: "Resorts", href: "/maldives/resorts/" },
-  { label: "Hotels", href: "/maldives/hotels/" },
-  { label: "Guesthouses", href: "/maldives/guesthouses/" },
-  // No dedicated accommodation-type page exists yet (no real per-vessel
-  // inventory — see ACCOMMODATION_TYPE_SEGMENT's own comment in
-  // src/lib/accommodations/types.ts), same reasoning as the mobile bottom
-  // nav's own Liveaboards entry.
-  { label: "Liveaboards", href: "/maldives/packages/liveaboard/" },
-] as const;
+// inline instead of duplicating this list. Hrefs go through
+// localizedSiteHref, so each one stays in the visitor's language where
+// that page is translated (Liveaboards has no translated page, so it
+// keeps its English URL).
+export function moreNavItems(locale: Locale): Array<{ label: string; href: string }> {
+  const ui = getUiStrings(locale);
+  return [
+    { label: ui.nav.travelGuide, href: "/maldives/travel-guide/" },
+    { label: ui.footerLinks.resorts, href: "/maldives/resorts/" },
+    { label: ui.footerLinks.hotels, href: "/maldives/hotels/" },
+    { label: ui.footerLinks.guesthouses, href: "/maldives/guesthouses/" },
+    // No dedicated accommodation-type page exists yet (no real per-vessel
+    // inventory — see ACCOMMODATION_TYPE_SEGMENT's own comment in
+    // src/lib/accommodations/types.ts), same reasoning as the mobile bottom
+    // nav's own Liveaboards entry.
+    { label: getChromeStrings(locale).liveaboards, href: "/maldives/packages/liveaboard/" },
+  ].map((item) => ({ ...item, href: localizedSiteHref(locale, item.href) }));
+}
 
 function isActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(href);
@@ -40,7 +50,9 @@ export function HeaderMoreMenu() {
 function MoreMenuButton({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const active = MORE_NAV_ITEMS.some((item) => isActive(pathname, item.href));
+  const locale = localeFromPathname(pathname);
+  const items = moreNavItems(locale);
+  const active = items.some((item) => isActive(pathname, item.href));
 
   useEffect(() => {
     if (!open) return;
@@ -71,12 +83,12 @@ function MoreMenuButton({ pathname }: { pathname: string }) {
           active ? "bg-lagoon-100 text-ocean-900" : "text-neutral-600 hover:bg-neutral-100 hover:text-ocean-900"
         }`}
       >
-        Pages
+        {getChromeStrings(locale).pagesMenu}
         <ChevronRightIcon className={`h-3.5 w-3.5 transition-transform ${open ? "-rotate-90" : "rotate-90"}`} />
       </button>
       {open && (
         <div role="menu" className="absolute left-0 z-50 mt-2 w-48 rounded-xl border border-neutral-200 bg-white py-1 shadow-lg">
-          {MORE_NAV_ITEMS.map((item) => {
+          {items.map((item) => {
             const itemActive = isActive(pathname, item.href);
             return (
               <Link

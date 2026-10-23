@@ -20,6 +20,7 @@ import { getRecentArticles } from "@/lib/articles/repository";
 import { getAttractions } from "@/lib/attractions/repository";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
+import { getLinkLocalizer } from "@/lib/i18n/link-localizer";
 import { getPageTranslation, getPublishedLocalesForPage } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
 import { getAtolls } from "@/lib/locations/repository";
@@ -78,7 +79,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
   const ui = getUiStrings(locale);
   const h = ui.home;
 
-  const [atolls, accommodations, activities, attractions, transferRoutes, packages, articles] = await Promise.all([
+  const [atolls, accommodations, activities, attractions, transferRoutes, packages, articles, L] = await Promise.all([
     getAtolls(),
     getAccommodations({ type: "resort", pageSize: 6 }),
     getActivities({ pageSize: 6 }),
@@ -86,6 +87,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
     getTransferRoutes({ pageSize: 4 }),
     getFeaturedPackageViews(6),
     getRecentArticles(3),
+    getLinkLocalizer(locale),
   ]);
 
   const islandCount = atolls.reduce((sum, atoll) => sum + atoll.islandCount, 0);
@@ -129,11 +131,11 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
       {featuredAtolls.length > 0 && (
         <section className="py-14 sm:py-20">
           <Container>
-            <SectionHeader eyebrow={h.destinationsEyebrow} title={h.destinationsTitle} description={h.destinationsDescription} action={{ label: h.destinationsCta, href: "/maldives/atolls/" }} />
+            <SectionHeader eyebrow={h.destinationsEyebrow} title={h.destinationsTitle} description={h.destinationsDescription} action={{ label: h.destinationsCta, href: L.href("/maldives/atolls/") }} />
             <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
               {featuredAtolls.map((atoll) => (
                 <li key={atoll.id} className={CARD_CLASS}>
-                  <Link href={`/maldives/atolls/${atoll.slug}/`} className="group flex h-full flex-col justify-between">
+                  <Link href={L.href(`/maldives/atolls/${atoll.slug}/`)} className="group flex h-full flex-col justify-between">
                     {atoll.heroImage ? (
                       <div className={CARD_IMAGE_BLEED_CLASS}>
                         <MediaImage asset={atoll.heroImage} alt={atoll.title} aspectClassName="aspect-square" />
@@ -142,7 +144,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
                       <MapPinIcon className="h-5 w-5 text-maldives-600" />
                     )}
                     <div className="mt-3">
-                      <p className="font-medium text-ocean-900 group-hover:text-maldives-600">{atoll.title}</p>
+                      <p className="font-medium text-ocean-900 group-hover:text-maldives-600">{L.title(`/maldives/atolls/${atoll.slug}/`, atoll.title)}</p>
                       <p className="mt-0.5 text-xs text-neutral-500">
                         {atoll.islandCount} island{atoll.islandCount === 1 ? "" : "s"}
                       </p>
@@ -158,17 +160,17 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
       {accommodations.items.length > 0 && (
         <section className="bg-sand-50 py-14 sm:py-20">
           <Container>
-            <SectionHeader eyebrow={h.staysEyebrow} title={h.staysTitle} description={h.staysDescription} action={{ label: h.staysCta, href: "/maldives/resorts/" }} />
+            <SectionHeader eyebrow={h.staysEyebrow} title={h.staysTitle} description={h.staysDescription} action={{ label: h.staysCta, href: L.href("/maldives/stays/") }} />
             <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {accommodations.items.map((accommodation) => (
-                <AccommodationCard key={accommodation.id} accommodation={accommodation} />
+                <AccommodationCard key={accommodation.id} accommodation={accommodation} localize={L} />
               ))}
             </ul>
             <div className="mt-6 flex flex-wrap gap-3 text-sm">
-              <Link href="/maldives/hotels/" className="font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
+              <Link href={L.href("/maldives/hotels/")} className="font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
                 {h.staysHotelsLink} →
               </Link>
-              <Link href="/maldives/guesthouses/" className="font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
+              <Link href={L.href("/maldives/guesthouses/")} className="font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
                 {h.staysGuesthousesLink} →
               </Link>
             </div>
@@ -179,17 +181,17 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
       {activities.items.length > 0 && (
         <section className="py-14 sm:py-20">
           <Container>
-            <SectionHeader eyebrow={h.activitiesEyebrow} title={h.activitiesTitle} description={h.activitiesDescription} action={{ label: h.activitiesCta, href: "/maldives/activities/" }} />
+            <SectionHeader eyebrow={h.activitiesEyebrow} title={h.activitiesTitle} description={h.activitiesDescription} action={{ label: h.activitiesCta, href: L.href("/maldives/activities/") }} />
             <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {activities.items.map((activity) => (
-                <ActivityCard key={activity.id} activity={activity} />
+                <ActivityCard key={activity.id} activity={activity} localize={L} />
               ))}
             </ul>
             <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
-              <Link href="/maldives/diving/" className="inline-flex items-center gap-1.5 font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
+              <Link href={L.href("/maldives/diving/")} className="inline-flex items-center gap-1.5 font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
                 <DivingIcon className="h-4 w-4" /> {h.divingLink}
               </Link>
-              <Link href="/maldives/fishing/" className="inline-flex items-center gap-1.5 font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
+              <Link href={L.href("/maldives/fishing/")} className="inline-flex items-center gap-1.5 font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
                 <FishIcon className="h-4 w-4" /> {h.fishingLink}
               </Link>
               <Link href="/maldives/surfing/" className="inline-flex items-center gap-1.5 font-medium text-maldives-600 hover:text-ocean-800 hover:underline">
@@ -203,10 +205,10 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
       {attractions.items.length > 0 && (
         <section className="py-14 sm:py-20">
           <Container>
-            <SectionHeader eyebrow={h.attractionsEyebrow} title={h.attractionsTitle} description={h.attractionsDescription} action={{ label: h.attractionsCta, href: "/maldives/attractions/" }} />
+            <SectionHeader eyebrow={h.attractionsEyebrow} title={h.attractionsTitle} description={h.attractionsDescription} action={{ label: h.attractionsCta, href: L.href("/maldives/attractions/") }} />
             <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {attractions.items.map((attraction) => (
-                <AttractionCard key={attraction.id} attraction={attraction} />
+                <AttractionCard key={attraction.id} attraction={attraction} localize={L} />
               ))}
             </ul>
           </Container>
@@ -230,7 +232,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
             </nav>
             <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {transferRoutes.items.map((route) => (
-                <TransferRouteCard key={route.id} route={route} />
+                <TransferRouteCard key={route.id} route={route} localize={L} />
               ))}
             </ul>
           </Container>
@@ -243,7 +245,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
             <SectionHeader eyebrow={h.packagesEyebrow} title={h.packagesTitle} description={h.packagesDescription} action={{ label: h.packagesCta, href: localizeHubPath(locale, "/maldives/packages/") }} />
             <ul className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {packages.map((pkg) => (
-                <PackageCard key={pkg.id} pkg={pkg} />
+                <PackageCard key={pkg.id} pkg={pkg} localize={L} />
               ))}
             </ul>
           </Container>
@@ -256,7 +258,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
             <SectionHeader eyebrow={h.guideEyebrow} title={h.guideTitle} description={h.guideDescription} action={{ label: h.guideCta, href: localizeHubPath(locale, "/maldives/travel-guide/") }} />
             <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
               {articles.map((article) => (
-                <ArticleCard key={article.id} article={article} />
+                <ArticleCard key={article.id} article={article} localize={L} />
               ))}
             </ul>
           </Container>

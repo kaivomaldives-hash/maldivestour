@@ -6,6 +6,7 @@ import { WhereToStaySection } from "@/components/accommodation/where-to-stay-sec
 import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { ActivityQuickFacts } from "@/components/activity/activity-quick-facts";
 import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
+import { LocalizedEmperorPage, localizedEmperorMetadata } from "@/components/i18n/localized-emperor-page";
 import {
   LocalizedFishingSpeciesPage,
   localizedFishingSpeciesMetadata,
@@ -74,6 +75,7 @@ async function loadOrNotFound(locale: string, slug: string) {
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { locale, activity: slug } = await params;
   if (!isLocale(locale) || locale === "en") return {};
+  if (slug === "emperor") return localizedEmperorMetadata(locale);
   if (isFishingSpeciesPageSlug(slug)) return localizedFishingSpeciesMetadata(locale, slug);
   if (isFishingTechniquePageSlug(slug)) return localizedFishingTechniqueMetadata(locale, slug);
   const activity = await getTranslatedActivityViewBySlug(locale, slug);
@@ -102,6 +104,7 @@ export default async function LocaleFishingDetailPage({ params }: { params: Prom
   // their translated URLs (e.g. /de/malediven/angeln/gt-angeln/) to the
   // English page slug here -- see src/lib/i18n/localized-leaf-pages.json.
   if (isLocale(rawLocale) && rawLocale !== "en" && getFishingPagesStrings(rawLocale)) {
+    if (slug === "emperor") return <LocalizedEmperorPage locale={rawLocale} />;
     if (isFishingSpeciesPageSlug(slug)) return <LocalizedFishingSpeciesPage locale={rawLocale} slug={slug} />;
     if (isFishingTechniquePageSlug(slug)) return <LocalizedFishingTechniquePage locale={rawLocale} slug={slug} />;
   }

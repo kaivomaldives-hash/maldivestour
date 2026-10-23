@@ -86,13 +86,19 @@ export async function resolveLegacyRedirect(pathname: string): Promise<ResolvedR
 
   try {
     const supabase = await createClient();
-    const { data, error } = await supabase
+    // Sources are matched with or without a trailing slash: legacy .html
+    // paths were recorded without one, but redirects for new-site URLs
+    // (added by hand, or from the admin) are often stored with one.
+    const candidates = sourcePath === "/" ? [sourcePath] : [sourcePath, `${sourcePath}/`];
+    const { data: rows, error } = await supabase
       .from("url_redirects")
       .select("target_type, target_path, status_code")
-      .eq("source_path", sourcePath)
+      .in("source_path", candidates)
       .eq("is_active", true)
-      .maybeSingle<{ target_type: string; target_path: string | null; status_code: number }>();
+      .limit(1)
+      .returns<Array<{ target_type: string; target_path: string | null; status_code: number }>>();
 
+    const data = rows?.[0];
     if (error || !data) return null;
     if (data.target_type !== "path" || !data.target_path) return null;
     if (!isSafeInternalPath(data.target_path)) return null;
@@ -102,4 +108,53 @@ export async function resolveLegacyRedirect(pathname: string): Promise<ResolvedR
   } catch {
     return null;
   }
+}
+
+const IN_APP_SOURCES_TTL_MS = 60_000;
+let inAppSources: { paths: Set<string>; fetchedAt: number } | null = null;
+let inAppSourcesInFlight: Promise<Set<string>> | null = null;
+
+async function fetchInAppRedirectSources(): Promise<Set<string>> {
+  const supabase = await createClient();
+  // .html sources are all legacy (handled per request already) and are the
+  // bulk of the table -- leaving them out keeps this one small read well
+  // under PostgREST's 1000-row response cap.
+  const { data, error } = await supabase
+    .from("url_redirects")
+    .select("source_path")
+    .eq("is_active", true)
+    .not("source_path", "like", "%.html")
+    .returns<Array<{ source_path: string }>>();
+  if (error || !data) throw error ?? new Error("no data");
+  return new Set(data.map((r) => normalizeLegacyPath(r.source_path)).filter((p) => !looksLikeLegacyPath(p)));
+}
+
+/**
+ * True when an active redirect exists whose source is a NEW-site path
+ * (e.g. a retired /maldives/transfers/<slug> URL, added from the admin) --
+ * the case looksLikeLegacyPath deliberately skips so real traffic never
+ * pays for a per-request url_redirects read. Instead, the whole (small)
+ * set of such sources is held in memory and refreshed at most once a
+ * minute per server instance, so a new redirect takes effect within
+ * about a minute. A failed refresh keeps the previous set, and a cold
+ * failure means "no redirect" -- never a broken page.
+ */
+export async function hasInAppRedirect(pathname: string): Promise<boolean> {
+  const now = Date.now();
+  if (!inAppSources || now - inAppSources.fetchedAt > IN_APP_SOURCES_TTL_MS) {
+    inAppSourcesInFlight ??= fetchInAppRedirectSources()
+      .then((paths) => {
+        inAppSources = { paths, fetchedAt: Date.now() };
+        return paths;
+      })
+      .catch(() => {
+        if (inAppSources) inAppSources.fetchedAt = Date.now(); // back off, keep the last good set
+        return inAppSources?.paths ?? new Set<string>();
+      })
+      .finally(() => {
+        inAppSourcesInFlight = null;
+      });
+    if (!inAppSources) await inAppSourcesInFlight; // first request waits; later ones use the previous set meanwhile
+  }
+  return inAppSources?.paths.has(normalizeLegacyPath(pathname)) ?? false;
 }

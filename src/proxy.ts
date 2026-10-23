@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { looksLikeLegacyPath, resolveLegacyRedirect } from "@/lib/redirects/resolve";
+import { hasInAppRedirect, looksLikeLegacyPath, resolveLegacyRedirect } from "@/lib/redirects/resolve";
 import { updateSession } from "@/lib/supabase/proxy";
 
 export async function proxy(request: NextRequest) {
@@ -11,7 +11,9 @@ export async function proxy(request: NextRequest) {
   // looksLikeLegacyPath's own comment) — the site's real traffic never
   // pays for this lookup.
   const { pathname } = request.nextUrl;
-  if (looksLikeLegacyPath(pathname)) {
+  // New-site paths only reach the database when they're in the cached set
+  // of in-app redirect sources (see hasInAppRedirect).
+  if (looksLikeLegacyPath(pathname) || (await hasInAppRedirect(pathname))) {
     const redirect = await resolveLegacyRedirect(pathname);
     if (redirect) {
       const destination = new URL(redirect.targetPath, request.url);

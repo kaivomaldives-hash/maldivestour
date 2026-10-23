@@ -32,3 +32,11 @@ export function localizedPath(locale: Locale, path: string): string {
   const normalized = path.startsWith("/") ? path : `/${path}`;
   return `/${locale}${normalized}`;
 }
+
+/** The locale a site pathname is in, from its first segment ("en" when
+ * unprefixed). Client-safe -- used by the header, footer, mobile bar and
+ * language switcher, which all render outside the [locale] route tree. */
+export function localeFromPathname(pathname: string): Locale {
+  const first = pathname.split("/").filter(Boolean)[0];
+  return first && isLocale(first) ? first : DEFAULT_LOCALE;
+}

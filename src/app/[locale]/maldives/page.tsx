@@ -10,7 +10,7 @@ import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { SectionHeader } from "@/components/ui/section-header";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
-import { localizeHubPath } from "@/lib/i18n/hub-paths";
+import { getLinkLocalizer } from "@/lib/i18n/link-localizer";
 import { getPageTranslation, getPublishedLocalesForPage } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
 import { getAtolls, getIslandBySlug } from "@/lib/locations/repository";
@@ -27,27 +27,21 @@ export const revalidate = 3660;
  * is localized (getUiStrings().maldivesHub); atoll/island titles
  * themselves stay as their real, un-translated location data, same as
  * every other card on this page. The "Explore More Maldives" links
- * below resolve through localizeHubPath per item -- translated
- * sub-hubs (packages, transfers, travel guide) get their own real
- * localized URL; everything else still points at the plain English URL
- * since those sections have no /{locale}/... translation yet (Task 19
- * §16/§29: never a fabricated URL for content that doesn't exist).
+ * and every atoll/island link resolve through getLinkLocalizer -- a
+ * translated hub or entity gets its own real localized URL (and title);
+ * anything untranslated keeps the plain English URL (Task 19 §16/§29:
+ * never a fabricated URL for content that doesn't exist).
  */
-const TRANSLATED_HUB_PATHS = new Set(["/maldives/packages/", "/maldives/transfers/", "/maldives/travel-guide/"]);
 
 const EXPLORE_MORE_LINKS = [
   { href: "/maldives/activities/", labelKey: "activities" },
   { href: "/maldives/diving/", labelKey: "diving" },
   { href: "/maldives/fishing/", labelKey: "fishing" },
-  { href: "/maldives/resorts/", labelKey: "stays" },
+  { href: "/maldives/stays/", labelKey: "stays" },
   { href: "/maldives/transfers/", labelKey: "transfers" },
   { href: "/maldives/packages/", labelKey: "packages" },
   { href: "/maldives/travel-guide/", labelKey: "travelGuide" },
 ] as const;
-
-function exploreMoreHref(locale: Locale, href: string): string {
-  return TRANSLATED_HUB_PATHS.has(href) ? localizeHubPath(locale, href) : href;
-}
 
 const FEATURED_ISLAND_SLUGS = ["thulusdhoo", "maafushi", "dhigurah", "ukulhas", "fuvahmulah", "gan"];
 
@@ -83,8 +77,9 @@ export default async function LocaleMaldivesHubPage({ params }: { params: Promis
   const ui = getUiStrings(locale);
   const h = ui.maldivesHub;
 
-  const [atolls, featuredIslandResults] = await Promise.all([
+  const [atolls, L, featuredIslandResults] = await Promise.all([
     getAtolls(),
+    getLinkLocalizer(locale),
     Promise.all(FEATURED_ISLAND_SLUGS.map((slug) => getIslandBySlug(slug))),
   ]);
   const totalIslands = atolls.reduce((sum, atoll) => sum + atoll.islandCount, 0);
@@ -121,11 +116,11 @@ export default async function LocaleMaldivesHubPage({ params }: { params: Promis
         </section>
 
         <div className="mt-10">
-          <SectionHeader eyebrow={h.atollsEyebrow} title={h.atollsTitle} description={h.atollsDescription} action={{ label: h.atollsCta, href: "/maldives/atolls/" }} />
+          <SectionHeader eyebrow={h.atollsEyebrow} title={h.atollsTitle} description={h.atollsDescription} action={{ label: h.atollsCta, href: L.href("/maldives/atolls/") }} />
           <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {atolls.map((atoll) => (
               <li key={atoll.id} className={CARD_CLASS}>
-                <Link href={`/maldives/atolls/${atoll.slug}/`} className="flex items-center gap-3">
+                <Link href={L.href(`/maldives/atolls/${atoll.slug}/`)} className="flex items-center gap-3">
                   {atoll.heroImage ? (
                     <div className="w-14 shrink-0 overflow-hidden rounded-lg">
                       <MediaImage asset={atoll.heroImage} alt={atoll.title} aspectClassName="aspect-square" />
@@ -134,7 +129,7 @@ export default async function LocaleMaldivesHubPage({ params }: { params: Promis
                     <MapPinIcon className="h-5 w-5 shrink-0 text-maldives-600" />
                   )}
                   <span>
-                    <span className="block font-medium text-ocean-900">{atoll.title}</span>
+                    <span className="block font-medium text-ocean-900">{L.title(`/maldives/atolls/${atoll.slug}/`, atoll.title)}</span>
                     <span className="text-xs text-neutral-500">
                       {atoll.islandCount} island{atoll.islandCount === 1 ? "" : "s"}
                     </span>
@@ -147,10 +142,10 @@ export default async function LocaleMaldivesHubPage({ params }: { params: Promis
 
         {featuredIslands.length > 0 && (
           <div className="mt-12">
-            <SectionHeader title={h.islandsTitle} description={h.islandsDescription} action={{ label: h.islandsCta, href: "/maldives/islands/" }} />
+            <SectionHeader title={h.islandsTitle} description={h.islandsDescription} action={{ label: h.islandsCta, href: L.href("/maldives/islands/") }} />
             <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {featuredIslands.map((island) => (
-                <IslandCard key={island.id} island={island} />
+                <IslandCard key={island.id} island={island} localize={L} />
               ))}
             </ul>
           </div>
@@ -163,11 +158,11 @@ export default async function LocaleMaldivesHubPage({ params }: { params: Promis
             <p>{h.localIslandsP2}</p>
           </div>
           <p className="mt-4 text-sm text-neutral-600">
-            <Link href="/maldives/islands/" className="font-medium text-maldives-600 hover:underline">
+            <Link href={L.href("/maldives/islands/")} className="font-medium text-maldives-600 hover:underline">
               {h.localIslandsCtaIslands}
             </Link>{" "}
             {h.localIslandsCtaOr}{" "}
-            <Link href="/maldives/guesthouses/" className="font-medium text-maldives-600 hover:underline">
+            <Link href={L.href("/maldives/guesthouses/")} className="font-medium text-maldives-600 hover:underline">
               {h.localIslandsCtaGuesthouses}
             </Link>
             .
@@ -180,17 +175,13 @@ export default async function LocaleMaldivesHubPage({ params }: { params: Promis
             {EXPLORE_MORE_LINKS.map((link) => (
               <Link
                 key={link.href}
-                href={exploreMoreHref(locale, link.href)}
+                href={L.href(link.href)}
                 className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
               >
                 {ui.nav[link.labelKey]}
               </Link>
             ))}
           </nav>
-          <p className="mt-4 text-sm text-neutral-500">
-            {/* Honest about the current rollout stage rather than silently mixing languages without explanation. */}
-            {locale === "de" ? "Diese Bereiche sind derzeit nur auf Englisch verfügbar — weitere Übersetzungen folgen." : null}
-          </p>
         </section>
       </div>
     </main>

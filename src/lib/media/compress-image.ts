@@ -1,6 +1,9 @@
 import "server-only";
 
+import type { SupabaseClient } from "@supabase/supabase-js";
 import sharp from "sharp";
+
+import { IMAGE_VARIANT_WIDTHS, imageVariantPath, OPTIMIZED_MEDIA_PREFIX } from "@/lib/media/types";
 
 /**
  * Resizes/recompresses an uploaded image before it ever reaches the
@@ -25,8 +28,10 @@ import sharp from "sharp";
  * hero) with no responsive variants.
  */
 
-const MAX_DIMENSION = 2000;
-const WEBP_QUALITY = 82;
+// 1600 covers a full-bleed hero on a typical desktop display; anything
+// smaller is served from the pre-resized variants (IMAGE_VARIANT_WIDTHS).
+const MAX_DIMENSION = 1600;
+const WEBP_QUALITY = 80;
 
 export interface CompressedImage {
   buffer: Buffer;
@@ -47,4 +52,43 @@ export async function compressImage(input: ArrayBuffer | Buffer): Promise<Compre
     .toBuffer();
 
   return { buffer: output, contentType: "image/webp", ext: "webp" };
+}
+
+/**
+ * compressImage plus one narrower copy per IMAGE_VARIANT_WIDTHS entry,
+ * uploaded together under OPTIMIZED_MEDIA_PREFIX -- so the returned
+ * storagePath satisfies the variant guarantee src/lib/media/image-loader.ts
+ * relies on. Narrow sources still get every variant (at their own size)
+ * so a variant URL can never 404. `paths` lists every uploaded object,
+ * for a caller that has to clean up after a later failure. 1-year
+ * cacheControl: the path is timestamp/random-suffixed and never reused,
+ * so its bytes never change (Search Console flagged the SDK's 1-hour
+ * default as a sitewide "inefficient cache lifetime" cost).
+ */
+export async function uploadOptimizedImage(
+  supabase: { storage: SupabaseClient["storage"] },
+  folder: string,
+  input: ArrayBuffer | Buffer,
+): Promise<{ storagePath: string; paths: string[]; error?: undefined } | { error: string }> {
+  const full = await compressImage(input);
+  const variants = await Promise.all(
+    IMAGE_VARIANT_WIDTHS.map(async (width) => ({
+      width,
+      buffer: await sharp(full.buffer).resize({ width, withoutEnlargement: true }).webp({ quality: WEBP_QUALITY }).toBuffer(),
+    })),
+  );
+
+  const storagePath = `${OPTIMIZED_MEDIA_PREFIX}${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.webp`;
+  const files = [{ path: storagePath, buffer: full.buffer }, ...variants.map((v) => ({ path: imageVariantPath(storagePath, v.width), buffer: v.buffer }))];
+  const paths = files.map((f) => f.path);
+
+  const results = await Promise.all(
+    files.map((f) => supabase.storage.from("media").upload(f.path, f.buffer, { contentType: "image/webp", upsert: false, cacheControl: "31536000" })),
+  );
+  const failed = results.find((r) => r.error);
+  if (failed?.error) {
+    await supabase.storage.from("media").remove(paths);
+    return { error: failed.error.message };
+  }
+  return { storagePath, paths };
 }

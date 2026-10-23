@@ -12,6 +12,8 @@ import { getDiveSites } from "@/lib/diving/repository";
 import type { Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getEntityLocaleSlugsByIds, getPublishedLocalesForPage } from "@/lib/i18n/repository";
+import { DESTINATION_STRINGS_LOCALES } from "@/lib/i18n/destination-strings";
+import { STAYS_STRINGS_LOCALES } from "@/lib/i18n/stays-strings";
 import { UI_STRINGS_LOCALES } from "@/lib/i18n/ui-strings";
 import { getAtolls, getIslands } from "@/lib/locations/repository";
 import { getPackages } from "@/lib/packages/repository";
@@ -20,6 +22,12 @@ import { getSiteUrl, hreflangAlternates, localizedCanonicalUrl } from "@/lib/seo
 import { getSpeedboats } from "@/lib/speedboats/repository";
 import { getSurfBreaks } from "@/lib/surfing/repository";
 import { getTransferRoutes } from "@/lib/transfers/repository";
+import { ACTIVITY_CATEGORY_LOCALES, ACTIVITY_CATEGORY_SLUGS } from "@/lib/i18n/activity-categories";
+import { FISHING_PAGES_LOCALES, FISHING_SPECIES_PAGE_SLUGS, FISHING_TECHNIQUE_PAGE_SLUGS } from "@/lib/i18n/fishing-pages";
+import { EMPEROR_LOCALES } from "@/lib/i18n/fishing-pages/emperor";
+import { PACKAGE_CATEGORY_LOCALES } from "@/lib/i18n/package-categories";
+import { TRANSFER_CATEGORY_LOCALES, TRANSFER_CATEGORY_SLUGS } from "@/lib/i18n/transfer-categories";
+import { PACKAGE_CATEGORIES } from "@/lib/packages/view-types";
 
 /**
  * Task 16 §30: the sitemap must contain only real, currently-live
@@ -195,6 +203,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/maldives/fishing/": fishingHubLocales,
     "/maldives/diving/": divingHubLocales,
     "/maldives/activities/": activitiesHubLocales,
+    // UI-strings-only destination hubs, same "published = has real copy"
+    // rule as the Travel Guide hub above.
+    "/maldives/atolls/": DESTINATION_STRINGS_LOCALES,
+    "/maldives/islands/": DESTINATION_STRINGS_LOCALES,
+    "/maldives/dive-sites/": DESTINATION_STRINGS_LOCALES,
+    "/maldives/attractions/": DESTINATION_STRINGS_LOCALES,
+    "/maldives/stays/": STAYS_STRINGS_LOCALES,
+    "/maldives/resorts/": STAYS_STRINGS_LOCALES,
+    "/maldives/hotels/": STAYS_STRINGS_LOCALES,
+    "/maldives/guesthouses/": STAYS_STRINGS_LOCALES,
+    ...Object.fromEntries(PACKAGE_CATEGORIES.map((c) => [`/maldives/packages/${c.slug}/`, PACKAGE_CATEGORY_LOCALES])),
+    ...Object.fromEntries(ACTIVITY_CATEGORY_SLUGS.map((slug) => [`/maldives/${slug}/`, ACTIVITY_CATEGORY_LOCALES])),
+    ...Object.fromEntries(TRANSFER_CATEGORY_SLUGS.map((slug) => [`/maldives/${slug}/`, TRANSFER_CATEGORY_LOCALES])),
+    ...Object.fromEntries([...FISHING_SPECIES_PAGE_SLUGS, ...FISHING_TECHNIQUE_PAGE_SLUGS].map((slug) => [`/maldives/fishing/${slug}/`, FISHING_PAGES_LOCALES])),
+    "/maldives/fishing/emperor/": EMPEROR_LOCALES,
   };
 
   const entries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => {
@@ -235,9 +258,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  for (const a of atolls) entries.push({ url: url(`/maldives/atolls/${a.slug}/`), changeFrequency: "monthly", priority: 0.7 });
-  for (const i of islands) entries.push({ url: url(`/maldives/islands/${i.slug}/`), changeFrequency: "monthly", priority: 0.6 });
-  for (const a of accommodations) entries.push({ url: url(`/maldives/${ACCOMMODATION_TYPE_SEGMENT[a.accommodationType]}/${a.slug}/`), changeFrequency: "weekly", priority: 0.7 });
+  // Resorts/hotels/guesthouses are translated and get their English entry
+  // plus hreflang from pushLocalizedEntityEntries below; any other type
+  // (villa/liveaboard/other) has no translated route and stays plain.
+  for (const a of accommodations) {
+    if (a.accommodationType === "resort" || a.accommodationType === "hotel" || a.accommodationType === "guesthouse") continue;
+    entries.push({ url: url(`/maldives/${ACCOMMODATION_TYPE_SEGMENT[a.accommodationType]}/${a.slug}/`), changeFrequency: "weekly", priority: 0.7 });
+  }
   // Only surfing activities are pushed here as plain entries -- fishing,
   // diving, and every other category (Task 22) are now translated and get
   // both their English entry AND reciprocal hreflang alternates from
@@ -245,8 +272,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // would duplicate the English URL (Task 16 §30: never a duplicate).
   // Surfing has no translated route yet, so it stays exactly as before.
   for (const a of activities) if (a.activityCategory === "surfing") entries.push({ url: url(activityHref(a)), changeFrequency: "monthly", priority: 0.6 });
-  for (const a of attractions) entries.push({ url: url(`/maldives/attractions/${a.slug}/`), changeFrequency: "monthly", priority: 0.5 });
-  for (const d of diveSites) entries.push({ url: url(`/maldives/dive-sites/${d.slug}/`), changeFrequency: "monthly", priority: 0.5 });
   for (const s of surfBreaks) entries.push({ url: url(`/maldives/surf-breaks/${s.slug}/`), changeFrequency: "monthly", priority: 0.5 });
   // Packages and transfer routes are NOT pushed here as plain entries --
   // pushLocalizedEntityEntries below already pushes the English entry
@@ -331,6 +356,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   pushLocalizedEntityEntries(fishingActivities, activityLocaleSlugs, "/maldives/fishing/", 0.6);
   pushLocalizedEntityEntries(divingActivities, activityLocaleSlugs, "/maldives/diving/", 0.6);
   pushLocalizedEntityEntries(genericActivities, activityLocaleSlugs, "/maldives/activities/", 0.5);
+
+  // Destinations (atolls, islands, dive sites, attractions) are all
+  // translated too -- English entry plus reciprocal hreflang from the same
+  // helper, so (as with activities above) they're no longer pushed as
+  // plain entries earlier in this function.
+  const destinationLocaleSlugs = await getEntityLocaleSlugsByIds([...atolls, ...islands, ...diveSites, ...attractions].map((d) => d.id));
+  pushLocalizedEntityEntries(atolls, destinationLocaleSlugs, "/maldives/atolls/", 0.7);
+  pushLocalizedEntityEntries(islands, destinationLocaleSlugs, "/maldives/islands/", 0.6);
+  pushLocalizedEntityEntries(diveSites, destinationLocaleSlugs, "/maldives/dive-sites/", 0.5);
+  pushLocalizedEntityEntries(attractions, destinationLocaleSlugs, "/maldives/attractions/", 0.5);
+
+  const stayLocaleSlugs = await getEntityLocaleSlugsByIds(accommodations.map((a) => a.id));
+  for (const type of ["resort", "hotel", "guesthouse"] as const) {
+    pushLocalizedEntityEntries(
+      accommodations.filter((a) => a.accommodationType === type),
+      stayLocaleSlugs,
+      `/maldives/${ACCOMMODATION_TYPE_SEGMENT[type]}/`,
+      0.7,
+    );
+  }
 
   for (const p of providers) entries.push({ url: url(`/maldives/providers/${p.slug}/`), changeFrequency: "monthly", priority: 0.4 });
 

@@ -1,6 +1,8 @@
 import "server-only";
 
 import { cachedRead } from "@/lib/cache/cached-read";
+import type { Locale } from "@/lib/i18n/locales";
+import { getTranslationWithEnglishSlug } from "@/lib/i18n/repository";
 import { getHeroMediaByNodeIds } from "@/lib/media/repository";
 import type { MediaAsset } from "@/lib/media/types";
 import { createClient } from "@/lib/supabase/public";
@@ -297,6 +299,43 @@ async function getIslandBySlugUncached(slug: string): Promise<IslandDetail | nul
 }
 
 export const getIslandBySlug = cachedRead(getIslandBySlugUncached, ["locations:island-by-slug"], 900, ["locations:island-by-slug", "locations"]);
+
+/** Localized equivalent of getAtollBySlug/getIslandBySlug -- same
+ * convention as getTranslatedActivityViewBySlug: resolves a translated
+ * /{locale}/maldives/{atolls|islands}/[slug] slug back to the canonical
+ * English location, then overlays only title/summary/slug/meta. Every
+ * other field (coordinates, administrative code, guide content) stays
+ * the real, un-translated canonical data. */
+export async function getTranslatedAtollBySlug(locale: Locale, slug: string): Promise<(AtollDetail & { englishSlug: string }) | null> {
+  const resolved = await getTranslationWithEnglishSlug(locale, slug, "location");
+  if (!resolved) return null;
+  const canonical = await getAtollBySlug(resolved.englishSlug);
+  return canonical ? overlayLocationTranslation(canonical, resolved.translation) : null;
+}
+
+export async function getTranslatedIslandBySlug(locale: Locale, slug: string): Promise<(IslandDetail & { englishSlug: string }) | null> {
+  const resolved = await getTranslationWithEnglishSlug(locale, slug, "location");
+  if (!resolved) return null;
+  const canonical = await getIslandBySlug(resolved.englishSlug);
+  return canonical ? overlayLocationTranslation(canonical, resolved.translation) : null;
+}
+
+/** `englishSlug` keeps the canonical slug alongside the translated one,
+ * for the page's hreflang/language-switcher paths and English links. */
+function overlayLocationTranslation<T extends LocationDetail>(
+  canonical: T,
+  translation: { slug: string; title: string; shortDescription: string | null; description: string | null; metaTitle: string | null; metaDescription: string | null },
+): T & { englishSlug: string } {
+  return {
+    ...canonical,
+    englishSlug: canonical.slug,
+    slug: translation.slug,
+    title: translation.title,
+    summary: translation.shortDescription ?? translation.description,
+    metaTitle: translation.metaTitle,
+    metaDescription: translation.metaDescription,
+  };
+}
 
 /** Any locations parented under `locationId` (localities, sites, etc.). */
 async function getChildLocationsUncached(locationId: string): Promise<LocationSummary[]> {

@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { publicStorageUrl } from "@/lib/media/types";
+import { isOptimizedStoragePath, publicStorageUrl } from "@/lib/media/types";
 import type { MediaAsset } from "@/lib/media/types";
 
 /**
@@ -46,6 +46,11 @@ export function MediaImage({
 
   const url = publicStorageUrl(asset.storagePath);
   if (!url) return null;
+  // Optimized paths have pre-built size variants, so they go through the
+  // custom loader (src/lib/media/image-loader.ts) and get a real srcset;
+  // anything else still has only its original file and stays
+  // `unoptimized` -- never Vercel's metered optimizer either way.
+  const unoptimized = !isOptimizedStoragePath(asset.storagePath);
 
   if (fillParent) {
     return (
@@ -56,14 +61,14 @@ export function MediaImage({
         sizes={sizes}
         className={["object-cover", className].filter(Boolean).join(" ")}
         priority={priority}
-        unoptimized
+        unoptimized={unoptimized}
       />
     );
   }
 
   return (
     <div className={["relative overflow-hidden", aspectClassName, className].filter(Boolean).join(" ")}>
-      <Image src={url} alt={asset.altText || alt} fill sizes={sizes} className="object-cover" priority={priority} unoptimized />
+      <Image src={url} alt={asset.altText || alt} fill sizes={sizes} className="object-cover" priority={priority} unoptimized={unoptimized} />
     </div>
   );
 }

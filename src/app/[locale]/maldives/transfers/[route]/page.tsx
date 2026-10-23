@@ -15,6 +15,7 @@ import { FaqSection } from "@/components/ui/faq-section";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { isSupportedCurrency } from "@/lib/currency/types";
+import { getChromeStrings } from "@/lib/i18n/chrome-strings";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getEntityLocalePaths, localizedEntityHref } from "@/lib/i18n/repository";
@@ -61,11 +62,12 @@ interface Params {
  * translated link. Origin/destination locations have no translated
  * route yet, so those links always fall back to English for now.
  */
-function formatDuration(minutes: number | null): string | null {
+function formatDuration(minutes: number | null, locale: Locale): string | null {
   if (!minutes) return null;
-  if (minutes < 60) return `${minutes} min`;
+  const units = getChromeStrings(locale);
+  if (minutes < 60) return units.minutes.replace("{n}", String(minutes));
   const hours = minutes / 60;
-  return Number.isInteger(hours) ? `${hours} hr` : `${hours.toFixed(1)} hr`;
+  return units.hours.replace("{n}", Number.isInteger(hours) ? String(hours) : hours.toFixed(1));
 }
 
 async function getEnglishSlug(entityId: string): Promise<string | null> {
@@ -104,8 +106,8 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   };
 }
 
-function ServiceCard({ service, d }: { service: TransferService; d: ReturnType<typeof getUiStrings>["transferDetail"] }) {
-  const duration = formatDuration(service.durationMinutes);
+function ServiceCard({ service, d, locale }: { service: TransferService; d: ReturnType<typeof getUiStrings>["transferDetail"]; locale: Locale }) {
+  const duration = formatDuration(service.durationMinutes, locale);
   const TYPE_LABEL: Record<TransferType, string> = {
     speedboat: d.typeSpeedboat,
     seaplane: d.typeSeaplane,
@@ -165,7 +167,7 @@ export default async function LocaleTransferRouteDetailPage({ params }: { params
     reverseCanonical ? localizedEntityHref(locale, reverseCanonical.id, reverseCanonical.slug, "/maldives/transfers/") : Promise.resolve(null),
   ]);
 
-  const duration = formatDuration(route.typicalDurationMinutes);
+  const duration = formatDuration(route.typicalDurationMinutes, locale);
   const hasPrivateService = route.services.some((s) => s.sharedOrPrivate === "private" && s.isBookable);
 
   const breadcrumb = breadcrumbJsonLd(
@@ -238,7 +240,7 @@ export default async function LocaleTransferRouteDetailPage({ params }: { params
           ) : (
             <ul className="mt-4 space-y-3">
               {route.services.map((service) => (
-                <ServiceCard key={service.id} service={service} d={d} />
+                <ServiceCard key={service.id} service={service} d={d} locale={locale} />
               ))}
             </ul>
           )}

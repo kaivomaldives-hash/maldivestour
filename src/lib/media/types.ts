@@ -58,3 +58,25 @@ export function publicStorageUrl(storagePath: string): string | null {
     .join("/");
   return `${base.replace(/\/$/, "")}/storage/v1/object/public/media/${encodedPath}`;
 }
+
+/**
+ * Responsive-variant convention for optimized Storage images: an asset
+ * whose storage_path lives under OPTIMIZED_MEDIA_PREFIX and ends in
+ * ".webp" also has one pre-resized sibling per IMAGE_VARIANT_WIDTHS entry
+ * at "<path minus .webp>.w<width>.webp" (written together by
+ * uploadOptimizedImage / scripts/optimize-media-variants.mjs). That
+ * guarantee is what lets src/lib/media/image-loader.ts hand every
+ * <img srcset> slot a right-sized file without Vercel's metered image
+ * optimizer -- paths outside the prefix have no variants and are served
+ * as-is.
+ */
+export const OPTIMIZED_MEDIA_PREFIX = "opt/";
+export const IMAGE_VARIANT_WIDTHS = [640, 1280] as const;
+
+export function isOptimizedStoragePath(storagePath: string): boolean {
+  return storagePath.replace(/^\/+/, "").replace(/^media\//, "").startsWith(OPTIMIZED_MEDIA_PREFIX) && storagePath.endsWith(".webp");
+}
+
+export function imageVariantPath(storagePath: string, width: number): string {
+  return storagePath.replace(/\.webp$/, `.w${width}.webp`);
+}

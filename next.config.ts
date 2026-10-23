@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+import LEAF_PAGES from "./src/lib/i18n/localized-leaf-pages.json";
+
 /**
  * Localized URL segments for the translated [locale] hubs -- must stay
  * in sync with src/lib/i18n/hub-paths.ts's LOCALIZED_HUB_PREFIXES (the
@@ -20,6 +22,14 @@ const LOCALIZED_HUBS: Array<{ englishSegment: string; parent: string | null; wor
   { englishSegment: "fishing", parent: "maldives", words: { de: "angeln", es: "pesca", it: "pesca", ru: "rybalka", ja: "tsuri", zh: "diaoyu" } },
   { englishSegment: "diving", parent: "maldives", words: { de: "tauchen", es: "buceo", it: "immersioni", ru: "dayving", ja: "daibingu", zh: "qianshui" } },
   { englishSegment: "activities", parent: "maldives", words: { de: "aktivitaeten", es: "actividades", it: "attivita", ru: "aktivnosti", ja: "akutibiti", zh: "huodong" } },
+  { englishSegment: "atolls", parent: "maldives", words: { de: "atolle", es: "atolones", it: "atolli", ru: "atolly", ja: "kansho", zh: "huanjiao" } },
+  { englishSegment: "islands", parent: "maldives", words: { de: "inseln", es: "islas", it: "isole", ru: "ostrova", ja: "shima", zh: "daoyu" } },
+  { englishSegment: "dive-sites", parent: "maldives", words: { de: "tauchplaetze", es: "puntos-de-buceo", it: "siti-di-immersione", ru: "dayv-sayty", ja: "daibu-pointo", zh: "qianshui-didian" } },
+  { englishSegment: "stays", parent: "maldives", words: { de: "unterkuenfte", es: "alojamiento", it: "alloggi", ru: "prozhivanie", ja: "shukuhaku", zh: "zhusu" } },
+  { englishSegment: "resorts", parent: "maldives", words: { de: "resorts", es: "resorts", it: "resort", ru: "kurorty", ja: "rizooto", zh: "dujiacun" } },
+  { englishSegment: "hotels", parent: "maldives", words: { de: "hotels", es: "hoteles", it: "hotel", ru: "oteli", ja: "hoteru", zh: "jiudian" } },
+  { englishSegment: "guesthouses", parent: "maldives", words: { de: "gaestehaeuser", es: "casas-de-huespedes", it: "guesthouse", ru: "gostevye-doma", ja: "gesutohausu", zh: "minsu" } },
+  { englishSegment: "attractions", parent: "maldives", words: { de: "sehenswuerdigkeiten", es: "atracciones", it: "attrazioni", ru: "dostoprimechatelnosti", ja: "kanko-supotto", zh: "jingdian" } },
 ];
 
 const LOCALES = ["de", "es", "it", "ru", "ja", "zh"];
@@ -44,8 +54,29 @@ function localizedPathFor(hub: (typeof LOCALIZED_HUBS)[number], locale: string):
 // localize.
 const ORDERED_HUBS = [...LOCALIZED_HUBS].sort((a, b) => englishPathFor(b).length - englishPathFor(a).length);
 
+/** Translated single pages under a hub (src/lib/i18n/localized-leaf-pages.json,
+ * also read by hub-paths.ts): [englishPath, localizedPath] per locale.
+ * Exact-match rules, emitted BEFORE the hubs' `:path*` wildcards so the
+ * parent hub's rule doesn't swallow them. */
+function leafPairs(locale: string): Array<[string, string]> {
+  const pairs: Array<[string, string]> = [];
+  for (const [parentPath, leaves] of Object.entries(LEAF_PAGES as Record<string, Record<string, Partial<Record<string, string>>>>)) {
+    const parent = LOCALIZED_HUBS.find((h) => englishPathFor(h) === parentPath);
+    const parentLocalized = parent && localizedPathFor(parent, locale);
+    if (!parentLocalized) continue;
+    for (const [segment, words] of Object.entries(leaves)) {
+      const word = words[locale];
+      if (word) pairs.push([`${parentPath}${segment}/`, `${parentLocalized}${word}/`]);
+    }
+  }
+  return pairs;
+}
+
 function buildHubRewrites() {
   const rules: Array<{ source: string; destination: string }> = [];
+  for (const locale of LOCALES) {
+    for (const [englishPath, localizedPath] of leafPairs(locale)) rules.push({ source: `/${locale}${localizedPath}`, destination: `/${locale}${englishPath}` });
+  }
   for (const locale of LOCALES) {
     for (const hub of ORDERED_HUBS) {
       const localizedPath = localizedPathFor(hub, locale);
@@ -60,6 +91,19 @@ function buildHubRewrites() {
 
 function buildHubRedirects() {
   const rules: Array<{ source: string; destination: string; permanent: true }> = [];
+  for (const locale of LOCALES) {
+    for (const [englishPath, localizedPath] of leafPairs(locale)) {
+      if (englishPath === localizedPath) continue;
+      rules.push({ source: `/${locale}${englishPath}`, destination: `/${locale}${localizedPath}`, permanent: true });
+      // The English last segment under the localized parent (e.g.
+      // /de/malediven/pakete/honeymoon/) would otherwise also serve the
+      // page via the parent hub's wildcard rewrite -- one URL per page.
+      const englishSegmentUnderLocalizedParent = `${localizedPath.slice(0, localizedPath.slice(0, -1).lastIndexOf("/") + 1)}${englishPath.split("/").filter(Boolean).pop()}/`;
+      if (englishSegmentUnderLocalizedParent !== localizedPath) {
+        rules.push({ source: `/${locale}${englishSegmentUnderLocalizedParent}`, destination: `/${locale}${localizedPath}`, permanent: true });
+      }
+    }
+  }
   for (const locale of LOCALES) {
     for (const hub of ORDERED_HUBS) {
       const localizedPath = localizedPathFor(hub, locale);
@@ -141,6 +185,12 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
+    // Serves pre-built size variants straight from Storage for optimized
+    // media (see src/lib/media/image-loader.ts) -- a custom loader means
+    // next/image never routes anything through Vercel's metered
+    // /_next/image optimizer.
+    loader: "custom",
+    loaderFile: "./src/lib/media/image-loader.ts",
     remotePatterns: [
       // Supabase Storage public bucket URLs (see src/lib/media/types.ts's
       // publicStorageUrl and the "media" bucket created in

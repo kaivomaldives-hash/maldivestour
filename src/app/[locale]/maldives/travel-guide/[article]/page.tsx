@@ -11,6 +11,7 @@ import { DEFAULT_LOCALE, isLocale, type Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getArticleLocalePaths } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
+import { getLinkLocalizer } from "@/lib/i18n/link-localizer";
 import { publicStorageUrl } from "@/lib/media/types";
 import { canonicalUrl, getSiteUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { createClient } from "@/lib/supabase/public";
@@ -114,6 +115,8 @@ export default async function LocaleArticleDetailPage({ params }: { params: Prom
   const englishSlug = (await getEnglishSlug(article.id)) ?? article.slug;
   const localePaths = await getArticleLocalePaths(article.id, englishSlug);
 
+  const L = await getLinkLocalizer(locale);
+
   return (
     <main>
       <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath="/maldives/travel-guide/" />
@@ -163,10 +166,10 @@ export default async function LocaleArticleDetailPage({ params }: { params: Prom
                   {article.relatedLocations.map((location) => (
                     <li key={location.id}>
                       <Link
-                        href={location.locationType === "atoll" ? `/maldives/atolls/${location.slug}/` : `/maldives/islands/${location.slug}/`}
+                        href={L.href(location.locationType === "atoll" ? `/maldives/atolls/${location.slug}/` : `/maldives/islands/${location.slug}/`)}
                         className="text-maldives-600 hover:underline"
                       >
-                        {location.title}
+                        {L.title(location.locationType === "atoll" ? `/maldives/atolls/${location.slug}/` : `/maldives/islands/${location.slug}/`, location.title)}
                       </Link>
                     </li>
                   ))}
@@ -180,8 +183,8 @@ export default async function LocaleArticleDetailPage({ params }: { params: Prom
                 <ul className="mt-3 space-y-2 text-sm">
                   {article.relatedEntities.map((entity) => (
                     <li key={entity.id}>
-                      <Link href={entity.href} className="text-maldives-600 hover:underline">
-                        {entity.title}
+                      <Link href={L.href(entity.href)} className="text-maldives-600 hover:underline">
+                        {L.title(entity.href, entity.title)}
                       </Link>
                     </li>
                   ))}

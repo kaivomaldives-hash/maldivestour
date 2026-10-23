@@ -15,10 +15,12 @@ import { getNearbyAccommodations } from "@/lib/accommodations/repository";
 import { getTranslatedActivityViewBySlug } from "@/lib/activities/repository";
 import { bookingCta } from "@/lib/bookings/copy";
 import { getDiveSitesForActivity, getDivingActivitiesByLocation } from "@/lib/diving/repository";
+import { getChromeStrings } from "@/lib/i18n/chrome-strings";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getEntityLocalePaths, localizedEntityHref } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
+import { getLinkLocalizer } from "@/lib/i18n/link-localizer";
 import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { createClient } from "@/lib/supabase/public";
@@ -42,11 +44,12 @@ interface Params {
  * English for an un-translated vertical" convention as everywhere
  * else). 404s if the resolved entity isn't a diving-category activity.
  */
-function formatDuration(minutes: number | null): string | null {
+function formatDuration(minutes: number | null, locale: Locale): string | null {
   if (!minutes) return null;
-  if (minutes < 60) return `${minutes} min`;
+  const units = getChromeStrings(locale);
+  if (minutes < 60) return units.minutes.replace("{n}", String(minutes));
   const hours = minutes / 60;
-  return Number.isInteger(hours) ? `${hours} hr` : `${hours.toFixed(1)} hr`;
+  return units.hours.replace("{n}", Number.isInteger(hours) ? String(hours) : hours.toFixed(1));
 }
 
 async function getEnglishSlug(entityId: string): Promise<string | null> {
@@ -92,7 +95,7 @@ export default async function LocaleDivingDetailPage({ params }: { params: Promi
   const d = ui.activityDetail;
 
   const { primaryLocation, atoll } = activity;
-  const duration = formatDuration(activity.durationMinutes);
+  const duration = formatDuration(activity.durationMinutes, locale);
 
   const [diveSites, sameIslandActivities, packages, nearbyStays, englishSlug, localePaths] = await Promise.all([
     getDiveSitesForActivity(activity.id),
@@ -113,6 +116,8 @@ export default async function LocaleDivingDetailPage({ params }: { params: Promi
     ],
     localizeHubPath(locale, `/maldives/diving/${activity.slug}`),
   );
+
+  const L = await getLinkLocalizer(locale);
 
   return (
     <main>
@@ -140,13 +145,13 @@ export default async function LocaleDivingDetailPage({ params }: { params: Promi
           </div>
         )}
 
-        <ActivityQuickFacts activity={activity} duration={duration} />
+        <ActivityQuickFacts activity={activity} duration={duration} localize={L} />
 
         {diveSites.length > 0 && (
           <section className="mt-10">
             <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {diveSites.map((site) => (
-                <DiveSiteCard key={site.id} site={site} />
+                <DiveSiteCard key={site.id} site={site} localize={L} />
               ))}
             </ul>
           </section>
@@ -176,7 +181,7 @@ export default async function LocaleDivingDetailPage({ params }: { params: Promi
             </h2>
             <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {packages.map((pkg) => (
-                <PackageCard key={pkg.id} pkg={pkg} />
+                <PackageCard key={pkg.id} pkg={pkg} localize={L} />
               ))}
             </ul>
           </section>
@@ -198,7 +203,7 @@ export default async function LocaleDivingDetailPage({ params }: { params: Promi
           </section>
         )}
 
-        <WhereToStaySection nearby={nearbyStays} islandTitle={primaryLocation?.title ?? null} atollTitle={atoll?.title ?? null} />
+        <WhereToStaySection nearby={nearbyStays} islandTitle={primaryLocation?.title ?? null} atollTitle={atoll?.title ?? null} localize={L} />
 
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">{d.exploreMoreTitle}</h2>

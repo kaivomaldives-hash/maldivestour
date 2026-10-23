@@ -1,0 +1,296 @@
+{
+  "/maldives/packages/": {
+    "luxury": {
+      "de": "luxus",
+      "es": "lujo",
+      "it": "lusso",
+      "ru": "lyuks",
+      "ja": "rakushari",
+      "zh": "haohua"
+    },
+    "family": {
+      "de": "familie",
+      "es": "familia",
+      "it": "famiglia",
+      "ru": "semeynye",
+      "ja": "famirii",
+      "zh": "qinzi"
+    },
+    "adults-only": {
+      "de": "nur-erwachsene",
+      "es": "solo-adultos",
+      "it": "solo-adulti",
+      "ru": "tolko-dlya-vzroslykh",
+      "ja": "otona-gentei",
+      "zh": "jin-xian-chengren"
+    },
+    "long-stay": {
+      "de": "langzeit",
+      "es": "estancias-largas",
+      "it": "soggiorni-lunghi",
+      "ru": "dlitelnoe-prebyvanie",
+      "ja": "chouki-taizai",
+      "zh": "changzhu"
+    },
+    "budget": {
+      "de": "budget",
+      "es": "economicos",
+      "it": "economici",
+      "ru": "byudzhetnye",
+      "ja": "kakuyasu",
+      "zh": "jingji"
+    },
+    "honeymoon": {
+      "de": "flitterwochen",
+      "es": "luna-de-miel",
+      "it": "luna-di-miele",
+      "ru": "medovyy-mesyats",
+      "ja": "hanemuun",
+      "zh": "miyue"
+    },
+    "solo": {
+      "de": "alleinreisende",
+      "es": "viajeros-solos",
+      "it": "viaggiatori-singoli",
+      "ru": "dlya-puteshestvuyushchikh-v-odinochku",
+      "ja": "hitori-tabi",
+      "zh": "dulv"
+    },
+    "diving": {
+      "de": "tauchen",
+      "es": "buceo",
+      "it": "immersioni",
+      "ru": "dayving",
+      "ja": "daibingu",
+      "zh": "qianshui"
+    },
+    "fishing": {
+      "de": "angeln",
+      "es": "pesca",
+      "it": "pesca",
+      "ru": "rybalka",
+      "ja": "tsuri",
+      "zh": "diaoyu"
+    },
+    "surfing": {
+      "de": "surfen",
+      "es": "surf",
+      "it": "surf",
+      "ru": "serfing",
+      "ja": "saafin",
+      "zh": "chonglang"
+    },
+    "liveaboard": {
+      "de": "tauchsafari",
+      "es": "cruceros-de-buceo",
+      "it": "crociere-sub",
+      "ru": "dayv-safari",
+      "ja": "raibuaboodo",
+      "zh": "qianshui-chuansu"
+    }
+  },
+  "/maldives/": {
+    "snorkeling": {
+      "de": "schnorcheln",
+      "es": "esnorquel",
+      "it": "snorkeling",
+      "ru": "snorkling",
+      "ja": "shunookeringu",
+      "zh": "fuqian"
+    },
+    "excursions": {
+      "de": "ausfluege",
+      "es": "excursiones",
+      "it": "escursioni",
+      "ru": "ekskursii",
+      "ja": "ekusukaashon",
+      "zh": "yiriyou"
+    },
+    "sandbank-tours": {
+      "de": "sandbank-touren",
+      "es": "bancos-de-arena",
+      "it": "banchi-di-sabbia",
+      "ru": "peschanye-otmeli",
+      "ja": "sandobanku",
+      "zh": "shazhou"
+    },
+    "water-sports": {
+      "de": "wassersport",
+      "es": "deportes-acuaticos",
+      "it": "sport-acquatici",
+      "ru": "vodnye-vidy-sporta",
+      "ja": "marin-supootsu",
+      "zh": "shuishang-yundong"
+    },
+    "island-hopping": {
+      "de": "inselhopping",
+      "es": "salto-de-islas",
+      "it": "island-hopping",
+      "ru": "ostrovnye-tury",
+      "ja": "airando-hoppingu",
+      "zh": "tiaodao"
+    },
+    "dolphin-whale-watching": {
+      "de": "delfin-und-walbeobachtung",
+      "es": "delfines-y-ballenas",
+      "it": "delfini-e-balene",
+      "ru": "delfiny-i-kity",
+      "ja": "iruka-kujira-wocchingu",
+      "zh": "guan-haitun-jingyu"
+    },
+    "sightseeing": {
+      "de": "sightseeing",
+      "es": "turismo",
+      "it": "visite-turistiche",
+      "ru": "obzornye-ekskursii",
+      "ja": "kankou",
+      "zh": "guanguang"
+    },
+    "airport-transfers": {
+      "de": "flughafentransfer",
+      "es": "traslados-aeropuerto",
+      "it": "trasferimenti-aeroporto",
+      "ru": "transfery-iz-aeroporta",
+      "ja": "kuukou-sougei",
+      "zh": "jichang-jiesong"
+    },
+    "resort-transfers": {
+      "de": "resort-transfer",
+      "es": "traslados-a-resorts",
+      "it": "trasferimenti-resort",
+      "ru": "transfery-na-kurorty",
+      "ja": "rizooto-sougei",
+      "zh": "dujiacun-jiesong"
+    },
+    "hotel-transfers": {
+      "de": "hotel-transfer",
+      "es": "traslados-a-hoteles",
+      "it": "trasferimenti-hotel",
+      "ru": "transfery-v-oteli",
+      "ja": "hoteru-sougei",
+      "zh": "jiudian-jiesong"
+    },
+    "island-transfers": {
+      "de": "insel-transfer",
+      "es": "traslados-entre-islas",
+      "it": "trasferimenti-isole",
+      "ru": "transfery-na-ostrova",
+      "ja": "shima-sougei",
+      "zh": "daoyu-jiesong"
+    },
+    "speedboat-transfers": {
+      "de": "speedboot-transfer",
+      "es": "traslados-en-lancha",
+      "it": "trasferimenti-motoscafo",
+      "ru": "transfery-na-katere",
+      "ja": "supiidobooto-sougei",
+      "zh": "kuaiting-jiesong"
+    }
+  },
+  "/maldives/fishing/": {
+    "gt-fishing": {
+      "de": "gt-angeln",
+      "es": "pesca-gt",
+      "it": "pesca-gt",
+      "ru": "rybalka-na-gt",
+      "ja": "gt-tsuri",
+      "zh": "gt-diaoyu"
+    },
+    "tuna-fishing": {
+      "de": "thunfischangeln",
+      "es": "pesca-de-atun",
+      "it": "pesca-al-tonno",
+      "ru": "rybalka-na-tunca",
+      "ja": "maguro-tsuri",
+      "zh": "jinqiangyu-diaoyu"
+    },
+    "wahoo-fishing": {
+      "de": "wahoo-angeln",
+      "es": "pesca-de-peto",
+      "it": "pesca-wahoo",
+      "ru": "rybalka-na-vahu",
+      "ja": "kamasusawara-tsuri",
+      "zh": "ciba-diaoyu"
+    },
+    "dogtooth-tuna": {
+      "de": "dogtooth-thun",
+      "es": "atun-diente-de-perro",
+      "it": "tonno-dente-di-cane",
+      "ru": "zubastyy-tunets",
+      "ja": "isomaguro",
+      "zh": "quanya-jinqiangyu"
+    },
+    "mahi-mahi-fishing": {
+      "de": "mahi-mahi-angeln",
+      "es": "pesca-de-dorado",
+      "it": "pesca-lampuga",
+      "ru": "rybalka-na-dorado",
+      "ja": "shiira-tsuri",
+      "zh": "qiqiu-diaoyu"
+    },
+    "marlin-fishing": {
+      "de": "marlin-angeln",
+      "es": "pesca-de-marlin",
+      "it": "pesca-al-marlin",
+      "ru": "rybalka-na-marlina",
+      "ja": "kajiki-tsuri",
+      "zh": "qiangyu-diaoyu"
+    },
+    "sailfish-fishing": {
+      "de": "segelfisch-angeln",
+      "es": "pesca-de-pez-vela",
+      "it": "pesca-pesce-vela",
+      "ru": "rybalka-na-parusnika",
+      "ja": "bashoukajiki-tsuri",
+      "zh": "qiyu-diaoyu"
+    },
+    "popping": {
+      "de": "popping",
+      "es": "popping",
+      "it": "popping",
+      "ru": "popping",
+      "ja": "poppingu",
+      "zh": "popping"
+    },
+    "jigging": {
+      "de": "jigging",
+      "es": "jigging",
+      "it": "jigging",
+      "ru": "dzhigging",
+      "ja": "jigingu",
+      "zh": "jigging"
+    },
+    "big-game-fishing": {
+      "de": "big-game-fishing",
+      "es": "pesca-de-altura",
+      "it": "pesca-d-altura",
+      "ru": "glubokovodnaya-rybalka",
+      "ja": "biggu-geemu",
+      "zh": "shenhai-youdiao"
+    },
+    "trolling": {
+      "de": "schleppangeln",
+      "es": "pesca-al-currican",
+      "it": "pesca-a-traina",
+      "ru": "trolling",
+      "ja": "torooringu",
+      "zh": "tuodiao"
+    },
+    "fly-fishing": {
+      "de": "fliegenfischen",
+      "es": "pesca-con-mosca",
+      "it": "pesca-a-mosca",
+      "ru": "nakhlyst",
+      "ja": "furai-fisshingu",
+      "zh": "feiying-diao"
+    },
+    "emperor": {
+      "de": "emperor",
+      "es": "emperor",
+      "it": "emperor",
+      "ru": "emperor",
+      "ja": "emperor",
+      "zh": "emperor"
+    }
+  }
+}

@@ -28,7 +28,7 @@ import { breadcrumbJsonLd, canonicalUrl, hreflangAlternates, itemListJsonLd, saf
 // so this is the closest genuinely on-topic hero available.
 const ACTIVITIES_HERO = asset(
   "1169d556-fa59-fd56-3eb2-660d07d28e40",
-  "legacy/images/activities/island-hopping/island-hopping-tour.webp",
+  "opt/legacy/images/activities/island-hopping/island-hopping-tour.webp",
   "Island hopping tour, Maldives",
 );
 

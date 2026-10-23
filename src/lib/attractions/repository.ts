@@ -2,6 +2,8 @@ import "server-only";
 
 import type { AttractionDetail, AttractionSummary, AttractionType, GetAttractionsOptions, PaginatedResult } from "@/lib/attractions/types";
 import { cachedRead } from "@/lib/cache/cached-read";
+import type { Locale } from "@/lib/i18n/locales";
+import { getTranslationWithEnglishSlug } from "@/lib/i18n/repository";
 import {
   getLocationBySlugAndType,
   getLocationSummariesByIds,
@@ -183,5 +185,27 @@ async function getAttractionBySlugUncached(slug: string): Promise<AttractionDeta
 }
 
 export const getAttractionBySlug = cachedRead(getAttractionBySlugUncached, ["attractions:by-slug"], 300);
+
+/** Localized equivalent of getAttractionBySlug. Unlike the other
+ * location overlays, an attraction's translated `description` carries
+ * its full translated body (the English `attributes.body`), so the
+ * localized page has real prose rather than English text under a
+ * translated heading. `bodyIsTranslated` tells the page which one it got. */
+export async function getTranslatedAttractionBySlug(locale: Locale, slug: string): Promise<(AttractionDetail & { englishSlug: string; bodyIsTranslated: boolean }) | null> {
+  const resolved = await getTranslationWithEnglishSlug(locale, slug, "location");
+  if (!resolved) return null;
+  const canonical = await getAttractionBySlug(resolved.englishSlug);
+  if (!canonical) return null;
+  const { translation } = resolved;
+  return {
+    ...canonical,
+    englishSlug: canonical.slug,
+    slug: translation.slug,
+    title: translation.title,
+    summary: translation.shortDescription ?? canonical.summary,
+    body: translation.description ?? canonical.body,
+    bodyIsTranslated: Boolean(translation.description),
+  };
+}
 
 export type { AttractionType };

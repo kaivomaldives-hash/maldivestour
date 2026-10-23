@@ -6,6 +6,13 @@ import { WhereToStaySection } from "@/components/accommodation/where-to-stay-sec
 import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { ActivityQuickFacts } from "@/components/activity/activity-quick-facts";
 import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
+import { LocalizedEmperorPage, localizedEmperorMetadata } from "@/components/i18n/localized-emperor-page";
+import {
+  LocalizedFishingSpeciesPage,
+  localizedFishingSpeciesMetadata,
+  LocalizedFishingTechniquePage,
+  localizedFishingTechniqueMetadata,
+} from "@/components/i18n/localized-fishing-landing-page";
 import { PackageCard } from "@/components/packages/package-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
@@ -14,10 +21,13 @@ import { getNearbyAccommodations } from "@/lib/accommodations/repository";
 import { bookingCta } from "@/lib/bookings/copy";
 import { getTranslatedActivityViewBySlug } from "@/lib/activities/repository";
 import { getFishingActivitiesByLocation } from "@/lib/fishing/repository";
+import { getFishingPagesStrings, isFishingSpeciesPageSlug, isFishingTechniquePageSlug } from "@/lib/i18n/fishing-pages";
+import { getChromeStrings } from "@/lib/i18n/chrome-strings";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getEntityLocalePaths, localizedEntityHref } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
+import { getLinkLocalizer } from "@/lib/i18n/link-localizer";
 import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { createClient } from "@/lib/supabase/public";
@@ -43,11 +53,12 @@ interface Params {
  * actually a fishing-category activity (mirrors the English
  * getFishingActivityBySlug's own category check).
  */
-function formatDuration(minutes: number | null): string | null {
+function formatDuration(minutes: number | null, locale: Locale): string | null {
   if (!minutes) return null;
-  if (minutes < 60) return `${minutes} min`;
+  const units = getChromeStrings(locale);
+  if (minutes < 60) return units.minutes.replace("{n}", String(minutes));
   const hours = minutes / 60;
-  return Number.isInteger(hours) ? `${hours} hr` : `${hours.toFixed(1)} hr`;
+  return units.hours.replace("{n}", Number.isInteger(hours) ? String(hours) : hours.toFixed(1));
 }
 
 async function getEnglishSlug(entityId: string): Promise<string | null> {
@@ -66,6 +77,9 @@ async function loadOrNotFound(locale: string, slug: string) {
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { locale, activity: slug } = await params;
   if (!isLocale(locale) || locale === "en") return {};
+  if (slug === "emperor") return localizedEmperorMetadata(locale);
+  if (isFishingSpeciesPageSlug(slug)) return localizedFishingSpeciesMetadata(locale, slug);
+  if (isFishingTechniquePageSlug(slug)) return localizedFishingTechniqueMetadata(locale, slug);
   const activity = await getTranslatedActivityViewBySlug(locale, slug);
   if (!activity || activity.activityCategory !== "fishing") return {};
 
@@ -88,12 +102,20 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 
 export default async function LocaleFishingDetailPage({ params }: { params: Promise<Params> }) {
   const { locale: rawLocale, activity: slug } = await params;
+  // Species/technique pages share this URL space: next.config.ts rewrites
+  // their translated URLs (e.g. /de/malediven/angeln/gt-angeln/) to the
+  // English page slug here -- see src/lib/i18n/localized-leaf-pages.json.
+  if (isLocale(rawLocale) && rawLocale !== "en" && getFishingPagesStrings(rawLocale)) {
+    if (slug === "emperor") return <LocalizedEmperorPage locale={rawLocale} />;
+    if (isFishingSpeciesPageSlug(slug)) return <LocalizedFishingSpeciesPage locale={rawLocale} slug={slug} />;
+    if (isFishingTechniquePageSlug(slug)) return <LocalizedFishingTechniquePage locale={rawLocale} slug={slug} />;
+  }
   const { locale, activity } = await loadOrNotFound(rawLocale, slug);
   const ui = getUiStrings(locale);
   const d = ui.activityDetail;
 
   const { primaryLocation, atoll } = activity;
-  const duration = formatDuration(activity.durationMinutes);
+  const duration = formatDuration(activity.durationMinutes, locale);
 
   const [sameIslandTrips, packages, nearbyStays, englishSlug, localePaths] = await Promise.all([
     primaryLocation ? getFishingActivitiesByLocation(primaryLocation.id) : Promise.resolve([]),
@@ -113,6 +135,8 @@ export default async function LocaleFishingDetailPage({ params }: { params: Prom
     ],
     localizeHubPath(locale, `/maldives/fishing/${activity.slug}`),
   );
+
+  const L = await getLinkLocalizer(locale);
 
   return (
     <main>
@@ -140,7 +164,7 @@ export default async function LocaleFishingDetailPage({ params }: { params: Prom
           </div>
         )}
 
-        <ActivityQuickFacts activity={activity} duration={duration} showDifficulty={false} showMinAge={false} />
+        <ActivityQuickFacts activity={activity} duration={duration} localize={L} showDifficulty={false} showMinAge={false} />
 
         {activity.isBookable && (
           <section className="mt-6 rounded-2xl border border-neutral-200 p-6">
@@ -183,13 +207,13 @@ export default async function LocaleFishingDetailPage({ params }: { params: Prom
             </h2>
             <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {packages.map((pkg) => (
-                <PackageCard key={pkg.id} pkg={pkg} />
+                <PackageCard key={pkg.id} pkg={pkg} localize={L} />
               ))}
             </ul>
           </section>
         )}
 
-        <WhereToStaySection nearby={nearbyStays} islandTitle={primaryLocation?.title ?? null} atollTitle={atoll?.title ?? null} />
+        <WhereToStaySection nearby={nearbyStays} islandTitle={primaryLocation?.title ?? null} atollTitle={atoll?.title ?? null} localize={L} />
 
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">{d.exploreMoreTitle}</h2>

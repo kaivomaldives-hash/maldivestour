@@ -5,7 +5,7 @@ import { revalidatePath, updateTag } from "next/cache";
 import { requireStaff } from "@/lib/admin/auth";
 import type { AdminActionResult } from "@/lib/admin/node-actions";
 import { publicDestinationPath } from "@/lib/locations/public-destination-path";
-import { compressImage } from "@/lib/media/compress-image";
+import { uploadOptimizedImage } from "@/lib/media/compress-image";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -122,17 +122,12 @@ export async function approvePlaceSubmission(submissionId: string): Promise<Admi
     const { data: fileBlob, error: downloadError } = await supabase.storage.from("place-submissions").download(image.storage_path);
     if (downloadError || !fileBlob) continue;
 
-    // Resized/recompressed to WebP here rather than relying on Next's
-    // per-request image optimizer — see compressImage's own comment.
-    const compressed = await compressImage(await fileBlob.arrayBuffer());
-    const newStoragePath = `guest-uploads/${newNodeId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${compressed.ext}`;
-
-    // cacheControl: see the identical comment in src/lib/admin/media-
-    // actions.ts — newStoragePath is never reused, so this is safe.
-    const { error: uploadError } = await supabase.storage
-      .from("media")
-      .upload(newStoragePath, compressed.buffer, { contentType: compressed.contentType, upsert: false, cacheControl: "31536000" });
-    if (uploadError) continue;
+    // Resized/recompressed to WebP (plus responsive-size variants) here
+    // rather than relying on Next's per-request image optimizer — see
+    // uploadOptimizedImage's own comment.
+    const uploaded = await uploadOptimizedImage(supabase, `guest-uploads/${newNodeId}`, await fileBlob.arrayBuffer());
+    if (uploaded.error !== undefined) continue;
+    const { storagePath: newStoragePath, paths } = uploaded;
 
     // The submitter's required caption becomes both title and alt_text —
     // see 20261105000100_photo_submission_captions.sql's own comment on
@@ -144,7 +139,7 @@ export async function approvePlaceSubmission(submissionId: string): Promise<Admi
       .select("id")
       .single<{ id: string }>();
     if (assetError || !assetRow) {
-      await supabase.storage.from("media").remove([newStoragePath]);
+      await supabase.storage.from("media").remove(paths);
       continue;
     }
 
@@ -153,7 +148,7 @@ export async function approvePlaceSubmission(submissionId: string): Promise<Admi
       .insert({ node_id: newNodeId, media_id: assetRow.id, role: sortOrder === 0 ? "hero" : "gallery", sort_order: sortOrder } as unknown as never);
     if (attachError) {
       await supabase.from("media_assets").delete().eq("id", assetRow.id);
-      await supabase.storage.from("media").remove([newStoragePath]);
+      await supabase.storage.from("media").remove(paths);
       continue;
     }
     sortOrder += 1;

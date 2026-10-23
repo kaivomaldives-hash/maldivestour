@@ -145,6 +145,12 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
+    // Serves pre-built size variants straight from Storage for optimized
+    // media (see src/lib/media/image-loader.ts) -- a custom loader means
+    // next/image never routes anything through Vercel's metered
+    // /_next/image optimizer.
+    loader: "custom",
+    loaderFile: "./src/lib/media/image-loader.ts",
     remotePatterns: [
       // Supabase Storage public bucket URLs (see src/lib/media/types.ts's
       // publicStorageUrl and the "media" bucket created in

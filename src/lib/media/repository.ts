@@ -1,7 +1,7 @@
 import "server-only";
 
 import { cachedRead } from "@/lib/cache/cached-read";
-import { publicStorageUrl } from "@/lib/media/types";
+import { IMAGE_VARIANT_WIDTHS, imageVariantPath, isOptimizedStoragePath, publicStorageUrl } from "@/lib/media/types";
 import type { MediaAsset, MediaRole, NodeMediaItem } from "@/lib/media/types";
 import { createClient } from "@/lib/supabase/public";
 
@@ -175,6 +175,11 @@ export function resolveStorageImageSrcs(html: string): string {
   return html.replace(/<figure><img\b[^>]*\bsrc="([^"]*)"[^>]*\/?>\s*<\/figure>/g, (full, storagePath: string) => {
     const url = publicStorageUrl(storagePath);
     if (!url) return "";
-    return full.replace(`src="${storagePath}"`, `src="${url}"`);
+    if (!isOptimizedStoragePath(storagePath)) return full.replace(`src="${storagePath}"`, `src="${url}"`);
+    // Optimized path: offer its pre-built size variants too, so a phone
+    // downloads the 640px copy rather than the full-size file. sizes
+    // matches the article column's max width (max-w-3xl).
+    const srcset = [...IMAGE_VARIANT_WIDTHS.map((w) => `${imageVariantPath(url, w)} ${w}w`), `${url} 1600w`].join(", ");
+    return full.replace(`src="${storagePath}"`, `src="${url}" srcset="${srcset}" sizes="(max-width: 768px) 100vw, 768px"`);
   });
 }

@@ -2,6 +2,7 @@ import "server-only";
 
 import { cachedRead } from "@/lib/cache/cached-read";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
+import { canonicalUrl } from "@/lib/seo/site";
 import { createClient } from "@/lib/supabase/public";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -130,6 +131,18 @@ function entityTranslationOf(row: EntityTranslationRow): EntityTranslation {
   };
 }
 
+/** PostgREST caps every response at 1000 rows, and an `in` filter over
+ * hundreds of ids also makes for a very long URL -- so batched lookups
+ * by id go out in chunks this size. At most 9 locale rows per id, so a
+ * chunk can never come back truncated by the row cap. */
+const ID_CHUNK_SIZE = 100;
+
+function chunk<T>(items: T[], size: number): T[][] {
+  const chunks: T[][] = [];
+  for (let i = 0; i < items.length; i += size) chunks.push(items.slice(i, i + size));
+  return chunks;
+}
+
 const ENTITY_TRANSLATION_SELECT =
   "entity_id, entity_type, locale, slug, title, short_description, description, body_html, meta_title, meta_description";
 
@@ -198,15 +211,16 @@ async function getEntityTranslationsByIdsUncached(entityIds: string[], locale: L
   if (locale === "en" || entityIds.length === 0) return result;
 
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("translations")
-    .select(ENTITY_TRANSLATION_SELECT)
-    .eq("locale", locale)
-    .in("entity_id", entityIds)
-    .returns<EntityTranslationRow[]>();
+  const pages = await Promise.all(
+    chunk(entityIds, ID_CHUNK_SIZE).map((ids) =>
+      supabase.from("translations").select(ENTITY_TRANSLATION_SELECT).eq("locale", locale).in("entity_id", ids).returns<EntityTranslationRow[]>(),
+    ),
+  );
 
-  if (error || !data) return result;
-  for (const row of data) result.set(row.entity_id, entityTranslationOf(row));
+  for (const { data, error } of pages) {
+    if (error || !data) continue;
+    for (const row of data) result.set(row.entity_id, entityTranslationOf(row));
+  }
   return result;
 }
 
@@ -250,17 +264,23 @@ async function getEntityLocaleSlugsByIdsUncached(entityIds: string[]): Promise<M
   if (entityIds.length === 0) return result;
 
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("translations")
-    .select("entity_id, locale, slug")
-    .in("entity_id", entityIds)
-    .returns<Array<{ entity_id: string; locale: Locale; slug: string }>>();
+  const pages = await Promise.all(
+    chunk(entityIds, ID_CHUNK_SIZE).map((ids) =>
+      supabase
+        .from("translations")
+        .select("entity_id, locale, slug")
+        .in("entity_id", ids)
+        .returns<Array<{ entity_id: string; locale: Locale; slug: string }>>(),
+    ),
+  );
 
-  if (error || !data) return result;
-  for (const row of data) {
-    const list = result.get(row.entity_id) ?? [];
-    list.push({ locale: row.locale, slug: row.slug });
-    result.set(row.entity_id, list);
+  for (const { data, error } of pages) {
+    if (error || !data) continue;
+    for (const row of data) {
+      const list = result.get(row.entity_id) ?? [];
+      list.push({ locale: row.locale, slug: row.slug });
+      result.set(row.entity_id, list);
+    }
   }
   return result;
 }
@@ -306,4 +326,70 @@ export async function getEntityLocalePaths(
 export async function localizedEntityHref(locale: Locale, entityId: string, englishSlug: string, pathPrefix: string): Promise<string> {
   const paths = await getEntityLocalePaths(entityId, englishSlug, pathPrefix);
   return paths[locale] ?? paths.en ?? `${pathPrefix}${englishSlug}/`;
+}
+
+/** Resolves an incoming translated /{locale}/... detail slug straight to
+ * its translation row plus the canonical English slug -- the shared first
+ * step of every getTranslated*BySlug overlay (locations, dive sites,
+ * attractions), which then load the real English entity by that slug and
+ * overlay only the translated fields. Null when the slug isn't a
+ * published translation of an entity of `entityType`. */
+export async function getTranslationWithEnglishSlug(
+  locale: Locale,
+  slug: string,
+  entityType: string,
+): Promise<{ translation: EntityTranslation; englishSlug: string } | null> {
+  if (locale === "en") return null;
+  const translation = await getEntityTranslationBySlug(locale, slug);
+  if (!translation || translation.entityType !== entityType) return null;
+
+  const supabase = await createClient();
+  const { data } = await supabase.from("nodes").select("slug").eq("id", translation.entityId).maybeSingle<{ slug: string }>();
+  if (!data) return null;
+  return { translation, englishSlug: data.slug };
+}
+
+export interface LocalizedCard {
+  title: string;
+  summary: string | null;
+  href: string;
+}
+
+/** Batch overlay for a listing of entities on a translated page: one
+ * query for every item's translation in this locale, returning each
+ * item's translated title/summary and its own translated URL -- or, for
+ * an item with no translation here, its real English title/summary and
+ * plain English URL (never a fabricated translated URL). Keyed by id. */
+export async function localizeCards(
+  locale: Locale,
+  items: Array<{ id: string; slug: string; title: string; summary?: string | null }>,
+  pathPrefix: string,
+): Promise<Map<string, LocalizedCard>> {
+  const translations = await getEntityTranslationsByIds(
+    items.map((i) => i.id),
+    locale,
+  );
+  const result = new Map<string, LocalizedCard>();
+  for (const item of items) {
+    const t = translations.get(item.id);
+    result.set(
+      item.id,
+      t
+        ? { title: t.title, summary: t.shortDescription ?? t.description, href: localizeHubPath(locale, `${pathPrefix}${t.slug}/`) }
+        : { title: item.title, summary: item.summary ?? null, href: `${pathPrefix}${item.slug}/` },
+    );
+  }
+  return result;
+}
+
+/** hreflang `languages` map for one entity's detail page -- every locale
+ * it's published under at its own per-locale URL, plus x-default ->
+ * English. Shared by the English and [locale] detail metadata of each
+ * destination type (atolls, islands, dive sites, attractions). */
+export async function entityHreflangLanguages(entityId: string, englishSlug: string, pathPrefix: string): Promise<Record<string, string>> {
+  const paths = await getEntityLocalePaths(entityId, englishSlug, pathPrefix);
+  const languages: Record<string, string> = {};
+  for (const [locale, path] of Object.entries(paths)) languages[locale] = canonicalUrl(path);
+  languages["x-default"] = languages.en;
+  return languages;
 }

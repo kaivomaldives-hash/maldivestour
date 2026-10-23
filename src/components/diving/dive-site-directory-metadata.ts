@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { canonicalUrl } from "@/lib/seo/site";
+import { DESTINATION_STRINGS_LOCALES } from "@/lib/i18n/destination-strings";
+import { canonicalUrl, hreflangAlternates } from "@/lib/seo/site";
 
 export interface DiveSiteDirectorySearchParams {
   page?: string;
@@ -21,7 +22,7 @@ export async function diveSiteDirectoryMetadata(searchParams: Promise<DiveSiteDi
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages: hreflangAlternates("/maldives/dive-sites/", DESTINATION_STRINGS_LOCALES) },
     openGraph: { title, description, url },
     robots: hasAnyFilter(sp) ? { index: false, follow: true } : undefined,
   };

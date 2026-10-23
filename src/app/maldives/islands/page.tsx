@@ -7,7 +7,8 @@ import { PageHero } from "@/components/ui/page-hero";
 import { Pagination } from "@/components/ui/pagination";
 import { SearchIcon } from "@/components/ui/icons";
 import { getIslands, searchLocations } from "@/lib/locations/repository";
-import { canonicalUrl } from "@/lib/seo/site";
+import { DESTINATION_STRINGS_LOCALES } from "@/lib/i18n/destination-strings";
+import { canonicalUrl, hreflangAlternates } from "@/lib/seo/site";
 
 const PAGE_SIZE = 48;
 
@@ -27,7 +28,7 @@ export function generateMetadata({
     return {
       title,
       description,
-      alternates: { canonical: canonicalUrl("/maldives/islands") },
+      alternates: { canonical: canonicalUrl("/maldives/islands"), languages: hreflangAlternates("/maldives/islands/", DESTINATION_STRINGS_LOCALES) },
       openGraph: { title, description, url: canonicalUrl("/maldives/islands") },
       // A search query narrows results to an arbitrary, non-canonical view —
       // keep it out of the index; the plain directory (and its pagination)

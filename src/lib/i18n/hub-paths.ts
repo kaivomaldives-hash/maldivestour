@@ -82,6 +82,38 @@ export const LOCALIZED_HUB_PREFIXES: Record<string, Partial<Record<Locale, strin
     ja: "/morudibu/akutibiti/",
     zh: "/maerdaifu/huodong/",
   },
+  "/maldives/atolls/": {
+    de: "/malediven/atolle/",
+    es: "/maldivas/atolones/",
+    it: "/maldive/atolli/",
+    ru: "/maldivy/atolly/",
+    ja: "/morudibu/kansho/",
+    zh: "/maerdaifu/huanjiao/",
+  },
+  "/maldives/islands/": {
+    de: "/malediven/inseln/",
+    es: "/maldivas/islas/",
+    it: "/maldive/isole/",
+    ru: "/maldivy/ostrova/",
+    ja: "/morudibu/shima/",
+    zh: "/maerdaifu/daoyu/",
+  },
+  "/maldives/dive-sites/": {
+    de: "/malediven/tauchplaetze/",
+    es: "/maldivas/puntos-de-buceo/",
+    it: "/maldive/siti-di-immersione/",
+    ru: "/maldivy/dayv-sayty/",
+    ja: "/morudibu/daibu-pointo/",
+    zh: "/maerdaifu/qianshui-didian/",
+  },
+  "/maldives/attractions/": {
+    de: "/malediven/sehenswuerdigkeiten/",
+    es: "/maldivas/atracciones/",
+    it: "/maldive/attrazioni/",
+    ru: "/maldivy/dostoprimechatelnosti/",
+    ja: "/morudibu/kanko-supotto/",
+    zh: "/maerdaifu/jingdian/",
+  },
 };
 
 // Longest (most specific) prefix first, so "/maldives/packages/" is

@@ -20,6 +20,10 @@ const LOCALIZED_HUBS: Array<{ englishSegment: string; parent: string | null; wor
   { englishSegment: "fishing", parent: "maldives", words: { de: "angeln", es: "pesca", it: "pesca", ru: "rybalka", ja: "tsuri", zh: "diaoyu" } },
   { englishSegment: "diving", parent: "maldives", words: { de: "tauchen", es: "buceo", it: "immersioni", ru: "dayving", ja: "daibingu", zh: "qianshui" } },
   { englishSegment: "activities", parent: "maldives", words: { de: "aktivitaeten", es: "actividades", it: "attivita", ru: "aktivnosti", ja: "akutibiti", zh: "huodong" } },
+  { englishSegment: "atolls", parent: "maldives", words: { de: "atolle", es: "atolones", it: "atolli", ru: "atolly", ja: "kansho", zh: "huanjiao" } },
+  { englishSegment: "islands", parent: "maldives", words: { de: "inseln", es: "islas", it: "isole", ru: "ostrova", ja: "shima", zh: "daoyu" } },
+  { englishSegment: "dive-sites", parent: "maldives", words: { de: "tauchplaetze", es: "puntos-de-buceo", it: "siti-di-immersione", ru: "dayv-sayty", ja: "daibu-pointo", zh: "qianshui-didian" } },
+  { englishSegment: "attractions", parent: "maldives", words: { de: "sehenswuerdigkeiten", es: "atracciones", it: "attrazioni", ru: "dostoprimechatelnosti", ja: "kanko-supotto", zh: "jingdian" } },
 ];
 
 const LOCALES = ["de", "es", "it", "ru", "ja", "zh"];

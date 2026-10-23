@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { getEntityLocalePaths } from "@/lib/i18n/repository";
 import { getNearbyAccommodations } from "@/lib/accommodations/repository";
 import { ActivityCard } from "@/components/activity/activity-card";
+import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
 import { WhereToStaySection } from "@/components/accommodation/where-to-stay-section";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
 import { LocationCommentsSection } from "@/components/locations/location-comments-section";
@@ -29,18 +31,20 @@ export async function DiveSiteDetailPage({ slug }: { slug: string }) {
   const site = await getDiveSiteBySlug(slug);
   if (!site) notFound();
 
-  const [activities, comments, mediaItems, nearbyStays, sitesInAtoll] = await Promise.all([
+  const [activities, comments, mediaItems, nearbyStays, sitesInAtoll, localePaths] = await Promise.all([
     getDivingActivitiesAtSite(site.id),
     getPublishedLocationComments(site.id),
     getMediaForNode(site.id),
     getNearbyAccommodations({ islandId: site.nearbyIsland?.id ?? null, atollId: site.atoll?.id ?? null }),
     site.atoll ? getDiveSitesByAtoll(site.atoll.id) : Promise.resolve([]),
+    getEntityLocalePaths(site.id, site.slug, "/maldives/dive-sites/"),
   ]);
   const galleryImages = mediaItems.filter((m) => m.role === "gallery").map((m) => m.asset);
   const nearbySites = sitesInAtoll.filter((s) => s.id !== site.id).slice(0, 3);
 
   return (
     <main>
+      <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath="/maldives/dive-sites/" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

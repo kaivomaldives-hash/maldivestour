@@ -2,12 +2,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
+import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
 import { ActivityCard } from "@/components/activity/activity-card";
 import { LocationCommentsSection } from "@/components/locations/location-comments-section";
 import { LocationGallerySection } from "@/components/locations/location-gallery-section";
 import { LocationMediaUploadForm } from "@/components/locations/location-media-upload-form";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
+import { getEntityLocalePaths } from "@/lib/i18n/repository";
 import { getAccommodationsByAtoll, getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { getActivitiesByAtoll, getActivitiesByLocation } from "@/lib/activities/repository";
 import { getAttractionBySlug } from "@/lib/attractions/repository";
@@ -43,7 +45,7 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
   // tied to an open-water/atoll-wide site (Hanifaru Bay) or an unseeded
   // resort island (Ozen Maadhoo), an atoll parent instead — fall back to
   // atoll-level activities/accommodations rather than showing nothing.
-  const [activities, accommodations, sourceArticle, comments, mediaItems, entityMap] = await Promise.all([
+  const [activities, accommodations, sourceArticle, comments, mediaItems, entityMap, localePaths] = await Promise.all([
     attraction.island
       ? getActivitiesByLocation(attraction.island.id)
       : attraction.atoll
@@ -58,6 +60,7 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
     getPublishedLocationComments(attraction.id),
     getMediaForNode(attraction.id),
     buildEntityLinkMap(),
+    getEntityLocalePaths(attraction.id, attraction.slug, "/maldives/attractions/"),
   ]);
   const galleryImages = mediaItems.filter((m) => m.role === "gallery").map((m) => m.asset);
   const bodyHtml = attraction.body
@@ -66,6 +69,7 @@ export async function AttractionDetailPage({ slug }: { slug: string }) {
 
   return (
     <main>
+      <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath="/maldives/attractions/" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(breadcrumbJsonLd([{ label: "Maldives", href: "/maldives/" }, { label: "Attractions", href: "/maldives/attractions/" }, { label: attraction.title }], "/maldives/attractions")) }}

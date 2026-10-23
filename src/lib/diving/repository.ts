@@ -8,6 +8,8 @@ import {
 } from "@/lib/activities/repository";
 import type { ActivityDetail, ActivitySummary, PaginatedResult as ActivityPaginatedResult } from "@/lib/activities/types";
 import { cachedRead } from "@/lib/cache/cached-read";
+import type { Locale } from "@/lib/i18n/locales";
+import { getTranslationWithEnglishSlug } from "@/lib/i18n/repository";
 import { getCategoriesByGroup, getCategoryBySlug, getNodeIdsByCategory } from "@/lib/categories/repository";
 import type { CategorySummary } from "@/lib/categories/types";
 import { getHeroMediaByNodeIds } from "@/lib/media/repository";
@@ -269,6 +271,18 @@ async function getDiveSiteBySlugUncached(slug: string): Promise<DiveSiteDetail |
 }
 
 export const getDiveSiteBySlug = cachedRead(getDiveSiteBySlugUncached, ["diving:dive-site-by-slug"], 300);
+
+/** Localized equivalent of getDiveSiteBySlug -- same title/summary/slug
+ * overlay as getTranslatedActivityViewBySlug; depth, conditions and
+ * marine-life notes stay the real, un-translated canonical data. */
+export async function getTranslatedDiveSiteBySlug(locale: Locale, slug: string): Promise<(DiveSiteDetail & { englishSlug: string }) | null> {
+  const resolved = await getTranslationWithEnglishSlug(locale, slug, "location");
+  if (!resolved) return null;
+  const canonical = await getDiveSiteBySlug(resolved.englishSlug);
+  if (!canonical) return null;
+  const { translation } = resolved;
+  return { ...canonical, englishSlug: canonical.slug, slug: translation.slug, title: translation.title, summary: translation.shortDescription ?? canonical.summary };
+}
 
 /** Diving activities that visit a given dive site (node_locations tag in
  * either direction — see getDiveSitesForActivity for the activity side). */

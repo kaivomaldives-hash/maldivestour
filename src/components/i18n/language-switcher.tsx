@@ -4,8 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
-import { useArticleLocaleLinks } from "@/components/i18n/article-locale-links-context";
+import { useEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
 import { GlobeIcon } from "@/components/ui/icons";
+import { hubPrefixForPath, localizeHubPath } from "@/lib/i18n/hub-paths";
 import { LOCALE_NAMES, SUPPORTED_LOCALES, type Locale } from "@/lib/i18n/locales";
 
 /**
@@ -18,19 +19,26 @@ import { LOCALE_NAMES, SUPPORTED_LOCALES, type Locale } from "@/lib/i18n/locales
  * homepage published, they start appearing here automatically — no
  * code change needed, this list is driven by real published rows.
  *
- * Target-page resolution (Task 19 §16): if the visitor is on the
- * homepage or the Maldives hub, the switcher sends them to that same
- * page in the target locale (when published). On a Travel Guide article
- * page, a RegisterArticleLocaleLinks call (rendered by that page) has
- * registered the article's real per-locale paths via
- * ArticleLocaleLinksProvider -- the switcher uses those when present,
- * since an article's translated slug differs per locale and can't be
- * derived from the current pathname. For every other page — other
- * entity types (activity/accommodation/etc.) don't have per-entity
- * translations published yet — it falls back to that locale's Maldives
- * hub rather than fabricating a URL or silently doing nothing. If the
- * target locale isn't published at all, the current page doesn't
- * change (there's nothing better to offer yet).
+ * Target-page resolution (Task 19 §16, generalized in Task 22, and
+ * again to cover every hub page -- not just the top-level Maldives hub
+ * -- after Task 22 shipped fishing/diving/activities): if the visitor
+ * is on the homepage, or on any registered hub page itself (Maldives,
+ * packages, transfers, travel guide, fishing, diving, activities --
+ * see hubPrefixForPath), the switcher sends them to that SAME hub in
+ * the target locale (when published). On any translated entity's
+ * detail page (article, package, transfer route, fishing/diving/
+ * activity trip), a RegisterEntityLocaleLinks call (rendered by that
+ * page) has registered the entity's real per-locale paths via
+ * EntityLocaleLinksProvider -- the switcher uses those when present,
+ * since an entity's translated slug differs per locale and can't be
+ * derived from the current pathname, falling back to THAT entity
+ * type's own hub (not generically the Maldives hub) for a locale with
+ * no translation of this specific entity yet. For every other page —
+ * entity types with no per-entity translations published at all yet —
+ * it falls back to that locale's Maldives hub rather than fabricating
+ * a URL or silently doing nothing. If the target locale isn't
+ * published at all, the current page doesn't change (there's nothing
+ * better to offer yet).
  */
 export function LanguageSwitcher({
   publishedLocales,
@@ -52,7 +60,7 @@ export function LanguageSwitcher({
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const { paths: articleLocalePaths } = useArticleLocaleLinks();
+  const { links: entityLocaleLinks } = useEntityLocaleLinks();
 
   const availableLocales: Locale[] = ["en", ...SUPPORTED_LOCALES.filter((l) => l !== "en" && publishedLocales.includes(l))];
   if (availableLocales.length <= 1) return null;
@@ -61,26 +69,31 @@ export function LanguageSwitcher({
   const currentLocale: Locale = (SUPPORTED_LOCALES as readonly string[]).includes(segments[0]) ? (segments[0] as Locale) : "en";
   const pathAfterLocale = currentLocale === "en" ? pathname : `/${segments.slice(1).join("/")}`;
   const isHomepage = pathAfterLocale === "/" || pathAfterLocale === "";
-  const isMaldivesHub = pathAfterLocale === "/maldives" || pathAfterLocale === "/maldives/";
+  // Matches the full pathname against EVERY registered hub page (not
+  // just "/maldives/") for the locale we're actually on -- a plain
+  // string match on "/maldives/" would never fire for "/maldives/packages/"
+  // etc, and silently stops matching once a hub segment itself gets
+  // localized per locale (see hubPrefixForPath's own docs).
+  const currentHubPrefix = hubPrefixForPath(currentLocale, pathname);
 
   function targetHref(locale: Locale): string {
     const prefix = locale === "en" ? "" : `/${locale}`;
     if (isHomepage) return locale === "en" ? "/" : publishedLocales.includes(locale) ? `${prefix}/` : pathname;
-    if (isMaldivesHub) return locale === "en" ? "/maldives/" : publishedLocales.includes(locale) ? `${prefix}/maldives/` : pathname;
-    if (articleLocalePaths) {
-      // On a Travel Guide article page: use the article's real translated
-      // path when this locale has one, else fall back to that locale's
-      // Travel Guide hub (more relevant here than the whole Maldives hub)
-      // rather than a URL that 404s.
-      const articlePath = articleLocalePaths[locale];
-      if (articlePath) return articlePath;
-      if (locale === "en") return "/maldives/travel-guide/";
-      return publishedLocales.includes(locale) ? `${prefix}/maldives/travel-guide/` : pathname;
+    if (currentHubPrefix) return locale === "en" ? currentHubPrefix : publishedLocales.includes(locale) ? localizeHubPath(locale, currentHubPrefix) : pathname;
+    if (entityLocaleLinks) {
+      // On a translated entity's detail page (article, package,
+      // transfer route): use that entity's real translated path when
+      // this locale has one, else fall back to its own hub (more
+      // relevant than the whole Maldives hub) rather than a URL that 404s.
+      const entityPath = entityLocaleLinks.paths[locale];
+      if (entityPath) return entityPath;
+      if (locale === "en") return entityLocaleLinks.fallbackHubPath;
+      return publishedLocales.includes(locale) ? localizeHubPath(locale, entityLocaleLinks.fallbackHubPath) : pathname;
     }
     // Any other page: no per-entity translation lookup wired in yet --
     // fall back to that locale's Maldives hub if it's published.
     if (locale === "en") return "/maldives/";
-    return publishedLocales.includes(locale) ? `${prefix}/maldives/` : pathname;
+    return publishedLocales.includes(locale) ? localizeHubPath(locale, "/maldives/") : pathname;
   }
 
   const triggerClass =

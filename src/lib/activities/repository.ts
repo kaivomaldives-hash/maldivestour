@@ -3,6 +3,8 @@ import "server-only";
 import { cachedRead } from "@/lib/cache/cached-read";
 import { getContentSortSetting } from "@/lib/content-sort/repository";
 import type { ContentSortMode } from "@/lib/content-sort/types";
+import type { Locale } from "@/lib/i18n/locales";
+import { getEntityTranslationBySlug } from "@/lib/i18n/repository";
 import { getLocationSummariesByIds, getLocationSummaryById } from "@/lib/locations/repository";
 import type { LocationSummary } from "@/lib/locations/types";
 import { getHeroMediaByNodeIds, getMediaForNode } from "@/lib/media/repository";
@@ -425,6 +427,40 @@ async function getActivityBySlugUncached(slug: string): Promise<ActivityDetail |
 // from the locations repository, so an admin coordinate edit there needs
 // to bust this cache too, not just the locations-side ones.
 export const getActivityBySlug = cachedRead(getActivityBySlugUncached, ["activities:by-slug"], 300, ["activities:by-slug", "locations"]);
+
+/** Localized equivalent of getTranslatedPackageViewBySlug/
+ * getTranslatedTransferRouteViewBySlug -- resolves a translated
+ * /{locale}/maldives/{fishing|diving|activities}/[slug] slug back to
+ * the canonical English activity via the translations table, then
+ * overlays only title/summary/slug. Every other field (gallery,
+ * itinerary, rates, provider, pricing) stays as the real, un-translated
+ * canonical data -- the translations table has no equivalent fields
+ * for those yet, same convention as packages/transfer routes. Works
+ * for any activity category (fishing/diving/generic) since it's keyed
+ * by entity_id, not category -- callers that need to enforce "this
+ * entity is actually in my category" (mirroring the English
+ * getFishingActivityBySlug/getDivingActivityBySlug/loadGenericActivity
+ * pattern) check `activityCategory` on the result themselves. */
+export async function getTranslatedActivityViewBySlug(locale: Locale, slug: string): Promise<ActivityDetail | null> {
+  if (locale === "en") return getActivityBySlug(slug);
+
+  const translation = await getEntityTranslationBySlug(locale, slug);
+  if (!translation || translation.entityType !== "activity") return null;
+
+  const supabase = await createClient();
+  const { data } = await supabase.from("nodes").select("slug").eq("id", translation.entityId).maybeSingle<{ slug: string }>();
+  if (!data) return null;
+
+  const canonical = await getActivityBySlug(data.slug);
+  if (!canonical) return null;
+
+  return {
+    ...canonical,
+    slug: translation.slug,
+    title: translation.title,
+    summary: translation.shortDescription ?? translation.description,
+  };
+}
 
 /** Batch lookup by node id — used by the package repository to resolve
  * itinerary items without an N+1 query per item (Task 11). */

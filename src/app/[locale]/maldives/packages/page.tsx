@@ -7,6 +7,7 @@ import { CONTAINER_CLASS } from "@/components/ui/container";
 import { FaqSection } from "@/components/ui/faq-section";
 import { PageHero } from "@/components/ui/page-hero";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
+import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getPageTranslation, getPublishedLocalesForPage } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
 import { PACKAGE_CATEGORY_FALLBACK_IMAGES } from "@/lib/packages/category-images";
@@ -27,10 +28,13 @@ export const revalidate = 3690;
  * Deliberately omits the full filter bar / search / pagination of the
  * English page (that machinery assumes English-only query params and
  * isn't worth re-localizing yet); this page links out to the English
- * listing for anyone who wants to filter. Category and "Explore More"
- * links point at plain English URLs -- none of those verticals have a
- * translated route yet (Task 19 §16/§29: never a fabricated URL for
- * content that doesn't exist).
+ * listing for anyone who wants to filter. Category links point at plain
+ * English URLs -- those verticals have no translated route yet (Task 19
+ * §16/§29: never a fabricated URL for content that doesn't exist).
+ * "Explore More" links use localizeHubPath per-item, so a sibling hub
+ * that's since been translated (transfers, travel guide) automatically
+ * gets its own real localized URL without this file needing to change
+ * again later.
  */
 type CategoryLabelKey =
   | "categoryLuxury"
@@ -66,6 +70,10 @@ const EXPLORE_MORE_LINKS = [
   { href: "/maldives/transfers/", labelKey: "transfers" },
   { href: "/maldives/travel-guide/", labelKey: "travelGuide" },
 ] as const;
+
+function exploreMoreHref(locale: Locale, href: string): string {
+  return href === "/maldives/transfers/" || href === "/maldives/travel-guide/" ? localizeHubPath(locale, href) : href;
+}
 
 async function loadOrNotFound(locale: string) {
   if (!isLocale(locale) || locale === "en") notFound();
@@ -104,7 +112,7 @@ export default async function LocalePackagesHubPage({ params }: { params: Promis
   return (
     <main>
       <PageHero
-        breadcrumbs={[{ label: ui.breadcrumbHome, href: `/${locale}/` }, { label: ui.nav.maldives, href: `/${locale}/maldives/` }, { label: ui.nav.packages }]}
+        breadcrumbs={[{ label: ui.breadcrumbHome, href: `/${locale}/` }, { label: ui.nav.maldives, href: localizeHubPath(locale, "/maldives/") }, { label: ui.nav.packages }]}
         eyebrow={h.heroEyebrow}
         title={h.title}
         description={h.description}
@@ -156,7 +164,7 @@ export default async function LocalePackagesHubPage({ params }: { params: Promis
             {EXPLORE_MORE_LINKS.map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
+                href={exploreMoreHref(locale, link.href)}
                 className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
               >
                 {ui.nav[link.labelKey]}

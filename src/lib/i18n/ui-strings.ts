@@ -168,6 +168,135 @@ export interface UiStrings {
     allPackagesLink: string;
     englishVersionLink: string;
   };
+  transfersHub: {
+    heroEyebrow: string;
+    title: string;
+    description: string;
+    introP1: string;
+    introP2: string;
+    airportSectionTitle: string;
+    resortSectionTitle: string;
+    islandSectionTitle: string;
+    faqTitle: string;
+    faqs: { question: string; answer: string }[];
+    exploreMoreTitle: string;
+  };
+  transferDetail: {
+    eyebrow: string;
+    fromLabel: string;
+    toLabel: string;
+    durationLabel: string;
+    distanceLabel: string;
+    reverseRoutePrompt: string;
+    servicesTitle: string;
+    noServicesNote: string;
+    privateTransferTitle: string;
+    privateTransferBody: string;
+    privateTransferCta: string;
+    packagesUsingRouteTitle: string;
+    faqTitle: string;
+    relatedTitle: string;
+    exploreMoreTitle: string;
+    allTransfersLink: string;
+    englishVersionLink: string;
+    typeSpeedboat: string;
+    typeSeaplane: string;
+    typeDomesticFlight: string;
+    typeFerry: string;
+    typePrivateYacht: string;
+    typeLandTransfer: string;
+    modeShared: string;
+    modePrivate: string;
+  };
+  /** One label per src/components/site-footer.tsx TRAVEL_LINKS entry,
+   * in the same order. Only the maldives/transfers/packages/travelGuide
+   * entries resolve to a real localized href (via localizeHubPath) --
+   * every other label is still shown in this language, but its link
+   * stays the plain English URL since that vertical has no translated
+   * route yet (same "translate the word, not a fabricated URL"
+   * convention as everywhere else). */
+  footerLinks: {
+    maldives: string;
+    atolls: string;
+    islands: string;
+    resorts: string;
+    hotels: string;
+    guesthouses: string;
+    activities: string;
+    fishing: string;
+    diving: string;
+    surfing: string;
+    snorkeling: string;
+    excursions: string;
+    sandbankTours: string;
+    waterSports: string;
+    islandHopping: string;
+    dolphinWhaleWatching: string;
+    sightseeing: string;
+    transfers: string;
+    airportTransfers: string;
+    resortTransfers: string;
+    islandTransfers: string;
+    speedboatCharter: string;
+    ferrySchedule: string;
+    packages: string;
+    travelGuide: string;
+    attractions: string;
+    restaurants: string;
+    shops: string;
+    hospitals: string;
+    schools: string;
+    gyms: string;
+  };
+  fishingHub: {
+    heroEyebrow: string;
+    title: string;
+    description: string;
+    introP1: string;
+    introP2: string;
+    featuredTitle: string;
+    faqTitle: string;
+    faqs: { question: string; answer: string }[];
+    exploreMoreTitle: string;
+  };
+  divingHub: {
+    heroEyebrow: string;
+    title: string;
+    description: string;
+    introP1: string;
+    introP2: string;
+    featuredTitle: string;
+    faqTitle: string;
+    faqs: { question: string; answer: string }[];
+    exploreMoreTitle: string;
+  };
+  activitiesHub: {
+    heroEyebrow: string;
+    title: string;
+    description: string;
+    introP1: string;
+    introP2: string;
+    featuredTitle: string;
+    faqTitle: string;
+    faqs: { question: string; answer: string }[];
+    exploreMoreTitle: string;
+  };
+  /** Shared chrome for the fishing/diving/generic-activities detail
+   * pages -- the category-specific eyebrow text reuses ui.nav.fishing/
+   * diving/activities rather than duplicating it here. */
+  activityDetail: {
+    durationLabel: string;
+    bookingIntro: string;
+    otherTripsTitle: string;
+    packagesFeaturingTitle: string;
+    pickupLocationsTitle: string;
+    pickupLocationsIntro: string;
+    exploreMoreTitle: string;
+    allFishingLink: string;
+    allDivingLink: string;
+    allActivitiesLink: string;
+    englishVersionLink: string;
+  };
 }
 
 const EN: UiStrings = {
@@ -343,6 +472,169 @@ const EN: UiStrings = {
     exploreMoreTitle: "Explore More Maldives",
     allPackagesLink: "All Maldives Packages",
     englishVersionLink: "View this package in English",
+  },
+  transfersHub: {
+    heroEyebrow: "Maldives transportation",
+    title: "Maldives Transfers",
+    description: "Real airport, resort, island and speedboat transfer routes across the Maldives — search by destination, or request a private charter.",
+    introP1: "Every route below is a real, individually verified transfer — not a generic estimate. See the full English listing for search and filters.",
+    introP2: "Resort transfers run on each resort's own schedule; local-island transfers mostly run by public ferry or private speedboat.",
+    airportSectionTitle: "Maldives Airport Transfers",
+    resortSectionTitle: "Resort Transfers",
+    islandSectionTitle: "Island Transfers",
+    faqTitle: "Common questions",
+    faqs: [
+      {
+        question: "How do Maldives airport transfers work?",
+        answer: "You land at Velana International Airport, then continue by speedboat, ferry, seaplane, or domestic flight depending on your destination.",
+      },
+      {
+        question: "Are Maldives speedboat transfers shared?",
+        answer: "Both — most resorts offer a scheduled shared transfer, and a private transfer or full charter is also usually available. Each route page shows what's actually on offer.",
+      },
+      {
+        question: "How early should I arrange my transfer?",
+        answer: "As soon as your accommodation is confirmed, especially for resorts that time transfers to specific flights.",
+      },
+      {
+        question: "What's the difference between a resort transfer and an island transfer?",
+        answer: "A resort transfer goes to a private resort island; an island transfer goes to a local, inhabited Maldivian island with hotels or guesthouses rather than a resort.",
+      },
+    ],
+    exploreMoreTitle: "Explore More Maldives",
+  },
+  transferDetail: {
+    eyebrow: "Transfer route",
+    fromLabel: "From",
+    toLabel: "To",
+    durationLabel: "Typical duration",
+    distanceLabel: "Distance",
+    reverseRoutePrompt: "Travelling the other way?",
+    servicesTitle: "Transfer services",
+    noServicesNote: "No verified transfer services recorded for this route yet.",
+    privateTransferTitle: "Private Transfer",
+    privateTransferBody: "Prefer your own boat and your own schedule? A private transfer means a private group, flexible timing, and a custom arrangement for this route.",
+    privateTransferCta: "Book This Trip as a Private Transfer",
+    packagesUsingRouteTitle: "Packages Using This Route",
+    faqTitle: "Common questions",
+    relatedTitle: "Related Transfers",
+    exploreMoreTitle: "Explore More Maldives",
+    allTransfersLink: "All Maldives Transfers",
+    englishVersionLink: "View this route in English",
+    typeSpeedboat: "Speedboat",
+    typeSeaplane: "Seaplane",
+    typeDomesticFlight: "Domestic Flight",
+    typeFerry: "Ferry",
+    typePrivateYacht: "Private Yacht",
+    typeLandTransfer: "Land Transfer",
+    modeShared: "Shared",
+    modePrivate: "Private",
+  },
+  footerLinks: {
+    maldives: "Maldives",
+    atolls: "Atolls",
+    islands: "Islands",
+    resorts: "Resorts",
+    hotels: "Hotels",
+    guesthouses: "Guesthouses",
+    activities: "Activities",
+    fishing: "Fishing",
+    diving: "Diving",
+    surfing: "Surfing",
+    snorkeling: "Snorkeling",
+    excursions: "Excursions",
+    sandbankTours: "Sandbank Tours",
+    waterSports: "Water Sports",
+    islandHopping: "Island Hopping",
+    dolphinWhaleWatching: "Dolphin & Whale Watching",
+    sightseeing: "Sightseeing",
+    transfers: "Transfers",
+    airportTransfers: "Airport Transfers",
+    resortTransfers: "Resort Transfers",
+    islandTransfers: "Island Transfers",
+    speedboatCharter: "Private Speedboat Charter",
+    ferrySchedule: "Ferry Schedule",
+    packages: "Packages",
+    travelGuide: "Travel Guide",
+    attractions: "Attractions",
+    restaurants: "Restaurants",
+    shops: "Shops",
+    hospitals: "Hospitals",
+    schools: "Schools",
+    gyms: "Gyms",
+  },
+  fishingHub: {
+    heroEyebrow: "Maldives fishing",
+    title: "Maldives Fishing",
+    description: "Real fishing charters and trips across the Maldives — private full-day and half-day charters, big game, reef and traditional fishing, sourced from real operators.",
+    introP1: "Every trip below is real and individually verified — not a generic directory listing. See the full English listing for search and filters.",
+    introP2: "Private charters give you your own boat and crew; shared and local trips are a lower-cost way to get out on the water.",
+    featuredTitle: "Fishing Trips & Charters",
+    faqTitle: "Common questions",
+    faqs: [
+      {
+        question: "What kinds of fishing are available in the Maldives?",
+        answer: "Big game trolling, reef and bottom fishing, traditional handline trips, and night fishing — each page shows the real trip on offer.",
+      },
+      {
+        question: "Can I book a private charter?",
+        answer: "Yes — most operators offer a private full-day or half-day charter with your own boat and crew.",
+      },
+    ],
+    exploreMoreTitle: "Explore More Maldives",
+  },
+  divingHub: {
+    heroEyebrow: "Maldives diving",
+    title: "Maldives Diving",
+    description: "Real diving trips, courses and dive centers across the Maldives — fun dives, PADI courses, and Discover Scuba Diving, sourced from real operators.",
+    introP1: "Every dive below is real and individually verified — not a generic directory listing. See the full English listing for search and filters.",
+    introP2: "A fun dive suits certified divers; PADI courses and Discover Scuba Diving are for beginners with no certification yet.",
+    featuredTitle: "Diving Trips & Courses",
+    faqTitle: "Common questions",
+    faqs: [
+      {
+        question: "Do I need a certification to dive in the Maldives?",
+        answer: "No — Discover Scuba Diving lets you dive with an instructor with no certification; PADI courses let you get certified.",
+      },
+      {
+        question: "What's a fun dive?",
+        answer: "A guided reef dive for already-certified divers, usually a single tank.",
+      },
+    ],
+    exploreMoreTitle: "Explore More Maldives",
+  },
+  activitiesHub: {
+    heroEyebrow: "Things to do",
+    title: "Maldives Activities",
+    description: "Real, bookable Maldives activities and excursions — island hopping, watersports, dolphin cruises, city tours and more.",
+    introP1: "Every activity below is real and individually verified — not a generic directory listing. See the full English listing for search and filters.",
+    introP2: "Fishing, diving and surfing each have their own dedicated section — this page covers everything else: watersports, excursions, island hopping and more.",
+    featuredTitle: "Popular Activities",
+    faqTitle: "Common questions",
+    faqs: [
+      {
+        question: "How do I book an activity?",
+        answer: "Open the activity's page and send an enquiry with your preferred date and group size — we follow up directly.",
+      },
+      {
+        question: "Where do I find fishing, diving or surfing?",
+        answer: "Those have their own dedicated sections — see Explore More below.",
+      },
+    ],
+    exploreMoreTitle: "Explore More Maldives",
+  },
+  activityDetail: {
+    durationLabel: "Duration",
+    bookingIntro: "Tell us your preferred date and group size and we'll follow up on availability.",
+    otherTripsTitle: "Other trips on",
+    packagesFeaturingTitle: "Packages featuring",
+    pickupLocationsTitle: "Available with pickup from",
+    pickupLocationsIntro: "This trip offers pickup from any of these resorts and islands.",
+    exploreMoreTitle: "Explore More Maldives",
+    allFishingLink: "All Maldives Fishing",
+    allDivingLink: "All Maldives Diving",
+    allActivitiesLink: "All Maldives Activities",
+    englishVersionLink: "View this page in English",
   },
 };
 
@@ -521,6 +813,169 @@ const DE: UiStrings = {
     allPackagesLink: "Alle Malediven-Pakete",
     englishVersionLink: "Dieses Paket auf Englisch ansehen",
   },
+  transfersHub: {
+    heroEyebrow: "Fortbewegung auf den Malediven",
+    title: "Malediven-Transfers",
+    description: "Echte Flughafen-, Resort-, Insel- und Speedboot-Transferrouten auf den Malediven — nach Ziel suchen oder eine private Charter anfragen.",
+    introP1: "Jede Route unten ist ein echter, einzeln geprüfter Transfer — keine generische Schätzung. Die vollständige englische Liste bietet Suche und Filter.",
+    introP2: "Resort-Transfers laufen nach dem eigenen Zeitplan des jeweiligen Resorts; Transfers zu lokalen Inseln erfolgen meist per öffentlicher Fähre oder privatem Speedboot.",
+    airportSectionTitle: "Malediven-Flughafentransfers",
+    resortSectionTitle: "Resort-Transfers",
+    islandSectionTitle: "Inseltransfers",
+    faqTitle: "Häufige Fragen",
+    faqs: [
+      {
+        question: "Wie funktionieren Flughafentransfers auf den Malediven?",
+        answer: "Sie landen am Flughafen Velana International und reisen dann je nach Ziel per Speedboot, Fähre, Wasserflugzeug oder Inlandsflug weiter.",
+      },
+      {
+        question: "Sind Speedboot-Transfers auf den Malediven geteilt?",
+        answer: "Beides — die meisten Resorts bieten einen geplanten geteilten Transfer an, meist ist auch ein privater Transfer oder eine Komplett-Charter verfügbar. Jede Routenseite zeigt, was tatsächlich angeboten wird.",
+      },
+      {
+        question: "Wie früh sollte ich meinen Transfer organisieren?",
+        answer: "Sobald Ihre Unterkunft bestätigt ist, besonders bei Resorts, die Transfers auf bestimmte Flüge abstimmen.",
+      },
+      {
+        question: "Was ist der Unterschied zwischen einem Resort- und einem Inseltransfer?",
+        answer: "Ein Resort-Transfer führt zu einer privaten Resortinsel; ein Inseltransfer führt zu einer bewohnten maledivischen Insel mit Hotels oder Gästehäusern statt zu einem Resort.",
+      },
+    ],
+    exploreMoreTitle: "Mehr von den Malediven entdecken",
+  },
+  transferDetail: {
+    eyebrow: "Transferroute",
+    fromLabel: "Von",
+    toLabel: "Nach",
+    durationLabel: "Typische Dauer",
+    distanceLabel: "Entfernung",
+    reverseRoutePrompt: "Reisen Sie in die andere Richtung?",
+    servicesTitle: "Transferangebote",
+    noServicesNote: "Für diese Route sind noch keine geprüften Transferangebote erfasst.",
+    privateTransferTitle: "Privater Transfer",
+    privateTransferBody: "Bevorzugen Sie Ihr eigenes Boot und Ihren eigenen Zeitplan? Ein privater Transfer bedeutet eine private Gruppe, flexible Zeiten und eine individuelle Vereinbarung für diese Route.",
+    privateTransferCta: "Diese Fahrt als privaten Transfer buchen",
+    packagesUsingRouteTitle: "Pakete mit dieser Route",
+    faqTitle: "Häufige Fragen",
+    relatedTitle: "Ähnliche Transfers",
+    exploreMoreTitle: "Mehr von den Malediven entdecken",
+    allTransfersLink: "Alle Malediven-Transfers",
+    englishVersionLink: "Diese Route auf Englisch ansehen",
+    typeSpeedboat: "Speedboot",
+    typeSeaplane: "Wasserflugzeug",
+    typeDomesticFlight: "Inlandsflug",
+    typeFerry: "Fähre",
+    typePrivateYacht: "Private Yacht",
+    typeLandTransfer: "Landtransfer",
+    modeShared: "Geteilt",
+    modePrivate: "Privat",
+  },
+  footerLinks: {
+    maldives: "Malediven",
+    atolls: "Atolle",
+    islands: "Inseln",
+    resorts: "Resorts",
+    hotels: "Hotels",
+    guesthouses: "Gästehäuser",
+    activities: "Aktivitäten",
+    fishing: "Angeln",
+    diving: "Tauchen",
+    surfing: "Surfen",
+    snorkeling: "Schnorcheln",
+    excursions: "Ausflüge",
+    sandbankTours: "Sandbank-Touren",
+    waterSports: "Wassersport",
+    islandHopping: "Inselhüpfen",
+    dolphinWhaleWatching: "Delfin- & Walbeobachtung",
+    sightseeing: "Sightseeing",
+    transfers: "Transfer",
+    airportTransfers: "Flughafentransfers",
+    resortTransfers: "Resort-Transfers",
+    islandTransfers: "Inseltransfers",
+    speedboatCharter: "Private Speedboot-Charter",
+    ferrySchedule: "Fährplan",
+    packages: "Pakete",
+    travelGuide: "Reiseführer",
+    attractions: "Attraktionen",
+    restaurants: "Restaurants",
+    shops: "Geschäfte",
+    hospitals: "Krankenhäuser",
+    schools: "Schulen",
+    gyms: "Fitnessstudios",
+  },
+  fishingHub: {
+    heroEyebrow: "Angeln auf den Malediven",
+    title: "Angeln auf den Malediven",
+    description: "Echte Angelcharter und -ausflüge auf den Malediven — private Ganztags- und Halbtagscharter, Big-Game-, Riff- und traditionelles Angeln, von echten Anbietern.",
+    introP1: "Jeder Ausflug unten ist real und einzeln geprüft — kein generisches Verzeichnis. Die vollständige englische Liste bietet Suche und Filter.",
+    introP2: "Private Charter bieten ein eigenes Boot und eine eigene Crew; geteilte und lokale Ausflüge sind eine günstigere Möglichkeit, aufs Wasser zu kommen.",
+    featuredTitle: "Angelausflüge & Charter",
+    faqTitle: "Häufige Fragen",
+    faqs: [
+      {
+        question: "Welche Arten des Angelns gibt es auf den Malediven?",
+        answer: "Big-Game-Schleppangeln, Riff- und Grundangeln, traditionelles Handleinenangeln und Nachtangeln — jede Seite zeigt den tatsächlichen Ausflug.",
+      },
+      {
+        question: "Kann ich einen privaten Charter buchen?",
+        answer: "Ja — die meisten Anbieter bieten einen privaten Ganztags- oder Halbtagscharter mit eigenem Boot und eigener Crew an.",
+      },
+    ],
+    exploreMoreTitle: "Mehr von den Malediven entdecken",
+  },
+  divingHub: {
+    heroEyebrow: "Tauchen auf den Malediven",
+    title: "Tauchen auf den Malediven",
+    description: "Echte Tauchausflüge, Kurse und Tauchzentren auf den Malediven — Fun Dives, PADI-Kurse und Discover Scuba Diving, von echten Anbietern.",
+    introP1: "Jeder Tauchgang unten ist real und einzeln geprüft — kein generisches Verzeichnis. Die vollständige englische Liste bietet Suche und Filter.",
+    introP2: "Ein Fun Dive eignet sich für zertifizierte Taucher; PADI-Kurse und Discover Scuba Diving sind für Anfänger ohne Zertifizierung.",
+    featuredTitle: "Tauchausflüge & Kurse",
+    faqTitle: "Häufige Fragen",
+    faqs: [
+      {
+        question: "Brauche ich eine Zertifizierung, um auf den Malediven zu tauchen?",
+        answer: "Nein — bei Discover Scuba Diving tauchen Sie mit einem Lehrer ohne Zertifizierung; PADI-Kurse ermöglichen eine Zertifizierung.",
+      },
+      {
+        question: "Was ist ein Fun Dive?",
+        answer: "Ein geführter Riff-Tauchgang für bereits zertifizierte Taucher, meist mit einer Flasche.",
+      },
+    ],
+    exploreMoreTitle: "Mehr von den Malediven entdecken",
+  },
+  activitiesHub: {
+    heroEyebrow: "Unternehmungen",
+    title: "Aktivitäten auf den Malediven",
+    description: "Echte, buchbare Aktivitäten und Ausflüge auf den Malediven — Inselhüpfen, Wassersport, Delfintouren, Stadtrundfahrten und mehr.",
+    introP1: "Jede Aktivität unten ist real und einzeln geprüft — kein generisches Verzeichnis. Die vollständige englische Liste bietet Suche und Filter.",
+    introP2: "Angeln, Tauchen und Surfen haben jeweils ihren eigenen Bereich — diese Seite deckt alles andere ab: Wassersport, Ausflüge, Inselhüpfen und mehr.",
+    featuredTitle: "Beliebte Aktivitäten",
+    faqTitle: "Häufige Fragen",
+    faqs: [
+      {
+        question: "Wie buche ich eine Aktivität?",
+        answer: "Öffnen Sie die Seite der Aktivität und senden Sie eine Anfrage mit Ihrem bevorzugten Datum und Ihrer Gruppengröße — wir melden uns direkt.",
+      },
+      {
+        question: "Wo finde ich Angeln, Tauchen oder Surfen?",
+        answer: "Diese haben ihre eigenen Bereiche — siehe „Mehr entdecken\" unten.",
+      },
+    ],
+    exploreMoreTitle: "Mehr von den Malediven entdecken",
+  },
+  activityDetail: {
+    durationLabel: "Dauer",
+    bookingIntro: "Teilen Sie uns Ihr bevorzugtes Datum und Ihre Gruppengröße mit — wir melden uns zur Verfügbarkeit.",
+    otherTripsTitle: "Weitere Ausflüge auf",
+    packagesFeaturingTitle: "Pakete mit",
+    pickupLocationsTitle: "Verfügbar mit Abholung von",
+    pickupLocationsIntro: "Dieser Ausflug bietet Abholung von jedem dieser Resorts und Inseln.",
+    exploreMoreTitle: "Mehr von den Malediven entdecken",
+    allFishingLink: "Alle Malediven-Angelausflüge",
+    allDivingLink: "Alle Malediven-Tauchausflüge",
+    allActivitiesLink: "Alle Malediven-Aktivitäten",
+    englishVersionLink: "Diese Seite auf Englisch ansehen",
+  },
 };
 
 const ES: UiStrings = {
@@ -696,6 +1151,169 @@ const ES: UiStrings = {
     exploreMoreTitle: "Explorar Más de Maldivas",
     allPackagesLink: "Todos los Paquetes de Maldivas",
     englishVersionLink: "Ver este paquete en inglés",
+  },
+  transfersHub: {
+    heroEyebrow: "Transporte en Maldivas",
+    title: "Traslados en Maldivas",
+    description: "Rutas reales de traslado en aeropuerto, resort, isla y lancha rápida por todas las Maldivas — busca por destino o solicita un chárter privado.",
+    introP1: "Cada ruta de abajo es un traslado real, verificado individualmente — no una estimación genérica. Consulta el listado completo en inglés para buscar y filtrar.",
+    introP2: "Los traslados de resort siguen el propio horario de cada resort; los traslados a islas locales se hacen principalmente en ferry público o lancha rápida privada.",
+    airportSectionTitle: "Traslados del Aeropuerto de Maldivas",
+    resortSectionTitle: "Traslados a Resorts",
+    islandSectionTitle: "Traslados a Islas",
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+      {
+        question: "¿Cómo funcionan los traslados del aeropuerto en Maldivas?",
+        answer: "Aterrizas en el Aeropuerto Internacional de Velana y luego continúas en lancha rápida, ferry, hidroavión o vuelo doméstico según tu destino.",
+      },
+      {
+        question: "¿Los traslados en lancha rápida en Maldivas son compartidos?",
+        answer: "Ambos — la mayoría de los resorts ofrecen un traslado compartido programado, y normalmente también hay disponible un traslado privado o chárter completo. Cada página de ruta muestra lo que realmente se ofrece.",
+      },
+      {
+        question: "¿Con cuánta antelación debo organizar mi traslado?",
+        answer: "En cuanto se confirme tu alojamiento, especialmente en resorts que ajustan los traslados a vuelos específicos.",
+      },
+      {
+        question: "¿Cuál es la diferencia entre un traslado de resort y un traslado de isla?",
+        answer: "Un traslado de resort va a una isla privada de resort; un traslado de isla va a una isla maldiva habitada con hoteles o pensiones en lugar de un resort.",
+      },
+    ],
+    exploreMoreTitle: "Explorar Más de Maldivas",
+  },
+  transferDetail: {
+    eyebrow: "Ruta de traslado",
+    fromLabel: "Desde",
+    toLabel: "Hasta",
+    durationLabel: "Duración típica",
+    distanceLabel: "Distancia",
+    reverseRoutePrompt: "¿Viajas en sentido contrario?",
+    servicesTitle: "Servicios de traslado",
+    noServicesNote: "Aún no hay servicios de traslado verificados registrados para esta ruta.",
+    privateTransferTitle: "Traslado Privado",
+    privateTransferBody: "¿Prefieres tu propio barco y tu propio horario? Un traslado privado significa un grupo privado, horario flexible y un arreglo personalizado para esta ruta.",
+    privateTransferCta: "Reservar Este Viaje como Traslado Privado",
+    packagesUsingRouteTitle: "Paquetes que Usan Esta Ruta",
+    faqTitle: "Preguntas frecuentes",
+    relatedTitle: "Traslados Relacionados",
+    exploreMoreTitle: "Explorar Más de Maldivas",
+    allTransfersLink: "Todos los Traslados de Maldivas",
+    englishVersionLink: "Ver esta ruta en inglés",
+    typeSpeedboat: "Lancha rápida",
+    typeSeaplane: "Hidroavión",
+    typeDomesticFlight: "Vuelo doméstico",
+    typeFerry: "Ferry",
+    typePrivateYacht: "Yate privado",
+    typeLandTransfer: "Traslado terrestre",
+    modeShared: "Compartido",
+    modePrivate: "Privado",
+  },
+  footerLinks: {
+    maldives: "Maldivas",
+    atolls: "Atolones",
+    islands: "Islas",
+    resorts: "Resorts",
+    hotels: "Hoteles",
+    guesthouses: "Pensiones",
+    activities: "Actividades",
+    fishing: "Pesca",
+    diving: "Buceo",
+    surfing: "Surf",
+    snorkeling: "Esnórquel",
+    excursions: "Excursiones",
+    sandbankTours: "Tours a Bancos de Arena",
+    waterSports: "Deportes Acuáticos",
+    islandHopping: "Isla en Isla",
+    dolphinWhaleWatching: "Avistamiento de Delfines y Ballenas",
+    sightseeing: "Turismo",
+    transfers: "Traslados",
+    airportTransfers: "Traslados de Aeropuerto",
+    resortTransfers: "Traslados de Resort",
+    islandTransfers: "Traslados de Isla",
+    speedboatCharter: "Chárter de Lancha Privada",
+    ferrySchedule: "Horario de Ferris",
+    packages: "Paquetes",
+    travelGuide: "Guía de Viaje",
+    attractions: "Atracciones",
+    restaurants: "Restaurantes",
+    shops: "Tiendas",
+    hospitals: "Hospitales",
+    schools: "Escuelas",
+    gyms: "Gimnasios",
+  },
+  fishingHub: {
+    heroEyebrow: "Pesca en Maldivas",
+    title: "Pesca en Maldivas",
+    description: "Chárteres y excursiones de pesca reales por toda Maldivas — chárteres privados de día completo y medio día, pesca de altura, de arrecife y tradicional, de operadores reales.",
+    introP1: "Cada excursión de abajo es real y verificada individualmente — no un directorio genérico. Consulta el listado completo en inglés para buscar y filtrar.",
+    introP2: "Los chárteres privados ofrecen tu propio barco y tripulación; las excursiones compartidas y locales son una forma más económica de salir al agua.",
+    featuredTitle: "Excursiones y Chárteres de Pesca",
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+      {
+        question: "¿Qué tipos de pesca hay disponibles en Maldivas?",
+        answer: "Pesca de altura con señuelo, pesca de arrecife y de fondo, excursiones tradicionales con sedal de mano y pesca nocturna — cada página muestra la excursión real disponible.",
+      },
+      {
+        question: "¿Puedo reservar un chárter privado?",
+        answer: "Sí — la mayoría de operadores ofrecen un chárter privado de día completo o medio día con tu propio barco y tripulación.",
+      },
+    ],
+    exploreMoreTitle: "Explorar Más de Maldivas",
+  },
+  divingHub: {
+    heroEyebrow: "Buceo en Maldivas",
+    title: "Buceo en Maldivas",
+    description: "Excursiones de buceo, cursos y centros de buceo reales por toda Maldivas — inmersiones de ocio, cursos PADI y Discover Scuba Diving, de operadores reales.",
+    introP1: "Cada inmersión de abajo es real y verificada individualmente — no un directorio genérico. Consulta el listado completo en inglés para buscar y filtrar.",
+    introP2: "Una inmersión de ocio es para buceadores certificados; los cursos PADI y Discover Scuba Diving son para principiantes sin certificación.",
+    featuredTitle: "Excursiones y Cursos de Buceo",
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+      {
+        question: "¿Necesito una certificación para bucear en Maldivas?",
+        answer: "No — con Discover Scuba Diving buceas con un instructor sin certificación; los cursos PADI te permiten certificarte.",
+      },
+      {
+        question: "¿Qué es una inmersión de ocio?",
+        answer: "Una inmersión guiada en arrecife para buceadores ya certificados, normalmente con una botella.",
+      },
+    ],
+    exploreMoreTitle: "Explorar Más de Maldivas",
+  },
+  activitiesHub: {
+    heroEyebrow: "Qué hacer",
+    title: "Actividades en Maldivas",
+    description: "Actividades y excursiones reales y reservables en Maldivas — isla en isla, deportes acuáticos, cruceros de delfines, tours urbanos y más.",
+    introP1: "Cada actividad de abajo es real y verificada individualmente — no un directorio genérico. Consulta el listado completo en inglés para buscar y filtrar.",
+    introP2: "La pesca, el buceo y el surf tienen cada uno su propia sección — esta página cubre todo lo demás: deportes acuáticos, excursiones, isla en isla y más.",
+    featuredTitle: "Actividades Populares",
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+      {
+        question: "¿Cómo reservo una actividad?",
+        answer: "Abre la página de la actividad y envía una consulta con tu fecha y tamaño de grupo preferidos — te responderemos directamente.",
+      },
+      {
+        question: "¿Dónde encuentro pesca, buceo o surf?",
+        answer: "Esos tienen sus propias secciones — ver Explorar Más abajo.",
+      },
+    ],
+    exploreMoreTitle: "Explorar Más de Maldivas",
+  },
+  activityDetail: {
+    durationLabel: "Duración",
+    bookingIntro: "Indícanos tu fecha y tamaño de grupo preferidos y te responderemos sobre disponibilidad.",
+    otherTripsTitle: "Otras excursiones en",
+    packagesFeaturingTitle: "Paquetes que incluyen",
+    pickupLocationsTitle: "Disponible con recogida desde",
+    pickupLocationsIntro: "Esta excursión ofrece recogida desde cualquiera de estos resorts e islas.",
+    exploreMoreTitle: "Explorar Más de Maldivas",
+    allFishingLink: "Toda la Pesca en Maldivas",
+    allDivingLink: "Todo el Buceo en Maldivas",
+    allActivitiesLink: "Todas las Actividades en Maldivas",
+    englishVersionLink: "Ver esta página en inglés",
   },
 };
 
@@ -873,6 +1491,169 @@ const IT: UiStrings = {
     allPackagesLink: "Tutti i Pacchetti delle Maldive",
     englishVersionLink: "Visualizza questo pacchetto in inglese",
   },
+  transfersHub: {
+    heroEyebrow: "Trasporti alle Maldive",
+    title: "Trasferimenti alle Maldive",
+    description: "Percorsi di trasferimento reali per aeroporto, resort, isola e motoscafo in tutte le Maldive — cerca per destinazione o richiedi un charter privato.",
+    introP1: "Ogni percorso qui sotto è un trasferimento reale, verificato individualmente — non una stima generica. Consulta l'elenco completo in inglese per ricerca e filtri.",
+    introP2: "I trasferimenti per resort seguono l'orario del resort stesso; i trasferimenti verso isole locali avvengono principalmente tramite traghetto pubblico o motoscafo privato.",
+    airportSectionTitle: "Trasferimenti dall'Aeroporto delle Maldive",
+    resortSectionTitle: "Trasferimenti per Resort",
+    islandSectionTitle: "Trasferimenti per Isole",
+    faqTitle: "Domande frequenti",
+    faqs: [
+      {
+        question: "Come funzionano i trasferimenti aeroportuali alle Maldive?",
+        answer: "Si arriva all'Aeroporto Internazionale di Velana e si prosegue poi in motoscafo, traghetto, hydroplane o volo nazionale in base alla destinazione.",
+      },
+      {
+        question: "I trasferimenti in motoscafo alle Maldive sono condivisi?",
+        answer: "Entrambi — la maggior parte dei resort offre un trasferimento condiviso programmato, ed è generalmente disponibile anche un trasferimento privato o un charter completo. Ogni pagina del percorso mostra cosa è realmente offerto.",
+      },
+      {
+        question: "Con quanto anticipo dovrei organizzare il mio trasferimento?",
+        answer: "Non appena l'alloggio è confermato, soprattutto per i resort che programmano i trasferimenti su voli specifici.",
+      },
+      {
+        question: "Qual è la differenza tra un trasferimento per resort e un trasferimento per isola?",
+        answer: "Un trasferimento per resort porta a un'isola privata di un resort; un trasferimento per isola porta a un'isola maldiviana abitata con hotel o guesthouse invece di un resort.",
+      },
+    ],
+    exploreMoreTitle: "Esplora Altro delle Maldive",
+  },
+  transferDetail: {
+    eyebrow: "Percorso di trasferimento",
+    fromLabel: "Da",
+    toLabel: "A",
+    durationLabel: "Durata tipica",
+    distanceLabel: "Distanza",
+    reverseRoutePrompt: "Viaggi nella direzione opposta?",
+    servicesTitle: "Servizi di trasferimento",
+    noServicesNote: "Nessun servizio di trasferimento verificato ancora registrato per questo percorso.",
+    privateTransferTitle: "Trasferimento Privato",
+    privateTransferBody: "Preferisci la tua barca e il tuo orario? Un trasferimento privato significa un gruppo privato, orari flessibili e un accordo personalizzato per questo percorso.",
+    privateTransferCta: "Prenota Questo Viaggio come Trasferimento Privato",
+    packagesUsingRouteTitle: "Pacchetti che Usano Questo Percorso",
+    faqTitle: "Domande frequenti",
+    relatedTitle: "Trasferimenti Correlati",
+    exploreMoreTitle: "Esplora Altro delle Maldive",
+    allTransfersLink: "Tutti i Trasferimenti delle Maldive",
+    englishVersionLink: "Visualizza questo percorso in inglese",
+    typeSpeedboat: "Motoscafo",
+    typeSeaplane: "Hydroplane",
+    typeDomesticFlight: "Volo nazionale",
+    typeFerry: "Traghetto",
+    typePrivateYacht: "Yacht privato",
+    typeLandTransfer: "Trasferimento terrestre",
+    modeShared: "Condiviso",
+    modePrivate: "Privato",
+  },
+  footerLinks: {
+    maldives: "Maldive",
+    atolls: "Atolli",
+    islands: "Isole",
+    resorts: "Resort",
+    hotels: "Hotel",
+    guesthouses: "Guesthouse",
+    activities: "Attività",
+    fishing: "Pesca",
+    diving: "Immersioni",
+    surfing: "Surf",
+    snorkeling: "Snorkeling",
+    excursions: "Escursioni",
+    sandbankTours: "Tour ai Banchi di Sabbia",
+    waterSports: "Sport Acquatici",
+    islandHopping: "Island Hopping",
+    dolphinWhaleWatching: "Avvistamento Delfini e Balene",
+    sightseeing: "Turismo",
+    transfers: "Trasferimenti",
+    airportTransfers: "Trasferimenti Aeroportuali",
+    resortTransfers: "Trasferimenti Resort",
+    islandTransfers: "Trasferimenti Isola",
+    speedboatCharter: "Charter Privato di Motoscafo",
+    ferrySchedule: "Orario dei Traghetti",
+    packages: "Pacchetti",
+    travelGuide: "Guida di Viaggio",
+    attractions: "Attrazioni",
+    restaurants: "Ristoranti",
+    shops: "Negozi",
+    hospitals: "Ospedali",
+    schools: "Scuole",
+    gyms: "Palestre",
+  },
+  fishingHub: {
+    heroEyebrow: "Pesca alle Maldive",
+    title: "Pesca alle Maldive",
+    description: "Charter ed escursioni di pesca reali in tutte le Maldive — charter privati di giornata intera e mezza giornata, pesca d'altura, di barriera e tradizionale, da operatori reali.",
+    introP1: "Ogni escursione qui sotto è reale e verificata individualmente — non un elenco generico. Consulta l'elenco completo in inglese per ricerca e filtri.",
+    introP2: "I charter privati offrono una barca e un equipaggio propri; le escursioni condivise e locali sono un modo più economico per uscire in acqua.",
+    featuredTitle: "Escursioni e Charter di Pesca",
+    faqTitle: "Domande frequenti",
+    faqs: [
+      {
+        question: "Quali tipi di pesca sono disponibili alle Maldive?",
+        answer: "Traina d'altura, pesca di barriera e di fondo, escursioni tradizionali con lenza a mano e pesca notturna — ogni pagina mostra l'escursione reale disponibile.",
+      },
+      {
+        question: "Posso prenotare un charter privato?",
+        answer: "Sì — la maggior parte degli operatori offre un charter privato di giornata intera o mezza giornata con barca ed equipaggio propri.",
+      },
+    ],
+    exploreMoreTitle: "Esplora Altro delle Maldive",
+  },
+  divingHub: {
+    heroEyebrow: "Immersioni alle Maldive",
+    title: "Immersioni alle Maldive",
+    description: "Escursioni di immersione, corsi e diving center reali in tutte le Maldive — immersioni ricreative, corsi PADI e Discover Scuba Diving, da operatori reali.",
+    introP1: "Ogni immersione qui sotto è reale e verificata individualmente — non un elenco generico. Consulta l'elenco completo in inglese per ricerca e filtri.",
+    introP2: "Un'immersione ricreativa è per sub già certificati; i corsi PADI e il Discover Scuba Diving sono per principianti senza certificazione.",
+    featuredTitle: "Escursioni e Corsi di Immersione",
+    faqTitle: "Domande frequenti",
+    faqs: [
+      {
+        question: "Serve una certificazione per immergersi alle Maldive?",
+        answer: "No — con il Discover Scuba Diving ti immergi con un istruttore senza certificazione; i corsi PADI permettono di certificarsi.",
+      },
+      {
+        question: "Cos'è un'immersione ricreativa?",
+        answer: "Un'immersione guidata in barriera per sub già certificati, di solito con una bombola.",
+      },
+    ],
+    exploreMoreTitle: "Esplora Altro delle Maldive",
+  },
+  activitiesHub: {
+    heroEyebrow: "Cosa fare",
+    title: "Attività alle Maldive",
+    description: "Attività ed escursioni reali e prenotabili alle Maldive — island hopping, sport acquatici, crociere con i delfini, tour cittadini e altro.",
+    introP1: "Ogni attività qui sotto è reale e verificata individualmente — non un elenco generico. Consulta l'elenco completo in inglese per ricerca e filtri.",
+    introP2: "Pesca, immersioni e surf hanno ciascuno una propria sezione — questa pagina copre tutto il resto: sport acquatici, escursioni, island hopping e altro.",
+    featuredTitle: "Attività Popolari",
+    faqTitle: "Domande frequenti",
+    faqs: [
+      {
+        question: "Come prenoto un'attività?",
+        answer: "Apri la pagina dell'attività e invia una richiesta con la data e la dimensione del gruppo preferite — ti risponderemo direttamente.",
+      },
+      {
+        question: "Dove trovo pesca, immersioni o surf?",
+        answer: "Hanno le loro sezioni dedicate — vedi Esplora Altro qui sotto.",
+      },
+    ],
+    exploreMoreTitle: "Esplora Altro delle Maldive",
+  },
+  activityDetail: {
+    durationLabel: "Durata",
+    bookingIntro: "Indicaci la data e la dimensione del gruppo preferite e ti risponderemo sulla disponibilità.",
+    otherTripsTitle: "Altre escursioni a",
+    packagesFeaturingTitle: "Pacchetti che includono",
+    pickupLocationsTitle: "Disponibile con pickup da",
+    pickupLocationsIntro: "Questa escursione offre il pickup da uno di questi resort e isole.",
+    exploreMoreTitle: "Esplora Altro delle Maldive",
+    allFishingLink: "Tutta la Pesca alle Maldive",
+    allDivingLink: "Tutte le Immersioni alle Maldive",
+    allActivitiesLink: "Tutte le Attività alle Maldive",
+    englishVersionLink: "Visualizza questa pagina in inglese",
+  },
 };
 
 const RU: UiStrings = {
@@ -1048,6 +1829,169 @@ const RU: UiStrings = {
     exploreMoreTitle: "Исследовать больше Мальдив",
     allPackagesLink: "Все пакеты на Мальдивы",
     englishVersionLink: "Посмотреть этот пакет на английском",
+  },
+  transfersHub: {
+    heroEyebrow: "Транспорт на Мальдивах",
+    title: "Трансферы на Мальдивах",
+    description: "Настоящие маршруты трансфера из аэропорта, в курорт, на остров и на скоростном катере по всем Мальдивам — ищите по направлению или запросите частный чартер.",
+    introP1: "Каждый маршрут ниже — это настоящий, индивидуально проверенный трансфер, а не общая оценка. Полный список на английском языке с поиском и фильтрами доступен отдельно.",
+    introP2: "Трансферы на курорты идут по собственному расписанию каждого курорта; трансферы на местные острова в основном осуществляются общественным паромом или частным скоростным катером.",
+    airportSectionTitle: "Трансферы из аэропорта Мальдив",
+    resortSectionTitle: "Трансферы на курорты",
+    islandSectionTitle: "Трансферы на острова",
+    faqTitle: "Часто задаваемые вопросы",
+    faqs: [
+      {
+        question: "Как работают трансферы из аэропорта на Мальдивах?",
+        answer: "Вы прилетаете в международный аэропорт Velana, а затем продолжаете путь на скоростном катере, пароме, гидросамолёте или внутреннем рейсе в зависимости от направления.",
+      },
+      {
+        question: "Являются ли трансферы на скоростных катерах на Мальдивах общими?",
+        answer: "И то, и другое — большинство курортов предлагают запланированный общий трансфер, а также, как правило, доступен частный трансфер или полный чартер. На странице каждого маршрута показано, что фактически предлагается.",
+      },
+      {
+        question: "Как заранее нужно организовывать трансфер?",
+        answer: "Сразу после подтверждения проживания, особенно для курортов, которые привязывают трансферы к конкретным рейсам.",
+      },
+      {
+        question: "В чём разница между трансфером на курорт и трансфером на остров?",
+        answer: "Трансфер на курорт ведёт на частный курортный остров; трансфер на остров ведёт на обитаемый мальдивский остров с отелями или гестхаусами вместо курорта.",
+      },
+    ],
+    exploreMoreTitle: "Исследовать больше Мальдив",
+  },
+  transferDetail: {
+    eyebrow: "Маршрут трансфера",
+    fromLabel: "Из",
+    toLabel: "В",
+    durationLabel: "Типичная продолжительность",
+    distanceLabel: "Расстояние",
+    reverseRoutePrompt: "Едете в обратном направлении?",
+    servicesTitle: "Услуги трансфера",
+    noServicesNote: "Для этого маршрута пока не зарегистрировано проверенных услуг трансфера.",
+    privateTransferTitle: "Частный трансфер",
+    privateTransferBody: "Предпочитаете собственную лодку и собственное расписание? Частный трансфер означает отдельную группу, гибкое время и индивидуальную организацию для этого маршрута.",
+    privateTransferCta: "Заказать эту поездку как частный трансфер",
+    packagesUsingRouteTitle: "Пакеты с этим маршрутом",
+    faqTitle: "Часто задаваемые вопросы",
+    relatedTitle: "Похожие трансферы",
+    exploreMoreTitle: "Исследовать больше Мальдив",
+    allTransfersLink: "Все трансферы на Мальдивах",
+    englishVersionLink: "Посмотреть этот маршрут на английском",
+    typeSpeedboat: "Скоростной катер",
+    typeSeaplane: "Гидросамолёт",
+    typeDomesticFlight: "Внутренний рейс",
+    typeFerry: "Паром",
+    typePrivateYacht: "Частная яхта",
+    typeLandTransfer: "Наземный трансфер",
+    modeShared: "Общий",
+    modePrivate: "Частный",
+  },
+  footerLinks: {
+    maldives: "Мальдивы",
+    atolls: "Атоллы",
+    islands: "Острова",
+    resorts: "Курорты",
+    hotels: "Отели",
+    guesthouses: "Гестхаусы",
+    activities: "Активности",
+    fishing: "Рыбалка",
+    diving: "Дайвинг",
+    surfing: "Сёрфинг",
+    snorkeling: "Снорклинг",
+    excursions: "Экскурсии",
+    sandbankTours: "Туры на песчаные банки",
+    waterSports: "Водные виды спорта",
+    islandHopping: "Путешествие по островам",
+    dolphinWhaleWatching: "Наблюдение за дельфинами и китами",
+    sightseeing: "Экскурсии по достопримечательностям",
+    transfers: "Трансферы",
+    airportTransfers: "Трансферы из аэропорта",
+    resortTransfers: "Трансферы на курорт",
+    islandTransfers: "Трансферы на остров",
+    speedboatCharter: "Частный чартер катера",
+    ferrySchedule: "Расписание паромов",
+    packages: "Пакеты",
+    travelGuide: "Путеводитель",
+    attractions: "Достопримечательности",
+    restaurants: "Рестораны",
+    shops: "Магазины",
+    hospitals: "Больницы",
+    schools: "Школы",
+    gyms: "Спортзалы",
+  },
+  fishingHub: {
+    heroEyebrow: "Рыбалка на Мальдивах",
+    title: "Рыбалка на Мальдивах",
+    description: "Настоящие рыболовные чартеры и поездки по всем Мальдивам — частные чартеры на полный и половину дня, глубоководная, рифовая и традиционная рыбалка от реальных операторов.",
+    introP1: "Каждая поездка ниже — настоящая и индивидуально проверенная, а не общий каталог. Полный список на английском языке с поиском и фильтрами доступен отдельно.",
+    introP2: "Частный чартер даёт собственную лодку и команду; совместные и местные поездки — более доступный способ выйти на воду.",
+    featuredTitle: "Рыболовные поездки и чартеры",
+    faqTitle: "Часто задаваемые вопросы",
+    faqs: [
+      {
+        question: "Какие виды рыбалки доступны на Мальдивах?",
+        answer: "Троллинг на крупную рыбу, рифовая и донная рыбалка, традиционная рыбалка на леску и ночная рыбалка — на каждой странице показана реальная предлагаемая поездка.",
+      },
+      {
+        question: "Можно ли заказать частный чартер?",
+        answer: "Да — большинство операторов предлагают частный чартер на полный или половину дня с собственной лодкой и командой.",
+      },
+    ],
+    exploreMoreTitle: "Исследовать больше Мальдив",
+  },
+  divingHub: {
+    heroEyebrow: "Дайвинг на Мальдивах",
+    title: "Дайвинг на Мальдивах",
+    description: "Настоящие дайвинг-поездки, курсы и дайв-центры по всем Мальдивам — развлекательные погружения, курсы PADI и Discover Scuba Diving от реальных операторов.",
+    introP1: "Каждое погружение ниже — настоящее и индивидуально проверенное, а не общий каталог. Полный список на английском языке с поиском и фильтрами доступен отдельно.",
+    introP2: "Развлекательное погружение подходит сертифицированным дайверам; курсы PADI и Discover Scuba Diving — для новичков без сертификации.",
+    featuredTitle: "Дайвинг-поездки и курсы",
+    faqTitle: "Часто задаваемые вопросы",
+    faqs: [
+      {
+        question: "Нужна ли сертификация для дайвинга на Мальдивах?",
+        answer: "Нет — Discover Scuba Diving позволяет погружаться с инструктором без сертификации; курсы PADI дают возможность сертифицироваться.",
+      },
+      {
+        question: "Что такое развлекательное погружение?",
+        answer: "Погружение на рифе с гидом для уже сертифицированных дайверов, обычно с одним баллоном.",
+      },
+    ],
+    exploreMoreTitle: "Исследовать больше Мальдив",
+  },
+  activitiesHub: {
+    heroEyebrow: "Чем заняться",
+    title: "Активности на Мальдивах",
+    description: "Настоящие, доступные для бронирования активности и экскурсии на Мальдивах — путешествия по островам, водные виды спорта, круизы с дельфинами, городские туры и многое другое.",
+    introP1: "Каждая активность ниже — настоящая и индивидуально проверенная, а не общий каталог. Полный список на английском языке с поиском и фильтрами доступен отдельно.",
+    introP2: "У рыбалки, дайвинга и сёрфинга есть собственные разделы — эта страница охватывает всё остальное: водные виды спорта, экскурсии, путешествия по островам и многое другое.",
+    featuredTitle: "Популярные активности",
+    faqTitle: "Часто задаваемые вопросы",
+    faqs: [
+      {
+        question: "Как забронировать активность?",
+        answer: "Откройте страницу активности и отправьте запрос с предпочитаемой датой и размером группы — мы свяжемся напрямую.",
+      },
+      {
+        question: "Где найти рыбалку, дайвинг или сёрфинг?",
+        answer: "У них есть собственные разделы — см. «Исследовать больше» ниже.",
+      },
+    ],
+    exploreMoreTitle: "Исследовать больше Мальдив",
+  },
+  activityDetail: {
+    durationLabel: "Продолжительность",
+    bookingIntro: "Сообщите нам предпочитаемую дату и размер группы, и мы свяжемся с вами по поводу доступности.",
+    otherTripsTitle: "Другие поездки на",
+    packagesFeaturingTitle: "Пакеты с",
+    pickupLocationsTitle: "Доступно с трансфером из",
+    pickupLocationsIntro: "Эта поездка предлагает трансфер из любого из этих курортов и островов.",
+    exploreMoreTitle: "Исследовать больше Мальдив",
+    allFishingLink: "Вся рыбалка на Мальдивах",
+    allDivingLink: "Весь дайвинг на Мальдивах",
+    allActivitiesLink: "Все активности на Мальдивах",
+    englishVersionLink: "Посмотреть эту страницу на английском",
   },
 };
 
@@ -1225,6 +2169,169 @@ const JA: UiStrings = {
     allPackagesLink: "モルディブの全パッケージ",
     englishVersionLink: "英語版でこのパッケージを見る",
   },
+  transfersHub: {
+    heroEyebrow: "モルディブの交通手段",
+    title: "モルディブの送迎",
+    description: "モルディブ全土の空港、リゾート、島、スピードボートの実際の送迎ルート——目的地で検索するか、プライベートチャーターをリクエストできます。",
+    introP1: "以下の各ルートは実在し個別に確認された送迎です——一般的な推定ではありません。検索とフィルター機能付きの完全な英語版リストもご覧いただけます。",
+    introP2: "リゾート送迎は各リゾート独自のスケジュールで運行され、ローカルアイランドへの送迎は主に公共フェリーまたはプライベートスピードボートで行われます。",
+    airportSectionTitle: "モルディブ空港送迎",
+    resortSectionTitle: "リゾート送迎",
+    islandSectionTitle: "島への送迎",
+    faqTitle: "よくある質問",
+    faqs: [
+      {
+        question: "モルディブの空港送迎はどのように機能しますか?",
+        answer: "ヴェラナ国際空港に到着後、目的地に応じてスピードボート、フェリー、水上飛行機、または国内線で移動を続けます。",
+      },
+      {
+        question: "モルディブのスピードボート送迎は乗り合いですか?",
+        answer: "どちらもあります——ほとんどのリゾートは予定された乗り合い送迎を提供し、通常はプライベート送迎やチャーターも利用可能です。各ルートページで実際に提供されている内容を確認できます。",
+      },
+      {
+        question: "送迎はどれくらい前に手配すべきですか?",
+        answer: "宿泊先が確定したらすぐに、特にフライトに合わせて送迎時間を設定するリゾートの場合は早めに手配してください。",
+      },
+      {
+        question: "リゾート送迎と島送迎の違いは何ですか?",
+        answer: "リゾート送迎はプライベートリゾートアイランドへ向かい、島送迎はリゾートではなくホテルやゲストハウスのある有人のモルディブの島へ向かいます。",
+      },
+    ],
+    exploreMoreTitle: "モルディブをもっと探る",
+  },
+  transferDetail: {
+    eyebrow: "送迎ルート",
+    fromLabel: "出発地",
+    toLabel: "目的地",
+    durationLabel: "標準的な所要時間",
+    distanceLabel: "距離",
+    reverseRoutePrompt: "反対方向へ移動しますか?",
+    servicesTitle: "送迎サービス",
+    noServicesNote: "このルートには確認済みの送迎サービスがまだ登録されていません。",
+    privateTransferTitle: "プライベート送迎",
+    privateTransferBody: "自分のボートと自分のスケジュールをお好みですか?プライベート送迎とは、専用グループ、柔軟な時間設定、このルート専用の個別手配を意味します。",
+    privateTransferCta: "この旅をプライベート送迎として予約する",
+    packagesUsingRouteTitle: "このルートを使用するパッケージ",
+    faqTitle: "よくある質問",
+    relatedTitle: "関連する送迎",
+    exploreMoreTitle: "モルディブをもっと探る",
+    allTransfersLink: "モルディブの全送迎",
+    englishVersionLink: "英語版でこのルートを見る",
+    typeSpeedboat: "スピードボート",
+    typeSeaplane: "水上飛行機",
+    typeDomesticFlight: "国内線",
+    typeFerry: "フェリー",
+    typePrivateYacht: "プライベートヨット",
+    typeLandTransfer: "陸路送迎",
+    modeShared: "乗り合い",
+    modePrivate: "プライベート",
+  },
+  footerLinks: {
+    maldives: "モルディブ",
+    atolls: "環礁",
+    islands: "島",
+    resorts: "リゾート",
+    hotels: "ホテル",
+    guesthouses: "ゲストハウス",
+    activities: "アクティビティ",
+    fishing: "フィッシング",
+    diving: "ダイビング",
+    surfing: "サーフィン",
+    snorkeling: "シュノーケリング",
+    excursions: "小旅行",
+    sandbankTours: "サンドバンクツアー",
+    waterSports: "ウォータースポーツ",
+    islandHopping: "アイランドホッピング",
+    dolphinWhaleWatching: "イルカ・クジラウォッチング",
+    sightseeing: "観光",
+    transfers: "送迎",
+    airportTransfers: "空港送迎",
+    resortTransfers: "リゾート送迎",
+    islandTransfers: "島送迎",
+    speedboatCharter: "プライベートスピードボートチャーター",
+    ferrySchedule: "フェリースケジュール",
+    packages: "パッケージ",
+    travelGuide: "旅行ガイド",
+    attractions: "観光スポット",
+    restaurants: "レストラン",
+    shops: "ショップ",
+    hospitals: "病院",
+    schools: "学校",
+    gyms: "ジム",
+  },
+  fishingHub: {
+    heroEyebrow: "モルディブの釣り",
+    title: "モルディブの釣り",
+    description: "モルディブ全土の本物の釣りチャーターとツアー——プライベートの終日・半日チャーター、大物釣り、リーフフィッシング、伝統釣りを実在のオペレーターから。",
+    introP1: "以下の各ツアーは実在し個別に確認されたものです——一般的なディレクトリではありません。検索とフィルター機能付きの完全な英語版リストもご覧いただけます。",
+    introP2: "プライベートチャーターは専用のボートとクルーを提供し、乗り合いやローカルツアーはより手頃に海に出る方法です。",
+    featuredTitle: "釣りツアー&チャーター",
+    faqTitle: "よくある質問",
+    faqs: [
+      {
+        question: "モルディブではどのような釣りができますか?",
+        answer: "ビッグゲームトローリング、リーフ・ボトムフィッシング、伝統的な手釣りツアー、ナイトフィッシングなど——各ページで実際のツアー内容を確認できます。",
+      },
+      {
+        question: "プライベートチャーターは予約できますか?",
+        answer: "はい——ほとんどのオペレーターが専用のボートとクルー付きの終日または半日のプライベートチャーターを提供しています。",
+      },
+    ],
+    exploreMoreTitle: "モルディブをもっと探る",
+  },
+  divingHub: {
+    heroEyebrow: "モルディブのダイビング",
+    title: "モルディブのダイビング",
+    description: "モルディブ全土の本物のダイビングツアー、コース、ダイブセンター——ファンダイブ、PADIコース、体験ダイビングを実在のオペレーターから。",
+    introP1: "以下の各ダイブは実在し個別に確認されたものです——一般的なディレクトリではありません。検索とフィルター機能付きの完全な英語版リストもご覧いただけます。",
+    introP2: "ファンダイブは認定ダイバー向け、PADIコースと体験ダイビングは認定資格のない初心者向けです。",
+    featuredTitle: "ダイビングツアー&コース",
+    faqTitle: "よくある質問",
+    faqs: [
+      {
+        question: "モルディブでダイビングするには認定資格が必要ですか?",
+        answer: "いいえ——体験ダイビングでは資格なしでインストラクターと一緒に潜ることができ、PADIコースで資格を取得できます。",
+      },
+      {
+        question: "ファンダイブとは何ですか?",
+        answer: "既に認定を受けたダイバー向けのガイド付きリーフダイブで、通常1本のタンクを使用します。",
+      },
+    ],
+    exploreMoreTitle: "モルディブをもっと探る",
+  },
+  activitiesHub: {
+    heroEyebrow: "やってみよう",
+    title: "モルディブのアクティビティ",
+    description: "モルディブの本物の予約可能なアクティビティとエクスカーション——アイランドホッピング、ウォータースポーツ、ドルフィンクルーズ、シティツアーなど。",
+    introP1: "以下の各アクティビティは実在し個別に確認されたものです——一般的なディレクトリではありません。検索とフィルター機能付きの完全な英語版リストもご覧いただけます。",
+    introP2: "釣り、ダイビング、サーフィンにはそれぞれ専用セクションがあります——このページではウォータースポーツ、エクスカーション、アイランドホッピングなど、その他すべてを扱います。",
+    featuredTitle: "人気のアクティビティ",
+    faqTitle: "よくある質問",
+    faqs: [
+      {
+        question: "アクティビティはどのように予約しますか?",
+        answer: "アクティビティのページを開き、希望の日付とグループ人数を記載してお問い合わせください——直接ご連絡いたします。",
+      },
+      {
+        question: "釣り、ダイビング、サーフィンはどこにありますか?",
+        answer: "それぞれ専用セクションがあります——下記の「もっと探る」をご覧ください。",
+      },
+    ],
+    exploreMoreTitle: "モルディブをもっと探る",
+  },
+  activityDetail: {
+    durationLabel: "所要時間",
+    bookingIntro: "ご希望の日付とグループ人数をお知らせください。空き状況についてご連絡いたします。",
+    otherTripsTitle: "その他のツアー:",
+    packagesFeaturingTitle: "含まれるパッケージ:",
+    pickupLocationsTitle: "送迎可能な場所",
+    pickupLocationsIntro: "このツアーは以下のリゾートや島からの送迎が可能です。",
+    exploreMoreTitle: "モルディブをもっと探る",
+    allFishingLink: "モルディブの釣り全て",
+    allDivingLink: "モルディブのダイビング全て",
+    allActivitiesLink: "モルディブのアクティビティ全て",
+    englishVersionLink: "英語版でこのページを見る",
+  },
 };
 
 const ZH: UiStrings = {
@@ -1401,6 +2508,169 @@ const ZH: UiStrings = {
     allPackagesLink: "所有马尔代夫套餐",
     englishVersionLink: "查看英文版套餐",
   },
+  transfersHub: {
+    heroEyebrow: "马尔代夫交通",
+    title: "马尔代夫接送服务",
+    description: "马尔代夫各地真实的机场、度假村、岛屿和快艇接送路线——按目的地搜索,或申请私人租船服务。",
+    introP1: "以下每条路线均为真实、经过单独核实的接送服务,而非笼统估算。完整的英文列表提供搜索和筛选功能。",
+    introP2: "度假村接送按各度假村自己的时间表运行;本地岛屿接送主要通过公共渡轮或私人快艇进行。",
+    airportSectionTitle: "马尔代夫机场接送",
+    resortSectionTitle: "度假村接送",
+    islandSectionTitle: "岛屿接送",
+    faqTitle: "常见问题",
+    faqs: [
+      {
+        question: "马尔代夫的机场接送如何运作?",
+        answer: "您抵达维拉纳国际机场后,根据目的地继续乘坐快艇、渡轮、水上飞机或国内航班前往。",
+      },
+      {
+        question: "马尔代夫的快艇接送是共享的吗?",
+        answer: "两种都有——大多数度假村提供定时共享接送,通常也可提供私人接送或整船租赁。每个路线页面都会显示实际提供的服务。",
+      },
+      {
+        question: "我应该提前多久安排接送?",
+        answer: "一旦住宿确认后应尽快安排,尤其是那些将接送时间与特定航班对接的度假村。",
+      },
+      {
+        question: "度假村接送和岛屿接送有什么区别?",
+        answer: "度假村接送前往私人度假村岛屿;岛屿接送前往有酒店或民宿的马尔代夫有人居住岛屿,而非度假村。",
+      },
+    ],
+    exploreMoreTitle: "探索更多马尔代夫",
+  },
+  transferDetail: {
+    eyebrow: "接送路线",
+    fromLabel: "出发地",
+    toLabel: "目的地",
+    durationLabel: "通常时长",
+    distanceLabel: "距离",
+    reverseRoutePrompt: "要前往相反方向吗?",
+    servicesTitle: "接送服务",
+    noServicesNote: "此路线暂无已核实的接送服务记录。",
+    privateTransferTitle: "私人接送",
+    privateTransferBody: "想要自己的船只和时间安排吗?私人接送意味着专属团队、灵活的时间以及针对此路线的定制安排。",
+    privateTransferCta: "将此行程预订为私人接送",
+    packagesUsingRouteTitle: "使用此路线的套餐",
+    faqTitle: "常见问题",
+    relatedTitle: "相关接送服务",
+    exploreMoreTitle: "探索更多马尔代夫",
+    allTransfersLink: "马尔代夫所有接送服务",
+    englishVersionLink: "查看英文版路线",
+    typeSpeedboat: "快艇",
+    typeSeaplane: "水上飞机",
+    typeDomesticFlight: "国内航班",
+    typeFerry: "渡轮",
+    typePrivateYacht: "私人游艇",
+    typeLandTransfer: "陆路接送",
+    modeShared: "共享",
+    modePrivate: "私人",
+  },
+  footerLinks: {
+    maldives: "马尔代夫",
+    atolls: "环礁",
+    islands: "岛屿",
+    resorts: "度假村",
+    hotels: "酒店",
+    guesthouses: "民宿",
+    activities: "活动",
+    fishing: "钓鱼",
+    diving: "潜水",
+    surfing: "冲浪",
+    snorkeling: "浮潜",
+    excursions: "短途游览",
+    sandbankTours: "沙洲之旅",
+    waterSports: "水上运动",
+    islandHopping: "跳岛游",
+    dolphinWhaleWatching: "观赏海豚和鲸鱼",
+    sightseeing: "观光",
+    transfers: "接送服务",
+    airportTransfers: "机场接送",
+    resortTransfers: "度假村接送",
+    islandTransfers: "岛屿接送",
+    speedboatCharter: "私人快艇租赁",
+    ferrySchedule: "渡轮时间表",
+    packages: "套餐",
+    travelGuide: "旅游指南",
+    attractions: "景点",
+    restaurants: "餐厅",
+    shops: "商店",
+    hospitals: "医院",
+    schools: "学校",
+    gyms: "健身房",
+  },
+  fishingHub: {
+    heroEyebrow: "马尔代夫钓鱼",
+    title: "马尔代夫钓鱼",
+    description: "马尔代夫各地真实的钓鱼租船和行程——私人全天和半天租船、大物钓鱼、礁石钓鱼和传统钓鱼,均来自真实运营商。",
+    introP1: "以下每个行程均为真实且经过单独核实,而非笼统的目录列表。完整的英文列表提供搜索和筛选功能。",
+    introP2: "私人租船提供专属船只和船员;共享和本地行程则是更经济的出海方式。",
+    featuredTitle: "钓鱼行程与租船",
+    faqTitle: "常见问题",
+    faqs: [
+      {
+        question: "马尔代夫有哪些钓鱼方式?",
+        answer: "大物拖钓、礁石和底层钓鱼、传统手线钓鱼以及夜钓——每个页面都显示实际提供的行程。",
+      },
+      {
+        question: "可以预订私人租船吗?",
+        answer: "可以——大多数运营商提供配备专属船只和船员的全天或半天私人租船服务。",
+      },
+    ],
+    exploreMoreTitle: "探索更多马尔代夫",
+  },
+  divingHub: {
+    heroEyebrow: "马尔代夫潜水",
+    title: "马尔代夫潜水",
+    description: "马尔代夫各地真实的潜水行程、课程和潜水中心——休闲潜水、PADI课程和体验潜水,均来自真实运营商。",
+    introP1: "以下每次潜水均为真实且经过单独核实,而非笼统的目录列表。完整的英文列表提供搜索和筛选功能。",
+    introP2: "休闲潜水适合持证潜水员;PADI课程和体验潜水适合尚未获得认证的初学者。",
+    featuredTitle: "潜水行程与课程",
+    faqTitle: "常见问题",
+    faqs: [
+      {
+        question: "在马尔代夫潜水需要潜水证吗?",
+        answer: "不需要——体验潜水可让您在没有证书的情况下与教练一起潜水;PADI课程可让您获得认证。",
+      },
+      {
+        question: "什么是休闲潜水?",
+        answer: "适合已持证潜水员的有导潜陪同的礁石潜水,通常使用一个气瓶。",
+      },
+    ],
+    exploreMoreTitle: "探索更多马尔代夫",
+  },
+  activitiesHub: {
+    heroEyebrow: "休闲活动",
+    title: "马尔代夫活动",
+    description: "马尔代夫真实可预订的活动和短途游览——跳岛游、水上运动、海豚巡游、城市观光等。",
+    introP1: "以下每项活动均为真实且经过单独核实,而非笼统的目录列表。完整的英文列表提供搜索和筛选功能。",
+    introP2: "钓鱼、潜水和冲浪各有专属板块——本页面涵盖其余所有内容:水上运动、短途游览、跳岛游等。",
+    featuredTitle: "热门活动",
+    faqTitle: "常见问题",
+    faqs: [
+      {
+        question: "如何预订活动?",
+        answer: "打开活动页面,提交您偏好的日期和团队人数的咨询——我们会直接与您联系。",
+      },
+      {
+        question: "在哪里可以找到钓鱼、潜水或冲浪?",
+        answer: "这些都有各自的专属板块——请参见下方的「探索更多」。",
+      },
+    ],
+    exploreMoreTitle: "探索更多马尔代夫",
+  },
+  activityDetail: {
+    durationLabel: "时长",
+    bookingIntro: "请告知我们您偏好的日期和团队人数,我们会就可用性与您联系。",
+    otherTripsTitle: "其他行程,位于",
+    packagesFeaturingTitle: "包含该项目的套餐",
+    pickupLocationsTitle: "可提供接送的地点",
+    pickupLocationsIntro: "此行程可从以下任意度假村或岛屿提供接送服务。",
+    exploreMoreTitle: "探索更多马尔代夫",
+    allFishingLink: "马尔代夫所有钓鱼项目",
+    allDivingLink: "马尔代夫所有潜水项目",
+    allActivitiesLink: "马尔代夫所有活动",
+    englishVersionLink: "查看英文版页面",
+  },
 };
 
 const UI_STRINGS: Partial<Record<Locale, UiStrings>> = { en: EN, de: DE, es: ES, it: IT, ru: RU, ja: JA, zh: ZH };
@@ -1410,3 +2680,10 @@ const UI_STRINGS: Partial<Record<Locale, UiStrings>> = { en: EN, de: DE, es: ES,
 export function getUiStrings(locale: Locale): UiStrings {
   return UI_STRINGS[locale] ?? EN;
 }
+
+/** Every non-English locale with real UI-strings copy -- used by pages
+ * whose hub is pure static copy (no page_translations row to check a
+ * "published" state against, e.g. the Travel Guide hub) to build their
+ * hreflang alternates from the same rollout list this file itself
+ * defines, rather than a second hardcoded locale array. */
+export const UI_STRINGS_LOCALES: Locale[] = Object.keys(UI_STRINGS).filter((l): l is Locale => l !== "en") as Locale[];

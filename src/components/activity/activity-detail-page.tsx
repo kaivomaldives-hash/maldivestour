@@ -18,6 +18,7 @@ import { bookingCta } from "@/lib/bookings/copy";
 import { getNearbyAccommodations } from "@/lib/accommodations/repository";
 import { getActivityBySlug } from "@/lib/activities/repository";
 import { activityServiceJsonLd, hasDedicatedRoute } from "@/lib/activities/types";
+import { getEntityLocalePaths } from "@/lib/i18n/repository";
 import { getPackageViewsByActivity } from "@/lib/packages/view-repository";
 import { getReviewsForNode } from "@/lib/reviews/repository";
 import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
@@ -53,6 +54,18 @@ async function loadGenericActivity(slug: string) {
   return activity;
 }
 
+/** Mirrors fishingHreflangAlternates()/[locale] activities route -- see
+ * that function's own comment. */
+async function activityHreflangAlternates(entityId: string, englishSlug: string): Promise<Record<string, string>> {
+  const paths = await getEntityLocalePaths(entityId, englishSlug, "/maldives/activities/");
+  const alternates: Record<string, string> = {};
+  for (const [locale, path] of Object.entries(paths)) {
+    alternates[locale] = canonicalUrl(path);
+  }
+  alternates["x-default"] = alternates.en;
+  return alternates;
+}
+
 export async function activityDetailMetadata(slug: string): Promise<Metadata> {
   const activity = await loadGenericActivity(slug);
   if (!activity) return {};
@@ -60,11 +73,12 @@ export async function activityDetailMetadata(slug: string): Promise<Metadata> {
   const title = activity.metaTitle ?? `${activity.title} | Maldives Activities | MTG`;
   const description = activity.metaDescription ?? activity.summary ?? undefined;
   const url = canonicalUrl(`/maldives/activities/${activity.slug}`);
+  const languages = await activityHreflangAlternates(activity.id, activity.slug);
 
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages },
     openGraph: { title, description, url },
   };
 }

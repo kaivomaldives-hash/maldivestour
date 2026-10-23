@@ -3,15 +3,16 @@ import Link from "next/link";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { MediaImage } from "@/components/ui/media-image";
 import { articleHref, type ArticleSummary } from "@/lib/articles/types";
-import { localizedPath, type Locale } from "@/lib/i18n/locales";
+import type { Locale } from "@/lib/i18n/locales";
+import { localizeHubPath } from "@/lib/i18n/hub-paths";
 
-/** `locale` only changes the href prefix (e.g. `/de/maldives/travel-guide/
+/** `locale` only changes the href prefix (e.g. `/de/malediven/reisefuehrer/
  * {translated-slug}/`) — `article.slug`/`.title` are expected to already be
  * the translated values when this is used on a localized page (see
  * getTranslatedArticles in src/lib/articles/repository.ts). Omitted (or
  * "en"), this renders the plain English card exactly as before. */
 export function ArticleCard({ article, locale }: { article: ArticleSummary; locale?: Locale }) {
-  const href = locale ? localizedPath(locale, articleHref(article)) : articleHref(article);
+  const href = locale ? localizeHubPath(locale, articleHref(article)) : articleHref(article);
   return (
     <li className={CARD_CLASS}>
       {article.heroImage && (

@@ -3,11 +3,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ArticleVideoSection } from "@/components/articles/article-video-section";
-import { RegisterArticleLocaleLinks } from "@/components/i18n/article-locale-links-context";
+import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getTranslatedArticleBySlug } from "@/lib/articles/repository";
-import { DEFAULT_LOCALE, isLocale, localizedPath, type Locale } from "@/lib/i18n/locales";
+import { DEFAULT_LOCALE, isLocale, type Locale } from "@/lib/i18n/locales";
+import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getArticleLocalePaths } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
 import { publicStorageUrl } from "@/lib/media/types";
@@ -75,7 +76,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 
   const title = article.metaTitle ?? `${article.title} | Maldives Travel Guide | MTG`;
   const description = article.metaDescription ?? article.summary ?? undefined;
-  const url = localizedPath(locale, `/maldives/travel-guide/${article.slug}/`);
+  const url = localizeHubPath(locale, `/maldives/travel-guide/${article.slug}/`);
   const englishSlug = (await getEnglishSlug(article.id)) ?? article.slug;
   const languages = await articleHreflangAlternates(article.id, englishSlug);
   const ogImage = article.heroImage?.storagePath ? publicStorageUrl(article.heroImage.storagePath) : null;
@@ -89,7 +90,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 }
 
 function articleJsonLd(locale: Locale, article: NonNullable<Awaited<ReturnType<typeof getTranslatedArticleBySlug>>>) {
-  const url = `${getSiteUrl()}${localizedPath(locale, `/maldives/travel-guide/${article.slug}/`)}`;
+  const url = `${getSiteUrl()}${localizeHubPath(locale, `/maldives/travel-guide/${article.slug}/`)}`;
   const imageUrl = article.heroImage?.storagePath ? publicStorageUrl(article.heroImage.storagePath) : undefined;
 
   return {
@@ -115,13 +116,13 @@ export default async function LocaleArticleDetailPage({ params }: { params: Prom
 
   return (
     <main>
-      <RegisterArticleLocaleLinks paths={localePaths} />
+      <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath="/maldives/travel-guide/" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(articleJsonLd(locale, article)) }} />
 
       <PageHero
         breadcrumbs={[
-          { label: ui.nav.maldives, href: `/${locale}/maldives/` },
-          { label: ui.nav.travelGuide, href: `/${locale}/maldives/travel-guide/` },
+          { label: ui.nav.maldives, href: localizeHubPath(locale, "/maldives/") },
+          { label: ui.nav.travelGuide, href: localizeHubPath(locale, "/maldives/travel-guide/") },
           { label: article.title },
         ]}
         eyebrow={article.category?.title ?? ui.nav.travelGuide}
@@ -209,7 +210,7 @@ export default async function LocaleArticleDetailPage({ params }: { params: Prom
               {article.relatedArticles.map((related) => (
                 <li key={related.id}>
                   <Link
-                    href={localizedPath(locale, `/maldives/travel-guide/${related.slug}/`)}
+                    href={localizeHubPath(locale, `/maldives/travel-guide/${related.slug}/`)}
                     className="block rounded-xl border border-neutral-200 p-4 text-sm font-medium text-ocean-900 transition-colors hover:border-maldives-600 hover:text-maldives-600"
                   >
                     {related.title}
@@ -221,7 +222,7 @@ export default async function LocaleArticleDetailPage({ params }: { params: Prom
         )}
 
         <div className="mt-10 border-t border-neutral-200 pt-6">
-          <Link href={`/${locale}/maldives/travel-guide/`} className="text-sm font-medium text-maldives-600 hover:underline">
+          <Link href={localizeHubPath(locale, "/maldives/travel-guide/")} className="text-sm font-medium text-maldives-600 hover:underline">
             {d.backToGuide}
           </Link>
         </div>

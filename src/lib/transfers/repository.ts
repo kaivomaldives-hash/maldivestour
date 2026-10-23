@@ -5,6 +5,8 @@ import { cachedRead } from "@/lib/cache/cached-read";
 import { getCategoryBySlug, getNodeIdsByCategory } from "@/lib/categories/repository";
 import { getContentSortSetting } from "@/lib/content-sort/repository";
 import type { ContentSortMode } from "@/lib/content-sort/types";
+import type { Locale } from "@/lib/i18n/locales";
+import { getEntityTranslationBySlug } from "@/lib/i18n/repository";
 import { getLocationSummariesByIds } from "@/lib/locations/repository";
 import { getHeroMediaByNodeIds } from "@/lib/media/repository";
 import type { MediaAsset } from "@/lib/media/types";
@@ -483,6 +485,34 @@ async function getTransferRouteBySlugUncached(slug: string): Promise<TransferRou
 }
 
 export const getTransferRouteBySlug = cachedRead(getTransferRouteBySlugUncached, ["transfers:route-by-slug"], 300);
+
+/** Localized equivalent of getTranslatedPackageViewBySlug
+ * (src/lib/packages/view-repository.ts) -- resolves a translated
+ * /{locale}/maldives/transfers/[route] slug back to the canonical
+ * English route via the translations table, then overlays only
+ * title/summary/slug. Every other field (services, distance, duration,
+ * categories, images) stays as the real, un-translated canonical data --
+ * the translations table has no equivalent fields for those yet. */
+export async function getTranslatedTransferRouteViewBySlug(locale: Locale, slug: string): Promise<TransferRouteDetail | null> {
+  if (locale === "en") return getTransferRouteBySlug(slug);
+
+  const translation = await getEntityTranslationBySlug(locale, slug);
+  if (!translation || translation.entityType !== "transfer_route") return null;
+
+  const supabase = await createClient();
+  const { data } = await supabase.from("nodes").select("slug").eq("id", translation.entityId).maybeSingle<{ slug: string }>();
+  if (!data) return null;
+
+  const canonical = await getTransferRouteBySlug(data.slug);
+  if (!canonical) return null;
+
+  return {
+    ...canonical,
+    slug: translation.slug,
+    title: translation.title,
+    summary: translation.shortDescription ?? translation.description,
+  };
+}
 
 export async function getTransferRoutesByOrigin(originLocationId: string): Promise<TransferRouteSummary[]> {
   const result = await getTransferRoutes({ originLocationId, pageSize: 100 });

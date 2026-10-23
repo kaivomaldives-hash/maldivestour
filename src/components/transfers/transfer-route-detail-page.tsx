@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { BookingToggle } from "@/components/bookings/booking-toggle";
 import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
+import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
 import { PackageCard } from "@/components/packages/package-card";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { RouteGallerySection } from "@/components/transfers/route-gallery-section";
@@ -15,6 +16,7 @@ import { CARD_CLASS } from "@/components/ui/card";
 import { FaqSection } from "@/components/ui/faq-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
+import { getEntityLocalePaths } from "@/lib/i18n/repository";
 import { getLocationBySlug, getLocationSummaryById } from "@/lib/locations/repository";
 import { getMediaForNode } from "@/lib/media/repository";
 import { getPackageViewsByTransferRoute } from "@/lib/packages/view-repository";
@@ -79,13 +81,29 @@ export async function transferRouteDetailMetadata(slug: string): Promise<Metadat
     route.summary ??
     `Transfers from ${originTitle} to ${destinationTitle}${types.length > 0 ? ` — ${types.join(", ")}` : ""}.`;
   const url = canonicalUrl(`/maldives/transfers/${route.slug}`);
+  const languages = await transferRouteHreflangAlternates(route.id, route.slug);
 
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages },
     openGraph: { title, description, url },
   };
+}
+
+/** Mirrors packageHreflangAlternates()/[locale] transfer route -- the
+ * English route is the other reciprocal half of that pair, so it needs
+ * the identical hreflang set pointing at every translated version. Only
+ * ever includes locales with a real, published translations row --
+ * getEntityLocalePaths already enforces that. */
+async function transferRouteHreflangAlternates(entityId: string, englishSlug: string): Promise<Record<string, string>> {
+  const paths = await getEntityLocalePaths(entityId, englishSlug, "/maldives/transfers/");
+  const alternates: Record<string, string> = {};
+  for (const [locale, path] of Object.entries(paths)) {
+    alternates[locale] = canonicalUrl(path);
+  }
+  alternates["x-default"] = alternates.en;
+  return alternates;
 }
 
 /** Real, visible-on-page facts only — no ratings/reviews/availability
@@ -114,7 +132,7 @@ function routeJsonLd(route: TransferRouteDetail) {
 /** Route-specific FAQ (Task 20 §36) — every answer is derived from this
  * route's own real data, never a generic template repeated unchanged
  * across routes. */
-function buildRouteFaqs(route: TransferRouteDetail): Array<{ question: string; answer: string }> {
+export function buildRouteFaqs(route: TransferRouteDetail): Array<{ question: string; answer: string }> {
   const faqs: Array<{ question: string; answer: string }> = [];
   const originTitle = route.origin?.title ?? "the airport";
   const destinationTitle = route.destination?.title ?? route.title;
@@ -282,7 +300,7 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
   if (!route) notFound();
 
   const reverseSlug = route.origin && route.destination ? `${route.destination.slug}-to-${route.origin.slug}` : null;
-  const [reverseRoute, packages, originRoutes, destinationRoutes, atollRoutes, reviews, originDetail, destinationDetail, originAtoll, media] = await Promise.all([
+  const [reverseRoute, packages, originRoutes, destinationRoutes, atollRoutes, reviews, originDetail, destinationDetail, originAtoll, media, localePaths] = await Promise.all([
     reverseSlug ? getTransferRouteBySlug(reverseSlug) : Promise.resolve(null),
     getPackageViewsByTransferRoute(route.id),
     route.origin ? getTransferRoutesByOrigin(route.origin.id) : Promise.resolve([]),
@@ -293,6 +311,7 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
     route.destination ? getLocationBySlug(route.destination.slug) : Promise.resolve(null),
     route.origin?.parentId ? getLocationSummaryById(route.origin.parentId) : Promise.resolve(null),
     getMediaForNode(route.id),
+    getEntityLocalePaths(route.id, route.slug, "/maldives/transfers/"),
   ]);
   const galleryImages = media.filter((m) => m.role === "gallery").map((m) => m.asset);
 
@@ -307,6 +326,7 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
 
   return (
     <main>
+      <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath="/maldives/transfers/" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(routeJsonLd(route)) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(routeVideoJsonLd()) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(faqJsonLd(faqs)) }} />

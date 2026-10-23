@@ -15,10 +15,11 @@ import { PageHero } from "@/components/ui/page-hero";
 import { getActivities, searchActivities } from "@/lib/activities/repository";
 import { activityHref, type ActivityCategory, type ActivityDifficulty } from "@/lib/activities/types";
 import { getAttractions } from "@/lib/attractions/repository";
+import { getPublishedLocalesForPage } from "@/lib/i18n/repository";
 import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
 import { getActivitiesHeroVideo } from "@/lib/media/site-hero-video";
 import { asset } from "@/lib/packages/category-images";
-import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
+import { breadcrumbJsonLd, canonicalUrl, hreflangAlternates, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 
 // A real legacy island-hopping photo (already verified against
 // data/maldives/migration/full-legacy-image-library-manifest.json and used
@@ -127,11 +128,12 @@ export async function activityDirectoryMetadata(searchParams: Promise<ActivityDi
   const title = "Maldives Activities | Things to Do, Tours & Experiences";
   const description = "Real, bookable Maldives activities and excursions — island hopping, watersports, dolphin cruises and more — by category, atoll and island.";
   const url = canonicalUrl("/maldives/activities");
+  const publishedLocales = await getPublishedLocalesForPage("activities-hub");
 
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages: hreflangAlternates("/maldives/activities/", publishedLocales) },
     openGraph: { title, description, url },
     // A category/atoll/island/search filter is a discovery view, not a
     // canonical page — the same rule applied to accommodations (Task 5)

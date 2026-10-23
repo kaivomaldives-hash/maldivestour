@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { canonicalUrl } from "@/lib/seo/site";
+import { getPublishedLocalesForPage } from "@/lib/i18n/repository";
+import { canonicalUrl, hreflangAlternates } from "@/lib/seo/site";
 
 export interface FishingDirectorySearchParams {
   q?: string;
@@ -22,11 +23,12 @@ export async function fishingDirectoryMetadata(searchParams: Promise<FishingDire
   const description =
     "Real Maldives fishing charters, trips and packages — private full-day and half-day charters, big game, reef and traditional fishing, sourced from real operators and a verified rate sheet, not a generic directory.";
   const url = canonicalUrl("/maldives/fishing");
+  const publishedLocales = await getPublishedLocalesForPage("fishing-hub");
 
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages: hreflangAlternates("/maldives/fishing/", publishedLocales) },
     openGraph: { title, description, url },
     robots: hasAnyFilter(sp) ? { index: false, follow: true } : undefined,
   };

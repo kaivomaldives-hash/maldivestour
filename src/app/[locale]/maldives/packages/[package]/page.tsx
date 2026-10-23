@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
 import { PackageCard } from "@/components/packages/package-card";
 import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
@@ -11,7 +12,8 @@ import { LocationMap } from "@/components/locations/location-map";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { bookingCta, FISHING_PACKAGE_CTA } from "@/lib/bookings/copy";
-import { isLocale, localizedPath, type Locale } from "@/lib/i18n/locales";
+import { isLocale, type Locale } from "@/lib/i18n/locales";
+import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getEntityLocalePaths } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
 import { getRelatedPackageViews, getTranslatedPackageViewBySlug } from "@/lib/packages/view-repository";
@@ -67,7 +69,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 
   const title = `${pkg.title} | ${pkg.nights ?? "?"} ${getUiStrings(locale).packageDetail.nightsDays}`;
   const description = pkg.shortDescription ?? undefined;
-  const url = localizedPath(locale, `/maldives/packages/${pkg.slug}/`);
+  const url = localizeHubPath(locale, `/maldives/packages/${pkg.slug}/`);
   const englishSlug = (await getEnglishSlug(pkg.id)) ?? pkg.slug;
   const paths = await getEntityLocalePaths(pkg.id, englishSlug, "/maldives/packages/");
   const languages: Record<string, string> = {};
@@ -91,24 +93,26 @@ export default async function LocalePackageDetailPage({ params }: { params: Prom
   const [related, englishSlug] = await Promise.all([getRelatedPackageViews(pkg, 6), getEnglishSlug(pkg.id)]);
   const youtubeId = pkg.youtubeId ? extractYoutubeId(pkg.youtubeId) : null;
   const priceTypeLabel = pkg.priceType === "per-person" ? d.perPerson : pkg.priceType === "per-couple" ? d.perCouple : pkg.priceType === "per-package" ? d.perPackage : null;
+  const localePaths = await getEntityLocalePaths(pkg.id, englishSlug ?? pkg.slug, "/maldives/packages/");
 
   const breadcrumb = breadcrumbJsonLd(
     [
-      { label: ui.nav.maldives, href: `/${locale}/maldives/` },
-      { label: ui.nav.packages, href: `/${locale}/maldives/packages/` },
+      { label: ui.nav.maldives, href: localizeHubPath(locale, "/maldives/") },
+      { label: ui.nav.packages, href: localizeHubPath(locale, "/maldives/packages/") },
       { label: pkg.title },
     ],
-    localizedPath(locale, `/maldives/packages/${pkg.slug}`),
+    localizeHubPath(locale, `/maldives/packages/${pkg.slug}`),
   );
 
   return (
     <main>
+      <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath="/maldives/packages/" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(breadcrumb) }} />
 
       <PageHero
         breadcrumbs={[
-          { label: ui.nav.maldives, href: `/${locale}/maldives/` },
-          { label: ui.nav.packages, href: `/${locale}/maldives/packages/` },
+          { label: ui.nav.maldives, href: localizeHubPath(locale, "/maldives/") },
+          { label: ui.nav.packages, href: localizeHubPath(locale, "/maldives/packages/") },
           { label: pkg.title },
         ]}
         eyebrow={d.eyebrow}
@@ -337,7 +341,7 @@ export default async function LocalePackageDetailPage({ params }: { params: Prom
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">{d.exploreMoreTitle}</h2>
           <nav aria-label="Related Maldives links" className="mt-4 flex flex-wrap gap-2">
-            <Link href="/maldives/packages/" className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+            <Link href={localizeHubPath(locale, "/maldives/packages/")} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
               {d.allPackagesLink}
             </Link>
             {pkg.categories.map((c) => (

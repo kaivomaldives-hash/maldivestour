@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { getAccommodationBySlug } from "@/lib/accommodations/repository";
 import { ACCOMMODATION_TYPE_SEGMENT, type AccommodationType } from "@/lib/accommodations/types";
+import { entityHreflangLanguages } from "@/lib/i18n/repository";
 import { canonicalUrl } from "@/lib/seo/site";
 
 export const TYPE_LABEL: Record<AccommodationType, string> = {
@@ -45,10 +46,12 @@ export async function accommodationDetailMetadata(type: AccommodationType, slug:
   const description = accommodation.metaDescription ?? accommodation.summary ?? undefined;
   const url = canonicalUrl(`/maldives/${ACCOMMODATION_TYPE_SEGMENT[type]}/${accommodation.slug}`);
 
+  const languages = await entityHreflangLanguages(accommodation.id, accommodation.slug, `/maldives/${ACCOMMODATION_TYPE_SEGMENT[type]}/`);
+
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages },
     openGraph: { title, description, url },
   };
 }

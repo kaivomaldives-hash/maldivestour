@@ -8,38 +8,27 @@ import { useState } from "react";
 import { SearchBox } from "@/components/search/search-box";
 import { CurrencySelector } from "@/components/currency/currency-selector";
 import { HeaderAccountMenu } from "@/components/header-account-menu";
-import { HeaderMoreMenu, MORE_NAV_ITEMS } from "@/components/header-more-menu";
+import { HeaderMoreMenu, moreNavItems } from "@/components/header-more-menu";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { CloseIcon, MenuIcon, SearchIcon } from "@/components/ui/icons";
-import { localizeHubPath } from "@/lib/i18n/hub-paths";
-import { SUPPORTED_LOCALES, type Locale } from "@/lib/i18n/locales";
+import { localizedSiteHref } from "@/lib/i18n/hub-paths";
+import { localeFromPathname, type Locale } from "@/lib/i18n/locales";
+import { getChromeStrings } from "@/lib/i18n/chrome-strings";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
 
-// `navKey` indexes ui.nav; `href` is the real English URL. Only
-// maldives/transfers/packages resolve through localizeHubPath (via
-// `translatedHub: true`) -- stays/activities/diving/fishing show a
-// translated label but keep their plain English href, since those
-// verticals have no translated route yet.
+// `navKey` indexes ui.nav; `href` is the real English URL, turned into
+// the same page in the visitor's language by localizedSiteHref (every
+// one of these hubs is translated).
 const PRIMARY_NAV = [
-  { navKey: "maldives", href: "/maldives/", translatedHub: true },
+  { navKey: "maldives", href: "/maldives/" },
   { navKey: "stays", href: "/maldives/stays/" },
   { navKey: "activities", href: "/maldives/activities/" },
   { navKey: "diving", href: "/maldives/diving/" },
   { navKey: "fishing", href: "/maldives/fishing/" },
-  { navKey: "transfers", href: "/maldives/transfers/", translatedHub: true },
-  { navKey: "packages", href: "/maldives/packages/", translatedHub: true },
+  { navKey: "transfers", href: "/maldives/transfers/" },
+  { navKey: "packages", href: "/maldives/packages/" },
 ] as const;
-
-/** Derives the current locale from the first path segment -- same
- * pattern as LanguageSwitcher, which this header already renders. A
- * Client Component still server-renders with the real request pathname
- * on first load, so the nav is correctly localized from the first
- * byte, not a post-hydration swap. */
-function localeFromPathname(pathname: string): Locale {
-  const first = pathname.split("/").filter(Boolean)[0];
-  return (SUPPORTED_LOCALES as readonly string[]).includes(first) ? (first as Locale) : "en";
-}
 
 const WHATSAPP_URL = "https://wa.me/9607794332";
 
@@ -62,9 +51,10 @@ export function SiteHeader({ availableLocales }: { availableLocales: Locale[] })
   const locale = localeFromPathname(pathname);
   const ui = getUiStrings(locale);
   const navItems = PRIMARY_NAV.map((item) => ({
-    href: "translatedHub" in item && item.translatedHub ? localizeHubPath(locale, item.href) : item.href,
+    href: localizedSiteHref(locale, item.href),
     label: ui.nav[item.navKey],
   }));
+  const moreItems = moreNavItems(locale);
   const [mobilePanel, setMobilePanel] = useState<MobilePanel>("none");
 
   // Close whichever mobile panel is open on route change, so it never
@@ -84,7 +74,7 @@ export function SiteHeader({ availableLocales }: { availableLocales: Locale[] })
   return (
     <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <div className={`${CONTAINER_CLASS} flex h-16 items-center justify-between gap-4`}>
-        <Link href="/" className="flex shrink-0 items-center">
+        <Link href={localizedSiteHref(locale, "/")} className="flex shrink-0 items-center">
           {/* unoptimized: Next's image optimizer flattens this PNG's
               transparent background onto white when it re-encodes a
               resized variant — verified by fetching the optimized
@@ -127,7 +117,7 @@ export function SiteHeader({ availableLocales }: { availableLocales: Locale[] })
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-ocean-800"
           >
-            Get in touch
+            {ui.ctaGetInTouch}
           </a>
           <HeaderAccountMenu />
         </div>
@@ -184,8 +174,8 @@ export function SiteHeader({ availableLocales }: { availableLocales: Locale[] })
                 </Link>
               );
             })}
-            <p className="mt-2 border-t border-neutral-200 px-3 pt-3 text-xs font-medium uppercase tracking-wide text-neutral-400">Pages</p>
-            {MORE_NAV_ITEMS.map((item) => {
+            <p className="mt-2 border-t border-neutral-200 px-3 pt-3 text-xs font-medium uppercase tracking-wide text-neutral-400">{getChromeStrings(locale).pagesMenu}</p>
+            {moreItems.map((item) => {
               const active = isActive(pathname, item.href);
               return (
                 <Link
@@ -214,7 +204,7 @@ export function SiteHeader({ availableLocales }: { availableLocales: Locale[] })
               rel="noopener noreferrer"
               className="mt-2 inline-flex items-center justify-center rounded-full bg-maldives-600 px-4 py-2.5 text-sm font-medium text-white"
             >
-              Get in touch
+              {ui.ctaGetInTouch}
             </a>
           </nav>
         </div>

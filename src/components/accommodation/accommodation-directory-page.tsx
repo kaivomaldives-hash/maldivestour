@@ -12,7 +12,8 @@ import { ACCOMMODATION_TYPE_SEGMENT, type AccommodationType, type PriceTier } fr
 import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
 import { getResortsHeroVideo } from "@/lib/media/site-hero-video";
 import { ACCOMMODATION_SEO_LANDING_SPECS } from "@/lib/accommodations/seo-landing-content";
-import { canonicalUrl } from "@/lib/seo/site";
+import { STAYS_STRINGS_LOCALES } from "@/lib/i18n/stays-strings";
+import { canonicalUrl, hreflangAlternates } from "@/lib/seo/site";
 
 const TYPE_LABEL: Record<AccommodationType, string> = {
   hotel: "Hotels",
@@ -63,7 +64,12 @@ export async function accommodationDirectoryMetadata(
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: {
+      canonical: url,
+      // Only the three types with translated directories (see
+      // src/app/[locale]/maldives/{resorts,hotels,guesthouses}/).
+      ...(type === "resort" || type === "hotel" || type === "guesthouse" ? { languages: hreflangAlternates(`/maldives/${segment}/`, STAYS_STRINGS_LOCALES) } : {}),
+    },
     openGraph: { title, description, url },
     // Any filter/search state is a discovery view, not a canonical page —
     // keep it out of the index (matches the /maldives/islands/ pattern).

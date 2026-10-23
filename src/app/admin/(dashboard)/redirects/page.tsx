@@ -2,6 +2,8 @@ import Link from "next/link";
 
 import { AdminSearchField } from "@/components/admin/admin-search-field";
 import { AdminTableHead } from "@/components/admin/admin-table-head";
+import { RedirectCreateForm } from "@/components/admin/redirect-create-form";
+import { RedirectDeleteButton } from "@/components/admin/redirect-delete-button";
 import { RedirectToggleButton } from "@/components/admin/redirect-toggle-button";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -18,7 +20,9 @@ export default async function AdminRedirectsPage({ searchParams }: { searchParam
   return (
     <div>
       <h1 className="text-2xl font-semibold text-ocean-900">Redirects ({results.total})</h1>
-      <p className="mt-1 text-sm text-neutral-600">View, search, and enable/disable. Creating new redirects isn&rsquo;t built yet — see the final report.</p>
+      <p className="mt-1 text-sm text-neutral-600">Add, search, enable/disable or delete redirects. Changes reach the live site within about a minute.</p>
+
+      <RedirectCreateForm />
 
       <form method="get" className="mt-4 flex items-end gap-3">
         <AdminSearchField label="Search" name="q" defaultValue={sp.q} placeholder="Source or target path" className="w-72" />
@@ -53,7 +57,10 @@ export default async function AdminRedirectsPage({ searchParams }: { searchParam
                     <Badge tone={r.isActive ? "maldives" : "neutral"}>{r.isActive ? "Active" : "Disabled"}</Badge>
                   </td>
                   <td className="px-4 py-3">
-                    <RedirectToggleButton redirectId={r.id} isActive={r.isActive} />
+                    <div className="flex gap-2">
+                      <RedirectToggleButton redirectId={r.id} isActive={r.isActive} />
+                      <RedirectDeleteButton redirectId={r.id} sourcePath={r.sourcePath} />
+                    </div>
                   </td>
                 </tr>
               ))}

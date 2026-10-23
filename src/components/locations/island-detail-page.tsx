@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
+import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
 import { ActivityCard } from "@/components/activity/activity-card";
 import { ArticleCard } from "@/components/articles/article-card";
 import { AttractionCard } from "@/components/attractions/attraction-card";
@@ -16,6 +17,7 @@ import { CONTAINER_CLASS } from "@/components/ui/container";
 import { FaqSection } from "@/components/ui/faq-section";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
+import { getEntityLocalePaths } from "@/lib/i18n/repository";
 import { getAccommodationsByLocation } from "@/lib/accommodations/repository";
 import { getActivitiesByLocation } from "@/lib/activities/repository";
 import { getArticlesRelatedToNodes } from "@/lib/articles/repository";
@@ -71,7 +73,7 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
   const island = await getIslandBySlug(slug);
   if (!island) notFound();
 
-  const [atoll, children, accommodations, activities, attractions, diveSites, surfBreaks, transferRoutes, packages, heroById, content, relatedGuides, entityMap, mediaItems, comments] =
+  const [atoll, children, accommodations, activities, attractions, diveSites, surfBreaks, transferRoutes, packages, heroById, content, relatedGuides, entityMap, mediaItems, comments, localePaths] =
     await Promise.all([
       getAtollSummary(island.parentId),
       getChildLocations(island.id),
@@ -88,6 +90,7 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
       buildEntityLinkMap(),
       getMediaForNode(island.id),
       getPublishedLocationComments(island.id),
+      getEntityLocalePaths(island.id, island.slug, "/maldives/islands/"),
     ]);
   const heroImage = heroById.get(island.id) ?? null;
 
@@ -125,6 +128,7 @@ export async function IslandDetailPage({ slug }: { slug: string }) {
 
   return (
     <main>
+      <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath="/maldives/islands/" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

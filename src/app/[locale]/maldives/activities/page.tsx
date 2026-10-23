@@ -9,6 +9,7 @@ import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { getActivities } from "@/lib/activities/repository";
 import type { ActivitySummary } from "@/lib/activities/types";
+import { ACTIVITY_CATEGORY_SLUGS, getActivityCategoryStrings } from "@/lib/i18n/activity-categories";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getPageTranslation, getPublishedLocalesForPage, localizedEntityHref } from "@/lib/i18n/repository";
@@ -90,6 +91,8 @@ export default async function LocaleActivitiesHubPage({ params }: { params: Prom
 
   const { items: featured } = await getActivities({ pageSize: 8 });
 
+  const categoryStrings = getActivityCategoryStrings(locale);
+
   return (
     <main>
       <PageHero
@@ -114,6 +117,23 @@ export default async function LocaleActivitiesHubPage({ params }: { params: Prom
           <section className="mt-10">
             <h2 className="text-xl font-semibold text-ocean-900">{h.featuredTitle}</h2>
             <ActivityCardList locale={locale} items={featured} />
+          </section>
+        )}
+
+        {categoryStrings && (
+          <section className="mt-12 border-t border-neutral-200 pt-10">
+            <h2 className="text-xl font-semibold text-ocean-900">{categoryStrings.otherTypes}</h2>
+            <nav aria-label={categoryStrings.otherTypes} className="mt-4 flex flex-wrap gap-2">
+              {ACTIVITY_CATEGORY_SLUGS.map((slug) => (
+                <Link
+                  key={slug}
+                  href={localizeHubPath(locale, `/maldives/${slug}/`)}
+                  className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
+                >
+                  {categoryStrings.categories[slug].label}
+                </Link>
+              ))}
+            </nav>
           </section>
         )}
 

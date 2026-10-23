@@ -8,9 +8,10 @@ import { FaqSection } from "@/components/ui/faq-section";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
-import { localizeHubPath } from "@/lib/i18n/hub-paths";
+import { localizedSiteHref, localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getPageTranslation, getPublishedLocalesForPage, localizedEntityHref } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
+import { getTransferCategoryStrings, TRANSFER_CATEGORY_SLUGS } from "@/lib/i18n/transfer-categories";
 import { TRANSFER_CATEGORY_IMAGES } from "@/lib/transfers/category-images";
 import { getTransferRoutes } from "@/lib/transfers/repository";
 import type { TransferRouteSummary } from "@/lib/transfers/types";
@@ -33,8 +34,6 @@ export const revalidate = 3790;
  * are separate, un-translated verticals) -- this page links out to the
  * English hub for anyone who wants the full picture.
  */
-const TRANSLATED_HUB_PATHS = new Set(["/maldives/packages/", "/maldives/travel-guide/"]);
-
 const EXPLORE_MORE_LINKS = [
   { href: "/maldives/packages/", labelKey: "packages" },
   { href: "/maldives/activities/", labelKey: "activities" },
@@ -43,7 +42,7 @@ const EXPLORE_MORE_LINKS = [
 ] as const;
 
 function exploreMoreHref(locale: Locale, href: string): string {
-  return TRANSLATED_HUB_PATHS.has(href) ? localizeHubPath(locale, href) : href;
+  return localizedSiteHref(locale, href);
 }
 
 async function loadOrNotFound(locale: string) {
@@ -104,6 +103,8 @@ export default async function LocaleTransfersHubPage({ params }: { params: Promi
     getTransferRoutes({ category: "island-transfer", pageSize: 6 }),
   ]);
 
+  const categoryStrings = getTransferCategoryStrings(locale);
+
   return (
     <main>
       <PageHero
@@ -143,6 +144,23 @@ export default async function LocaleTransfersHubPage({ params }: { params: Promi
           <section className="mt-10">
             <h2 className="text-xl font-semibold text-ocean-900">{h.islandSectionTitle}</h2>
             <RouteCardList locale={locale} routes={islandResult.items} />
+          </section>
+        )}
+
+        {categoryStrings && (
+          <section className="mt-12 border-t border-neutral-200 pt-10">
+            <h2 className="text-xl font-semibold text-ocean-900">{categoryStrings.otherTypes}</h2>
+            <nav aria-label={categoryStrings.otherTypes} className="mt-4 flex flex-wrap gap-2">
+              {TRANSFER_CATEGORY_SLUGS.map((slug) => (
+                <Link
+                  key={slug}
+                  href={localizeHubPath(locale, `/maldives/${slug}/`)}
+                  className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600"
+                >
+                  {categoryStrings.categories[slug].label}
+                </Link>
+              ))}
+            </nav>
           </section>
         )}
 

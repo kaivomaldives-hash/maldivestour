@@ -10,7 +10,8 @@ import { FaqSection } from "@/components/ui/faq-section";
 import { PageHero } from "@/components/ui/page-hero";
 import { getAtolls } from "@/lib/locations/repository";
 import type { MediaAsset } from "@/lib/media/types";
-import { breadcrumbJsonLd, canonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
+import { isTransferCategorySlug, TRANSFER_CATEGORY_LOCALES } from "@/lib/i18n/transfer-categories";
+import { breadcrumbJsonLd, canonicalUrl, hreflangAlternates, safeJsonLdStringify } from "@/lib/seo/site";
 import { getTransferRoutes } from "@/lib/transfers/repository";
 import type { SharedOrPrivate, TransferType } from "@/lib/transfers/types";
 
@@ -72,7 +73,10 @@ export function transferCategoryMetadata(config: TransferCategoryConfig): Metada
   return {
     title: config.metaTitle,
     description: config.metaDescription,
-    alternates: { canonical: url },
+    alternates: {
+      canonical: url,
+      ...(isTransferCategorySlug(config.slug) ? { languages: hreflangAlternates(`/maldives/${config.slug}/`, TRANSFER_CATEGORY_LOCALES) } : {}),
+    },
     openGraph: { title: config.metaTitle, description: config.metaDescription, url },
   };
 }

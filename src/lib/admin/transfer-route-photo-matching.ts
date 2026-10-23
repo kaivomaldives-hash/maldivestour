@@ -3,7 +3,7 @@
 import { revalidatePath, updateTag } from "next/cache";
 
 import { requireStaff } from "@/lib/admin/auth";
-import { compressImage } from "@/lib/media/compress-image";
+import { uploadOptimizedImage } from "@/lib/media/compress-image";
 import type { RouteMatchCandidate } from "@/lib/transfers/photo-filename-matching";
 import { createClient } from "@/lib/supabase/server";
 
@@ -114,13 +114,9 @@ export async function uploadMatchedRoutePhoto(routeId: string, formData: FormDat
     await supabase.from("node_media").delete().eq("node_id", routeId).eq("role", "hero");
   }
 
-  const compressed = await compressImage(await file.arrayBuffer());
-  const storagePath = `admin-uploads/${routeId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${compressed.ext}`;
-
-  const { error: uploadError } = await supabase.storage
-    .from("media")
-    .upload(storagePath, compressed.buffer, { contentType: compressed.contentType, upsert: false, cacheControl: "31536000" });
-  if (uploadError) return { ok: false, error: uploadError.message };
+  const uploaded = await uploadOptimizedImage(supabase, `admin-uploads/${routeId}`, await file.arrayBuffer());
+  if (uploaded.error !== undefined) return { ok: false, error: uploaded.error };
+  const { storagePath, paths } = uploaded;
 
   const { data: assetRow, error: assetError } = await supabase
     .from("media_assets")
@@ -128,7 +124,7 @@ export async function uploadMatchedRoutePhoto(routeId: string, formData: FormDat
     .select("id")
     .single<{ id: string }>();
   if (assetError || !assetRow) {
-    await supabase.storage.from("media").remove([storagePath]);
+    await supabase.storage.from("media").remove(paths);
     return { ok: false, error: assetError?.message ?? "Failed to save the uploaded image." };
   }
 
@@ -137,7 +133,7 @@ export async function uploadMatchedRoutePhoto(routeId: string, formData: FormDat
     .insert({ node_id: routeId, media_id: assetRow.id, role: "hero", sort_order: 0 } as unknown as never);
   if (attachError) {
     await supabase.from("media_assets").delete().eq("id", assetRow.id);
-    await supabase.storage.from("media").remove([storagePath]);
+    await supabase.storage.from("media").remove(paths);
     return { ok: false, error: attachError.message };
   }
 

@@ -5,6 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { MediaImage } from "@/components/ui/media-image";
 import { isSupportedCurrency } from "@/lib/currency/types";
+import { getChromeStrings } from "@/lib/i18n/chrome-strings";
+import { getPackageCategoryStrings } from "@/lib/i18n/package-categories";
+import { getUiStrings } from "@/lib/i18n/ui-strings";
+import type { LinkLocalizer } from "@/lib/i18n/link-localizer";
 import { PACKAGE_CATEGORY_TITLE } from "@/lib/packages/view-types";
 import type { PackageView } from "@/lib/packages/view-types";
 
@@ -14,7 +18,20 @@ const PRICE_TYPE_LABEL: Record<string, string> = {
   "per-package": "per package",
 };
 
-export function PackageCard({ pkg }: { pkg: PackageView }) {
+export function PackageCard({ pkg, localize }: { pkg: PackageView; localize?: LinkLocalizer }) {
+  // Demo/sample packages are never translated (their [locale] URL 404s,
+  // see getTranslatedPackageViewBySlug) -- on a translated page they're
+  // left out rather than linking across to English.
+  if (localize && pkg.isDemo) return null;
+  const englishHref = `/maldives/packages/${pkg.slug}/`;
+  const href = localize ? localize.href(englishHref) : englishHref;
+  const title = localize ? localize.title(englishHref, pkg.title) : pkg.title;
+  const chrome = getChromeStrings(localize?.locale ?? "en");
+  const ui = getUiStrings(localize?.locale ?? "en");
+  const categoryStrings = localize ? getPackageCategoryStrings(localize.locale) : null;
+  const priceTypeLabel: Record<string, string> = localize
+    ? { "per-person": ui.packageDetail.perPerson, "per-couple": ui.packageDetail.perCouple, "per-package": ui.packageDetail.perPackage }
+    : PRICE_TYPE_LABEL;
   const primaryDestination = pkg.destinations[0] ?? null;
   const primaryCategory = pkg.categories[0] ?? null;
   const priceCurrency = pkg.currency ?? "USD";
@@ -23,17 +40,17 @@ export function PackageCard({ pkg }: { pkg: PackageView }) {
     <li className={CARD_CLASS}>
       {pkg.heroImage && (
         <div className={CARD_IMAGE_BLEED_CLASS}>
-          <MediaImage asset={pkg.heroImage} alt={pkg.title} aspectClassName="aspect-[4/3]" />
+          <MediaImage asset={pkg.heroImage} alt={title} aspectClassName="aspect-[4/3]" />
         </div>
       )}
 
       <div className="flex flex-wrap items-start justify-between gap-2">
-        <Link href={`/maldives/packages/${pkg.slug}/`} className="text-lg font-medium text-ocean-900 transition-colors hover:text-maldives-600">
-          {pkg.title}
+        <Link href={href} className="text-lg font-medium text-ocean-900 transition-colors hover:text-maldives-600">
+          {title}
         </Link>
         {pkg.isMtgCurated && !pkg.isDemo && (
           <Badge tone="aqua" className="shrink-0">
-            MTG-curated
+            {chrome.mtgCurated}
           </Badge>
         )}
       </div>
@@ -43,7 +60,7 @@ export function PackageCard({ pkg }: { pkg: PackageView }) {
         {primaryCategory && (
           <>
             {primaryDestination && <span aria-hidden="true">·</span>}
-            <span>{PACKAGE_CATEGORY_TITLE[primaryCategory]}</span>
+            <span>{categoryStrings?.categories[primaryCategory].title ?? PACKAGE_CATEGORY_TITLE[primaryCategory]}</span>
           </>
         )}
       </div>
@@ -59,7 +76,7 @@ export function PackageCard({ pkg }: { pkg: PackageView }) {
       <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
         {pkg.nights !== null && (
           <span className="text-base font-semibold text-ocean-900">
-            {pkg.nights} Night{pkg.nights === 1 ? "" : "s"} / {pkg.days} Days
+            {localize ? chrome.nightsDays.replace("{nights}", String(pkg.nights)).replace("{days}", String(pkg.days)) : `${pkg.nights} Night${pkg.nights === 1 ? "" : "s"} / ${pkg.days} Days`}
           </span>
         )}
       </div>
@@ -68,17 +85,17 @@ export function PackageCard({ pkg }: { pkg: PackageView }) {
         {pkg.price !== null ? (
           <>
             <span className="font-medium text-ocean-900">
-              From{" "}
+              {chrome.cardFrom}{" "}
               {isSupportedCurrency(priceCurrency) ? (
                 <Price baseAmount={pkg.price} baseCurrency={priceCurrency} />
               ) : (
                 `${priceCurrency} ${pkg.price.toLocaleString()}`
               )}
             </span>{" "}
-            {pkg.priceType && <span className="text-neutral-500">{PRICE_TYPE_LABEL[pkg.priceType]}</span>}
+            {pkg.priceType && <span className="text-neutral-500">{priceTypeLabel[pkg.priceType]}</span>}
           </>
         ) : (
-          <span>Quote on request</span>
+          <span>{localize ? ui.packageDetail.quoteOnRequest : "Quote on request"}</span>
         )}
       </div>
 
@@ -96,10 +113,10 @@ export function PackageCard({ pkg }: { pkg: PackageView }) {
       )}
 
       <Link
-        href={`/maldives/packages/${pkg.slug}/`}
+        href={href}
         className="mt-3 inline-flex items-center justify-center rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-ocean-800"
       >
-        View Package
+        {chrome.viewPackage}
       </Link>
     </li>
   );

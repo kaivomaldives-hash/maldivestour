@@ -3,13 +3,8 @@ import "server-only";
 import { createClient } from "@/lib/supabase/server";
 
 /**
- * Admin-only redirect reads. View/search/toggle only, per Task 15 §13 —
- * redirect CREATION is deliberately not built this round: the existing
- * chain-prevention trigger (`prevent_redirect_chains()`, supabase/
- * migrations/20250101001300_functions_triggers.sql) is delicate, and the
- * spec is explicit not to change the SEO migration strategy in this task.
- * A create/edit UI belongs in its own round with its own validation
- * against that trigger, not bolted on here for the sake of completeness.
+ * Admin-only redirect reads, for the list/search view. Writes (create,
+ * toggle, delete) live in redirects-actions.ts.
  */
 
 const PAGE_SIZE = 30;

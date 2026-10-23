@@ -7,7 +7,8 @@ import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { getAtolls } from "@/lib/locations/repository";
 import { getHeroMediaByNodeIds } from "@/lib/media/repository";
-import { canonicalUrl } from "@/lib/seo/site";
+import { DESTINATION_STRINGS_LOCALES } from "@/lib/i18n/destination-strings";
+import { canonicalUrl, hreflangAlternates } from "@/lib/seo/site";
 
 export function generateMetadata(): Metadata {
   const title = "Maldives Atolls | MTG";
@@ -15,7 +16,7 @@ export function generateMetadata(): Metadata {
   return {
     title,
     description,
-    alternates: { canonical: canonicalUrl("/maldives/atolls") },
+    alternates: { canonical: canonicalUrl("/maldives/atolls"), languages: hreflangAlternates("/maldives/atolls/", DESTINATION_STRINGS_LOCALES) },
     openGraph: { title, description, url: canonicalUrl("/maldives/atolls") },
   };
 }

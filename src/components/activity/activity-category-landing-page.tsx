@@ -11,7 +11,8 @@ import { PageHero } from "@/components/ui/page-hero";
 import { getNodeIdsByCategory, getCategoryBySlug } from "@/lib/categories/repository";
 import { getActivities } from "@/lib/activities/repository";
 import type { MediaAsset } from "@/lib/media/types";
-import { breadcrumbJsonLd, canonicalUrl, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
+import { ACTIVITY_CATEGORY_LOCALES, isActivityCategorySlug } from "@/lib/i18n/activity-categories";
+import { breadcrumbJsonLd, canonicalUrl, hreflangAlternates, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
 import { activityHref } from "@/lib/activities/types";
 
 /**
@@ -61,7 +62,10 @@ export function activityCategoryMetadata(config: ActivityCategoryConfig): Metada
   return {
     title: config.metaTitle,
     description: config.metaDescription,
-    alternates: { canonical: url },
+    alternates: {
+      canonical: url,
+      ...(isActivityCategorySlug(config.slug) ? { languages: hreflangAlternates(`/maldives/${config.slug}/`, ACTIVITY_CATEGORY_LOCALES) } : {}),
+    },
     openGraph: { title: config.metaTitle, description: config.metaDescription, url },
   };
 }

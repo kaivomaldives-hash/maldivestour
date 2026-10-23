@@ -9,6 +9,7 @@ import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import type { ActivitySummary } from "@/lib/activities/types";
 import { getFishingActivities } from "@/lib/fishing/repository";
+import { FISHING_SPECIES_PAGE_SLUGS, FISHING_TECHNIQUE_PAGE_SLUGS, getFishingPagesStrings } from "@/lib/i18n/fishing-pages";
 import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getPageTranslation, getPublishedLocalesForPage, localizedEntityHref } from "@/lib/i18n/repository";
@@ -93,6 +94,8 @@ export default async function LocaleFishingHubPage({ params }: { params: Promise
 
   const { items: featured } = await getFishingActivities({ pageSize: 8 });
 
+  const fishingStrings = getFishingPagesStrings(locale);
+
   return (
     <main>
       <PageHero
@@ -118,6 +121,31 @@ export default async function LocaleFishingHubPage({ params }: { params: Promise
             <h2 className="text-xl font-semibold text-ocean-900">{h.featuredTitle}</h2>
             <ActivityCardList locale={locale} items={featured} />
           </section>
+        )}
+
+        {fishingStrings && (
+          <>
+            <section className="mt-12 border-t border-neutral-200 pt-10">
+              <h2 className="text-xl font-semibold text-ocean-900">{fishingStrings.techniquesTitle}</h2>
+              <nav aria-label={fishingStrings.techniquesTitle} className="mt-4 flex flex-wrap gap-2">
+                {FISHING_TECHNIQUE_PAGE_SLUGS.map((slug) => (
+                  <Link key={slug} href={localizeHubPath(locale, `/maldives/fishing/${slug}/`)} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                    {fishingStrings.techniques[slug].h1}
+                  </Link>
+                ))}
+              </nav>
+            </section>
+            <section className="mt-12 border-t border-neutral-200 pt-10">
+              <h2 className="text-xl font-semibold text-ocean-900">{fishingStrings.targetSpeciesTitle}</h2>
+              <nav aria-label={fishingStrings.targetSpeciesTitle} className="mt-4 flex flex-wrap gap-2">
+                {FISHING_SPECIES_PAGE_SLUGS.map((slug) => (
+                  <Link key={slug} href={localizeHubPath(locale, `/maldives/fishing/${slug}/`)} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                    {fishingStrings.species[slug].h1}
+                  </Link>
+                ))}
+              </nav>
+            </section>
+          </>
         )}
 
         <FaqSection faqs={h.faqs} title={h.faqTitle} className="mt-12 border-t border-neutral-200 pt-10" />

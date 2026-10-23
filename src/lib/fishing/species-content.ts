@@ -194,7 +194,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
     // gallery photo + factual prose instead of inventing those stats.
     fallbackImage: asset(
       "dbd93db3-e064-94a9-5883-96ea6c3aebf1",
-      "uploads/assets/uploads/fishing/images/gallery/blue-marlin.avif",
+      "opt/uploads/assets/uploads/fishing/images/gallery/blue-marlin.webp",
       "Blue marlin caught fishing in the Maldives",
     ),
     fallbackDescription:
@@ -230,7 +230,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
     // Same gap as marlin — no real bio entry exists for sailfish either.
     fallbackImage: asset(
       "d647a2a4-2099-8667-168f-88c292b6de0d",
-      "uploads/assets/uploads/fishing/images/gallery/sailfish-maldives.webp",
+      "opt/uploads/assets/uploads/fishing/images/gallery/sailfish-maldives.webp",
       "Sailfish caught fishing in the Maldives",
     ),
     fallbackDescription:

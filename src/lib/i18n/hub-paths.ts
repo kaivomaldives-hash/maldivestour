@@ -1,5 +1,7 @@
 import { DEFAULT_LOCALE, localizedPath, type Locale } from "@/lib/i18n/locales";
 
+import leafPages from "./localized-leaf-pages.json";
+
 /**
  * Single source of truth for every [locale] route segment beyond the
  * bare `/{locale}` prefix -- next.config.ts's rewrites/redirects,
@@ -82,7 +84,93 @@ export const LOCALIZED_HUB_PREFIXES: Record<string, Partial<Record<Locale, strin
     ja: "/morudibu/akutibiti/",
     zh: "/maerdaifu/huodong/",
   },
+  "/maldives/atolls/": {
+    de: "/malediven/atolle/",
+    es: "/maldivas/atolones/",
+    it: "/maldive/atolli/",
+    ru: "/maldivy/atolly/",
+    ja: "/morudibu/kansho/",
+    zh: "/maerdaifu/huanjiao/",
+  },
+  "/maldives/islands/": {
+    de: "/malediven/inseln/",
+    es: "/maldivas/islas/",
+    it: "/maldive/isole/",
+    ru: "/maldivy/ostrova/",
+    ja: "/morudibu/shima/",
+    zh: "/maerdaifu/daoyu/",
+  },
+  "/maldives/dive-sites/": {
+    de: "/malediven/tauchplaetze/",
+    es: "/maldivas/puntos-de-buceo/",
+    it: "/maldive/siti-di-immersione/",
+    ru: "/maldivy/dayv-sayty/",
+    ja: "/morudibu/daibu-pointo/",
+    zh: "/maerdaifu/qianshui-didian/",
+  },
+  "/maldives/stays/": {
+    de: "/malediven/unterkuenfte/",
+    es: "/maldivas/alojamiento/",
+    it: "/maldive/alloggi/",
+    ru: "/maldivy/prozhivanie/",
+    ja: "/morudibu/shukuhaku/",
+    zh: "/maerdaifu/zhusu/",
+  },
+  "/maldives/resorts/": {
+    de: "/malediven/resorts/",
+    es: "/maldivas/resorts/",
+    it: "/maldive/resort/",
+    ru: "/maldivy/kurorty/",
+    ja: "/morudibu/rizooto/",
+    zh: "/maerdaifu/dujiacun/",
+  },
+  "/maldives/hotels/": {
+    de: "/malediven/hotels/",
+    es: "/maldivas/hoteles/",
+    it: "/maldive/hotel/",
+    ru: "/maldivy/oteli/",
+    ja: "/morudibu/hoteru/",
+    zh: "/maerdaifu/jiudian/",
+  },
+  "/maldives/guesthouses/": {
+    de: "/malediven/gaestehaeuser/",
+    es: "/maldivas/casas-de-huespedes/",
+    it: "/maldive/guesthouse/",
+    ru: "/maldivy/gostevye-doma/",
+    ja: "/morudibu/gesutohausu/",
+    zh: "/maerdaifu/minsu/",
+  },
+  "/maldives/attractions/": {
+    de: "/malediven/sehenswuerdigkeiten/",
+    es: "/maldivas/atracciones/",
+    it: "/maldive/attrazioni/",
+    ru: "/maldivy/dostoprimechatelnosti/",
+    ja: "/morudibu/kanko-supotto/",
+    zh: "/maerdaifu/jingdian/",
+  },
 };
+
+/**
+ * Single pages nested under a hub (package styles, activity types,
+ * transfer types, fishing techniques...) that have their own translated
+ * page: parent hub -> English segment -> per-locale last segment. Shared
+ * with next.config.ts (a plain JSON file, so its config loader can read
+ * it too). Merged into LOCALIZED_HUB_PREFIXES below as fully composed
+ * prefixes, so localizeHubPath/localizedSiteHref/the language switcher
+ * treat them exactly like hubs.
+ */
+export const LOCALIZED_LEAF_PAGES = leafPages as Record<string, Record<string, Partial<Record<Locale, string>>>>;
+
+for (const [parent, leaves] of Object.entries(LOCALIZED_LEAF_PAGES)) {
+  for (const [segment, words] of Object.entries(leaves)) {
+    const composed: Partial<Record<Locale, string>> = {};
+    for (const [locale, word] of Object.entries(words) as Array<[Locale, string]>) {
+      const parentPrefix = LOCALIZED_HUB_PREFIXES[parent]?.[locale];
+      if (parentPrefix) composed[locale] = `${parentPrefix}${word}/`;
+    }
+    LOCALIZED_HUB_PREFIXES[`${parent}${segment}/`] = composed;
+  }
+}
 
 // Longest (most specific) prefix first, so "/maldives/packages/" is
 // tried before the more general "/maldives/" -- otherwise the shorter
@@ -133,4 +221,20 @@ export function hubPrefixForPath(locale: Locale, pathname: string): string | nul
     if (pathname === localized || pathname === localized.slice(0, -1)) return prefix;
   }
   return null;
+}
+
+/**
+ * Same-language href for site chrome (header, footer, mobile bar) and
+ * any other link to a hub: the site root becomes `/{locale}/`, a
+ * registered hub page becomes its localized hub URL, and everything else
+ * -- including category pages under a hub (e.g. /maldives/packages/
+ * honeymoon/), which have no translated route -- stays the plain English
+ * path. Unlike localizeHubPath, it never builds a localized URL for a
+ * page that doesn't exist in that language (localizeHubPath would turn
+ * that honeymoon path into a translated *package* slug that 404s).
+ */
+export function localizedSiteHref(locale: Locale, englishPath: string): string {
+  if (locale === DEFAULT_LOCALE) return englishPath;
+  if (englishPath === "/") return `/${locale}/`;
+  return englishPath in LOCALIZED_HUB_PREFIXES ? localizeHubPath(locale, englishPath) : englishPath;
 }

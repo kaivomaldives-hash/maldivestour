@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 import { PACKAGE_CATEGORY_CONTENT } from "@/lib/packages/category-content";
-import { canonicalUrl } from "@/lib/seo/site";
+import { PACKAGE_CATEGORY_LOCALES } from "@/lib/i18n/package-categories";
+import { canonicalUrl, hreflangAlternates } from "@/lib/seo/site";
 import type { PackageCategorySlug } from "@/lib/packages/view-types";
 
 export interface PackageCategoryPageSearchParams {
@@ -27,7 +28,7 @@ export async function packageCategoryMetadata(category: PackageCategorySlug, sea
   return {
     title: content.metaTitle,
     description: content.metaDescription,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages: hreflangAlternates(`/maldives/packages/${category}/`, PACKAGE_CATEGORY_LOCALES) },
     openGraph: { title: content.metaTitle, description: content.metaDescription, url },
     robots: hasAnyFilter(sp) ? { index: false, follow: true } : undefined,
   };

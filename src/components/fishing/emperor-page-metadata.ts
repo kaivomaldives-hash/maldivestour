@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { canonicalUrl } from "@/lib/seo/site";
+import { EMPEROR_LOCALES } from "@/lib/i18n/fishing-pages/emperor";
+import { canonicalUrl, hreflangAlternates } from "@/lib/seo/site";
 
 export function emperorPageMetadata(): Metadata {
   const title = "Emperor Private Fishing Charter Maldives | Maldives Fishing";
@@ -10,7 +11,7 @@ export function emperorPageMetadata(): Metadata {
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages: hreflangAlternates("/maldives/fishing/emperor/", EMPEROR_LOCALES) },
     openGraph: { title, description, url },
   };
 }

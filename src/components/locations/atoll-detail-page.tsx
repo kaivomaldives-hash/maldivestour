@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { AccommodationCard } from "@/components/accommodation/accommodation-card";
+import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
 import { ActivityCard } from "@/components/activity/activity-card";
 import { ArticleCard } from "@/components/articles/article-card";
 import { DiveSiteCard } from "@/components/diving/dive-site-card";
@@ -15,6 +16,7 @@ import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
+import { getEntityLocalePaths } from "@/lib/i18n/repository";
 import { getAccommodationsByAtoll } from "@/lib/accommodations/repository";
 import { getActivitiesByAtoll } from "@/lib/activities/repository";
 import { getArticlesRelatedToNodes } from "@/lib/articles/repository";
@@ -78,7 +80,7 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
   const atoll = await getAtollBySlug(slug);
   if (!atoll) notFound();
 
-  const [heroById, allIslands, children, content, accommodations, activities, diveSites, surfBreaks, transferRoutes, packages, relatedGuides, entityMap, mediaItems, comments] =
+  const [heroById, allIslands, children, content, accommodations, activities, diveSites, surfBreaks, transferRoutes, packages, relatedGuides, entityMap, mediaItems, comments, localePaths] =
     await Promise.all([
       getHeroMediaByNodeIds([atoll.id]),
       getIslandsByAtollId(atoll.id),
@@ -94,6 +96,7 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
       buildEntityLinkMap(),
       getMediaForNode(atoll.id),
       getPublishedLocationComments(atoll.id),
+      getEntityLocalePaths(atoll.id, atoll.slug, "/maldives/atolls/"),
     ]);
   const galleryImages = mediaItems.filter((m) => m.role === "gallery").map((m) => m.asset);
 
@@ -141,6 +144,7 @@ export async function AtollDetailPage({ slug }: { slug: string }) {
 
   return (
     <main>
+      <RegisterEntityLocaleLinks paths={localePaths} fallbackHubPath="/maldives/atolls/" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

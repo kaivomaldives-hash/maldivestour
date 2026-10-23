@@ -9,6 +9,10 @@ interface LocationMapProps {
   lat: number | null;
   lng: number | null;
   className?: string;
+  /** Localized heading/intro for the [locale] location pages -- default
+   * to the English copy every English page already renders. */
+  heading?: string;
+  intro?: string;
 }
 
 /**
@@ -24,7 +28,7 @@ interface LocationMapProps {
  * erased at compile time and the `leaflet/dist/leaflet.css` import is a
  * plain stylesheet, neither touches `window`.
  */
-export function LocationMap({ title, lat, lng, className = "" }: LocationMapProps) {
+export function LocationMap({ title, lat, lng, className = "", heading, intro }: LocationMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
   const markerRef = useRef<Marker | null>(null);
@@ -58,8 +62,8 @@ export function LocationMap({ title, lat, lng, className = "" }: LocationMapProp
   return (
     <section className={`mt-10 overflow-hidden rounded-2xl border border-neutral-200 bg-sand-50 ${className}`} aria-label={`Map showing ${title}`}>
       <div className="border-b border-neutral-200 px-5 py-4">
-        <h2 className="text-xl font-semibold text-ocean-900">Where is {title}?</h2>
-        <p className="mt-1 text-sm text-neutral-600">Explore the location on the map.</p>
+        <h2 className="text-xl font-semibold text-ocean-900">{heading ?? `Where is ${title}?`}</h2>
+        <p className="mt-1 text-sm text-neutral-600">{intro ?? "Explore the location on the map."}</p>
       </div>
       <div ref={containerRef} className="h-72 w-full sm:h-96" />
       <p className="border-t border-neutral-200 px-5 py-3 text-xs text-neutral-500">Map data &copy; OpenStreetMap contributors.</p>

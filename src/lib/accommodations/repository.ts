@@ -3,6 +3,8 @@ import "server-only";
 import { cachedRead } from "@/lib/cache/cached-read";
 import { getContentSortSetting } from "@/lib/content-sort/repository";
 import type { ContentSortMode } from "@/lib/content-sort/types";
+import type { Locale } from "@/lib/i18n/locales";
+import { getTranslationWithEnglishSlug } from "@/lib/i18n/repository";
 import { getLocationSummariesByIds, getLocationSummaryById, getNodeAttributesByIds } from "@/lib/locations/repository";
 import type { LocationSummary } from "@/lib/locations/types";
 import { getHeroMediaByNodeIds, getMediaAssetsByIds, getMediaForNode } from "@/lib/media/repository";
@@ -483,6 +485,28 @@ async function getAccommodationBySlugUncached(slug: string): Promise<Accommodati
 // from the locations repository, so an admin coordinate edit there needs
 // to bust this cache too, not just the locations-side ones.
 export const getAccommodationBySlug = cachedRead(getAccommodationBySlugUncached, ["accommodations:by-slug"], 300, ["accommodations:by-slug", "locations"]);
+
+/** Localized equivalent of getAccommodationBySlug -- same title/summary/
+ * slug overlay as the other translated detail pages; rooms, photos,
+ * facts and the English overview paragraphs stay canonical data. Callers
+ * check accommodationType against their own route, exactly like
+ * loadAndVerify does for the English routes. */
+export async function getTranslatedAccommodationBySlug(locale: Locale, slug: string): Promise<(AccommodationDetail & { englishSlug: string }) | null> {
+  const resolved = await getTranslationWithEnglishSlug(locale, slug, "accommodation");
+  if (!resolved) return null;
+  const canonical = await getAccommodationBySlug(resolved.englishSlug);
+  if (!canonical) return null;
+  const { translation } = resolved;
+  return {
+    ...canonical,
+    englishSlug: canonical.slug,
+    slug: translation.slug,
+    title: translation.title,
+    summary: translation.shortDescription ?? canonical.summary,
+    metaTitle: translation.metaTitle,
+    metaDescription: translation.metaDescription,
+  };
+}
 
 /** Batch lookup by node id — used by the package repository to resolve
  * itinerary items without an N+1 query per item (Task 11). */

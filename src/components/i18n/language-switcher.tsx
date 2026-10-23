@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import { useEntityLocaleLinks } from "@/components/i18n/entity-locale-links-context";
 import { GlobeIcon } from "@/components/ui/icons";
-import { localizeHubPath } from "@/lib/i18n/hub-paths";
+import { hubPrefixForPath, localizeHubPath } from "@/lib/i18n/hub-paths";
 import { LOCALE_NAMES, SUPPORTED_LOCALES, type Locale } from "@/lib/i18n/locales";
 
 /**
@@ -19,12 +19,16 @@ import { LOCALE_NAMES, SUPPORTED_LOCALES, type Locale } from "@/lib/i18n/locales
  * homepage published, they start appearing here automatically — no
  * code change needed, this list is driven by real published rows.
  *
- * Target-page resolution (Task 19 §16, generalized in Task 22): if the
- * visitor is on the homepage or the Maldives hub, the switcher sends
- * them to that same page in the target locale (when published). On any
- * translated entity's detail page (article, package, transfer route),
- * a RegisterEntityLocaleLinks call (rendered by that page) has
- * registered the entity's real per-locale paths via
+ * Target-page resolution (Task 19 §16, generalized in Task 22, and
+ * again to cover every hub page -- not just the top-level Maldives hub
+ * -- after Task 22 shipped fishing/diving/activities): if the visitor
+ * is on the homepage, or on any registered hub page itself (Maldives,
+ * packages, transfers, travel guide, fishing, diving, activities --
+ * see hubPrefixForPath), the switcher sends them to that SAME hub in
+ * the target locale (when published). On any translated entity's
+ * detail page (article, package, transfer route, fishing/diving/
+ * activity trip), a RegisterEntityLocaleLinks call (rendered by that
+ * page) has registered the entity's real per-locale paths via
  * EntityLocaleLinksProvider -- the switcher uses those when present,
  * since an entity's translated slug differs per locale and can't be
  * derived from the current pathname, falling back to THAT entity
@@ -65,18 +69,17 @@ export function LanguageSwitcher({
   const currentLocale: Locale = (SUPPORTED_LOCALES as readonly string[]).includes(segments[0]) ? (segments[0] as Locale) : "en";
   const pathAfterLocale = currentLocale === "en" ? pathname : `/${segments.slice(1).join("/")}`;
   const isHomepage = pathAfterLocale === "/" || pathAfterLocale === "";
-  // Compares the full pathname against this locale's own localized
-  // Maldives-hub URL (localizeHubPath("en", ...) is a no-op, so this
-  // still matches "/maldives" and "/maldives/" on English) -- a plain
-  // string match on "/maldives/" would silently stop matching once the
-  // hub segment itself got localized per locale (Task 22 follow-up).
-  const maldivesHubPath = localizeHubPath(currentLocale, "/maldives/");
-  const isMaldivesHub = pathname === maldivesHubPath || pathname === maldivesHubPath.slice(0, -1);
+  // Matches the full pathname against EVERY registered hub page (not
+  // just "/maldives/") for the locale we're actually on -- a plain
+  // string match on "/maldives/" would never fire for "/maldives/packages/"
+  // etc, and silently stops matching once a hub segment itself gets
+  // localized per locale (see hubPrefixForPath's own docs).
+  const currentHubPrefix = hubPrefixForPath(currentLocale, pathname);
 
   function targetHref(locale: Locale): string {
     const prefix = locale === "en" ? "" : `/${locale}`;
     if (isHomepage) return locale === "en" ? "/" : publishedLocales.includes(locale) ? `${prefix}/` : pathname;
-    if (isMaldivesHub) return locale === "en" ? "/maldives/" : publishedLocales.includes(locale) ? localizeHubPath(locale, "/maldives/") : pathname;
+    if (currentHubPrefix) return locale === "en" ? currentHubPrefix : publishedLocales.includes(locale) ? localizeHubPath(locale, currentHubPrefix) : pathname;
     if (entityLocaleLinks) {
       // On a translated entity's detail page (article, package,
       // transfer route): use that entity's real translated path when

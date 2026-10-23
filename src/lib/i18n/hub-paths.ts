@@ -110,3 +110,27 @@ export function localizeHubPath(locale: Locale, englishPath: string): string {
 
   return localizedPath(locale, englishPath);
 }
+
+/**
+ * Reverse of `localizeHubPath`, for exactly one use: the language
+ * switcher (Task 22). Given the CURRENT full pathname and the locale
+ * it's actually in, returns the English hub prefix (e.g.
+ * "/maldives/packages/") when `pathname` is one of these hub pages
+ * ITSELF -- not a detail sub-page below it (those are handled via
+ * EntityLocaleLinksContext instead, since their slug differs per
+ * locale and can't be derived from the hub prefix). Returns null for
+ * every other page, including a hub's own detail sub-pages.
+ *
+ * Tried against every registered prefix (not just the longest match --
+ * these are exact-equality checks against a fully composed path, so
+ * "/maldives/packages/" can never accidentally match the "/maldives/"
+ * entry too). Tolerates a missing trailing slash since Next.js can
+ * hand back a pathname either way depending on how the link was built.
+ */
+export function hubPrefixForPath(locale: Locale, pathname: string): string | null {
+  for (const prefix of Object.keys(LOCALIZED_HUB_PREFIXES)) {
+    const localized = localizeHubPath(locale, prefix);
+    if (pathname === localized || pathname === localized.slice(0, -1)) return prefix;
+  }
+  return null;
+}

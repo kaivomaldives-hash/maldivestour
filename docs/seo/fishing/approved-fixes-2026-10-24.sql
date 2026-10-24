@@ -14,6 +14,11 @@ begin;
 --    1,500 / 1,000, which the charter pages, cards and Offer JSON-LD show.
 update activities set price_from = 1380 where id = '23435db5-9605-46ed-a51e-335850b034c7'; -- private-full-day-fishing-charter (was 1500)
 update activities set price_from = 980  where id = 'a001b2f2-45a8-44fd-a538-816f5f534b11'; -- private-half-day-fishing-charter (was 1000)
+--    Re-confirmed by the owner 2026-10-24. bookable_products.base_price is
+--    the booking/enquiry price and was set alongside price_from by
+--    20261020000300_gotrip_mfh_pricing_update.sql, so change it too.
+update bookable_products set base_price = 1380 where id = '23435db5-9605-46ed-a51e-335850b034c7'; -- (was 1500)
+update bookable_products set base_price = 980  where id = 'a001b2f2-45a8-44fd-a538-816f5f534b11'; -- (was 1000)
 
 -- 2. Unpublish Golden Reel Adventure (no operator, price, duration or
 --    location). Draft, not deleted: reversible. Its English and translated

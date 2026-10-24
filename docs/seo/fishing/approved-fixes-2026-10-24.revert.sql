@@ -3,6 +3,8 @@
 begin;
 update activities set price_from = 1500 where id = '23435db5-9605-46ed-a51e-335850b034c7';
 update activities set price_from = 1000 where id = 'a001b2f2-45a8-44fd-a538-816f5f534b11';
+update bookable_products set base_price = 1500 where id = '23435db5-9605-46ed-a51e-335850b034c7';
+update bookable_products set base_price = 1000 where id = 'a001b2f2-45a8-44fd-a538-816f5f534b11';
 update nodes set status = 'published' where id = 'c244ad69-035b-4c52-b698-5494b70f6579';
 update nodes set meta_title = 'Sunset Fishing Trip | Maldives Fishing | MTG' where id = '9bae1c06-40f4-4081-bac1-2699cd37a752';
 update nodes set meta_title = 'Sunset Fishing Trip | Maldives Fishing | MTG' where id = 'e6567447-5d7a-419d-96aa-97612b32109a';

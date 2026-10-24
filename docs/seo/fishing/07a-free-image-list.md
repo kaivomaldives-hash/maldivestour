@@ -35,7 +35,7 @@ Everything else in the plan uses photos already in the bucket. I looked at each 
 | 11 | `releasing-fish-into-the-sea.webp` | Fish being released into the sea (generic) | `releasing fish back into ocean` | 1600x900 | N07 §Hero |
 | 12 | `handline-fishing-hands.webp` | Hands holding a handline over the side of a boat | `handline fishing hands` | 1280x960 | N09 §Handline |
 | 13 | `seychelles-flats.webp` | Seychelles flats | `Seychelles flats beach` | 1280x720 | N11 §Other destinations |
-| 14 | `seychelles-granite-boulder-beach.webp` | **Chosen by owner (2026-10-24):** white-sand beach with granite boulders and turquoise sea | — | 1280x720 | N12 §Seychelles. Alt: "White-sand beach with large granite boulders and turquoise water under a blue sky in the Seychelles". Still to record: photographer + Pexels URL. Upload the original size (the copy in chat was 640 px wide). |
+| 14 | `seychelles-granite-boulder-beach.webp` | **Chosen by owner (2026-10-24):** white-sand beach with granite boulders and turquoise sea | — | 1280x720 | N12 §Seychelles. Alt: "White-sand beach with large granite boulders and turquoise water under a blue sky in the Seychelles". Source: Pixabay (not Pexels), photographer **micro200**, https://pixabay.com/photos/beach-4957461/ (ID 4957461), downloaded 2026-10-24. Caption: `Photo: micro200 / Pixabay`. Original is 6000x4000; upload that, not the 640 px copy. |
 
 ## Found while reviewing the bucket
 - **Lodge photos.** `gotrip/lodge/mfh-lodge-exterior.webp` shows the lounge, not the outside. There is **no exterior photo of the lodge** in the bucket. If you can take one photo yourself, make it this one.

@@ -1,0 +1,78 @@
+source_url,destination_url,anchor_suggestion,relationship,status,destination_exists_today,notes
+/maldives/fishing/,/maldives/fishing/popping/,popping for giant trevally,Hub → technique/species (currently missing),Proposed fix — no new content needed,Yes,Audit §5: not linked from hub today
+/maldives/fishing/,/maldives/fishing/jigging/,jigging over the drop-offs,Hub → technique/species (currently missing),Proposed fix — no new content needed,Yes,Audit §5: not linked from hub today
+/maldives/fishing/,/maldives/fishing/trolling/,trolling for tuna and wahoo,Hub → technique/species (currently missing),Proposed fix — no new content needed,Yes,Audit §5: not linked from hub today
+/maldives/fishing/,/maldives/fishing/marlin-fishing/,marlin fishing,Hub → technique/species (currently missing),Proposed fix — no new content needed,Yes,Audit §5: not linked from hub today
+/maldives/fishing/,/maldives/fishing/sailfish-fishing/,sailfish,Hub → technique/species (currently missing),Proposed fix — no new content needed,Yes,Audit §5: not linked from hub today
+/maldives/travel-guide/maldives-fishing-techniques-guide/,/maldives/fishing/popping/,popping,Overview article → technique page,Proposed fix,Yes,Techniques article links to none of them today
+/maldives/travel-guide/maldives-fishing-techniques-guide/,/maldives/fishing/jigging/,jigging,Overview article → technique page,Proposed fix,Yes,Techniques article links to none of them today
+/maldives/travel-guide/maldives-fishing-techniques-guide/,/maldives/fishing/trolling/,trolling,Overview article → technique page,Proposed fix,Yes,Techniques article links to none of them today
+/maldives/travel-guide/maldives-fishing-techniques-guide/,/maldives/fishing/big-game-fishing/,big game fishing,Overview article → technique page,Proposed fix,Yes,Techniques article links to none of them today
+/maldives/travel-guide/maldives-fishing-techniques-guide/,/maldives/fishing/fly-fishing/,fly fishing,Overview article → technique page,Proposed fix,Yes,Techniques article links to none of them today
+/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/,/maldives/fishing/gt-fishing/,giant trevally season,Season article → species page,Proposed fix,Yes,
+/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/,/maldives/fishing/tuna-fishing/,yellowfin tuna,Season article → species page,Proposed fix,Yes,
+/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/,/maldives/fishing/wahoo-fishing/,wahoo,Season article → species page,Proposed fix,Yes,
+/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/,/maldives/fishing/mahi-mahi-fishing/,mahi-mahi,Season article → species page,Proposed fix,Yes,
+/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/,/maldives/fishing/dogtooth-tuna/,dogtooth tuna,Season article → species page,Proposed fix,Yes,
+/maldives/fishing/big-game-fishing/,/maldives/fishing/trolling/,how trolling works,Trip type → method,Proposed fix,Yes,Gives the orphan trolling page a second link
+/maldives/fishing/tuna-fishing/,/maldives/fishing/trolling/,trolling,Species → method,Proposed fix,Yes,
+/maldives/travel-guide/maldives-in-december-weather-activities-expert-travel-guide/,/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/,what's biting this month,Month guide → fishing seasons,Proposed (editorial),Yes,These month guides mention fishing 14–15 times (audit §3.4)
+/maldives/travel-guide/maldives-in-january-weather-activities-expert-travel-guide/,/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/,what's biting this month,Month guide → fishing seasons,Proposed (editorial),Yes,These month guides mention fishing 14–15 times (audit §3.4)
+/maldives/travel-guide/maldives-in-november-weather-activities-expert-travel-guide/,/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/,what's biting this month,Month guide → fishing seasons,Proposed (editorial),Yes,These month guides mention fishing 14–15 times (audit §3.4)
+/maldives/travel-guide/100-best-things-to-do-in-the-maldives-an-ultimate-guide/,/maldives/fishing/,fishing trips in the Maldives,General guide → hub,Proposed (editorial),Yes,23 fishing mentions in this article
+/maldives/travel-guide/maldives-fishing-trip-cost/,/maldives/fishing/emperor/,Emperor charter rates,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/maldives-fishing-trip-cost/,/maldives/packages/fishing/,fishing packages,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/maldives-fishing-trip-cost/,/maldives/travel-guide/maldives-fishing-holiday-planning-guide/,plan the whole trip,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/maldives-fishing-trip-cost/,/maldives/travel-guide/how-to-choose-a-fishing-charter-in-the-maldives/,what to check before booking,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/maldives-fishing-holiday-planning-guide/,/maldives/packages/fishing/,compare fishing packages,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/maldives-fishing-holiday-planning-guide/,/maldives/travel-guide/gaafu-atoll-fishing-guide-mfh-maamendhoo/,Maamendhoo and Gaafu Alifu,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/maldives-fishing-holiday-planning-guide/,/maldives/guesthouses/maldives-fishing-and-holidays-lodge/,the fishing lodge,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/maldives-fishing-holiday-planning-guide/,/maldives/travel-guide/maldives-fishing-trip-cost/,what it costs,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/maldives-fishing-holiday-planning-guide/,/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/,when to go,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/maldives-fishing-holiday-planning-guide/,/maldives/travel-guide/what-to-pack-for-a-maldives-fishing-trip/,packing list,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/how-to-choose-a-fishing-charter-in-the-maldives/,/maldives/fishing/emperor/,our own charter boat,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/how-to-choose-a-fishing-charter-in-the-maldives/,/maldives/travel-guide/maldives-fishing-trip-cost/,typical charter prices,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/how-to-choose-a-fishing-charter-in-the-maldives/,/maldives/travel-guide/maldives-fishing-rules-and-catch-and-release/,local fishing rules,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/popping-vs-jigging-for-giant-trevally/,/maldives/fishing/popping/,popping,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/popping-vs-jigging-for-giant-trevally/,/maldives/fishing/jigging/,jigging,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/popping-vs-jigging-for-giant-trevally/,/maldives/fishing/gt-fishing/,GT fishing in the Maldives,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/popping-vs-jigging-for-giant-trevally/,/maldives/travel-guide/gt-popping-and-jigging-tackle-guide/,tackle for both,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/gt-popping-and-jigging-tackle-guide/,/maldives/fishing/popping/,popping trips,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/gt-popping-and-jigging-tackle-guide/,/maldives/fishing/jigging/,jigging trips,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/gt-popping-and-jigging-tackle-guide/,/maldives/fishing/emperor/,gear provided on Emperor,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/gt-popping-and-jigging-tackle-guide/,/maldives/travel-guide/what-to-pack-for-a-maldives-fishing-trip/,what else to pack,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/sunset-and-night-fishing-in-the-maldives/,/maldives/fishing/sunset-fishing-trip/,sunset handline trip from Maafushi,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/sunset-and-night-fishing-in-the-maldives/,/maldives/fishing/sunset-fishing-trip-maafushi/,Kaani Hotels sunset trip,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/sunset-and-night-fishing-in-the-maldives/,/maldives/fishing/sunset-reef-fishing/,sunset reef fishing,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/sunset-and-night-fishing-in-the-maldives/,/maldives/fishing/night-fishing-trip/,night fishing trip,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/sunset-and-night-fishing-in-the-maldives/,/maldives/fishing/night-fishing-excursion/,night fishing excursion,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/sunset-and-night-fishing-in-the-maldives/,/maldives/travel-guide/reef-and-bottom-fishing-in-the-maldives/,reef and bottom fishing,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/maldives-fishing-rules-and-catch-and-release/,/maldives/fishing/,responsible fishing,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/maldives-fishing-rules-and-catch-and-release/,/maldives/fishing/gt-fishing/,releasing GT,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/maldives-fishing-rules-and-catch-and-release/,/maldives/travel-guide/how-to-choose-a-fishing-charter-in-the-maldives/,choosing a licensed operator,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/reef-and-bottom-fishing-in-the-maldives/,/maldives/fishing/sunset-reef-fishing/,a sunset reef fishing trip,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/reef-and-bottom-fishing-in-the-maldives/,/maldives/travel-guide/sunset-and-night-fishing-in-the-maldives/,sunset and night trips,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/reef-and-bottom-fishing-in-the-maldives/,/maldives/fishing/,Maldives fish species,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/traditional-maldivian-fishing/,/maldives/fishing/traditional-handline-fishing-trip/,try handline fishing,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/traditional-maldivian-fishing/,/maldives/fishing/tuna-fishing/,tuna fishing,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/traditional-maldivian-fishing/,/maldives/travel-guide/sunset-and-night-fishing-in-the-maldives/,sunset handline trips,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/what-to-pack-for-a-maldives-fishing-trip/,/maldives/travel-guide/gt-popping-and-jigging-tackle-guide/,GT tackle,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/what-to-pack-for-a-maldives-fishing-trip/,/maldives/travel-guide/maldives-fishing-holiday-planning-guide/,planning your fishing holiday,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/best-gt-fishing-destinations-indian-ocean/,/maldives/fishing/gt-fishing/,GT fishing in the Maldives,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/best-gt-fishing-destinations-indian-ocean/,/maldives/travel-guide/maldives-vs-seychelles-gt-fishing/,Maldives vs Seychelles,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/best-gt-fishing-destinations-indian-ocean/,/maldives/travel-guide/maldives-fishing-holiday-planning-guide/,plan a Maldives fishing holiday,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/maldives-vs-seychelles-gt-fishing/,/maldives/fishing/gt-fishing/,GT fishing in the Maldives,New article → related page,Proposed (with article),Yes,
+/maldives/travel-guide/maldives-vs-seychelles-gt-fishing/,/maldives/travel-guide/best-gt-fishing-destinations-indian-ocean/,other Indian Ocean GT destinations,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/maldives-vs-seychelles-gt-fishing/,/maldives/travel-guide/maldives-fishing-trip-cost/,what a Maldives trip costs,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/maldives-fishing-for-beginners-and-families/,/maldives/travel-guide/sunset-and-night-fishing-in-the-maldives/,sunset and night fishing,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/maldives-fishing-for-beginners-and-families/,/maldives/travel-guide/reef-and-bottom-fishing-in-the-maldives/,reef fishing,New article → related page,Proposed (with article),No — proposed,
+/maldives/travel-guide/maldives-fishing-for-beginners-and-families/,/maldives/fishing/,all Maldives fishing trips,New article → related page,Proposed (with article),Yes,
+/maldives/fishing/,/maldives/travel-guide/maldives-fishing-trip-cost/,full price guide,Existing page → new article (incoming),Proposed (after article is live),No — proposed,
+/maldives/fishing/emperor/,/maldives/travel-guide/maldives-fishing-trip-cost/,how charter and package prices compare,Existing page → new article (incoming),Proposed (after article is live),No — proposed,
+/maldives/packages/fishing/,/maldives/travel-guide/maldives-fishing-trip-cost/,what fishing packages cost,Existing page → new article (incoming),Proposed (after article is live),No — proposed,
+/maldives/fishing/,/maldives/travel-guide/maldives-fishing-holiday-planning-guide/,planning a fishing holiday,Existing page → new article (incoming),Proposed (after article is live),No — proposed,
+/maldives/packages/fishing/,/maldives/travel-guide/maldives-fishing-holiday-planning-guide/,how to plan your fishing holiday,Existing page → new article (incoming),Proposed (after article is live),No — proposed,
+/maldives/fishing/,/maldives/travel-guide/sunset-and-night-fishing-in-the-maldives/,sunset and night fishing,Existing page → new article (incoming),Proposed (after article is live),No — proposed,
+/maldives/fishing/,/maldives/travel-guide/maldives-fishing-rules-and-catch-and-release/,fishing rules and catch-and-release,Existing page → new article (incoming),Proposed (after article is live),No — proposed,
+/maldives/fishing/gt-fishing/,/maldives/travel-guide/popping-vs-jigging-for-giant-trevally/,popping or jigging for GT?,Existing page → new article (incoming),Proposed (after article is live),No — proposed,
+/maldives/fishing/gt-fishing/,/maldives/travel-guide/gt-popping-and-jigging-tackle-guide/,GT tackle,Existing page → new article (incoming),Proposed (after article is live),No — proposed,

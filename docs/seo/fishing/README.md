@@ -20,18 +20,19 @@ starts.
 |---|------|------------|--------|
 | — | `README.md` | This overview | **Done** (2026-10-24) |
 | 01 | `01-existing-site-audit.md` | Audit of every existing fishing page, article, product, image and their SEO setup | **Done** (2026-10-24) |
-| 02 | `02-keyword-database.csv` | One row per keyword, with metrics and their source | Not started — blocked on keyword data (see "Missing inputs") |
-| 03 | `03-keyword-clusters.md` | Cluster definitions (A–J) and search intent | Not started |
-| 04 | `04-keyword-url-mapping.csv` | Keyword → existing/proposed URL, cannibalization checks | Not started |
-| 05 | `05-blog-content-roadmap.csv` | Every proposed article: priority, keywords, images, word range, phase | Not started |
-| 06 | `06-individual-content-briefs.md` | A full brief per approved article | Not started |
-| 07 | `07-image-production-plan.csv` | Image subjects, filenames, alt text, sourcing | Not started |
-| 08 | `08-internal-linking-plan.csv` | Source → destination links and anchor suggestions | Not started |
-| 09 | `09-competitor-analysis.md` | Search-result and competitor analysis | Not started |
-| 10 | `10-twelve-week-publishing-plan.md` | Weekly production schedule | Not started |
-| 11 | `11-measurement-plan.md` | Metrics and review process | Not started |
-| 12 | `12-technical-qa-checklist.md` | Pre-publication checks | Not started |
-| 13 | `13-prioritized-action-plan.md` | Recommended next actions, in order | Not started |
+| 02 | `02-keyword-database.csv` | 109 keywords, 10 clusters: intent, audience, target URL, cannibalization, priority. Metrics are `Not available` until real data arrives. | **Done (Stage 1, preliminary)**. Stage 2 = GSC merge (doc 11 §4) |
+| 03 | `03-keyword-clusters.md` | Cluster definitions (A–J), data-status legend, priority rubric | **Done** |
+| 04 | `04-keyword-url-mapping.csv` | 32 targets (19 updates, 13 new): keyword → URL, cannibalization resolution | **Done** |
+| 05 | `05-blog-content-roadmap.csv` | Priority, depth, images, links, CTA, week for each target | **Done** |
+| 06 | `06-individual-content-briefs.md` | Full briefs for N01–N13; update briefs for U01–U19 | **Done** (awaiting approval) |
+| 07 | `07-image-production-plan.csv` | 94 image slots (65 existing bucket photos, 16 `NEEDS ORIGINAL IMAGE`, 10 illustrations, 3 licensed stock) + 5 HTML-table rows | **Done** |
+| 08 | `08-internal-linking-plan.csv` | 77 planned links with anchors | **Done** |
+| 09 | `09-competitor-analysis.md` | Results observed for 12 queries (2026-10-24) | **Done** |
+| 10 | `10-twelve-week-publishing-plan.md` | Weekly schedule | **Done** (proposal) |
+| 11 | `11-measurement-plan.md` | Baseline, KPIs, GSC (Stage 2) process, cannibalization checks | **Done** |
+| 12 | `12-technical-qa-checklist.md` | Pre-publication checks | **Done** |
+| 13 | `13-prioritized-action-plan.md` | Recommended next actions, in order | **Done** |
+| — | `approved-fixes-2026-10-24.sql` (+ `.revert.sql`) | The owner's 2026-10-24 decisions (charter prices 1,380/980, unpublish Golden Reel, distinct sunset titles, 4 alt texts) as SQL. **Not applied yet.** | Waiting for the owner to run it |
 
 The brief's Phase 1 also names `docs/seo/fishing-seo-audit.md`. That audit
 lives at `docs/seo/fishing/01-existing-site-audit.md` instead, so there is one
@@ -79,7 +80,7 @@ copy, not two.
   folder. Word counts, keyword counts and image counts are planning estimates,
   to be adjusted against real search results.
 
-## Missing inputs (needed for documents 02–13)
+## Missing inputs (still needed)
 
 | Input | Why it matters | Who can provide it |
 |-------|----------------|--------------------|
@@ -88,4 +89,4 @@ copy, not two.
 | Target markets (countries/languages that actually book) | Decides which country's metrics to prioritise | Site owner |
 | Enquiry/booking counts by product, if tracked | Ties content priority to revenue | Site owner |
 | Original fishing photographs (boat, crew, catches, techniques, lodge, Maamendhoo) | Most planned images must be real, not stock | Site owner / operator |
-| Confirmation of current charter prices | Pages currently disagree (audit §6.1) | Site owner |
+| ~~Confirmation of current charter prices~~ | Confirmed 2026-10-24: USD 1,380 / 980 | Done |

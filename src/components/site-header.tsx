@@ -82,7 +82,7 @@ export function SiteHeader({ availableLocales }: { availableLocales: Locale[] })
               a small, always-visible static asset, so skipping
               optimization (serving the original file's bytes verbatim)
               is the simplest fix and costs nothing in practice. */}
-          <Image src="/logo.png" alt="Maldives Tour Guide" width={445} height={300} priority unoptimized className="h-10 w-auto sm:h-12" />
+          <Image src="/logo-header.webp" alt="Maldives Tour Guide" width={178} height={120} priority unoptimized className="h-10 w-auto sm:h-12" />
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">

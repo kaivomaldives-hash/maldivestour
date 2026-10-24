@@ -71,7 +71,10 @@ export function publicStorageUrl(storagePath: string): string | null {
  * as-is.
  */
 export const OPTIMIZED_MEDIA_PREFIX = "opt/";
-export const IMAGE_VARIANT_WIDTHS = [640, 1280] as const;
+// 480/768/960 were added later (scripts/add-media-size-variants.mjs backfilled
+// them for every existing opt/ asset) so a ~720px-wide slot -- a phone at
+// 1.75x DPR -- no longer has to download the 1280px file.
+export const IMAGE_VARIANT_WIDTHS = [480, 640, 768, 960, 1280] as const;
 
 export function isOptimizedStoragePath(storagePath: string): boolean {
   return storagePath.replace(/^\/+/, "").replace(/^media\//, "").startsWith(OPTIMIZED_MEDIA_PREFIX) && storagePath.endsWith(".webp");

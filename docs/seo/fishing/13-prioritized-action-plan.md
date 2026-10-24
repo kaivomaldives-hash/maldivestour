@@ -35,13 +35,11 @@ Every item needs owner approval before it is done. **"Approved"** means the owne
 ## Later (weeks 8–12)
 N03, N04, N05, N07, N08, N13, then N09–N12, plus the remaining small updates (U09, U10, U15–U19). Full order in doc 10.
 
-## Needs original images before publishing
-These targets have `NEEDS ORIGINAL IMAGE` rows in doc 07:
-
-| Group | Targets |
-|---|---|
-| New articles | N02, N03, N04, N05, N06, N07, N09 |
-| Page updates | U02, U03, U04, U14 |
+## Images
+- Original photos are no longer a blocker. Every slot now uses either a photo already in the bucket (viewed and matched) or a free Pexels/Pixabay photo with credit. The list is in `07a-free-image-list.md`.
+- **Chosen:** 1 of 14 (the Seychelles beach for N12).
+- **Still to choose:** 13. Pick each one before its article's week.
+- **The one photo most worth taking yourself:** the outside of the lodge. None exists.
 
 ## Risks
 - **Prices:** until item 1 is applied, the charter pages and Offer JSON-LD show 1,500 / 1,000, while the FAQs and descriptions say 1,380 / 980.

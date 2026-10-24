@@ -1,8 +1,8 @@
 -- Owner-approved fishing fixes (decisions given 2026-10-24, see
--- docs/seo/fishing/01-existing-site-audit.md §13). NOT YET APPLIED -- the
--- session's permission settings blocked direct database writes. Run this
--- in the Supabase SQL editor (or allow the write and ask Claude to apply
--- it). Undo: docs/seo/fishing/approved-fixes-2026-10-24.revert.sql.
+-- docs/seo/fishing/01-existing-site-audit.md §13). APPLIED 2026-10-24 on
+-- the owner's instruction (statement by statement through the REST API;
+-- each update matched exactly 1 row and was read back).
+-- Undo: docs/seo/fishing/approved-fixes-2026-10-24.revert.sql.
 --
 -- Values below were read from the live database on 2026-10-24.
 

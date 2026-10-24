@@ -53,6 +53,10 @@ yarn-error.log*
 # script locally ("local changes would be overwritten by merge").
 /data/maldives/media/storage-upload-report.json
 
+# scripts/add-media-size-variants.mjs's resume log (asset ids already
+# done) -- local run state, same reasoning as the report above.
+/scripts/output/media-size-variants-done.txt
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

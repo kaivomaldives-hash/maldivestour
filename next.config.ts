@@ -158,6 +158,12 @@ const nextConfig: NextConfig = {
   // through a Server Action as multipart/form-data — the 1MB default
   // easily clips a phone-camera photo or scanned PDF.
   experimental: {
+    // Puts the (small, Tailwind-only, ~11 KB gzipped) stylesheet in a
+    // <style> tag in the HTML instead of a render-blocking <link>, which
+    // Lighthouse flagged as a ~140 ms request on the critical path. The
+    // trade-off -- CSS isn't cached separately between pages -- is small at
+    // this size. See node_modules/next/dist/docs/.../inlineCss.md.
+    inlineCss: true,
     serverActions: {
       bodySizeLimit: "10mb",
     },
@@ -191,6 +197,13 @@ const nextConfig: NextConfig = {
     // /_next/image optimizer.
     loader: "custom",
     loaderFile: "./src/lib/media/image-loader.ts",
+    // srcset widths = the pre-built variant widths (IMAGE_VARIANT_WIDTHS in
+    // src/lib/media/types.ts) plus the 1600px full-size file, so every
+    // srcset candidate is a real file at its stated width -- with Next's
+    // default sizes (750, 828, 1080...), each mapped up to the next variant
+    // and the browser picked a much larger file than the slot needed.
+    deviceSizes: [480, 640, 768, 960, 1280, 1600],
+    imageSizes: [256, 384],
     remotePatterns: [
       // Supabase Storage public bucket URLs (see src/lib/media/types.ts's
       // publicStorageUrl and the "media" bucket created in

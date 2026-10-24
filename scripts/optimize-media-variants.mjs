@@ -42,7 +42,7 @@ if (!BASE) {
 
 // Must match src/lib/media/types.ts / src/lib/media/compress-image.ts.
 const PREFIX = "opt/";
-const VARIANT_WIDTHS = [640, 1280];
+const VARIANT_WIDTHS = [480, 640, 768, 960, 1280];
 const MAX_DIMENSION = 1600;
 const WEBP_QUALITY = 80;
 const CONCURRENCY = 24;

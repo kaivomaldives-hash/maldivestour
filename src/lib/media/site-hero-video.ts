@@ -36,12 +36,22 @@ import type { HeroVideoSource, HeroVideoSources } from "@/components/ui/hero-vid
  * falling back to the page's own ocean gradient rather than a broken-
  * media icon.
  */
+/**
+ * The site/ hero files are stored with `Cache-Control: max-age=31536000`
+ * (one year), so browsers keep them between visits. Their paths never
+ * change, though -- so whenever a hero video or poster is replaced in
+ * Storage, bump this number, or returning visitors keep the old file
+ * for up to a year. (When re-uploading, set the same cache-control:
+ * the Storage upload's `cacheControl: "31536000"` option.)
+ */
+const SITE_HERO_ASSET_VERSION = 2;
+
 function resolveSource(mp4Path: string, posterPath: string): HeroVideoSource | null {
   const mp4 = publicStorageUrl(mp4Path);
   const poster = publicStorageUrl(posterPath);
   if (!mp4 || !poster) return null;
 
-  return { mp4, poster };
+  return { mp4: `${mp4}?v=${SITE_HERO_ASSET_VERSION}`, poster: `${poster}?v=${SITE_HERO_ASSET_VERSION}` };
 }
 
 function resolveHeroVideo(key: string): HeroVideoSources | null {

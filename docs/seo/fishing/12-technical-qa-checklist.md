@@ -30,6 +30,7 @@ Run against the local production build (`next build && next start`) and again on
 ## Images (doc 07)
 - [ ] Every image has accurate alt text describing what it shows (not the article title).
 - [ ] Original-photo slots filled with owner photos, or the item is held back. No stock image passed off as ours.
+- [ ] Pexels/Pixabay photos: source URL, photographer and download date recorded; credit shown in the caption; the photo really shows the stated place; never captioned as one of our trips.
 - [ ] Served through the media pipeline with size variants (480–1280 px). Hero has `priority`/preload; the rest load lazily.
 - [ ] Source width ≥ 1,200 px for hero images; ≥ 800 px elsewhere (the audit found 22 below 800 px).
 - [ ] Descriptive filenames for new uploads (doc 07 `proposed_filename_for_new_upload`).

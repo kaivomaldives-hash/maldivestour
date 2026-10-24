@@ -25,7 +25,7 @@ starts.
 | 04 | `04-keyword-url-mapping.csv` | 32 targets (19 updates, 13 new): keyword → URL, cannibalization resolution | **Done** |
 | 05 | `05-blog-content-roadmap.csv` | Priority, depth, images, links, CTA, week for each target | **Done** |
 | 06 | `06-individual-content-briefs.md` | Full briefs for N01–N13; update briefs for U01–U19 | **Done** (awaiting approval) |
-| 07 | `07-image-production-plan.csv` | 94 image slots (65 existing bucket photos, 16 `NEEDS ORIGINAL IMAGE`, 10 illustrations, 3 licensed stock) + 5 HTML-table rows | **Done** |
+| 07 | `07-image-production-plan.csv` | 94 image slots (65 existing bucket photos, 16 `NEEDS ORIGINAL IMAGE`, 10 illustrations, 3 free-licence Pexels/Pixabay photos with credit) + 5 HTML-table rows | **Done** |
 | 08 | `08-internal-linking-plan.csv` | 77 planned links with anchors | **Done** |
 | 09 | `09-competitor-analysis.md` | Results observed for 12 queries (2026-10-24) | **Done** |
 | 10 | `10-twelve-week-publishing-plan.md` | Weekly schedule | **Done** (proposal) |

@@ -32,7 +32,7 @@ Keyword metrics are all `Not available` (see the legend in doc 03).
 | 12. Outline (H2s) | 1. Quick answer: price ranges (half day / full day / packages)<br>2. Private charter prices: per boat, up to 5 anglers (table)<br>3. Fishing holiday package prices per person by group size and nights (table)<br>4. What's included and what costs extra (transfers, equipment, meals & hotel, pro rod & reel)<br>5. Per-boat vs per-person: how group size changes the price<br>6. Shared trips vs private charters (sunset/night trips from local islands)<br>7. How to keep the cost down<br>8. FAQ |
 | 13. Questions to answer | 10 questions (FAQ + body), drafted from the outline and checked against GSC queries in Stage 2 |
 | 14. Depth | 1,400–2,000 words; long enough to answer fully, with no padding |
-| 15. Facts to verify / sources | • Charter USD 1,380 / 980 per boat (owner-confirmed 2026-10-24; DB fix pending)<br>• Add-ons: transfer USD 475/person, equipment USD 80/kit, FB meals & hotel USD 150/room, pro rod & reel USD 80/setup — confirm still current<br>• Package price table (2–8 nights, 1/2/5 guests) — confirm current season<br>• Shared trip prices (e.g. sunset handline USD 30) — from live product records only<br>• Do NOT quote competitor prices as fact; if used, attribute and date them |
+| 15. Facts to verify / sources | • Charter USD 1,380 / 980 per boat (owner-confirmed 2026-10-24; DB fix pending)<br>• Add-ons: domestic flight USD 365/person (owner-confirmed 2026-10-24; rate sheet said USD 475 transfer), equipment USD 80/kit, FB meals & hotel USD 150/room, pro rod & reel USD 80/setup — confirm still current<br>• Package price table (2–8 nights, 1/2/5 guests) — confirm current season<br>• Shared trip prices (e.g. sunset handline USD 30) — from live product records only<br>• Do NOT quote competitor prices as fact; if used, attribute and date them |
 | 16. Images | 5–7 total: 4 original business photos, 0 illustrations (doc 07) |
 | 17. Tables / diagrams | 2 price tables (charters; packages per person by group size) |
 | 18. Internal links out | Emperor, charter products, U11, package pages, N02, N03 |
@@ -42,7 +42,7 @@ Keyword metrics are all `Not available` (see the legend in doc 03).
 | 22. Cannibalization check | Hub FAQ answers cost in one line and links here; U11 lists packages; N01 explains and compares |
 | 23. Measurement | Position 'Maldives fishing trip cost'; clicks to U11/U02 |
 
-Dependencies: Approved charter price fix; confirm add-on prices (transfer USD 475/person, equipment USD 80/kit) are current. Effort: Medium.
+Dependencies: Approved charter price fix; domestic flight USD 365/person confirmed 2026-10-24; equipment USD 80/kit from the rate sheet. Effort: Medium.
 
 ### N02 — Planning a fishing holiday in the Maldives
 

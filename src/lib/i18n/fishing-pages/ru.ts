@@ -26,6 +26,7 @@ export const RU: FishingPagesLocaleStrings = {
   related: { fishing: "Рыбалка на Мальдивах", emperor: "Emperor — частный рыболовный чартер", allFishes: "Все рыбы Мальдив", fishingPackages: "Рыболовные туры", gtFishing: "Рыбалка на GT", tunaFishing: "Рыбалка на тунца" },
   waSpecies: "Здравствуйте, я хочу спланировать рыбалку на Мальдивах, цель: {name}.\nМоё местоположение:\nДата:\nКоличество рыбаков:\nПолдня или полный день:",
   waTechnique: "Здравствуйте, я хочу спланировать выход: {name}.\nМоё местоположение:\nДата:\nКоличество рыбаков:\nПолдня или полный день:",
+  nights: "Ночей: {n}",
   species: {
     "gt-fishing": {
       displayName: "гигантский каранкс (GT)",

@@ -26,6 +26,7 @@ export const ZH: FishingPagesLocaleStrings = {
   related: { fishing: "马尔代夫钓鱼", emperor: "Emperor 私人钓鱼包船", allFishes: "马尔代夫全部鱼类", fishingPackages: "钓鱼度假套餐", gtFishing: "GT浪人鲹钓", tunaFishing: "金枪鱼钓" },
   waSpecies: "您好，我想在马尔代夫安排一次钓鱼行程，目标鱼种：{name}。\n我的位置：\n日期：\n钓手人数：\n半天还是全天：",
   waTechnique: "您好，我想安排一次行程：{name}。\n我的位置：\n日期：\n钓手人数：\n半天还是全天：",
+  nights: "{n}晚",
   species: {
     "gt-fishing": {
       displayName: "浪人鲹（GT）",

@@ -11,7 +11,7 @@ import { DEFAULT_LOCALE, isLocale, type Locale } from "@/lib/i18n/locales";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getArticleLocalePaths } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
-import { getLinkLocalizer } from "@/lib/i18n/link-localizer";
+import { getLinkLocalizer, type LinkLocalizer } from "@/lib/i18n/link-localizer";
 import { publicStorageUrl } from "@/lib/media/types";
 import { canonicalUrl, getSiteUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { createClient } from "@/lib/supabase/public";
@@ -107,6 +107,13 @@ function articleJsonLd(locale: Locale, article: NonNullable<Awaited<ReturnType<t
   };
 }
 
+/** Points every internal link in a translated body at the same page in
+ * this language when that page has a translation (unchanged otherwise),
+ * so bodies can be written with plain English hrefs. */
+function localizeBodyLinks(html: string, L: LinkLocalizer): string {
+  return html.replace(/href="(\/[^"]*)"/g, (_, href: string) => `href="${L.href(href)}"`);
+}
+
 export default async function LocaleArticleDetailPage({ params }: { params: Promise<Params> }) {
   const { locale: rawLocale, article: slug } = await params;
   const { locale, article } = await loadOrNotFound(rawLocale, slug);
@@ -150,12 +157,12 @@ export default async function LocaleArticleDetailPage({ params }: { params: Prom
               [&_ol]:mt-4 [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:pl-6
               [&_blockquote]:mt-4 [&_blockquote]:border-l-4 [&_blockquote]:border-maldives-300 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-neutral-600
               [&_figure]:mt-6 [&_figure]:overflow-hidden [&_figure]:rounded-2xl
-              [&_img]:h-auto [&_img]:w-full
+              [&_img]:h-auto [&_img]:w-full [&_figure_img]:max-h-[560px] [&_figure_img]:object-cover [&_figure_img]:object-[center_25%]
               [&_table]:mt-4 [&_table]:w-full [&_table]:border-collapse [&_table]:text-sm
               [&_td]:border [&_td]:border-neutral-200 [&_td]:p-2
               [&_a]:text-maldives-600 [&_a]:underline
             "
-            dangerouslySetInnerHTML={{ __html: article.bodyHtml }}
+            dangerouslySetInnerHTML={{ __html: localizeBodyLinks(article.bodyHtml, L) }}
           />
 
           <aside className="space-y-8">

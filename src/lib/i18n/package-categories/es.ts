@@ -7,6 +7,7 @@ export const ES: PackageCategoryLocaleStrings = {
   emptyTitle: "Todavía no hay {title} disponibles.",
   emptyDescription: "Consulta todos los paquetes en Maldivas o escríbenos directamente.",
   filtersInEnglish: "Búsqueda y filtros (en inglés)",
+  nights: "{n} noches",
   categories: {
     luxury: {
       title: "Paquetes de lujo",

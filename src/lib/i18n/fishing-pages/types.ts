@@ -4,6 +4,8 @@ export const FISHING_TECHNIQUE_PAGE_SLUGS = ["popping", "jigging", "big-game-fis
 export type FishingSpeciesPageSlug = (typeof FISHING_SPECIES_PAGE_SLUGS)[number];
 export type FishingTechniquePageSlug = (typeof FISHING_TECHNIQUE_PAGE_SLUGS)[number];
 
+import type { TranslatedContentSection } from "@/lib/content/content-section";
+
 type Faq = { question: string; answer: string };
 
 /** Mirrors a SPECIES_PAGES entry (src/lib/fishing/species-content.ts) plus
@@ -21,6 +23,8 @@ export interface FishingSpeciesTranslation {
   whyMaldives: string[];
   techniqueLabels: string[];
   faqs: Faq[];
+  /** Translations of the English entry's extraSections, by position. */
+  extraSections?: TranslatedContentSection[];
 }
 
 /** Mirrors a TECHNIQUE_PAGES entry (src/lib/fishing/technique-content.ts). */
@@ -32,6 +36,8 @@ export interface FishingTechniqueTranslation {
   howItWorks: string[];
   targetSpeciesLabels: string[];
   faqs: Faq[];
+  /** Translations of the English entry's extraSections, by position. */
+  extraSections?: TranslatedContentSection[];
 }
 
 export interface FishingPagesLocaleStrings {
@@ -65,6 +71,8 @@ export interface FishingPagesLocaleStrings {
   /** WhatsApp message templates ("{name}" -> species display name / technique h1). */
   waSpecies: string;
   waTechnique: string;
+  /** "{n}" -> number of nights, for package price tables. */
+  nights: string;
   species: Record<FishingSpeciesPageSlug, FishingSpeciesTranslation>;
   techniques: Record<FishingTechniquePageSlug, FishingTechniqueTranslation>;
 }

@@ -29,7 +29,7 @@ export const EMPEROR_HERO_IMAGE = asset(
   "opt/uploads/assets/uploads/fishing/images/charters/emperor.webp",
   "Emperor, a 32 ft white-and-black fishing boat with twin outboards, anchored off a Maldives island",
 );
-const EMPEROR_GALLERY = [
+export const EMPEROR_GALLERY = [
   asset(
     "231eed3c-1bc0-71fb-4187-ca095c8d7630",
     "opt/uploads/assets/uploads/fishing/images/charters/emperor-fishing-boat.webp",

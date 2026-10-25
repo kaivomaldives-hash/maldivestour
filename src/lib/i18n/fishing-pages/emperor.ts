@@ -1,3 +1,4 @@
+import { getFishingContentUpdate } from "@/lib/i18n/fishing-content";
 import type { Locale } from "@/lib/i18n/locales";
 
 /** Translated copy for the Emperor charter page (src/components/fishing/emperor-page.tsx).
@@ -36,6 +37,17 @@ export interface EmperorStrings {
   from: string;
   perBoat: string;
   waMessage: string;
+  /** "What to expect" and "What's included" sections (optional until translated). */
+  dayTitle?: string;
+  dayParagraphs?: string[];
+  includedTitle?: string;
+  includedHeading?: string;
+  notIncludedHeading?: string;
+  included?: string[];
+  notIncluded?: string[];
+  packageBefore?: string;
+  packageLink?: string;
+  packageAfter?: string;
 }
 
 const DE: EmperorStrings = {
@@ -343,5 +355,8 @@ const STRINGS: Partial<Record<Locale, EmperorStrings>> = { de: DE, es: ES, it: I
 export const EMPEROR_LOCALES = Object.keys(STRINGS) as Locale[];
 
 export function getEmperorStrings(locale: Locale): EmperorStrings | null {
-  return STRINGS[locale] ?? null;
+  const base = STRINGS[locale];
+  if (!base) return null;
+  const update = getFishingContentUpdate(locale);
+  return update ? { ...base, ...update.emperor } : base;
 }

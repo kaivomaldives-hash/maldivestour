@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { Price } from "@/components/currency/price";
-import { EMPEROR_HERO_IMAGE } from "@/components/fishing/emperor-page";
+import { EMPEROR_GALLERY, EMPEROR_HERO_IMAGE } from "@/components/fishing/emperor-page";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { FaqSection } from "@/components/ui/faq-section";
@@ -114,7 +114,59 @@ export async function LocalizedEmperorPage({ locale }: { locale: Locale }) {
               </li>
             ))}
           </ul>
+
+          <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {EMPEROR_GALLERY.map((image) => (
+              <li key={image.id} className="overflow-hidden rounded-2xl">
+                <MediaImage asset={image} alt={t.title} aspectClassName="aspect-[4/3]" />
+              </li>
+            ))}
+          </ul>
         </section>
+
+        {t.dayTitle && t.dayParagraphs && (
+          <section className="mt-12 border-t border-neutral-200 pt-10">
+            <h2 className="text-xl font-semibold text-ocean-900">{t.dayTitle}</h2>
+            <div className="mt-3 space-y-3 text-sm text-neutral-700">
+              {t.dayParagraphs.map((p) => (
+                <p key={p}>{p}</p>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {t.includedTitle && t.included && t.notIncluded && (
+          <section className="mt-12 border-t border-neutral-200 pt-10">
+            <h2 className="text-xl font-semibold text-ocean-900">{t.includedTitle}</h2>
+            <div className="mt-4 grid grid-cols-1 gap-6 text-sm text-neutral-700 sm:grid-cols-2">
+              <div>
+                <h3 className="font-medium text-ocean-900">{t.includedHeading}</h3>
+                <ul className="mt-2 list-disc space-y-1 pl-5">
+                  {t.included.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 className="font-medium text-ocean-900">{t.notIncludedHeading}</h3>
+                <ul className="mt-2 list-disc space-y-1 pl-5">
+                  {t.notIncluded.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                {t.packageLink && (
+                  <p className="mt-3">
+                    {t.packageBefore}
+                    <Link href={L.href("/maldives/packages/fishing/")} className="text-maldives-600 hover:underline">
+                      {t.packageLink}
+                    </Link>
+                    {t.packageAfter}
+                  </p>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
 
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">{t.whereTitle}</h2>

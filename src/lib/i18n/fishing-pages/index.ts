@@ -1,3 +1,4 @@
+import { applyPageUpdate, getFishingContentUpdate } from "@/lib/i18n/fishing-content";
 import { DE } from "@/lib/i18n/fishing-pages/de";
 import { ES } from "@/lib/i18n/fishing-pages/es";
 import { IT } from "@/lib/i18n/fishing-pages/it";
@@ -19,7 +20,15 @@ const STRINGS: Partial<Record<Locale, FishingPagesLocaleStrings>> = { de: DE, es
 export const FISHING_PAGES_LOCALES = Object.keys(STRINGS) as Locale[];
 
 export function getFishingPagesStrings(locale: Locale): FishingPagesLocaleStrings | null {
-  return STRINGS[locale] ?? null;
+  const base = STRINGS[locale];
+  if (!base) return null;
+  const update = getFishingContentUpdate(locale);
+  if (!update) return base;
+  const species = { ...base.species };
+  for (const slug of FISHING_SPECIES_PAGE_SLUGS) species[slug] = applyPageUpdate(base.species[slug], update.species[slug]);
+  const techniques = { ...base.techniques };
+  for (const slug of FISHING_TECHNIQUE_PAGE_SLUGS) techniques[slug] = applyPageUpdate(base.techniques[slug], update.techniques[slug]);
+  return { ...base, species, techniques };
 }
 
 export function isFishingSpeciesPageSlug(slug: string): slug is FishingSpeciesPageSlug {

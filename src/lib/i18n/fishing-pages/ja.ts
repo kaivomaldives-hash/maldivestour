@@ -26,6 +26,7 @@ export const JA: FishingPagesLocaleStrings = {
   related: { fishing: "モルディブの釣り", emperor: "エンペラー号 プライベート釣りチャーター", allFishes: "モルディブの魚一覧", fishingPackages: "釣り旅行パッケージ", gtFishing: "GTフィッシング", tunaFishing: "マグロ釣り" },
   waSpecies: "こんにちは。モルディブで{name}を狙う釣りを計画したいです。\n現在地：\n日付：\n釣り人の人数：\n半日または1日：",
   waTechnique: "こんにちは。次の釣りを計画したいです：{name}\n現在地：\n日付：\n釣り人の人数：\n半日または1日：",
+  nights: "{n}泊",
   species: {
     "gt-fishing": {
       displayName: "ロウニンアジ（GT）",

@@ -15,26 +15,26 @@ The page updates from doc 06 (U01–U19) still apply where a topic lands on an e
 
 | # | Topic | Target keywords | Images | Length | Lands on | Status |
 |---|---|---|---|---|---|---|
-| 1 | Complete guide to Maldives fishing | 15–25 | 8–12 | 2,000–3,000 | Hub `/maldives/fishing/` (U01) | U01 done in code; already ~4,500 words |
-| 2 | Best time to fish in the Maldives | 8–15 | 5–8 | 1,200–1,800 | `/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/` (U12, expand) | LIVE 2026-10-25 (rewritten in place, ~1,340 words + 2 listing cards, 8 images); old version in backups/ |
-| 3 | GT fishing in the Maldives | 12–20 | 7–10 | 1,800–2,500 | `/maldives/fishing/gt-fishing/` (U03) | Done in code 2026-10-25 (~1,840 words + charter cards, 8 photos + 2 card photos); not merged |
-| 4 | Popping and jigging guide | 12–20 | 7–10 | 1,800–2,500 | New article `/maldives/travel-guide/gt-popping-and-jigging-guide/` (replaces N04 + N05); `/popping/` and `/jigging/` stay short landing pages | To do |
-| 5 | Maldives fishing holidays and packages | 10–18 | 6–10 | 1,500–2,200 | `/maldives/packages/fishing/` (U11, expand) | To do |
-| 6 | Deep-sea fishing in the Maldives | 10–16 | 6–9 | 1,500–2,000 | `/maldives/fishing/big-game-fishing/` (U07; owns "deep sea fishing") | To do |
-| 7 | Tuna fishing in the Maldives | 10–18 | 6–9 | 1,500–2,200 | New article `/maldives/travel-guide/tuna-fishing-in-the-maldives/` covering yellowfin, skipjack, dogtooth and pole-and-line | To do |
-| 8 | Maldives fishing holiday cost | 8–15 | 4–7 | 1,200–1,800 | N01 `/maldives/travel-guide/maldives-fishing-trip-cost/` | Draft in DB, awaiting owner publish |
-| 9 | Fishing charters: private vs guided | 8–15 | 5–8 | 1,200–1,800 | New article `/maldives/travel-guide/private-vs-shared-fishing-charters-maldives/` | To do |
-| 10 | Best fishing spots in the Maldives | 10–18 | 7–12 | 1,500–2,200 | New article `/maldives/travel-guide/best-fishing-spots-in-the-maldives/` (Gaafu Alifu first) | To do |
-| 11 | Maldives vs Seychelles GT fishing | 10–16 | 5–8 | 1,500–2,200 | N12 `/maldives/travel-guide/maldives-vs-seychelles-gt-fishing/` | To do |
-| 12 | Best GT fishing destinations worldwide | 15–25 | 8–12 | 2,000–3,000 | N11, widened to worldwide: `/maldives/travel-guide/best-gt-fishing-destinations/` (Maldives + Gaafu Alifu featured) | Draft in DB 2026-10-25 (node 8c4d21bd-de1a-44ec-8027-d5463f0eef25, ~2,220 words, 9 images incl. hero and cards) |
-| 13 | Best popping and jigging destinations | 12–20 | 7–10 | 1,800–2,500 | New article `/maldives/travel-guide/best-popping-and-jigging-destinations/` | To do |
-| 14 | Big-game fishing in the Indian Ocean | 12–20 | 7–10 | 1,800–2,500 | New article `/maldives/travel-guide/big-game-fishing-indian-ocean/` | To do |
-| 15 | Yellowfin tuna fishing in the Maldives | 8–15 | 5–8 | 1,200–1,800 | `/maldives/fishing/tuna-fishing/` (U08; the page is already the yellowfin species page) | To do |
-| 16 | Dogtooth tuna fishing guide | 10–18 | 6–9 | 1,500–2,200 | `/maldives/fishing/dogtooth-tuna/` (U19, expand) | To do |
-| 17 | Tropical fishing holiday packing list | 8–12 | 6–10 | 1,000–1,600 | N10 `/maldives/travel-guide/fishing-holiday-packing-list/` | To do |
-| 18 | Maldives fishing trip itinerary | 8–15 | 6–10 | 1,200–2,000 | New article `/maldives/travel-guide/maldives-fishing-trip-itinerary/` (sample days built from the real packages) | To do |
-| 19 | Traditional Maldivian fishing | 8–15 | 6–10 | 1,200–2,000 | N09 `/maldives/travel-guide/traditional-maldivian-fishing/` | To do |
-| 20 | Choosing a Maldives fishing tour operator | 8–15 | 4–7 | 1,200–1,800 | N03 `/maldives/travel-guide/how-to-choose-a-fishing-charter-in-the-maldives/` | To do |
+| 1 | Complete guide to Maldives fishing | 15–25 | 8–12 | 2,000–3,000 | Hub `/maldives/fishing/` (U01) | Done in code (hub links, intro, meta); ~4,600 words |
+| 2 | Best time to fish in the Maldives | 8–15 | 5–8 | 1,200–1,800 | `/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/` (U12, expand) | LIVE 2026-10-25 (rewritten in place; old version in backups/) |
+| 3 | GT fishing in the Maldives | 12–20 | 7–10 | 1,800–2,500 | `/maldives/fishing/gt-fishing/` (U03) | Done in code (~1,820 words, 10 images) |
+| 4 | Popping and jigging guide | 12–20 | 7–10 | 1,800–2,500 | New article `/maldives/travel-guide/gt-popping-and-jigging-guide/` (replaces N04 + N05); `/popping/` and `/jigging/` stay short landing pages | Draft in DB, node 0cca7aba-a2be-4fe3-87ac-06fb2d3ce3b9 (~1,850 words) |
+| 5 | Maldives fishing holidays and packages | 10–18 | 6–10 | 1,500–2,200 | `/maldives/packages/fishing/` (U11, expand) | Done in code (~2,080 words incl. full price tables) |
+| 6 | Deep-sea fishing in the Maldives | 10–16 | 6–9 | 1,500–2,000 | `/maldives/fishing/big-game-fishing/` (U07; owns "deep sea fishing") | Done in code (~1,530 words; now targets "deep sea fishing Maldives") |
+| 7 | Tuna fishing in the Maldives | 10–18 | 6–9 | 1,500–2,200 | New article `/maldives/travel-guide/tuna-fishing-in-the-maldives/` covering yellowfin, skipjack, dogtooth and pole-and-line | Draft in DB, node bd42322c-bd27-4dd5-a00b-5cc155b9f7c5 (~1,540 words) |
+| 8 | Maldives fishing holiday cost | 8–15 | 4–7 | 1,200–1,800 | N01 `/maldives/travel-guide/maldives-fishing-trip-cost/` | Draft in DB, node b6f40298-e425-4be7-9220-59fcb1b617a7 (~1,650 words) |
+| 9 | Fishing charters: private vs guided | 8–15 | 5–8 | 1,200–1,800 | New article `/maldives/travel-guide/private-vs-shared-fishing-charters-maldives/` | Draft in DB, node 8dbd2ec2-a647-4d02-bcb8-e731447d612e (~1,270 words) |
+| 10 | Best fishing spots in the Maldives | 10–18 | 7–12 | 1,500–2,200 | New article `/maldives/travel-guide/best-fishing-spots-in-the-maldives/` (Gaafu Alifu first) | Draft in DB, node 9dae41a6-ede0-48d1-8500-a6c3d5dbefc6 (~1,510 words) |
+| 11 | Maldives vs Seychelles GT fishing | 10–16 | 5–8 | 1,500–2,200 | N12 `/maldives/travel-guide/maldives-vs-seychelles-gt-fishing/` | Draft in DB, node cb93025c-720c-4271-8090-f9513774cbbe (~1,500 words) |
+| 12 | Best GT fishing destinations worldwide | 15–25 | 8–12 | 2,000–3,000 | N11, widened to worldwide: `/maldives/travel-guide/best-gt-fishing-destinations/` (Maldives + Gaafu Alifu featured) | Draft in DB, node 8c4d21bd-de1a-44ec-8027-d5463f0eef25 (~2,220 words) |
+| 13 | Best popping and jigging destinations | 12–20 | 7–10 | 1,800–2,500 | New article `/maldives/travel-guide/best-popping-and-jigging-destinations/` | Draft in DB, node dd50d949-0651-4abd-8b73-368bd59c698a (~1,810 words) |
+| 14 | Big-game fishing in the Indian Ocean | 12–20 | 7–10 | 1,800–2,500 | New article `/maldives/travel-guide/big-game-fishing-indian-ocean/` | Draft in DB, node 28233a06-154d-4cba-8e44-724ce77f46f5 (~1,800 words) |
+| 15 | Yellowfin tuna fishing in the Maldives | 8–15 | 5–8 | 1,200–1,800 | `/maldives/fishing/tuna-fishing/` (U08; the page is already the yellowfin species page) | Done in code (~1,290 words; H1 now "Yellowfin Tuna Fishing in the Maldives") |
+| 16 | Dogtooth tuna fishing guide | 10–18 | 6–9 | 1,500–2,200 | `/maldives/fishing/dogtooth-tuna/` (U19, expand) | Done in code (~1,520 words) |
+| 17 | Tropical fishing holiday packing list | 8–12 | 6–10 | 1,000–1,600 | N10 `/maldives/travel-guide/fishing-holiday-packing-list/` | Draft in DB, node 71047b47-ecb6-460c-a7da-33e887673e82 (~1,060 words) |
+| 18 | Maldives fishing trip itinerary | 8–15 | 6–10 | 1,200–2,000 | New article `/maldives/travel-guide/maldives-fishing-trip-itinerary/` (sample days built from the real packages) | Draft in DB, node 87aab238-914c-4cb2-a4f1-f7d0413c7dc8 (~1,210 words) |
+| 19 | Traditional Maldivian fishing | 8–15 | 6–10 | 1,200–2,000 | N09 `/maldives/travel-guide/traditional-maldivian-fishing/` | Draft in DB, node 9e2dfa30-bccb-4e6a-9875-781a5b3f50d0 (~1,215 words) |
+| 20 | Choosing a Maldives fishing tour operator | 8–15 | 4–7 | 1,200–1,800 | N03 `/maldives/travel-guide/how-to-choose-a-fishing-charter-in-the-maldives/` | Draft in DB, node 90e6a013-e84d-46f9-a9d9-d9fe6ff4e3f5 (~1,330 words) |
 
 ## Overlaps to keep apart
 - **#7 vs #15:** #15 is the yellowfin species page (bookable, short-intent); #7 is the broader guide to all Maldivian tuna and links to #15 and #16.
@@ -47,16 +47,8 @@ The page updates from doc 06 (U01–U19) still apply where a topic lands on an e
 ## Dropped from the old plan
 - N06 sunset & night fishing, N07 rules & catch-and-release, N08 reef & bottom fishing, N13 beginners & families: not in the owner's list. Their content can be folded into #1, #3 and #10 where useful.
 
-## Links already pointing at unpublished pages
-Added on purpose so they aren't forgotten (owner, 2026-10-25). Each starts working when its target is published.
-Check this list before publishing anything, and publish targets soon.
-
-| Link target | Target status | Linked from |
-|---|---|---|
-| `/maldives/travel-guide/maldives-fishing-trip-cost/` (#8) | Draft in DB | Hub intro, GT page, Emperor page, #12 |
-| `/maldives/travel-guide/best-gt-fishing-destinations/` (#12) | Draft in DB | GT page |
-| `/maldives/travel-guide/maldives-vs-seychelles-gt-fishing/` (#11) | Not written | #12 |
-| `/maldives/travel-guide/best-popping-and-jigging-destinations/` (#13) | Not written | #12 |
-| `/maldives/travel-guide/private-vs-shared-fishing-charters-maldives/` (#9) | Not written | #8 |
-| `/maldives/travel-guide/how-to-choose-a-fishing-charter-in-the-maldives/` (#20) | Not written | #8 |
-| `/maldives/travel-guide/maldives-fishing-trip-itinerary/` (#18) | Not written | #8 |
+## Publishing order (all 20 topics written, 2026-10-25)
+- 13 articles are drafts in the database (#4, #7–#14, #17–#20). They link to each other, and the code pages (hub, GT, Emperor, packages, deep sea, yellowfin, dogtooth) link to several of them.
+- **Publish all 13 drafts at the same time as the code changes go live**, otherwise those links show "page not found".
+- Article drafts are kept in `drafts/T*.html` and `drafts/N01-*.html`; the database copy was saved from these files.
+- Translations of the new and expanded content are still to do, after the owner approves the English.

@@ -1,6 +1,7 @@
 import { asset } from "@/lib/packages/category-images";
+import type { ContentSection } from "@/lib/content/content-section";
 import type { MediaAsset } from "@/lib/media/types";
-import { MFH_PRICE_TABLES } from "@/lib/packages/mfh-price-tables";
+import { mfhPackageRow } from "@/lib/packages/mfh-price-rows";
 
 /**
  * Per-page content for the species SEO landing pages (/maldives/fishing/
@@ -48,30 +49,7 @@ export interface SpeciesPageContent {
   heroImage?: MediaAsset;
   /** Longer-form sections rendered after "Why the Maldives", each with an
    * optional photo and related links. */
-  extraSections?: Array<{
-    heading: string;
-    paragraphs: string[];
-    image?: MediaAsset;
-    links?: Array<{ label: string; href: string | null }>;
-    table?: { headers: string[]; rows: Array<Array<{ text: string; href?: string }>> };
-  }>;
-}
-
-/** Per-person website price for an MFH package and group size, from the
- * same generated table the package pages render (never hand-typed). */
-function mfhPrice(slug: string, guests: number): string {
-  const tier = MFH_PRICE_TABLES[slug]?.find((g) => g.guests === guests);
-  return tier ? `USD ${tier.websitePrice.toLocaleString("en-US")}` : "On request";
-}
-
-function fullDayPackageRow(nights: number) {
-  const slug = `${nights}-night-maldives-fishing-package-full-day-fishing`;
-  return [
-    { text: `${nights} nights`, href: `/maldives/packages/${slug}/` },
-    { text: String(nights - 1) },
-    { text: mfhPrice(slug, 2) },
-    { text: mfhPrice(slug, 5) },
-  ];
+  extraSections?: ContentSection[];
 }
 
 export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
@@ -171,7 +149,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
         ],
         table: {
           headers: ["Package", "Fishing days", "Per person, 2 anglers", "Per person, 5 anglers"],
-          rows: [3, 4, 5, 6, 7, 8].map(fullDayPackageRow),
+          rows: [3, 4, 5, 6, 7, 8].map((nights) => mfhPackageRow(nights, "full-day", [2, 5])),
         },
         image: asset(
           "d82258a7-f7ae-f6ea-c603-5c18159eff68",
@@ -251,10 +229,99 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
     displayName: "Yellowfin Tuna",
     speciesSlug: "yellowfin-tuna",
     pageSlug: "tuna-fishing",
-    metaTitle: "Tuna Fishing Maldives | Yellowfin Tuna Fishing Charters",
+    metaTitle: "Yellowfin Tuna Fishing Maldives | Tuna Fishing Charters",
     metaDescription:
-      "Yellowfin tuna fishing in the Maldives — trolling further offshore aboard Emperor, our private Gaafu Atoll charter. Real charter, real rates, no invented catch claims.",
-    h1: "Tuna Fishing in the Maldives",
+      "Yellowfin tuna fishing in the Maldives: where and how to catch yellowfin, best season, tackle and prices for a private tuna fishing charter in Gaafu Alifu.",
+    h1: "Yellowfin Tuna Fishing in the Maldives",
+    heroImage: asset(
+      "8dc28836-323e-85d9-d5ad-4d4ddd294c13",
+      "opt/uploads/assets/uploads/fishing/images/gallery/fishing-tours-maldives.webp",
+      "Two anglers holding tuna on a fishing boat at sunset in the Maldives",
+    ),
+    extraSections: [
+      {
+        heading: "Yellowfin Tuna in the Maldives",
+        paragraphs: [
+          "Yellowfin tuna are one of the most sought-after sport fish in the Maldives. They are built for speed, with a torpedo-shaped body, a dark blue back, a yellow stripe along the side and long, bright yellow second dorsal and anal fins. They grow up to about 200 cm and 200 kg, and even a medium-sized yellowfin will run hard and deep and fight all the way to the boat.",
+          "Yellowfin hunt in schools in the open ocean, feeding on flying fish, squid and smaller tuna. They are often found with feeding seabirds, around floating debris and fish aggregating devices (FADs), and alongside dolphins. In the Maldives they are also caught by local fishermen with handlines and poles, and they are a staple of Maldivian cooking.",
+        ],
+        image: asset(
+          "a8ba6833-886f-504b-136f-7cb31111c497",
+          "opt/uploads/assets/uploads/fishing/images/gallery/yellowfin-tuna-fishing-maldives.webp",
+          "Angler holding a large yellowfin tuna upright on the deck of a fishing boat in the Maldives",
+        ),
+      },
+      {
+        heading: "Where to Catch Yellowfin Tuna in the Maldives",
+        paragraphs: [
+          "Yellowfin tuna live in the deep blue water beyond the atolls, so yellowfin fishing means heading offshore past the reef. The crew looks for birds diving on bait, tuna breaking the surface, floating logs and the FADs moored offshore, which gather baitfish and the tuna that feed on them.",
+          "In the Maldives the deep ocean is close to every atoll. In Gaafu Alifu, in the far south, the long outer reef drops straight into deep water, so Emperor can be trolling for yellowfin soon after leaving Maamendhoo and can switch to the reef for giant trevally or dogtooth tuna later in the day.",
+        ],
+        image: asset(
+          "6007f61c-90c0-de64-6c2b-70c47da0c911",
+          "opt/legacy/fishing/images/trolling-fishing.webp",
+          "Trolling rods set in the stern of a sport-fishing boat with a white wake behind it in the Maldives",
+        ),
+      },
+      {
+        heading: "How to Catch Yellowfin Tuna",
+        paragraphs: [
+          "Trolling is the main method. The boat tows a spread of skirted lures, diving plugs or rigged baits offshore, and when a yellowfin strikes, the reel screams and the angler takes the rod. Trolling also catches wahoo, mahi-mahi and skipjack tuna, and occasionally sailfish and marlin.",
+          "When a school of yellowfin is feeding on the surface, casting poppers and stickbaits into the action is one of the most exciting ways to catch them, and needs heavy spinning tackle. Trolling tackle is supplied on the boat; basic gear is included and a professional popping rod and reel setup is USD 80 per setup.",
+        ],
+        image: asset(
+          "10ffc1ca-8306-20b4-2a70-f4239de861d2",
+          "opt/legacy/images/fishing/tuna-fishing-in-maldives.webp",
+          "Four anglers holding yellowfin tuna on a fishing boat in the Maldives",
+        ),
+        links: [
+          { label: "Trolling in the Maldives", href: "/maldives/fishing/trolling/" },
+          { label: "Deep sea and big game fishing", href: "/maldives/fishing/big-game-fishing/" },
+        ],
+      },
+      {
+        heading: "Yellowfin Tuna Fishing Charters and Prices",
+        paragraphs: [
+          "Emperor, our private fishing boat, is a 32-foot boat with twin 200 HP engines for up to 5 anglers, based on Maamendhoo in Gaafu Alifu Atoll. For yellowfin we recommend a full day, which gives time to run offshore and find the schools: USD 1,380 per boat, or USD 276 each with five anglers. A half day costs USD 980 per boat. Both include the captain and crew, fuel, soft drinks and snacks, and basic gear.",
+          "For several days of tuna fishing, our packages at the Maldives Fishing and Holidays Lodge include the lodge, full-board meals, the domestic flight, the boat transfer and a private charter on every fishing day:",
+        ],
+        table: {
+          headers: ["Package (full-day fishing)", "Fishing days", "Per person, 2 anglers", "Per person, 5 anglers"],
+          rows: [3, 5, 7].map((nights) => mfhPackageRow(nights, "full-day", [2, 5])),
+        },
+        image: asset(
+          "65ce543b-f8cb-5760-a0ed-e49aefe7280d",
+          "opt/uploads/assets/uploads/fishing/images/gallery/giant-yellowfin-tuna.webp",
+          "Several yellowfin tuna laid out on the deck of a fishing boat with three anglers in the Maldives",
+        ),
+        links: [
+          { label: "Emperor private fishing charter", href: "/maldives/fishing/emperor/" },
+          { label: "All fishing packages", href: "/maldives/packages/fishing/" },
+          { label: "Tuna fishing in the Maldives: all species", href: "/maldives/travel-guide/tuna-fishing-in-the-maldives/" },
+        ],
+      },
+      {
+        heading: "Yellowfin Tuna and Other Maldives Tuna",
+        paragraphs: [
+          "Yellowfin are one of three tuna anglers catch in the Maldives. Skipjack tuna are smaller, striped-bellied fish that travel in huge schools all year and are the backbone of the traditional pole-and-line fishery. Dogtooth tuna are reef predators that live along the deep reef walls and are caught by jigging, mainly from November to April. A full day on Emperor can target all three: trolling offshore for yellowfin and skipjack, then jigging the reef wall for dogtooth.",
+        ],
+        links: [
+          { label: "Dogtooth tuna fishing", href: "/maldives/fishing/dogtooth-tuna/" },
+          { label: "Traditional Maldivian fishing", href: "/maldives/travel-guide/traditional-maldivian-fishing/" },
+        ],
+      },
+      {
+        heading: "Yellowfin Tuna Fishing Tips",
+        paragraphs: [
+          "Go out early, when tuna often feed hardest. Watch for diving birds, the best sign of tuna below. Book a full day in the December to March season. Keep only the tuna you'll eat and release the rest: a fresh yellowfin is one of the best meals in the Maldives, whether as sashimi, grilled steaks or a Maldivian tuna curry.",
+        ],
+        image: asset(
+          "0b224be8-cf15-e001-f9b4-7d32c3b664ea",
+          "opt/uploads/assets/uploads/fishing/images/gallery/maldives-fishing-packages.webp",
+          "Smiling angler in a white shirt holding a tuna on a fishing boat in the Maldives",
+        ),
+      },
+    ],
     whyMaldives: [
       "Yellowfin tuna are powerful, fast-swimming predators and a primary target for sport fishermen in the Maldives, found around the edges of atolls and in open water, often hunting in schools.",
       "Trolling further offshore from a charter like Emperor is the usual way to target yellowfin tuna, alongside wahoo and other pelagic species on the same run.",
@@ -274,6 +341,18 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
       {
         question: "Can I catch tuna on the same trip as GT?",
         answer: "It depends on the day's plan — our team can discuss targeting both on a full-day charter when you enquire.",
+      },
+      {
+        question: "How big do yellowfin tuna get in the Maldives?",
+        answer: "Yellowfin tuna grow up to about 200 cm and 200 kg, though most caught on a day trip are much smaller and still fight hard.",
+      },
+      {
+        question: "How much does a tuna fishing trip in the Maldives cost?",
+        answer: "A private full-day charter on Emperor costs USD 1,380 per boat for up to 5 anglers, including the crew, fuel, drinks, snacks and basic gear. A half day costs USD 980.",
+      },
+      {
+        question: "Can I keep the tuna I catch?",
+        answer: "Ask the crew. Tuna kept for the table is often prepared fresh; release what you won't eat.",
       },
     ],
   },
@@ -309,8 +388,112 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
     pageSlug: "dogtooth-tuna",
     metaTitle: "Dogtooth Tuna Fishing Maldives | Jigging Charters",
     metaDescription:
-      "Dogtooth tuna fishing in the Maldives — jigging over deep reef slopes and drop-offs aboard Emperor, our private Gaafu Atoll charter. Real charter, real rates.",
+      "Dogtooth tuna fishing in the Maldives: where they live, how to jig for them, tackle, best season and prices for a private jigging charter in Gaafu Alifu.",
     h1: "Dogtooth Tuna Fishing in the Maldives",
+    heroImage: asset(
+      "a3212df8-100d-d0b6-5f03-22333dae40c6",
+      "opt/legacy/images/fishing/half-day-trip-deep-jigging.webp",
+      "Two anglers jigging over the side of a fishing boat on open water in the Maldives",
+    ),
+    extraSections: [
+      {
+        heading: "Dogtooth Tuna: the Reef's Toughest Fighter",
+        paragraphs: [
+          "Dogtooth tuna (Gymnosarda unicolor) are named for their sharp, conical teeth, unusual among tunas. Unlike yellowfin and skipjack, which roam the open ocean in schools, dogtooth tuna are reef predators that live along deep reef walls and drop-offs, usually alone or in small groups. They grow up to about 130 cm and 70 kg.",
+          "Dogtooth are famous for their strength. When hooked, a dogtooth turns and dives straight for the reef, and if it gets there, the line is usually cut on the coral. Landing one takes heavy tackle, a tight drag and quick, determined winding in the first seconds of the fight, which is exactly why jigging anglers travel to catch them.",
+        ],
+        image: asset(
+          "7e90fcd5-499f-8989-6783-c3ff27ee5bb1",
+          "opt/uploads/assets/uploads/fishing/images/charters/maldives-fishing-boat-emperor.webp",
+          "Top-down aerial view of Emperor, a white center-console fishing boat, in deep blue water",
+        ),
+      },
+      {
+        heading: "Where to Find Dogtooth Tuna in the Maldives",
+        paragraphs: [
+          "Dogtooth tuna hold on the steep outer reef walls where the coral falls away into deep water, at the drop-offs at channel mouths, and around deep pinnacles. They feed where current pushes bait along the wall, so the best spots are on the up-current side of the reef while the tide is running.",
+          "The remote southern atolls are among the best places in the Maldives for dogtooth tuna, because their outer walls see very little fishing pressure. Gaafu Alifu, where our boat Emperor is based, has a long outer reef with deep walls and channel drop-offs close to the island of Maamendhoo.",
+        ],
+        image: asset(
+          "231eed3c-1bc0-71fb-4187-ca095c8d7630",
+          "opt/uploads/assets/uploads/fishing/images/charters/emperor-fishing-boat.webp",
+          "Aerial view of the Emperor fishing boat over a shallow turquoise reef",
+        ),
+        links: [{ label: "Best fishing spots in the Maldives", href: "/maldives/travel-guide/best-fishing-spots-in-the-maldives/" }],
+      },
+      {
+        heading: "How to Catch Dogtooth Tuna: Jigging",
+        paragraphs: [
+          "Jigging is the main way to catch dogtooth tuna. A heavy metal jig is dropped down the reef wall to the depth where the fish are holding, then worked back up with sharp lifts of the rod and fast turns of the reel. The strike often comes as the jig falls or on the first lifts off the bottom, so stay ready from the moment the jig hits the depth.",
+          "Speed jigging, with fast, aggressive lifts and long slim jigs, is the classic dogtooth technique. Slow-pitch jigging, with shorter lifts and flatter jigs that flutter as they fall, also catches dogtooth and brings groupers, snappers and amberjack too. Dogtooth tuna occasionally take poppers when they come up to the surface, and are sometimes caught on live bait.",
+        ],
+        image: asset(
+          "437c760e-0079-e191-b056-ebe871a06643",
+          "opt/uploads/assets/uploads/fishing/images/gallery/maldives-fishing-trips.webp",
+          "Angler holding a large reef fish caught jigging on a boat in the Maldives",
+        ),
+        links: [
+          { label: "Jigging in the Maldives", href: "/maldives/fishing/jigging/" },
+          { label: "GT popping and jigging guide", href: "/maldives/travel-guide/gt-popping-and-jigging-guide/" },
+        ],
+      },
+      {
+        heading: "Dogtooth Tuna Jigging Tackle",
+        paragraphs: [
+          "Dogtooth tackle has to stop a powerful fish within a few metres of the reef. Anglers use a strong jigging rod and a high-capacity spinning or overhead jigging reel with a powerful drag, braided main line for direct contact with the jig, and a thick fluorocarbon leader to resist the teeth and the coral. Jigs range from around 100 g to 300 g or more, depending on the depth and current, rigged with strong assist hooks.",
+          "On Emperor, basic fishing gear is included on every charter, and you can add a professional jigging rod and reel setup for USD 80 per setup if you don't bring your own.",
+        ],
+        image: asset(
+          "720ed678-f61d-74c4-00d3-13879c709508",
+          "opt/uploads/assets/uploads/fishing/images/gallery/maldives-fishing.webp",
+          "Angler in a sun mask holding a spotted grouper on a boat over turquoise water in the Maldives",
+        ),
+      },
+      {
+        heading: "How to Fight a Dogtooth Tuna",
+        paragraphs: [
+          "Set your drag tight before you drop the jig. When a dogtooth hits, don't give it line: lock the rod against your body, lift and wind hard to pull the fish up and away from the reef in the first few seconds. Once it is clear of the wall, keep steady pressure and pump and wind to the surface. Fighting from a moving boat helps: the captain will often motor away from the reef to drag the fish into open water.",
+        ],
+      },
+      {
+        heading: "Dogtooth Tuna Fishing Charters and Prices",
+        paragraphs: [
+          "Emperor is a 32-foot boat with twin 200 HP engines for up to 5 anglers. A full-day charter costs USD 1,380 per boat and a half day USD 980, including the captain and crew, fuel, soft drinks and snacks, and basic gear. The crew plans jigging sessions on the reef walls around the tide, and can mix in popping for giant trevally and trolling for tuna and wahoo.",
+          "For several days of jigging, our packages at the Maldives Fishing and Holidays Lodge on Maamendhoo include the lodge, full-board meals, the domestic flight, the boat transfer and a private charter on every fishing day:",
+        ],
+        table: {
+          headers: ["Package (full-day fishing)", "Fishing days", "Per person, 2 anglers", "Per person, 5 anglers"],
+          rows: [3, 5, 7].map((nights) => mfhPackageRow(nights, "full-day", [2, 5])),
+        },
+        image: asset(
+          "6a568121-cf94-c905-4b2d-bba7ceff1137",
+          "opt/uploads/assets/uploads/fishing/images/gallery/redsnappers-in-maldives.webp",
+          "Angler in sunglasses holding a red snapper caught on a fishing boat in the Maldives",
+        ),
+        links: [
+          { label: "Emperor private fishing charter", href: "/maldives/fishing/emperor/" },
+          { label: "All fishing packages", href: "/maldives/packages/fishing/" },
+          { label: "Tuna fishing in the Maldives", href: "/maldives/travel-guide/tuna-fishing-in-the-maldives/" },
+        ],
+      },
+      {
+        heading: "Other Fish You Catch Jigging for Dogtooth Tuna",
+        paragraphs: [
+          "Jigging the deep reef walls rarely produces only dogtooth tuna. The same jigs catch giant trevally holding deep, amberjack, groupers such as the spotted and coral groupers, red snappers, jobfish and other reef fish, many of them excellent to eat. Slow-pitch jigging in particular brings a wide mix of bottom species, which makes a jigging session productive even on days when the dogtooth aren't biting.",
+          "Because the reef walls sit right beside the channel mouths, the crew can also switch to popping for giant trevally when the tide runs, or head offshore to troll for yellowfin tuna and wahoo.",
+        ],
+        links: [
+          { label: "GT fishing in the Maldives", href: "/maldives/fishing/gt-fishing/" },
+          { label: "Best popping and jigging destinations", href: "/maldives/travel-guide/best-popping-and-jigging-destinations/" },
+        ],
+      },
+      {
+        heading: "Dogtooth Tuna Catch and Release",
+        paragraphs: [
+          "Dogtooth tuna are slow-growing reef predators, and many anglers release them. Keep the fight short with strong tackle, handle the fish carefully away from its teeth, support its weight for a quick photo, and revive it in the water before letting go. If you keep one for the table, dogtooth makes excellent eating.",
+        ],
+      },
+    ],
     whyMaldives: [
       "Dogtooth tuna inhabit the deeper reef slopes and drop-offs around Maldivian atolls — exactly the kind of structure found along Gaafu Atoll's outer reef, where Emperor's jigging trips run.",
       "These solitary hunters are known for their incredible fighting ability and tendency to dive deep when hooked, making them a prized catch for experienced anglers using jigging techniques.",
@@ -326,6 +509,22 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
       {
         question: "What technique is used for dogtooth tuna?",
         answer: "Jigging over deep reef slopes and drop-offs is the usual technique — see our Jigging page for how it works.",
+      },
+      {
+        question: "How big do dogtooth tuna get?",
+        answer: "Dogtooth tuna grow up to about 130 cm and 70 kg. Even medium-sized fish are very strong and head straight for the reef when hooked.",
+      },
+      {
+        question: "What weight jig is best for dogtooth tuna?",
+        answer: "It depends on the depth and current; many anglers carry jigs from around 100 g to 300 g or more, using heavier jigs in deep water and strong current.",
+      },
+      {
+        question: "Where is the best dogtooth tuna fishing in the Maldives?",
+        answer: "The steep outer reef walls and channel drop-offs of the remote southern atolls, such as Gaafu Alifu, where our boat Emperor is based.",
+      },
+      {
+        question: "How much does a dogtooth tuna fishing trip cost?",
+        answer: "A private full-day charter on Emperor costs USD 1,380 per boat for up to 5 anglers, or USD 980 for a half day. A professional jigging setup is USD 80 per setup.",
       },
     ],
   },

@@ -6,6 +6,7 @@ import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { Price } from "@/components/currency/price";
 import { ChipLinkList } from "@/components/fishing/chip-link-list";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
+import { ContentSections } from "@/components/ui/content-sections";
 import { FaqSection } from "@/components/ui/faq-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { WhatsAppIcon } from "@/components/ui/icons";
@@ -133,56 +134,7 @@ export async function SpeciesLandingPage({ content }: { content: SpeciesPageCont
           </div>
         </section>
 
-        {content.extraSections?.map((section) => (
-          <section key={section.heading} className="mt-12 border-t border-neutral-200 pt-10">
-            <h2 className="text-xl font-semibold text-ocean-900">{section.heading}</h2>
-            <div className={section.image ? "mt-3 grid grid-cols-1 gap-6 md:grid-cols-[1fr_320px]" : "mt-3"}>
-              <div className="space-y-3 text-sm text-neutral-700">
-                {section.paragraphs.map((p) => (
-                  <p key={p}>{p}</p>
-                ))}
-                {section.table && (
-                  <div className="overflow-x-auto">
-                    <table className="w-full border-collapse text-sm">
-                      <thead>
-                        <tr>
-                          {section.table.headers.map((h) => (
-                            <th key={h} className="border border-neutral-200 bg-neutral-50 p-2 text-left font-medium text-ocean-900">
-                              {h}
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {section.table.rows.map((row) => (
-                          <tr key={row[0].text}>
-                            {row.map((cell, i) => (
-                              <td key={i} className="border border-neutral-200 p-2">
-                                {cell.href ? (
-                                  <Link href={cell.href} className="text-maldives-600 hover:underline">
-                                    {cell.text}
-                                  </Link>
-                                ) : (
-                                  cell.text
-                                )}
-                              </td>
-                            ))}
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-                {section.links && <ChipLinkList items={section.links} />}
-              </div>
-              {section.image && (
-                <div className="overflow-hidden rounded-2xl">
-                  <MediaImage asset={section.image} alt={section.image.altText ?? ""} aspectClassName="aspect-[4/3]" />
-                </div>
-              )}
-            </div>
-          </section>
-        ))}
+        {content.extraSections && <ContentSections sections={content.extraSections} />}
 
         {/* Season — a real pointer to the existing month-by-month guide
             article rather than repeating or guessing at seasonal claims

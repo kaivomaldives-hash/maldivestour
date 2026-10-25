@@ -5,6 +5,7 @@ import { PackageCard } from "@/components/packages/package-card";
 import type { PackageCategoryPageSearchParams } from "@/components/packages/package-category-metadata";
 import { PackageFilterBar } from "@/components/packages/package-filter-bar";
 import { CONTAINER_CLASS } from "@/components/ui/container";
+import { ContentSections } from "@/components/ui/content-sections";
 import { EmptyState } from "@/components/ui/empty-state";
 import { FaqSection } from "@/components/ui/faq-section";
 import { PageHero } from "@/components/ui/page-hero";
@@ -165,6 +166,8 @@ export async function PackageCategoryPage({
         )}
 
         <Pagination page={page} totalPages={totalPages} basePath={basePath} baseQuery={baseQuery} />
+
+        {content.sections && <ContentSections sections={content.sections} />}
 
         <FaqSection faqs={content.faqs} className="mt-14 border-t border-neutral-200 pt-10" />
 

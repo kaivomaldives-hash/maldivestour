@@ -1,3 +1,6 @@
+import type { ContentSection } from "@/lib/content/content-section";
+import { asset } from "@/lib/packages/category-images";
+import { mfhPackageRow } from "@/lib/packages/mfh-price-rows";
 import type { PackageCategorySlug } from "@/lib/packages/view-types";
 
 export interface PackageCategoryContent {
@@ -6,6 +9,8 @@ export interface PackageCategoryContent {
   intro: string;
   faqs: Array<{ question: string; answer: string }>;
   relatedLinks: Array<{ href: string; label: string }>;
+  /** Optional long-form sections shown below the package grid. */
+  sections?: ContentSection[];
 }
 
 /**
@@ -145,19 +150,150 @@ export const PACKAGE_CATEGORY_CONTENT: Record<PackageCategorySlug, PackageCatego
     ],
   },
   fishing: {
-    metaTitle: "Maldives Fishing Holiday Packages | Fishing Holidays in the Maldives",
-    metaDescription: "Real Maldives fishing holiday packages — sunset, night and big-game fishing trips with genuine local and resort operators. Search, compare, and enquire.",
+    metaTitle: "Maldives Fishing Packages & Fishing Holidays | MTG",
+    metaDescription:
+      "Maldives fishing holiday packages in Gaafu Alifu Atoll: 2 to 8 nights with lodge, meals, domestic flight, transfer and a private fishing charter every day.",
     intro:
-      "Traditional Maldivian handline fishing and modern sport fishing both have a real place here — sunset reef trips, night fishing, and offshore big-game charters targeting marlin and tuna. Every trip referenced below is a real activity already in our catalogue.",
+      "Fishing holiday packages at the Maldives Fishing and Holidays Lodge on Maamendhoo, Gaafu Alifu Atoll: full-board accommodation, the return domestic flight, the boat transfer and a private charter on our boat Emperor on every fishing day. 2 to 8 nights, full-day or half-day fishing, priced per person.",
     faqs: [
-      { question: "What kind of fishing trips are available?", answer: "Sunset/night reef fishing (relaxed, beginner-friendly) and big-game/sport fishing charters (offshore, targeting larger species) — see each package's Included section." },
-      { question: "Do I need my own gear?", answer: "No — real fishing trips on this site are guided and equipped by the operator." },
-      { question: "Can non-anglers come along?", answer: "Often, yes, especially on sunset trips — enquire with the specific package to confirm." },
+      {
+        question: "What is included in a Maldives fishing package?",
+        answer:
+          "Full-board accommodation at the Maldives Fishing and Holidays Lodge on Maamendhoo, the return domestic flight from Malé, the boat transfer to the island, and a private charter on Emperor on every fishing day (captain and crew, fuel, soft drinks and snacks, basic fishing gear).",
+      },
+      {
+        question: "How many fishing days do I get?",
+        answer: "One fewer than the number of nights: a 3-night package has 2 fishing days, a 5-night package 4, and an 8-night package 7.",
+      },
+      {
+        question: "Why does the price depend on the number of guests?",
+        answer:
+          "The boat costs the same however many anglers are on it, so the more people share it, the lower the price per person. 5 guests sharing is the best-value rate.",
+      },
+      {
+        question: "What is the difference between full-day and half-day packages?",
+        answer: "Full-day packages include about 8 hours on the boat each fishing day; half-day packages about 4 hours, which is cheaper and leaves afternoons free.",
+      },
+      {
+        question: "Are international flights included?",
+        answer: "No. Packages include the return domestic flight from Malé and the boat transfer; you book your own international flight to Malé.",
+      },
+      {
+        question: "Do I need my own fishing gear?",
+        answer:
+          "No. Basic fishing gear is included on every fishing day. A professional popping or jigging rod and reel setup is available for USD 80 per setup, or bring your own.",
+      },
+      {
+        question: "Can non-anglers come on a fishing package?",
+        answer: "Ask us when you enquire. The lodge is on a local island, so non-anglers can relax, swim and snorkel while others fish.",
+      },
     ],
     relatedLinks: [
-      { href: "/maldives/fishing/", label: "Fishing" },
-      { href: "/maldives/islands/", label: "Maldives Islands" },
-      { href: "/maldives/packages/budget/", label: "Budget Packages" },
+      { href: "/maldives/fishing/", label: "Maldives Fishing" },
+      { href: "/maldives/fishing/emperor/", label: "Emperor Private Fishing Charter" },
+      { href: "/maldives/guesthouses/maldives-fishing-and-holidays-lodge/", label: "Maldives Fishing and Holidays Lodge" },
+      { href: "/maldives/travel-guide/maldives-fishing-trip-cost/", label: "Maldives Fishing Trip Cost" },
+      { href: "/maldives/travel-guide/maldives-fishing-trip-itinerary/", label: "Fishing Trip Itinerary" },
+    ],
+    sections: [
+      {
+        heading: "Maldives Fishing Holidays in Gaafu Alifu Atoll",
+        paragraphs: [
+          "Our fishing packages are built around one of the quietest fishing grounds in the Maldives. Gaafu Alifu is the northern half of Huvadhu Atoll, in the deep south of the country, one of the largest atolls in the world. Its long outer reef is broken by many channels and drops straight into deep ocean, and very few fishing boats work it. That makes it an ideal base for GT popping and jigging, dogtooth tuna on the reef walls, and trolling offshore for yellowfin tuna, wahoo and mahi-mahi.",
+          "You stay at the Maldives Fishing and Holidays Lodge on Maamendhoo, a local island in Gaafu Alifu, run by the same company as our fishing boat, Emperor. Your room, meals, transfers and fishing are arranged by one operator, and the fishing grounds are close to the island, so you spend your days fishing rather than travelling.",
+        ],
+        image: asset(
+          "8c2e8baf-376e-b0b6-a222-a8450b073a09",
+          "opt/uploads/assets/uploads/fishing/images/gallery/maldives-atoll-aerial-view.webp",
+          "Aerial view of a Maldives island ringed by reef in deep blue ocean",
+        ),
+        links: [
+          { label: "Gaafu Atoll fishing guide", href: "/maldives/travel-guide/gaafu-atoll-fishing-guide-mfh-maamendhoo/" },
+          { label: "Best fishing spots in the Maldives", href: "/maldives/travel-guide/best-fishing-spots-in-the-maldives/" },
+        ],
+      },
+      {
+        heading: "What's Included in Every Fishing Package",
+        paragraphs: [
+          "Every package includes full-board accommodation at the lodge, the return domestic flight from Malé, the boat transfer to Maamendhoo, and a private charter on Emperor on every fishing day. Emperor is a 32-foot fishing boat with twin 200 HP engines for up to 5 anglers, and each charter includes a professional captain and crew, fuel, soft drinks and snacks, and basic fishing gear.",
+          "Not included: your international flight to Malé, and a professional popping or jigging rod and reel setup if you want one (USD 80 per setup). The number of fishing days is one fewer than the number of nights, so arrival and departure days are for travel.",
+        ],
+        image: asset(
+          "78a6c490-6263-2e47-c74b-59f312afd4e9",
+          "opt/uploads/assets/uploads/gotrip/lodge/mfh-lodge-hotel.webp",
+          "Twin bedroom with white linen and an en-suite bathroom at the Maldives Fishing and Holidays Lodge",
+        ),
+      },
+      {
+        heading: "Full-Day Fishing Package Prices",
+        paragraphs: [
+          "Full-day packages include about 8 hours on the boat on every fishing day, the best choice for GT popping and jigging and for offshore trolling. Prices are per person and depend on how many guests share the boat; 5 guests sharing is the best-value rate.",
+        ],
+        table: {
+          headers: ["Package", "Fishing days", "1 guest", "2 guests", "3 guests", "4 guests", "5 guests"],
+          rows: [2, 3, 4, 5, 6, 7, 8].map((nights) => mfhPackageRow(nights, "full-day", [1, 2, 3, 4, 5])),
+        },
+      },
+      {
+        heading: "Half-Day Fishing Package Prices",
+        paragraphs: [
+          "Half-day packages include about 4 hours on the boat on every fishing day, leaving afternoons free to rest, swim or snorkel. They cost less than full-day packages and suit mixed groups, families and anglers who want a more relaxed pace.",
+        ],
+        table: {
+          headers: ["Package", "Fishing days", "1 guest", "2 guests", "3 guests", "4 guests", "5 guests"],
+          rows: [2, 3, 4, 5, 6, 7, 8].map((nights) => mfhPackageRow(nights, "half-day", [1, 2, 3, 4, 5])),
+        },
+      },
+      {
+        heading: "How to Choose a Fishing Package",
+        paragraphs: [
+          "How many nights? A 3-night package (2 fishing days) is a good short break. A 5-night package (4 fishing days) is the most popular length: enough to try popping, jigging and trolling and to ride out a windy day. Dedicated anglers choose 7 or 8 nights.",
+          "Full or half days? Choose full days for serious GT fishing and offshore trips; half days if you want afternoons off or are travelling with non-anglers.",
+          "How many anglers? Because the boat costs the same however many people are on board, the price per person falls sharply as your group grows. On packages of 4 nights or more, 5 anglers each pay less than a third of the solo price.",
+        ],
+        image: asset(
+          "c1e3ca08-0e43-1f98-3061-c6d9951c6834",
+          "opt/uploads/assets/uploads/fishing/images/gallery/giant-trevally.webp",
+          "Angler in a blue cap holding a large giant trevally on a fishing boat in the Maldives",
+        ),
+        links: [
+          { label: "Sample fishing trip itinerary", href: "/maldives/travel-guide/maldives-fishing-trip-itinerary/" },
+          { label: "Maldives fishing trip cost", href: "/maldives/travel-guide/maldives-fishing-trip-cost/" },
+        ],
+      },
+      {
+        heading: "What You Can Catch on a Maldives Fishing Holiday",
+        paragraphs: [
+          "The crew plans each fishing day around the tide, the weather and the season. Popping and jigging along the reef edges and channels target giant trevally, bluefin trevally, dogtooth tuna, groupers and snappers. Trolling offshore targets yellowfin tuna, wahoo and mahi-mahi, with a chance of sailfish and marlin.",
+          "The season most commonly reported for GT is April to October, while December to April brings calmer seas and the peak season for yellowfin tuna, wahoo and mahi-mahi. Fishing runs all year.",
+        ],
+        image: asset(
+          "65ce543b-f8cb-5760-a0ed-e49aefe7280d",
+          "opt/uploads/assets/uploads/fishing/images/gallery/giant-yellowfin-tuna.webp",
+          "Several yellowfin tuna laid out on the deck of a fishing boat with three anglers in the Maldives",
+        ),
+        links: [
+          { label: "GT fishing in the Maldives", href: "/maldives/fishing/gt-fishing/" },
+          { label: "Best time to fish in the Maldives", href: "/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/" },
+          { label: "Tuna fishing in the Maldives", href: "/maldives/travel-guide/tuna-fishing-in-the-maldives/" },
+        ],
+      },
+      {
+        heading: "Getting to Your Fishing Holiday",
+        paragraphs: [
+          "Fly into Malé on your international flight. From there, the domestic flight south and the boat transfer to Maamendhoo are included in every package. Leave enough time between your international and domestic flights, and check the baggage allowance on the domestic flight if you are bringing rod tubes.",
+          "Only want a day or two of fishing? You can also book Emperor by the day: USD 1,380 per boat for a full day or USD 980 for a half day, for up to 5 anglers.",
+        ],
+        image: asset(
+          "e520e856-d8be-505a-1e39-bc1a61f726e0",
+          "opt/uploads/assets/uploads/fishing/images/charters/emperor.webp",
+          "Emperor, a 32 ft white-and-black fishing boat with twin outboards, anchored off a Maldives island",
+        ),
+        links: [
+          { label: "Emperor private fishing charter", href: "/maldives/fishing/emperor/" },
+          { label: "Fishing holiday packing list", href: "/maldives/travel-guide/fishing-holiday-packing-list/" },
+        ],
+      },
     ],
   },
   surfing: {

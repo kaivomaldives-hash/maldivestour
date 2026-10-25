@@ -26,7 +26,7 @@ The page updates from doc 06 (U01–U19) still apply where a topic lands on an e
 | 9 | Fishing charters: private vs guided | 8–15 | 5–8 | 1,200–1,800 | New article `/maldives/travel-guide/private-vs-shared-fishing-charters-maldives/` | To do |
 | 10 | Best fishing spots in the Maldives | 10–18 | 7–12 | 1,500–2,200 | New article `/maldives/travel-guide/best-fishing-spots-in-the-maldives/` (Gaafu Alifu first) | To do |
 | 11 | Maldives vs Seychelles GT fishing | 10–16 | 5–8 | 1,500–2,200 | N12 `/maldives/travel-guide/maldives-vs-seychelles-gt-fishing/` | To do |
-| 12 | Best GT fishing destinations worldwide | 15–25 | 8–12 | 2,000–3,000 | N11, widened to worldwide: `/maldives/travel-guide/best-gt-fishing-destinations/` (Maldives + Gaafu Alifu featured) | To do |
+| 12 | Best GT fishing destinations worldwide | 15–25 | 8–12 | 2,000–3,000 | N11, widened to worldwide: `/maldives/travel-guide/best-gt-fishing-destinations/` (Maldives + Gaafu Alifu featured) | Draft in DB 2026-10-25 (node 8c4d21bd-de1a-44ec-8027-d5463f0eef25, ~2,220 words, 9 images incl. hero and cards) |
 | 13 | Best popping and jigging destinations | 12–20 | 7–10 | 1,800–2,500 | New article `/maldives/travel-guide/best-popping-and-jigging-destinations/` | To do |
 | 14 | Big-game fishing in the Indian Ocean | 12–20 | 7–10 | 1,800–2,500 | New article `/maldives/travel-guide/big-game-fishing-indian-ocean/` | To do |
 | 15 | Yellowfin tuna fishing in the Maldives | 8–15 | 5–8 | 1,200–1,800 | `/maldives/fishing/tuna-fishing/` (U08; the page is already the yellowfin species page) | To do |

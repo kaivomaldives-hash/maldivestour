@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { Price } from "@/components/currency/price";
+import { EMPEROR_HERO_IMAGE } from "@/components/fishing/emperor-page";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { FaqSection } from "@/components/ui/faq-section";
@@ -19,7 +20,6 @@ import { getLinkLocalizer } from "@/lib/i18n/link-localizer";
 import type { Locale } from "@/lib/i18n/locales";
 import { localizeCards } from "@/lib/i18n/repository";
 import { getUiStrings } from "@/lib/i18n/ui-strings";
-import { FISHING_HERO_IMAGE } from "@/lib/packages/category-images";
 import { breadcrumbJsonLd, hreflangAlternates, localizedCanonicalUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { whatsappUrl } from "@/lib/whatsapp";
 
@@ -78,7 +78,7 @@ export async function LocalizedEmperorPage({ locale }: { locale: Locale }) {
         eyebrow={t.eyebrow}
         title={t.title}
         description={t.heroDescription}
-        image={FISHING_HERO_IMAGE}
+        image={EMPEROR_HERO_IMAGE}
         action={
           <div className="flex flex-wrap gap-3">
             <a href="#emperor-charters" className="rounded-full bg-maldives-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-ocean-800">

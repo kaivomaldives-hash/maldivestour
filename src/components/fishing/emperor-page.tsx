@@ -11,8 +11,8 @@ import { PageHero } from "@/components/ui/page-hero";
 import { isSupportedCurrency } from "@/lib/currency/types";
 import { bookingCta } from "@/lib/bookings/copy";
 import { getFishingActivityBySlug } from "@/lib/fishing/repository";
-import { FISHING_HERO_IMAGE } from "@/lib/packages/category-images";
-import { breadcrumbJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
+import { asset } from "@/lib/packages/category-images";
+import { breadcrumbJsonLd, canonicalUrl, getSiteUrl, safeJsonLdStringify } from "@/lib/seo/site";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 // The 2 real, currently-verified charter SKUs — same source as the
@@ -21,6 +21,38 @@ import { whatsappUrl } from "@/lib/whatsapp";
 // invented per-technique products — see that file's "Known gaps" section
 // for why no separate "GT Popping Charter" SKU exists.
 const CHARTER_SLUGS = ["private-full-day-fishing-charter", "private-half-day-fishing-charter"];
+
+// Real photos of Emperor from the media library (the hub's generic
+// FISHING_HERO_IMAGE used to stand in here).
+export const EMPEROR_HERO_IMAGE = asset(
+  "e520e856-d8be-505a-1e39-bc1a61f726e0",
+  "opt/uploads/assets/uploads/fishing/images/charters/emperor.webp",
+  "Emperor, a 32 ft white-and-black fishing boat with twin outboards, anchored off a Maldives island",
+);
+const EMPEROR_GALLERY = [
+  asset(
+    "231eed3c-1bc0-71fb-4187-ca095c8d7630",
+    "opt/uploads/assets/uploads/fishing/images/charters/emperor-fishing-boat.webp",
+    "Aerial view of the Emperor fishing boat over a shallow turquoise reef",
+  ),
+  asset(
+    "7e90fcd5-499f-8989-6783-c3ff27ee5bb1",
+    "opt/uploads/assets/uploads/fishing/images/charters/maldives-fishing-boat-emperor.webp",
+    "Top-down aerial view of Emperor, a white center-console fishing boat, in deep blue water",
+  ),
+  asset(
+    "94bb6eed-690f-20c7-1169-f3c0b0a9466d",
+    "opt/uploads/assets/uploads/fishing/images/charters/emperor-fishing-charter.webp",
+    "The Emperor fishing boat in deep blue water off an island",
+  ),
+];
+
+const INCLUDED = ["Professional captain and crew", "Fuel", "Soft drinks and snacks", "Basic fishing gear"];
+const NOT_INCLUDED = [
+  "Domestic flight to Gaafu Atoll (USD 365 per person) if you're coming to Emperor's home base",
+  "Accommodation and meals (our lodge on Maamendhoo: USD 150 per room, full board)",
+  "Professional rod and reel setup for heavier popping and jigging tackle (USD 80 per setup)",
+];
 
 function atollHref(location: { slug: string; locationType: string }): string {
   if (location.locationType === "island") return `/maldives/islands/${location.slug}/`;
@@ -52,6 +84,25 @@ const FAQS = [
     answer: "No — basic fishing gear is included. If you have your own preferred rod, reel or flies, you're welcome to bring them.",
   },
 ];
+
+/** Service markup for the charter itself, with the 2 real per-boat
+ * offers. No ratings or reviews: none are collected for Emperor. */
+function serviceJsonLd(charters: Array<{ title: string; priceFrom: number | null; currency: string | null }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Emperor Private Fishing Charter",
+    serviceType: "Private fishing charter",
+    description:
+      "Private half-day and full-day fishing charters aboard Emperor, a 32-foot boat with twin 200 HP engines for up to 5 anglers, based at Maamendhoo, Gaafu Alifu Atoll.",
+    url: canonicalUrl("/maldives/fishing/emperor"),
+    areaServed: "Maldives",
+    provider: { "@type": "Organization", name: "Maldives Tour Guide", url: getSiteUrl() },
+    offers: charters
+      .filter((c) => c.priceFrom !== null)
+      .map((c) => ({ "@type": "Offer", name: c.title, price: c.priceFrom, priceCurrency: c.currency ?? "USD", availability: "https://schema.org/InStock" })),
+  };
+}
 
 function faqJsonLd() {
   return {
@@ -89,6 +140,7 @@ export async function EmperorPage() {
         }}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(faqJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLdStringify(serviceJsonLd(charters)) }} />
 
       <PageHero
         breadcrumbs={[
@@ -99,7 +151,7 @@ export async function EmperorPage() {
         eyebrow="Private fishing charter"
         title="Emperor — Private Fishing Charter Across the Maldives"
         description="32 ft · Twin 200 HP engines · Up to 5 anglers. Home-based in Gaafu Atoll — same rate wherever we arrange your charter across the Maldives."
-        image={FISHING_HERO_IMAGE}
+        image={EMPEROR_HERO_IMAGE}
         action={
           <div className="flex flex-wrap gap-3">
             <a href="#emperor-charters" className="rounded-full bg-maldives-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-ocean-800">
@@ -154,6 +206,65 @@ export async function EmperorPage() {
               </li>
             ))}
           </ul>
+
+          <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {EMPEROR_GALLERY.map((image) => (
+              <li key={image.id} className="overflow-hidden rounded-2xl">
+                <MediaImage asset={image} alt={image.altText ?? ""} aspectClassName="aspect-[4/3]" />
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* A day on Emperor — the 4 h / 8 h durations are the charter
+            records' own duration_minutes; the rest describes how the crew
+            plans the day, not a fixed timetable. */}
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">A Day on Emperor</h2>
+          <div className="mt-3 space-y-3 text-sm text-neutral-700">
+            <p>
+              A <strong>half-day charter</strong> is about 4 hours on the water and a <strong>full-day charter</strong> about 8 hours. At
+              Emperor&rsquo;s home base the boat leaves from Maamendhoo, Gaafu Alifu Atoll; if we arrange your charter elsewhere, we confirm
+              the departure point with you when we confirm the date.
+            </p>
+            <p>
+              Tell the captain what your group wants to catch and how much fishing experience everyone has, and the crew plans the day around the tide, the weather and the season: popping and jigging over the outer reef edges and
+              channels for giant trevally and dogtooth tuna, trolling on the runs between spots for tuna, wahoo and mahi-mahi, or calmer
+              reef fishing closer to the island. A full day leaves time to mix several of these; a half day usually focuses on one or two.
+            </p>
+            <p>Soft drinks, snacks and basic fishing gear are on board.</p>
+          </div>
+        </section>
+
+        {/* Included / not included — from the charter rate sheet and the
+            owner (domestic flight price confirmed 2026-10-24). */}
+        <section className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">What&rsquo;s Included</h2>
+          <div className="mt-4 grid grid-cols-1 gap-6 text-sm text-neutral-700 sm:grid-cols-2">
+            <div>
+              <h3 className="font-medium text-ocean-900">Included in every charter</h3>
+              <ul className="mt-2 list-disc space-y-1 pl-5">
+                {INCLUDED.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-medium text-ocean-900">Not included</h3>
+              <ul className="mt-2 list-disc space-y-1 pl-5">
+                {NOT_INCLUDED.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <p className="mt-3">
+                Staying several nights? A{" "}
+                <Link href="/maldives/packages/fishing/" className="text-maldives-600 hover:underline">
+                  fishing package
+                </Link>{" "}
+                bundles the charters with the lodge, meals, the domestic flight and the boat transfer.
+              </p>
+            </div>
+          </div>
         </section>
 
         {/* Where Can You Fish — the site owner confirmed the charter rate
@@ -202,7 +313,8 @@ export async function EmperorPage() {
             {[
               { label: "Popping (GT)", href: "/maldives/fishing/popping/" },
               { label: "Jigging (GT, dogtooth tuna)", href: "/maldives/fishing/jigging/" },
-              { label: "Trolling / Big Game Fishing (tuna, wahoo)", href: "/maldives/fishing/big-game-fishing/" },
+              { label: "Trolling (tuna, wahoo)", href: "/maldives/fishing/trolling/" },
+              { label: "Big Game Fishing", href: "/maldives/fishing/big-game-fishing/" },
               { label: "Reef fishing", href: null },
             ].map((technique) =>
               technique.href ? (
@@ -284,6 +396,7 @@ export async function EmperorPage() {
           <nav aria-label="Related fishing links" className="mt-4 flex flex-wrap gap-2">
             {[
               { href: "/maldives/fishing/", label: "Maldives Fishing" },
+              { href: "/maldives/fishing/gt-fishing/", label: "GT Fishing" },
               { href: "/maldives/packages/fishing/", label: "Fishing Packages" },
               { href: "/maldives/islands/maamendhoo-gaafu-alifu/", label: "Maamendhoo, Gaafu Alifu" },
             ].map((link) => (

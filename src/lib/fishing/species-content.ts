@@ -71,7 +71,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
     ),
     extraSections: [
       {
-        heading: "Where GT Are Fished",
+        heading: "Where to Go GT Fishing in the Maldives",
         paragraphs: [
           "Giant trevally hunt where reef meets moving water. In the Maldives that means the outer reef edges, where the coral drops away into deep blue water, and the channels (kandu) that cut through the atoll rim. On a running tide, baitfish are pushed through these channels between the lagoon and the open ocean, and GT gather at the channel mouths and along the edges to ambush them.",
           "The less a reef is fished, the better the chances, which is why remote southern atolls such as Gaafu draw GT anglers. Emperor, our private charter boat, is based at Maamendhoo in Gaafu Alifu Atoll, close to the outer reef and channels of one of the largest atolls in the country. Charters can also be arranged in other atolls at the same rate, depending on your dates and where the boat is.",
@@ -83,7 +83,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
         ),
       },
       {
-        heading: "Popping and Jigging for GT",
+        heading: "GT Popping and Jigging in the Maldives",
         paragraphs: [
           "Popping is the classic way to catch GT. You cast a large surface lure, a popper or stickbait, towards the reef edge or across a channel and work it back with sharp sweeps of the rod so it splashes and throws water. A GT that takes it usually hits hard and close to the surface, and then heads straight for the reef, so the first few seconds decide whether the fish is landed. Popping is physical: expect to cast a heavy rod many times over a session.",
           "Jigging works deeper water. A heavy metal jig is dropped down the reef slope and worked back up with the rod and reel. It is less tiring than popping, catches GT that aren't feeding at the surface, and also brings dogtooth tuna, groupers and other reef fish. Many anglers mix the two in a day: popping when the tide is running and fish are active near the surface, jigging when they are holding deeper.",
@@ -99,7 +99,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
         ],
       },
       {
-        heading: "What a GT Day Looks Like",
+        heading: "GT Fishing Charters: What to Expect and What It Costs",
         paragraphs: [
           "A half-day charter is about 4 hours on the water and a full-day charter about 8 hours. The crew plans the day around the tide, because moving water is what switches GT on: the boat works the channel mouths and reef edges while the tide runs, and slack water is a good time to jig deeper or move to the next spot.",
           "Basic fishing gear is included on every Emperor charter. For dedicated GT popping and jigging you can bring your own tackle or add a professional rod and reel setup for USD 80 per setup. Emperor takes up to 5 anglers, and the price is per boat: USD 980 for a half day or USD 1,380 for a full day. A full day gives you more tides and more spots.",
@@ -115,7 +115,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
         ],
       },
       {
-        heading: "Catch and Release",
+        heading: "Giant Trevally Catch and Release",
         paragraphs: [
           "Giant trevally grow slowly, and most GT anglers release their fish. Good practice keeps the fish's chances high: use single or barbless hooks, keep the fight short, support the fish horizontally under its belly for a quick photo rather than holding it up by the jaw, and keep it out of the water for as little time as possible. Before letting go, hold it in the water facing into the current until it kicks away on its own.",
         ],

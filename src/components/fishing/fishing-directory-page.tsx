@@ -386,7 +386,7 @@ export async function FishingDirectoryPage({
             technique that has tagged activities, which left popping,
             jigging, trolling, marlin and sailfish unlinked from the hub. */}
         <section id="fishing-techniques" className="mt-12 scroll-mt-20 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Fishing Techniques &amp; Target Species</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Maldives Fishing Techniques &amp; Fish Species</h2>
           <p className="mt-2 text-sm text-neutral-700">
             How each style of fishing works in the Maldives, and what it takes to catch the species anglers travel here for.
           </p>

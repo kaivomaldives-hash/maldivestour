@@ -174,7 +174,7 @@ export async function EmperorPage() {
         {/* Meet Emperor — only real, sourced specifications (see
             data/maldives/fishing/SOURCES-mfh.md); nothing here is invented. */}
         <section>
-          <h2 className="text-xl font-semibold text-ocean-900">Meet Emperor</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Meet Emperor: Our Private Fishing Boat in the Maldives</h2>
           <div className="mt-3 space-y-3 text-sm text-neutral-700">
             <p>
               Emperor is a 32-foot private fishing boat with twin 200 HP outboard engines, carrying up to 5 anglers. The boat and crew are
@@ -220,7 +220,7 @@ export async function EmperorPage() {
             records' own duration_minutes; the rest describes how the crew
             plans the day, not a fixed timetable. */}
         <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">A Day on Emperor</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">What to Expect on a Private Fishing Charter</h2>
           <div className="mt-3 space-y-3 text-sm text-neutral-700">
             <p>
               A <strong>half-day charter</strong> is about 4 hours on the water and a <strong>full-day charter</strong> about 8 hours. At
@@ -239,7 +239,7 @@ export async function EmperorPage() {
         {/* Included / not included — from the charter rate sheet and the
             owner (domestic flight price confirmed 2026-10-24). */}
         <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">What&rsquo;s Included</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">What&rsquo;s Included in a Private Fishing Charter</h2>
           <div className="mt-4 grid grid-cols-1 gap-6 text-sm text-neutral-700 sm:grid-cols-2">
             <div>
               <h3 className="font-medium text-ocean-900">Included in every charter</h3>
@@ -273,7 +273,7 @@ export async function EmperorPage() {
             still framed as "ask us", since that genuinely does depend on
             the boat's positioning/schedule, not on the rate. */}
         <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Where Can You Fish?</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Where Can You Hire a Fishing Boat in the Maldives?</h2>
           <p className="mt-2 text-sm text-neutral-700">
             Emperor&rsquo;s home waters are Gaafu Atoll, in the far south of the Maldives. Charters can also be arranged from other regions
             at the same rate — your exact departure location and date depend on where you&rsquo;re staying and the boat&rsquo;s positioning
@@ -301,7 +301,7 @@ export async function EmperorPage() {
         {/* Techniques — only what the real source material documents for
             this specific operation, no invented species-specific SKUs. */}
         <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Fishing Techniques</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Fishing Techniques on a Private Charter</h2>
           <p className="mt-2 text-sm text-neutral-700">
             What&rsquo;s productive depends on where you fish and the season — see{" "}
             <Link href="/maldives/fishing/#fishing-seasons" className="text-maldives-600 hover:underline">
@@ -338,7 +338,7 @@ export async function EmperorPage() {
         {/* Charters — the 2 real, bookable SKUs, same data/booking flow as
             the main fishing hub. No separate/parallel booking system. */}
         <section id="emperor-charters" className="mt-12 scroll-mt-20 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Emperor Charter Rates</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Private Fishing Charter Prices in the Maldives</h2>
           <p className="mt-2 text-sm text-neutral-700">
             One rate, per boat, wherever we arrange your charter across the Maldives — no extra transfer or positioning surcharge.
           </p>

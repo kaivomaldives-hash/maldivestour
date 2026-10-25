@@ -21,7 +21,7 @@ export async function fishingDirectoryMetadata(searchParams: Promise<FishingDire
   const sp = await searchParams;
   const title = "Maldives Fishing | Fishing Charters, Trips & Packages";
   const description =
-    "Real Maldives fishing charters, trips and packages — private full-day and half-day charters, big game, reef and traditional fishing, sourced from real operators and a verified rate sheet, not a generic directory.";
+    "Maldives fishing charters, trips and packages: private boats from USD 980, GT popping and jigging, trolling, big game and reef fishing, plus sunset trips.";
   const url = canonicalUrl("/maldives/fishing");
   const publishedLocales = await getPublishedLocalesForPage("fishing-hub");
 

@@ -38,6 +38,7 @@ import { FISHING_HERO_IMAGE } from "@/lib/packages/category-images";
 import { filterPackageViews, getAllPackageViews } from "@/lib/packages/view-repository";
 import { getProviderBySlug } from "@/lib/providers/repository";
 import { breadcrumbJsonLd, itemListJsonLd, safeJsonLdStringify } from "@/lib/seo/site";
+import { SPECIES_PAGES } from "@/lib/fishing/species-content";
 import { TECHNIQUE_PAGES } from "@/lib/fishing/technique-content";
 import { whatsappUrl } from "@/lib/whatsapp";
 
@@ -343,10 +344,10 @@ export async function FishingDirectoryPage({
         {/* Intro / SEO content */}
         <section className="mt-12 border-t border-neutral-200 pt-10 prose-sm max-w-none text-sm text-neutral-700">
           <p>
-            Fishing has always been part of everyday life in the Maldives, long before tourism — and today it&rsquo;s one of the country&rsquo;s
-            most genuine, least commercialized activities. Whether that means a traditional handline sunset trip taught by a local crew, a
-            private full-day charter chasing tuna and wahoo further offshore, or a multi-night fishing holiday built entirely around the boat,
-            real operators across the Maldives run real, bookable trips — not a generic &ldquo;fishing excursion&rdquo; add-on.
+            Fishing in the Maldives ranges from a relaxed handline trip at sunset to a full day popping and jigging for giant trevally on the
+            outer reef, or trolling offshore for tuna, wahoo and mahi-mahi. Our own private charter, Emperor, costs USD 980 for a half day or
+            USD 1,380 for a full day per boat (up to 5 anglers), and shared sunset trips from local islands start at USD 25 per person. Every
+            trip on this page is run by a real operator and can be booked.
           </p>
           <p>
             This page covers two distinct things travelers search for. A <strong>fishing charter</strong> is the boat trip itself — a half day
@@ -377,6 +378,43 @@ export async function FishingDirectoryPage({
               alongside that tradition rather than replacing it, and most operators on this page — resort-based and
               independent — run both styles.
             </p>
+          </div>
+        </section>
+
+        {/* Techniques & species — links every technique and species landing
+            page. The "Fishing by Technique" block further down only links a
+            technique that has tagged activities, which left popping,
+            jigging, trolling, marlin and sailfish unlinked from the hub. */}
+        <section id="fishing-techniques" className="mt-12 scroll-mt-20 border-t border-neutral-200 pt-10">
+          <h2 className="text-xl font-semibold text-ocean-900">Fishing Techniques &amp; Target Species</h2>
+          <p className="mt-2 text-sm text-neutral-700">
+            How each style of fishing works in the Maldives, and what it takes to catch the species anglers travel here for.
+          </p>
+          <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+              <h3 className="font-medium text-ocean-900">Techniques</h3>
+              <ul className="mt-2 flex flex-wrap gap-2">
+                {Object.values(TECHNIQUE_PAGES).map((page) => (
+                  <li key={page.pageSlug}>
+                    <Link href={`/maldives/fishing/${page.pageSlug}/`} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                      {page.h1.replace(/ in the Maldives$/, "")}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-medium text-ocean-900">Target species</h3>
+              <ul className="mt-2 flex flex-wrap gap-2">
+                {Object.values(SPECIES_PAGES).map((page) => (
+                  <li key={page.pageSlug}>
+                    <Link href={`/maldives/fishing/${page.pageSlug}/`} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:border-maldives-500 hover:text-maldives-600">
+                      {page.displayName}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </section>
 
@@ -694,6 +732,7 @@ export async function FishingDirectoryPage({
           <nav aria-label="Explore Maldives fishing sections" className="mt-4 flex flex-wrap gap-2">
             {[
               { href: "#all-fishing-activities", label: "All Fishing Activities" },
+              { href: "#fishing-techniques", label: "Fishing Techniques & Species" },
               { href: "#emperor-charter", label: "Emperor Private Fishing Charter" },
               { href: "#fishing-charters", label: "Maldives Fishing Charters" },
               { href: "#fishing-packages", label: "Maldives Fishing Packages" },

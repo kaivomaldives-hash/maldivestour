@@ -46,3 +46,17 @@ The page updates from doc 06 (U01–U19) still apply where a topic lands on an e
 
 ## Dropped from the old plan
 - N06 sunset & night fishing, N07 rules & catch-and-release, N08 reef & bottom fishing, N13 beginners & families: not in the owner's list. Their content can be folded into #1, #3 and #10 where useful.
+
+## Links already pointing at unpublished pages
+Added on purpose so they aren't forgotten (owner, 2026-10-25). Each starts working when its target is published.
+Check this list before publishing anything, and publish targets soon.
+
+| Link target | Target status | Linked from |
+|---|---|---|
+| `/maldives/travel-guide/maldives-fishing-trip-cost/` (#8) | Draft in DB | Hub intro, GT page, Emperor page, #12 |
+| `/maldives/travel-guide/best-gt-fishing-destinations/` (#12) | Draft in DB | GT page |
+| `/maldives/travel-guide/maldives-vs-seychelles-gt-fishing/` (#11) | Not written | #12 |
+| `/maldives/travel-guide/best-popping-and-jigging-destinations/` (#13) | Not written | #12 |
+| `/maldives/travel-guide/private-vs-shared-fishing-charters-maldives/` (#9) | Not written | #8 |
+| `/maldives/travel-guide/how-to-choose-a-fishing-charter-in-the-maldives/` (#20) | Not written | #8 |
+| `/maldives/travel-guide/maldives-fishing-trip-itinerary/` (#18) | Not written | #8 |

@@ -398,6 +398,7 @@ export async function EmperorPage() {
               { href: "/maldives/fishing/", label: "Maldives Fishing" },
               { href: "/maldives/fishing/gt-fishing/", label: "GT Fishing" },
               { href: "/maldives/packages/fishing/", label: "Fishing Packages" },
+              { href: "/maldives/travel-guide/maldives-fishing-trip-cost/", label: "Maldives Fishing Trip Cost" },
               { href: "/maldives/islands/maamendhoo-gaafu-alifu/", label: "Maamendhoo, Gaafu Alifu" },
             ].map((link) => (
               <Link

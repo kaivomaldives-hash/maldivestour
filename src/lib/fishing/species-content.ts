@@ -159,6 +159,8 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
         ),
         links: [
           { label: "Emperor private fishing charter", href: "/maldives/fishing/emperor/" },
+          { label: "Maldives fishing trip cost", href: "/maldives/travel-guide/maldives-fishing-trip-cost/" },
+          { label: "Best GT fishing destinations", href: "/maldives/travel-guide/best-gt-fishing-destinations/" },
         ],
       },
       {

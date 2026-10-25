@@ -42,7 +42,7 @@ export async function SpeciesLandingPage({ content }: { content: SpeciesPageCont
   const species = content.speciesSlug ? getFishSpeciesBySlug(content.speciesSlug) : null;
   if (content.speciesSlug && !species) notFound();
 
-  const heroImage = species?.image ?? content.fallbackImage ?? null;
+  const heroImage = content.heroImage ?? species?.image ?? content.fallbackImage ?? null;
   const heroDescription = species?.description ?? content.fallbackDescription ?? "";
 
   const charters = (await Promise.all(content.charterSlugs.map((slug) => getFishingActivityBySlug(slug)))).filter(
@@ -129,6 +129,25 @@ export async function SpeciesLandingPage({ content }: { content: SpeciesPageCont
             ))}
           </div>
         </section>
+
+        {content.extraSections?.map((section) => (
+          <section key={section.heading} className="mt-12 border-t border-neutral-200 pt-10">
+            <h2 className="text-xl font-semibold text-ocean-900">{section.heading}</h2>
+            <div className={section.image ? "mt-3 grid grid-cols-1 gap-6 md:grid-cols-[1fr_320px]" : "mt-3"}>
+              <div className="space-y-3 text-sm text-neutral-700">
+                {section.paragraphs.map((p) => (
+                  <p key={p}>{p}</p>
+                ))}
+                {section.links && <ChipLinkList items={section.links} />}
+              </div>
+              {section.image && (
+                <div className="overflow-hidden rounded-2xl">
+                  <MediaImage asset={section.image} alt={section.image.altText ?? ""} aspectClassName="aspect-[4/3]" />
+                </div>
+              )}
+            </div>
+          </section>
+        ))}
 
         {/* Season — a real pointer to the existing month-by-month guide
             article rather than repeating or guessing at seasonal claims

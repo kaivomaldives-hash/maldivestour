@@ -238,7 +238,7 @@ export async function LocalizedFishingSpeciesPage({ locale, slug }: { locale: Lo
       h1={t.h1}
       eyebrow={s.speciesEyebrow}
       description={t.description}
-      image={species?.image ?? content.fallbackImage ?? null}
+      image={content.heroImage ?? species?.image ?? content.fallbackImage ?? null}
       waMessage={s.waSpecies.replace("{name}", t.displayName)}
       faqs={t.faqs}
       related={[

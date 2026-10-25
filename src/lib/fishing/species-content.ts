@@ -106,6 +106,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
         paragraphs: [
           "Gaafu Alifu is the northern half of Huvadhu Atoll in the deep south of the Maldives, one of the largest atolls in the world. Its long outer reef is broken by many channels, and with few resorts and few fishing boats working it, the reefs see far less fishing pressure than the central atolls. That combination of channels, deep drop-offs and quiet water is exactly what GT fishing needs.",
           "Emperor and its crew are based on Maamendhoo, a local island in Gaafu Alifu, at the Maldives Fishing and Holidays Lodge. Staying at the lodge keeps you close to the fishing grounds, so you can be on the reef when the tide starts to run. Getting there is a domestic flight from Malé (USD 365 per person) and a short boat transfer, both included in our fishing packages.",
+          "Gaafu Alifu also suits a mixed fishing trip. When the GT are quiet, the same boat can troll offshore for yellowfin tuna, wahoo and mahi-mahi, or jig the deep reef slopes for dogtooth tuna and groupers, so every day on the water has a target, whatever the tide and season.",
         ],
         image: asset(
           "8c2e8baf-376e-b0b6-a222-a8450b073a09",

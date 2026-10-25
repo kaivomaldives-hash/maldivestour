@@ -13,4 +13,9 @@ update media_assets set alt_text = 'Popping Fishing', title = null where id = '6
 update media_assets set alt_text = 'sports fishing maldives - Maldives fishing', title = null where id = '7fb94bc0-e308-f850-82cf-10a86c0ee91d';
 update media_assets set alt_text = 'Maldives atoll aerial view - Maldives fishing', title = null where id = '8c2e8baf-376e-b0b6-a222-a8450b073a09';
 update media_assets set alt_text = 'maldives fishing charters - Maldives fishing', title = null where id = 'd82258a7-f7ae-f6ea-c603-5c18159eff68';
+update media_assets set alt_text = 'giant yellowfin tuna - Maldives fishing', title = null where id = '65ce543b-f8cb-5760-a0ed-e49aefe7280d';
+update media_assets set alt_text = 'fishing tours maldives - Maldives fishing', title = null where id = '8dc28836-323e-85d9-d5ad-4d4ddd294c13';
+update media_assets set alt_text = 'Yellowfin tuna fishing Maldives - Maldives fishing', title = null where id = 'a8ba6833-886f-504b-136f-7cb31111c497';
+update media_assets set alt_text = 'wahoo in maldives - Maldives fishing', title = null where id = 'e5ffdf3e-f374-906a-92b3-61c4c7190d3c';
+update media_assets set alt_text = 'fishing in maldives - Maldives fishing', title = null where id = 'f7b6b8e0-4d72-6329-b52b-62c5f8b24472';
 commit;

@@ -16,7 +16,7 @@ The page updates from doc 06 (U01–U19) still apply where a topic lands on an e
 | # | Topic | Target keywords | Images | Length | Lands on | Status |
 |---|---|---|---|---|---|---|
 | 1 | Complete guide to Maldives fishing | 15–25 | 8–12 | 2,000–3,000 | Hub `/maldives/fishing/` (U01) | U01 done in code; already ~4,500 words |
-| 2 | Best time to fish in the Maldives | 8–15 | 5–8 | 1,200–1,800 | `/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/` (U12, expand) | To do |
+| 2 | Best time to fish in the Maldives | 8–15 | 5–8 | 1,200–1,800 | `/maldives/travel-guide/maldives-fishing-seasons-month-by-month-guide/` (U12, expand) | LIVE 2026-10-25 (rewritten in place, ~1,340 words + 2 listing cards, 8 images); old version in backups/ |
 | 3 | GT fishing in the Maldives | 12–20 | 7–10 | 1,800–2,500 | `/maldives/fishing/gt-fishing/` (U03) | Done in code 2026-10-25 (~1,840 words + charter cards, 8 photos + 2 card photos); not merged |
 | 4 | Popping and jigging guide | 12–20 | 7–10 | 1,800–2,500 | New article `/maldives/travel-guide/gt-popping-and-jigging-guide/` (replaces N04 + N05); `/popping/` and `/jigging/` stay short landing pages | To do |
 | 5 | Maldives fishing holidays and packages | 10–18 | 6–10 | 1,500–2,200 | `/maldives/packages/fishing/` (U11, expand) | To do |

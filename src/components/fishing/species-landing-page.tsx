@@ -141,6 +141,38 @@ export async function SpeciesLandingPage({ content }: { content: SpeciesPageCont
                 {section.paragraphs.map((p) => (
                   <p key={p}>{p}</p>
                 ))}
+                {section.table && (
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse text-sm">
+                      <thead>
+                        <tr>
+                          {section.table.headers.map((h) => (
+                            <th key={h} className="border border-neutral-200 bg-neutral-50 p-2 text-left font-medium text-ocean-900">
+                              {h}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {section.table.rows.map((row) => (
+                          <tr key={row[0].text}>
+                            {row.map((cell, i) => (
+                              <td key={i} className="border border-neutral-200 p-2">
+                                {cell.href ? (
+                                  <Link href={cell.href} className="text-maldives-600 hover:underline">
+                                    {cell.text}
+                                  </Link>
+                                ) : (
+                                  cell.text
+                                )}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
                 {section.links && <ChipLinkList items={section.links} />}
               </div>
               {section.image && (

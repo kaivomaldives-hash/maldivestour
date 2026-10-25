@@ -1,5 +1,6 @@
 import { asset } from "@/lib/packages/category-images";
 import type { MediaAsset } from "@/lib/media/types";
+import { MFH_PRICE_TABLES } from "@/lib/packages/mfh-price-tables";
 
 /**
  * Per-page content for the species SEO landing pages (/maldives/fishing/
@@ -52,7 +53,25 @@ export interface SpeciesPageContent {
     paragraphs: string[];
     image?: MediaAsset;
     links?: Array<{ label: string; href: string | null }>;
+    table?: { headers: string[]; rows: Array<Array<{ text: string; href?: string }>> };
   }>;
+}
+
+/** Per-person website price for an MFH package and group size, from the
+ * same generated table the package pages render (never hand-typed). */
+function mfhPrice(slug: string, guests: number): string {
+  const tier = MFH_PRICE_TABLES[slug]?.find((g) => g.guests === guests);
+  return tier ? `USD ${tier.websitePrice.toLocaleString("en-US")}` : "On request";
+}
+
+function fullDayPackageRow(nights: number) {
+  const slug = `${nights}-night-maldives-fishing-package-full-day-fishing`;
+  return [
+    { text: `${nights} nights`, href: `/maldives/packages/${slug}/` },
+    { text: String(nights - 1) },
+    { text: mfhPrice(slug, 2) },
+    { text: mfhPrice(slug, 5) },
+  ];
 }
 
 export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
@@ -74,13 +93,30 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
         heading: "Where to Go GT Fishing in the Maldives",
         paragraphs: [
           "Giant trevally hunt where reef meets moving water. In the Maldives that means the outer reef edges, where the coral drops away into deep blue water, and the channels (kandu) that cut through the atoll rim. On a running tide, baitfish are pushed through these channels between the lagoon and the open ocean, and GT gather at the channel mouths and along the edges to ambush them.",
-          "The less a reef is fished, the better the chances, which is why remote southern atolls such as Gaafu draw GT anglers. Emperor, our private charter boat, is based at Maamendhoo in Gaafu Alifu Atoll, close to the outer reef and channels of one of the largest atolls in the country. Charters can also be arranged in other atolls at the same rate, depending on your dates and where the boat is.",
+          "The less a reef is fished, the better the chances, which is why GT anglers head for the remote atolls of the far south rather than the busy resort atolls around Malé. Emperor, our private charter boat, can be arranged in other atolls at the same rate depending on your dates and where the boat is, but its home is Gaafu Alifu Atoll.",
         ],
         image: asset(
           "ead2e1da-00ff-1554-b001-6bdc3d5885fe",
           "opt/uploads/assets/uploads/fishing/images/packages/reef-baa.webp",
           "Top-down aerial view of a white fishing boat over a coral reef edge in the Maldives",
         ),
+      },
+      {
+        heading: "GT Fishing in Gaafu Alifu Atoll",
+        paragraphs: [
+          "Gaafu Alifu is the northern half of Huvadhu Atoll in the deep south of the Maldives, one of the largest atolls in the world. Its long outer reef is broken by many channels, and with few resorts and few fishing boats working it, the reefs see far less fishing pressure than the central atolls. That combination of channels, deep drop-offs and quiet water is exactly what GT fishing needs.",
+          "Emperor and its crew are based on Maamendhoo, a local island in Gaafu Alifu, at the Maldives Fishing and Holidays Lodge. Staying at the lodge keeps you close to the fishing grounds, so you can be on the reef when the tide starts to run. Getting there is a domestic flight from Malé (USD 365 per person) and a short boat transfer, both included in our fishing packages.",
+        ],
+        image: asset(
+          "8c2e8baf-376e-b0b6-a222-a8450b073a09",
+          "opt/uploads/assets/uploads/fishing/images/gallery/maldives-atoll-aerial-view.webp",
+          "Aerial view of a Maldives island ringed by reef in deep blue ocean",
+        ),
+        links: [
+          { label: "Maldives Fishing and Holidays Lodge", href: "/maldives/guesthouses/maldives-fishing-and-holidays-lodge/" },
+          { label: "Maamendhoo, Gaafu Alifu", href: "/maldives/islands/maamendhoo-gaafu-alifu/" },
+          { label: "Gaafu Atoll fishing guide", href: "/maldives/travel-guide/gaafu-atoll-fishing-guide-mfh-maamendhoo/" },
+        ],
       },
       {
         heading: "GT Popping and Jigging in the Maldives",
@@ -94,15 +130,27 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
           "Two anglers jigging over the side of a fishing boat on open water in the Maldives",
         ),
         links: [
-          { label: "How popping works", href: "/maldives/fishing/popping/" },
-          { label: "How jigging works", href: "/maldives/fishing/jigging/" },
+          { label: "GT popping in the Maldives", href: "/maldives/fishing/popping/" },
+          { label: "Jigging in the Maldives", href: "/maldives/fishing/jigging/" },
         ],
+      },
+      {
+        heading: "GT Popping Tackle and Fishing Equipment",
+        paragraphs: [
+          "GT tackle has to stop a powerful fish from reaching the coral in the first few seconds of the fight. That means a heavy spinning rod built for casting big lures, a large saltwater spinning reel with a strong drag, heavy braided main line and a thick monofilament or fluorocarbon leader to survive the reef. Poppers and stickbaits are fitted with strong single hooks or heavy-duty trebles and split rings.",
+          "Basic fishing gear is included on every Emperor charter. If you don't bring your own popping and jigging outfit, you can add a professional rod and reel setup for USD 80 per setup. Bring polarised sunglasses, a hat, gloves for handling leader and fish, and reef-safe sunscreen.",
+        ],
+        image: asset(
+          "6df03edc-e48a-1f54-4ba0-9bd8f587046d",
+          "opt/legacy/images/fishing/popping-fishing.webp",
+          "Angler in sunglasses holding a giant trevally caught popping from a boat in the Maldives",
+        ),
       },
       {
         heading: "GT Fishing Charters: What to Expect and What It Costs",
         paragraphs: [
           "A half-day charter is about 4 hours on the water and a full-day charter about 8 hours. The crew plans the day around the tide, because moving water is what switches GT on: the boat works the channel mouths and reef edges while the tide runs, and slack water is a good time to jig deeper or move to the next spot.",
-          "Basic fishing gear is included on every Emperor charter. For dedicated GT popping and jigging you can bring your own tackle or add a professional rod and reel setup for USD 80 per setup. Emperor takes up to 5 anglers, and the price is per boat: USD 980 for a half day or USD 1,380 for a full day. A full day gives you more tides and more spots.",
+          "Emperor takes up to 5 anglers, and the price is per boat: USD 980 for a half day or USD 1,380 for a full day, including captain and crew, fuel, soft drinks and snacks, and basic gear. Shared between five anglers, a full day of GT fishing comes to USD 276 each. A full day gives you more tides and more spots.",
         ],
         image: asset(
           "a0396492-c61d-9a26-f750-712a914f5b22",
@@ -110,8 +158,32 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
           "Angler holding a large giant trevally (GT) on a boat in the Maldives",
         ),
         links: [
-          { label: "Emperor charter rates", href: "/maldives/fishing/emperor/" },
-          { label: "Fishing packages", href: "/maldives/packages/fishing/" },
+          { label: "Emperor private fishing charter", href: "/maldives/fishing/emperor/" },
+        ],
+      },
+      {
+        heading: "GT Fishing Holidays and Packages in the Maldives",
+        paragraphs: [
+          "For a dedicated GT fishing holiday, our packages at the lodge on Maamendhoo bundle full-board accommodation, the return domestic flight, the boat transfer and a private Emperor charter on every fishing day. The price is per person and falls as more anglers share the boat. These are the full-day fishing packages:",
+        ],
+        table: {
+          headers: ["Package", "Fishing days", "Per person, 2 anglers", "Per person, 5 anglers"],
+          rows: [3, 4, 5, 6, 7, 8].map(fullDayPackageRow),
+        },
+        image: asset(
+          "d82258a7-f7ae-f6ea-c603-5c18159eff68",
+          "opt/uploads/assets/uploads/fishing/images/gallery/maldives-fishing-charters.webp",
+          "Smiling angler holding a large giant trevally on a fishing boat in the Maldives",
+        ),
+        links: [
+          { label: "All Maldives fishing packages", href: "/maldives/packages/fishing/" },
+          { label: "Half-day fishing packages", href: "/maldives/packages/3-night-maldives-fishing-package-half-day-fishing/" },
+        ],
+      },
+      {
+        heading: "How Big Do Giant Trevally Get?",
+        paragraphs: [
+          "Giant trevally (Caranx ignobilis) are the largest of the trevally family and grow up to about 170 cm and 80 kg. Whatever its size, a GT pulls harder than almost anything else on the reef. Smaller GT often hunt in groups, while the biggest fish tend to patrol alone along the reef edge.",
         ],
       },
       {
@@ -149,6 +221,21 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
         question: "How much does a GT fishing trip cost?",
         answer:
           "A private charter on Emperor costs USD 980 for a half day or USD 1,380 for a full day, per boat for up to 5 anglers. A professional rod and reel setup for heavier GT tackle is USD 80 per setup.",
+      },
+      {
+        question: "Where is the best GT fishing in the Maldives?",
+        answer:
+          "The remote southern atolls, where channels and outer reef edges see little fishing pressure. Our boat, Emperor, is based in Gaafu Alifu Atoll, in the deep south, for exactly that reason.",
+      },
+      {
+        question: "Do I need experience to go GT popping?",
+        answer:
+          "No, but it helps to be reasonably fit: popping means casting a heavy rod many times. Jigging is an easier way to start, and you can ask the crew for help with casting and working the lure.",
+      },
+      {
+        question: "Can I book a GT fishing holiday package?",
+        answer:
+          "Yes. Our packages at the Maldives Fishing and Holidays Lodge on Maamendhoo, Gaafu Alifu, run from 2 to 8 nights and include the lodge, meals, the domestic flight, the boat transfer and a private charter on every fishing day.",
       },
       {
         question: "Is GT fishing catch and release?",

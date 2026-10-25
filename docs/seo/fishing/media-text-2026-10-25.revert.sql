@@ -9,4 +9,8 @@ update media_assets set alt_text = 'Half Day Trip Deep Jigging', title = null wh
 update media_assets set alt_text = 'emperor - Maldives fishing', title = null where id = 'e520e856-d8be-505a-1e39-bc1a61f726e0'; -- opt/uploads/assets/uploads/fishing/images/charters/emperor.webp
 update media_assets set alt_text = 'giant trevally - Maldives fishing', title = null where id = 'c1e3ca08-0e43-1f98-3061-c6d9951c6834'; -- opt/uploads/assets/uploads/fishing/images/gallery/giant-trevally.webp
 update media_assets set alt_text = 'reef baa - Maldives fishing', title = null where id = 'ead2e1da-00ff-1554-b001-6bdc3d5885fe'; -- opt/uploads/assets/uploads/fishing/images/packages/reef-baa.webp
+update media_assets set alt_text = 'Popping Fishing', title = null where id = '6df03edc-e48a-1f54-4ba0-9bd8f587046d';
+update media_assets set alt_text = 'sports fishing maldives - Maldives fishing', title = null where id = '7fb94bc0-e308-f850-82cf-10a86c0ee91d';
+update media_assets set alt_text = 'Maldives atoll aerial view - Maldives fishing', title = null where id = '8c2e8baf-376e-b0b6-a222-a8450b073a09';
+update media_assets set alt_text = 'maldives fishing charters - Maldives fishing', title = null where id = 'd82258a7-f7ae-f6ea-c603-5c18159eff68';
 commit;

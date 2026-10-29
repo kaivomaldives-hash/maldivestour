@@ -1,3 +1,4 @@
+import { getFishingContentUpdate } from "@/lib/i18n/fishing-content";
 import { DE } from "@/lib/i18n/package-categories/de";
 import { ES } from "@/lib/i18n/package-categories/es";
 import { IT } from "@/lib/i18n/package-categories/it";
@@ -14,5 +15,9 @@ const STRINGS: Partial<Record<Locale, PackageCategoryLocaleStrings>> = { de: DE,
 export const PACKAGE_CATEGORY_LOCALES = Object.keys(STRINGS) as Locale[];
 
 export function getPackageCategoryStrings(locale: Locale): PackageCategoryLocaleStrings | null {
-  return STRINGS[locale] ?? null;
+  const base = STRINGS[locale];
+  if (!base) return null;
+  const update = getFishingContentUpdate(locale);
+  if (!update) return base;
+  return { ...base, categories: { ...base.categories, fishing: { ...base.categories.fishing, ...update.packagesFishing } } };
 }

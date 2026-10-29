@@ -22,6 +22,7 @@ import type {
   ActivitySummary,
   PaginatedResult,
 } from "@/lib/activities/types";
+import { titleSearchFilter } from "@/lib/search/normalize";
 
 /**
  * Server-side activity data-access layer, following the same pattern as
@@ -510,7 +511,7 @@ export async function searchActivities(query: string, options: SearchActivitiesO
     .select(NODE_ACTIVITY_SELECT)
     .eq("node_type", "activity")
     .eq("status", "published")
-    .ilike("title", `%${trimmed}%`)
+    .filter("title", ...titleSearchFilter(trimmed))
     .order("title", { ascending: true })
     .limit(options.limit ?? 20)
     .returns<NodeActivityRow[]>();

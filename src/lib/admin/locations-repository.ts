@@ -2,6 +2,7 @@ import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
 import type { NodeStatus } from "@/lib/admin/node-actions";
+import { titleSearchFilter } from "@/lib/search/normalize";
 
 /**
  * Admin-only location reads (all statuses). Uses the explicit
@@ -93,7 +94,7 @@ export async function getLocationsAdmin(options: { search?: string; locationType
 
   const supabase = await createClient();
   let query = supabase.from("nodes").select(NODE_LOCATION_SELECT, { count: "exact" }).eq("node_type", "location").order("title", { ascending: true });
-  if (options.search?.trim()) query = query.ilike("title", `%${options.search.trim()}%`);
+  if (options.search?.trim()) query = query.filter("title", ...titleSearchFilter(options.search));
   if (options.locationType) query = query.eq("locations.location_type", options.locationType);
 
   const { data, error, count } = await query.range(from, to).returns<NodeLocationRow[]>();

@@ -5,6 +5,7 @@ import { getAdminNodeIdsAtAtoll } from "@/lib/admin/admin-location-filter";
 import type { NodeStatus } from "@/lib/admin/node-actions";
 import type { AccommodationType, PriceTier } from "@/lib/accommodations/types";
 import { createClient } from "@/lib/supabase/server";
+import { titleSearchFilter } from "@/lib/search/normalize";
 
 /**
  * Admin-only accommodation reads (all statuses), mirroring providers-
@@ -130,7 +131,7 @@ export async function getAccommodationsAdmin(
     .eq("node_type", "accommodation")
     .order("sort_order", { ascending: true, nullsFirst: false })
     .order("title", { ascending: true });
-  if (options.search?.trim()) query = query.ilike("title", `%${options.search.trim()}%`);
+  if (options.search?.trim()) query = query.filter("title", ...titleSearchFilter(options.search));
   if (options.accommodationType) query = query.eq("accommodations.accommodation_type", options.accommodationType);
   if (options.status) query = query.eq("status", options.status);
   if (options.providerId) query = query.eq("accommodations.operated_by_provider_id", options.providerId);

@@ -2,6 +2,7 @@ import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
 import type { NodeStatus } from "@/lib/admin/node-actions";
+import { titleSearchFilter } from "@/lib/search/normalize";
 
 /**
  * Admin-only provider reads (all statuses, unlike src/lib/providers/
@@ -94,7 +95,7 @@ export async function getProvidersAdmin(options: { search?: string; page?: numbe
 
   const supabase = await createClient();
   let query = supabase.from("nodes").select(NODE_PROVIDER_SELECT, { count: "exact" }).eq("node_type", "provider").order("title", { ascending: true });
-  if (options.search?.trim()) query = query.ilike("title", `%${options.search.trim()}%`);
+  if (options.search?.trim()) query = query.filter("title", ...titleSearchFilter(options.search));
 
   const { data, error, count } = await query.range(from, to).returns<NodeProviderRow[]>();
   if (error || !data) return { items: [], total: 0, page, pageSize: PAGE_SIZE };

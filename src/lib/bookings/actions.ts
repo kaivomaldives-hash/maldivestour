@@ -38,6 +38,30 @@ function isSpam(honeypot: string | undefined): boolean {
 
 const GENERIC_ERROR = "Something went wrong. Please try again.";
 
+type BookingRpcResult = { data: { id: string; booking_reference: string } | null; error: { code?: string; message: string } | null };
+
+/** Calls create_booking_inquiry, sending p_promo_code only when a code was
+ * actually entered. The live database may still run the pre-promo-code
+ * version of the RPC (20261030000100_affiliate_promo_codes_and_commission.sql
+ * not yet applied); PostgREST resolves functions by parameter names, so an
+ * extra p_promo_code key — even null — makes every booking fail with
+ * PGRST202. If a code was entered and the RPC doesn't accept it yet, the
+ * booking is retried without it rather than lost. */
+async function callCreateBookingInquiry(rpcArgs: Record<string, unknown>): Promise<BookingRpcResult> {
+  const supabase = await createClient();
+  const call = (args: Record<string, unknown>) =>
+    supabase
+      .rpc("create_booking_inquiry" as unknown as never, args as unknown as undefined)
+      .single<{ id: string; booking_reference: string }>() as unknown as Promise<BookingRpcResult>;
+
+  const { p_promo_code: promoCode, ...withoutPromo } = rpcArgs;
+  if (!promoCode) return call(withoutPromo);
+
+  const result = await call(rpcArgs);
+  if (result.error?.code === "PGRST202") return call(withoutPromo);
+  return result;
+}
+
 export interface TransferBookingInquiryInput {
   transferServiceId: string;
   originLocationId: string | null;
@@ -104,7 +128,6 @@ export async function createTransferBookingInquiry(
   // this one call via an explicit, narrow unknown-cast — the RPC's real
   // parameter/return shape is documented and enforced by the hand-written
   // types on this function's own signature instead.
-  const supabase = await createClient();
   const rpcArgs = {
     p_product_type: "transfer_service",
     p_product_node_id: null,
@@ -132,9 +155,7 @@ export async function createTransferBookingInquiry(
     p_source: "transfer" satisfies BookingSource,
     p_promo_code: input.promoCode?.trim() || null,
   };
-  const { data, error } = await supabase
-    .rpc("create_booking_inquiry" as unknown as never, rpcArgs as unknown as undefined)
-    .single<{ id: string; booking_reference: string }>();
+  const { data, error } = await callCreateBookingInquiry(rpcArgs);
 
   if (error || !data) {
     return { ok: false, error: friendlyRpcError(error?.message) };
@@ -292,7 +313,6 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
     .filter(Boolean)
     .join(" ") || null;
 
-  const supabase = await createClient();
   const rpcArgs = {
     p_product_type: "node",
     p_product_node_id: input.productNodeId,
@@ -321,9 +341,7 @@ export async function createNodeInquiry(input: NodeInquiryInput): Promise<Transf
     p_destination_label: input.destinationLabel?.trim() || null,
     p_promo_code: input.promoCode?.trim() || null,
   };
-  const { data, error } = await supabase
-    .rpc("create_booking_inquiry" as unknown as never, rpcArgs as unknown as undefined)
-    .single<{ id: string; booking_reference: string }>();
+  const { data, error } = await callCreateBookingInquiry(rpcArgs);
 
   if (error || !data) {
     return { ok: false, error: friendlyRpcError(error?.message) };

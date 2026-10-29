@@ -23,6 +23,7 @@ import type {
   TransferServiceStatus,
   TransferType,
 } from "@/lib/transfers/types";
+import { titleSearchFilter } from "@/lib/search/normalize";
 
 /**
  * Server-side transfer data-access layer, following the same pattern as
@@ -554,7 +555,7 @@ export async function searchTransferRoutes(query: string, options: SearchTransfe
     .select(NODE_TRANSFER_ROUTE_SELECT)
     .eq("node_type", "transfer_route")
     .eq("status", "published")
-    .ilike("title", `%${trimmed}%`)
+    .filter("title", ...titleSearchFilter(trimmed))
     .order("title", { ascending: true })
     .limit(options.limit ?? 20)
     .returns<NodeTransferRouteRow[]>();

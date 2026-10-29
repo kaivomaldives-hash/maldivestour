@@ -3,6 +3,7 @@ import "server-only";
 import { cachedRead } from "@/lib/cache/cached-read";
 import { createClient } from "@/lib/supabase/public";
 import type { PaginatedResult, ProviderDetail, ProviderSummary } from "@/lib/providers/types";
+import { titleSearchFilter } from "@/lib/search/normalize";
 
 /**
  * Server-side provider data-access layer, mirroring the pattern established
@@ -182,7 +183,7 @@ export async function searchProviders(query: string, options: SearchProvidersOpt
     .select(NODE_PROVIDER_SELECT)
     .eq("node_type", "provider")
     .eq("status", "published")
-    .ilike("title", `%${trimmed}%`)
+    .filter("title", ...titleSearchFilter(trimmed))
     .order("title", { ascending: true })
     .limit(options.limit ?? 20)
     .returns<NodeProviderRow[]>();

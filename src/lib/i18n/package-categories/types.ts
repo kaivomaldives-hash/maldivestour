@@ -1,3 +1,4 @@
+import type { TranslatedContentSection } from "@/lib/content/content-section";
 import type { PackageCategorySlug } from "@/lib/packages/view-types";
 
 /** One package style page's translated copy -- mirrors the English
@@ -9,7 +10,9 @@ export interface PackageCategoryTranslation {
   metaDescription: string;
   intro: string;
   faqs: Array<{ question: string; answer: string }>;
-  relatedLabels: [string, string, string];
+  relatedLabels: string[];
+  /** Translations of the English entry's sections, by position. */
+  sections?: TranslatedContentSection[];
 }
 
 export interface PackageCategoryLocaleStrings {
@@ -21,5 +24,7 @@ export interface PackageCategoryLocaleStrings {
   emptyDescription: string;
   /** Link to the English page, which has search and filters. */
   filtersInEnglish: string;
+  /** "{n}" -> number of nights, for package price tables. */
+  nights: string;
   categories: Record<PackageCategorySlug, PackageCategoryTranslation>;
 }

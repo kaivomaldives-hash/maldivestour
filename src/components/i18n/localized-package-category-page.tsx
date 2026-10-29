@@ -3,9 +3,11 @@ import Link from "next/link";
 
 import { PackageCard } from "@/components/packages/package-card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
+import { ContentSections } from "@/components/ui/content-sections";
 import { EmptyState } from "@/components/ui/empty-state";
 import { FaqSection } from "@/components/ui/faq-section";
 import { PageHero } from "@/components/ui/page-hero";
+import { localizeContentSections } from "@/lib/content/content-section";
 import { localizeHubPath } from "@/lib/i18n/hub-paths";
 import { getLinkLocalizer } from "@/lib/i18n/link-localizer";
 import type { Locale } from "@/lib/i18n/locales";
@@ -111,6 +113,10 @@ export async function LocalizedPackageCategoryPage({ locale, category }: { local
             ))}
           </ul>
         )}
+
+        <ContentSections
+          sections={localizeContentSections(PACKAGE_CATEGORY_CONTENT[category].sections, t.sections, L.href, (n) => strings.nights.replace("{n}", String(n)))}
+        />
 
         <FaqSection faqs={t.faqs} title={ui.packagesHub.faqTitle} className="mt-14 border-t border-neutral-200 pt-10" />
 

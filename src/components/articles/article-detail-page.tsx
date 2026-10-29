@@ -87,7 +87,7 @@ export async function ArticleDetailPage({ slug }: { slug: string }) {
               [&_ol]:mt-4 [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:pl-6
               [&_blockquote]:mt-4 [&_blockquote]:border-l-4 [&_blockquote]:border-maldives-300 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-neutral-600
               [&_figure]:mt-6 [&_figure]:overflow-hidden [&_figure]:rounded-2xl
-              [&_img]:h-auto [&_img]:w-full
+              [&_img]:h-auto [&_img]:w-full [&_figure_img]:max-h-[560px] [&_figure_img]:object-cover [&_figure_img]:object-[center_25%]
               [&_table]:mt-4 [&_table]:w-full [&_table]:border-collapse [&_table]:text-sm
               [&_td]:border [&_td]:border-neutral-200 [&_td]:p-2
               [&_a]:text-maldives-600 [&_a]:underline

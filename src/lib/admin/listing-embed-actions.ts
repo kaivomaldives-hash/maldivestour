@@ -3,6 +3,7 @@
 import { requireStaff } from "@/lib/admin/auth";
 import { LISTING_EMBED_NODE_TYPES, type ListingEmbedOption } from "@/lib/admin/listing-embed-types";
 import { createClient } from "@/lib/supabase/server";
+import { titleSearchFilter } from "@/lib/search/normalize";
 
 /**
  * Backs the article editor's "Insert real listing" picker
@@ -25,7 +26,7 @@ export async function searchListingEmbedOptions(query: string): Promise<ListingE
     .select("slug, title, node_type")
     .in("node_type", LISTING_EMBED_NODE_TYPES as unknown as string[])
     .eq("status", "published")
-    .ilike("title", `%${trimmed}%`)
+    .filter("title", ...titleSearchFilter(trimmed))
     .order("title", { ascending: true })
     .limit(15)
     .returns<Array<{ slug: string; title: string; node_type: ListingEmbedOption["nodeType"] }>>();

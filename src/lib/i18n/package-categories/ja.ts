@@ -7,6 +7,7 @@ export const JA: PackageCategoryLocaleStrings = {
   emptyTitle: "現在、{title}はまだありません。",
   emptyDescription: "モルディブのパッケージ一覧をご覧いただくか、直接お問い合わせください。",
   filtersInEnglish: "検索・絞り込み（英語）",
+  nights: "{n}泊",
   categories: {
     luxury: {
       title: "ラグジュアリーパッケージ",

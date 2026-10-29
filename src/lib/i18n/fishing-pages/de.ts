@@ -26,6 +26,7 @@ export const DE: FishingPagesLocaleStrings = {
   related: { fishing: "Angeln auf den Malediven", emperor: "Emperor – privates Angelcharter", allFishes: "Alle Fische der Malediven", fishingPackages: "Angelurlaub-Pakete", gtFishing: "GT-Angeln", tunaFishing: "Thunfischangeln" },
   waSpecies: "Hallo, ich möchte einen Angelausflug auf den Malediven planen, Zielfisch: {name}.\nMein Standort:\nDatum:\nAnzahl der Angler:\nHalber oder ganzer Tag:",
   waTechnique: "Hallo, ich möchte einen Ausflug planen: {name}.\nMein Standort:\nDatum:\nAnzahl der Angler:\nHalber oder ganzer Tag:",
+  nights: "{n} Nächte",
   species: {
     "gt-fishing": {
       displayName: "Giant Trevally (GT)",

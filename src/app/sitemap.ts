@@ -95,6 +95,7 @@ const STATIC_PATHS = [
   "/maldives/diving/",
   "/maldives/fishing/",
   "/maldives/fishing/emperor/",
+  "/maldives/fishing/calculator/",
   "/maldives/fishing/gt-fishing/",
   "/maldives/fishing/tuna-fishing/",
   "/maldives/fishing/wahoo-fishing/",

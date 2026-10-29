@@ -172,15 +172,21 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
           )}
         </div>
 
-        {/* Guest-count pricing table — only present for packages sourced from
-            a real per-guest-tier rate sheet (currently just the MFH fishing
-            packages). pkg.price already shows the 5-guest "best value" rate
-            above; this table is the full 1-5 guest breakdown from the same
+        {/* Guest-count pricing table — only present for the Maamendhoo
+            fishing packages (priced from the fishing package calculator's
+            rates). pkg.price already shows the 6-guest "best value" rate
+            above; this table is the full 1-6 guest breakdown from the same
             source, never a separate/different figure. */}
         {MFH_PRICE_TABLES[pkg.slug] && (
           <section className="mt-8">
             <h2 className="text-lg font-semibold text-ocean-900">Price by Group Size</h2>
-            <p className="mt-1 text-sm text-neutral-600">Per person, based on guests sharing the boat — from our own rate sheet.</p>
+            <p className="mt-1 text-sm text-neutral-600">
+              Per person, based on guests sharing the boat. Want a different length, atoll or fishing type? Try the{" "}
+              <Link href="/maldives/fishing/calculator/" className="text-maldives-600 hover:underline">
+                fishing package calculator
+              </Link>
+              .
+            </p>
             <div className="mt-3 overflow-x-auto">
               <table className="min-w-full text-sm">
                 <thead>
@@ -197,8 +203,7 @@ export async function PackageDetailPage({ slug }: { slug: string }) {
                         {row.isBestValue && <span className="ml-2 rounded-full bg-maldives-600 px-2 py-0.5 text-xs font-medium text-white">Best value</span>}
                       </td>
                       <td className="py-2 pr-4 font-medium text-ocean-900">
-                        USD {row.websitePrice.toLocaleString()}
-                        <span className="ml-2 text-xs font-normal text-neutral-400 line-through">USD {row.sourcePrice.toLocaleString()}</span>
+                        USD {row.price.toLocaleString("en-US")}
                       </td>
                     </tr>
                   ))}

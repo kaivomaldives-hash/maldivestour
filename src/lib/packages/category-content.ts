@@ -1,5 +1,6 @@
 import type { ContentSection } from "@/lib/content/content-section";
 import { asset } from "@/lib/packages/category-images";
+import { FISHING_PACKAGE_NIGHTS } from "@/lib/packages/fishing-package-types";
 import { mfhPackageRow } from "@/lib/packages/mfh-price-rows";
 import type { PackageCategorySlug } from "@/lib/packages/view-types";
 
@@ -152,14 +153,14 @@ export const PACKAGE_CATEGORY_CONTENT: Record<PackageCategorySlug, PackageCatego
   fishing: {
     metaTitle: "Maldives Fishing Packages & Fishing Holidays | MTG",
     metaDescription:
-      "Maldives fishing holiday packages in Gaafu Alifu Atoll: 2 to 8 nights with lodge, meals, domestic flight, transfer and a private fishing charter every day.",
+      "Maldives fishing packages in Gaafu Alifu Atoll: 3 to 8 nights of reef, tuna or fly fishing with lodge, meals, domestic flight, transfer and a private boat.",
     intro:
-      "Fishing holiday packages at the Maldives Fishing and Holidays Lodge on Maamendhoo, Gaafu Alifu Atoll: full-board accommodation, the return domestic flight, the boat transfer and a private charter on our boat Emperor on every fishing day. 2 to 8 nights, full-day or half-day fishing, priced per person.",
+      "Fishing holiday packages at the Maldives Fishing and Holidays Lodge on Maamendhoo, Gaafu Alifu Atoll: full-board twin-share accommodation, the return domestic flight, the boat transfer and a private boat for your group on every fishing day. 3 to 8 nights of full-day or half-day reef, tuna or fly fishing, priced per person — or build your own with the fishing package calculator.",
     faqs: [
       {
         question: "What is included in a Maldives fishing package?",
         answer:
-          "Full-board accommodation at the Maldives Fishing and Holidays Lodge on Maamendhoo, the return domestic flight from Malé, the boat transfer to the island, and a private charter on Emperor on every fishing day (captain and crew, fuel, soft drinks and snacks, basic fishing gear).",
+          "Full-board twin-share accommodation at the Maldives Fishing and Holidays Lodge on Maamendhoo, the return domestic flight from Malé, the boat transfer to the island, and a private boat for your group on every fishing day (captain and crew, fuel, soft drinks and snacks, basic fishing gear).",
       },
       {
         question: "How many fishing days do I get?",
@@ -168,11 +169,16 @@ export const PACKAGE_CATEGORY_CONTENT: Record<PackageCategorySlug, PackageCatego
       {
         question: "Why does the price depend on the number of guests?",
         answer:
-          "The boat costs the same however many anglers are on it, so the more people share it, the lower the price per person. 5 guests sharing is the best-value rate.",
+          "The boat costs the same however many anglers are on it, so the more people share it, the lower the price per person. 6 guests sharing is the best-value rate.",
       },
       {
         question: "What is the difference between full-day and half-day packages?",
         answer: "Full-day packages include about 8 hours on the boat each fishing day; half-day packages about 4 hours, which is cheaper and leaves afternoons free.",
+      },
+      {
+        question: "What is the difference between reef, tuna and fly fishing packages?",
+        answer:
+          "Reef fishing packages work the reef edges and channels — popping, jigging and bottom fishing for giant trevally, groupers and snappers. Tuna fishing packages head offshore to troll and jig for yellowfin, skipjack and dogtooth tuna. Fly fishing packages fish the flats and reef edges with a fly rod.",
       },
       {
         question: "Are international flights included?",
@@ -215,7 +221,7 @@ export const PACKAGE_CATEGORY_CONTENT: Record<PackageCategorySlug, PackageCatego
       {
         heading: "What's Included in Every Fishing Package",
         paragraphs: [
-          "Every package includes full-board accommodation at the lodge, the return domestic flight from Malé, the boat transfer to Maamendhoo, and a private charter on Emperor on every fishing day. Emperor is a 32-foot fishing boat with twin 200 HP engines for up to 5 anglers, and each charter includes a professional captain and crew, fuel, soft drinks and snacks, and basic fishing gear.",
+          "Every package includes full-board twin-share accommodation at the lodge (one room for every two guests), the return domestic flight from Malé, the boat transfer to Maamendhoo, and a private boat for your group on every fishing day: Emperor, a 32-foot boat with twin 200 HP engines for up to 5 anglers, or Bluefin, a 36-foot boat for up to 6. Each charter includes a professional captain and crew, fuel, soft drinks and snacks, and basic fishing gear.",
           "Not included: your international flight to Malé, and a professional popping or jigging rod and reel setup if you want one (USD 80 per setup). The number of fishing days is one fewer than the number of nights, so arrival and departure days are for travel.",
         ],
         image: asset(
@@ -225,31 +231,71 @@ export const PACKAGE_CATEGORY_CONTENT: Record<PackageCategorySlug, PackageCatego
         ),
       },
       {
-        heading: "Full-Day Fishing Package Prices",
+        heading: "Full-Day Reef Fishing Package Prices",
         paragraphs: [
-          "Full-day packages include about 8 hours on the boat on every fishing day, the best choice for GT popping and jigging and for offshore trolling. Prices are per person and depend on how many guests share the boat; 5 guests sharing is the best-value rate.",
+          "Full-day reef fishing packages include about 8 hours on the boat on every fishing day, working the reef edges and channels: the best choice for GT popping and jigging. Prices are per person and depend on how many guests share the boat; 6 guests sharing is the best-value rate.",
         ],
         table: {
-          headers: ["Package", "Fishing days", "1 guest", "2 guests", "3 guests", "4 guests", "5 guests"],
-          rows: [2, 3, 4, 5, 6, 7, 8].map((nights) => mfhPackageRow(nights, "full-day", [1, 2, 3, 4, 5])),
+          headers: ["Package", "Fishing days", "1 guest", "2 guests", "3 guests", "4 guests", "5 guests", "6 guests"],
+          rows: FISHING_PACKAGE_NIGHTS.map((nights) => mfhPackageRow(nights, "fullReef", [1, 2, 3, 4, 5, 6])),
         },
       },
       {
-        heading: "Half-Day Fishing Package Prices",
+        heading: "Half-Day Reef Fishing Package Prices",
         paragraphs: [
-          "Half-day packages include about 4 hours on the boat on every fishing day, leaving afternoons free to rest, swim or snorkel. They cost less than full-day packages and suit mixed groups, families and anglers who want a more relaxed pace.",
+          "Half-day reef fishing packages include about 4 hours on the boat on every fishing day, leaving afternoons free to rest, swim or snorkel. They cost less than full-day packages and suit mixed groups, families and anglers who want a more relaxed pace.",
         ],
         table: {
-          headers: ["Package", "Fishing days", "1 guest", "2 guests", "3 guests", "4 guests", "5 guests"],
-          rows: [2, 3, 4, 5, 6, 7, 8].map((nights) => mfhPackageRow(nights, "half-day", [1, 2, 3, 4, 5])),
+          headers: ["Package", "Fishing days", "1 guest", "2 guests", "3 guests", "4 guests", "5 guests", "6 guests"],
+          rows: FISHING_PACKAGE_NIGHTS.map((nights) => mfhPackageRow(nights, "halfReef", [1, 2, 3, 4, 5, 6])),
+        },
+      },
+      {
+        heading: "Full-Day Tuna Fishing Package Prices",
+        paragraphs: [
+          "Full-day tuna fishing packages head offshore for about 8 hours on every fishing day, trolling and jigging for yellowfin, skipjack and dogtooth tuna, with wahoo and mahi-mahi often in the mix.",
+        ],
+        table: {
+          headers: ["Package", "Fishing days", "1 guest", "2 guests", "3 guests", "4 guests", "5 guests", "6 guests"],
+          rows: FISHING_PACKAGE_NIGHTS.map((nights) => mfhPackageRow(nights, "fullTuna", [1, 2, 3, 4, 5, 6])),
+        },
+      },
+      {
+        heading: "Half-Day Tuna Fishing Package Prices",
+        paragraphs: [
+          "Half-day tuna fishing packages give you about 4 hours offshore on every fishing day — enough for a morning trolling session for tuna, with the afternoon free.",
+        ],
+        table: {
+          headers: ["Package", "Fishing days", "1 guest", "2 guests", "3 guests", "4 guests", "5 guests", "6 guests"],
+          rows: FISHING_PACKAGE_NIGHTS.map((nights) => mfhPackageRow(nights, "halfTuna", [1, 2, 3, 4, 5, 6])),
+        },
+      },
+      {
+        heading: "Full-Day Fly Fishing Package Prices",
+        paragraphs: [
+          "Fly fishing packages fish the flats and reef edges of Gaafu Alifu with a fly rod, at our published per-person fly fishing rates. Choose full-day fly fishing for the most time on the water.",
+        ],
+        table: {
+          headers: ["Package", "Fishing days", "1 guest", "2 guests", "3 guests", "4 guests", "5 guests", "6 guests"],
+          rows: FISHING_PACKAGE_NIGHTS.map((nights) => mfhPackageRow(nights, "flyFull", [1, 2, 3, 4, 5, 6])),
+        },
+      },
+      {
+        heading: "Half-Day Fly Fishing Package Prices",
+        paragraphs: [
+          "Half-day fly fishing packages include about 4 hours of fly fishing on every fishing day — a good fit if you want to fish the best tide and keep the rest of the day free.",
+        ],
+        table: {
+          headers: ["Package", "Fishing days", "1 guest", "2 guests", "3 guests", "4 guests", "5 guests", "6 guests"],
+          rows: FISHING_PACKAGE_NIGHTS.map((nights) => mfhPackageRow(nights, "flyHalf", [1, 2, 3, 4, 5, 6])),
         },
       },
       {
         heading: "How to Choose a Fishing Package",
         paragraphs: [
           "How many nights? A 3-night package (2 fishing days) is a good short break. A 5-night package (4 fishing days) is the most popular length: enough to try popping, jigging and trolling and to ride out a windy day. Dedicated anglers choose 7 or 8 nights.",
-          "Full or half days? Choose full days for serious GT fishing and offshore trips; half days if you want afternoons off or are travelling with non-anglers.",
-          "How many anglers? Because the boat costs the same however many people are on board, the price per person falls sharply as your group grows. On packages of 4 nights or more, 5 anglers each pay less than a third of the solo price.",
+          "Reef, tuna or fly? Reef fishing is the classic choice for GT popping and jigging; tuna fishing for offshore trolling; fly fishing for anglers who want the challenge of the flats. Full or half days? Choose full days for serious fishing and offshore trips; half days if you want afternoons off or are travelling with non-anglers.",
+          "How many anglers? Because the boat costs the same however many people are on board, the price per person falls sharply as your group grows. On a 5-night full-day reef fishing package, 6 anglers each pay about a quarter of the solo price. Want another length, atoll or mix? Use the fishing package calculator.",
         ],
         image: asset(
           "c1e3ca08-0e43-1f98-3061-c6d9951c6834",
@@ -257,6 +303,7 @@ export const PACKAGE_CATEGORY_CONTENT: Record<PackageCategorySlug, PackageCatego
           "Angler in a blue cap holding a large giant trevally on a fishing boat in the Maldives",
         ),
         links: [
+          { label: "Fishing package calculator", href: "/maldives/fishing/calculator/" },
           { label: "Sample fishing trip itinerary", href: "/maldives/travel-guide/maldives-fishing-trip-itinerary/" },
           { label: "Maldives fishing trip cost", href: "/maldives/travel-guide/maldives-fishing-trip-cost/" },
         ],
@@ -282,7 +329,7 @@ export const PACKAGE_CATEGORY_CONTENT: Record<PackageCategorySlug, PackageCatego
         heading: "Getting to Your Fishing Holiday",
         paragraphs: [
           "Fly into Malé on your international flight. From there, the domestic flight south and the boat transfer to Maamendhoo are included in every package. Leave enough time between your international and domestic flights, and check the baggage allowance on the domestic flight if you are bringing rod tubes.",
-          "Only want a day or two of fishing? You can also book Emperor by the day: USD 1,380 per boat for a full day or USD 980 for a half day, for up to 5 anglers.",
+          "Only want a day or two of fishing? You can also book Emperor by the day: USD 1,380 per boat for a full day or USD 980 for a half day, for up to 5 anglers. To price a different package, try the fishing package calculator.",
         ],
         image: asset(
           "e520e856-d8be-505a-1e39-bc1a61f726e0",

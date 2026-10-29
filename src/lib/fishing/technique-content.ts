@@ -189,8 +189,8 @@ export const TECHNIQUE_PAGES: Record<string, TechniquePageContent> = {
           "Emperor, a 32 ft white-and-black fishing boat with twin outboards, anchored off a Maldives island",
         ),
         table: {
-          headers: ["Package (full-day fishing)", "Fishing days", "Per person, 2 anglers", "Per person, 5 anglers"],
-          rows: [3, 5, 7].map((nights) => mfhPackageRow(nights, "full-day", [2, 5])),
+          headers: ["Package (full-day tuna fishing)", "Fishing days", "Per person, 2 anglers", "Per person, 5 anglers"],
+          rows: [3, 5, 7].map((nights) => mfhPackageRow(nights, "fullTuna", [2, 5])),
         },
         links: [
           { label: "Emperor private fishing charter", href: "/maldives/fishing/emperor/" },
@@ -333,7 +333,7 @@ export const TECHNIQUE_PAGES: Record<string, TechniquePageContent> = {
       },
       {
         question: "Is there a fly fishing holiday package?",
-        answer: "Yes — see our 3-night Maldives fly fishing holiday package, which bundles accommodation, meals and the charter together.",
+        answer: "Yes — our fly fishing holidays run from 3 to 8 nights with full-day or half-day fly fishing, and bundle the lodge, full-board meals, the domestic flight, the boat transfer and the fly fishing charter together.",
       },
     ],
   },

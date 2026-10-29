@@ -1,7 +1,8 @@
 import type { FishingContentUpdate } from "@/lib/i18n/fishing-content/types";
 
-const PKG_HEADERS = ["Paquete (pesca de día completo)", "Días de pesca", "Por persona, 2 pescadores", "Por persona, 5 pescadores"];
-const PKG_TABLE = ["Paquete", "Días de pesca", "1 huésped", "2 huéspedes", "3 huéspedes", "4 huéspedes", "5 huéspedes"];
+const REEF_PKG_HEADERS = ["Paquete (pesca de arrecife de día completo)", "Días de pesca", "Por persona, 2 pescadores", "Por persona, 5 pescadores"];
+const TUNA_PKG_HEADERS = ["Paquete (pesca de atún de día completo)", "Días de pesca", "Por persona, 2 pescadores", "Por persona, 5 pescadores"];
+const PKG_TABLE6 = ["Paquete", "Días de pesca", "1 huésped", "2 huéspedes", "3 huéspedes", "4 huéspedes", "5 huéspedes", "6 huéspedes"];
 
 export const ES: FishingContentUpdate = {
   species: {
@@ -50,9 +51,9 @@ export const ES: FishingContentUpdate = {
         {
           heading: "Vacaciones y paquetes de pesca de GT en Maldivas",
           paragraphs: [
-            "Para unas vacaciones dedicadas al GT, nuestros paquetes en el lodge de Maamendhoo incluyen pensión completa, el vuelo doméstico de ida y vuelta, el traslado en barco y un chárter privado en el Emperor cada día de pesca. El precio es por persona y baja cuantos más pescadores comparten el barco. Estos son los paquetes con pesca de día completo:",
+            "Para unas vacaciones dedicadas al GT, nuestros paquetes en el lodge de Maamendhoo incluyen pensión completa, el vuelo doméstico de ida y vuelta, el traslado en barco y un chárter privado en el Emperor cada día de pesca. El precio es por persona y baja cuantos más pescadores comparten el barco. Estos son los paquetes de pesca de arrecife de día completo:",
           ],
-          table: { headers: PKG_HEADERS },
+          table: { headers: REEF_PKG_HEADERS },
           linkLabels: ["Todos los paquetes de pesca en Maldivas", "Paquetes con pesca de medio día"],
         },
         {
@@ -109,7 +110,7 @@ export const ES: FishingContentUpdate = {
             "El Emperor, nuestro barco de pesca privado, mide 32 pies, tiene dos motores de 200 CV, admite hasta 5 pescadores y tiene su base en Maamendhoo, atolón Gaafu Alifu. Para el aleta amarilla recomendamos un día completo, que da tiempo para salir mar adentro y encontrar los bancos: 1.380 USD por barco, o 276 USD por persona con cinco pescadores. El medio día cuesta 980 USD por barco. Ambos incluyen capitán y tripulación, combustible, refrescos y snacks, y equipo básico.",
             "Para varios días de pesca de atún, nuestros paquetes en el Maldives Fishing and Holidays Lodge incluyen el lodge, pensión completa, el vuelo doméstico, el traslado en barco y un chárter privado cada día de pesca:",
           ],
-          table: { headers: PKG_HEADERS },
+          table: { headers: TUNA_PKG_HEADERS },
           linkLabels: ["Chárter privado Emperor", "Todos los paquetes de pesca", "Pesca de atún en Maldivas: todas las especies"],
         },
         {
@@ -177,7 +178,7 @@ export const ES: FishingContentUpdate = {
             "El Emperor es un barco de 32 pies con dos motores de 200 CV para hasta 5 pescadores. Un chárter de día completo cuesta 1.380 USD por barco y uno de medio día 980 USD, con capitán y tripulación, combustible, refrescos y snacks, y equipo básico. La tripulación planifica el jigging en las paredes según la marea y puede añadir popping para GT y curricán para atún y wahoo.",
             "Para varios días de jigging, nuestros paquetes en el Maldives Fishing and Holidays Lodge de Maamendhoo incluyen el lodge, pensión completa, el vuelo doméstico, el traslado en barco y un chárter privado cada día de pesca:",
           ],
-          table: { headers: PKG_HEADERS },
+          table: { headers: REEF_PKG_HEADERS },
           linkLabels: ["Chárter privado Emperor", "Todos los paquetes de pesca", "Pesca de atún en Maldivas"],
         },
         {
@@ -261,7 +262,7 @@ export const ES: FishingContentUpdate = {
             "Nuestro barco privado, el Emperor, es un barco de pesca de 32 pies con dos motores de 200 CV para hasta 5 pescadores, con base en Maamendhoo, atolón Gaafu Alifu, donde el océano profundo empieza justo tras el largo arrecife exterior. Para la pesca mar adentro recomendamos un día completo: 1.380 USD por barco, o 276 USD por persona con cinco pescadores. El medio día cuesta 980 USD por barco. Ambos incluyen capitán y tripulación, combustible, refrescos y snacks, y equipo básico.",
             "Cerca de Malé, la web también muestra salidas de big game de resorts y operadores independientes; consulta los chárteres más abajo. Para varios días de pesca, nuestros paquetes en el Maldives Fishing and Holidays Lodge incluyen el lodge, las comidas, el vuelo doméstico, el traslado y un chárter privado cada día de pesca.",
           ],
-          table: { headers: PKG_HEADERS },
+          table: { headers: TUNA_PKG_HEADERS },
           linkLabels: ["Chárter privado Emperor", "Todos los paquetes de pesca", "Coste de un viaje de pesca en Maldivas"],
         },
         {
@@ -309,14 +310,15 @@ export const ES: FishingContentUpdate = {
   },
   packagesFishing: {
     metaTitle: "Paquetes y vacaciones de pesca en Maldivas | MTG",
-    metaDescription: "Paquetes de vacaciones de pesca en el atolón Gaafu Alifu: 2 a 8 noches con lodge, comidas, vuelo doméstico, traslado y chárter de pesca privado cada día.",
+    metaDescription: "Paquetes de pesca en el atolón Gaafu Alifu: 3 a 8 noches de pesca de arrecife, atún o con mosca con lodge, comidas, vuelo doméstico, traslado y barco privado.",
     intro:
-      "Paquetes de vacaciones de pesca en el Maldives Fishing and Holidays Lodge de Maamendhoo, atolón Gaafu Alifu: pensión completa, vuelo doméstico de ida y vuelta, traslado en barco y un chárter privado en nuestro barco Emperor cada día de pesca. De 2 a 8 noches, pesca de día completo o medio día, precio por persona.",
+      "Paquetes de vacaciones de pesca en el Maldives Fishing and Holidays Lodge de Maamendhoo, atolón Gaafu Alifu: pensión completa en habitación doble, vuelo doméstico de ida y vuelta, traslado en barco y un barco privado para tu grupo cada día de pesca. De 3 a 8 noches de pesca de arrecife, de atún o con mosca, de día completo o medio día, con precio por persona — o crea el tuyo con la calculadora de paquetes de pesca.",
     faqs: [
-      { question: "¿Qué incluye un paquete de pesca en Maldivas?", answer: "Pensión completa en el Maldives Fishing and Holidays Lodge de Maamendhoo, el vuelo doméstico de ida y vuelta desde Malé, el traslado en barco a la isla y un chárter privado en el Emperor cada día de pesca (capitán y tripulación, combustible, refrescos y snacks, equipo básico de pesca)." },
+      { question: "¿Qué incluye un paquete de pesca en Maldivas?", answer: "Pensión completa en habitación doble en el Maldives Fishing and Holidays Lodge de Maamendhoo, vuelo doméstico de ida y vuelta desde Malé, traslado en barco a la isla y un barco privado para tu grupo cada día de pesca (capitán y tripulación, combustible, refrescos y snacks, equipo básico de pesca)." },
       { question: "¿Cuántos días de pesca tengo?", answer: "Uno menos que el número de noches: un paquete de 3 noches tiene 2 días de pesca, uno de 5 noches 4 y uno de 8 noches 7." },
-      { question: "¿Por qué el precio depende del número de huéspedes?", answer: "El barco cuesta lo mismo con independencia de cuántos pescadores lleve, así que cuantas más personas lo comparten, menor es el precio por persona. 5 huéspedes es la tarifa más ventajosa." },
+      { question: "¿Por qué el precio depende del número de huéspedes?", answer: "El barco cuesta lo mismo sin importar cuántos pescadores vayan a bordo, así que cuantos más lo compartan, menor es el precio por persona. 6 huéspedes es la tarifa más económica." },
       { question: "¿Qué diferencia hay entre paquetes de día completo y de medio día?", answer: "Los de día completo incluyen unas 8 horas en el barco cada día de pesca; los de medio día unas 4 horas, son más baratos y dejan las tardes libres." },
+      { question: "¿Qué diferencia hay entre los paquetes de arrecife, de atún y de pesca con mosca?", answer: "Los paquetes de arrecife pescan en los bordes del arrecife y los canales: popping, jigging y pesca de fondo de GT, meros y pargos. Los de atún salen mar adentro a curricán y jigging de atún aleta amarilla, listado y atún diente de perro. Los de pesca con mosca recorren los bajos y los bordes del arrecife con caña de mosca." },
       { question: "¿Están incluidos los vuelos internacionales?", answer: "No. Los paquetes incluyen el vuelo doméstico de ida y vuelta desde Malé y el traslado en barco; el vuelo internacional a Malé lo reservas tú." },
       { question: "¿Necesito mi propio equipo de pesca?", answer: "No. El equipo básico está incluido cada día de pesca. Hay un equipo profesional de popping o jigging por 80 USD por equipo, o puedes traer el tuyo." },
       { question: "¿Pueden venir personas que no pescan?", answer: "Pregúntanos al hacer la consulta. El lodge está en una isla local, así que quienes no pescan pueden relajarse, nadar y hacer snorkel mientras los demás pescan." },
@@ -334,28 +336,48 @@ export const ES: FishingContentUpdate = {
       {
         heading: "Qué incluye cada paquete de pesca",
         paragraphs: [
-          "Cada paquete incluye pensión completa en el lodge, el vuelo doméstico de ida y vuelta desde Malé, el traslado en barco a Maamendhoo y un chárter privado en el Emperor cada día de pesca. El Emperor es un barco de pesca de 32 pies con dos motores de 200 CV para hasta 5 pescadores, y cada chárter incluye capitán y tripulación profesionales, combustible, refrescos y snacks, y equipo básico de pesca.",
+          "Cada paquete incluye pensión completa en el lodge en habitación doble (una habitación por cada dos huéspedes), el vuelo doméstico de ida y vuelta desde Malé, el traslado en barco a Maamendhoo y un barco privado para tu grupo cada día de pesca: Emperor, un barco de 32 pies con dos motores de 200 CV para hasta 5 pescadores, o Bluefin, un barco de 36 pies para hasta 6. Cada chárter incluye capitán y tripulación, combustible, refrescos y snacks, y equipo básico de pesca.",
           "No incluido: tu vuelo internacional a Malé y, si lo quieres, un equipo profesional de popping o jigging (80 USD por equipo). El número de días de pesca es uno menos que el de noches, así que los días de llegada y salida son de viaje.",
         ],
       },
       {
-        heading: "Precios de los paquetes con pesca de día completo",
-        paragraphs: ["Los paquetes de día completo incluyen unas 8 horas en el barco cada día de pesca, la mejor opción para el popping y jigging de GT y la pesca mar adentro. Los precios son por persona y dependen de cuántos huéspedes comparten el barco; 5 huéspedes es la tarifa más ventajosa."],
-        table: { headers: PKG_TABLE },
+        heading: "Precios de los paquetes de pesca de arrecife de día completo",
+        paragraphs: ["Los paquetes de pesca de arrecife de día completo incluyen unas 8 horas en el barco cada día de pesca, en los bordes del arrecife y los canales: la mejor opción para el popping y el jigging de GT. Los precios son por persona y dependen de cuántos huéspedes compartan el barco; 6 huéspedes es la tarifa más económica."],
+        table: { headers: PKG_TABLE6 },
       },
       {
-        heading: "Precios de los paquetes con pesca de medio día",
-        paragraphs: ["Los paquetes de medio día incluyen unas 4 horas en el barco cada día de pesca y dejan las tardes libres para descansar, nadar o hacer snorkel. Cuestan menos que los de día completo y son ideales para grupos mixtos, familias y pescadores que quieren un ritmo más relajado."],
-        table: { headers: PKG_TABLE },
+        heading: "Precios de los paquetes de pesca de arrecife de medio día",
+        paragraphs: ["Los paquetes de pesca de arrecife de medio día incluyen unas 4 horas en el barco cada día de pesca y dejan las tardes libres para descansar, nadar o hacer snorkel. Cuestan menos que los de día completo y son ideales para grupos mixtos, familias y pescadores que prefieren un ritmo más tranquilo."],
+        table: { headers: PKG_TABLE6 },
+      },
+      {
+        heading: "Precios de los paquetes de pesca de atún de día completo",
+        paragraphs: ["Los paquetes de pesca de atún de día completo salen mar adentro unas 8 horas cada día de pesca, a curricán y jigging de atún aleta amarilla, listado y atún diente de perro, a menudo con peto y dorado."],
+        table: { headers: PKG_TABLE6 },
+      },
+      {
+        heading: "Precios de los paquetes de pesca de atún de medio día",
+        paragraphs: ["Los paquetes de pesca de atún de medio día ofrecen unas 4 horas mar adentro cada día de pesca: suficiente para una sesión de curricán por la mañana, con la tarde libre."],
+        table: { headers: PKG_TABLE6 },
+      },
+      {
+        heading: "Precios de los paquetes de pesca con mosca de día completo",
+        paragraphs: ["Los paquetes de pesca con mosca recorren los bajos y los bordes del arrecife de Gaafu Alifu con caña de mosca, según nuestras tarifas publicadas por persona. Elige la pesca con mosca de día completo para pasar más tiempo en el agua."],
+        table: { headers: PKG_TABLE6 },
+      },
+      {
+        heading: "Precios de los paquetes de pesca con mosca de medio día",
+        paragraphs: ["Los paquetes de pesca con mosca de medio día incluyen unas 4 horas de pesca cada día: perfectos si quieres aprovechar la mejor marea y tener el resto del día libre."],
+        table: { headers: PKG_TABLE6 },
       },
       {
         heading: "Cómo elegir un paquete de pesca",
         paragraphs: [
           "¿Cuántas noches? Un paquete de 3 noches (2 días de pesca) es una buena escapada. El de 5 noches (4 días de pesca) es el más popular: suficiente para probar popping, jigging y curricán y para compensar un día de viento. Los pescadores más dedicados eligen 7 u 8 noches.",
-          "¿Día completo o medio día? Elige día completo para la pesca seria de GT y las salidas mar adentro, y medio día si quieres tardes libres o viajas con personas que no pescan.",
-          "¿Cuántos pescadores? Como el barco cuesta lo mismo lleve a quien lleve, el precio por persona baja mucho al crecer el grupo. En paquetes de 4 noches o más, 5 pescadores pagan cada uno menos de un tercio del precio individual.",
+          "¿Arrecife, atún o mosca? La pesca de arrecife es la opción clásica para el popping y el jigging de GT; la de atún, para el curricán en alta mar; la pesca con mosca, para quienes buscan el reto de los bajos. ¿Día completo o medio día? Elige días completos para pescar en serio y salir mar adentro, y medios días si quieres las tardes libres o viajas con personas que no pescan.",
+          "¿Cuántos pescadores? Como el barco cuesta lo mismo sin importar cuántos vayan a bordo, el precio por persona baja mucho a medida que crece el grupo. En un paquete de 5 noches de pesca de arrecife de día completo, 6 pescadores pagan cada uno alrededor de una cuarta parte del precio individual. ¿Otra duración, otro atolón o una combinación? Usa la calculadora de paquetes de pesca.",
         ],
-        linkLabels: ["Itinerario de ejemplo", "Coste de un viaje de pesca en Maldivas"],
+        linkLabels: ["Calculadora de paquetes de pesca", "Itinerario de ejemplo", "Coste de un viaje de pesca en Maldivas"],
       },
       {
         heading: "Qué se pesca en unas vacaciones de pesca en Maldivas",
@@ -369,7 +391,7 @@ export const ES: FishingContentUpdate = {
         heading: "Cómo llegar a tus vacaciones de pesca",
         paragraphs: [
           "Vuela a Malé en tu vuelo internacional. Desde allí, el vuelo doméstico al sur y el traslado en barco a Maamendhoo están incluidos en todos los paquetes. Deja tiempo suficiente entre el vuelo internacional y el doméstico, y comprueba el equipaje permitido en el vuelo doméstico si llevas tubos de cañas.",
-          "¿Solo quieres uno o dos días de pesca? También puedes reservar el Emperor por días: 1.380 USD por barco el día completo o 980 USD el medio día, para hasta 5 pescadores.",
+          "¿Solo quieres uno o dos días de pesca? También puedes reservar Emperor por días: 1.380 USD por barco el día completo o 980 USD el medio día, para hasta 5 pescadores. Para calcular otro paquete, prueba la calculadora de paquetes de pesca.",
         ],
         linkLabels: ["Chárter privado Emperor", "Lista de equipaje para vacaciones de pesca"],
       },

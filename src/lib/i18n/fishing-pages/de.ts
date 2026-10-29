@@ -229,7 +229,7 @@ export const DE: FishingPagesLocaleStrings = {
       faqs: [
         { question: "Unterscheidet sich Fliegenfischen von unserem allgemeinen Privatcharter?", answer: "Ja — für das Fliegenfischen gibt es eigene Ganztages- und Halbtagescharter, die vom selben Betrieb im Gaafu-Atoll starten." },
         { question: "Muss ich meine eigene Fliegenfischausrüstung mitbringen?", answer: "Ja — bringen Sie für unsere Fliegenfischcharter Ihre eigene Fliegenrute und Ausrüstung mit." },
-        { question: "Gibt es ein Fliegenfisch-Urlaubspaket?", answer: "Ja — unser 3-Nächte-Fliegenfischurlaub auf den Malediven kombiniert Unterkunft, Mahlzeiten und Charter." },
+        { question: "Gibt es ein Fliegenfisch-Urlaubspaket?", answer: "Ja — unsere Fliegenfischurlaube dauern 3 bis 8 Nächte mit ganz- oder halbtägigem Fliegenfischen und umfassen Lodge, Vollpension, Inlandsflug, Boottransfer und das Fliegenfisch-Charter." },
       ],
     },
   },

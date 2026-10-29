@@ -145,7 +145,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
       {
         heading: "GT Fishing Holidays and Packages in the Maldives",
         paragraphs: [
-          "For a dedicated GT fishing holiday, our packages at the lodge on Maamendhoo bundle full-board accommodation, the return domestic flight, the boat transfer and a private Emperor charter on every fishing day. The price is per person and falls as more anglers share the boat. These are the full-day fishing packages:",
+          "For a dedicated GT fishing holiday, our packages at the lodge on Maamendhoo bundle full-board accommodation, the return domestic flight, the boat transfer and a private Emperor charter on every fishing day. The price is per person and falls as more anglers share the boat. These are the full-day reef fishing packages:",
         ],
         table: {
           headers: ["Package", "Fishing days", "Per person, 2 anglers", "Per person, 5 anglers"],
@@ -283,11 +283,11 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
         heading: "Yellowfin Tuna Fishing Charters and Prices",
         paragraphs: [
           "Emperor, our private fishing boat, is a 32-foot boat with twin 200 HP engines for up to 5 anglers, based on Maamendhoo in Gaafu Alifu Atoll. For yellowfin we recommend a full day, which gives time to run offshore and find the schools: USD 1,380 per boat, or USD 276 each with five anglers. A half day costs USD 980 per boat. Both include the captain and crew, fuel, soft drinks and snacks, and basic gear.",
-          "For several days of tuna fishing, our packages at the Maldives Fishing and Holidays Lodge include the lodge, full-board meals, the domestic flight, the boat transfer and a private charter on every fishing day:",
+          "For several days of tuna fishing, our tuna fishing packages at the Maldives Fishing and Holidays Lodge include the lodge, full-board meals, the domestic flight, the boat transfer and a private boat offshore on every fishing day:",
         ],
         table: {
-          headers: ["Package (full-day fishing)", "Fishing days", "Per person, 2 anglers", "Per person, 5 anglers"],
-          rows: [3, 5, 7].map((nights) => mfhPackageRow(nights, "full-day", [2, 5])),
+          headers: ["Package (full-day tuna fishing)", "Fishing days", "Per person, 2 anglers", "Per person, 5 anglers"],
+          rows: [3, 5, 7].map((nights) => mfhPackageRow(nights, "fullTuna", [2, 5])),
         },
         image: asset(
           "65ce543b-f8cb-5760-a0ed-e49aefe7280d",
@@ -462,7 +462,7 @@ export const SPECIES_PAGES: Record<string, SpeciesPageContent> = {
           "For several days of jigging, our packages at the Maldives Fishing and Holidays Lodge on Maamendhoo include the lodge, full-board meals, the domestic flight, the boat transfer and a private charter on every fishing day:",
         ],
         table: {
-          headers: ["Package (full-day fishing)", "Fishing days", "Per person, 2 anglers", "Per person, 5 anglers"],
+          headers: ["Package (full-day reef fishing)", "Fishing days", "Per person, 2 anglers", "Per person, 5 anglers"],
           rows: [3, 5, 7].map((nights) => mfhPackageRow(nights, "full-day", [2, 5])),
         },
         image: asset(

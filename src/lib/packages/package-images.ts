@@ -139,6 +139,32 @@ export const PACKAGE_HERO_OVERRIDES: Record<string, MediaAsset> = {
     "Marlin fishing in the Maldives",
   ),
 
+  // Tuna and fly fishing packages by fishing type (2026-10-29) — photos
+  // already in the media library, reused and rotated so neighbouring
+  // cards in the packages grid don't look identical.
+  "3-night-maldives-fishing-package-full-day-tuna-fishing": asset("4ff44b0e-81a3-a18f-cf0f-d781fccc47e6", "opt/uploads/assets/uploads/fishing/images/packages/yellowfin-tuna.webp", "Yellowfin tuna caught fishing in the Maldives"),
+  "4-night-maldives-fishing-package-full-day-tuna-fishing": asset("65ce543b-f8cb-5760-a0ed-e49aefe7280d", "opt/uploads/assets/uploads/fishing/images/gallery/giant-yellowfin-tuna.webp", "Yellowfin tuna catch on a Maldives fishing charter"),
+  "5-night-maldives-fishing-package-full-day-tuna-fishing": asset("a8ba6833-886f-504b-136f-7cb31111c497", "opt/uploads/assets/uploads/fishing/images/gallery/yellowfin-tuna-fishing-maldives.webp", "Yellowfin tuna caught fishing in the Maldives"),
+  "6-night-maldives-fishing-package-full-day-tuna-fishing": asset("572c610a-06c9-2ce3-7a45-a3e102138d7c", "opt/uploads/assets/uploads/fishing/images/gallery/yellowfin-tuna.webp", "Yellowfin tuna in the Maldives"),
+  "7-night-maldives-fishing-package-full-day-tuna-fishing": asset("fdcb6dcb-87a4-1f21-4095-4e9ffc1be220", "opt/uploads/assets/uploads/fishing/images/packages/trolling-fishing.webp", "Trolling fishing in the Maldives"),
+  "8-night-maldives-fishing-package-full-day-tuna-fishing": asset("0b224be8-cf15-e001-f9b4-7d32c3b664ea", "opt/uploads/assets/uploads/fishing/images/gallery/maldives-fishing-packages.webp", "Tuna caught on a Maldives fishing trip"),
+  "3-night-maldives-fishing-package-half-day-tuna-fishing": asset("fdcb6dcb-87a4-1f21-4095-4e9ffc1be220", "opt/uploads/assets/uploads/fishing/images/packages/trolling-fishing.webp", "Trolling fishing in the Maldives"),
+  "4-night-maldives-fishing-package-half-day-tuna-fishing": asset("a8ba6833-886f-504b-136f-7cb31111c497", "opt/uploads/assets/uploads/fishing/images/gallery/yellowfin-tuna-fishing-maldives.webp", "Yellowfin tuna caught fishing in the Maldives"),
+  "5-night-maldives-fishing-package-half-day-tuna-fishing": asset("390aad4e-f870-8e2c-0869-bbb6906dba92", "opt/legacy/fishing/images/dogtooth-tuna-in-maldives.webp", "Dogtooth tuna in the Maldives"),
+  "6-night-maldives-fishing-package-half-day-tuna-fishing": asset("65ce543b-f8cb-5760-a0ed-e49aefe7280d", "opt/uploads/assets/uploads/fishing/images/gallery/giant-yellowfin-tuna.webp", "Yellowfin tuna catch on a Maldives fishing charter"),
+  "7-night-maldives-fishing-package-half-day-tuna-fishing": asset("0b224be8-cf15-e001-f9b4-7d32c3b664ea", "opt/uploads/assets/uploads/fishing/images/gallery/maldives-fishing-packages.webp", "Tuna caught on a Maldives fishing trip"),
+  "8-night-maldives-fishing-package-half-day-tuna-fishing": asset("4ff44b0e-81a3-a18f-cf0f-d781fccc47e6", "opt/uploads/assets/uploads/fishing/images/packages/yellowfin-tuna.webp", "Yellowfin tuna caught fishing in the Maldives"),
+  "4-night-maldives-fly-fishing-holiday": asset("9af0b52c-d5bf-c732-f0aa-cb9272c6e983", "opt/uploads/assets/uploads/fishing/images/gallery/fly-fishing-maldives.webp", "Fly fishing on the flats in the Maldives"),
+  "6-night-maldives-fly-fishing-holiday": asset("0f934170-314e-c46a-d2e4-7899963d850f", "opt/uploads/assets/uploads/fishing/images/gallery/maldives-fly-fishing-packages.webp", "Maldives fly fishing package"),
+  "7-night-maldives-fly-fishing-holiday": asset("9af0b52c-d5bf-c732-f0aa-cb9272c6e983", "opt/uploads/assets/uploads/fishing/images/gallery/fly-fishing-maldives.webp", "Fly fishing on the flats in the Maldives"),
+  "8-night-maldives-fly-fishing-holiday": asset("df242384-66bf-6063-1664-5c69a9e14f73", "opt/uploads/assets/uploads/fishing/images/gallery/maldives-fly-fishing.webp", "Maldives fly fishing"),
+  "3-night-maldives-fly-fishing-holiday-half-day": asset("9af0b52c-d5bf-c732-f0aa-cb9272c6e983", "opt/uploads/assets/uploads/fishing/images/gallery/fly-fishing-maldives.webp", "Fly fishing on the flats in the Maldives"),
+  "4-night-maldives-fly-fishing-holiday-half-day": asset("df242384-66bf-6063-1664-5c69a9e14f73", "opt/uploads/assets/uploads/fishing/images/gallery/maldives-fly-fishing.webp", "Maldives fly fishing"),
+  "5-night-maldives-fly-fishing-holiday-half-day": asset("0f934170-314e-c46a-d2e4-7899963d850f", "opt/uploads/assets/uploads/fishing/images/gallery/maldives-fly-fishing-packages.webp", "Maldives fly fishing package"),
+  "6-night-maldives-fly-fishing-holiday-half-day": asset("df242384-66bf-6063-1664-5c69a9e14f73", "opt/uploads/assets/uploads/fishing/images/gallery/maldives-fly-fishing.webp", "Maldives fly fishing"),
+  "7-night-maldives-fly-fishing-holiday-half-day": asset("9af0b52c-d5bf-c732-f0aa-cb9272c6e983", "opt/uploads/assets/uploads/fishing/images/gallery/fly-fishing-maldives.webp", "Fly fishing on the flats in the Maldives"),
+  "8-night-maldives-fly-fishing-holiday-half-day": asset("0f934170-314e-c46a-d2e4-7899963d850f", "opt/uploads/assets/uploads/fishing/images/gallery/maldives-fly-fishing-packages.webp", "Maldives fly fishing package"),
+
   // GoTripMaldives / Yuvi Blue holiday packages — 16 real packages (Diving,
   // Surfing, Honeymoon, Family themes x 2/4/5/6 nights) at Yuvi Blue
   // Maldives, Himmafushi, sourced from the owner's "Gotripmaldives Customer

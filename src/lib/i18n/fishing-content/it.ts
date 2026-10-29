@@ -1,7 +1,8 @@
 import type { FishingContentUpdate } from "@/lib/i18n/fishing-content/types";
 
-const PKG_HEADERS = ["Pacchetto (pesca a giornata intera)", "Giorni di pesca", "A persona, 2 pescatori", "A persona, 5 pescatori"];
-const PKG_TABLE = ["Pacchetto", "Giorni di pesca", "1 ospite", "2 ospiti", "3 ospiti", "4 ospiti", "5 ospiti"];
+const REEF_PKG_HEADERS = ["Pacchetto (pesca sul reef a giornata intera)", "Giorni di pesca", "A persona, 2 pescatori", "A persona, 5 pescatori"];
+const TUNA_PKG_HEADERS = ["Pacchetto (pesca al tonno a giornata intera)", "Giorni di pesca", "A persona, 2 pescatori", "A persona, 5 pescatori"];
+const PKG_TABLE6 = ["Pacchetto", "Giorni di pesca", "1 ospite", "2 ospiti", "3 ospiti", "4 ospiti", "5 ospiti", "6 ospiti"];
 
 export const IT: FishingContentUpdate = {
   species: {
@@ -50,9 +51,9 @@ export const IT: FishingContentUpdate = {
         {
           heading: "Vacanze e pacchetti di pesca al GT alle Maldive",
           paragraphs: [
-            "Per una vacanza dedicata al GT, i nostri pacchetti al lodge di Maamendhoo includono pensione completa, volo interno andata e ritorno, trasferimento in barca e un charter privato con Emperor in ogni giorno di pesca. Il prezzo è a persona e scende quanti più pescatori condividono la barca. Questi sono i pacchetti con pesca a giornata intera:",
+            "Per una vacanza dedicata al GT, i nostri pacchetti al lodge di Maamendhoo includono pensione completa, volo interno andata e ritorno, trasferimento in barca e un charter privato con Emperor in ogni giorno di pesca. Il prezzo è a persona e scende quanti più pescatori condividono la barca. Questi sono i pacchetti di pesca sul reef a giornata intera:",
           ],
-          table: { headers: PKG_HEADERS },
+          table: { headers: REEF_PKG_HEADERS },
           linkLabels: ["Tutti i pacchetti di pesca alle Maldive", "Pacchetti con pesca a mezza giornata"],
         },
         {
@@ -109,7 +110,7 @@ export const IT: FishingContentUpdate = {
             "Emperor, la nostra barca da pesca privata, è lunga 32 piedi, ha due motori da 200 CV, porta fino a 5 pescatori e ha base a Maamendhoo, nell'atollo di Gaafu Alifu. Per il pinna gialla consigliamo una giornata intera, che dà il tempo di uscire al largo e trovare i banchi: 1.380 USD a barca, o 276 USD a testa con cinque pescatori. La mezza giornata costa 980 USD a barca. Entrambi includono capitano ed equipaggio, carburante, bibite e snack e attrezzatura di base.",
             "Per più giorni di pesca al tonno, i nostri pacchetti al Maldives Fishing and Holidays Lodge includono lodge, pensione completa, volo interno, trasferimento in barca e un charter privato in ogni giorno di pesca:",
           ],
-          table: { headers: PKG_HEADERS },
+          table: { headers: TUNA_PKG_HEADERS },
           linkLabels: ["Charter privato Emperor", "Tutti i pacchetti di pesca", "Pesca al tonno alle Maldive: tutte le specie"],
         },
         {
@@ -177,7 +178,7 @@ export const IT: FishingContentUpdate = {
             "Emperor è una barca di 32 piedi con due motori da 200 CV per fino a 5 pescatori. Un charter di giornata intera costa 1.380 USD a barca e uno di mezza giornata 980 USD, con capitano ed equipaggio, carburante, bibite e snack e attrezzatura di base. L'equipaggio pianifica il jigging sulle pareti in base alla marea e può aggiungere popping al GT e traina per tonno e wahoo.",
             "Per più giorni di jigging, i nostri pacchetti al Maldives Fishing and Holidays Lodge di Maamendhoo includono lodge, pensione completa, volo interno, trasferimento in barca e un charter privato in ogni giorno di pesca:",
           ],
-          table: { headers: PKG_HEADERS },
+          table: { headers: REEF_PKG_HEADERS },
           linkLabels: ["Charter privato Emperor", "Tutti i pacchetti di pesca", "Pesca al tonno alle Maldive"],
         },
         {
@@ -261,7 +262,7 @@ export const IT: FishingContentUpdate = {
             "La nostra barca privata, Emperor, è una barca da pesca di 32 piedi con due motori da 200 CV per fino a 5 pescatori, con base a Maamendhoo nell'atollo di Gaafu Alifu, dove l'oceano profondo comincia subito dopo il lungo reef esterno. Per la pesca al largo consigliamo una giornata intera: 1.380 USD a barca, o 276 USD a testa con cinque pescatori. La mezza giornata costa 980 USD a barca. Entrambi includono capitano ed equipaggio, carburante, bibite e snack e attrezzatura di base.",
             "Vicino a Malé il sito elenca anche uscite big game di resort e operatori indipendenti; vedi i charter qui sotto. Per più giorni di pesca, i nostri pacchetti al Maldives Fishing and Holidays Lodge includono lodge, pasti, volo interno, trasferimento e un charter privato in ogni giorno di pesca.",
           ],
-          table: { headers: PKG_HEADERS },
+          table: { headers: TUNA_PKG_HEADERS },
           linkLabels: ["Charter privato Emperor", "Tutti i pacchetti di pesca", "Costo di un viaggio di pesca alle Maldive"],
         },
         {
@@ -309,14 +310,15 @@ export const IT: FishingContentUpdate = {
   },
   packagesFishing: {
     metaTitle: "Pacchetti e vacanze di pesca alle Maldive | MTG",
-    metaDescription: "Pacchetti vacanza di pesca nell'atollo di Gaafu Alifu: da 2 a 8 notti con lodge, pasti, volo interno, trasferimento e charter di pesca privato ogni giorno.",
+    metaDescription: "Pacchetti di pesca nell'atollo di Gaafu Alifu: da 3 a 8 notti di pesca sul reef, al tonno o a mosca con lodge, pasti, volo domestico, transfer e barca privata.",
     intro:
-      "Pacchetti vacanza di pesca al Maldives Fishing and Holidays Lodge di Maamendhoo, atollo di Gaafu Alifu: pensione completa, volo interno andata e ritorno, trasferimento in barca e un charter privato sulla nostra barca Emperor in ogni giorno di pesca. Da 2 a 8 notti, pesca a giornata intera o mezza giornata, prezzo a persona.",
+      "Pacchetti vacanza di pesca al Maldives Fishing and Holidays Lodge di Maamendhoo, atollo di Gaafu Alifu: pensione completa in camera doppia, volo domestico andata e ritorno, trasferimento in barca e una barca privata per il vostro gruppo in ogni giorno di pesca. Da 3 a 8 notti di pesca sul reef, al tonno o a mosca, a giornata intera o mezza giornata, prezzo a persona — oppure create il vostro con il calcolatore dei pacchetti di pesca.",
     faqs: [
-      { question: "Cosa include un pacchetto di pesca alle Maldive?", answer: "Pensione completa al Maldives Fishing and Holidays Lodge di Maamendhoo, volo interno andata e ritorno da Malé, trasferimento in barca all'isola e un charter privato con Emperor in ogni giorno di pesca (capitano ed equipaggio, carburante, bibite e snack, attrezzatura di base)." },
+      { question: "Cosa include un pacchetto di pesca alle Maldive?", answer: "Pensione completa in camera doppia al Maldives Fishing and Holidays Lodge di Maamendhoo, volo domestico andata e ritorno da Malé, trasferimento in barca sull'isola e una barca privata per il vostro gruppo in ogni giorno di pesca (capitano ed equipaggio, carburante, bibite e snack, attrezzatura di base)." },
       { question: "Quanti giorni di pesca ho?", answer: "Uno in meno del numero di notti: un pacchetto di 3 notti ha 2 giorni di pesca, uno di 5 notti 4 e uno di 8 notti 7." },
-      { question: "Perché il prezzo dipende dal numero di ospiti?", answer: "La barca costa lo stesso indipendentemente da quanti pescatori porta, quindi più persone la condividono, più basso è il prezzo a persona. 5 ospiti è la tariffa più conveniente." },
+      { question: "Perché il prezzo dipende dal numero di ospiti?", answer: "La barca costa lo stesso indipendentemente da quanti pescatori ci sono a bordo, quindi più persone la condividono, più basso è il prezzo a persona. 6 ospiti è la tariffa più conveniente." },
       { question: "Che differenza c'è tra pacchetti a giornata intera e a mezza giornata?", answer: "Quelli a giornata intera includono circa 8 ore in barca per giorno di pesca; quelli a mezza giornata circa 4 ore, costano meno e lasciano liberi i pomeriggi." },
+      { question: "Che differenza c'è tra i pacchetti di pesca sul reef, al tonno e a mosca?", answer: "I pacchetti sul reef pescano lungo i bordi del reef e i canali: popping, jigging e pesca a fondo per GT, cernie e lutjanidi. I pacchetti al tonno escono al largo per traina e jigging al tonno pinna gialla, al tonnetto striato e al dogtooth. I pacchetti a mosca pescano sui flat e lungo i bordi del reef con la canna da mosca." },
       { question: "I voli internazionali sono inclusi?", answer: "No. I pacchetti includono il volo interno andata e ritorno da Malé e il trasferimento in barca; il volo internazionale per Malé lo prenoti tu." },
       { question: "Mi serve la mia attrezzatura da pesca?", answer: "No. L'attrezzatura di base è inclusa in ogni giorno di pesca. Un set professionale da popping o jigging costa 80 USD a set, oppure porta il tuo." },
       { question: "Possono venire anche i non pescatori?", answer: "Chiedicelo quando ci contatti. Il lodge è su un'isola locale, quindi chi non pesca può rilassarsi, nuotare e fare snorkeling mentre gli altri pescano." },
@@ -334,28 +336,48 @@ export const IT: FishingContentUpdate = {
       {
         heading: "Cosa include ogni pacchetto di pesca",
         paragraphs: [
-          "Ogni pacchetto include pensione completa al lodge, volo interno andata e ritorno da Malé, trasferimento in barca a Maamendhoo e un charter privato con Emperor in ogni giorno di pesca. Emperor è una barca da pesca di 32 piedi con due motori da 200 CV per fino a 5 pescatori, e ogni charter include capitano ed equipaggio professionisti, carburante, bibite e snack e attrezzatura da pesca di base.",
+          "Ogni pacchetto include pensione completa al lodge in camera doppia (una camera ogni due ospiti), il volo domestico andata e ritorno da Malé, il trasferimento in barca a Maamendhoo e una barca privata per il vostro gruppo in ogni giorno di pesca: Emperor, una barca di 32 piedi con due motori da 200 CV per un massimo di 5 pescatori, oppure Bluefin, una barca di 36 piedi per un massimo di 6. Ogni charter include capitano ed equipaggio, carburante, bibite e snack e attrezzatura di base.",
           "Non incluso: il tuo volo internazionale per Malé e, se lo desideri, un set professionale da popping o jigging (80 USD a set). I giorni di pesca sono uno in meno delle notti, quindi i giorni di arrivo e partenza sono di viaggio.",
         ],
       },
       {
-        heading: "Prezzi dei pacchetti con pesca a giornata intera",
-        paragraphs: ["I pacchetti a giornata intera includono circa 8 ore in barca in ogni giorno di pesca, la scelta migliore per popping e jigging al GT e per la traina al largo. I prezzi sono a persona e dipendono da quanti ospiti condividono la barca; 5 ospiti è la tariffa più conveniente."],
-        table: { headers: PKG_TABLE },
+        heading: "Prezzi dei pacchetti di pesca sul reef a giornata intera",
+        paragraphs: ["I pacchetti di pesca sul reef a giornata intera includono circa 8 ore in barca in ogni giorno di pesca, lungo i bordi del reef e i canali: la scelta migliore per il popping e il jigging ai GT. I prezzi sono a persona e dipendono da quanti ospiti condividono la barca; 6 ospiti è la tariffa più conveniente."],
+        table: { headers: PKG_TABLE6 },
       },
       {
-        heading: "Prezzi dei pacchetti con pesca a mezza giornata",
-        paragraphs: ["I pacchetti a mezza giornata includono circa 4 ore in barca in ogni giorno di pesca e lasciano i pomeriggi liberi per riposare, nuotare o fare snorkeling. Costano meno di quelli a giornata intera e sono adatti a gruppi misti, famiglie e pescatori che vogliono un ritmo più rilassato."],
-        table: { headers: PKG_TABLE },
+        heading: "Prezzi dei pacchetti di pesca sul reef a mezza giornata",
+        paragraphs: ["I pacchetti di pesca sul reef a mezza giornata includono circa 4 ore in barca in ogni giorno di pesca e lasciano i pomeriggi liberi per riposare, nuotare o fare snorkeling. Costano meno di quelli a giornata intera e sono adatti a gruppi misti, famiglie e pescatori che preferiscono un ritmo più rilassato."],
+        table: { headers: PKG_TABLE6 },
+      },
+      {
+        heading: "Prezzi dei pacchetti di pesca al tonno a giornata intera",
+        paragraphs: ["I pacchetti di pesca al tonno a giornata intera escono al largo per circa 8 ore in ogni giorno di pesca, a traina e jigging per tonno pinna gialla, tonnetto striato e dogtooth, spesso con wahoo e lampuga."],
+        table: { headers: PKG_TABLE6 },
+      },
+      {
+        heading: "Prezzi dei pacchetti di pesca al tonno a mezza giornata",
+        paragraphs: ["I pacchetti di pesca al tonno a mezza giornata offrono circa 4 ore al largo in ogni giorno di pesca: abbastanza per una sessione di traina al mattino, con il pomeriggio libero."],
+        table: { headers: PKG_TABLE6 },
+      },
+      {
+        heading: "Prezzi dei pacchetti di fly fishing a giornata intera",
+        paragraphs: ["I pacchetti di fly fishing pescano sui flat e lungo i bordi del reef di Gaafu Alifu con la canna da mosca, alle nostre tariffe pubblicate a persona. Scegliete il fly fishing a giornata intera per passare più tempo in acqua."],
+        table: { headers: PKG_TABLE6 },
+      },
+      {
+        heading: "Prezzi dei pacchetti di fly fishing a mezza giornata",
+        paragraphs: ["I pacchetti di fly fishing a mezza giornata includono circa 4 ore di pesca a mosca in ogni giorno di pesca: ideali se volete sfruttare la marea migliore e avere il resto della giornata libero."],
+        table: { headers: PKG_TABLE6 },
       },
       {
         heading: "Come scegliere un pacchetto di pesca",
         paragraphs: [
           "Quante notti? Un pacchetto di 3 notti (2 giorni di pesca) è una buona breve fuga. Quello di 5 notti (4 giorni di pesca) è il più richiesto: abbastanza per provare popping, jigging e traina e per recuperare un giorno di vento. I pescatori più appassionati scelgono 7 o 8 notti.",
-          "Giornata intera o mezza giornata? Scegli la giornata intera per la pesca seria al GT e le uscite al largo, la mezza giornata se vuoi pomeriggi liberi o viaggi con chi non pesca.",
-          "Quanti pescatori? Poiché la barca costa lo stesso qualunque sia il numero a bordo, il prezzo a persona scende molto con il crescere del gruppo. Nei pacchetti da 4 notti in su, 5 pescatori pagano ciascuno meno di un terzo del prezzo per una persona sola.",
+          "Reef, tonno o mosca? La pesca sul reef è la scelta classica per il popping e il jigging ai GT; quella al tonno per la traina d'altura; il fly fishing per chi cerca la sfida dei flat. Giornata intera o mezza giornata? Scegliete la giornata intera per la pesca seria e le uscite al largo, la mezza giornata se volete i pomeriggi liberi o viaggiate con chi non pesca.",
+          "Quanti pescatori? Poiché la barca costa lo stesso indipendentemente da quante persone ci sono a bordo, il prezzo a persona scende molto con la crescita del gruppo. Con un pacchetto di 5 notti di pesca sul reef a giornata intera, 6 pescatori pagano ciascuno circa un quarto del prezzo individuale. Un'altra durata, un altro atollo o una combinazione? Usate il calcolatore dei pacchetti di pesca.",
         ],
-        linkLabels: ["Itinerario di esempio", "Costo di un viaggio di pesca alle Maldive"],
+        linkLabels: ["Calcolatore dei pacchetti di pesca", "Itinerario di esempio", "Costo di un viaggio di pesca alle Maldive"],
       },
       {
         heading: "Cosa si pesca in una vacanza di pesca alle Maldive",
@@ -369,7 +391,7 @@ export const IT: FishingContentUpdate = {
         heading: "Come raggiungere la tua vacanza di pesca",
         paragraphs: [
           "Arriva a Malé con il tuo volo internazionale. Da lì, il volo interno verso sud e il trasferimento in barca a Maamendhoo sono inclusi in ogni pacchetto. Lascia abbastanza tempo tra volo internazionale e volo interno e verifica il bagaglio consentito sul volo interno se porti tubi portacanne.",
-          "Vuoi solo uno o due giorni di pesca? Puoi anche prenotare Emperor a giornata: 1.380 USD a barca per una giornata intera o 980 USD per mezza giornata, per fino a 5 pescatori.",
+          "Volete solo uno o due giorni di pesca? Potete prenotare Emperor anche a giornata: 1.380 USD a barca per una giornata intera o 980 USD per mezza giornata, per un massimo di 5 pescatori. Per calcolare un altro pacchetto, provate il calcolatore dei pacchetti di pesca.",
         ],
         linkLabels: ["Charter privato Emperor", "Cosa mettere in valigia per una vacanza di pesca"],
       },

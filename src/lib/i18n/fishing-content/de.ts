@@ -1,6 +1,9 @@
 import type { FishingContentUpdate } from "@/lib/i18n/fishing-content/types";
 
-const PKG_HEADERS = ["Paket (Ganztagesangeln)", "Angeltage", "Pro Person, 2 Angler", "Pro Person, 5 Angler"];
+const REEF_PKG_HEADERS = ["Paket (ganztägiges Riffangeln)", "Angeltage", "Pro Person, 2 Angler", "Pro Person, 5 Angler"];
+const TUNA_PKG_HEADERS = ["Paket (ganztägiges Thunfischangeln)", "Angeltage", "Pro Person, 2 Angler", "Pro Person, 5 Angler"];
+
+const PKG_TABLE6 = ["Paket", "Angeltage", "1 Gast", "2 Gäste", "3 Gäste", "4 Gäste", "5 Gäste", "6 Gäste"];
 
 export const DE: FishingContentUpdate = {
   species: {
@@ -49,9 +52,9 @@ export const DE: FishingContentUpdate = {
         {
           heading: "GT-Angelurlaub und Pakete auf den Malediven",
           paragraphs: [
-            "Für einen reinen GT-Angelurlaub umfassen unsere Pakete in der Lodge auf Maamendhoo Vollpension, den Inlandsflug hin und zurück, den Boottransfer und ein privates Emperor-Charter an jedem Angeltag. Der Preis gilt pro Person und sinkt, je mehr Angler sich das Boot teilen. Dies sind die Pakete mit Ganztagesangeln:",
+            "Für einen reinen GT-Angelurlaub umfassen unsere Pakete in der Lodge auf Maamendhoo Vollpension, den Inlandsflug hin und zurück, den Boottransfer und ein privates Emperor-Charter an jedem Angeltag. Der Preis gilt pro Person und sinkt, je mehr Angler sich das Boot teilen. Dies sind die Pakete mit ganztägigem Riffangeln:",
           ],
-          table: { headers: PKG_HEADERS },
+          table: { headers: REEF_PKG_HEADERS },
           linkLabels: ["Alle Angelpakete auf den Malediven", "Pakete mit Halbtagesangeln"],
         },
         {
@@ -108,7 +111,7 @@ export const DE: FishingContentUpdate = {
             "Die Emperor, unser privates Angelboot, ist 32 Fuß lang, hat zwei 200-PS-Motoren, nimmt bis zu 5 Angler mit und liegt auf Maamendhoo im Gaafu-Alifu-Atoll. Für Yellowfin empfehlen wir einen ganzen Tag, um hinauszufahren und die Schwärme zu finden: 1.380 USD pro Boot oder 276 USD pro Person bei fünf Anglern. Ein halber Tag kostet 980 USD pro Boot. Beides inklusive Kapitän und Crew, Treibstoff, Softdrinks und Snacks sowie Basis-Ausrüstung.",
             "Für mehrere Tage Thunfischangeln umfassen unsere Pakete in der Maldives Fishing and Holidays Lodge Lodge, Vollpension, Inlandsflug, Boottransfer und ein Privatcharter an jedem Angeltag:",
           ],
-          table: { headers: PKG_HEADERS },
+          table: { headers: TUNA_PKG_HEADERS },
           linkLabels: ["Emperor Privatcharter", "Alle Angelpakete", "Thunfischangeln auf den Malediven: alle Arten"],
         },
         {
@@ -176,7 +179,7 @@ export const DE: FishingContentUpdate = {
             "Die Emperor ist ein 32-Fuß-Boot mit zwei 200-PS-Motoren für bis zu 5 Angler. Ein Ganztagescharter kostet 1.380 USD pro Boot, ein halber Tag 980 USD, inklusive Kapitän und Crew, Treibstoff, Softdrinks und Snacks sowie Basis-Ausrüstung. Die Crew plant Jigging an den Riffwänden nach der Tide und kann Popping auf GT und Schleppangeln auf Thun und Wahoo einbauen.",
             "Für mehrere Tage Jigging umfassen unsere Pakete in der Maldives Fishing and Holidays Lodge auf Maamendhoo Lodge, Vollpension, Inlandsflug, Boottransfer und ein Privatcharter an jedem Angeltag:",
           ],
-          table: { headers: PKG_HEADERS },
+          table: { headers: REEF_PKG_HEADERS },
           linkLabels: ["Emperor Privatcharter", "Alle Angelpakete", "Thunfischangeln auf den Malediven"],
         },
         {
@@ -260,7 +263,7 @@ export const DE: FishingContentUpdate = {
             "Unser Privatboot Emperor ist ein 32-Fuß-Angelboot mit zwei 200-PS-Motoren für bis zu 5 Angler und liegt auf Maamendhoo im Gaafu-Alifu-Atoll, wo der tiefe Ozean direkt hinter dem langen Außenriff beginnt. Für Offshore-Angeln empfehlen wir einen ganzen Tag: 1.380 USD pro Boot oder 276 USD pro Person bei fünf Anglern. Ein halber Tag kostet 980 USD pro Boot. Beides inklusive Kapitän und Crew, Treibstoff, Softdrinks und Snacks sowie Basis-Ausrüstung.",
             "Nahe Malé führt die Website auch Big-Game-Touren von Resorts und unabhängigen Anbietern; siehe die Charter unten. Für mehrere Angeltage umfassen unsere Pakete in der Maldives Fishing and Holidays Lodge Lodge, Mahlzeiten, Inlandsflug, Transfer und ein Privatcharter an jedem Angeltag.",
           ],
-          table: { headers: PKG_HEADERS },
+          table: { headers: TUNA_PKG_HEADERS },
           linkLabels: ["Emperor Privatcharter", "Alle Angelpakete", "Kosten einer Angelreise auf den Malediven"],
         },
         {
@@ -308,14 +311,15 @@ export const DE: FishingContentUpdate = {
   },
   packagesFishing: {
     metaTitle: "Angelpakete und Angelurlaub auf den Malediven | MTG",
-    metaDescription: "Angelurlaub-Pakete im Gaafu-Alifu-Atoll: 2 bis 8 Nächte mit Lodge, Mahlzeiten, Inlandsflug, Transfer und täglichem privatem Angelcharter.",
+    metaDescription: "Angelpakete im Gaafu-Alifu-Atoll: 3 bis 8 Nächte Riff-, Thunfisch- oder Fliegenfischen mit Lodge, Mahlzeiten, Inlandsflug, Transfer und privatem Boot.",
     intro:
-      "Angelurlaub-Pakete in der Maldives Fishing and Holidays Lodge auf Maamendhoo im Gaafu-Alifu-Atoll: Vollpension, Inlandsflug hin und zurück, Boottransfer und ein Privatcharter auf unserem Boot Emperor an jedem Angeltag. 2 bis 8 Nächte, Ganz- oder Halbtagesangeln, Preis pro Person.",
+      "Angelurlaub-Pakete in der Maldives Fishing and Holidays Lodge auf Maamendhoo im Gaafu-Alifu-Atoll: Vollpension im Doppelzimmer, Inlandsflug hin und zurück, Boottransfer und ein privates Boot für Ihre Gruppe an jedem Angeltag. 3 bis 8 Nächte Riff-, Thunfisch- oder Fliegenfischen, ganz- oder halbtags, Preis pro Person — oder stellen Sie mit dem Angelpaket-Rechner Ihr eigenes Paket zusammen.",
     faqs: [
-      { question: "Was ist in einem Angelpaket auf den Malediven inklusive?", answer: "Vollpension in der Maldives Fishing and Holidays Lodge auf Maamendhoo, Inlandsflug ab Malé hin und zurück, Boottransfer zur Insel und ein Privatcharter auf der Emperor an jedem Angeltag (Kapitän und Crew, Treibstoff, Softdrinks und Snacks, Basis-Angelausrüstung)." },
+      { question: "Was ist in einem Angelpaket auf den Malediven inklusive?", answer: "Vollpension im Doppelzimmer in der Maldives Fishing and Holidays Lodge auf Maamendhoo, Inlandsflug ab Malé hin und zurück, Boottransfer zur Insel und ein privates Boot für Ihre Gruppe an jedem Angeltag (Kapitän und Crew, Treibstoff, Softdrinks und Snacks, Basis-Angelausrüstung)." },
       { question: "Wie viele Angeltage bekomme ich?", answer: "Einen weniger als Nächte: Ein Paket mit 3 Nächten hat 2 Angeltage, eines mit 5 Nächten 4 und eines mit 8 Nächten 7." },
-      { question: "Warum hängt der Preis von der Zahl der Gäste ab?", answer: "Das Boot kostet gleich viel, egal wie viele Angler an Bord sind; je mehr es sich teilen, desto niedriger der Preis pro Person. 5 Gäste sind der günstigste Tarif." },
+      { question: "Warum hängt der Preis von der Zahl der Gäste ab?", answer: "Das Boot kostet gleich viel, egal wie viele Angler an Bord sind; je mehr es sich teilen, desto niedriger der Preis pro Person. 6 Gäste sind der günstigste Tarif." },
       { question: "Was ist der Unterschied zwischen Ganz- und Halbtagespaketen?", answer: "Ganztagespakete umfassen etwa 8 Stunden auf dem Boot pro Angeltag, Halbtagespakete etwa 4 Stunden, was günstiger ist und die Nachmittage freilässt." },
+      { question: "Was ist der Unterschied zwischen Riff-, Thunfisch- und Fliegenfischpaketen?", answer: "Riffangelpakete befischen Riffkanten und Kanäle — Popping, Jigging und Grundangeln auf Giant Trevally, Zackenbarsche und Schnapper. Thunfischpakete fahren offshore zum Schleppangeln und Jigging auf Gelbflossen-, Bonito- und Dogtooth-Thun. Fliegenfischpakete fischen mit der Fliegenrute auf den Flats und an den Riffkanten." },
       { question: "Sind internationale Flüge inklusive?", answer: "Nein. Die Pakete umfassen den Inlandsflug ab Malé hin und zurück und den Boottransfer; den internationalen Flug nach Malé buchen Sie selbst." },
       { question: "Brauche ich eigene Angelausrüstung?", answer: "Nein. Basis-Ausrüstung ist an jedem Angeltag inklusive. Ein professionelles Popping- oder Jigging-Set gibt es für 80 USD pro Set, oder Sie bringen Ihr eigenes mit." },
       { question: "Können Nicht-Angler mitkommen?", answer: "Fragen Sie bei der Anfrage. Die Lodge liegt auf einer Einheimischeninsel, Nicht-Angler können entspannen, schwimmen und schnorcheln, während die anderen angeln." },
@@ -333,28 +337,48 @@ export const DE: FishingContentUpdate = {
       {
         heading: "Was in jedem Angelpaket inklusive ist",
         paragraphs: [
-          "Jedes Paket umfasst Vollpension in der Lodge, den Inlandsflug ab Malé hin und zurück, den Boottransfer nach Maamendhoo und ein Privatcharter auf der Emperor an jedem Angeltag. Die Emperor ist ein 32-Fuß-Angelboot mit zwei 200-PS-Motoren für bis zu 5 Angler; jedes Charter umfasst Kapitän und Crew, Treibstoff, Softdrinks und Snacks sowie Basis-Angelausrüstung.",
+          "Jedes Paket umfasst Vollpension in der Lodge im Doppelzimmer (ein Zimmer für je zwei Gäste), den Inlandsflug ab Malé hin und zurück, den Boottransfer nach Maamendhoo und ein privates Boot für Ihre Gruppe an jedem Angeltag: die Emperor, ein 32-Fuß-Boot mit zwei 200-PS-Motoren für bis zu 5 Angler, oder die Bluefin, ein 36-Fuß-Boot für bis zu 6. Jedes Charter umfasst Kapitän und Crew, Treibstoff, Softdrinks und Snacks sowie Basis-Angelausrüstung.",
           "Nicht inklusive: Ihr internationaler Flug nach Malé und, falls gewünscht, ein professionelles Popping- oder Jigging-Set (80 USD pro Set). Die Zahl der Angeltage ist eins weniger als die der Nächte; An- und Abreisetag sind Reisetage.",
         ],
       },
       {
-        heading: "Preise für Pakete mit Ganztagesangeln",
-        paragraphs: ["Ganztagespakete umfassen an jedem Angeltag etwa 8 Stunden auf dem Boot, die beste Wahl für GT-Popping, Jigging und Schleppangeln offshore. Preise pro Person, abhängig davon, wie viele Gäste sich das Boot teilen; 5 Gäste sind der günstigste Tarif."],
-        table: { headers: ["Paket", "Angeltage", "1 Gast", "2 Gäste", "3 Gäste", "4 Gäste", "5 Gäste"] },
+        heading: "Preise für Pakete mit ganztägigem Riffangeln",
+        paragraphs: ["Pakete mit ganztägigem Riffangeln umfassen an jedem Angeltag etwa 8 Stunden auf dem Boot an Riffkanten und Kanälen, die beste Wahl für GT-Popping und Jigging. Preise pro Person, abhängig davon, wie viele Gäste sich das Boot teilen; 6 Gäste sind der günstigste Tarif."],
+        table: { headers: PKG_TABLE6 },
       },
       {
-        heading: "Preise für Pakete mit Halbtagesangeln",
-        paragraphs: ["Halbtagespakete umfassen an jedem Angeltag etwa 4 Stunden auf dem Boot und lassen die Nachmittage frei zum Ausruhen, Schwimmen oder Schnorcheln. Sie sind günstiger als Ganztagespakete und passen zu gemischten Gruppen, Familien und Anglern, die es ruhiger angehen wollen."],
-        table: { headers: ["Paket", "Angeltage", "1 Gast", "2 Gäste", "3 Gäste", "4 Gäste", "5 Gäste"] },
+        heading: "Preise für Pakete mit halbtägigem Riffangeln",
+        paragraphs: ["Pakete mit halbtägigem Riffangeln umfassen an jedem Angeltag etwa 4 Stunden auf dem Boot und lassen die Nachmittage frei zum Ausruhen, Schwimmen oder Schnorcheln. Sie sind günstiger als Ganztagespakete und passen zu gemischten Gruppen, Familien und Anglern, die es ruhiger angehen wollen."],
+        table: { headers: PKG_TABLE6 },
+      },
+      {
+        heading: "Preise für Pakete mit ganztägigem Thunfischangeln",
+        paragraphs: ["Pakete mit ganztägigem Thunfischangeln fahren an jedem Angeltag etwa 8 Stunden offshore zum Schleppangeln und Jigging auf Gelbflossen-, Bonito- und Dogtooth-Thun, oft mit Wahoo und Mahi-Mahi als Beifang."],
+        table: { headers: PKG_TABLE6 },
+      },
+      {
+        heading: "Preise für Pakete mit halbtägigem Thunfischangeln",
+        paragraphs: ["Pakete mit halbtägigem Thunfischangeln bieten an jedem Angeltag etwa 4 Stunden offshore — genug für eine Schleppangel-Session am Morgen, der Nachmittag bleibt frei."],
+        table: { headers: PKG_TABLE6 },
+      },
+      {
+        heading: "Preise für Pakete mit ganztägigem Fliegenfischen",
+        paragraphs: ["Fliegenfischpakete befischen die Flats und Riffkanten von Gaafu Alifu mit der Fliegenrute, zu unseren veröffentlichten Fliegenfisch-Tarifen pro Person. Wählen Sie ganztägiges Fliegenfischen für die meiste Zeit auf dem Wasser."],
+        table: { headers: PKG_TABLE6 },
+      },
+      {
+        heading: "Preise für Pakete mit halbtägigem Fliegenfischen",
+        paragraphs: ["Pakete mit halbtägigem Fliegenfischen umfassen an jedem Angeltag etwa 4 Stunden Fliegenfischen — ideal, wenn Sie die beste Tide nutzen und den Rest des Tages freihaben möchten."],
+        table: { headers: PKG_TABLE6 },
       },
       {
         heading: "Wie man das richtige Angelpaket wählt",
         paragraphs: [
           "Wie viele Nächte? Ein Paket mit 3 Nächten (2 Angeltage) ist eine gute Kurzreise. Ein Paket mit 5 Nächten (4 Angeltage) ist am beliebtesten: genug, um Popping, Jigging und Schleppangeln auszuprobieren und einen windigen Tag zu überbrücken. Passionierte Angler wählen 7 oder 8 Nächte.",
-          "Ganz- oder Halbtage? Ganztage für ernsthaftes GT-Angeln und Offshore-Touren, Halbtage, wenn Sie die Nachmittage freihaben möchten oder mit Nicht-Anglern reisen.",
-          "Wie viele Angler? Da das Boot gleich viel kostet, egal wie viele an Bord sind, sinkt der Preis pro Person deutlich mit der Gruppengröße. Bei Paketen ab 4 Nächten zahlen 5 Angler jeweils weniger als ein Drittel des Einzelpreises.",
+          "Riff, Thunfisch oder Fliege? Riffangeln ist die klassische Wahl für GT-Popping und Jigging, Thunfischangeln für Schleppangeln offshore, Fliegenfischen für Angler, die die Herausforderung der Flats suchen. Ganz- oder Halbtage? Ganztage für ernsthaftes Angeln und Offshore-Touren, Halbtage, wenn Sie die Nachmittage freihaben möchten oder mit Nicht-Anglern reisen.",
+          "Wie viele Angler? Da das Boot gleich viel kostet, egal wie viele an Bord sind, sinkt der Preis pro Person deutlich mit der Gruppengröße. Bei einem Paket mit 5 Nächten und ganztägigem Riffangeln zahlen 6 Angler jeweils etwa ein Viertel des Einzelpreises. Eine andere Länge, ein anderes Atoll oder eine Mischung? Nutzen Sie den Angelpaket-Rechner.",
         ],
-        linkLabels: ["Beispiel-Reiseplan", "Kosten einer Angelreise auf den Malediven"],
+        linkLabels: ["Angelpaket-Rechner", "Beispiel-Reiseplan", "Kosten einer Angelreise auf den Malediven"],
       },
       {
         heading: "Was man im Angelurlaub auf den Malediven fängt",
@@ -368,7 +392,7 @@ export const DE: FishingContentUpdate = {
         heading: "Anreise zu Ihrem Angelurlaub",
         paragraphs: [
           "Fliegen Sie international nach Malé. Von dort sind Inlandsflug nach Süden und Boottransfer nach Maamendhoo in jedem Paket inklusive. Planen Sie genug Zeit zwischen internationalem und Inlandsflug ein und prüfen Sie das Freigepäck des Inlandsflugs, wenn Sie Rutenrohre mitnehmen.",
-          "Nur ein oder zwei Tage Angeln? Sie können die Emperor auch tageweise buchen: 1.380 USD pro Boot für einen ganzen Tag oder 980 USD für einen halben Tag, für bis zu 5 Angler.",
+          "Nur ein oder zwei Tage Angeln? Sie können die Emperor auch tageweise buchen: 1.380 USD pro Boot für einen ganzen Tag oder 980 USD für einen halben Tag, für bis zu 5 Angler. Für ein anderes Paket probieren Sie den Angelpaket-Rechner.",
         ],
         linkLabels: ["Emperor Privatcharter", "Packliste für den Angelurlaub"],
       },

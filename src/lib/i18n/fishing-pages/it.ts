@@ -229,7 +229,7 @@ export const IT: FishingPagesLocaleStrings = {
       faqs: [
         { question: "La pesca a mosca è diversa dal nostro charter privato generale?", answer: "Sì: la pesca a mosca ha i suoi charter dedicati di giornata intera e mezza giornata, che partono dalla stessa attività nell'atollo di Gaafu." },
         { question: "Devo portare la mia attrezzatura da pesca a mosca?", answer: "Sì: per i nostri charter di pesca a mosca porta la tua canna e la tua attrezzatura." },
-        { question: "Esiste un pacchetto vacanza di pesca a mosca?", answer: "Sì: il nostro pacchetto di 3 notti di pesca a mosca alle Maldive combina alloggio, pasti e charter." },
+        { question: "Esiste un pacchetto vacanza di pesca a mosca?", answer: "Sì: le nostre vacanze di pesca a mosca vanno da 3 a 8 notti, con fly fishing a giornata intera o mezza giornata, e includono lodge, pensione completa, volo domestico, trasferimento in barca e il charter di pesca a mosca." },
       ],
     },
   },

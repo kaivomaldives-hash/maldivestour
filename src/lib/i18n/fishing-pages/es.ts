@@ -229,7 +229,7 @@ export const ES: FishingPagesLocaleStrings = {
       faqs: [
         { question: "¿La pesca con mosca es distinta de nuestro chárter privado general?", answer: "Sí; la pesca con mosca tiene sus propios chárteres de día completo y medio día, que salen de la misma operación en el atolón de Gaafu." },
         { question: "¿Tengo que traer mi propio equipo de pesca con mosca?", answer: "Sí; para nuestros chárteres de pesca con mosca, trae tu propia caña y equipo." },
-        { question: "¿Hay un paquete de vacaciones de pesca con mosca?", answer: "Sí; nuestro paquete de 3 noches de pesca con mosca en Maldivas combina alojamiento, comidas y el chárter." },
+        { question: "¿Hay un paquete de vacaciones de pesca con mosca?", answer: "Sí; nuestras vacaciones de pesca con mosca van de 3 a 8 noches, con pesca de día completo o medio día, e incluyen el lodge, la pensión completa, el vuelo doméstico, el traslado en barco y el chárter de pesca con mosca." },
       ],
     },
   },

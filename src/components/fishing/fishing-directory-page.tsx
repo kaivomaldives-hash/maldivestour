@@ -6,6 +6,7 @@ import { ArticleCard } from "@/components/articles/article-card";
 import { Price } from "@/components/currency/price";
 import { fishingDurationBucketToMinutes, isFishingDurationBucket } from "@/components/fishing/fishing-duration";
 import { FishingFilterBar } from "@/components/fishing/fishing-filter-bar";
+import { FishingPackageCalculator } from "@/components/fishing/fishing-package-calculator";
 import type { FishingDirectorySearchParams } from "@/components/fishing/fishing-directory-metadata";
 import { FishingGallerySection } from "@/components/fishing/fishing-gallery-section";
 import { FishingVideo } from "@/components/fishing/fishing-video";
@@ -32,6 +33,7 @@ import {
   searchFishingActivities,
 } from "@/lib/fishing/repository";
 import { getCategoryBySlug } from "@/lib/categories/repository";
+import { getFishingCalculatorConfig } from "@/lib/fishing/package-calculator-repository";
 import { getAtollBySlug, getAtolls, getIslandBySlug } from "@/lib/locations/repository";
 import { getPublishedNodeComments } from "@/lib/nodes/comments/repository";
 import { FISHING_HERO_IMAGE } from "@/lib/packages/category-images";
@@ -205,11 +207,12 @@ export async function FishingDirectoryPage({
   const query = sp.q?.trim() ?? "";
   const isSearching = query.length > 0;
 
-  const [atoll, island, supporting, fishingHubCategory] = await Promise.all([
+  const [atoll, island, supporting, fishingHubCategory, calculatorConfig] = await Promise.all([
     sp.atoll ? getAtollBySlug(sp.atoll) : Promise.resolve(null),
     sp.island ? getIslandBySlug(sp.island) : Promise.resolve(null),
     getFishingSupportingContent(),
     getCategoryBySlug("fishing-hub", "activity-category"),
+    getFishingCalculatorConfig(),
   ]);
   const { atolls, fishingTypes, realCharters, fishingPackages, realOperators, realGuides, typesWithActivities } = supporting;
   const fishingHubComments = fishingHubCategory ? await getPublishedNodeComments(fishingHubCategory.id) : [];
@@ -277,6 +280,9 @@ export async function FishingDirectoryPage({
             <a href="#fishing-packages" className="rounded-full border border-white/60 px-5 py-2.5 text-sm font-medium text-white hover:bg-white/10">
               Explore Fishing Packages
             </a>
+            <Link href="/maldives/fishing/calculator/" className="rounded-full border border-white/60 px-5 py-2.5 text-sm font-medium text-white hover:bg-white/10">
+              Fishing Package Calculator
+            </Link>
             <a
               href={whatsappUrl("Hi, I would like to plan a fishing trip in the Maldives.\nMy location:\nDate:\nNumber of anglers:\nTarget species:\nFishing type:\nPreferred duration:")}
               target="_blank"
@@ -339,6 +345,12 @@ export async function FishingDirectoryPage({
           )}
 
           {!isSearching && <Pagination page={page} totalPages={totalPages} basePath="/maldives/fishing/" baseQuery={baseQuery} />}
+        </section>
+
+        {/* Fishing package calculator — under the listings, per the site
+            owner's request; the standalone version is /maldives/fishing/calculator/. */}
+        <section id="fishing-package-calculator" className="mt-12 scroll-mt-20" aria-labelledby="fishing-package-calculator-heading">
+          <FishingPackageCalculator config={calculatorConfig} showPageLink />
         </section>
 
         {/* Intro / SEO content */}
@@ -653,9 +665,17 @@ export async function FishingDirectoryPage({
           <section id="fishing-packages" className="mt-12 scroll-mt-20 border-t border-neutral-200 pt-10">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <h2 className="text-xl font-semibold text-ocean-900">Maldives Fishing Packages</h2>
-              <Link href="/maldives/packages/fishing/" className="text-sm font-medium text-maldives-600 hover:underline">
-                See all fishing packages ({fishingPackages.length}) →
-              </Link>
+              <div className="flex flex-wrap items-center gap-4">
+                <Link
+                  href="/maldives/fishing/calculator/"
+                  className="rounded-full bg-maldives-600 px-4 py-2 text-sm font-medium text-white hover:bg-ocean-800"
+                >
+                  Fishing Package Calculator
+                </Link>
+                <Link href="/maldives/packages/fishing/" className="text-sm font-medium text-maldives-600 hover:underline">
+                  See all fishing packages ({fishingPackages.length}) →
+                </Link>
+              </div>
             </div>
             <p className="mt-2 text-sm text-neutral-700">
               Multi-night fishing holidays combining accommodation, full-board meals, transfers and a private charter — from 2 to 8 nights, verified

@@ -47,6 +47,7 @@ const NAV_SECTIONS: NavSection[] = [
       { label: "Transfers", href: "/admin/transfers" },
       { label: "Packages", href: "/admin/packages" },
       { label: "Holiday Pricing", href: "/admin/holiday-pricing" },
+      { label: "Fishing Calculator", href: "/admin/fishing-calculator" },
       { label: "Articles", href: "/admin/articles" },
       { label: "Providers", href: "/admin/providers" },
       { label: "Locations", href: "/admin/locations" },

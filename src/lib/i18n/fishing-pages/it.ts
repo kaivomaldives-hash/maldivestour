@@ -26,6 +26,7 @@ export const IT: FishingPagesLocaleStrings = {
   related: { fishing: "Pesca alle Maldive", emperor: "Emperor, charter di pesca privato", allFishes: "Tutti i pesci delle Maldive", fishingPackages: "Pacchetti pesca", gtFishing: "Pesca al GT", tunaFishing: "Pesca al tonno" },
   waSpecies: "Ciao, vorrei organizzare una battuta di pesca alle Maldive per {name}.\nLa mia posizione:\nData:\nNumero di pescatori:\nMezza giornata o giornata intera:",
   waTechnique: "Ciao, vorrei organizzare un'uscita: {name}.\nLa mia posizione:\nData:\nNumero di pescatori:\nMezza giornata o giornata intera:",
+  nights: "{n} notti",
   species: {
     "gt-fishing": {
       displayName: "carango gigante (GT)",

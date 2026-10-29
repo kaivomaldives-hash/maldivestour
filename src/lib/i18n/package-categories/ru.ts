@@ -7,6 +7,7 @@ export const RU: PackageCategoryLocaleStrings = {
   emptyTitle: "Пока здесь нет вариантов в разделе «{title}».",
   emptyDescription: "Посмотрите все туры на Мальдивы или напишите нам напрямую.",
   filtersInEnglish: "Поиск и фильтры (на английском)",
+  nights: "Ночей: {n}",
   categories: {
     luxury: {
       title: "Люкс-туры",

@@ -354,7 +354,12 @@ export async function FishingDirectoryPage({
             or full day, usually priced per boat rather than per person. A <strong>fishing package</strong> bundles a charter with
             accommodation, meals and transfers into a complete multi-night holiday. Both are represented here with real, currently-verified
             pricing from our own rate sheet (valid until 31 December 2027), alongside individually
-            sourced trips from resort dive/watersports centres and independent Maafushi and Male-area operators.
+            sourced trips from resort dive/watersports centres and independent Maafushi and Male-area operators. For every price in one
+            place, see our{" "}
+            <Link href="/maldives/travel-guide/maldives-fishing-trip-cost/" className="text-maldives-600 hover:underline">
+              Maldives fishing trip cost guide
+            </Link>
+            .
           </p>
         </section>
 
@@ -386,7 +391,7 @@ export async function FishingDirectoryPage({
             technique that has tagged activities, which left popping,
             jigging, trolling, marlin and sailfish unlinked from the hub. */}
         <section id="fishing-techniques" className="mt-12 scroll-mt-20 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Fishing Techniques &amp; Target Species</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">Maldives Fishing Techniques &amp; Fish Species</h2>
           <p className="mt-2 text-sm text-neutral-700">
             How each style of fishing works in the Maldives, and what it takes to catch the species anglers travel here for.
           </p>

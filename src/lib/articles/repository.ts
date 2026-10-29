@@ -17,6 +17,7 @@ import { getPackageSummariesByIds } from "@/lib/packages/repository";
 import { createClient } from "@/lib/supabase/public";
 import { getTransferRoutesByIds } from "@/lib/transfers/repository";
 import type { ArticleDetail, ArticleSummary, GetArticlesOptions, PaginatedResult, RelatedEntityLink } from "@/lib/articles/types";
+import { titleSearchFilter } from "@/lib/search/normalize";
 
 /**
  * Server-side article data-access layer (Task 14), following the same
@@ -557,7 +558,7 @@ export async function searchArticles(query: string, options: SearchArticlesOptio
     .select(NODE_ARTICLE_SELECT)
     .eq("node_type", "article")
     .eq("status", "published")
-    .ilike("title", `%${trimmed}%`)
+    .filter("title", ...titleSearchFilter(trimmed))
     .order("title", { ascending: true })
     .limit(options.limit ?? 20)
     .returns<NodeArticleRow[]>();

@@ -5,6 +5,7 @@ import { getAdminNodeIdsAtAtoll } from "@/lib/admin/admin-location-filter";
 import type { NodeStatus } from "@/lib/admin/node-actions";
 import type { ActivityCategory, ActivityDifficulty, ActivityItineraryStep, ActivityRate } from "@/lib/activities/types";
 import { createClient } from "@/lib/supabase/server";
+import { titleSearchFilter } from "@/lib/search/normalize";
 
 /**
  * Admin-only activity reads (all statuses). Covers Activities/Fishing/
@@ -129,7 +130,7 @@ export async function getActivitiesAdmin(
     .eq("node_type", "activity")
     .order("sort_order", { ascending: true, nullsFirst: false })
     .order("title", { ascending: true });
-  if (options.search?.trim()) query = query.ilike("title", `%${options.search.trim()}%`);
+  if (options.search?.trim()) query = query.filter("title", ...titleSearchFilter(options.search));
   if (options.activityCategory) query = query.eq("activities.activity_category", options.activityCategory);
   if (options.status) query = query.eq("status", options.status);
   if (options.providerId) query = query.eq("activities.operated_by_provider_id", options.providerId);

@@ -26,6 +26,7 @@ export const ES: FishingPagesLocaleStrings = {
   related: { fishing: "Pesca en Maldivas", emperor: "Emperor, chárter privado de pesca", allFishes: "Todos los peces de Maldivas", fishingPackages: "Paquetes de pesca", gtFishing: "Pesca de GT", tunaFishing: "Pesca de atún" },
   waSpecies: "Hola, me gustaría organizar una salida de pesca en Maldivas para pescar {name}.\nMi ubicación:\nFecha:\nNúmero de pescadores:\n¿Medio día o día completo?:",
   waTechnique: "Hola, me gustaría organizar una salida: {name}.\nMi ubicación:\nFecha:\nNúmero de pescadores:\n¿Medio día o día completo?:",
+  nights: "{n} noches",
   species: {
     "gt-fishing": {
       displayName: "jurel gigante (GT)",

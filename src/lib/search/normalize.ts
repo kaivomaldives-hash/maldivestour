@@ -19,15 +19,27 @@ export function normalizeQuery(raw: string): string {
     .slice(0, MAX_QUERY_LENGTH);
 }
 
+/** PostgREST filter for a title search, used as `.filter("title", ...titleSearchFilter(q))`.
+ *
+ * One word: the same substring ILIKE as before ("male" still finds
+ * "Hulhumale"). Several words: a case-insensitive regex where each word
+ * must start a word in the title, in order, with anything in between —
+ * so "SO Maldives" finds "SO/ Maldives" (a plain "%SO Maldives%" never
+ * matched because of the slash) without also matching the "so" inside
+ * every "Resort ... Maldives" title. Words are split on anything that isn't
+ * a letter or digit, so no regex metacharacters reach the pattern. */
+export function titleSearchFilter(raw: string): ["ilike" | "imatch", string] {
+  const trimmed = raw.trim();
+  const words = trimmed.normalize("NFC").split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+  if (words.length < 2) return ["ilike", `%${trimmed}%`];
+  return ["imatch", words.map((word) => `\\m${word}`).join(".*")];
+}
+
 export function tokenize(query: string): string[] {
   return normalizeQuery(query)
     .toLowerCase()
     .split(" ")
     .filter((token) => token.length > 0);
-}
-
-function escapeRegExp(value: string): string {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 /**
@@ -38,13 +50,17 @@ function escapeRegExp(value: string): string {
  * back to the caller's stable secondary sort (title, then id).
  */
 export function scoreTitleMatch(title: string, query: string): number {
-  const t = title.toLowerCase();
-  const q = query.toLowerCase().trim();
+  // Punctuation counts as a space on both sides, so "SO Maldives" scores
+  // as a whole-phrase match for "... to SO/ Maldives" instead of only as
+  // a two-token match tied with "Soneva ... Maldives".
+  const loose = (value: string) => value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+  const t = loose(title);
+  const q = loose(query);
   if (!q) return 0;
 
   if (t === q) return 100;
   if (t.startsWith(q)) return 85;
-  if (new RegExp(`\\b${escapeRegExp(q)}`, "i").test(title)) return 65;
+  if (` ${t}`.includes(` ${q}`)) return 65;
   if (t.includes(q)) return 45;
 
   const tokens = tokenize(q);

@@ -3,6 +3,7 @@ import "server-only";
 import { requireStaff } from "@/lib/admin/auth";
 import type { NodeStatus } from "@/lib/admin/node-actions";
 import { createClient } from "@/lib/supabase/server";
+import { titleSearchFilter } from "@/lib/search/normalize";
 
 /**
  * Admin-only article reads. `articles` is node-backed (node_type='article'),
@@ -78,7 +79,7 @@ export async function getArticlesAdmin(options: { search?: string; page?: number
 
   const supabase = await createClient();
   let query = supabase.from("nodes").select(NODE_ARTICLE_SELECT, { count: "exact" }).eq("node_type", "article").order("title", { ascending: true });
-  if (options.search?.trim()) query = query.ilike("title", `%${options.search.trim()}%`);
+  if (options.search?.trim()) query = query.filter("title", ...titleSearchFilter(options.search));
 
   const { data, error, count } = await query.range(from, to).returns<NodeArticleRow[]>();
   if (error || !data) return { items: [], total: 0, page, pageSize: PAGE_SIZE };

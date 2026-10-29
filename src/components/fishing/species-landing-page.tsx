@@ -6,6 +6,7 @@ import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { Price } from "@/components/currency/price";
 import { ChipLinkList } from "@/components/fishing/chip-link-list";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
+import { ContentSections } from "@/components/ui/content-sections";
 import { FaqSection } from "@/components/ui/faq-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { WhatsAppIcon } from "@/components/ui/icons";
@@ -42,7 +43,10 @@ export async function SpeciesLandingPage({ content }: { content: SpeciesPageCont
   const species = content.speciesSlug ? getFishSpeciesBySlug(content.speciesSlug) : null;
   if (content.speciesSlug && !species) notFound();
 
-  const heroImage = species?.image ?? content.fallbackImage ?? null;
+  // Keyword form of the page topic for headings: "GT Fishing", "Tuna
+  // Fishing", "Dogtooth Tuna", ... (the H1 without "in the Maldives").
+  const topic = content.h1.replace(/ in the Maldives$/, "");
+  const heroImage = content.heroImage ?? species?.image ?? content.fallbackImage ?? null;
   const heroDescription = species?.description ?? content.fallbackDescription ?? "";
 
   const charters = (await Promise.all(content.charterSlugs.map((slug) => getFishingActivityBySlug(slug)))).filter(
@@ -130,13 +134,15 @@ export async function SpeciesLandingPage({ content }: { content: SpeciesPageCont
           </div>
         </section>
 
+        {content.extraSections && <ContentSections sections={content.extraSections} />}
+
         {/* Season — a real pointer to the existing month-by-month guide
             article rather than repeating or guessing at seasonal claims
             here. Only shown when real season data exists (species truthy)
             — marlin/sailfish have none, so no claim is made either way. */}
         {species && (
           <section className="mt-12 border-t border-neutral-200 pt-10">
-            <h2 className="text-xl font-semibold text-ocean-900">{species.dietOrSeasonLabel === "Best Season" ? "Season" : "When to Go"}</h2>
+            <h2 className="text-xl font-semibold text-ocean-900">Best Time for {topic} in the Maldives</h2>
             <p className="mt-2 text-sm text-neutral-700">
               {content.displayName} activity is commonly reported around <strong>{species.dietOrSeason}</strong>, though this varies by
               atoll, tide and year — see our{" "}
@@ -150,14 +156,14 @@ export async function SpeciesLandingPage({ content }: { content: SpeciesPageCont
 
         {/* Techniques */}
         <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Fishing Techniques</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">{topic} Techniques</h2>
           <ChipLinkList items={content.techniques} />
         </section>
 
         {/* Real charters — same booking pipeline as everywhere else. */}
         {charters.length > 0 && (
           <section className="mt-12 border-t border-neutral-200 pt-10">
-            <h2 className="text-xl font-semibold text-ocean-900">Available Charters</h2>
+            <h2 className="text-xl font-semibold text-ocean-900">{topic} Charters</h2>
             <p className="mt-2 text-sm text-neutral-700">
               Our own private charter, <Link href="/maldives/fishing/emperor/" className="text-maldives-600 hover:underline">Emperor</Link>,
               home-based in Gaafu Atoll and arranged from other locations on request.

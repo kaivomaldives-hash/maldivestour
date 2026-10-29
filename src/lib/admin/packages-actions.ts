@@ -7,6 +7,7 @@ import { createNode, deleteOrphanedNode, updateNodeCore, type AdminActionResult,
 import type { PackageFieldsAdmin } from "@/lib/admin/packages-repository";
 import { createClient } from "@/lib/supabase/server";
 import type { PackageItineraryComponentRole } from "@/lib/packages/types";
+import { titleSearchFilter } from "@/lib/search/normalize";
 
 function packageRow(fields: PackageFieldsAdmin) {
   return {
@@ -80,7 +81,7 @@ export async function searchItineraryNodeOptions(query: string): Promise<Itinera
     .from("nodes")
     .select("id, title, node_type")
     .in("node_type", ITINERARY_NODE_TYPES)
-    .ilike("title", `%${trimmed}%`)
+    .filter("title", ...titleSearchFilter(trimmed))
     .order("title", { ascending: true })
     .limit(15)
     .returns<Array<{ id: string; title: string; node_type: string }>>();
@@ -106,7 +107,7 @@ export async function searchTransferServiceOptions(query: string): Promise<Trans
     .from("nodes")
     .select("id, title")
     .eq("node_type", "transfer_route")
-    .ilike("title", `%${trimmed}%`)
+    .filter("title", ...titleSearchFilter(trimmed))
     .limit(10)
     .returns<Array<{ id: string; title: string }>>();
   if (!routeNodes || routeNodes.length === 0) return [];

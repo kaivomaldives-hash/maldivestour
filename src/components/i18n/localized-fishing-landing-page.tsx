@@ -5,12 +5,14 @@ import { NodeInquiryToggle } from "@/components/bookings/node-inquiry-toggle";
 import { Price } from "@/components/currency/price";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
+import { ContentSections } from "@/components/ui/content-sections";
 import { FaqSection } from "@/components/ui/faq-section";
 import { WhatsAppIcon } from "@/components/ui/icons";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
 import type { ActivityDetail } from "@/lib/activities/types";
 import { bookingCta } from "@/lib/bookings/copy";
+import { localizeContentSections } from "@/lib/content/content-section";
 import { isSupportedCurrency } from "@/lib/currency/types";
 import { getFishSpeciesBySlug } from "@/lib/fishing/fish-species";
 import { getFishingActivityBySlug } from "@/lib/fishing/repository";
@@ -238,7 +240,7 @@ export async function LocalizedFishingSpeciesPage({ locale, slug }: { locale: Lo
       h1={t.h1}
       eyebrow={s.speciesEyebrow}
       description={t.description}
-      image={species?.image ?? content.fallbackImage ?? null}
+      image={content.heroImage ?? species?.image ?? content.fallbackImage ?? null}
       waMessage={s.waSpecies.replace("{name}", t.displayName)}
       faqs={t.faqs}
       related={[
@@ -285,6 +287,8 @@ export async function LocalizedFishingSpeciesPage({ locale, slug }: { locale: Lo
         </div>
       </section>
 
+      <ContentSections sections={localizeContentSections(content.extraSections, t.extraSections, L.href, (n) => s.nights.replace("{n}", String(n)))} />
+
       {species && t.bio && (
         <section className="mt-12 border-t border-neutral-200 pt-10">
           <h2 className="text-xl font-semibold text-ocean-900">{s.seasonTitle}</h2>
@@ -326,7 +330,7 @@ export async function LocalizedFishingTechniquePage({ locale, slug }: { locale: 
       h1={t.h1}
       eyebrow={s.techniqueEyebrow}
       description={t.heroDescription}
-      image={FISHING_HERO_IMAGE}
+      image={content.heroImage ?? FISHING_HERO_IMAGE}
       waMessage={s.waTechnique.replace("{name}", t.h1)}
       faqs={t.faqs}
       related={[
@@ -352,6 +356,8 @@ export async function LocalizedFishingTechniquePage({ locale, slug }: { locale: 
         <h2 className="text-xl font-semibold text-ocean-900">{s.targetSpeciesTitle}</h2>
         <Chips items={content.targetSpecies.map((sp, i) => ({ href: sp.href, label: t.targetSpeciesLabels[i] ?? sp.label }))} L={L} />
       </section>
+
+      <ContentSections sections={localizeContentSections(content.extraSections, t.extraSections, L.href, (n) => s.nights.replace("{n}", String(n)))} />
 
       <ChartersSection
         s={s}

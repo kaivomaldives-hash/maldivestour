@@ -9,6 +9,7 @@ import { HubPageExtras } from "@/components/nodes/hub-page-extras";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { FaqSection } from "@/components/ui/faq-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
+import { ContentSections } from "@/components/ui/content-sections";
 import { WhatsAppIcon } from "@/components/ui/icons";
 import { MediaImage } from "@/components/ui/media-image";
 import { PageHero } from "@/components/ui/page-hero";
@@ -50,6 +51,9 @@ export async function TechniqueLandingPage({ content }: { content: TechniquePage
   const taggedNodeIds = category ? await getNodeIdsByCategory(category.id) : [];
   const galleryNodeIds = Array.from(new Set([...charters.map((c) => c.id), ...taggedNodeIds]));
 
+  // Keyword form of the page topic for headings: "Popping", "Jigging",
+  // "Deep Sea and Big Game Fishing", ... (the H1 without "in the Maldives").
+  const topic = content.h1.replace(/ in the Maldives$/, "");
   const waMessage = `Hi, I'd like to plan a ${content.h1.toLowerCase()} trip.\nMy location:\nDate:\nNumber of anglers:\nHalf day or full day:`;
 
   return (
@@ -76,7 +80,7 @@ export async function TechniqueLandingPage({ content }: { content: TechniquePage
         eyebrow="Fishing technique"
         title={content.h1}
         description={content.heroDescription}
-        image={FISHING_HERO_IMAGE}
+        image={content.heroImage ?? FISHING_HERO_IMAGE}
         action={
           <a
             href={whatsappUrl(waMessage)}
@@ -93,7 +97,7 @@ export async function TechniqueLandingPage({ content }: { content: TechniquePage
       <div className={`${CONTAINER_CLASS} py-10 sm:py-14`}>
         {/* How it works */}
         <section>
-          <h2 className="text-xl font-semibold text-ocean-900">How It Works</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">How {topic} Works</h2>
           <div className="mt-3 space-y-3 text-sm text-neutral-700">
             {content.howItWorks.map((p) => (
               <p key={p}>{p}</p>
@@ -103,14 +107,16 @@ export async function TechniqueLandingPage({ content }: { content: TechniquePage
 
         {/* Target species */}
         <section className="mt-12 border-t border-neutral-200 pt-10">
-          <h2 className="text-xl font-semibold text-ocean-900">Target Species</h2>
+          <h2 className="text-xl font-semibold text-ocean-900">{topic} Target Species</h2>
           <ChipLinkList items={content.targetSpecies} />
         </section>
+
+        {content.extraSections && <ContentSections sections={content.extraSections} />}
 
         {/* Real charters */}
         {charters.length > 0 && (
           <section className="mt-12 border-t border-neutral-200 pt-10">
-            <h2 className="text-xl font-semibold text-ocean-900">Available Charters</h2>
+            <h2 className="text-xl font-semibold text-ocean-900">{topic} Charters</h2>
             <p className="mt-2 text-sm text-neutral-700">
               Our own private charter, <Link href="/maldives/fishing/emperor/" className="text-maldives-600 hover:underline">Emperor</Link>,
               home-based in Gaafu Atoll and arranged from other locations on request.

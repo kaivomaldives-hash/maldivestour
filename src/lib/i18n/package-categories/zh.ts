@@ -7,6 +7,7 @@ export const ZH: PackageCategoryLocaleStrings = {
   emptyTitle: "目前还没有{title}。",
   emptyDescription: "浏览全部马尔代夫套餐，或直接联系我们。",
   filtersInEnglish: "搜索和筛选（英文）",
+  nights: "{n}晚",
   categories: {
     luxury: {
       title: "奢华套餐",

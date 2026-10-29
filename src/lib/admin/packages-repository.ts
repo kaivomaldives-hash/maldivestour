@@ -5,6 +5,7 @@ import { getAdminNodeIdsAtAtoll } from "@/lib/admin/admin-location-filter";
 import type { NodeStatus } from "@/lib/admin/node-actions";
 import type { PackageItineraryComponentRole } from "@/lib/packages/types";
 import { createClient } from "@/lib/supabase/server";
+import { titleSearchFilter } from "@/lib/search/normalize";
 
 /**
  * Admin-only package reads. `packages` is node-backed (like providers/
@@ -110,7 +111,7 @@ export async function getPackagesAdmin(
     .eq("node_type", "package")
     .order("sort_order", { ascending: true, nullsFirst: false })
     .order("title", { ascending: true });
-  if (options.search?.trim()) query = query.ilike("title", `%${options.search.trim()}%`);
+  if (options.search?.trim()) query = query.filter("title", ...titleSearchFilter(options.search));
   if (options.status) query = query.eq("status", options.status);
   if (options.providerId) query = query.eq("packages.operated_by_provider_id", options.providerId);
   if (options.atollId) {

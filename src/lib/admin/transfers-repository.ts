@@ -5,6 +5,7 @@ import { getProviderOptions } from "@/lib/admin/providers-repository";
 import type { NodeStatus } from "@/lib/admin/node-actions";
 import { createClient } from "@/lib/supabase/server";
 import type { SharedOrPrivate, TransferServiceStatus, TransferType } from "@/lib/transfers/types";
+import { titleSearchFilter } from "@/lib/search/normalize";
 
 /**
  * Admin-only transfer reads. `transfer_routes` is node-backed (like
@@ -160,7 +161,7 @@ export async function getTransferRoutesAdmin(
     .eq("node_type", "transfer_route")
     .order("sort_order", { ascending: true, nullsFirst: false })
     .order("title", { ascending: true });
-  if (options.search?.trim()) query = query.ilike("title", `%${options.search.trim()}%`);
+  if (options.search?.trim()) query = query.filter("title", ...titleSearchFilter(options.search));
   if (options.status) query = query.eq("status", options.status);
 
   const idFilters: string[][] = [];

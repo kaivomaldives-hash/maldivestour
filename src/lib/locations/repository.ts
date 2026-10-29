@@ -20,6 +20,7 @@ import type {
   LocationType,
   PaginatedResult,
 } from "@/lib/locations/types";
+import { titleSearchFilter } from "@/lib/search/normalize";
 
 /**
  * Server-side location data-access layer. Pages/components should call
@@ -376,7 +377,7 @@ export async function searchLocations(
     .select(NODE_LOCATION_SELECT)
     .eq("node_type", "location")
     .eq("status", "published")
-    .ilike("title", `%${trimmed}%`)
+    .filter("title", ...titleSearchFilter(trimmed))
     .order("title", { ascending: true })
     .limit(options.limit ?? 20);
 

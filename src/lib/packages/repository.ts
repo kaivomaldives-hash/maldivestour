@@ -23,6 +23,7 @@ import type {
   PackageSummary,
   PaginatedResult,
 } from "@/lib/packages/types";
+import { titleSearchFilter } from "@/lib/search/normalize";
 
 /**
  * Server-side package data-access layer (Task 11), following the same
@@ -543,7 +544,7 @@ export async function searchPackages(query: string, options: SearchPackagesOptio
     .select(NODE_PACKAGE_SELECT)
     .eq("node_type", "package")
     .eq("status", "published")
-    .ilike("title", `%${trimmed}%`)
+    .filter("title", ...titleSearchFilter(trimmed))
     .order("title", { ascending: true })
     .limit(options.limit ?? 20)
     .returns<NodePackageRow[]>();

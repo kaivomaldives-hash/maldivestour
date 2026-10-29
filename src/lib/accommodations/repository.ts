@@ -21,6 +21,7 @@ import type {
   PaginatedResult,
   PriceTier,
 } from "@/lib/accommodations/types";
+import { titleSearchFilter } from "@/lib/search/normalize";
 
 /**
  * Server-side accommodation data-access layer, following the same pattern
@@ -559,7 +560,7 @@ export async function searchAccommodations(
     .select(NODE_ACCOMMODATION_SELECT)
     .eq("node_type", "accommodation")
     .eq("status", "published")
-    .ilike("title", `%${trimmed}%`)
+    .filter("title", ...titleSearchFilter(trimmed))
     .order("title", { ascending: true })
     .limit(options.limit ?? 20)
     .returns<NodeAccommodationRow[]>();

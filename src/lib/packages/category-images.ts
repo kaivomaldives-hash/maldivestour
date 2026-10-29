@@ -45,14 +45,13 @@ export type PackageCategoryFallbackKey = keyof typeof PACKAGE_CATEGORY_FALLBACK_
  * data/maldives/migration/full-legacy-image-library-manifest.json) than the
  * one still used as the general diving category fallback.
  *
- * FISHING_HERO_IMAGE: one of the owner's own newly-uploaded fishing photos
- * (assets/uploads/fishing/images/gallery/) rather than a legacy image — see
- * scripts/attach-fishing-uploads.mjs, which registers this file's
- * media_assets row (not yet in the legacy library).
+ * FISHING_HERO_IMAGE: our own boat, Emperor. Replaced the earlier
+ * "fishing-charter-boat" photo (another operator's boat, no rights to use
+ * it) on 2026-10-29 — that photo must not be used anywhere on the site.
  */
 export const DIVING_HERO_IMAGE = asset("eec07825-78df-21de-fc72-7e604440e43c", "opt/legacy/images/diving/scuba-divers-maldives.webp", "Scuba divers in the Maldives");
 export const FISHING_HERO_IMAGE = asset(
-  "cdb0fc20-985d-4734-a1c8-79b6d020e07a",
-  "opt/uploads/assets/uploads/fishing/images/gallery/fishing-charter-boat.webp",
-  "Maldives fishing charter boat",
+  "e520e856-d8be-505a-1e39-bc1a61f726e0",
+  "opt/uploads/assets/uploads/fishing/images/charters/emperor.webp",
+  "Emperor, our 32 ft fishing boat, off a Maldives island",
 );

@@ -18,6 +18,10 @@
 --   * the full migration chain applies cleanly, in this order, on a fresh Postgres 16
 --     with a Supabase auth/storage stub.
 --
+-- Manual fix (2026-10-29): the agreed_to_terms checks on reviews, partner_accounts,
+-- partner_requests and holiday_quote_requests apply only to rows created after this
+-- script runs, because those tables already hold rows from before the terms checkbox.
+--
 -- How to run: Supabase dashboard -> SQL Editor -> paste this whole file -> Run.
 -- It is one transaction: if any statement fails, nothing is changed.
 -- The last line tells the API to reload its schema cache so the new
@@ -407,10 +411,20 @@ on conflict (key) do nothing;
 -- alongside RLS).
 
 alter table reviews add column agreed_to_terms boolean not null default false;
-alter table reviews add constraint reviews_agreed_to_terms_check check (agreed_to_terms = true);
+-- [manual fix] Existing reviews rows predate the terms checkbox and keep
+-- agreed_to_terms = false (never backfilled to true: they didn't agree).
+-- The rule applies to rows created from the moment this script runs.
+do $fix$ begin
+  execute format('alter table reviews add constraint reviews_agreed_to_terms_check check (agreed_to_terms = true or created_at < %L::timestamptz)', now());
+end $fix$;
 
 alter table partner_accounts add column agreed_to_terms boolean not null default false;
-alter table partner_accounts add constraint partner_accounts_agreed_to_terms_check check (agreed_to_terms = true);
+-- [manual fix] Existing partner_accounts rows predate the terms checkbox and keep
+-- agreed_to_terms = false (never backfilled to true: they didn't agree).
+-- The rule applies to rows created from the moment this script runs.
+do $fix$ begin
+  execute format('alter table partner_accounts add constraint partner_accounts_agreed_to_terms_check check (agreed_to_terms = true or created_at < %L::timestamptz)', now());
+end $fix$;
 
 alter table agent_accounts add column agreed_to_terms boolean not null default false;
 alter table agent_accounts add constraint agent_accounts_agreed_to_terms_check check (agreed_to_terms = true);
@@ -419,7 +433,12 @@ alter table affiliate_accounts add column agreed_to_terms boolean not null defau
 alter table affiliate_accounts add constraint affiliate_accounts_agreed_to_terms_check check (agreed_to_terms = true);
 
 alter table partner_requests add column agreed_to_terms boolean not null default false;
-alter table partner_requests add constraint partner_requests_agreed_to_terms_check check (agreed_to_terms = true);
+-- [manual fix] Existing partner_requests rows predate the terms checkbox and keep
+-- agreed_to_terms = false (never backfilled to true: they didn't agree).
+-- The rule applies to rows created from the moment this script runs.
+do $fix$ begin
+  execute format('alter table partner_requests add constraint partner_requests_agreed_to_terms_check check (agreed_to_terms = true or created_at < %L::timestamptz)', now());
+end $fix$;
 
 -- ─────────────────────────────────────────────────────────────────
 -- submit_review(): add p_agreed_to_terms
@@ -707,7 +726,12 @@ grant execute on function submit_partner_request(text, text, text, text, text, t
 -- independent layer.
 
 alter table holiday_quote_requests add column agreed_to_terms boolean not null default false;
-alter table holiday_quote_requests add constraint holiday_quote_requests_agreed_to_terms_check check (agreed_to_terms = true);
+-- [manual fix] Existing holiday_quote_requests rows predate the terms checkbox and keep
+-- agreed_to_terms = false (never backfilled to true: they didn't agree).
+-- The rule applies to rows created from the moment this script runs.
+do $fix$ begin
+  execute format('alter table holiday_quote_requests add constraint holiday_quote_requests_agreed_to_terms_check check (agreed_to_terms = true or created_at < %L::timestamptz)', now());
+end $fix$;
 
 drop function if exists submit_holiday_quote_request(text, text, text, text, date, int, int, int, int, jsonb, jsonb, text, numeric);
 

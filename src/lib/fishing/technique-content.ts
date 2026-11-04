@@ -311,6 +311,11 @@ export const TECHNIQUE_PAGES: Record<string, TechniquePageContent> = {
     metaDescription:
       "Fly fishing in the Maldives — sight-casting on the flats and reef edges aboard our dedicated fly fishing charters, full-day, half-day or a multi-night fly fishing holiday.",
     h1: "Fly Fishing in the Maldives",
+    heroImage: asset(
+      "5c9fe494-0f07-53d0-a912-1fc348f6201e",
+      "opt/uploads/assets/uploads/fishing/images/fly-fishing/giant-trevally-fly-fishing-maldives-flats.webp",
+      "Angler in a sun hood releasing a large giant trevally in clear turquoise water on a Maldives flat",
+    ),
     heroDescription: "Sight-casting a fly to fish on the flats and reef edges — a specialist technique rewarding accurate casting over shallow, clear water.",
     howItWorks: [
       "Fly fishing here means sight-casting a fly to fish on the flats and reef edges, rather than trolling or bait fishing — a technique that rewards accurate casting and reading the water over shallow, clear ground.",

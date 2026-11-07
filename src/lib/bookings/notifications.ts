@@ -1,6 +1,9 @@
 import "server-only";
 
+import { activityHref, type ActivityCategory } from "@/lib/activities/types";
 import { escapeHtml, getAdminNotificationEmail, sendResendEmail, type DeliveryResult } from "@/lib/notifications/email";
+import { getSiteUrl } from "@/lib/seo/site";
+import { FISHING_SOCIAL_LINKS, MTG_SOCIAL_LINKS } from "@/lib/social-links";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
@@ -399,5 +402,145 @@ export async function sendBookingConfirmedEmail(input: BookingConfirmedEmailInpu
     }
   } catch (err) {
     console.error("[bookings] sendBookingConfirmedEmail threw unexpectedly:", err instanceof Error ? err.message : String(err));
+  }
+}
+
+const GOOGLE_REVIEW_URL = "https://g.page/r/CXFuVWSvn2TTEAE/review";
+const SOCIAL_ICON_BASE = `${(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "").replace(/\/$/, "")}/storage/v1/object/public/media/email/social`;
+
+/**
+ * Public page of the booked product with a review form, so the thank-you
+ * email can send the customer straight to it: the transfer route for a
+ * transfer booking, the activity page for an activity. Other products have
+ * no on-site reviews, so null (the email then asks for a Google review only).
+ */
+async function reviewPageUrl(admin: ReturnType<typeof createAdminClient>, bookingId: string): Promise<{ url: string; title: string } | null> {
+  const { data: booking } = await admin
+    .from("bookings")
+    .select("product_type, product_node_id, transfer_service_id")
+    .eq("id", bookingId)
+    .maybeSingle<{ product_type: string; product_node_id: string | null; transfer_service_id: string | null }>();
+  if (!booking) return null;
+
+  let nodeId = booking.product_node_id;
+  if (booking.product_type === "transfer_service" && booking.transfer_service_id) {
+    const { data: service } = await admin
+      .from("transfer_services")
+      .select("route_id")
+      .eq("id", booking.transfer_service_id)
+      .maybeSingle<{ route_id: string }>();
+    nodeId = service?.route_id ?? null;
+  }
+  if (!nodeId) return null;
+
+  const { data: node } = await admin
+    .from("nodes")
+    .select("node_type, slug, title, status")
+    .eq("id", nodeId)
+    .maybeSingle<{ node_type: string; slug: string; title: string; status: string }>();
+  if (!node || node.status !== "published") return null;
+
+  let path: string | null = null;
+  if (node.node_type === "transfer_route") path = `/maldives/transfers/${node.slug}/`;
+  if (node.node_type === "activity") {
+    const { data: activity } = await admin
+      .from("activities")
+      .select("activity_category")
+      .eq("id", nodeId)
+      .maybeSingle<{ activity_category: ActivityCategory }>();
+    if (activity) path = activityHref({ activityCategory: activity.activity_category, slug: node.slug });
+  }
+  return path ? { url: `${getSiteUrl()}${path}#write-review`, title: node.title } : null;
+}
+
+export interface BookingThankYouEmailInput {
+  bookingId: string;
+  bookingReference: string;
+  customerName: string;
+  customerEmail: string;
+  productTitle: string;
+  source: string | null;
+}
+
+function buildThankYouHtml(input: BookingThankYouEmailInput, reviewPage: { url: string; title: string } | null): string {
+  const firstName = input.customerName.trim().split(/\s+/)[0] || input.customerName;
+  const isFishing = input.source === "fishing";
+  const brand = isFishing ? "Maldives Fishing" : SITE_NAME;
+  const socials = isFishing ? FISHING_SOCIAL_LINKS : MTG_SOCIAL_LINKS;
+  const button = (href: string, label: string, color: string) =>
+    `<a href="${escapeHtml(href)}" style="display:inline-block;margin:4px 8px 4px 0;padding:12px 20px;border-radius:999px;background:${color};color:#ffffff;font-weight:600;text-decoration:none">${label}</a>`;
+
+  const icons = socials
+    .map(
+      (s) =>
+        `<a href="${escapeHtml(s.href)}" style="display:inline-block;margin:0 4px"><img src="${SOCIAL_ICON_BASE}/${s.network}.png" width="32" height="32" alt="${escapeHtml(s.label)}" style="display:block;border:0" /></a>`,
+    )
+    .join("");
+
+  return `
+    <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#0a2e42;max-width:560px">
+      <p>Dear ${escapeHtml(firstName)},</p>
+      <p>Thank you for travelling with us! We hope you enjoyed your ${escapeHtml(input.productTitle)} (booking ${escapeHtml(input.bookingReference)}) and that everything went smoothly.</p>
+      <p>Your feedback helps us improve and helps other travellers plan their trip. Could you spare a minute to tell us how it went?</p>
+      <p>
+        ${reviewPage ? button(reviewPage.url, "Review your trip on our website", "#0e7aa4") : ""}
+        ${button(GOOGLE_REVIEW_URL, "Leave a Google review", "#1a73e8")}
+      </p>
+      <p>Follow ${escapeHtml(brand)} for Maldives tips, photos and special offers:</p>
+      <p>${icons}</p>
+      <p>We'd love to welcome you back. Questions or plans for your next trip? WhatsApp us on +${WHATSAPP_NUMBER} or reply to this email.</p>
+      <p>Warm regards,<br/>${escapeHtml(brand)}<br/>
+      <a href="${getSiteUrl()}/" style="color:#0e7aa4">${getSiteUrl().replace(/^https?:\/\//, "")}</a></p>
+    </div>
+  `;
+}
+
+/**
+ * Fires once, when an admin moves a booking into 'completed' (see
+ * updateBookingStatus() in src/lib/admin/bookings-actions.ts, the only
+ * caller): a thank-you to the customer, copied to the admin inbox, asking
+ * for a review on the booked product's own page and on Google, with the
+ * brand's social profiles. Like sendBookingConfirmedEmail(), it only sets
+ * bookings.thank_you_email_sent_at on a successful send, so a failed
+ * attempt can be retried by re-saving the status. Never throws.
+ */
+export async function sendBookingThankYouEmail(input: BookingThankYouEmailInput): Promise<void> {
+  try {
+    const admin = createAdminClient();
+    const [adminEmail, reviewPage] = await Promise.all([getAdminNotificationEmail(admin), reviewPageUrl(admin, input.bookingId)]);
+    const cc = adminEmail.toLowerCase() === input.customerEmail.toLowerCase() ? [] : [adminEmail];
+
+    const result = await sendResendEmail(
+      input.customerEmail,
+      `Thank you for travelling with us — ${input.bookingReference}`,
+      buildThankYouHtml(input, reviewPage),
+      { cc },
+    );
+    const nowIso = new Date().toISOString();
+
+    const { error: insertError } = await admin.from("booking_notifications").insert({
+      booking_id: input.bookingId,
+      notification_type: "customer_thank_you",
+      recipient_email: input.customerEmail,
+      status: result.ok ? "sent" : "failed",
+      provider_message_id: result.providerMessageId ?? null,
+      error_message: result.ok ? null : (result.error ?? null),
+      sent_at: result.ok ? nowIso : null,
+    } as unknown as never);
+    if (insertError) {
+      console.error("[bookings] failed to record thank-you booking_notifications row:", insertError.message);
+    }
+
+    if (result.ok) {
+      const { error: updateError } = await admin
+        .from("bookings")
+        .update({ thank_you_email_sent_at: nowIso } as unknown as never)
+        .eq("id", input.bookingId);
+      if (updateError) {
+        console.error("[bookings] failed to set bookings.thank_you_email_sent_at:", updateError.message);
+      }
+    }
+  } catch (err) {
+    console.error("[bookings] sendBookingThankYouEmail threw unexpectedly:", err instanceof Error ? err.message : String(err));
   }
 }

@@ -11,6 +11,7 @@ import {
   XIcon,
   YouTubeIcon,
 } from "@/components/ui/icons";
+import { FISHING_SOCIAL_LINKS, MTG_SOCIAL_LINKS, type SocialNetwork } from "@/lib/social-links";
 
 /**
  * Footer social links are brand-scoped, not sitewide: the fishing section
@@ -23,28 +24,18 @@ import {
  * footer file (duplicating the whole thing would mean keeping travel
  * links/newsletter/WhatsApp/copyright in sync by hand forever).
  *
- * Real, verified profiles only — do not add any account not explicitly
- * supplied by the site owner.
+ * The profiles themselves live in src/lib/social-links.ts (also used by
+ * the booking thank-you email).
  */
-const MTG_SOCIAL_LINKS = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/maldivestourguide/", Icon: LinkedInIcon },
-  { label: "YouTube", href: "https://www.youtube.com/@Maldives-Holiday", Icon: YouTubeIcon },
-  { label: "Facebook", href: "https://web.facebook.com/maldivestourguide", Icon: FacebookIcon },
-  { label: "X", href: "https://x.com/maldivestourg", Icon: XIcon },
-  { label: "Pinterest", href: "https://www.pinterest.com/themaldivesholidays/", Icon: PinterestIcon },
-  { label: "TikTok", href: "https://www.tiktok.com/@maldivestourguides?lang=en", Icon: TikTokIcon },
-  { label: "Instagram", href: "https://www.instagram.com/themaldivesholiday/", Icon: InstagramIcon },
-];
-
-const FISHING_SOCIAL_LINKS = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/maldives-fishing/", Icon: LinkedInIcon },
-  { label: "YouTube", href: "https://www.youtube.com/@maldivesfishing2", Icon: YouTubeIcon },
-  { label: "Facebook", href: "https://web.facebook.com/profile.php?id=61594780457332", Icon: FacebookIcon },
-  { label: "X", href: "https://x.com/maldivesfishin2", Icon: XIcon },
-  { label: "Pinterest", href: "https://www.pinterest.com/maldivesfishing/", Icon: PinterestIcon },
-  { label: "TikTok", href: "https://www.tiktok.com/@maldivesfishing2", Icon: TikTokIcon },
-  { label: "Instagram", href: "https://www.instagram.com/maldivesfishing2/", Icon: InstagramIcon },
-];
+const ICONS: Record<SocialNetwork, (props: { className?: string }) => React.ReactNode> = {
+  linkedin: LinkedInIcon,
+  youtube: YouTubeIcon,
+  facebook: FacebookIcon,
+  x: XIcon,
+  pinterest: PinterestIcon,
+  tiktok: TikTokIcon,
+  instagram: InstagramIcon,
+};
 
 export function FooterSocialLinks() {
   const pathname = usePathname();
@@ -56,19 +47,22 @@ export function FooterSocialLinks() {
     <>
       <p className="text-xs font-semibold uppercase tracking-wide text-lagoon-300">Follow {brand}</p>
       <ul className="mt-4 flex flex-wrap gap-2">
-        {links.map(({ label, href, Icon }) => (
-          <li key={label}>
-            <a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${brand} on ${label} (opens in a new tab)`}
-              className="min-touch-target inline-flex items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-            >
-              <Icon className="h-5 w-5" />
-            </a>
-          </li>
-        ))}
+        {links.map(({ network, label, href }) => {
+          const Icon = ICONS[network];
+          return (
+            <li key={label}>
+              <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${brand} on ${label} (opens in a new tab)`}
+                className="min-touch-target inline-flex items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+              >
+                <Icon className="h-5 w-5" />
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </>
   );

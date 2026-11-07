@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireStaff } from "@/lib/admin/auth";
 import { BOOKING_STATUSES, type BookingStatus } from "@/lib/admin/booking-status";
 import { getBookingByIdAdmin } from "@/lib/admin/bookings-repository";
-import { sendBookingConfirmedEmail } from "@/lib/bookings/notifications";
+import { sendBookingConfirmedEmail, sendBookingThankYouEmail } from "@/lib/bookings/notifications";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -69,11 +69,22 @@ export async function updateBookingStatus(id: string, input: UpdateBookingStatus
 
   const supabase = await createClient();
 
-  const { data: before } = await supabase
+  type BeforeRow = { status: BookingStatus; confirmation_email_sent_at: string | null; thank_you_email_sent_at?: string | null };
+  let { data: before, error: beforeError } = await supabase
     .from("bookings")
-    .select("status, confirmation_email_sent_at")
+    .select("status, confirmation_email_sent_at, thank_you_email_sent_at")
     .eq("id", id)
-    .maybeSingle<{ status: BookingStatus; confirmation_email_sent_at: string | null }>();
+    .maybeSingle<BeforeRow>();
+  // thank_you_email_sent_at comes from a later migration
+  // (20261115002500_booking_thank_you_email.sql); until it has run, read
+  // without it so status changes keep working.
+  if (beforeError?.code === "42703") {
+    ({ data: before, error: beforeError } = await supabase
+      .from("bookings")
+      .select("status, confirmation_email_sent_at")
+      .eq("id", id)
+      .maybeSingle<BeforeRow>());
+  }
 
   const updatePayload: Record<string, unknown> = { status: input.status };
   if (input.quotedPrice !== undefined) updatePayload.quoted_price = input.quotedPrice;
@@ -146,6 +157,23 @@ export async function updateBookingStatus(id: string, input: UpdateBookingStatus
               registrationNumber: booking.transferReturnRegistrationNumber,
             }
           : null,
+      });
+    }
+  }
+
+  // Moving into 'completed' thanks the customer and asks for a review,
+  // once: a later re-save only retries if the earlier send failed.
+  const shouldSendThankYou = input.status === "completed" && before?.status !== "completed" && !before?.thank_you_email_sent_at;
+  if (shouldSendThankYou) {
+    const booking = await getBookingByIdAdmin(id);
+    if (booking) {
+      await sendBookingThankYouEmail({
+        bookingId: booking.id,
+        bookingReference: booking.bookingReference,
+        customerName: booking.customerName,
+        customerEmail: booking.customerEmail,
+        productTitle: booking.productTitle,
+        source: booking.source,
       });
     }
   }

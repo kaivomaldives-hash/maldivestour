@@ -37,7 +37,12 @@ export interface DeliveryResult {
   error?: string;
 }
 
-export async function sendResendEmail(to: string, subject: string, html: string): Promise<DeliveryResult> {
+export interface SendEmailOptions {
+  /** Copied recipients, e.g. the admin inbox on a customer-facing email. */
+  cc?: string[];
+}
+
+export async function sendResendEmail(to: string, subject: string, html: string, options: SendEmailOptions = {}): Promise<DeliveryResult> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return { ok: false, error: "RESEND_API_KEY is not configured" };
 
@@ -46,7 +51,7 @@ export async function sendResendEmail(to: string, subject: string, html: string)
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ from, to, subject, html }),
+      body: JSON.stringify({ from, to, subject, html, ...(options.cc?.length ? { cc: options.cc } : {}) }),
     });
     const body = (await res.json().catch(() => null)) as { id?: string; message?: string } | null;
     if (!res.ok) return { ok: false, error: body?.message ?? `Resend responded ${res.status}` };

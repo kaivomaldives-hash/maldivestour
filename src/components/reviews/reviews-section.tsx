@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { WriteReviewForm } from "@/components/reviews/write-review-form";
 import { Button } from "@/components/ui/button";
@@ -22,8 +22,19 @@ function Stars({ rating }: { rating: number }) {
 export function ReviewsSection({ nodeId, reviews, subjectLabel = "transfer" }: { nodeId: string; reviews: Review[]; subjectLabel?: string }) {
   const [showForm, setShowForm] = useState(false);
 
+  // The booking thank-you email links to "<page>#write-review": open the
+  // form and scroll to it.
+  useEffect(() => {
+    if (window.location.hash !== "#write-review") return;
+    const timer = window.setTimeout(() => {
+      setShowForm(true);
+      document.getElementById("write-review")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
+
   return (
-    <section className="mt-10">
+    <section id="write-review" className="mt-10 scroll-mt-24">
       <h2 className="text-xl font-semibold text-ocean-900">Customer Reviews</h2>
 
       {reviews.length === 0 ? (

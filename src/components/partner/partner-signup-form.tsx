@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
-import { AgreeToTermsCheckbox } from "@/components/legal/agree-to-terms-checkbox";
+import { AgreeToTermsCheckbox, PARTNER_TERMS_HREF, PARTNER_TERMS_LABEL } from "@/components/legal/agree-to-terms-checkbox";
 import { Button } from "@/components/ui/button";
 import { createPartnerAccount } from "@/lib/partner/actions";
 import { PARTNER_KINDS, PROPERTY_TYPES, type PartnerKind, type PropertyType } from "@/lib/partner/types";
@@ -114,7 +114,7 @@ export function PartnerSignupForm() {
           return;
         }
         if (!agreedToTerms) {
-          setError("Please agree to the Terms and Conditions to continue.");
+          setError("Please agree to the Terms and Conditions for Partners to continue.");
           return;
         }
 
@@ -231,7 +231,7 @@ export function PartnerSignupForm() {
         <input name="password" type="password" required minLength={8} autoComplete="new-password" className={INPUT_CLASS} />
       </label>
 
-      <AgreeToTermsCheckbox />
+      <AgreeToTermsCheckbox href={PARTNER_TERMS_HREF} label={PARTNER_TERMS_LABEL} />
 
       {error && (
         <p role="alert" className="text-sm text-red-600">

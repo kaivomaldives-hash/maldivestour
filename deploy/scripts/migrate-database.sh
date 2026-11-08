@@ -23,7 +23,12 @@ set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
 SB_DIR="$HOME/supabase-project"
-SKIP_TABLES=(storage.objects storage.s3_multipart_uploads storage.s3_multipart_uploads_parts)
+SKIP_TABLES=(storage.objects storage.s3_multipart_uploads storage.s3_multipart_uploads_parts
+  # Newer cloud-only Storage tables (vector/analytics buckets, lifecycle):
+  # the site doesn't use them, and the self-hosted restore is refused
+  # permission on them.
+  storage.bucket_lifecycle_states storage.buckets_analytics storage.buckets_vectors
+  storage.lifecycle_abandoned_artifacts storage.vector_indexes)
 FRESH=0
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -36,7 +41,7 @@ done
 [ -n "${CLOUD_DB_URL:-}" ] || { echo "Set CLOUD_DB_URL (see the top of this script)." >&2; exit 1; }
 PGPASS=$(grep -E '^POSTGRES_PASSWORD=' "$SB_DIR/.env" | cut -d= -f2-)
 TENANT=$(grep -E '^POOLER_TENANT_ID=' "$SB_DIR/.env" | cut -d= -f2-)
-LOCAL_DB_URL="postgres://postgres.$TENANT:$PGPASS@127.0.0.1:5432/postgres"
+LOCAL_DB_URL="postgres://postgres.$TENANT:$PGPASS@127.0.0.1:5432/postgres?sslmode=disable"
 
 WORK="$HOME/mtg-migration/$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$WORK"
@@ -100,9 +105,12 @@ psql \
 
 echo "==> Copying the migration history"
 # The dump leaves out Supabase's own migration history table. Mark every
-# migration the cloud has already run as applied here too, so deploy-app.sh
-# (supabase db push) only ever runs NEW migrations on this server.
-versions=$(psql "$CLOUD_DB_URL" -tAc "select version from supabase_migrations.schema_migrations order by version")
+# migration in the repo as applied here, so deploy-app.sh (supabase db push)
+# only ever runs NEW migrations on this server. The repo's files are used
+# rather than the cloud's history table: most migrations were applied to the
+# cloud by other means, so that table lists only one of them, while the
+# copied schema already contains them all.
+versions=$(ls "$REPO_DIR"/supabase/migrations/*.sql | xargs -n1 basename | cut -d_ -f1 | sort)
 count=$(echo "$versions" | grep -c . || true)
 if [ "$count" -gt 0 ]; then
   ( cd "$REPO_DIR" && echo "$versions" | xargs supabase migration repair --status applied --remote="$LOCAL_DB_URL" --yes ) > repair.log 2>&1 \

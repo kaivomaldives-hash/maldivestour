@@ -20,7 +20,7 @@ read -r -p "This REPLACES all data on this server with the backup in $SRC. Type 
 
 PGPASS=$(grep -E '^POSTGRES_PASSWORD=' "$SB_DIR/.env" | cut -d= -f2-)
 TENANT=$(grep -E '^POOLER_TENANT_ID=' "$SB_DIR/.env" | cut -d= -f2-)
-DB_URL="postgres://postgres.$TENANT:$PGPASS@127.0.0.1:5432/postgres"
+DB_URL="postgres://postgres.$TENANT:$PGPASS@127.0.0.1:5432/postgres?sslmode=disable"
 
 echo "==> Wiping current database and files"
 cd "$SB_DIR"

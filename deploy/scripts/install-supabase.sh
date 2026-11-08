@@ -87,7 +87,7 @@ set_app() {
 set_app NEXT_PUBLIC_SUPABASE_URL "https://$API_DOMAIN"
 set_app NEXT_PUBLIC_SUPABASE_ANON_KEY "$ANON_KEY"
 set_app SUPABASE_SERVICE_ROLE_KEY "$SERVICE_ROLE_KEY"
-set_app DATABASE_URL "postgres://postgres.mtg:$POSTGRES_PASSWORD@127.0.0.1:5432/postgres"
+set_app DATABASE_URL "postgres://postgres.mtg:$POSTGRES_PASSWORD@127.0.0.1:5432/postgres?sslmode=disable"
 chmod 600 "$APP_ENV"
 
 echo "==> Starting Supabase"

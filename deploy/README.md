@@ -271,7 +271,8 @@ ssh-keygen -t ed25519 -N "" -C github-actions -f ~/.ssh/github_actions && cat ~/
      printed above (all of it, including the BEGIN/END lines).
    - Variables: `VPS_DEPLOY_ENABLED` = `true`.
 
-   From now on, every push to `main` deploys to the VPS, and database
+   From now on, every push to `claude/mtg-architecture-foundation-6jp6tp`
+   (the repo's default branch) deploys to the VPS, and database
    migrations go there instead of to Supabase cloud.
 6. **Anything made in the gap:** bookings or signups made on the old site
    between the final copy and the DNS switch are only in Supabase cloud.

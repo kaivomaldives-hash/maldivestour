@@ -1,7 +1,8 @@
 name: Deploy to VPS
 
 # Replaces Vercel's automatic deploys once the site runs on the Hostinger
-# VPS: on every push to main, logs in to the server over SSH and runs
+# VPS: on every push to the repo's default branch (the one the server
+# deploys, DEPLOY_BRANCH in deploy/.env), logs in to the server over SSH and runs
 # deploy/scripts/deploy-app.sh (pull code, apply new database migrations,
 # rebuild and restart the site, check it's up).
 #
@@ -11,7 +12,7 @@ name: Deploy to VPS
 #     Secrets:   VPS_HOST (server IP), VPS_SSH_KEY (private key for the mtg user)
 on:
   push:
-    branches: [main]
+    branches: [claude/mtg-architecture-foundation-6jp6tp]
   workflow_dispatch: {}
 
 concurrency:

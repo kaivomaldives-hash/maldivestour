@@ -22,7 +22,32 @@ const STATUS_CLASS: Record<PartnerDocumentStatus, string> = {
   rejected: "bg-red-100 text-red-700",
 };
 
-export function PartnerDocumentReviewList({ documents }: { documents: DocumentItem[] }) {
+/** "Sunset Guesthouse - Business tourism license.pdf": partner name + document
+ * type, keeping the uploaded file's extension, so saved files are easy to
+ * find and file later. Characters Windows/macOS reject in file names are
+ * stripped. */
+function downloadFileName(doc: DocumentItem, partnerName: string): string {
+  const typeLabel = PARTNER_DOCUMENT_TYPES.find((t) => t.value === doc.documentType)?.label ?? "Document";
+  const source = doc.fileName ?? doc.storagePath;
+  const dot = source.lastIndexOf(".");
+  const ext = dot > -1 && dot > source.lastIndexOf("/") ? source.slice(dot).toLowerCase() : "";
+  const base = `${partnerName} - ${typeLabel}`.replace(/[\\/:*?"<>|]+/g, " ").replace(/\s+/g, " ").trim();
+  return `${base}${ext}`;
+}
+
+/** Starts a browser download from an attachment-disposition URL. It's a
+ * plain same-tab navigation to a file the server marks as a download, so
+ * the page stays put and popup blockers don't apply (unlike window.open). */
+function triggerDownload(url: string) {
+  const a = document.createElement("a");
+  a.href = url;
+  a.rel = "noopener";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+export function PartnerDocumentReviewList({ documents, partnerName = "Partner" }: { documents: DocumentItem[]; partnerName?: string }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [viewError, setViewError] = useState<string | null>(null);
@@ -63,6 +88,29 @@ export function PartnerDocumentReviewList({ documents }: { documents: DocumentIt
               className="text-sm font-medium text-maldives-600 hover:underline disabled:opacity-50"
             >
               View document
+            </button>
+
+            <button
+              type="button"
+              disabled={isPending}
+              onClick={() => {
+                setViewError(null);
+                startTransition(async () => {
+                  const result = await getPartnerDocumentSignedUrl(doc.storagePath, downloadFileName(doc, partnerName));
+                  if (!result.url) {
+                    setViewError(result.error ?? "Could not download this document.");
+                    return;
+                  }
+                  triggerDownload(result.url);
+                });
+              }}
+              className="inline-flex items-center gap-1 rounded-full border border-maldives-200 px-3 py-1 text-sm font-medium text-maldives-700 hover:bg-maldives-50 disabled:opacity-50"
+            >
+              <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
+                <path d="M10 3a1 1 0 0 1 1 1v7.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42L9 11.6V4a1 1 0 0 1 1-1Z" />
+                <path d="M4 15a1 1 0 0 1 1 1h10a1 1 0 1 1 0 2H5a2 2 0 0 1-2-2 1 1 0 0 1 1-1Z" />
+              </svg>
+              Download
             </button>
 
             {doc.status !== "approved" && (

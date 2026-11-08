@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 
-import { AgreeToTermsCheckbox } from "@/components/legal/agree-to-terms-checkbox";
+import { AgreeToTermsCheckbox, PARTNER_TERMS_HREF, PARTNER_TERMS_LABEL } from "@/components/legal/agree-to-terms-checkbox";
 import { Button } from "@/components/ui/button";
 import { submitPartnerRequest } from "@/lib/partners/actions";
 import { PARTNER_TYPES } from "@/lib/partners/types";
@@ -107,7 +107,7 @@ export function PartnerRequestForm() {
         <textarea name="message" rows={4} placeholder="What you offer, where you operate, anything useful to know" className={INPUT_CLASS} />
       </label>
 
-      <AgreeToTermsCheckbox />
+      <AgreeToTermsCheckbox href={PARTNER_TERMS_HREF} label={PARTNER_TERMS_LABEL} />
 
       {error && (
         <p role="alert" className="text-sm text-red-600">

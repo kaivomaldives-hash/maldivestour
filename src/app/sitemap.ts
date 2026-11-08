@@ -71,6 +71,7 @@ const STATIC_PATHS = [
   "/",
   "/terms-and-conditions/",
   "/terms-and-conditions/transfers/",
+  "/terms-and-conditions/partners/",
   "/privacy-policy/",
   "/become-a-partner/",
   "/become-a-travel-agent/",

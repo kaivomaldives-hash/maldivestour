@@ -107,9 +107,21 @@ export async function updatePartnerDocumentStatus(documentId: string, status: Pa
  * staff_select` Storage policy, same reasoning as every other repository
  * in this codebase for reserving the service-role client for what RLS
  * genuinely can't express (src/lib/supabase/admin.ts's own doc comment). */
-export async function getPartnerDocumentSignedUrl(storagePath: string): Promise<{ url: string | null; error?: string }> {
+export async function getPartnerDocumentSignedUrl(
+  storagePath: string,
+  /** Pass a file name to get a link that saves the file (Content-Disposition:
+   * attachment) under that name, instead of one that opens it for viewing. */
+  downloadAs?: string,
+): Promise<{ url: string | null; error?: string }> {
   await requireStaff();
   const supabase = await createClient();
+  if (downloadAs) {
+    const { data, error } = await supabase.storage
+      .from("partner-documents")
+      .createSignedUrl(storagePath, 120, { download: downloadAs });
+    if (error || !data) return { url: null, error: error?.message };
+    return { url: data.signedUrl };
+  }
   // 120s, not 60s: the signed URL is only requested once the admin clicks
   // "View document" (not pre-generated), and a too-short TTL meant it
   // could expire between the click and the browser actually finishing the

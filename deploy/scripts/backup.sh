@@ -21,7 +21,8 @@ KEEP_OFFSITE_DAYS=30
 if [ "${1:-}" = "--install-cron" ]; then
   line="0 21 * * * bash $REPO_DIR/deploy/scripts/backup.sh >> $HOME/backups/backup.log 2>&1"
   mkdir -p "$BACKUP_ROOT"
-  ( crontab -l 2>/dev/null | grep -v 'deploy/scripts/backup.sh' ; echo "$line" ) | crontab -
+  # "|| true": with no crontab yet, crontab -l fails and set -e would stop here.
+  ( crontab -l 2>/dev/null | grep -v 'deploy/scripts/backup.sh' || true ; echo "$line" ) | crontab -
   echo "Installed: nightly backup at 21:00 UTC (02:00 Maldives time). Log: ~/backups/backup.log"
   exit 0
 fi

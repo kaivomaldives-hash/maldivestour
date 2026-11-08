@@ -1,0 +1,64 @@
+# The website side of the VPS: the Next.js app plus Caddy, which handles
+# HTTPS for both the website and the self-hosted Supabase API.
+# Supabase itself runs from its own folder (~/supabase-project) — see
+# deploy/README.md.
+#
+# Run from the repo root on the server:
+#   docker compose -f deploy/docker-compose.yml --env-file deploy/.env up -d --build
+
+name: mtg
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: deploy/app/Dockerfile
+      # The build pre-renders pages with data from Supabase, through
+      # https://API_DOMAIN on this same server, so Caddy must already be
+      # running when the app is built (deploy/README.md, step 8).
+      network: host
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+    image: mtg-app:latest
+    restart: unless-stopped
+    env_file: .env
+    # Only reachable from the server itself; Caddy is the public door.
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - next_cache:/app/.next/cache
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/terms-and-conditions/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    logging:
+      driver: json-file
+      options: { max-size: "20m", max-file: "3" }
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    # Host networking so Caddy can reach both the app (127.0.0.1:3000) and
+    # the Supabase gateway (127.0.0.1:8000), which only listen locally.
+    network_mode: host
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN}
+      API_DOMAIN: ${API_DOMAIN}
+      PREVIEW_DOMAIN: ${PREVIEW_DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    logging:
+      driver: json-file
+      options: { max-size: "20m", max-file: "3" }
+
+volumes:
+  next_cache:
+  caddy_data:
+  caddy_config:

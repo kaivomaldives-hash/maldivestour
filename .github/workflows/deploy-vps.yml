@@ -1,0 +1,36 @@
+name: Deploy to VPS
+
+# Replaces Vercel's automatic deploys once the site runs on the Hostinger
+# VPS: on every push to main, logs in to the server over SSH and runs
+# deploy/scripts/deploy-app.sh (pull code, apply new database migrations,
+# rebuild and restart the site, check it's up).
+#
+# Off until you turn it on (deploy/README.md, step 10):
+#   Repo -> Settings -> Secrets and variables -> Actions
+#     Variables: VPS_DEPLOY_ENABLED = true
+#     Secrets:   VPS_HOST (server IP), VPS_SSH_KEY (private key for the mtg user)
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-vps
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: vars.VPS_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Deploy over SSH
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          ssh -o BatchMode=yes "mtg@$VPS_HOST" 'bash ~/maldivestour/deploy/scripts/deploy-app.sh'

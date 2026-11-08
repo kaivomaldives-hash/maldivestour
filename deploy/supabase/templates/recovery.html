@@ -1,0 +1,14 @@
+<!-- Password reset email. Uses Supabase's standard confirmation link, same as
+     the cloud default "Reset password" template. -->
+<div style="font-family: Arial, Helvetica, sans-serif; max-width: 560px; margin: 0 auto; color: #1f2937;">
+  <h2 style="color: #0b3b5c;">Reset your password</h2>
+  <p>We received a request to reset the password for your Maldives Tour Guide account.</p>
+  <p style="margin: 28px 0;">
+    <a href="{{ .ConfirmationURL }}"
+       style="background: #0284c7; color: #ffffff; padding: 12px 22px; border-radius: 999px; text-decoration: none; font-weight: bold;">
+      Reset my password
+    </a>
+  </p>
+  <p style="font-size: 13px; color: #6b7280;">If you didn't ask for this, you can ignore this email.</p>
+  <p style="font-size: 13px; color: #6b7280;">Maldives Tour Guide &middot; contact@maldivestour.guide</p>
+</div>

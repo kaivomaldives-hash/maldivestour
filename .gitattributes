@@ -1,0 +1,9 @@
+# Server scripts and config must keep Linux line endings, even when the
+# repo is edited on Windows.
+*.sh text eol=lf
+deploy/** text eol=lf
+.github/** text eol=lf
+*.docx binary
+*.png binary
+*.jpg binary
+*.webp binary

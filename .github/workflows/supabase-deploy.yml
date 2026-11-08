@@ -16,6 +16,10 @@ on:
 
 jobs:
   deploy:
+    # Turns itself off once the site moves to the VPS: setting the repo
+    # variable VPS_DEPLOY_ENABLED=true hands migrations to deploy-vps.yml,
+    # so cloud Supabase stops receiving them (deploy/README.md, step 10).
+    if: vars.VPS_DEPLOY_ENABLED != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

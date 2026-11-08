@@ -34,11 +34,15 @@ for _ in $(seq 1 60); do psql "$DB_URL" -tAc 'select 1' >/dev/null 2>&1 && break
 
 echo "==> Restoring database"
 WORK=$(mktemp -d)
-for f in roles schema data; do gunzip -c "$SRC/$f.sql.gz" > "$WORK/$f.sql"; done
+for f in roles schema data storage-policies; do
+  if [ -f "$SRC/$f.sql.gz" ]; then gunzip -c "$SRC/$f.sql.gz" > "$WORK/$f.sql"; else : > "$WORK/$f.sql"; fi
+done
+[ -s "$WORK/storage-policies.sql" ] || echo "WARNING: this backup has no storage policies; signed-in users may not see private files until they are re-created." >&2
 psql --single-transaction --variable ON_ERROR_STOP=1 \
   --file "$WORK/roles.sql" --file "$WORK/schema.sql" \
   --command 'SET session_replication_role = replica' \
-  --file "$WORK/data.sql" --dbname "$DB_URL" > "$WORK/restore.log" 2>&1 || {
+  --file "$WORK/data.sql" --file "$WORK/storage-policies.sql" \
+  --dbname "$DB_URL" > "$WORK/restore.log" 2>&1 || {
     echo "Restore FAILED. See $WORK/restore.log" >&2; tail -n 15 "$WORK/restore.log" >&2; exit 1; }
 rm -rf "$WORK"
 if [ -s "$SRC/migrations.txt" ]; then

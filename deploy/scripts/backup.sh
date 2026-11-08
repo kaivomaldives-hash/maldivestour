@@ -43,6 +43,9 @@ supabase db dump --remote="$DB_URL" -f "$DEST/data.sql" --use-copy --data-only
 # The dumps leave out Supabase's migration history; keep the list so a
 # restore can mark them as applied again.
 psql "$DB_URL" -tAc "select version from supabase_migrations.schema_migrations order by version" > "$DEST/migrations.txt"
+# The dumps also leave out the storage schema's policies (who may read and
+# upload files); keep them so a restore can put them back.
+psql "$DB_URL" -tA -f "$REPO_DIR/deploy/scripts/storage-policies.sql" > "$DEST/storage-policies.sql"
 # Stored files, exactly as Supabase keeps them on disk (matches the
 # storage.objects rows in data.sql).
 # Read through a throwaway container: the files are owned by the storage

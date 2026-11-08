@@ -58,6 +58,11 @@ echo "   leaving out data for: $EXCLUDE"
 supabase db dump --remote="$CLOUD_DB_URL" -f roles.sql --role-only
 supabase db dump --remote="$CLOUD_DB_URL" -f schema.sql
 supabase db dump --remote="$CLOUD_DB_URL" -f data.sql --use-copy --data-only --exclude "$EXCLUDE"
+# The dumps leave out the storage schema, and with it the policies that say
+# who may read and upload files in each bucket. Without them signed-in users
+# (admins included) get "Object not found" on private files.
+psql "$CLOUD_DB_URL" -tA -f "$REPO_DIR/deploy/scripts/storage-policies.sql" > storage-policies.sql
+echo "   $(grep -c . storage-policies.sql) storage policies"
 ls -lh roles.sql schema.sql data.sql
 
 echo "==> 2/5 Preparing data file"
@@ -94,6 +99,7 @@ psql \
   --file schema.sql \
   --command 'SET session_replication_role = replica' \
   --file data.sql \
+  --file storage-policies.sql \
   --dbname "$LOCAL_DB_URL" > restore.log 2>&1 || {
     echo "Restore FAILED — nothing was changed. Last lines of $WORK/restore.log:" >&2
     tail -n 15 restore.log >&2

@@ -97,7 +97,7 @@ export default async function AdminPartnerDetailPage({ params }: { params: Promi
           <section className="rounded-2xl border border-neutral-200 bg-white p-4">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Verification Documents</h2>
             <div className="mt-3">
-              <PartnerDocumentReviewList documents={partner.documents} />
+              <PartnerDocumentReviewList documents={partner.documents} partnerName={partner.businessName} />
             </div>
           </section>
 

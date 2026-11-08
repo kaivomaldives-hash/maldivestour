@@ -10,7 +10,25 @@ import {
   PARTNER_TERMS_LAST_UPDATED,
   PARTNER_TERMS_SECTIONS,
   PARTNER_TERMS_TITLE,
+  type PartnerTermsSection,
 } from "@/lib/legal/partner-terms";
+
+function SectionBody({ section }: { section: PartnerTermsSection }) {
+  return (
+    <>
+      {section.paragraphs?.map((p) => (
+        <p key={p}>{p}</p>
+      ))}
+      {section.bullets && (
+        <ul>
+          {section.bullets.map((b) => (
+            <li key={b}>{b}</li>
+          ))}
+        </ul>
+      )}
+    </>
+  );
+}
 
 /**
  * General Terms and Conditions for Partners — what listing businesses
@@ -44,17 +62,14 @@ export function PartnerTermsPage() {
           {PARTNER_TERMS_SECTIONS.map((section) => (
             <section key={section.heading}>
               <h2>{section.heading}</h2>
-              {section.paragraphs?.map((p) => (
-                <p key={p}>{p}</p>
+              <SectionBody section={section} />
+              {section.subsections?.map((sub) => (
+                <div key={sub.heading}>
+                  <h3>{sub.heading}</h3>
+                  <SectionBody section={sub} />
+                </div>
               ))}
-              {section.bullets && (
-                <ul>
-                  {section.bullets.map((b) => (
-                    <li key={b}>{b}</li>
-                  ))}
-                </ul>
-              )}
-              {section.heading.startsWith("6.") && (
+              {section.bankDetails && (
                 <>
                   <h3>MTG bank account for commission payments</h3>
                   <ul>

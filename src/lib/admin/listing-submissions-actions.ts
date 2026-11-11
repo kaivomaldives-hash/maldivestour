@@ -81,6 +81,47 @@ async function upsertBookableCommission(nodeId: string, commissionPercent: numbe
     .upsert({ id: nodeId, booking_mode: "inquiry", commission_percent: commissionPercent } as unknown as never, { onConflict: "id" });
 }
 
+/**
+ * Attaches the partner's uploaded photos to the approved listing: gallery
+ * images in the partner's order, and the first as the hero when the
+ * listing has none yet. Photos already attached (a resubmitted change
+ * that repeats them) are skipped. Only paths in this partner's own upload
+ * folder are accepted.
+ */
+async function attachSubmissionPhotos(nodeId: string, partnerId: string, photos: string[], title: string): Promise<string | null> {
+  const ownFolder = `opt/partner-uploads/${partnerId}/`;
+  const paths = photos.filter((p) => typeof p === "string" && p.startsWith(ownFolder) && !p.includes(".."));
+  if (paths.length === 0) return null;
+
+  const supabase = await createClient();
+  const { data: existingAssets } = await supabase
+    .from("node_media")
+    .select("role, sort_order, media_assets(storage_path)")
+    .eq("node_id", nodeId)
+    .returns<Array<{ role: string; sort_order: number; media_assets: { storage_path: string | null } | null }>>();
+  const attachedPaths = new Set((existingAssets ?? []).map((row) => row.media_assets?.storage_path).filter(Boolean));
+  const hasHero = (existingAssets ?? []).some((row) => row.role === "hero");
+  let nextGallerySort = Math.max(-1, ...(existingAssets ?? []).filter((row) => row.role === "gallery").map((row) => row.sort_order)) + 1;
+
+  const newPaths = paths.filter((p) => !attachedPaths.has(p));
+  for (const [index, storagePath] of newPaths.entries()) {
+    const { data: asset, error: assetError } = await supabase
+      .from("media_assets")
+      .insert({ media_type: "image", storage_path: storagePath, alt_text: title } as unknown as never)
+      .select("id")
+      .single<{ id: string }>();
+    if (assetError || !asset) return assetError?.message ?? "Couldn't save a listing photo.";
+
+    const links: Array<{ node_id: string; media_id: string; role: string; sort_order: number }> = [
+      { node_id: nodeId, media_id: asset.id, role: "gallery", sort_order: nextGallerySort++ },
+    ];
+    if (index === 0 && !hasHero) links.push({ node_id: nodeId, media_id: asset.id, role: "hero", sort_order: 0 });
+    const { error: linkError } = await supabase.from("node_media").insert(links as unknown as never);
+    if (linkError) return linkError.message;
+  }
+  return null;
+}
+
 export async function approveListingSubmission(submissionId: string): Promise<AdminActionResult> {
   const { userId } = await requireStaff();
   const submission = await getListingSubmissionByIdAdmin(submissionId);
@@ -260,6 +301,9 @@ export async function approveListingSubmission(submissionId: string): Promise<Ad
   }
 
   if (!resultNodeId) return { ok: false, error: "Something went wrong — no listing id was produced." };
+
+  const photoError = await attachSubmissionPhotos(resultNodeId, submission.partnerId, submission.payload.photos ?? [], submission.title);
+  if (photoError) return { ok: false, error: photoError };
 
   const { error: closeError } = await supabase
     .from("listing_submissions")

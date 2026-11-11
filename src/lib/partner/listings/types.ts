@@ -14,7 +14,7 @@ import type { SharedOrPrivate, TransferServiceStatus, TransferType } from "@/lib
 
 export type ListingNodeType = "accommodation" | "activity" | "package" | "transfer_route";
 export type ListingSubmissionKind = "create" | "update";
-export type ListingSubmissionStatus = "pending" | "approved" | "rejected";
+export type ListingSubmissionStatus = "draft" | "pending" | "approved" | "rejected";
 
 export interface PartnerRoomInput {
   name: string;
@@ -98,7 +98,21 @@ export interface TransferRouteListingPayload {
   service: TransferServicePayload;
 }
 
-export type ListingPayload = AccommodationListingPayload | ActivityListingPayload | PackageListingPayload | TransferRouteListingPayload;
+/** Photos the partner uploaded with the submission: storage paths in the
+ * public `media` bucket (opt/partner-uploads/<partner id>/...). The first
+ * is the cover photo. Approval attaches them to the listing. Optional so
+ * submissions made before photos existed still parse. */
+export interface ListingPhotos {
+  photos?: string[];
+}
+
+export type ListingPayload = (AccommodationListingPayload | ActivityListingPayload | PackageListingPayload | TransferRouteListingPayload) & ListingPhotos;
+
+/** A partner's unfinished listing: what the form needs to pick up where they left off. */
+export interface ListingDraftRef {
+  id: string | null;
+  photos: string[];
+}
 
 export const ACCOMMODATION_TYPES: { value: AccommodationType; label: string }[] = [
   { value: "resort", label: "Resort" },
@@ -157,6 +171,14 @@ export interface ListingSubmissionSummary {
   status: ListingSubmissionStatus;
   adminNote: string | null;
   createdAt: string;
+}
+
+export interface MyListingDraft {
+  id: string;
+  nodeType: ListingNodeType;
+  nodeId: string | null;
+  title: string;
+  updatedAt: string;
 }
 
 export interface MyListingItem {

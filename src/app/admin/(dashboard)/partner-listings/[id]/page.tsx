@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ListingSubmissionReviewForm } from "@/components/admin/listing-submission-review-form";
 import { requireStaff } from "@/lib/admin/auth";
 import { getListingSubmissionByIdAdmin } from "@/lib/admin/listing-submissions-repository";
+import { publicStorageUrl } from "@/lib/media/types";
 import type {
   AccommodationListingPayload,
   ActivityListingPayload,
@@ -46,6 +47,32 @@ export default async function AdminPartnerListingDetailPage({ params }: { params
             {submission.nodeType === "activity" && <ActivityFields payload={submission.payload as ActivityListingPayload} />}
             {submission.nodeType === "package" && <PackageFields payload={submission.payload as PackageListingPayload} />}
             {submission.nodeType === "transfer_route" && <TransferFields payload={submission.payload as TransferRouteListingPayload} />}
+          </section>
+
+          <section className="rounded-2xl border border-neutral-200 bg-white p-4">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Photos</h2>
+            {(submission.payload.photos ?? []).length === 0 ? (
+              <p className="mt-2 text-sm text-neutral-500">No photos uploaded.</p>
+            ) : (
+              <>
+                <p className="mt-1 text-xs text-neutral-500">Approving adds these to the listing&rsquo;s gallery; the first becomes the main photo if the listing has none.</p>
+                <ul className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {(submission.payload.photos ?? []).map((path, index) => {
+                    const url = publicStorageUrl(path);
+                    return (
+                      <li key={path} className="overflow-hidden rounded-xl border border-neutral-200">
+                        {url && (
+                          <a href={url} target="_blank" rel="noreferrer">
+                            {/* eslint-disable-next-line @next/next/no-img-element -- plain preview of an uploaded photo */}
+                            <img src={url} alt={`Photo ${index + 1}`} className="aspect-[4/3] w-full object-cover" />
+                          </a>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
+            )}
           </section>
         </div>
 

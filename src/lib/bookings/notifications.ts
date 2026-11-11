@@ -43,6 +43,8 @@ export interface BookingNotificationInput {
   children: number;
   specialRequests: string | null;
   estimatedPrice: number | null;
+  /** How the estimate was worked out, e.g. "2 people × USD 45 × 2 (round trip)". */
+  priceBreakdown?: string | null;
   currency: string;
   /** Set only for a node inquiry whose product is tagged to more than one
    * destination (e.g. Emperor's charters) — the customer's own picked
@@ -90,7 +92,10 @@ export async function sendBookingNotifications(input: BookingNotificationInput):
     const guestLine = `${input.adults} adult${input.adults === 1 ? "" : "s"}${
       input.children ? `, ${input.children} child${input.children === 1 ? "" : "ren"}` : ""
     }`;
-    const priceLine = input.estimatedPrice != null ? `Estimated price: ${input.currency} ${input.estimatedPrice}` : null;
+    const priceLine =
+      input.estimatedPrice != null
+        ? `Estimated total: ${escapeHtml(input.currency)} ${input.estimatedPrice}${input.priceBreakdown ? ` (${escapeHtml(input.priceBreakdown)})` : ""}`
+        : null;
 
     const customerHtml = `
       <p>Hi ${escapeHtml(input.customerName)},</p>

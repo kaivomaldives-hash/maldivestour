@@ -43,6 +43,10 @@ export function RequestBookingForm({
   const [isPending, startTransition] = useTransition();
   const [tripType, setTripType] = useState<"one_way" | "round_trip">("one_way");
   const [promoCode, setPromoCode] = useState("");
+  // Adults + children (infants travel free); matches the server's estimate.
+  const [people, setPeople] = useState(2);
+  const legs = tripType === "round_trip" ? 2 : 1;
+  const estimatedTotal = Math.round(price * people * legs * 100) / 100;
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState<{
     reference: string;
@@ -104,6 +108,12 @@ export function RequestBookingForm({
   return (
     <form
       className="space-y-4"
+      onChange={(event) => {
+        const data = new FormData(event.currentTarget);
+        const adults = Math.max(1, Math.floor(Number(data.get("adults")) || 1));
+        const children = Math.max(0, Math.floor(Number(data.get("children")) || 0));
+        setPeople(adults + children);
+      }}
       onSubmit={(event) => {
         event.preventDefault();
         setError(null);
@@ -228,7 +238,14 @@ export function RequestBookingForm({
 
       <div className="flex items-center justify-between gap-4 border-t border-neutral-200 pt-4">
         <p className="text-sm text-neutral-600">
-          From {currency} <span className="font-semibold text-ocean-900">{price}</span> per person
+          {currency} {price} per person{legs === 2 ? " each way" : ""}
+          <br />
+          Estimated total: <span className="font-semibold text-ocean-900">{currency} {estimatedTotal}</span>
+          <span className="text-xs text-neutral-500">
+            {" "}
+            ({people} {people === 1 ? "person" : "people"}
+            {legs === 2 ? ", round trip" : ""})
+          </span>
         </p>
         <Button type="submit" disabled={isPending}>
           {isPending ? "Sending…" : "Request Transfer"}

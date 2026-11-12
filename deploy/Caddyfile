@@ -1,0 +1,41 @@
+# Caddy gets and renews free HTTPS certificates automatically.
+# Domains come from deploy/.env (SITE_DOMAIN, API_DOMAIN, ACME_EMAIL).
+{
+	email {$ACME_EMAIL}
+}
+
+# Main website. www redirects to the bare domain.
+www.{$SITE_DOMAIN} {
+	redir https://{$SITE_DOMAIN}{uri} permanent
+}
+
+{$SITE_DOMAIN} {
+	encode zstd gzip
+	# Partner document uploads can be up to 10 MB (next.config.ts).
+	request_body {
+		max_size 12MB
+	}
+	reverse_proxy 127.0.0.1:3000
+}
+
+# Preview address for testing the VPS before the main domain is switched
+# (and any time after). Same site, hidden from search engines.
+{$PREVIEW_DOMAIN} {
+	encode zstd gzip
+	header X-Robots-Tag "noindex, nofollow"
+	request_body {
+		max_size 12MB
+	}
+	reverse_proxy 127.0.0.1:3000
+}
+
+# Self-hosted Supabase: API for the website, plus the Studio dashboard
+# (Studio is password-protected by the Supabase gateway itself, using
+# DASHBOARD_USERNAME / DASHBOARD_PASSWORD from the Supabase .env).
+{$API_DOMAIN} {
+	encode zstd gzip
+	request_body {
+		max_size 60MB
+	}
+	reverse_proxy 127.0.0.1:8000
+}

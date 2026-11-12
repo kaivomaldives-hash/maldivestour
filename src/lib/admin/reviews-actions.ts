@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 
 import { requireStaff } from "@/lib/admin/auth";
 import { REVIEW_STATUSES, type ReviewStatus } from "@/lib/admin/reviews-repository";
@@ -33,5 +33,10 @@ export async function updateReviewStatus(id: string, status: string): Promise<Ad
 
   revalidatePath("/admin/reviews");
   revalidatePath("/admin");
+  // Show (or hide) the review on the public page straight away: refresh
+  // the cached review lists and the pre-built pages that show them.
+  // Approvals are rare, so refreshing every page is fine.
+  updateTag("reviews-for-node");
+  revalidatePath("/", "layout");
   return { ok: true };
 }

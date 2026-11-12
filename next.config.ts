@@ -116,7 +116,25 @@ function buildHubRedirects() {
   return rules;
 }
 
+/** Self-hosted Supabase Storage host (e.g. api.maldivestour.guide), read
+ * from the same env var the app uses at runtime. Added to images.remotePatterns
+ * next to the *.supabase.co cloud pattern, so images work on both. */
+function selfHostedStoragePattern() {
+  const raw = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!raw) return [];
+  try {
+    const url = new URL(raw);
+    if (url.hostname.endsWith(".supabase.co")) return [];
+    return [{ protocol: url.protocol.replace(":", "") as "http" | "https", hostname: url.hostname, pathname: "/storage/v1/object/public/**" }];
+  } catch {
+    return [];
+  }
+}
+
 const nextConfig: NextConfig = {
+  // VPS/Docker builds (deploy/app/Dockerfile sets BUILD_STANDALONE=1) get
+  // Next's self-contained server bundle; Vercel builds are unchanged.
+  output: process.env.BUILD_STANDALONE === "1" ? "standalone" : undefined,
   // Every canonical URL (src/lib/seo/site.ts's canonicalUrl()), every
   // internal <Link href>, and every url_redirects.target_path sitewide
   // already uses a trailing slash — but Next's own unconfigured default
@@ -217,6 +235,7 @@ const nextConfig: NextConfig = {
         hostname: "*.supabase.co",
         pathname: "/storage/v1/object/public/**",
       },
+      ...selfHostedStoragePattern(),
     ],
   },
 };

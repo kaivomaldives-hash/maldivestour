@@ -49,7 +49,8 @@ export async function getListingSubmissionsAdmin(filters: { status?: ListingSubm
     .from("listing_submissions")
     .select("id, partner_id, node_type, submission_kind, title, status, created_at, partner_accounts(business_name)", { count: "exact" })
     .order("created_at", { ascending: false });
-  if (filters.status) query = query.eq("status", filters.status);
+  // Partners' unfinished drafts are theirs alone; the queue never shows them.
+  query = filters.status ? query.eq("status", filters.status) : query.neq("status", "draft");
 
   const { data, error, count } = await query.range(from, to).returns<SubmissionListRow[]>();
   if (error || !data) return { items: [], total: 0, page, pageSize: PAGE_SIZE };

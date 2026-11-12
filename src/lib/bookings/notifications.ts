@@ -1,6 +1,7 @@
 import "server-only";
 
 import { activityHref, type ActivityCategory } from "@/lib/activities/types";
+import { renderEmailTemplate } from "@/lib/email-templates/repository";
 import { escapeHtml, getAdminNotificationEmail, sendResendEmail, type DeliveryResult } from "@/lib/notifications/email";
 import { getSiteUrl } from "@/lib/seo/site";
 import { FISHING_SOCIAL_LINKS, MTG_SOCIAL_LINKS } from "@/lib/social-links";
@@ -43,6 +44,8 @@ export interface BookingNotificationInput {
   children: number;
   specialRequests: string | null;
   estimatedPrice: number | null;
+  /** How the estimate was worked out, e.g. "2 people × USD 45 × 2 (round trip)". */
+  priceBreakdown?: string | null;
   currency: string;
   /** Set only for a node inquiry whose product is tagged to more than one
    * destination (e.g. Emperor's charters) — the customer's own picked
@@ -52,7 +55,16 @@ export interface BookingNotificationInput {
 }
 
 const SITE_NAME = "Maldives Tour Guide (MTG)";
-const WHATSAPP_NUMBER = "9607794332";
+
+/** The customer values every booking email template can use. */
+function customerTextValues(customerName: string, bookingReference: string, productTitle: string): Record<string, string> {
+  return {
+    customer_name: customerName,
+    customer_first_name: customerName.trim().split(/\s+/)[0] || customerName,
+    booking_reference: bookingReference,
+    product: productTitle,
+  };
+}
 
 async function sendTelegramMessage(text: string): Promise<DeliveryResult> {
   const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -90,20 +102,23 @@ export async function sendBookingNotifications(input: BookingNotificationInput):
     const guestLine = `${input.adults} adult${input.adults === 1 ? "" : "s"}${
       input.children ? `, ${input.children} child${input.children === 1 ? "" : "ren"}` : ""
     }`;
-    const priceLine = input.estimatedPrice != null ? `Estimated price: ${input.currency} ${input.estimatedPrice}` : null;
+    const priceLine =
+      input.estimatedPrice != null
+        ? `Estimated total: ${escapeHtml(input.currency)} ${input.estimatedPrice}${input.priceBreakdown ? ` (${escapeHtml(input.priceBreakdown)})` : ""}`
+        : null;
 
-    const customerHtml = `
-      <p>Hi ${escapeHtml(input.customerName)},</p>
-      <p>We've received your booking request. Our team will review availability and follow up shortly — this is a request, not a confirmed booking yet.</p>
+    const customerEmail = await renderEmailTemplate("booking_received", {
+      text: customerTextValues(input.customerName, input.bookingReference, input.productTitle),
+      html: {
+        booking_details: `
       <p><strong>Reference:</strong> ${escapeHtml(input.bookingReference)}<br/>
       <strong>Product:</strong> ${escapeHtml(input.productTitle)}<br/>
       ${dateLine}<br/>
       <strong>Guests:</strong> ${guestLine}</p>
       ${priceLine ? `<p>${priceLine}</p>` : ""}
-      ${input.specialRequests ? `<p><strong>Your notes:</strong> ${escapeHtml(input.specialRequests)}</p>` : ""}
-      <p>Questions in the meantime? WhatsApp us on +${WHATSAPP_NUMBER}.</p>
-      <p>— ${SITE_NAME}</p>
-    `;
+      ${input.specialRequests ? `<p><strong>Your notes:</strong> ${escapeHtml(input.specialRequests)}</p>` : ""}`,
+      },
+    });
 
     const adminHtml = `
       <p>New booking inquiry (${escapeHtml(input.source)}).</p>
@@ -139,7 +154,7 @@ export async function sendBookingNotifications(input: BookingNotificationInput):
       .join("\n");
 
     const [customerResult, adminResult, telegramResult] = await Promise.all([
-      sendResendEmail(input.customerEmail, `Booking request received — ${input.bookingReference}`, customerHtml),
+      sendResendEmail(input.customerEmail, customerEmail.subject, customerEmail.html),
       sendResendEmail(adminEmail, `New booking inquiry — ${input.bookingReference}`, adminHtml),
       sendTelegramMessage(telegramText),
     ]);
@@ -235,7 +250,7 @@ export interface BookingConfirmedEmailInput {
   travelTime: string | null;
   /**
    * Transfer bookings get a detailed boat/captain/meeting-point email
-   * instead of the generic one below -- see buildTransferConfirmationHtml().
+   * instead of the generic one below -- see transferConfirmationSections().
    * Used only when source === 'transfer' and the admin has filled in at
    * least the outbound boat name (src/lib/admin/bookings-actions.ts decides
    * this before calling in). Every field here is staff-entered per booking
@@ -273,25 +288,9 @@ function boatDetailLines(boat: TransferBoatDetails): string {
     .join("\n      ");
 }
 
-const TRANSFER_MEETING_POINTS_HTML = `
-  <h3 style="margin-bottom:4px">How to find us?</h3>
-  <p><strong>Meeting point 1:</strong> Our guide will wait for you at the arrival gate with our signboard (Maldives Tour Guide) as on the logo. It will be a crowded area and there will be lots of signboards so if you cannot locate our guide then kindly move to meeting point 2.<br/>
-  <strong>Meeting point 2:</strong> the Airport Help desk situated on the left of the arrival exit. Here you can make a free call to us from the desk (+${WHATSAPP_NUMBER}).<br/>
-  <strong>Meeting point 3:</strong> Airport Counter C8.<br/>
-  You can also find the Hotel staff with their signboard — they will help you contact us, or ask your hotel staff to contact us directly.</p>
-`;
-
-const TRANSFER_WEATHER_NOTE_HTML = `
-  <p style="font-size:13px;color:#555">
-  <strong>Note:</strong> We do not accept card payments on the boat. Speedboat transfers are weather-dependent trips, especially on our 24-foot boats.
-  May through October is the rainy season, and inclement weather is frequent during this time — weather can change suddenly and forecasts aren't always accurate.
-  Before traveling, please check the weather on the Maldives Meteorological Service's website and follow them for updates. We will not operate a scheduled transfer if the center issues a weather alert for that period.
-  </p>
-  <p style="font-size:13px;color:#555">Please read our <a href="https://maldivestour.guide/terms-and-conditions/transfers/">transfer terms and conditions</a>.</p>
-`;
-
-function buildTransferConfirmationHtml(input: BookingConfirmedEmailInput): string {
-  const firstName = input.customerName.trim().split(/\s+/)[0] || input.customerName;
+/** The trip and payment sections of the transfer confirmation email
+ * (template "transfer_confirmed"; the rest of its wording is editable). */
+function transferConfirmationSections(input: BookingConfirmedEmailInput): { trip_details: string; payment: string } {
   const routeTitle =
     input.originTitle && input.destinationTitle ? `${input.originTitle} to ${input.destinationTitle}` : input.productTitle;
 
@@ -310,31 +309,13 @@ function buildTransferConfirmationHtml(input: BookingConfirmedEmailInput): strin
   `
       : "";
 
-  const paymentHtml = input.paymentNote
+  const payment = input.paymentNote
     ? `<p>${escapeHtml(input.paymentNote).replace(/\n/g, "<br/>")}</p>`
     : input.quotedPrice != null
       ? `<p>Your total for this transfer is ${escapeHtml(input.currency ?? "USD")} ${input.quotedPrice}.</p>`
       : "";
 
-  return `
-    <p>Dear ${escapeHtml(firstName)},</p>
-    <p>Your booking is confirmed as below.</p>
-    ${outboundSection}
-    ${returnSection}
-    ${TRANSFER_MEETING_POINTS_HTML}
-    <h3 style="margin-bottom:4px">Payment</h3>
-    ${paymentHtml}
-    ${TRANSFER_WEATHER_NOTE_HTML}
-    <p>If you wish to change the timings or you have any questions, please do not hesitate to contact us — we wish you a safe journey.</p>
-    <p>For reservations or to change the time, please contact the reservation team by email: contact@maldivestour.guide or WhatsApp: +${WHATSAPP_NUMBER}.</p>
-    <p>Thank you, and we wish you a safe journey.<br/>Reservation Team</p>
-    <p style="font-size:13px;color:#555">
-    +${WHATSAPP_NUMBER}<br/>
-    contact@maldivestour.guide<br/>
-    <a href="https://maldivestour.guide/">https://maldivestour.guide/</a><br/>
-    Andhaleebuge, GA. Maamendhoo, Maldives
-    </p>
-  `;
+  return { trip_details: outboundSection + returnSection, payment };
 }
 
 /**
@@ -359,23 +340,24 @@ export async function sendBookingConfirmedEmail(input: BookingConfirmedEmailInpu
     const isTransferConfirmation = input.source === "transfer" && Boolean(input.outboundBoat?.boatName);
 
     const dateLine = input.travelDate ? `${input.travelDate}${input.travelTime ? ` at ${input.travelTime}` : ""}` : "To be confirmed with our team";
+    const text = customerTextValues(input.customerName, input.bookingReference, input.productTitle);
 
-    const html = isTransferConfirmation
-      ? buildTransferConfirmationHtml(input)
-      : `
-      <p>Hi ${escapeHtml(input.customerName)},</p>
-      <p>Good news — your booking is now <strong>confirmed</strong>.</p>
+    const email = isTransferConfirmation
+      ? await renderEmailTemplate("transfer_confirmed", { text, html: transferConfirmationSections(input) })
+      : await renderEmailTemplate("booking_confirmed", {
+          text,
+          html: {
+            booking_details: `
       <p><strong>Reference:</strong> ${escapeHtml(input.bookingReference)}<br/>
       <strong>Booking:</strong> ${escapeHtml(input.productTitle)}<br/>
       ${input.originTitle ? `<strong>Pickup location:</strong> ${escapeHtml(input.originTitle)}<br/>` : ""}
       ${input.destinationTitle ? `<strong>Drop-off location:</strong> ${escapeHtml(input.destinationTitle)}<br/>` : ""}
-      <strong>Date/time:</strong> ${dateLine}<br/>
-      <strong>Status:</strong> Confirmed</p>
-      <p>Questions in the meantime? WhatsApp us on +${WHATSAPP_NUMBER} or reply to this email.</p>
-      <p>— ${SITE_NAME}</p>
-    `;
+      <strong>Date/time:</strong> ${escapeHtml(dateLine)}<br/>
+      <strong>Status:</strong> Confirmed</p>`,
+          },
+        });
 
-    const result = await sendResendEmail(input.customerEmail, `Booking confirmed — ${input.bookingReference}`, html);
+    const result = await sendResendEmail(input.customerEmail, email.subject, email.html);
     const nowIso = new Date().toISOString();
 
     const { error: insertError } = await admin.from("booking_notifications").insert({
@@ -462,10 +444,9 @@ export interface BookingThankYouEmailInput {
   source: string | null;
 }
 
-function buildThankYouHtml(input: BookingThankYouEmailInput, reviewPage: { url: string; title: string } | null): string {
-  const firstName = input.customerName.trim().split(/\s+/)[0] || input.customerName;
-  const isFishing = input.source === "fishing";
-  const brand = isFishing ? "Maldives Fishing" : SITE_NAME;
+/** The review buttons and social icons of the thank-you email (template
+ * "booking_thank_you"; the rest of its wording is editable). */
+function thankYouSections(isFishing: boolean, reviewPage: { url: string; title: string } | null): { review_buttons: string; social_icons: string } {
   const socials = isFishing ? FISHING_SOCIAL_LINKS : MTG_SOCIAL_LINKS;
   const button = (href: string, label: string, color: string) =>
     `<a href="${escapeHtml(href)}" style="display:inline-block;margin:4px 8px 4px 0;padding:12px 20px;border-radius:999px;background:${color};color:#ffffff;font-weight:600;text-decoration:none">${label}</a>`;
@@ -477,22 +458,10 @@ function buildThankYouHtml(input: BookingThankYouEmailInput, reviewPage: { url: 
     )
     .join("");
 
-  return `
-    <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#0a2e42;max-width:560px">
-      <p>Dear ${escapeHtml(firstName)},</p>
-      <p>Thank you for travelling with us! We hope you enjoyed your ${escapeHtml(input.productTitle)} (booking ${escapeHtml(input.bookingReference)}) and that everything went smoothly.</p>
-      <p>Your feedback helps us improve and helps other travellers plan their trip. Could you spare a minute to tell us how it went?</p>
-      <p>
-        ${reviewPage ? button(reviewPage.url, "Review your trip on our website", "#0e7aa4") : ""}
-        ${button(GOOGLE_REVIEW_URL, "Leave a Google review", "#1a73e8")}
-      </p>
-      <p>Follow ${escapeHtml(brand)} for Maldives tips, photos and special offers:</p>
-      <p>${icons}</p>
-      <p>We'd love to welcome you back. Questions or plans for your next trip? WhatsApp us on +${WHATSAPP_NUMBER} or reply to this email.</p>
-      <p>Warm regards,<br/>${escapeHtml(brand)}<br/>
-      <a href="${getSiteUrl()}/" style="color:#0e7aa4">${getSiteUrl().replace(/^https?:\/\//, "")}</a></p>
-    </div>
-  `;
+  return {
+    review_buttons: `<p>${reviewPage ? button(reviewPage.url, "Review your trip on our website", "#0e7aa4") : ""}${button(GOOGLE_REVIEW_URL, "Leave a Google review", "#1a73e8")}</p>`,
+    social_icons: `<p>${icons}</p>`,
+  };
 }
 
 /**
@@ -510,12 +479,12 @@ export async function sendBookingThankYouEmail(input: BookingThankYouEmailInput)
     const [adminEmail, reviewPage] = await Promise.all([getAdminNotificationEmail(admin), reviewPageUrl(admin, input.bookingId)]);
     const cc = adminEmail.toLowerCase() === input.customerEmail.toLowerCase() ? [] : [adminEmail];
 
-    const result = await sendResendEmail(
-      input.customerEmail,
-      `Thank you for travelling with us — ${input.bookingReference}`,
-      buildThankYouHtml(input, reviewPage),
-      { cc },
-    );
+    const isFishing = input.source === "fishing";
+    const email = await renderEmailTemplate("booking_thank_you", {
+      text: { ...customerTextValues(input.customerName, input.bookingReference, input.productTitle), brand: isFishing ? "Maldives Fishing" : SITE_NAME },
+      html: thankYouSections(isFishing, reviewPage),
+    });
+    const result = await sendResendEmail(input.customerEmail, email.subject, email.html, { cc });
     const nowIso = new Date().toISOString();
 
     const { error: insertError } = await admin.from("booking_notifications").insert({

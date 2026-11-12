@@ -97,6 +97,31 @@ export interface TransferBookingInquiryInput {
   honeypot?: string;
 }
 
+/**
+ * Transfer prices are per person, one way. The estimate is that price ×
+ * every paying guest (adults and children; infants travel free), doubled
+ * for a round trip. The price comes from the database, not the browser.
+ */
+async function estimateTransferTotal(
+  transferServiceId: string,
+  adults: number,
+  children: number,
+  tripType: "one_way" | "round_trip",
+  fallbackCurrency: string,
+): Promise<{ total: number | null; currency: string; breakdown: string | null }> {
+  const supabase = await createClient();
+  const { data } = await supabase.from("transfer_services").select("price, currency").eq("id", transferServiceId).maybeSingle<{ price: number | string | null; currency: string | null }>();
+  const perPerson = Number(data?.price);
+  const currency = data?.currency || fallbackCurrency || "USD";
+  if (!Number.isFinite(perPerson) || perPerson <= 0) return { total: null, currency, breakdown: null };
+
+  const people = adults + children;
+  const legs = tripType === "round_trip" ? 2 : 1;
+  const total = Math.round(perPerson * people * legs * 100) / 100;
+  const breakdown = `${people} ${people === 1 ? "person" : "people"} × ${currency} ${perPerson}${legs === 2 ? " × 2 (round trip)" : ""}`;
+  return { total, currency, breakdown };
+}
+
 export interface TransferBookingInquiryResult {
   ok: boolean;
   bookingReference?: string;
@@ -120,6 +145,10 @@ export async function createTransferBookingInquiry(
   if (input.tripType === "round_trip" && !input.returnDate) {
     return { ok: false, error: "Please choose a return date for a round trip." };
   }
+
+  const adults = Math.max(1, Math.floor(Number(input.adults) || 1));
+  const children = Math.max(0, Math.floor(Number(input.children) || 0));
+  const estimate = await estimateTransferTotal(input.transferServiceId, adults, children, input.tripType, input.currency);
 
   // src/types/database.ts is a placeholder (`Functions: Record<string,
   // never>`, see its own header comment — this Supabase project's types
@@ -145,13 +174,13 @@ export async function createTransferBookingInquiry(
     p_return_date: input.returnDate || null,
     p_return_time: input.returnTime || null,
     p_trip_type: input.tripType,
-    p_adults: input.adults,
-    p_children: input.children,
+    p_adults: adults,
+    p_children: children,
     p_infants: input.infants,
     p_flight_number: input.flightNumber?.trim() || null,
     p_special_requests: input.specialRequests?.trim() || null,
-    p_estimated_price: input.estimatedPrice,
-    p_currency: input.currency,
+    p_estimated_price: estimate.total,
+    p_currency: estimate.currency,
     p_source: "transfer" satisfies BookingSource,
     p_promo_code: input.promoCode?.trim() || null,
   };
@@ -171,11 +200,12 @@ export async function createTransferBookingInquiry(
     customerPhone: input.customerPhone.trim() || null,
     nationality,
     requestedDate: input.travelDate,
-    adults: input.adults,
-    children: input.children,
+    adults,
+    children,
     specialRequests: input.specialRequests?.trim() || null,
-    estimatedPrice: input.estimatedPrice,
-    currency: input.currency,
+    estimatedPrice: estimate.total,
+    priceBreakdown: estimate.breakdown,
+    currency: estimate.currency,
   });
 
   return { ok: true, bookingReference: data.booking_reference };

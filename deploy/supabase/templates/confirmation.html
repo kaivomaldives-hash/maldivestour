@@ -1,0 +1,18 @@
+<!-- Signup confirmation email. {{ .RedirectTo }} is the emailRedirectTo the
+     signup form sends, e.g. https://maldivestour.guide/auth/confirm?next=/partner,
+     so the token is appended with "&". It must match ADDITIONAL_REDIRECT_URLS
+     in the Supabase .env, or Supabase swaps it for the bare Site URL.
+     If your Supabase cloud dashboard (Authentication -> Emails) has a custom
+     "Confirm signup" template, paste its wording here, keeping this link. -->
+<div style="font-family: Arial, Helvetica, sans-serif; max-width: 560px; margin: 0 auto; color: #1f2937;">
+  <h2 style="color: #0b3b5c;">Confirm your email</h2>
+  <p>Thanks for signing up with Maldives Tour Guide. Please confirm your email address to finish creating your account.</p>
+  <p style="margin: 28px 0;">
+    <a href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email"
+       style="background: #0284c7; color: #ffffff; padding: 12px 22px; border-radius: 999px; text-decoration: none; font-weight: bold;">
+      Confirm my email
+    </a>
+  </p>
+  <p style="font-size: 13px; color: #6b7280;">If you didn't create an account, you can ignore this email.</p>
+  <p style="font-size: 13px; color: #6b7280;">Maldives Tour Guide &middot; contact@maldivestour.guide</p>
+</div>

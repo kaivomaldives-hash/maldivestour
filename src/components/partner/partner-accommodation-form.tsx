@@ -1,14 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useId, useState, useTransition } from "react";
+import { useCallback, useId, useState } from "react";
 
 import { CommissionPercentField } from "@/components/partner/commission-percent-field";
+import { ListingFormShell } from "@/components/partner/listing-form-shell";
 import { PartnerLocationPicker } from "@/components/partner/partner-location-picker";
-import { Button } from "@/components/ui/button";
 import type { PartnerLocationOption } from "@/lib/partner/location-search-actions";
-import { submitListing } from "@/lib/partner/listings/actions";
-import { ACCOMMODATION_TYPES, PRICE_TIERS, type AccommodationListingPayload, type PartnerRoomInput } from "@/lib/partner/listings/types";
+import { ACCOMMODATION_TYPES, PRICE_TIERS, type AccommodationListingPayload, type ListingDraftRef, type PartnerRoomInput } from "@/lib/partner/listings/types";
 
 const INPUT_CLASS =
   "min-touch-target w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1";
@@ -19,56 +17,52 @@ export function PartnerAccommodationForm({
   nodeId,
   initial,
   initialLocation,
+  draft = null,
+  canSubmit = true,
 }: {
   nodeId: string | null;
   initial: AccommodationListingPayload | null;
   initialLocation: PartnerLocationOption | null;
+  draft?: ListingDraftRef | null;
+  canSubmit?: boolean;
 }) {
   const roomNameHeaderId = useId();
   const roomPriceHeaderId = useId();
   const roomBedTypeHeaderId = useId();
   const roomMaxOccupancyHeaderId = useId();
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
   const [location, setLocation] = useState<PartnerLocationOption | null>(initialLocation);
   const [rooms, setRooms] = useState<PartnerRoomInput[]>(initial?.rooms.length ? initial.rooms : [{ ...EMPTY_ROOM }]);
 
+  const buildPayload = useCallback(
+    (data: FormData): AccommodationListingPayload => ({
+      title: String(data.get("title") ?? ""),
+      summary: String(data.get("summary") ?? "") || null,
+      accommodationType: String(data.get("accommodationType") ?? "resort") as AccommodationListingPayload["accommodationType"],
+      starRating: Number(data.get("starRating")) || null,
+      priceTier: (String(data.get("priceTier") ?? "") || null) as AccommodationListingPayload["priceTier"],
+      roomCount: Number(data.get("roomCount")) || null,
+      allInclusive: data.get("allInclusive") === "on",
+      overwaterVillas: data.get("overwaterVillas") === "on",
+      checkInTime: String(data.get("checkInTime") ?? "") || null,
+      checkOutTime: String(data.get("checkOutTime") ?? "") || null,
+      currency: String(data.get("currency") ?? "USD") || "USD",
+      priceFrom: Number(data.get("priceFrom")) || null,
+      locationId: location?.id ?? null,
+      rooms: rooms.filter((r) => r.name.trim().length > 0),
+      commissionPercent: Number(data.get("commissionPercent")) || 15,
+    }),
+    [location, rooms],
+  );
+
   return (
-    <form
+    <ListingFormShell
+      nodeType="accommodation"
+      nodeId={nodeId}
+      draft={draft}
+      canSubmit={canSubmit}
+      buildPayload={buildPayload}
+      watch={[location?.id, rooms]}
       className="space-y-6"
-      onSubmit={(event) => {
-        event.preventDefault();
-        setError(null);
-        const data = new FormData(event.currentTarget);
-
-        const payload: AccommodationListingPayload = {
-          title: String(data.get("title") ?? ""),
-          summary: String(data.get("summary") ?? "") || null,
-          accommodationType: String(data.get("accommodationType") ?? "resort") as AccommodationListingPayload["accommodationType"],
-          starRating: Number(data.get("starRating")) || null,
-          priceTier: (String(data.get("priceTier") ?? "") || null) as AccommodationListingPayload["priceTier"],
-          roomCount: Number(data.get("roomCount")) || null,
-          allInclusive: data.get("allInclusive") === "on",
-          overwaterVillas: data.get("overwaterVillas") === "on",
-          checkInTime: String(data.get("checkInTime") ?? "") || null,
-          checkOutTime: String(data.get("checkOutTime") ?? "") || null,
-          currency: String(data.get("currency") ?? "USD") || "USD",
-          priceFrom: Number(data.get("priceFrom")) || null,
-          locationId: location?.id ?? null,
-          rooms: rooms.filter((r) => r.name.trim().length > 0),
-          commissionPercent: Number(data.get("commissionPercent")) || 15,
-        };
-
-        startTransition(async () => {
-          const result = await submitListing({ nodeType: "accommodation", submissionKind: nodeId ? "update" : "create", nodeId, payload });
-          if (!result.ok) {
-            setError(result.error ?? "Something went wrong. Please try again.");
-            return;
-          }
-          router.push("/partner/listings");
-        });
-      }}
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <label className="block text-sm sm:col-span-2">
@@ -215,22 +209,6 @@ export function PartnerAccommodationForm({
       </div>
 
       <CommissionPercentField defaultValue={initial?.commissionPercent ?? null} />
-
-      <p className="text-xs text-neutral-500">
-        Photos aren&rsquo;t part of this form yet — our team will add gallery images for your property once it&rsquo;s approved.
-      </p>
-
-      {error && (
-        <p role="alert" className="text-sm text-red-600">
-          {error}
-        </p>
-      )}
-
-      <div className="flex items-center justify-end gap-4 border-t border-neutral-200 pt-4">
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Submitting…" : nodeId ? "Submit Changes for Review" : "Submit for Review"}
-        </Button>
-      </div>
-    </form>
+    </ListingFormShell>
   );
 }

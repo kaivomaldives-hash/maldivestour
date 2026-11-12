@@ -5,9 +5,11 @@ import type {
   AccommodationListingPayload,
   ActivityListingPayload,
   ListingNodeType,
+  ListingPayload,
   ListingSubmissionKind,
   ListingSubmissionStatus,
   ListingSubmissionSummary,
+  MyListingDraft,
   MyListingItem,
   PackageListingPayload,
   TransferRouteListingPayload,
@@ -69,6 +71,7 @@ export async function getMyListingSubmissions(): Promise<ListingSubmissionSummar
     .from("listing_submissions")
     .select("id, node_type, submission_kind, title, status, admin_note, created_at")
     .eq("partner_id", user.id)
+    .neq("status", "draft")
     .order("created_at", { ascending: false })
     .returns<SubmissionRow[]>();
   if (error || !data) return [];
@@ -82,6 +85,89 @@ export async function getMyListingSubmissions(): Promise<ListingSubmissionSummar
     adminNote: row.admin_note,
     createdAt: row.created_at,
   }));
+}
+
+interface DraftRow {
+  id: string;
+  node_type: ListingNodeType;
+  node_id: string | null;
+  title: string;
+  updated_at: string;
+}
+
+/** The partner's unfinished listings, newest first. */
+export async function getMyListingDrafts(): Promise<MyListingDraft[]> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return [];
+
+  const { data, error } = await supabase
+    .from("listing_submissions")
+    .select("id, node_type, node_id, title, updated_at")
+    .eq("partner_id", user.id)
+    .eq("status", "draft")
+    .order("updated_at", { ascending: false })
+    .returns<DraftRow[]>();
+  if (error || !data) return [];
+  return data.map((row) => ({ id: row.id, nodeType: row.node_type, nodeId: row.node_id, title: row.title, updatedAt: row.updated_at }));
+}
+
+export interface MySubmissionForEdit {
+  id: string;
+  status: ListingSubmissionStatus;
+  nodeType: ListingNodeType;
+  nodeId: string | null;
+  submissionKind: ListingSubmissionKind;
+  payload: ListingPayload;
+}
+
+/** One of the partner's own submissions with its full payload: a draft to
+ * pick up again, or any submission to copy into a new draft. */
+export async function getMySubmissionForEdit(submissionId: string): Promise<MySubmissionForEdit | null> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+
+  const { data } = await supabase
+    .from("listing_submissions")
+    .select("id, status, node_type, node_id, submission_kind, payload, partner_id")
+    .eq("id", submissionId)
+    .maybeSingle<{
+      id: string;
+      status: ListingSubmissionStatus;
+      node_type: ListingNodeType;
+      node_id: string | null;
+      submission_kind: ListingSubmissionKind;
+      payload: ListingPayload;
+      partner_id: string;
+    }>();
+  if (!data || data.partner_id !== user.id) return null;
+  return { id: data.id, status: data.status, nodeType: data.node_type, nodeId: data.node_id, submissionKind: data.submission_kind, payload: data.payload };
+}
+
+/** The partner's open draft of changes to one of their live listings, if
+ * any, so the edit page continues it instead of starting a second one. */
+export async function getMyDraftForNode(nodeId: string): Promise<MySubmissionForEdit | null> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+
+  const { data } = await supabase
+    .from("listing_submissions")
+    .select("id")
+    .eq("partner_id", user.id)
+    .eq("node_id", nodeId)
+    .eq("status", "draft")
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .maybeSingle<{ id: string }>();
+  return data ? getMySubmissionForEdit(data.id) : null;
 }
 
 /** Resolves which editor a given listing needs by its own real node_type
@@ -358,4 +444,20 @@ export async function getTransferRouteForEdit(nodeId: string): Promise<TransferR
           commissionPercent: 15,
         },
   };
+}
+
+/** The live values of one of the partner's own listings, whatever its
+ * type: for the edit page and for "Duplicate". */
+export async function getMyListingPayload(nodeId: string): Promise<{ nodeType: ListingNodeType; payload: ListingPayload } | null> {
+  const nodeType = await getListingNodeTypeForEdit(nodeId);
+  if (!nodeType) return null;
+  const payload =
+    nodeType === "accommodation"
+      ? await getAccommodationForEdit(nodeId)
+      : nodeType === "activity"
+        ? await getActivityForEdit(nodeId)
+        : nodeType === "package"
+          ? await getPackageForEdit(nodeId)
+          : await getTransferRouteForEdit(nodeId);
+  return payload ? { nodeType, payload } : null;
 }

@@ -1,88 +1,82 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useCallback, useState } from "react";
 
 import { CommissionPercentField } from "@/components/partner/commission-percent-field";
+import { ListingFormShell } from "@/components/partner/listing-form-shell";
 import { PartnerLocationPicker } from "@/components/partner/partner-location-picker";
-import { Button } from "@/components/ui/button";
 import type { PartnerLocationOption } from "@/lib/partner/location-search-actions";
-import { submitListing } from "@/lib/partner/listings/actions";
-import { SHARED_OR_PRIVATE, TRANSFER_TYPES, type TransferRouteListingPayload } from "@/lib/partner/listings/types";
+import { SHARED_OR_PRIVATE, TRANSFER_TYPES, type ListingDraftRef, type ListingPayload, type TransferRouteListingPayload } from "@/lib/partner/listings/types";
 
 const INPUT_CLASS =
   "min-touch-target w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1";
+
+function validateTransfer(payload: ListingPayload): string | null {
+  const transfer = payload as TransferRouteListingPayload;
+  if (!transfer.originLocationId || !transfer.destinationLocationId) return "Origin and destination are both required.";
+  if (!transfer.service.price || transfer.service.price <= 0) return "Price must be greater than zero.";
+  return null;
+}
 
 export function PartnerTransferForm({
   nodeId,
   initial,
   initialOrigin,
   initialDestination,
+  draft = null,
+  canSubmit = true,
 }: {
   nodeId: string | null;
   initial: TransferRouteListingPayload | null;
   initialOrigin: PartnerLocationOption | null;
   initialDestination: PartnerLocationOption | null;
+  draft?: ListingDraftRef | null;
+  canSubmit?: boolean;
 }) {
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
   const [origin, setOrigin] = useState<PartnerLocationOption | null>(initialOrigin);
   const [destination, setDestination] = useState<PartnerLocationOption | null>(initialDestination);
 
+  const buildPayload = useCallback(
+    (data: FormData): TransferRouteListingPayload => ({
+      title: String(data.get("title") ?? ""),
+      summary: String(data.get("summary") ?? "") || null,
+      // Empty while a draft has no origin/destination yet; submitting checks them.
+      originLocationId: origin?.id ?? "",
+      destinationLocationId: destination?.id ?? "",
+      distanceKm: Number(data.get("distanceKm")) || null,
+      typicalDurationMinutes: Number(data.get("typicalDurationMinutes")) || null,
+      service: {
+        id: initial?.service.id ?? null,
+        transferType: String(data.get("transferType") ?? "speedboat") as TransferRouteListingPayload["service"]["transferType"],
+        vehicleType: String(data.get("vehicleType") ?? "") || null,
+        sharedOrPrivate: String(data.get("sharedOrPrivate") ?? "shared") as TransferRouteListingPayload["service"]["sharedOrPrivate"],
+        durationMinutes: Number(data.get("serviceDurationMinutes")) || null,
+        price: Number(data.get("price")) || 0,
+        currency: String(data.get("currency") ?? "USD") || "USD",
+        capacity: Number(data.get("capacity")) || null,
+        luggageAllowance: String(data.get("luggageAllowance") ?? "") || null,
+        status: "active",
+        pickupInstructions: String(data.get("pickupInstructions") ?? "") || null,
+        dropoffInstructions: String(data.get("dropoffInstructions") ?? "") || null,
+        bookingRequirements: String(data.get("bookingRequirements") ?? "") || null,
+        cancellationPolicy: String(data.get("cancellationPolicy") ?? "") || null,
+        description: String(data.get("description") ?? "") || null,
+        commissionPercent: Number(data.get("commissionPercent")) || 15,
+      },
+    }),
+    [origin, destination, initial],
+  );
+
   return (
-    <form
+    <ListingFormShell
+      nodeType="transfer_route"
+      nodeId={nodeId}
+      draft={draft}
+      canSubmit={canSubmit}
+      buildPayload={buildPayload}
+      validate={validateTransfer}
+      watch={[origin?.id, destination?.id]}
       className="space-y-6"
-      onSubmit={(event) => {
-        event.preventDefault();
-        setError(null);
-        if (!origin || !destination) {
-          setError("Origin and destination are both required.");
-          return;
-        }
-        const data = new FormData(event.currentTarget);
-
-        const payload: TransferRouteListingPayload = {
-          title: String(data.get("title") ?? ""),
-          summary: String(data.get("summary") ?? "") || null,
-          originLocationId: origin.id,
-          destinationLocationId: destination.id,
-          distanceKm: Number(data.get("distanceKm")) || null,
-          typicalDurationMinutes: Number(data.get("typicalDurationMinutes")) || null,
-          service: {
-            id: initial?.service.id ?? null,
-            transferType: String(data.get("transferType") ?? "speedboat") as TransferRouteListingPayload["service"]["transferType"],
-            vehicleType: String(data.get("vehicleType") ?? "") || null,
-            sharedOrPrivate: String(data.get("sharedOrPrivate") ?? "shared") as TransferRouteListingPayload["service"]["sharedOrPrivate"],
-            durationMinutes: Number(data.get("serviceDurationMinutes")) || null,
-            price: Number(data.get("price")) || 0,
-            currency: String(data.get("currency") ?? "USD") || "USD",
-            capacity: Number(data.get("capacity")) || null,
-            luggageAllowance: String(data.get("luggageAllowance") ?? "") || null,
-            status: "active",
-            pickupInstructions: String(data.get("pickupInstructions") ?? "") || null,
-            dropoffInstructions: String(data.get("dropoffInstructions") ?? "") || null,
-            bookingRequirements: String(data.get("bookingRequirements") ?? "") || null,
-            cancellationPolicy: String(data.get("cancellationPolicy") ?? "") || null,
-            description: String(data.get("description") ?? "") || null,
-            commissionPercent: Number(data.get("commissionPercent")) || 15,
-          },
-        };
-
-        if (!payload.service.price || payload.service.price <= 0) {
-          setError("Price must be greater than zero.");
-          return;
-        }
-
-        startTransition(async () => {
-          const result = await submitListing({ nodeType: "transfer_route", submissionKind: nodeId ? "update" : "create", nodeId, payload });
-          if (!result.ok) {
-            setError(result.error ?? "Something went wrong. Please try again.");
-            return;
-          }
-          router.push("/partner/listings");
-        });
-      }}
     >
       <label className="block text-sm">
         <span className="mb-1 block font-medium text-neutral-700">
@@ -181,18 +175,6 @@ export function PartnerTransferForm({
       </label>
 
       <CommissionPercentField defaultValue={initial?.service.commissionPercent ?? null} />
-
-      {error && (
-        <p role="alert" className="text-sm text-red-600">
-          {error}
-        </p>
-      )}
-
-      <div className="flex items-center justify-end gap-4 border-t border-neutral-200 pt-4">
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Submitting…" : nodeId ? "Submit Changes for Review" : "Submit for Review"}
-        </Button>
-      </div>
-    </form>
+    </ListingFormShell>
   );
 }

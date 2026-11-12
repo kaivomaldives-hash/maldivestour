@@ -1,0 +1,14 @@
+# Keep the VPS Docker build context small and free of secrets.
+node_modules
+.next
+.git
+.github
+.claude
+.env*
+!.env.example
+assets
+docs
+data
+supabase
+deploy
+*.log

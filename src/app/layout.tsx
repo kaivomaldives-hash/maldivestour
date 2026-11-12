@@ -98,8 +98,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <MobileBottomNav />
           </EntityLocaleLinksProvider>
         </CurrencyProvider>
-        <Analytics />
-        <SpeedInsights />
+        {/* Vercel-only (paid add-ons); off the VPS their scripts would just 404. */}
+        {process.env.VERCEL && (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        )}
       </body>
     </html>
   );

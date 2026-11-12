@@ -9,6 +9,8 @@ import type { ListingSubmissionStatus } from "@/lib/partner/listings/types";
 const STATUSES: readonly ListingSubmissionStatus[] = ["pending", "approved", "rejected"];
 
 const STATUS_TONE: Record<ListingSubmissionStatus, "neutral" | "maldives" | "aqua" | "outline"> = {
+  // Drafts never reach this list (the repository leaves them out).
+  draft: "neutral",
   pending: "aqua",
   approved: "maldives",
   rejected: "outline",

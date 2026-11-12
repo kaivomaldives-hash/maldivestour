@@ -1,0 +1,48 @@
+# MTG additions on top of the official self-hosted Supabase docker-compose.yml.
+# install-supabase.sh copies this file into ~/supabase-project and adds it to
+# COMPOSE_FILE in that folder's .env, so `sh run.sh ...` and
+# `docker compose ...` there always include it.
+
+services:
+  # Docker publishes ports straight through the firewall (it bypasses ufw),
+  # so bind everything to localhost. Caddy (deploy/docker-compose.yml) is
+  # the only public entry point, at https://API_DOMAIN.
+  api-gw:
+    ports: !override
+      - "127.0.0.1:8000:8000/tcp"
+
+  # Postgres via Supavisor: reachable from the server only (backups, the
+  # migration scripts and deploy-app.sh), never from the internet.
+  supavisor:
+    ports: !override
+      - "127.0.0.1:${POSTGRES_PORT}:5432"
+      - "127.0.0.1:${POOLER_PROXY_PORT_TRANSACTION}:6543"
+
+  # The site confirms signups through /auth/confirm with a token_hash
+  # (src/app/auth/confirm/route.ts), so the signup email must link there
+  # instead of Supabase's default /auth/v1/verify link.
+  auth:
+    depends_on:
+      templates-server:
+        condition: service_started
+    environment:
+      GOTRUE_MAILER_TEMPLATES_CONFIRMATION: "http://templates-server/confirmation.html"
+      GOTRUE_MAILER_SUBJECTS_CONFIRMATION: "Confirm your Maldives Tour Guide account"
+      GOTRUE_MAILER_TEMPLATES_INVITE: "http://templates-server/invite.html"
+      GOTRUE_MAILER_SUBJECTS_INVITE: "You have been invited to Maldives Tour Guide"
+      GOTRUE_MAILER_TEMPLATES_RECOVERY: "http://templates-server/recovery.html"
+      GOTRUE_MAILER_SUBJECTS_RECOVERY: "Reset your Maldives Tour Guide password"
+      # Optional: send all account emails through the website instead, with
+      # the wording edited at /admin/email-templates (docs/email-templates.md).
+      # Off unless SEND_EMAIL_HOOK_ENABLED=true is set in this folder's .env.
+      GOTRUE_HOOK_SEND_EMAIL_ENABLED: "${SEND_EMAIL_HOOK_ENABLED:-false}"
+      GOTRUE_HOOK_SEND_EMAIL_URI: "${SEND_EMAIL_HOOK_URI:-}"
+      GOTRUE_HOOK_SEND_EMAIL_SECRETS: "${SEND_EMAIL_HOOK_SECRET:-}"
+
+  # Serves the email templates to the auth service only (no public port).
+  templates-server:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    command: ["caddy", "file-server", "-r", "/templates", "--listen", ":80"]
+    volumes:
+      - ./volumes/templates:/templates:ro

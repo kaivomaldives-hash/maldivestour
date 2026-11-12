@@ -70,7 +70,10 @@ const NAV_SECTIONS: NavSection[] = [
   },
   {
     heading: "Site",
-    items: [{ label: "Redirects", href: "/admin/redirects" }],
+    items: [
+      { label: "Email Templates", href: "/admin/email-templates" },
+      { label: "Redirects", href: "/admin/redirects" },
+    ],
   },
 ];
 

@@ -26,22 +26,26 @@ echo "   now at $(git log --oneline -1)"
 echo "==> Database migrations"
 supabase db push --remote="$(get DATABASE_URL)" --yes
 
-echo "==> Email templates"
-if ! diff -rq deploy/supabase/templates "$SB_DIR/volumes/templates" >/dev/null 2>&1 \
-   || ! cmp -s deploy/supabase/docker-compose.mtg.yml "$SB_DIR/docker-compose.mtg.yml"; then
-  cp deploy/supabase/templates/*.html "$SB_DIR/volumes/templates/"
-  cp deploy/supabase/docker-compose.mtg.yml "$SB_DIR/docker-compose.mtg.yml"
-  ( cd "$SB_DIR" && docker compose up -d )
-  echo "   updated"
-else
-  echo "   unchanged"
-fi
-
 echo "==> Building and restarting the website"
 # Caddy first: the build reads data through https://API_DOMAIN.
 docker compose -f deploy/docker-compose.yml --env-file "$APP_ENV" up -d caddy
 docker compose -f deploy/docker-compose.yml --env-file "$APP_ENV" up -d --build app
 docker image prune -f >/dev/null
+
+# After the website: the templates server fetches sign-in emails from it.
+echo "==> Email templates"
+if ! diff -rq deploy/supabase/templates "$SB_DIR/volumes/templates" >/dev/null 2>&1 \
+   || ! diff -rq deploy/supabase/templates-proxy "$SB_DIR/volumes/templates-proxy" >/dev/null 2>&1 \
+   || ! cmp -s deploy/supabase/docker-compose.mtg.yml "$SB_DIR/docker-compose.mtg.yml"; then
+  mkdir -p "$SB_DIR/volumes/templates-proxy"
+  cp deploy/supabase/templates/*.html "$SB_DIR/volumes/templates/"
+  cp deploy/supabase/templates-proxy/Caddyfile "$SB_DIR/volumes/templates-proxy/Caddyfile"
+  cp deploy/supabase/docker-compose.mtg.yml "$SB_DIR/docker-compose.mtg.yml"
+  ( cd "$SB_DIR" && docker compose up -d && docker compose restart templates-server )
+  echo "   updated"
+else
+  echo "   unchanged"
+fi
 
 echo "==> Checking the site"
 for _ in $(seq 1 30); do

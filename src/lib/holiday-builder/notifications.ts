@@ -1,11 +1,10 @@
 import "server-only";
 
+import { renderEmail } from "@/lib/email-templates/repository";
 import { escapeHtml, sendResendEmail, getAdminNotificationEmail } from "@/lib/notifications/email";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { PriceBreakdown } from "@/lib/holiday-builder/types";
 
-const SITE_NAME = "Maldives Tour Guide (MTG)";
-const WHATSAPP_NUMBER = "9607794332";
 
 function lineItemsHtmlOf(breakdown: PriceBreakdown): string {
   return breakdown.lines.map((line) => `<li>${escapeHtml(line.label)} — USD ${line.amount.toFixed(2)}</li>`).join("");
@@ -76,21 +75,23 @@ export async function sendHolidayRequestConfirmedEmail(input: HolidayRequestConf
   try {
     const admin = createAdminClient();
 
-    const html = `
-      <p>Hi ${escapeHtml(input.customerName)},</p>
-      <p>Good news — we&rsquo;ve confirmed availability for your custom holiday request.</p>
-      <p><strong>Reference:</strong> ${escapeHtml(input.reference)}<br/>
+    const guests = `${input.adults} adult${input.adults === 1 ? "" : "s"}${input.children > 0 ? `, ${input.children} child${input.children === 1 ? "" : "ren"}` : ""}`;
+    const total = `USD ${input.breakdown.grandTotal.toFixed(2)}`;
+    // Wording from Admin -> Email Templates; the details block stays built here.
+    const email = await renderEmail(
+      "holiday_confirmed",
+      { customer_name: input.customerName, first_name: input.customerName.trim().split(/s+/)[0] || input.customerName, reference: input.reference, total },
+      {
+        holiday_details: `<p><strong>Reference:</strong> ${escapeHtml(input.reference)}<br/>
       <strong>Arrival:</strong> ${escapeHtml(input.arrivalDate)}<br/>
       <strong>Nights:</strong> ${input.nights}<br/>
-      <strong>Guests:</strong> ${input.adults} adult${input.adults === 1 ? "" : "s"}${input.children > 0 ? `, ${input.children} child${input.children === 1 ? "" : "ren"}` : ""}</p>
+      <strong>Guests:</strong> ${guests}</p>
       ${lineItemsHtmlOf(input.breakdown) ? `<p><strong>Your itinerary:</strong></p><ul>${lineItemsHtmlOf(input.breakdown)}</ul>` : ""}
-      <p><strong>Confirmed estimated total: USD ${input.breakdown.grandTotal.toFixed(2)}</strong></p>
-      <p>This confirms availability at this price — our team will follow up with final booking and payment details.</p>
-      <p>Questions in the meantime? WhatsApp us on +${WHATSAPP_NUMBER} or reply to this email.</p>
-      <p>— ${SITE_NAME}</p>
-    `;
+      <p><strong>Confirmed estimated total: ${total}</strong></p>`,
+      },
+    );
 
-    const result = await sendResendEmail(input.customerEmail, `Your custom holiday is confirmed — ${input.reference}`, html);
+    const result = await sendResendEmail(input.customerEmail, email.subject, email.html);
     if (!result.ok) {
       console.error("[holiday-builder] failed to send confirmation email:", result.error);
       return;

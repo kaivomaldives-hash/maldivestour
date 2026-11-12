@@ -33,10 +33,15 @@ services:
       GOTRUE_MAILER_TEMPLATES_RECOVERY: "http://templates-server/recovery.html"
       GOTRUE_MAILER_SUBJECTS_RECOVERY: "Reset your Maldives Tour Guide password"
 
-  # Serves the email templates to the auth service only (no public port).
+  # Serves the email templates to the auth service only (no public port):
+  # the wording edited in Admin -> Email Templates, fetched from the
+  # website, or the static files in volumes/templates if that fails.
   templates-server:
     image: caddy:2-alpine
     restart: unless-stopped
-    command: ["caddy", "file-server", "-r", "/templates", "--listen", ":80"]
+    command: ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+    environment:
+      MTG_SITE_HOST: ${MTG_SITE_HOST:-maldivestour.guide}
     volumes:
       - ./volumes/templates:/templates:ro
+      - ./volumes/templates-proxy/Caddyfile:/etc/caddy/Caddyfile:ro

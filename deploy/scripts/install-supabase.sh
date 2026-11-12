@@ -68,6 +68,8 @@ set_env OPENAI_API_KEY ""
 cp "$REPO_DIR/deploy/supabase/docker-compose.mtg.yml" ./docker-compose.mtg.yml
 mkdir -p volumes/templates
 cp "$REPO_DIR"/deploy/supabase/templates/*.html volumes/templates/
+mkdir -p volumes/templates-proxy
+cp "$REPO_DIR/deploy/supabase/templates-proxy/Caddyfile" volumes/templates-proxy/Caddyfile
 compose_files=$(grep -E '^COMPOSE_FILE=' .env | cut -d= -f2- | tr -d "\"'")
 case ":$compose_files:" in
   *":docker-compose.mtg.yml:"*) ;;

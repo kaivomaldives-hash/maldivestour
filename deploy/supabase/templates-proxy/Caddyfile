@@ -1,0 +1,27 @@
+# Serves the sign-in email templates to the Supabase auth service.
+# Each request is passed to the website, which returns the wording staff
+# edit in Admin -> Email Templates
+# (src/app/api/auth-email-templates/[file]/route.ts). If the website is
+# down or answers with an error, the static copy in /templates is used,
+# so sign-up emails keep working either way.
+{
+	admin off
+	auto_https off
+}
+
+:80 {
+	reverse_proxy https://{$MTG_SITE_HOST} {
+		rewrite /api/auth-email-templates{path}
+		header_up Host {$MTG_SITE_HOST}
+		@failed status 4xx 5xx
+		handle_response @failed {
+			root * /templates
+			file_server
+		}
+	}
+
+	handle_errors {
+		root * /templates
+		file_server
+	}
+}

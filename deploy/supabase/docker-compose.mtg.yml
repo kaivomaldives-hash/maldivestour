@@ -32,6 +32,12 @@ services:
       GOTRUE_MAILER_SUBJECTS_INVITE: "You have been invited to Maldives Tour Guide"
       GOTRUE_MAILER_TEMPLATES_RECOVERY: "http://templates-server/recovery.html"
       GOTRUE_MAILER_SUBJECTS_RECOVERY: "Reset your Maldives Tour Guide password"
+      # Optional: send all account emails through the website instead, with
+      # the wording edited at /admin/email-templates (docs/email-templates.md).
+      # Off unless SEND_EMAIL_HOOK_ENABLED=true is set in this folder's .env.
+      GOTRUE_HOOK_SEND_EMAIL_ENABLED: "${SEND_EMAIL_HOOK_ENABLED:-false}"
+      GOTRUE_HOOK_SEND_EMAIL_URI: "${SEND_EMAIL_HOOK_URI:-}"
+      GOTRUE_HOOK_SEND_EMAIL_SECRETS: "${SEND_EMAIL_HOOK_SECRET:-}"
 
   # Serves the email templates to the auth service only (no public port).
   templates-server:

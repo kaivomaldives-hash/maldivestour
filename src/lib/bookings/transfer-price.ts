@@ -1,0 +1,35 @@
+/**
+ * Transfer prices are per adult, one way. Children (2-11 years) pay half
+ * the adult price on every route, infants (under 2) travel free, and a
+ * round trip is two legs. Used by both the booking form (live estimate)
+ * and the server action (the stored estimate and the emails), so the two
+ * always agree.
+ */
+export const CHILD_RATE = 0.5;
+
+export interface TransferEstimate {
+  total: number;
+  childPrice: number;
+  legs: 1 | 2;
+  breakdown: string;
+}
+
+const round2 = (n: number) => Math.round(n * 100) / 100;
+
+export function calculateTransferEstimate(
+  adultPrice: number,
+  adults: number,
+  children: number,
+  tripType: "one_way" | "round_trip",
+  currency: string,
+): TransferEstimate {
+  const legs = tripType === "round_trip" ? 2 : 1;
+  const childPrice = round2(adultPrice * CHILD_RATE);
+  const total = round2((adultPrice * adults + childPrice * children) * legs);
+
+  const parts = [`${adults} adult${adults === 1 ? "" : "s"} × ${currency} ${adultPrice}`];
+  if (children > 0) parts.push(`${children} child${children === 1 ? "" : "ren"} × ${currency} ${childPrice}`);
+  const breakdown = `${parts.join(" + ")}${legs === 2 ? ", × 2 (round trip)" : ""}`;
+
+  return { total, childPrice, legs, breakdown };
+}

@@ -40,7 +40,7 @@ export interface EmailTemplateDef {
 
 const CONTACT = `For reservations or changes, contact our reservation team: contact@maldivestour.guide or WhatsApp +960 779 4332.`;
 
-const SAMPLE_DETAILS = `<p><strong>Reference:</strong> MTG-2026-000123<br/><strong>Product:</strong> Velana International Airport to Club Med Kani Maldives<br/>Requested date: 2026-12-20<br/><strong>Guests:</strong> 2 adults</p><p>Estimated total: USD 220 (2 people × USD 110)</p>`;
+const SAMPLE_DETAILS = `<p><strong>Reference:</strong> MTG-2026-000123<br/><strong>Product:</strong> Velana International Airport to Club Med Kani Maldives<br/>Requested date: 2026-12-20<br/><strong>Guests:</strong> 2 adults</p><p>Estimated total: USD 220 (2 adults × USD 110)</p>`;
 
 export const EMAIL_TEMPLATES: EmailTemplateDef[] = [
   {

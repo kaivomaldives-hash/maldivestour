@@ -3,6 +3,7 @@
 import { searchAccommodations } from "@/lib/accommodations/repository";
 import type { BookingSource } from "@/lib/bookings/copy";
 import { sendBookingNotifications } from "@/lib/bookings/notifications";
+import { calculateTransferEstimate } from "@/lib/bookings/transfer-price";
 import { searchLocations } from "@/lib/locations/repository";
 import { createClient } from "@/lib/supabase/server";
 
@@ -98,9 +99,9 @@ export interface TransferBookingInquiryInput {
 }
 
 /**
- * Transfer prices are per person, one way. The estimate is that price ×
- * every paying guest (adults and children; infants travel free), doubled
- * for a round trip. The price comes from the database, not the browser.
+ * Transfer prices are per adult, one way; children pay half and infants
+ * travel free (see calculateTransferEstimate). The price comes from the
+ * database, not the browser.
  */
 async function estimateTransferTotal(
   transferServiceId: string,
@@ -115,10 +116,7 @@ async function estimateTransferTotal(
   const currency = data?.currency || fallbackCurrency || "USD";
   if (!Number.isFinite(perPerson) || perPerson <= 0) return { total: null, currency, breakdown: null };
 
-  const people = adults + children;
-  const legs = tripType === "round_trip" ? 2 : 1;
-  const total = Math.round(perPerson * people * legs * 100) / 100;
-  const breakdown = `${people} ${people === 1 ? "person" : "people"} × ${currency} ${perPerson}${legs === 2 ? " × 2 (round trip)" : ""}`;
+  const { total, breakdown } = calculateTransferEstimate(perPerson, adults, children, tripType, currency);
   return { total, currency, breakdown };
 }
 

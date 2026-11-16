@@ -7,6 +7,7 @@ import { combinePhone } from "@/components/bookings/combine-phone";
 import { NationalityField, PhoneField, TermsCheckbox } from "@/components/bookings/customer-fields";
 import { PromoCodeField } from "@/components/bookings/promo-code-field";
 import { createTransferBookingInquiry } from "@/lib/bookings/actions";
+import { calculateTransferEstimate } from "@/lib/bookings/transfer-price";
 
 const WHATSAPP_NUMBER = "9607794332";
 
@@ -43,10 +44,10 @@ export function RequestBookingForm({
   const [isPending, startTransition] = useTransition();
   const [tripType, setTripType] = useState<"one_way" | "round_trip">("one_way");
   const [promoCode, setPromoCode] = useState("");
-  // Adults + children (infants travel free); matches the server's estimate.
-  const [people, setPeople] = useState(2);
-  const legs = tripType === "round_trip" ? 2 : 1;
-  const estimatedTotal = Math.round(price * people * legs * 100) / 100;
+  // Children (2-11) pay half, infants free; same calculation as the server.
+  const [guests, setGuests] = useState({ adults: 2, children: 0 });
+  const estimate = calculateTransferEstimate(price, guests.adults, guests.children, tripType, currency);
+  const legs = estimate.legs;
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState<{
     reference: string;
@@ -112,7 +113,7 @@ export function RequestBookingForm({
         const data = new FormData(event.currentTarget);
         const adults = Math.max(1, Math.floor(Number(data.get("adults")) || 1));
         const children = Math.max(0, Math.floor(Number(data.get("children")) || 0));
-        setPeople(adults + children);
+        setGuests({ adults, children });
       }}
       onSubmit={(event) => {
         event.preventDefault();
@@ -211,8 +212,8 @@ export function RequestBookingForm({
 
       <div className="grid grid-cols-3 gap-4">
         <Field label="Adults" name="adults" type="number" min={1} defaultValue={2} />
-        <Field label="Children" name="children" type="number" min={0} defaultValue={0} />
-        <Field label="Infants" name="infants" type="number" min={0} defaultValue={0} />
+        <Field label="Children (2-11)" name="children" type="number" min={0} defaultValue={0} />
+        <Field label="Infants (under 2)" name="infants" type="number" min={0} defaultValue={0} />
       </div>
 
       <Field label="Flight number (optional)" name="flightNumber" type="text" />
@@ -238,14 +239,10 @@ export function RequestBookingForm({
 
       <div className="flex items-center justify-between gap-4 border-t border-neutral-200 pt-4">
         <p className="text-sm text-neutral-600">
-          {currency} {price} per person{legs === 2 ? " each way" : ""}
+          {currency} {price} per adult, {currency} {estimate.childPrice} per child (2-11){legs === 2 ? " each way" : ""}
           <br />
-          Estimated total: <span className="font-semibold text-ocean-900">{currency} {estimatedTotal}</span>
-          <span className="text-xs text-neutral-500">
-            {" "}
-            ({people} {people === 1 ? "person" : "people"}
-            {legs === 2 ? ", round trip" : ""})
-          </span>
+          Estimated total: <span className="font-semibold text-ocean-900">{currency} {estimate.total}</span>
+          <span className="text-xs text-neutral-500"> ({estimate.breakdown})</span>
         </p>
         <Button type="submit" disabled={isPending}>
           {isPending ? "Sending…" : "Request Transfer"}

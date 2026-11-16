@@ -13,8 +13,10 @@ export const CARD_CLASS =
 
 /** Applied to a MediaImage wrapper placed as the first child of a
  * CARD_CLASS element, to bleed the image to the card's edges/rounded
- * corners despite the card's own p-4 padding (Task 14 §20). */
-export const CARD_IMAGE_BLEED_CLASS = "-mx-4 -mt-4 mb-3";
+ * corners despite the card's own p-4 padding (Task 14 §20). `card-media`
+ * marks it so a grid of photo cards gets the compact 2-per-row phone layout
+ * and 4 per row on wide screens (see "Photo card grids" in globals.css). */
+export const CARD_IMAGE_BLEED_CLASS = "card-media -mx-4 -mt-4 mb-3";
 
 export function Card({ className = "", children }: { className?: string; children: ReactNode }) {
   return <div className={[CARD_CLASS, className].filter(Boolean).join(" ")}>{children}</div>;

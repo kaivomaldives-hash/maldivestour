@@ -11,16 +11,10 @@ import {
   type AdminActionResult,
   type TransferBoatDetailsInput,
 } from "@/lib/admin/bookings-actions";
+import { isAutoPaymentNote, transferPaymentText } from "@/lib/bookings/transfer-price";
 
 const INPUT_CLASS =
   "w-full rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-maldives-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-maldives-500 focus-visible:ring-offset-1";
-
-function defaultPaymentNote(quotedPrice: number | null, currency: string): string {
-  if (quotedPrice == null) {
-    return "Payable in cash or by Crypto USDT on arrival. We do not accept card payments on the boat.";
-  }
-  return `Your total for this transfer is ${currency} ${quotedPrice}, payable in cash or by Crypto USDT on arrival. We do not accept card payments on the boat.`;
-}
 
 export interface BookingStatusFormProps {
   bookingId: string;
@@ -29,6 +23,7 @@ export interface BookingStatusFormProps {
   source: string | null;
   hasReturnLeg: boolean;
   quotedPrice: number | null;
+  estimatedPrice: number | null;
   currency: string;
   paymentNote: string | null;
   outboundBoat: TransferBoatDetailsInput;
@@ -42,6 +37,7 @@ export function BookingStatusForm({
   source,
   hasReturnLeg,
   quotedPrice,
+  estimatedPrice,
   currency,
   paymentNote,
   outboundBoat,
@@ -54,7 +50,10 @@ export function BookingStatusForm({
   const [notes, setNotes] = useState(currentNotes);
   const [price, setPrice] = useState(quotedPrice != null ? String(quotedPrice) : "");
   const [curr, setCurr] = useState(currency);
-  const [note, setNote] = useState(paymentNote ?? "");
+  // Old bookings may hold the note the form used to save automatically; the
+  // email now writes that line itself, so start those empty.
+  const initialNote = isAutoPaymentNote(paymentNote) ? "" : (paymentNote ?? "");
+  const [note, setNote] = useState(initialNote);
   const [outbound, setOutbound] = useState<TransferBoatDetailsInput>(outboundBoat);
   const [ret, setRet] = useState<TransferBoatDetailsInput>(returnBoat);
   const [isPending, startTransition] = useTransition();
@@ -65,7 +64,7 @@ export function BookingStatusForm({
     setError(null);
     startTransition(async () => {
       const parsedPrice = price.trim() === "" ? null : Number(price);
-      const effectiveNote = note.trim() || (status === "confirmed" ? defaultPaymentNote(parsedPrice, curr) : note);
+      const effectiveNote = note.trim() || null;
 
       const [statusResult, notesResult]: [AdminActionResult, AdminActionResult] = await Promise.all([
         updateBookingStatus(bookingId, {
@@ -92,7 +91,7 @@ export function BookingStatusForm({
     notes !== currentNotes ||
     price !== (quotedPrice != null ? String(quotedPrice) : "") ||
     curr !== currency ||
-    note !== (paymentNote ?? "") ||
+    note !== initialNote ||
     JSON.stringify(outbound) !== JSON.stringify(outboundBoat) ||
     JSON.stringify(ret) !== JSON.stringify(returnBoat);
 
@@ -127,17 +126,21 @@ export function BookingStatusForm({
         </>
       )}
 
+      {isTransfer && (
+        <div className="rounded-xl bg-maldives-50 p-3 text-sm text-neutral-700">
+          <span className="block text-xs font-semibold uppercase tracking-wide text-neutral-500">Payment line in the confirmation email</span>
+          {transferPaymentText(price.trim() === "" ? estimatedPrice : Number(price), curr, hasReturnLeg)}
+          {price.trim() === "" && estimatedPrice == null && (
+            <span className="mt-1 block text-xs text-amber-700">No price on this booking — enter a quoted price to show the total.</span>
+          )}
+        </div>
+      )}
+
       <label className="block text-sm">
         <span className="mb-1 block font-medium text-neutral-700">
-          Payment note {isTransfer && <span className="font-normal text-neutral-500">(shown to the customer on confirmation)</span>}
+          {isTransfer ? "Extra payment note (optional, shown to the customer under the line above)" : "Payment note"}
         </span>
-        <textarea
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          rows={3}
-          placeholder={defaultPaymentNote(price.trim() === "" ? null : Number(price), curr)}
-          className={INPUT_CLASS}
-        />
+        <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={3} className={INPUT_CLASS} />
       </label>
 
       <label className="block text-sm">

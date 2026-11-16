@@ -1,6 +1,7 @@
 import "server-only";
 
 import { activityHref, type ActivityCategory } from "@/lib/activities/types";
+import { isAutoPaymentNote, transferPaymentText } from "@/lib/bookings/transfer-price";
 import { buttonHtml } from "@/lib/email-templates/render";
 import { renderEmail } from "@/lib/email-templates/repository";
 import { escapeHtml, getAdminNotificationEmail, sendResendEmail, type DeliveryResult } from "@/lib/notifications/email";
@@ -257,6 +258,8 @@ export interface BookingConfirmedEmailInput {
   returnDate?: string | null;
   returnTime?: string | null;
   quotedPrice?: number | null;
+  /** The price worked out when the customer booked; used when no quote was set. */
+  estimatedPrice?: number | null;
   currency?: string | null;
   paymentNote?: string | null;
   outboundBoat?: TransferBoatDetails | null;
@@ -300,11 +303,10 @@ function transferConfirmationBlocks(input: BookingConfirmedEmailInput): { trip_d
     ${boatDetailLines(input.returnBoat)}</p>`
       : "";
 
-  const payment = input.paymentNote
-    ? `<p>${escapeHtml(input.paymentNote).replace(/\n/g, "<br/>")}</p>`
-    : input.quotedPrice != null
-      ? `<p>Your total for this transfer is ${escapeHtml(input.currency ?? "USD")} ${input.quotedPrice}.</p>`
-      : "";
+  const total = input.quotedPrice ?? input.estimatedPrice ?? null;
+  const standard = transferPaymentText(total, input.currency ?? "USD", Boolean(input.returnDate));
+  const extra = isAutoPaymentNote(input.paymentNote) ? "" : `<p>${escapeHtml(input.paymentNote!.trim()).replace(/\n/g, "<br/>")}</p>`;
+  const payment = `<p><strong>${escapeHtml(standard)}</strong></p>${extra}`;
 
   return { trip_details: `${outboundSection}\n${returnSection}`, payment };
 }
@@ -352,7 +354,7 @@ export async function sendBookingConfirmedEmail(input: BookingConfirmedEmailInpu
       ${input.originTitle ? `<strong>Pickup location:</strong> ${escapeHtml(input.originTitle)}<br/>` : ""}
       ${input.destinationTitle ? `<strong>Drop-off location:</strong> ${escapeHtml(input.destinationTitle)}<br/>` : ""}
       <strong>Date/time:</strong> ${escapeHtml(dateLine)}<br/>
-      <strong>Status:</strong> Confirmed</p>`,
+      <strong>Status:</strong> Confirmed</p>${input.source === "transfer" ? transferConfirmationBlocks(input).payment : ""}`,
         });
 
     const result = await sendResendEmail(input.customerEmail, email.subject, email.html);

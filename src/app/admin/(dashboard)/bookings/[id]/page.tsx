@@ -144,6 +144,7 @@ export default async function AdminBookingDetailPage({ params }: { params: Promi
             source={booking.source}
             hasReturnLeg={Boolean(booking.returnDate)}
             quotedPrice={booking.quotedPrice}
+            estimatedPrice={booking.estimatedPrice}
             currency={booking.currency}
             paymentNote={booking.paymentNote}
             outboundBoat={{

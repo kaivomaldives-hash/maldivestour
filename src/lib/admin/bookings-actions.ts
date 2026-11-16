@@ -135,6 +135,7 @@ export async function updateBookingStatus(id: string, input: UpdateBookingStatus
         returnDate: booking.returnDate,
         returnTime: booking.returnTime,
         quotedPrice: booking.quotedPrice,
+        estimatedPrice: booking.estimatedPrice,
         currency: booking.currency,
         paymentNote: booking.paymentNote,
         outboundBoat: booking.transferOutboundBoatName

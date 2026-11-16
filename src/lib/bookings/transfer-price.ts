@@ -16,6 +16,22 @@ export interface TransferEstimate {
 
 const round2 = (n: number) => Math.round(n * 100) / 100;
 
+/**
+ * The standard payment line in the transfer confirmation email (and shown
+ * in admin as a preview). `total` is the quoted price, else the estimate.
+ */
+export function transferPaymentText(total: number | null, currency: string, roundTrip: boolean): string {
+  const lead = total != null ? `Your total amount is ${currency} ${total}, payable` : "Payable";
+  return `${lead} in cash${currency === "USD" ? " (USD)" : ""} or crypto (USDT). We do not accept card payments on boats.${
+    roundTrip ? " You may also pay separately for each way." : ""
+  }`;
+}
+
+/** Notes that the old admin form saved automatically; the standard line replaces them. */
+export function isAutoPaymentNote(note: string | null | undefined): boolean {
+  return !note || /^(Your total for this transfer is|Payable in cash or by Crypto USDT)/.test(note.trim());
+}
+
 export function calculateTransferEstimate(
   adultPrice: number,
   adults: number,

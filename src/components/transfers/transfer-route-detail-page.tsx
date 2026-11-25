@@ -29,6 +29,7 @@ import {
   getTransferRoutesByOrigin,
 } from "@/lib/transfers/repository";
 import type { SharedOrPrivate, TransferRouteDetail, TransferService, TransferType } from "@/lib/transfers/types";
+import { getRouteGuide } from "@/lib/transfers/route-guides";
 
 const TRANSFER_TYPE_LABEL: Record<TransferType, string> = {
   speedboat: "Speedboat",
@@ -321,7 +322,8 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
     .slice(0, 6);
 
   const duration = formatDuration(route.typicalDurationMinutes);
-  const faqs = buildRouteFaqs(route);
+  const guide = getRouteGuide(route.slug);
+  const faqs = [...buildRouteFaqs(route), ...(guide?.faqs ?? [])];
   const hasPrivateService = route.services.some((s) => s.sharedOrPrivate === "private" && s.isBookable);
 
   return (
@@ -424,6 +426,29 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
           </ul>
         )}
       </section>
+
+      {guide && (
+        <section className="mt-10 max-w-3xl" aria-label={`${guide.resort} transfer guide`}>
+          {guide.sections.map((section) => (
+            <div key={section.heading} className="mt-8 first:mt-0">
+              <h2 className="text-xl font-semibold text-ocean-900">{section.heading}</h2>
+              {section.paragraphs.map((p) => (
+                <p key={p.slice(0, 40)} className="mt-3 leading-relaxed text-neutral-700">
+                  {p}
+                </p>
+              ))}
+            </div>
+          ))}
+          <div className={`${CARD_CLASS} mt-8 p-4 sm:p-6`}>
+            <h2 className="text-lg font-semibold text-ocean-900">Before you book: have these ready</h2>
+            <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-neutral-700">
+              {guide.checklist.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {!hasPrivateService && route.isBookableForPrivateInquiry && (
         <section className="mt-10 rounded-2xl border border-neutral-200 p-4 sm:p-6">

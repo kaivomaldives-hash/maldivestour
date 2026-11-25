@@ -102,6 +102,42 @@ export const ROUTE_GUIDES: Record<string, RouteGuide> = {
     ],
   },
 
+  "velana-international-airport-to-four-seasons-kuda-huraa": {
+    resort: "Four Seasons Kuda Huraa",
+    sections: [
+      {
+        heading: "Getting to Four Seasons Kuda Huraa",
+        paragraphs: [
+          "Four Seasons Resort Maldives at Kuda Huraa is in North Malé Atoll, a short speedboat ride from Velana International Airport. Because it is reached by boat, you can arrive at any time of day without waiting for a seaplane slot.",
+          "Share your flight number when you book. We follow your arrival, so the boat is ready whether you land early or late.",
+        ],
+      },
+      ARRIVAL_SECTION("Four Seasons Kuda Huraa"),
+      {
+        heading: "Kuda Huraa or Landaa Giraavaru?",
+        paragraphs: [
+          "Four Seasons has two resorts in the Maldives. Kuda Huraa, in North Malé Atoll, is reached by speedboat. Landaa Giraavaru is in Baa Atoll and needs a seaplane. Check your booking: if it says Kuda Huraa, this is the right transfer.",
+        ],
+      },
+    ],
+    checklist: [
+      "Your flight number and landing time",
+      "Number of guests and bags",
+      "Shared seat or private boat",
+      "Your departure flight, to book the return together",
+    ],
+    faqs: [
+      {
+        question: "Is Four Seasons Kuda Huraa reached by speedboat?",
+        answer: "Yes. It is in North Malé Atoll, close to Velana International Airport, and is reached by speedboat.",
+      },
+      {
+        question: "Is this transfer for Four Seasons Landaa Giraavaru?",
+        answer: "No. Landaa Giraavaru is a different Four Seasons resort in Baa Atoll that needs a seaplane. This route is for Kuda Huraa.",
+      },
+    ],
+  },
+
   "velana-international-airport-to-centara-mirage-and-grand-island-resort-maldives": {
     resort: "Centara Mirage Lagoon & Centara Grand Lagoon",
     sections: [

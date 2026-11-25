@@ -323,6 +323,14 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
 
   const duration = formatDuration(route.typicalDurationMinutes);
   const guide = getRouteGuide(route.slug);
+  // Resort routes whose destination is stored as the atoll (fake resort "islands" were removed,
+  // see 20250126000100_fix_fake_resort_islands.sql) show the resort name from the route title,
+  // e.g. "SO/ Maldives (Kaafu Atoll)" instead of just "Kaafu Atoll".
+  const titleDestination = route.title.split(" to ").slice(1).join(" to ").trim();
+  const destinationResort =
+    route.destination && titleDestination && !titleDestination.toLowerCase().includes(route.destination.title.toLowerCase())
+      ? titleDestination
+      : null;
   const faqs = [...buildRouteFaqs(route), ...(guide?.faqs ?? [])];
   const hasPrivateService = route.services.some((s) => s.sharedOrPrivate === "private" && s.isBookable);
 
@@ -371,9 +379,22 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
           <div>
             <dt className="text-neutral-500">To</dt>
             <dd className="font-medium">
-              <Link href={locationHref(route.destination)} className="hover:underline">
-                {route.destination.title}
-              </Link>
+              {destinationResort ? (
+                <>
+                  {destinationResort}{" "}
+                  <span className="font-normal text-neutral-500">
+                    (
+                    <Link href={locationHref(route.destination)} className="hover:underline">
+                      {route.destination.title}
+                    </Link>
+                    )
+                  </span>
+                </>
+              ) : (
+                <Link href={locationHref(route.destination)} className="hover:underline">
+                  {route.destination.title}
+                </Link>
+              )}
             </dd>
           </div>
         )}

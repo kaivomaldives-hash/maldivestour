@@ -3,7 +3,7 @@
 import { searchAccommodations } from "@/lib/accommodations/repository";
 import type { BookingSource } from "@/lib/bookings/copy";
 import { sendBookingNotifications } from "@/lib/bookings/notifications";
-import { calculateTransferEstimate } from "@/lib/bookings/transfer-price";
+import { calculateTransferEstimate, privateBoatPrice } from "@/lib/bookings/transfer-price";
 import { searchLocations } from "@/lib/locations/repository";
 import { createClient } from "@/lib/supabase/server";
 
@@ -94,6 +94,8 @@ export interface TransferBookingInquiryInput {
    * to an approved affiliate is silently ignored, never a submission
    * error (see validatePromoCode for the live-feedback check). */
   promoCode?: string | null;
+  /** The customer picked the private-boat option of this service. */
+  privateBoat?: boolean;
   /** Hidden honeypot field — must always be empty for a real submission. */
   honeypot?: string;
 }
@@ -110,6 +112,7 @@ async function estimateTransferTotal(
   children: number,
   tripType: "one_way" | "round_trip",
   fallbackCurrency: string,
+  privateBoat: boolean,
 ): Promise<{ total: number | null; currency: string; breakdown: string | null }> {
   const supabase = await createClient();
   const { data } = await supabase
@@ -121,8 +124,12 @@ async function estimateTransferTotal(
   const currency = data?.currency || fallbackCurrency || "USD";
   if (!Number.isFinite(price) || price <= 0) return { total: null, currency, breakdown: null };
 
-  const perBoat = data?.shared_or_private === "private";
-  const { total, breakdown } = calculateTransferEstimate(price, adults, children, tripType, currency, perBoat);
+  // A private boat is either a service stored as private (its price is per
+  // boat), or the private option of a shared service (4x its adult price).
+  const storedPrivate = data?.shared_or_private === "private";
+  const perBoat = storedPrivate || privateBoat;
+  const unitPrice = privateBoat && !storedPrivate ? privateBoatPrice(price) : price;
+  const { total, breakdown } = calculateTransferEstimate(unitPrice, adults, children, tripType, currency, perBoat);
   return { total, currency, breakdown };
 }
 
@@ -152,7 +159,13 @@ export async function createTransferBookingInquiry(
 
   const adults = Math.max(1, Math.floor(Number(input.adults) || 1));
   const children = Math.max(0, Math.floor(Number(input.children) || 0));
-  const estimate = await estimateTransferTotal(input.transferServiceId, adults, children, input.tripType, input.currency);
+  const privateBoat = input.privateBoat === true;
+  const estimate = await estimateTransferTotal(input.transferServiceId, adults, children, input.tripType, input.currency, privateBoat);
+  // The booking row points at the shared service; make the private choice
+  // impossible to miss for the team (admin, emails, Telegram).
+  const userRequests = input.specialRequests?.trim() || null;
+  const specialRequests = privateBoat ? `PRIVATE BOAT requested.${userRequests ? ` ${userRequests}` : ""}` : userRequests;
+  const productTitle = `${input.originTitle} to ${input.destinationTitle}${privateBoat ? " (Private boat)" : ""}`;
 
   // src/types/database.ts is a placeholder (`Functions: Record<string,
   // never>`, see its own header comment — this Supabase project's types
@@ -182,7 +195,7 @@ export async function createTransferBookingInquiry(
     p_children: children,
     p_infants: input.infants,
     p_flight_number: input.flightNumber?.trim() || null,
-    p_special_requests: input.specialRequests?.trim() || null,
+    p_special_requests: specialRequests,
     p_estimated_price: estimate.total,
     p_currency: estimate.currency,
     p_source: "transfer" satisfies BookingSource,
@@ -197,7 +210,7 @@ export async function createTransferBookingInquiry(
   await sendBookingNotifications({
     bookingId: data.id,
     bookingReference: data.booking_reference,
-    productTitle: `${input.originTitle} to ${input.destinationTitle}`,
+    productTitle,
     source: "transfer",
     customerName: name,
     customerEmail: email,
@@ -206,7 +219,7 @@ export async function createTransferBookingInquiry(
     requestedDate: input.travelDate,
     adults,
     children,
-    specialRequests: input.specialRequests?.trim() || null,
+    specialRequests,
     estimatedPrice: estimate.total,
     priceBreakdown: estimate.breakdown,
     currency: estimate.currency,

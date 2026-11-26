@@ -16,6 +16,7 @@ import { CARD_CLASS } from "@/components/ui/card";
 import { FaqSection } from "@/components/ui/faq-section";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
+import { privateBoatPrice } from "@/lib/bookings/transfer-price";
 import { getEntityLocalePaths } from "@/lib/i18n/repository";
 import { getLocationBySlug, getLocationSummaryById } from "@/lib/locations/repository";
 import { getMediaForNode } from "@/lib/media/repository";
@@ -163,9 +164,12 @@ export function buildRouteFaqs(route: TransferRouteDetail): Array<{ question: st
     });
   }
 
+  const sharedForPrivate = route.services.find(isPrivateRuleBase);
   faqs.push({
     question: "Can I book a private transfer on this route?",
-    answer: hasPrivate
+    answer: sharedForPrivate
+      ? `Yes — a private speedboat just for your group costs ${sharedForPrivate.currency} ${privateBoatPrice(sharedForPrivate.price)} for the whole boat, one way. Choose the Private option under Transfer services above.`
+      : hasPrivate
       ? "Yes — use the Private Transfer option below to request your own boat on your own schedule."
       : "No private service is currently listed for this specific route — request a private speedboat charter instead and we'll confirm availability.",
   });
@@ -192,7 +196,63 @@ function faqJsonLd(faqs: Array<{ question: string; answer: string }>) {
   };
 }
 
-function ServiceCard({ service, route }: { service: TransferService; route: TransferRouteDetail }) {
+/** A bookable shared speedboat: its private-boat price follows the 4x rule. */
+function isPrivateRuleBase(s: TransferService): boolean {
+  return s.sharedOrPrivate === "shared" && s.transferType === "speedboat" && s.isBookable && s.price > 0;
+}
+
+interface DisplayService {
+  service: TransferService;
+  /** The real transfer_services row a booking is made against. */
+  bookingServiceId: string;
+  privateBoat: boolean;
+}
+
+/**
+ * Owner's rule: on every route with a bookable shared speedboat, a private
+ * boat is offered at 4x the shared adult price (per boat, one way), right
+ * under the shared offer. Separately stored private speedboat prices are
+ * then hidden, so the rule is the only private price shown.
+ */
+export function servicesForDisplay(route: TransferRouteDetail): DisplayService[] {
+  const bases = route.services.filter(isPrivateRuleBase);
+  if (bases.length === 0) return route.services.map((s) => ({ service: s, bookingServiceId: s.id, privateBoat: false }));
+
+  const origin = route.origin?.title ?? "the airport";
+  const destination = route.destination?.title ?? route.title;
+  const list: DisplayService[] = [];
+  for (const s of route.services) {
+    if (s.sharedOrPrivate === "private" && s.transferType === "speedboat") continue;
+    list.push({ service: s, bookingServiceId: s.id, privateBoat: false });
+    if (!isPrivateRuleBase(s)) continue;
+    list.push({
+      service: {
+        ...s,
+        id: `${s.id}-private`,
+        sharedOrPrivate: "private",
+        price: privateBoatPrice(s.price),
+        capacity: null,
+        schedules: [],
+        description: `Private speedboat from ${origin} to ${destination}, just for your group, at a time that suits your flight. One price for the whole boat, one way.`,
+      },
+      bookingServiceId: s.id,
+      privateBoat: true,
+    });
+  }
+  return list;
+}
+
+function ServiceCard({
+  service,
+  route,
+  bookingServiceId = service.id,
+  privateBoat = false,
+}: {
+  service: TransferService;
+  route: TransferRouteDetail;
+  bookingServiceId?: string;
+  privateBoat?: boolean;
+}) {
   const duration = formatDuration(service.durationMinutes);
 
   return (
@@ -286,14 +346,14 @@ function ServiceCard({ service, route }: { service: TransferService; route: Tran
 
       {service.isBookable && (
         <BookingToggle
-          transferServiceId={service.id}
+          transferServiceId={bookingServiceId}
           originLocationId={route.origin?.id ?? null}
           destinationLocationId={route.destination?.id ?? null}
           originTitle={route.origin?.title ?? "Velana International Airport"}
           destinationTitle={route.destination?.title ?? route.title}
           price={service.price}
           currency={service.currency}
-          perBoat={service.sharedOrPrivate === "private"}
+          perBoat={privateBoat || service.sharedOrPrivate === "private"}
         />
       )}
     </li>
@@ -336,7 +396,8 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
       ? titleDestination
       : null;
   const faqs = [...buildRouteFaqs(route), ...(guide?.faqs ?? [])];
-  const hasPrivateService = route.services.some((s) => s.sharedOrPrivate === "private" && s.isBookable);
+  const displayServices = servicesForDisplay(route);
+  const hasPrivateService = displayServices.some(({ service }) => service.sharedOrPrivate === "private" && service.isBookable);
 
   return (
     <main>
@@ -445,8 +506,8 @@ export async function TransferRouteDetailPage({ slug }: { slug: string }) {
           <p className="mt-2 text-sm text-neutral-600">No verified transfer services recorded for this route yet.</p>
         ) : (
           <ul className="mt-4 space-y-3">
-            {route.services.map((service) => (
-              <ServiceCard key={service.id} service={service} route={route} />
+            {displayServices.map(({ service, bookingServiceId, privateBoat }) => (
+              <ServiceCard key={service.id} service={service} route={route} bookingServiceId={bookingServiceId} privateBoat={privateBoat} />
             ))}
           </ul>
         )}

@@ -8,7 +8,7 @@ import { RegisterEntityLocaleLinks } from "@/components/i18n/entity-locale-links
 import { RouteGallerySection } from "@/components/transfers/route-gallery-section";
 import { RouteMap } from "@/components/transfers/route-map";
 import { RouteVideo } from "@/components/transfers/route-video";
-import { buildRouteFaqs } from "@/components/transfers/transfer-route-detail-page";
+import { buildRouteFaqs, servicesForDisplay } from "@/components/transfers/transfer-route-detail-page";
 import { CARD_CLASS, CARD_IMAGE_BLEED_CLASS } from "@/components/ui/card";
 import { CONTAINER_CLASS } from "@/components/ui/container";
 import { FaqSection } from "@/components/ui/faq-section";
@@ -168,7 +168,8 @@ export default async function LocaleTransferRouteDetailPage({ params }: { params
   ]);
 
   const duration = formatDuration(route.typicalDurationMinutes, locale);
-  const hasPrivateService = route.services.some((s) => s.sharedOrPrivate === "private" && s.isBookable);
+  const displayServices = servicesForDisplay(route).map((x) => x.service);
+  const hasPrivateService = displayServices.some((s) => s.sharedOrPrivate === "private" && s.isBookable);
 
   const breadcrumb = breadcrumbJsonLd(
     [
@@ -239,7 +240,7 @@ export default async function LocaleTransferRouteDetailPage({ params }: { params
             <p className="mt-2 text-sm text-neutral-600">{d.noServicesNote}</p>
           ) : (
             <ul className="mt-4 space-y-3">
-              {route.services.map((service) => (
+              {displayServices.map((service) => (
                 <ServiceCard key={service.id} service={service} d={d} locale={locale} />
               ))}
             </ul>

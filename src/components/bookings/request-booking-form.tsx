@@ -155,6 +155,7 @@ export function RequestBookingForm({
             estimatedPrice: price,
             currency,
             promoCode: promoCode.trim() || null,
+            privateBoat: perBoat,
             honeypot: String(data.get("website") ?? ""),
           });
 

@@ -31,7 +31,10 @@ jobs:
           VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
         run: |
           install -m 700 -d ~/.ssh
-          printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/id_ed25519
+          # Clean up copy-paste damage (Windows line breaks, spaces at line ends).
+          printf '%s\n' "$VPS_SSH_KEY" | tr -d '\r' | sed -e 's/[[:space:]]*$//' -e '/^$/d' > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
+          # Say clearly if the saved key still can't be read (shows no key data).
+          ssh-keygen -y -f ~/.ssh/id_ed25519 > /dev/null || { echo "VPS_SSH_KEY is not a readable private key: paste the whole file again, BEGIN to END lines included."; exit 1; }
           ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts 2>/dev/null
           ssh -o BatchMode=yes "mtg@$VPS_HOST" 'bash ~/maldivestour/deploy/scripts/deploy-app.sh'

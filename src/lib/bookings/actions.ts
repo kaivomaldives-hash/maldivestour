@@ -99,8 +99,9 @@ export interface TransferBookingInquiryInput {
 }
 
 /**
- * Transfer prices are per adult, one way; children pay half and infants
- * travel free (see calculateTransferEstimate). The price comes from the
+ * Shared transfer prices are per adult, one way; children pay half and
+ * infants travel free. Private prices are per boat (see
+ * calculateTransferEstimate). The price comes from the
  * database, not the browser.
  */
 async function estimateTransferTotal(
@@ -111,12 +112,17 @@ async function estimateTransferTotal(
   fallbackCurrency: string,
 ): Promise<{ total: number | null; currency: string; breakdown: string | null }> {
   const supabase = await createClient();
-  const { data } = await supabase.from("transfer_services").select("price, currency").eq("id", transferServiceId).maybeSingle<{ price: number | string | null; currency: string | null }>();
-  const perPerson = Number(data?.price);
+  const { data } = await supabase
+    .from("transfer_services")
+    .select("price, currency, shared_or_private")
+    .eq("id", transferServiceId)
+    .maybeSingle<{ price: number | string | null; currency: string | null; shared_or_private: string | null }>();
+  const price = Number(data?.price);
   const currency = data?.currency || fallbackCurrency || "USD";
-  if (!Number.isFinite(perPerson) || perPerson <= 0) return { total: null, currency, breakdown: null };
+  if (!Number.isFinite(price) || price <= 0) return { total: null, currency, breakdown: null };
 
-  const { total, breakdown } = calculateTransferEstimate(perPerson, adults, children, tripType, currency);
+  const perBoat = data?.shared_or_private === "private";
+  const { total, breakdown } = calculateTransferEstimate(price, adults, children, tripType, currency, perBoat);
   return { total, currency, breakdown };
 }
 

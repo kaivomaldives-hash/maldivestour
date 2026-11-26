@@ -209,6 +209,9 @@ function ServiceCard({ service, route }: { service: TransferService; route: Tran
         </span>
         <span className="text-lg font-semibold">
           {service.currency} {service.price}
+          <span className="ml-1 text-sm font-normal text-neutral-500">
+            {service.sharedOrPrivate === "private" ? "per boat" : "per adult"}
+          </span>
         </span>
       </div>
 
@@ -290,6 +293,7 @@ function ServiceCard({ service, route }: { service: TransferService; route: Tran
           destinationTitle={route.destination?.title ?? route.title}
           price={service.price}
           currency={service.currency}
+          perBoat={service.sharedOrPrivate === "private"}
         />
       )}
     </li>

@@ -1,7 +1,7 @@
 /**
- * Transfer prices are per adult, one way. Children (2-11 years) pay half
- * the adult price on every route, infants (under 2) travel free, and a
- * round trip is two legs. Used by both the booking form (live estimate)
+ * Shared transfer prices are per adult, one way. Children (2-11 years) pay
+ * half the adult price on every route, infants (under 2) travel free, and a
+ * round trip is two legs. Private transfer prices are per boat, one way. Used by both the booking form (live estimate)
  * and the server action (the stored estimate and the emails), so the two
  * always agree.
  */
@@ -38,8 +38,18 @@ export function calculateTransferEstimate(
   children: number,
   tripType: "one_way" | "round_trip",
   currency: string,
+  perBoat = false,
 ): TransferEstimate {
   const legs = tripType === "round_trip" ? 2 : 1;
+  // Private transfers are one price for the whole boat, whatever the group size.
+  if (perBoat) {
+    return {
+      total: round2(adultPrice * legs),
+      childPrice: 0,
+      legs,
+      breakdown: `private boat × ${currency} ${adultPrice}${legs === 2 ? ", × 2 (round trip)" : ""}`,
+    };
+  }
   const childPrice = round2(adultPrice * CHILD_RATE);
   const total = round2((adultPrice * adults + childPrice * children) * legs);
 

@@ -19,6 +19,8 @@ export interface RequestBookingFormProps {
   destinationTitle: string;
   price: number;
   currency: string;
+  /** Private transfer: the price is for the whole boat, not per person. */
+  perBoat?: boolean;
 }
 
 /**
@@ -40,13 +42,14 @@ export function RequestBookingForm({
   destinationTitle,
   price,
   currency,
+  perBoat = false,
 }: RequestBookingFormProps) {
   const [isPending, startTransition] = useTransition();
   const [tripType, setTripType] = useState<"one_way" | "round_trip">("one_way");
   const [promoCode, setPromoCode] = useState("");
   // Children (2-11) pay half, infants free; same calculation as the server.
   const [guests, setGuests] = useState({ adults: 2, children: 0 });
-  const estimate = calculateTransferEstimate(price, guests.adults, guests.children, tripType, currency);
+  const estimate = calculateTransferEstimate(price, guests.adults, guests.children, tripType, currency, perBoat);
   const legs = estimate.legs;
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState<{
@@ -239,7 +242,9 @@ export function RequestBookingForm({
 
       <div className="flex items-center justify-between gap-4 border-t border-neutral-200 pt-4">
         <p className="text-sm text-neutral-600">
-          {currency} {price} per adult, {currency} {estimate.childPrice} per child (2-11){legs === 2 ? " each way" : ""}
+          {perBoat
+            ? `${currency} ${price} per private boat${legs === 2 ? " each way" : ""}`
+            : `${currency} ${price} per adult, ${currency} ${estimate.childPrice} per child (2-11)${legs === 2 ? " each way" : ""}`}
           <br />
           Estimated total: <span className="font-semibold text-ocean-900">{currency} {estimate.total}</span>
           <span className="text-xs text-neutral-500"> ({estimate.breakdown})</span>
